@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import login
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
@@ -24,24 +23,6 @@ class TestPloneTool(unittest.TestCase):
         self.assertEqual(
             self.tool.getSiteEncoding(),
             'utf-8'
-        )
-
-    def test_portal_utf8(self):
-        text = u'Eksempel \xe6\xf8\xe5'
-        site_text = text.encode('utf-8')
-
-        self.assertEqual(
-            self.tool.portal_utf8(site_text),
-            text.encode('utf-8')
-        )
-
-    def test_utf8_portal(self):
-        text = u'Eksempel \xe6\xf8\xe5'
-        utf8text = text.encode('utf-8')
-
-        self.assertEqual(
-            self.tool.utf8_portal(utf8text),
-            text.encode('utf-8')
         )
 
     def test_getMailHost(self):
@@ -92,7 +73,7 @@ class TestPloneTool(unittest.TestCase):
             []
         )
 
-        self.tool.addPortalMessage(u'A random warning message', 'warning')
+        self.tool.addPortalMessage('A random warning message', 'warning')
         status = IStatusMessage(self.request).show()
         self.assertEqual(
             len(status),
@@ -109,7 +90,7 @@ class TestPloneTool(unittest.TestCase):
             []
         )
 
-        self.tool.addPortalMessage(u'A random info message')
+        self.tool.addPortalMessage('A random info message')
         status = IStatusMessage(self.request).show()
         self.assertEqual(
             len(status),
@@ -204,5 +185,5 @@ class TestPloneTool(unittest.TestCase):
     def test_getEmptyTitle(self):
         self.assertEqual(
             self.tool.getEmptyTitle(translated=False),
-            u'[\xb7\xb7\xb7]'
+            '[\xb7\xb7\xb7]'
         )

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
 from AccessControl import Unauthorized
@@ -43,7 +42,7 @@ from Products.CMFPlone.utils import safe_hasattr
 from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import transaction_note
 from Products.statusmessages.interfaces import IStatusMessage
-from six.moves.urllib import parse
+from urllib import parse
 from ZODB.POSException import ConflictError
 from zope.component import getUtility
 from zope.component import queryAdapter
@@ -54,7 +53,6 @@ from zope.lifecycleevent import ObjectModifiedEvent
 
 import re
 import sys
-import six
 import transaction
 
 
@@ -111,21 +109,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         user.setProperties(**properties)
 
     @security.public
-    @deprecate(('`getSiteEncoding` is deprecated. Plone only supports UTF-8 '
-                'currently. This method always returns "utf-8"'))
+    @deprecate('`getSiteEncoding` is deprecated. Plone only supports UTF-8 '
+                'currently. This method always returns "utf-8"')
     def getSiteEncoding(self):
         """ Get the the site encoding, which is utf-8."""
         return 'utf-8'
-
-    @security.public
-    def portal_utf8(self, str, errors='strict'):
-        """Transforms an string in portal encoding to utf8."""
-        return utils.portal_utf8(self, str, errors)
-
-    @security.public
-    def utf8_portal(self, str, errors='strict'):
-        """Transforms an utf8 string to portal encoding."""
-        return utils.utf8_portal(self, str, errors)
 
     @security.private
     def getMailHost(self):
@@ -136,7 +124,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def validateSingleNormalizedEmailAddress(self, address):
         # Lower-level function to validate a single normalized email address,
         # see validateEmailAddress.
-        if not isinstance(address, six.string_types):
+        if not isinstance(address, str):
             return False
 
         sub = EMAIL_CUTOFF_RE.match(address)
@@ -153,7 +141,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     @security.public
     def validateSingleEmailAddress(self, address):
         # Validate a single email address, see also validateEmailAddresses.
-        if not isinstance(address, six.string_types):
+        if not isinstance(address, str):
             return False
 
         sub = EMAIL_CUTOFF_RE.match(address)
@@ -176,7 +164,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def validateEmailAddresses(self, addresses):
         # Validate a list of possibly several email addresses, see also
         # validateSingleEmailAddress.
-        if not isinstance(addresses, six.string_types):
+        if not isinstance(addresses, str):
             return False
 
         sub = EMAIL_CUTOFF_RE.match(addresses)
@@ -265,7 +253,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             parent = aq_parent(aq_inner(obj))
             parent.manage_renameObject(obj.getId(), id)
 
-    def _makeTransactionNote(self, obj, msg=u''):
+    def _makeTransactionNote(self, obj, msg=''):
         # TODO Why not aq_parent()?
         relative_path = '/'.join(
             getToolByName(self, 'portal_url').getRelativeContentPath(obj)[:-1]
@@ -314,7 +302,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Get an icon for an action, from its icon_expr.
         if context is None:
             context = aq_parent(self)
-        action_chain = '%s/%s' % (category, id)
+        action_chain = f'{category}/{id}'
         if category == 'controlpanel':
             tool = getToolByName(context, 'portal_controlpanel')
             actions = [ai for ai in tool.listActionInfos() if ai['id'] == id]
@@ -429,7 +417,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         s = sys.exc_info()[:2]
         if s[0] == None:
             return None
-        if isinstance(s[0], six.string_types):
+        if isinstance(s[0], str):
             return s[0]
         return str(s[1])
 
@@ -919,7 +907,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 exp_str = ''
 
             if eff_str or exp_str:
-                result['DC.date.valid_range'] = '%s - %s' % (eff_str, exp_str)
+                result['DC.date.valid_range'] = f'{eff_str} - {exp_str}'
 
         return result
 
@@ -1005,7 +993,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 obj = traverse(path)
                 obj_parent = aq_parent(aq_inner(obj))
                 obj_parent.manage_delObjects([obj.getId()])
-                success.append('%s (%s)' % (obj.getId(), path))
+                success.append(f'{obj.getId()} ({path})')
             except ConflictError:
                 raise
             except Exception as e:
@@ -1018,44 +1006,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         transaction_note('Deleted %s' % (', '.join(success)))
         return success, failure
     deleteObjectsByPaths = postonly(deleteObjectsByPaths)
-
-    @security.public
-    def transitionObjectsByPaths(self, workflow_action, paths, comment='',
-                                 expiration_date=None, effective_date=None,
-                                 include_children=False, handle_errors=True,
-                                 REQUEST=None):
-        log_deprecated("transitionObjectsByPaths is deprecated")
-        failure = {}
-        # use the portal for traversal in case we have relative paths
-        portal = getToolByName(self, 'portal_url').getPortalObject()
-        traverse = portal.restrictedTraverse
-        for path in paths:
-            if handle_errors:
-                sp = transaction.savepoint(optimistic=True)
-            try:
-                o = traverse(path, None)
-                if o is not None:
-                    o.content_status_modify(workflow_action,
-                                            comment,
-                                            effective_date=effective_date,
-                                            expiration_date=expiration_date)
-            except ConflictError:
-                raise
-            except Exception as e:
-                if handle_errors:
-                    # skip this object but continue with sub-objects.
-                    sp.rollback()
-                    failure[path] = e
-                else:
-                    raise
-            if getattr(o, 'isPrincipiaFolderish', None) and include_children:
-                subobject_paths = ["%s/%s" % (path, id) for id in o]
-                self.transitionObjectsByPaths(workflow_action, subobject_paths,
-                                              comment, expiration_date,
-                                              effective_date, include_children,
-                                              handle_errors)
-        return failure
-    transitionObjectsByPaths = postonly(transitionObjectsByPaths)
 
     @security.public
     def renameObjectsByPaths(self, paths, new_ids, new_titles,

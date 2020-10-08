@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import print_function
 from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
 from AccessControl import ModuleSecurityInfo
@@ -31,7 +29,7 @@ from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.log import log
 from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.log import log_exc
-from six.moves.urllib.parse import urlparse
+from urllib.parse import urlparse
 from ZODB.POSException import ConflictError
 from zope import schema
 from zope.component import getMultiAdapter
@@ -50,7 +48,6 @@ import json
 import OFS
 import pkg_resources
 import re
-import six
 import sys
 import transaction
 import warnings
@@ -182,7 +179,7 @@ def isExpired(content):
         expiry = expiry()
 
     # Convert to DateTime if necessary, ExpirationDate may return 'None'
-    if expiry and expiry != 'None' and isinstance(expiry, six.string_types):
+    if expiry and expiry != 'None' and isinstance(expiry, str):
         expiry = DateTime(expiry)
 
     if isinstance(expiry, DateTime) and expiry.isPast():
@@ -222,27 +219,10 @@ deprecated('getSiteEncoding',
             'currently. This method always returns "utf-8"'))
 
 
-# XXX portal_utf8 and utf8_portal probably can go away
-def portal_utf8(context, str, errors='strict'):
-    # Test
-    six.text_type(str, 'utf-8', errors)
-    return str
-
-
-# XXX this is the same method as above
-def utf8_portal(context, str, errors='strict'):
-    # Test
-    six.text_type(str, 'utf-8', errors)
-    return str
-
-
 def getEmptyTitle(context, translated=True):
     """Returns string to be used for objects with no title or id"""
     # The default is an extra fancy unicode elipsis
-    if six.PY2:
-        empty = unicode('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'utf-8')
-    else:
-        empty = b'\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d'.decode('utf8')
+    empty = b'\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d'.decode('utf8')
     if translated:
         if context is not None:
             if not IBrowserRequest.providedBy(context):
@@ -263,7 +243,7 @@ def normalizeString(text, context=None, encoding=None):
     return queryUtility(IIDNormalizer).normalize(text)
 
 
-class RealIndexIterator(object):
+class RealIndexIterator:
     """The 'real' version of the IndexIterator class, that's actually
     used to generate unique indexes.
     """
@@ -299,18 +279,18 @@ class ToolInit(CMFCoreToolInit):
         icon_path = path
         try:
             icon = ImageFile(path, pack.__dict__)
-        except (IOError, OSError):
+        except OSError:
             # Fallback:
             # Assume path is relative to CMFPlone directory
             path = abspath(join(PACKAGE_HOME, path))
             try:
                 icon = ImageFile(path, pack.__dict__)
-            except (IOError, OSError):
+            except OSError:
                 # if there is some problem loading the fancy image
                 # from the tool then  tell someone about it
-                log(('The icon for the product: %s which was set to: %s, '
+                log('The icon for the product: %s which was set to: %s, '
                      'was not found. Using the default.' %
-                     (self.product_name, icon_path)))
+                     (self.product_name, icon_path))
         return icon
 
     def initialize(self, context):
@@ -329,7 +309,7 @@ class ToolInit(CMFCoreToolInit):
                         # Icon was not found
                         return
                     icon.__roles__ = None
-                    tool.icon = 'misc_/%s/%s' % (self.product_name, name)
+                    tool.icon = f'misc_/{self.product_name}/{name}'
                     misc = OFS.misc_.misc_
                     Misc = OFS.misc_.Misc_
                     if not hasattr(misc, pid):
@@ -488,16 +468,6 @@ def safe_text(value, encoding='utf-8'):
         >>> print(safe_unicode(None))
         None
     """
-    if six.PY2:
-        if isinstance(value, unicode):
-            return value
-        elif isinstance(value, basestring):
-            try:
-                value = unicode(value, encoding)
-            except (UnicodeDecodeError):
-                value = value.decode('utf-8', 'replace')
-        return value
-
     if isinstance(value, str):
         return value
     elif isinstance(value, bytes):
@@ -514,7 +484,7 @@ safe_unicode = safe_text
 def safe_bytes(value, encoding='utf-8'):
     """Convert text to bytes of the specified encoding.
     """
-    if isinstance(value, six.text_type):
+    if isinstance(value, str):
         value = value.encode(encoding)
     return value
 
@@ -525,9 +495,7 @@ safe_encode = safe_bytes
 def safe_nativestring(value, encoding='utf-8'):
     """Convert a value to str in py2 and to text in py3
     """
-    if six.PY2 and isinstance(value, six.text_type):
-        value = safe_bytes(value, encoding)
-    if not six.PY2 and isinstance(value, six.binary_type):
+    if isinstance(value, bytes):
         value = safe_text(value, encoding)
     return value
 
@@ -684,7 +652,7 @@ def set_own_login_name(member, loginname):
 def ajax_load_url(url):
     if url and 'ajax_load' not in url:
         sep = '?' in url and '&' or '?'  # url parameter seperator
-        url = '%s%sajax_load=1' % (url, sep)
+        url = f'{url}{sep}ajax_load=1'
     return url
 
 
@@ -698,9 +666,9 @@ def validate_json(value):
         json.loads(value)
     except ValueError as exc:
         class JSONError(schema.ValidationError):
-            __doc__ = _(u"Must be empty or a valid JSON-formatted "
-                        u"configuration – ${message}.", mapping={
-                            'message': six.text_type(exc)})
+            __doc__ = _("Must be empty or a valid JSON-formatted "
+                        "configuration – ${message}.", mapping={
+                            'message': str(exc)})
 
         raise JSONError(value)
 
@@ -821,11 +789,7 @@ def get_top_site_from_url(context, request):
         url_path = urlparse(context.absolute_url()).path.split('/')
         for idx in range(len(url_path)):
             _path = '/'.join(url_path[:idx + 1]) or '/'
-            site_path = request.physicalPathFromURL(_path)
-            if six.PY2:
-                site_path = safe_encode('/'.join(site_path)) or '/'
-            else:
-                site_path = '/'.join(site_path) or '/'
+            site_path = '/'.join(request.physicalPathFromURL(_path)) or '/'
             _site = context.restrictedTraverse(site_path)
             if ISite.providedBy(_site):
                 break
@@ -866,13 +830,13 @@ def human_readable_size(size):
     if not size:
         return '0 %s' % smaller
 
-    if isinstance(size, six.integer_types):
+    if isinstance(size, int):
         if size < SIZE_CONST[smaller]:
             return '1 %s' % smaller
         for c in SIZE_ORDER:
             if size // SIZE_CONST[c] > 0:
                 break
-        return '%.1f %s' % (float(size / float(SIZE_CONST[c])), c)
+        return '{:.1f} {}'.format(float(size / float(SIZE_CONST[c])), c)
     return size
 
 
@@ -917,7 +881,7 @@ def check_id(
     # make sure we have an id if one is required
     if not id:
         if required:
-            return xlate(_(u'Please enter a name.'))
+            return xlate(_('Please enter a name.'))
 
         # Id is not required and no alternative was specified, so assume the
         # object's id will be context.getId(). We still should check to make
@@ -935,7 +899,7 @@ def check_id(
     # check for reserved names
     if id in ('login', 'layout', 'plone', 'zip', 'properties', ):
         return xlate(
-            _(u'${name} is reserved.',
+            _('${name} is reserved.',
               mapping={'name': id}))
 
     # check for bad characters
@@ -946,17 +910,17 @@ def check_id(
             bad_chars = ''.join(bad_chars).decode('utf-8')
             decoded_id = id.decode('utf-8')
             return xlate(
-                _(u'${name} is not a legal name. The following characters are '
-                  u'invalid: ${characters}',
-                  mapping={u'name': decoded_id, u'characters': bad_chars}))
+                _('${name} is not a legal name. The following characters are '
+                  'invalid: ${characters}',
+                  mapping={'name': decoded_id, 'characters': bad_chars}))
 
     # check for a catalog index
     portal_catalog = getToolByName(context, 'portal_catalog', None)
     if portal_catalog is not None:
         if id in list(portal_catalog.indexes()) + list(portal_catalog.schema()):
             return xlate(
-                _(u'${name} is reserved.',
-                  mapping={u'name': id}))
+                _('${name} is reserved.',
+                  mapping={'name': id}))
 
     # id is good; decide if we should check for id collisions
     portal_factory = getToolByName(context, 'portal_factory', None)
@@ -992,8 +956,8 @@ def check_id(
     except Unauthorized:
         # There is a permission problem. Safe to assume we can't use this id.
         return xlate(
-            _(u'${name} is reserved.',
-              mapping={u'name': id}))
+            _('${name} is reserved.',
+              mapping={'name': id}))
     if result is not None:
         result = xlate(result, )
     return result
@@ -1027,8 +991,8 @@ def _check_for_collision(contained_by, id, **kwargs):
         existing_obj = getattr(contained_by, id, None)
         if base_hasattr(existing_obj, 'portal_type'):
             return _(
-                u'There is already an item named ${name} in this folder.',
-                mapping={u'name': id})
+                'There is already an item named ${name} in this folder.',
+                mapping={'name': id})
 
     if base_hasattr(contained_by, 'checkIdAvailable'):
         # This used to be called from the check_id skin script,
@@ -1036,7 +1000,7 @@ def _check_for_collision(contained_by, id, **kwargs):
         # and the code would catch the Unauthorized exception.
         if secman.checkPermission(AddPortalContent, contained_by):
             if not contained_by.checkIdAvailable(id):
-                return _(u'${name} is reserved.', mapping={u'name': id})
+                return _('${name} is reserved.', mapping={'name': id})
 
     # containers may implement this hook to further restrict ids
     if base_hasattr(contained_by, 'checkValidId'):
@@ -1045,7 +1009,7 @@ def _check_for_collision(contained_by, id, **kwargs):
         except ConflictError:
             raise
         except:  # noqa: E722
-            return _(u'${name} is reserved.', mapping={u'name': id})
+            return _('${name} is reserved.', mapping={'name': id})
 
     # make sure we don't collide with any parent method aliases
     plone_utils = getToolByName(contained_by, 'plone_utils', None)
@@ -1056,7 +1020,7 @@ def _check_for_collision(contained_by, id, **kwargs):
             aliases = plone_utils.getMethodAliases(parentFti)
             if aliases is not None:
                 if id in aliases.keys():
-                    return _(u'${name} is reserved.', mapping={u'name': id})
+                    return _('${name} is reserved.', mapping={'name': id})
 
     # Lastly, we want to disallow the id of any of the tools in the portal
     # root, as well as any object that can be acquired via portal_skins.
@@ -1086,4 +1050,4 @@ def _check_for_collision(contained_by, id, **kwargs):
         return
     # but not other things
     if getattr(portal, id, None) is not None:
-        return _(u'${name} is reserved.', mapping={u'name': id})
+        return _('${name} is reserved.', mapping={'name': id})

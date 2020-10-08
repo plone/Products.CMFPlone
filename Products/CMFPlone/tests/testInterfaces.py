@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from ExtensionClass import ExtensionClass
 from Products.CMFPlone.ActionsTool import ActionsTool
 from Products.CMFPlone.CatalogTool import CatalogTool
@@ -12,7 +11,6 @@ from Products.CMFPlone.PloneTool import PloneTool
 from Products.CMFPlone.Portal import PloneSite
 from Products.CMFPlone.PropertiesTool import PropertiesTool
 from Products.CMFPlone.PropertiesTool import SimpleItemWithProperties
-from Products.CMFPlone.QuickInstallerTool import QuickInstallerTool
 from Products.CMFPlone.RegistrationTool import RegistrationTool
 from Products.CMFPlone.SkinsTool import SkinsTool
 from Products.CMFPlone.TypesTool import TypesTool
@@ -40,7 +38,7 @@ def className(klass):
 
 
 def dottedName(klass):
-    return "%s.%s" % (klass.__module__, klass.__name__)
+    return f"{klass.__module__}.{klass.__name__}"
 
 # list of tests
 tests = []
@@ -76,7 +74,7 @@ class InterfaceTest(TestCase):
 
         # is the class really implemented by the given interface?
         self.assertTrue(interface.implementedBy(klass),
-                        'The class %s does not implement %s' % (dottedName(klass),
+                        'The class {} does not implement {}'.format(dottedName(klass),
                                                                 dottedName(interface)))
         # verify if the implementation is correct
         try:
@@ -123,7 +121,7 @@ class InterfaceTest(TestCase):
         for interface in interfaces:
             self.assertTrue(
                 interface in impl,
-                'The class %s does not implement %s' % (dottedName(klass),
+                'The class {} does not implement {}'.format(dottedName(klass),
                                                         dottedName(interface)))
 
     def doesImplementBy(self, instance, interfaces):
@@ -182,7 +180,7 @@ class zope_interface_test(TestCase):
 
         # is the class really implemented by the given interface?
         self.assertTrue(interface.implementedBy(klass),
-                        'The class %s does not implement %s' % (dottedName(klass),
+                        'The class {} does not implement {}'.format(dottedName(klass),
                                                                 dottedName(interface)))
         # verify if the implementation is correct
         try:
@@ -201,7 +199,7 @@ class zope_interface_test(TestCase):
 
         # is the class really implemented by the given interface?
         self.assertTrue(interface.providedBy(instance),
-                        'The instance of %s does not provide %s' % (dottedName(instance),
+                        'The instance of {} does not provide {}'.format(dottedName(instance),
                                                                     dottedName(interface)))
         # verify if the implementation is correct
         try:
@@ -227,7 +225,7 @@ class zope_interface_test(TestCase):
         for interface in interfaces:
             self.assertTrue(
                 interface in impl,
-                'The class %s does not implement %s' % (dottedName(klass),
+                'The class {} does not implement {}'.format(dottedName(klass),
                                                         dottedName(interface)))
 
     def doesProvidedBy(self, instance, interfaces):
@@ -267,7 +265,6 @@ testClasses = [
     (PloneTool, ()),
     (PloneSite, ()),
     (PropertiesTool, ()), (SimpleItemWithProperties, ()),
-    (QuickInstallerTool, ()),
     (RegistrationTool, ()),
     (SkinsTool, ()),
     (TypesTool, ()),

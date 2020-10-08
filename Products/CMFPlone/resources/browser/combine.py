@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from datetime import datetime
 from io import BytesIO
@@ -13,7 +12,6 @@ from zope.component import queryUtility
 
 import logging
 import re
-import six
 
 
 PRODUCTION_RESOURCE_DIRECTORY = 'production'
@@ -32,9 +30,9 @@ def get_production_resource_directory():
     if 'timestamp.txt' not in production_folder:
         return '%s/++unique++1' % PRODUCTION_RESOURCE_DIRECTORY
     timestamp = production_folder.readFile('timestamp.txt')
-    if not six.PY2 and isinstance(timestamp, six.binary_type):
+    if isinstance(timestamp, bytes):
         timestamp = timestamp.decode()
-    return '%s/++unique++%s' % (
+    return '{}/++unique++{}'.format(
         PRODUCTION_RESOURCE_DIRECTORY, timestamp)
 
 
@@ -50,7 +48,7 @@ def get_resource(context, path):
     try:
         resource = context.unrestrictedTraverse(path)
     except (NotFound, AttributeError):
-        logger.warning(u'Could not find resource {0}. You may have to create it first.'.format(path))  # noqa
+        logger.warning(f'Could not find resource {path}. You may have to create it first.')  # noqa
         return
 
     if isinstance(resource, FilesystemFile):
@@ -114,9 +112,9 @@ def write_js(context, folder, meta_bundle):
 
     fi = BytesIO()
     for script in resources:
-        if not isinstance(script, six.binary_type):
+        if not isinstance(script, bytes):
             script = script.encode()
-        fi.write((script + b'\n'))
+        fi.write(script + b'\n')
     folder.writeFile(meta_bundle + '.js', fi)
     logger.info('Wrote combined JS bundle "%s".' % meta_bundle)
 
@@ -139,7 +137,7 @@ def write_css(context, folder, meta_bundle):
             # Process relative urls:
             # we prefix with current resource path any url not starting with
             # '/' or http: or data:
-            if not isinstance(path, six.binary_type):
+            if not isinstance(path, bytes):
                 path = path.encode()
             css = re.sub(
                 br"""(url\(['"]?(?!['"]?([a-z]+:|\/)))""",
@@ -149,9 +147,9 @@ def write_css(context, folder, meta_bundle):
 
     fi = BytesIO()
     for script in resources:
-        if not isinstance(script, six.binary_type):
+        if not isinstance(script, bytes):
             script = script.encode()
-        fi.write((script + b'\n'))
+        fi.write(script + b'\n')
     folder.writeFile(meta_bundle + '.css', fi)
     logger.info('Wrote combined CSS bundle "%s".' % meta_bundle)
 

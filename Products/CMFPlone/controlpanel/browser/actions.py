@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.autoform.form import AutoExtensibleForm
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.interfaces import IAction, IActionCategory
@@ -70,7 +69,7 @@ class ActionListControlPanel(BrowserView):
 
 
 @implementer(IActionSchema)
-class ActionControlPanelAdapter(object):
+class ActionControlPanelAdapter:
     """Adapter for action form."""
 
     adapts(IAction)
@@ -168,7 +167,7 @@ class ActionControlPanel(AutoExtensibleForm, form.EditForm):
 
     schema = IActionSchema
     ignoreContext = False
-    label = _(u'Action Settings')
+    label = _('Action Settings')
 
 
 class NewActionControlPanel(AutoExtensibleForm, form.AddForm):
@@ -176,7 +175,7 @@ class NewActionControlPanel(AutoExtensibleForm, form.AddForm):
 
     schema = INewActionSchema
     ignoreContext = True
-    label = _(u'New action')
+    label = _('New action')
 
     def createAndAdd(self, data):
         portal_actions = getToolByName(self.context, 'portal_actions')

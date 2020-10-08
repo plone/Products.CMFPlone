@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope.schema.fieldproperty import FieldProperty
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces import ISiteSchema
@@ -7,11 +6,9 @@ from zope.component import adapts
 from zope.component import getUtility
 from zope.interface import implementer
 
-import six
-
 
 @implementer(ISiteSchema)
-class SiteControlPanelAdapter(object):
+class SiteControlPanelAdapter:
 
     adapts(IPloneSiteRoot)
 
@@ -23,16 +20,12 @@ class SiteControlPanelAdapter(object):
         return self.settings.site_title
 
     def set_site_title(self, value):
-        if six.PY2 and isinstance(value, six.binary_type):
-            value = value.decode('utf-8')
         self.settings.site_title = value
 
     def get_webstats_js(self):
         return self.settings.webstats_js
 
     def set_webstats_js(self, value):
-        if six.PY2 and isinstance(value, six.binary_type):
-            value = value.decode('utf-8')
         self.settings.webstats_js = value
 
     site_title = property(get_site_title, set_site_title)

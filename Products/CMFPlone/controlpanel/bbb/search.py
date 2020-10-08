@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
@@ -9,7 +8,7 @@ from zope.component.hooks import getSite
 
 
 @implementer(ISearchSchema)
-class SearchControlPanelAdapter(object):
+class SearchControlPanelAdapter:
 
     adapts(IPloneSiteRoot)
 

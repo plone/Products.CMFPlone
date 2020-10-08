@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from AccessControl.PermissionRole import rolesForPermissionOn
 from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogEntries  # noqa
@@ -30,7 +29,6 @@ from Products.CMFPlone.utils import human_readable_size
 from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_unicode
 from Products.ZCatalog.ZCatalog import ZCatalog
-from six.moves import urllib
 from time import process_time
 from zExceptions import Unauthorized
 from zope.annotation.interfaces import IAnnotations
@@ -43,8 +41,8 @@ from zope.interface import providedBy
 
 import logging
 import re
-import six
 import time
+import urllib
 
 
 
@@ -192,7 +190,7 @@ def sortable_title(obj):
         if safe_callable(title):
             title = title()
 
-        if isinstance(title, six.string_types):
+        if isinstance(title, str):
             # Ignore case, normalize accents, strip spaces
             sortabletitle = mapUnicode(safe_unicode(title)).lower().strip()
             # Replace numbers with zero filled numbers
@@ -202,8 +200,6 @@ def sortable_title(obj):
                 start = sortabletitle[:(MAX_SORTABLE_TITLE - 13)]
                 end = sortabletitle[-10:]
                 sortabletitle = start + '...' + end
-            if six.PY2:
-                return sortabletitle.encode('utf-8')
             return sortabletitle
     return ''
 
@@ -390,14 +386,12 @@ class CatalogTool(PloneBaseTool, BaseTool):
             # Or: {'path': {'depth': 0, 'query': '/Plone/events/'}}
             paths = paths.get('query', [])
 
-        if isinstance(paths, six.string_types):
+        if isinstance(paths, str):
             paths = [paths]
 
         objs = []
         site = getSite()
         for path in list(paths):
-            if six.PY2:
-                path = path.encode('utf-8')  # paths must not be unicode
             try:
                 site_path = '/'.join(site.getPhysicalPath())
                 parts = path[len(site_path) + 1:].split('/')
@@ -444,7 +438,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
         # filter out invalid sort_on indexes
         sort_on = kw.get('sort_on') or []
-        if isinstance(sort_on, six.string_types):
+        if isinstance(sort_on, str):
             sort_on = [sort_on]
         valid_indexes = self.indexes()
         try:
@@ -474,7 +468,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         if not self.allow_inactive(query):
             query['effectiveRange'] = DateTime()
 
-        return super(CatalogTool, self).search(
+        return super().search(
             query, sort_index, reverse, limit, merge)
 
     @security.protected(ManageZCatalogEntries)

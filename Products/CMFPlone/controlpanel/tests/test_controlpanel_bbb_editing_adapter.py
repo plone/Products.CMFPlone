@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import IEditingSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID
@@ -70,23 +69,23 @@ class EditingControlPanelAdapterTest(unittest.TestCase):
     def test_get_default_editor_setting(self):
         self.assertEqual(
             getAdapter(self.portal, IEditingSchema).default_editor,
-            u'TinyMCE'
+            'TinyMCE'
         )
-        self.settings.default_editor = u'None'
+        self.settings.default_editor = 'None'
         self.assertEqual(
             getAdapter(self.portal, IEditingSchema).default_editor,
-            u'None'
+            'None'
         )
 
     def test_set_default_editor_setting(self):
         self.assertEqual(
             self.settings.default_editor,
-            u'TinyMCE'
+            'TinyMCE'
         )
-        getAdapter(self.portal, IEditingSchema).default_editor = u'None'
+        getAdapter(self.portal, IEditingSchema).default_editor = 'None'
         self.assertEqual(
             self.settings.default_editor,
-            u'None'
+            'None'
         )
 
     def test_get_lock_on_ttw_edit_setting(self):

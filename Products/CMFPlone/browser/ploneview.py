@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from plone.memoize.view import memoize
 from Products.CMFCore.utils import getToolByName
@@ -9,8 +8,6 @@ from zope.component import getMultiAdapter
 from zope.i18n import translate
 from zope.interface import implementer
 from zope.size import byteDisplay
-
-import six
 
 _marker = []
 
@@ -113,7 +110,7 @@ class Plone(BrowserView):
         if not length:
             return text
         converted = False
-        if not isinstance(text, six.text_type):
+        if not isinstance(text, str):
             text = utils.safe_unicode(text)
             converted = True
         if len(text) > length:
@@ -135,77 +132,77 @@ class Plone(BrowserView):
     def getCurrentUrl(self):
         context_state = getMultiAdapter(
             (aq_inner(self.context), self.request),
-            name=u'plone_context_state')
+            name='plone_context_state')
         return context_state.current_page_url()
 
     def isDefaultPageInFolder(self):
         context_state = getMultiAdapter(
             (aq_inner(self.context), self.request),
-            name=u'plone_context_state')
+            name='plone_context_state')
         return context_state.is_default_page()
 
     def isStructuralFolder(self):
         context_state = getMultiAdapter(
             (aq_inner(self.context), self.request),
-            name=u'plone_context_state')
+            name='plone_context_state')
         return context_state.is_structural_folder()
 
     def navigationRootPath(self):
         portal_state = getMultiAdapter(
             (aq_inner(self.context), self.request),
-            name=u'plone_portal_state')
+            name='plone_portal_state')
         return portal_state.navigation_root_path()
 
     def navigationRootUrl(self):
         portal_state = getMultiAdapter(
             (aq_inner(self.context), self.request),
-            name=u'plone_portal_state')
+            name='plone_portal_state')
         return portal_state.navigation_root_url()
 
     def getParentObject(self):
         context_state = getMultiAdapter(
             (aq_inner(self.context), self.request),
-            name=u'plone_context_state')
+            name='plone_context_state')
         return context_state.parent()
 
     def getCurrentFolder(self):
         context_state = getMultiAdapter(
             (aq_inner(self.context), self.request),
-            name=u'plone_context_state')
+            name='plone_context_state')
         return context_state.folder()
 
     def getCurrentFolderUrl(self):
         context_state = getMultiAdapter(
             (aq_inner(self.context), self.request),
-            name=u'plone_context_state')
+            name='plone_context_state')
         return context_state.folder().absolute_url()
 
     @memoize
     def getCurrentObjectUrl(self):
         context_state = getMultiAdapter(
             (aq_inner(self.context), self.request),
-            name=u'plone_context_state')
+            name='plone_context_state')
         return context_state.canonical_object_url()
 
     @memoize
     def isFolderOrFolderDefaultPage(self):
         state = getMultiAdapter(
             (aq_inner(self.context), self.request),
-            name=u'plone_context_state')
+            name='plone_context_state')
         return state.is_structural_folder() or state.is_default_page()
 
     @memoize
     def isPortalOrPortalDefaultPage(self):
         context_state = getMultiAdapter(
             (aq_inner(self.context), self.request),
-            name=u'plone_context_state')
+            name='plone_context_state')
         return context_state.is_portal_root()
 
     @memoize
     def getViewTemplateId(self):
         context_state = getMultiAdapter(
             (aq_inner(self.context), self.request),
-            name=u'plone_context_state')
+            name='plone_context_state')
         return context_state.view_template_id()
 
     @memoize
@@ -213,4 +210,4 @@ class Plone(BrowserView):
         context = aq_inner(self.context)
         return getMultiAdapter(
             (context, self.request),
-            name=u'plone_patterns_settings')()
+            name='plone_patterns_settings')()

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFCore.utils import getToolByName
@@ -12,13 +11,12 @@ from plone.app.layout.navigation.root import getNavigationRoot
 from zope.interface import directlyProvides
 from zope.interface import implementer
 
-default_user = PloneTestCase.default_user
 
 from Products.CMFPlone.PloneFolder import PloneFolder
 from Products.CMFPlone.interfaces import INonStructuralFolder
 
+default_user = PloneTestCase.default_user
 
-import six
 
 
 @implementer(INonStructuralFolder)
@@ -538,7 +536,7 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
 class TestNavigationRoot(PloneTestCase.PloneTestCase):
 
     def testGetNavigationRootPropertyNotSet(self):
-        self.portal.portal_registry['plone.root'] = u'/'
+        self.portal.portal_registry['plone.root'] = '/'
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, '/'.join(self.portal.getPhysicalPath()))
 
@@ -558,7 +556,7 @@ class TestNavigationRoot(PloneTestCase.PloneTestCase):
         folderPath = '/'.join(self.folder.getPhysicalPath())
         portalPath = '/'.join(self.portal.getPhysicalPath())
         relativePath = folderPath[len(portalPath):]
-        self.portal.portal_registry['plone.root'] = six.text_type(relativePath)
+        self.portal.portal_registry['plone.root'] = str(relativePath)
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, folderPath)
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope.component.hooks import getSite
 from zope.component import adapts
 from zope.interface import implementer
@@ -29,8 +28,6 @@ from plone.namedfile.interfaces import INamedField
 
 from plone.app.contenttypes.behaviors.leadimage import ILeadImage
 
-import six
-
 try:
     from Products.ATContentTypes.interfaces.file import IFileContent
 except ImportError:
@@ -39,7 +36,7 @@ except ImportError:
         pass
 
 
-class BaseFeedData(object):
+class BaseFeedData:
 
     def __init__(self, context):
         self.context = context
@@ -233,7 +230,7 @@ class BaseItem(BaseFeedData):
             value = self.context.text
         else:
             value = self.description
-        if not isinstance(value, six.string_types):
+        if not isinstance(value, str):
             if hasattr(value, 'output'):
                 # could be RichTextValue object, needs transform
                 value = value.output
@@ -291,7 +288,7 @@ class DexterityItem(BaseItem):
     field_name = ''
 
     def __init__(self, context, feed):
-        super(DexterityItem, self).__init__(context, feed)
+        super().__init__(context, feed)
         self.dexterity = IDexterityContent.providedBy(context)
         lead = ILeadImage(self.context, None)
         if lead:
@@ -318,7 +315,7 @@ class DexterityItem(BaseItem):
         if fi is not None:
             filename = fi.filename
             if filename:
-                url += '/@@download/%s/%s' % (
+                url += '/@@download/{}/{}'.format(
                     self.field_name, filename)
         return url
 

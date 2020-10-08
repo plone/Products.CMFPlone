@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.registry.interfaces import IRegistry
@@ -13,18 +12,16 @@ from zope.component import getUtility
 from zope.component import queryUtility
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
+from ZPublisher.HTTPRequest import record
 from ZTUtils import make_query
 
 import json
-import six
 
 _ = MessageFactory('plone')
 
 # We should accept both a simple space, unicode u'\u0020 but also a
 # multi-space, so called 'waji-kankaku', unicode u'\u3000'
-MULTISPACE = u'\u3000'
-if six.PY2:
-    MULTISPACE = u'\u3000'.encode('utf-8')
+MULTISPACE = '\u3000'
 BAD_CHARS = ('?', '-', '+', '*', MULTISPACE)
 EVER = DateTime('1970-01-03')
 
@@ -121,6 +118,11 @@ class Search(BrowserView):
                 # created not a mapping
                 del query['created']
 
+        # https://github.com/plone/Products.CMFPlone/issues/3007
+        # If 'created' exists and is of type 'record', then cast it as dict
+        if 'created' in query and isinstance(query['created'], record):
+            query['created'] = dict(query['created'])
+
         # respect `types_not_searched` setting
         types = query.get('portal_type', [])
         if 'query' in types:
@@ -179,11 +181,11 @@ class Search(BrowserView):
         if 'sort_on' not in self.request.form:
             self.request.form['sort_on'] = self.default_sort_on
         return (
-            SortOption(self.request, _(u'relevance'), 'relevance'),
+            SortOption(self.request, _('relevance'), 'relevance'),
             SortOption(
-                self.request, _(u'date (newest first)'), 'Date', reverse=True
+                self.request, _('date (newest first)'), 'Date', reverse=True
             ),
-            SortOption(self.request, _(u'alphabetically'), 'sortable_title'),
+            SortOption(self.request, _('alphabetically'), 'sortable_title'),
         )
 
     def show_advanced_search(self):
@@ -218,7 +220,7 @@ class Search(BrowserView):
             return None
         if len(breadcrumbs) > 3:
             # if we have too long breadcrumbs, emit the middle elements
-            empty = {'absolute_url': '', 'Title': u'…'}
+            empty = {'absolute_url': '', 'Title': '…'}
             breadcrumbs = [breadcrumbs[0], empty] + breadcrumbs[-2:]
         return breadcrumbs
 
@@ -269,7 +271,7 @@ class AjaxSearch(Search):
         })
 
 
-class SortOption(object):
+class SortOption:
 
     def __init__(self, request, title, sortkey='', reverse=False):
         self.request = request

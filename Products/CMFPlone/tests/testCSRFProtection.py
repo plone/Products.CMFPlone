@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing.bbb import PloneTestCase
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.authenticator import AuthenticatorView
-from six import BytesIO
+from io import BytesIO
 from zope.component import queryUtility
 
 
@@ -18,7 +17,7 @@ class AuthenticatorTestCase(PloneTestCase):
         self.assertTrue(queryUtility(IKeyManager), 'key manager not found')
 
     def checkAuthenticator(self, path, query='', status=200):
-        credentials = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
+        credentials = f'{TEST_USER_NAME}:{TEST_USER_PASSWORD}'
         path = '/' + self.portal.absolute_url(relative=True) + path
         data = BytesIO(query.encode('utf8'))
         # without authenticator...
@@ -40,15 +39,6 @@ class AuthenticatorTestCase(PloneTestCase):
             '/plone_utils/deleteObjectsByPaths',
             'paths:list=news')
         self.assertFalse(self.portal.get('news', None))
-
-    def test_PloneTool_transitionObjectsByPaths(self):
-        infoFor = self.portal.portal_workflow.getInfoFor
-        frontpage = self.portal['front-page']
-        self.assertEqual(infoFor(frontpage, 'review_state'), 'published')
-        self.checkAuthenticator(
-            '/plone_utils/transitionObjectsByPaths',
-            'workflow_action=retract&paths:list=front-page', status=302)
-        self.assertEqual(infoFor(frontpage, 'review_state'), 'visible')
 
     def test_PloneTool_renameObjectsByPaths(self):
         self.assertFalse(self.portal.get('foo', None))

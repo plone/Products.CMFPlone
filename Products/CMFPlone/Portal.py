@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from AccessControl import ClassSecurityInfo
 from AccessControl import Permissions
 from AccessControl import Unauthorized
@@ -28,7 +26,6 @@ from Products.CMFPlone.permissions import View
 from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from zope.component import queryUtility
 from zope.interface import implementer
-import six
 
 if bbb.HAS_ZSERVER:
     from webdav.NullResource import NullResource
@@ -121,7 +118,7 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         """We need to enforce security."""
         if ids is None:
             ids = []
-        if isinstance(ids, six.string_types):
+        if isinstance(ids, str):
             ids = [ids]
         for id in ids:
             item = self._getOb(id)
@@ -155,7 +152,7 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         languages = util.getLanguageListing()
         languages.sort(lambda x, y: cmp(x[1], y[1]))
         # Put language neutral at the top.
-        languages.insert(0, (u'', _(u'Language neutral (site default)')))
+        languages.insert(0, ('', _('Language neutral (site default)')))
 
         return languages
 

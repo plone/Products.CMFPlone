@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import unittest
 
 from AccessControl import Unauthorized
@@ -8,11 +7,17 @@ from Products.CMFPlone.interfaces.controlpanel import IMailSchema, ISiteSchema
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
-from email import message_from_string
 from plone.registry.interfaces import IRegistry
 from zope.component import getSiteManager, getUtility
 
 member_id = 'new_member'
+
+try:
+    # Python 3
+    from email import message_from_bytes
+except ImportError:
+    # Python 2
+    from email import message_from_string as message_from_bytes
 
 
 class TestRegistrationTool(PloneTestCase.PloneTestCase):
@@ -142,15 +147,15 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
 
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(ISiteSchema, prefix='plone')
-        site_settings.site_title = u'Tëst Portal'
+        site_settings.site_title = 'Tëst Portal'
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
-        mail_settings.email_from_name = u'Tëst Admin'
+        mail_settings.email_from_name = 'Tëst Admin'
         mail_settings.email_from_address = 'bar@baz.com'
 
         # Notify the registered user
         self.registration.registeredNotify(member_id)
         self.assertEqual(len(mails.messages), 1)
-        msg = message_from_string(mails.messages[0])
+        msg = message_from_bytes(mails.messages[0])
         # We get an encoded subject
         self.assertEqual(
             msg['Subject'],
@@ -171,9 +176,9 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                                                 'email': 'foo@bar.com'})
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(ISiteSchema, prefix='plone')
-        site_settings.site_title = u'Test Portal'
+        site_settings.site_title = 'Test Portal'
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
-        mail_settings.email_from_name = u'Test Admin'
+        mail_settings.email_from_name = 'Test Admin'
         mail_settings.email_from_address = 'bar@baz.com'
 
         # Set the portal email encoding
@@ -182,7 +187,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         # Notify the registered user
         self.registration.registeredNotify(member_id)
         self.assertEqual(len(mails.messages), 1)
-        msg = message_from_string(mails.messages[0])
+        msg = message_from_bytes(mails.messages[0])
 
         # Ensure charset (and thus Content-Type) were set via template
         self.assertEqual(msg['Content-Type'], 'text/plain; charset="us-ascii"')
@@ -201,15 +206,15 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
 
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(ISiteSchema, prefix='plone')
-        site_settings.site_title = u'Tëst Portal'
+        site_settings.site_title = 'Tëst Portal'
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
-        mail_settings.email_from_name = u'Tëst Admin'
+        mail_settings.email_from_name = 'Tëst Admin'
         mail_settings.email_from_address = 'bar@baz.com'
 
         from zope.publisher.browser import TestRequest
         self.registration.mailPassword(member_id, TestRequest())
         self.assertEqual(len(mails.messages), 1)
-        msg = message_from_string(mails.messages[0])
+        msg = message_from_bytes(mails.messages[0])
         # We get an encoded subject
         self.assertEqual(msg['Subject'],
                          '=?utf-8?q?Password_reset_request?=')
@@ -231,9 +236,9 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                                                 'email': 'foo@bar.com'})
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(ISiteSchema, prefix='plone')
-        site_settings.site_title = u'Tëst Portal'
+        site_settings.site_title = 'Tëst Portal'
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
-        mail_settings.email_from_name = u'Test Admin'
+        mail_settings.email_from_name = 'Test Admin'
         mail_settings.email_from_address = 'bar@baz.com'
 
         # Set the portal email encoding
@@ -242,7 +247,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         from zope.publisher.browser import TestRequest
         self.registration.mailPassword(member_id, TestRequest())
         self.assertEqual(len(mails.messages), 1)
-        msg = message_from_string(mails.messages[0])
+        msg = message_from_bytes(mails.messages[0])
 
         # Ensure charset (and thus Content-Type) were set via template
         self.assertEqual(msg['Content-Type'], 'text/plain; charset="us-ascii"')
@@ -301,11 +306,11 @@ class TestEmailValidityChecker(unittest.TestCase):
         self.assertTrue(*result)
 
     def test_idn_cc_tld(self):
-        result = self.check(u"webmaster@example.xn--wgbh1c")
+        result = self.check("webmaster@example.xn--wgbh1c")
         self.assertTrue(*result)
 
     def test_long_tld(self):
-        result = self.check(u"webmaster@example.onion")
+        result = self.check("webmaster@example.onion")
         self.assertTrue(*result)
 
 

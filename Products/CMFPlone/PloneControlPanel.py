@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
@@ -19,8 +18,6 @@ from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.i18nmessageid import Message
 from zope.interface import implementer
-
-import six
 
 
 class PloneConfiglet(ActionInformation):
@@ -64,16 +61,16 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
 
     group = dict(
         member=[
-            ('Member', _(u'My Preferences')),
+            ('Member', _('My Preferences')),
         ],
         site=[
-            ('plone-general', _(u'General')),
-            ('plone-content', _(u'Content')),
-            ('plone-users', _(u'Users')),
-            ('plone-security', _(u'Security')),
-            ('plone-advanced', _(u'Advanced')),
-            ('Plone', _(u'Plone Configuration')),
-            ('Products', _(u'Add-on Configuration')),
+            ('plone-general', _('General')),
+            ('plone-content', _('Content')),
+            ('plone-users', _('Users')),
+            ('plone-security', _('Security')),
+            ('plone-advanced', _('Advanced')),
+            ('Plone', _('Plone Configuration')),
+            ('Products', _('Add-on Configuration')),
         ]
     )
 
@@ -197,7 +194,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             except ValueError:
                 visible = 0
 
-        if isinstance(permissions, six.string_types):
+        if isinstance(permissions, str):
             permissions = (permissions, )
 
         return PloneConfiglet(id=id,

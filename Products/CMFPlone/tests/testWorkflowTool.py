@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
 from zope.interface import directlyProvides, Interface
 from zope.component import provideAdapter, getGlobalSiteManager
-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests.dummy import Dummy, DummyWorkflowChainAdapter
 from Products.CMFCore.interfaces import IWorkflowTool
-
 
 default_user = PloneTestCase.default_user
 

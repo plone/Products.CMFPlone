@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 from plone.app.layout.viewlets.common import ViewletBase
 from plone.app.theming.interfaces import IThemeSettings
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.resource import ResourceBase
 from Products.CMFPlone.utils import get_top_request
-from six.moves.urllib import parse
+from urllib import parse
 from zope.component import getUtility
 
 
@@ -21,7 +20,7 @@ class StylesBase(ResourceBase):
             url = parse.urlparse(css)
             if url.netloc == '':
                 # Local
-                src = "%s/%s" % (self.site_url, css)
+                src = f"{self.site_url}/{css}"
             else:
                 src = "%s" % (css)
 
@@ -65,14 +64,14 @@ class StylesBase(ResourceBase):
                     resource_path = css_path.split('++plone++')[-1]
                     resource_name, resource_filepath = resource_path.split(
                         '/', 1)
-                    css_location = '%s/++plone++%s/++unique++%s/%s' % (
+                    css_location = '{}/++plone++{}/++unique++{}/{}'.format(
                         self.site_url,
                         resource_name,
                         parse.quote(str(bundle.last_compilation)),
                         resource_filepath
                     )
                 else:
-                    css_location = '%s/%s?version=%s' % (
+                    css_location = '{}/{}?version={}'.format(
                         self.site_url,
                         bundle.csscompilation,
                         parse.quote(str(bundle.last_compilation))
@@ -105,7 +104,7 @@ class StylesBase(ResourceBase):
             result = self.ordered_bundles_result()
         else:
             result = [{
-                'src': '%s/++plone++%s' % (
+                'src': '{}/++plone++{}'.format(
                     self.site_url,
                     self.production_path + '/default.css'
                 ),
@@ -115,7 +114,7 @@ class StylesBase(ResourceBase):
             }, ]
             if not self.anonymous:
                 result.append({
-                    'src': '%s/++plone++%s' % (
+                    'src': '{}/++plone++{}'.format(
                         self.site_url,
                         self.production_path + '/logged-in.css'
                     ),
@@ -144,7 +143,7 @@ class StylesBase(ResourceBase):
             url = parse.urlparse(origin)
             if url.netloc == '':
                 # Local
-                src = "%s/%s" % (self.site_url, origin)
+                src = f"{self.site_url}/{origin}"
             else:
                 src = "%s" % (origin)
 
@@ -165,7 +164,7 @@ class StylesBase(ResourceBase):
             custom_css = {
                 'rel': 'stylesheet',
                 'conditionalcomment': '',
-                'src': "{0}/custom.css?timestamp={1}".format(
+                'src': "{}/custom.css?timestamp={}".format(
                     self.site_url,
                     self.custom_css_timestamp,
                 ),

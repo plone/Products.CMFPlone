@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from email import message_from_string
 from email.header import Header
 from plone.registry.interfaces import IRegistry
@@ -22,10 +21,9 @@ from zope.i18n import translate
 from zope.interface import implementer
 
 import logging
-import six
 
 
-SEND_USERNAME_TEMPLATE = _(u"mailtemplate_username_info", default=u"""From: {encoded_mail_sender}
+SEND_USERNAME_TEMPLATE = _("mailtemplate_username_info", default="""From: {encoded_mail_sender}
 To: {email}
 Subject: Your username for {portal_url}
 Content-Type: text/plain
@@ -49,22 +47,26 @@ log = logging.getLogger(__name__)
 class RequestResetPassword(form.Form):
 
     id = 'RequestResetPassword'
-    label = u''
+    label = ''
     fields = field.Fields(ILoginHelpFormSchema).select('reset_password')
     ignoreContext = True
 
     render = ViewPageTemplateFile('templates/subform_render.pt')
 
+    def updateActions(self):
+        super(RequestResetPassword, self).updateActions()
+        self.actions['reset'].addClass('btn-primary')
+
     def updateWidgets(self):
-        super(RequestResetPassword, self).updateWidgets()
+        super().updateWidgets()
         if self.use_email_as_login():
             self.widgets['reset_password'].label = _(
-                u'label_email',
-                default=u'Email'
+                'label_email',
+                default='Email'
             )
 
     @button.buttonAndHandler(
-        _(u'button_pwreset_reset_password', default=u'Reset your password'),
+        _('button_pwreset_reset_password', default='Reset your password'),
         name='reset'
     )
     def handleResetPassword(self, action):
@@ -80,13 +82,13 @@ class RequestResetPassword(form.Form):
             # Paranoia Warning!
             # We act as if a message has been sent to prevent probing Plone
             # for valid loginnames. Instead we log the error-message.
-            log.info('Error while trying to send a reset-password notice to user {0}: {1}'.format(data['reset_password'], e))  # noqa: E501
+            log.info('Error while trying to send a reset-password notice to user {}: {}'.format(data['reset_password'], e))  # noqa: E501
             pass
 
         IStatusMessage(self.request).addStatusMessage(
-            _(u'statusmessage_pwreset_password_mail_sent', default=u'An '
-              u'email has been sent with instructions on how to reset your '
-              u'password.'), 'info')
+            _('statusmessage_pwreset_password_mail_sent', default='An '
+              'email has been sent with instructions on how to reset your '
+              'password.'), 'info')
 
     def use_email_as_login(self):
         registry = getUtility(IRegistry)
@@ -98,14 +100,18 @@ class RequestResetPassword(form.Form):
 class RequestUsername(form.Form):
 
     id = 'RequestUsername'
-    label = u''
+    label = ''
     fields = field.Fields(ILoginHelpFormSchema).select('recover_username')
     ignoreContext = True
 
     render = ViewPageTemplateFile('templates/subform_render.pt')
 
+    def updateActions(self):
+        super(RequestUsername, self).updateActions()
+        self.actions['get_username'].addClass('btn-primary')
+
     @button.buttonAndHandler(
-        _(u'button_pwreset_get_username', default='Get your username'),
+        _('button_pwreset_get_username', default='Get your username'),
         name='get_username'
     )
     def handleGetUsername(self, action):
@@ -119,10 +125,10 @@ class RequestUsername(form.Form):
         results = pas.searchUsers(email=email, exact_match=True)
         send_email = True
         if not results:
-            log.info('No user found for {0}'.format(email))
+            log.info(f'No user found for {email}')
             send_email = False
         if len(results) > 1:
-            log.info('More than one user found for {0}'.format(email))
+            log.info(f'More than one user found for {email}')
             send_email = False
         if send_email:
             self.send_username(portal, results[0])
@@ -133,8 +139,8 @@ class RequestUsername(form.Form):
         # Because of this we always act as if that an email has been sent.
         # Instead we log the error-message.
         IStatusMessage(self.request).addStatusMessage(
-            _(u'statusmessage_pwreset_username_mail_sent',
-                default=u'An email has been sent with your username.'),
+            _('statusmessage_pwreset_username_mail_sent',
+                default='An email has been sent with your username.'),
             'info'
         )
 
@@ -154,10 +160,6 @@ class RequestUsername(form.Form):
             email_from_name=registry['plone.email_from_name'],
             encoded_mail_sender=self.encoded_mail_sender(),
         )
-        # The mail headers are not properly encoded we need to extract
-        # them and let MailHost manage the encoding.
-        if six.PY2 and isinstance(mail_text, six.text_type):
-            mail_text = mail_text.encode(encoding)
         message_obj = message_from_string(mail_text.strip())
         subject = message_obj['Subject']
         m_to = message_obj['To']
@@ -172,7 +174,7 @@ class RequestUsername(form.Form):
         except SMTPRecipientsRefused:
             # Don't disclose email address on failure
             raise SMTPRecipientsRefused(
-                _(u'Recipient address rejected by server.'))
+                _('Recipient address rejected by server.'))
         except SMTPException as e:
             raise(e)
 
@@ -186,7 +188,7 @@ class RequestUsername(form.Form):
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
         from_ = mail_settings.email_from_name
         mail = mail_settings.email_from_address
-        return '"%s" <%s>' % (self.encode_mail_header(from_), mail)
+        return '"{}" <{}>'.format(self.encode_mail_header(from_), mail)
 
 
 @implementer(ILoginHelpForm)
@@ -196,7 +198,7 @@ class LoginHelpForm(form.EditForm):
     subforms = []
 
     id = 'LoginHelpForm'
-    label = _(u'heading_login_form_help', default=u'Need Help?')
+    label = _('heading_login_form_help', default='Need Help?')
 
     ignoreContext = True
 
@@ -224,7 +226,7 @@ class LoginHelpForm(form.EditForm):
             subforms.append(form)
 
         self.subforms = subforms
-        super(LoginHelpForm, self).update()
+        super().update()
 
     def use_email_as_login(self):
         registry = getUtility(IRegistry)

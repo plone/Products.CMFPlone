@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.PloneBatch import Batch
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from ZTUtils.Lazy import LazyMap
@@ -61,5 +60,5 @@ class TestBatchIntegration(unittest.TestCase):
             self.assertEqual(
                 batch[0].id,
                 obj_ids[start],
-                'Failing test for start value: {}'.format(start)
+                f'Failing test for start value: {start}'
             )

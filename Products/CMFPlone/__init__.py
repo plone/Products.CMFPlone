@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
 from App.ImageFile import ImageFile
 import os
-import six
 import sys
 import pkg_resources
 
@@ -70,9 +68,6 @@ def initialize(context):
     this_module.Batch = Batch
 
     ModuleSecurityInfo('StringIO').declarePublic('StringIO')
-    if six.PY2:
-        from six import StringIO
-        allow_class(StringIO)
 
     # Make Unauthorized importable TTW
     ModuleSecurityInfo('AccessControl').declarePublic('Unauthorized')
@@ -147,7 +142,6 @@ def initialize(context):
     from Products.CMFPlone import TypesTool
     from Products.CMFPlone import CatalogTool
     from Products.CMFPlone import SkinsTool
-    from Products.CMFPlone import QuickInstallerTool
     from Products.CMFPlone import TranslationServiceTool
 
     tools = (
@@ -163,7 +157,6 @@ def initialize(context):
         TypesTool.TypesTool,
         CatalogTool.CatalogTool,
         SkinsTool.SkinsTool,
-        QuickInstallerTool.QuickInstallerTool,
         TranslationServiceTool.TranslationServiceTool,
     )
 

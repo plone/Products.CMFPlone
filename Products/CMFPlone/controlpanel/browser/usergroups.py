@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.permissions import ManagePortal
 from ZTUtils import make_query
 from itertools import chain
@@ -30,10 +29,10 @@ class UserGroupsSettingsControlPanel(AutoExtensibleForm, form.EditForm):
 
     @button.buttonAndHandler(_('label_save', default="Save"), name='save')
     def handleApply(self, action):
-        super(UserGroupsSettingsControlPanel, self).handleApply(self, action)
+        super().handleApply(self, action)
 
     def updateActions(self):
-        super(UserGroupsSettingsControlPanel, self).updateActions()
+        super().updateActions()
         if self.actions and 'save' in self.actions:
             self.actions['save'].addClass('btn-primary')
 

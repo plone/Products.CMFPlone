@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from z3c.form.browser.checkbox import CheckBoxWidget
 from z3c.form.interfaces import NO_VALUE
 from z3c.form.widget import FieldWidget

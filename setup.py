@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from setuptools import setup
 from setuptools import find_packages
 
@@ -96,7 +95,6 @@ setup(
         'Products.CMFDynamicViewFTI',
         'Products.CMFEditions',
         'Products.CMFFormController',
-        'Products.CMFQuickInstallerTool',
         'Products.CMFUid',
         'Products.DCWorkflow',
         'Products.ExtendedPathIndex',
@@ -113,7 +111,6 @@ setup(
         'Products.TemporaryFolder',
         'pyScss',
         'setuptools>=36.2',
-        'six',
         'transaction',
         'z3c.autoinclude',
         'ZODB3',

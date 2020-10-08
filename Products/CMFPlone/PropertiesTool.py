@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_parent, aq_inner
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import UniqueObject

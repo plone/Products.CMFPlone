@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import IEditingSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.app.linkintegrity.utils import linkintegrity_enabled
@@ -30,7 +29,7 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
         self.browser.handleErrors = False
         self.browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
+            f'Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}'
         )
 
     def test_editing_control_panel_link(self):

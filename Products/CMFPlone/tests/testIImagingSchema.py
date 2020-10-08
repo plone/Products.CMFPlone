@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import PLONE_INTEGRATION_TESTING
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
@@ -20,7 +19,7 @@ class TestImagingSchemaTool(unittest.TestCase):
 
         # Add a new image scale
         sizes = imaging_settings.allowed_sizes
-        imaging_settings.allowed_sizes = sizes + [u"larger 800:800"]
+        imaging_settings.allowed_sizes = sizes + ["larger 800:800"]
 
         # Set back to original
         imaging_settings.allowed_sizes = sizes

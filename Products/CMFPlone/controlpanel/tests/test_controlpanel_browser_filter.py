@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
@@ -30,7 +29,7 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
         self.browser.handleErrors = False
         self.browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
+            f'Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}'
         )
         self.safe_html = getattr(
             getToolByName(self.portal, 'portal_transforms'),
@@ -95,8 +94,8 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
         valid_tags = self.browser.getControl(
             name='form.widgets.valid_tags').value = valid_tags
         self.browser.getControl('Save').click()
-        self.assertEqual(self.settings.nasty_tags, [u'div', u'a'])
-        self.assertNotIn(u'a', self.settings.valid_tags)
+        self.assertEqual(self.settings.nasty_tags, ['div', 'a'])
+        self.assertNotIn('a', self.settings.valid_tags)
 
         # test that <a> is filtered
         self.assertFalse(self.settings.disable_filtering)

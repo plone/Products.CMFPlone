@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from ..browser.combine import combine_bundles
 from plone.registry.interfaces import IRegistry
 from zope.component import queryUtility

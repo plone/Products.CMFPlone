@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import INonInstallable
-from Products.CMFQuickInstallerTool.interfaces import INonInstallable as \
-    QINonInstallable
 from Products.Five.browser import BrowserView
 from Products.GenericSetup import EXTENSION
 from Products.GenericSetup.tool import UNKNOWN
@@ -13,7 +10,7 @@ from zope.component import getAllUtilitiesRegisteredFor
 import logging
 import pkg_resources
 import transaction
-import warnings
+
 
 logger = logging.getLogger('Plone')
 
@@ -23,21 +20,9 @@ class InstallerView(BrowserView):
     """
 
     def __init__(self, *args, **kwargs):
-        super(InstallerView, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.ps = getToolByName(self.context, 'portal_setup')
         self.errors = {}
-
-    def listInstallableProducts(self, skipInstalled=True):
-        warnings.warn(
-            'listInstallableProducts is no longer supported since Plone 5.1. '
-            'It will be removed in Plone 6.0.',
-            DeprecationWarning)
-
-    def listInstalledProducts(self, skipInstalled=True):
-        warnings.warn(
-            'listInstalledProducts is no longer supported since Plone 5.1. '
-            'It will be removed in Plone 6.0.',
-            DeprecationWarning)
 
     def is_profile_installed(self, profile_id):
         return self.ps.getLastVersionForProfile(profile_id) != UNKNOWN
@@ -48,25 +33,8 @@ class InstallerView(BrowserView):
             return False
         return self.is_profile_installed(profile['id'])
 
-    def isProductInstalled(self, product_name):
-        warnings.warn(
-            'isProductInstalled is deprecated since Plone 5.1. '
-            'It will be removed in Plone 6.0. '
-            'Use is_product_installed instead.',
-            DeprecationWarning)
-        return self.is_product_installed(product_name)
-
-    def notifyInstalled(self, productname, **kwargs):
-        warnings.warn(
-            'notifyInstalled is no longer supported since Plone 5.1. '
-            'It will be removed in Plone 6.0.',
-            DeprecationWarning)
-
     def _install_profile_info(self, product_id):
         """List extension profile infos of a given product.
-
-        From CMFQuickInstallerTool/QuickInstallerTool.py
-        _install_profile_info
         """
         profiles = self.ps.listProfileInfo()
         # We are only interested in extension profiles for the product.
@@ -82,9 +50,6 @@ class InstallerView(BrowserView):
 
     def get_install_profiles(self, product_id):
         """List all installer profile ids of the given name.
-
-        From CMFQuickInstallerTool/QuickInstallerTool.py
-        getInstallProfiles
 
         TODO Might be superfluous.
         """
@@ -154,9 +119,6 @@ class InstallerView(BrowserView):
     def get_install_profile(self, product_id, allow_hidden=False):
         """Return the default install profile.
 
-        From CMFQuickInstallerTool/QuickInstallerTool.py
-        getInstallProfile
-
         :param product_id: id of product/package
         :type product_id: string
         :param allow_hidden: Allow getting otherwise hidden profile.
@@ -178,27 +140,8 @@ class InstallerView(BrowserView):
         return self._get_profile(
             product_id, 'uninstall', strict=True, allow_hidden=True)
 
-    def isProductInstallable(self, productname):
-        warnings.warn(
-            'isProductInstallable is deprecated since Plone 5.1. '
-            'It will be removed in Plone 6.0. '
-            'Use is_product_installable instead.',
-            DeprecationWarning)
-        return self.is_product_installable(productname)
-
-    def isProductAvailable(self, productname):
-        warnings.warn(
-            'isProductAvailable is deprecated since Plone 5.1. '
-            'It will be removed in Plone 6.0. '
-            'Use is_product_installable instead.',
-            DeprecationWarning)
-        return self.is_product_installable(productname)
-
     def is_product_installable(self, product_id, allow_hidden=False):
         """Does a product have an installation profile?
-
-        From CMFQuickInstallerTool/QuickInstallerTool.py
-        isProductInstallable (and the deprecated isProductAvailable)
 
         :param allow_hidden: Allow installing otherwise hidden products.
             In the UI this will be False, but you can set it to True in
@@ -216,14 +159,6 @@ class InstallerView(BrowserView):
                 if gnip is None:
                     continue
                 not_installable.extend(gnip())
-            if product_id in not_installable:
-                return False
-            # BBB.  For backwards compatibility, we try the INonInstallable
-            # from the old QI as well.
-            not_installable = []
-            utils = getAllUtilitiesRegisteredFor(QINonInstallable)
-            for util in utils:
-                not_installable.extend(util.getNonInstallableProducts())
             if product_id in not_installable:
                 return False
 
@@ -254,8 +189,8 @@ class InstallerView(BrowserView):
                 # A new error is found, register it
                 self.errors[product_id] = dict(
                     type=_(
-                        u"dependency_missing",
-                        default=u"Missing dependency"
+                        "dependency_missing",
+                        default="Missing dependency"
                     ),
                     value=e.args[0],
                     product_id=product_id
@@ -263,8 +198,8 @@ class InstallerView(BrowserView):
             else:
                 self.errors[product_id] = dict(
                     type=_(
-                        u"dependency_missing",
-                        default=u"Missing dependency"
+                        "dependency_missing",
+                        default="Missing dependency"
                     ),
                     value=e.args[0],
                     product_id=product_id
@@ -272,31 +207,8 @@ class InstallerView(BrowserView):
             return False
         return True
 
-    def getProductFile(self, productname, fname='readme.txt'):
-        warnings.warn(
-            'getProductFile is no longer supported since Plone 5.1. '
-            'It will be removed in Plone 6.0.',
-            DeprecationWarning)
-
-    def getProductReadme(self, productname):
-        warnings.warn(
-            'getProductReadme is no longer supported since Plone 5.1. '
-            'It will be removed in Plone 6.0.',
-            DeprecationWarning)
-
-    def getProductVersion(self, productname):
-        warnings.warn(
-            'getProductVersion is deprecated since Plone 5.1. '
-            'It will be removed in Plone 6.0. '
-            'Use get_product_version instead.',
-            DeprecationWarning)
-
     def get_product_version(self, product_id):
         """Return the version of the product (package).
-
-        From CMFQuickInstallerTool/QuickInstallerTool
-        getProductVersion
-        That implementation used to fall back to getting the version.txt.
         """
         try:
             dist = pkg_resources.get_distribution(product_id)
@@ -312,8 +224,6 @@ class InstallerView(BrowserView):
 
         If anything errors out then go back to "old way" by returning
         'unknown'.
-
-        From CMFPlone/QuickInstallerTool.py getLatestUpgradeStep
         """
         profile_version = UNKNOWN
         try:
@@ -331,8 +241,6 @@ class InstallerView(BrowserView):
 
         This is a dict with among others two booleans values, stating if
         an upgrade is required and available.
-
-        From CMFPlone/QuickInstaller.py upgradeInfo
 
         :param product_id: id of product/package
         :type product_id: string
@@ -369,24 +277,6 @@ class InstallerView(BrowserView):
             newVersion=profile_version,
         )
 
-    def reinstallProducts(self, products, **kwargs):
-        """Reinstalls a list of products, the main difference to
-        uninstall/install is that it does not remove portal objects
-        created during install (e.g. tools, etc.)
-        """
-        warnings.warn(
-            'reinstallProducts is no longer supported since Plone 5.1. '
-            'It will be removed in Plone 6.0.',
-            DeprecationWarning)
-
-    def upgradeProduct(self, pid):
-        warnings.warn(
-            'upgradeProduct is deprecated since Plone 5.1. '
-            'It will be removed in Plone 6.0. '
-            'Use upgrade_product instead.',
-            DeprecationWarning)
-        return self.upgrade_product(pid)
-
     def upgrade_product(self, product_id):
         """Run the upgrade steps for a product.
 
@@ -399,33 +289,8 @@ class InstallerView(BrowserView):
         self.ps.upgradeProfile(profile['id'])
         return True
 
-    def installProducts(self, products=None, **kwargs):
-        warnings.warn(
-            'installProducts is deprecated since Plone 5.1. '
-            'It will be removed in Plone 6.0. '
-            'Use install_product with a single product instead. '
-            'All keyword arguments are ignored.',
-            DeprecationWarning)
-        if products is None:
-            products = []
-        for product_id in products:
-            self.install_product(product_id)
-
-    def installProduct(self, product_name, **kwargs):
-        """Deprecated install product.
-        """
-        warnings.warn(
-            'installProduct is deprecated since Plone 5.1. '
-            'It will be removed in Plone 6.0. '
-            'Use install_product instead. '
-            'All keyword arguments are ignored.',
-            DeprecationWarning)
-        return self.install_product(product_name)
-
     def install_product(self, product_id, allow_hidden=False):
         """Install a product by name.
-
-        From CMFQuickInstallerTool/QuickInstallerTool.py installProduct
 
         :param product_id: id of product/package
         :type product_id: string
@@ -461,20 +326,6 @@ class InstallerView(BrowserView):
 
         # No problems encountered.
         return True
-
-    def uninstallProducts(self, products=None, **kwargs):
-        """Uninstall a list of products.
-        """
-        warnings.warn(
-            'uninstallProducts is deprecated since Plone 5.1. '
-            'It will be removed in Plone 6.0. '
-            'Use uninstall_product with a single product instead. '
-            'All keyword arguments are ignored.',
-            DeprecationWarning)
-        if products is None:
-            products = []
-        for product_id in products:
-            self.uninstall_product(product_id)
 
     def uninstall_product(self, product_id):
         """Uninstall a product by name.
@@ -593,8 +444,7 @@ class ManageProductsView(InstallerView):
 
     def get_addons(self, apply_filter=None, product_name=None):
         """
-        100% based on generic setup profiles now. Kinda.
-        For products magic, use the zope quickinstaller I guess.
+        100% based on generic setup profiles now.
 
         @filter:= 'installed': only products that are installed and not hidden
                   'upgrades': only products with upgrades
@@ -666,14 +516,14 @@ class UpgradeProductsView(InstallerView):
                 result = self.upgrade_product(product_id)
                 if not result:
                     messages.addStatusMessage(
-                        _(u'Error upgrading ${product}.',
+                        _('Error upgrading ${product}.',
                           mapping={'product': product_id}), type="error")
                     # Abort changes for all upgrades.
                     transaction.abort()
                     break
             else:
                 messages.addStatusMessage(
-                    _(u'Upgraded products.'), type="info")
+                    _('Upgraded products.'), type="info")
 
         purl = getToolByName(self.context, 'portal_url')()
         self.request.response.redirect(purl + '/prefs_install_products_form')
@@ -688,14 +538,14 @@ class InstallProductsView(InstallerView):
             msg_type = 'info'
             result = self.install_product(product_id)
             if result:
-                msg = _(u'Installed ${product}!',
+                msg = _('Installed ${product}!',
                         mapping={'product': product_id})
             else:
                 # Only reason should be that between loading the page and
                 # clicking to install a product, another user has already
                 # installed this product.
                 msg_type = 'error'
-                msg = _(u'Failed to install ${product}.',
+                msg = _('Failed to install ${product}.',
                         mapping={'product': product_id})
             messages.addStatusMessage(msg, type=msg_type)
 
@@ -714,16 +564,16 @@ class UninstallProductsView(InstallerView):
             except Exception as e:
                 logger.error("Could not uninstall %s: %s", product_id, e)
                 msg_type = 'error'
-                msg = _(u'Error uninstalling ${product}.', mapping={
+                msg = _('Error uninstalling ${product}.', mapping={
                         'product': product_id})
             else:
                 if result:
                     msg_type = 'info'
-                    msg = _(u'Uninstalled ${product}.',
+                    msg = _('Uninstalled ${product}.',
                             mapping={'product': product_id})
                 else:
                     msg_type = 'error'
-                    msg = _(u'Could not uninstall ${product}.',
+                    msg = _('Could not uninstall ${product}.',
                             mapping={'product': product_id})
             messages.addStatusMessage(msg, type=msg_type)
 

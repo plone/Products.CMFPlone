@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import ISiteSchema
 from plone.formwidget.namedfile.converter import b64decode_file
 from plone.namedfile.browser import Download
@@ -10,7 +9,7 @@ from zope.component import getUtility
 class SiteLogo(Download):
 
     def __init__(self, context, request):
-        super(SiteLogo, self).__init__(context, request)
+        super().__init__(context, request)
         self.filename = None
         self.data = None
 

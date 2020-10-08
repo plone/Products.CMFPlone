@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import Explicit
 from OFS.SimpleItem import Item
 from plone.app.testing import login
@@ -33,7 +32,7 @@ class TestActionsTool(unittest.TestCase):
         import sys
         e, v, tb = sys.exc_info()
         tb = ''.join(format_exception(e, v, tb))
-        self.fail("%s\n%s\n" % (msg, tb))
+        self.fail(f"{msg}\n{tb}\n")
 
     def testAddAction(self):
         # addAction should work even though PloneTestCase patches _cloneActions

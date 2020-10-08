@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from AccessControl import Permissions
 from AccessControl import Unauthorized
@@ -26,7 +25,6 @@ from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 from zExceptions import NotFound
 from zope.interface import implementer
 
-import six
 import warnings
 
 
@@ -196,7 +194,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
         if ids is None:
             ids = []
         mt = getToolByName(self, 'portal_membership')
-        if isinstance(ids, six.string_types):
+        if isinstance(ids, str):
             ids = [ids]
         for id in ids:
             item = self._getOb(id)

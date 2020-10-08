@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import login
 from plone.app.testing import setRoles
 from plone.app.testing import SITE_OWNER_NAME
@@ -8,11 +7,10 @@ from plone.app.testing import TEST_USER_PASSWORD
 from plone.testing.zope import Browser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-from six import StringIO
-from six.moves.urllib.parse import urlencode
+from io import StringIO
+from urllib.parse import urlencode
 
 import re
-import six
 import transaction
 import unittest
 import zExceptions
@@ -43,7 +41,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
         self.browser.handleErrors = False
         self.browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % (TEST_USER_ID, TEST_USER_PASSWORD,)
+            f'Basic {TEST_USER_ID}:{TEST_USER_PASSWORD}'
         )
         self.normal_user = 'DIispfuF'
 
@@ -92,7 +90,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
         # a user with the Manager role can grant the Manager role
         self.browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
+            f'Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}'
         )
         self.browser.open(self.usergroups_url)
         form = {
@@ -160,7 +158,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
         self.assertEqual(['Reviewer', 'Authenticated'], roles)
         self.browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
+            f'Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}'
         )
         self.browser.open(self.groups_url)
         form = {

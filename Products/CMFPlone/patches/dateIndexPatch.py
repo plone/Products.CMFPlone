@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Avoid OverflowErrors in Date*Indexes
 
 from Products.PluginIndexes.DateIndex.DateIndex import DateIndex

@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
 from zope.interface import Interface, implementer
 from zope.component import adapter
 from Acquisition import aq_base
 from Products.CMFCore.interfaces import IWorkflowTool
 from Products.CMFPlone.interfaces import IWorkflowChain
-
-import six
 
 
 @adapter(Interface, IWorkflowTool)
@@ -42,7 +39,7 @@ def ToolWorkflowChain(context, workflow_tool):
       ()
 
     """
-    if isinstance(context, six.string_types):
+    if isinstance(context, str):
         pt = context
     elif hasattr(aq_base(context), 'getPortalTypeName'):
         pt = context.getPortalTypeName()

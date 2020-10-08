@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from zExceptions import Forbidden
 from itertools import chain
@@ -16,7 +15,6 @@ from Products.CMFPlone.controlpanel.browser.usergroups import \
     UsersGroupsControlPanelView
 
 import logging
-import six
 
 logger = logging.getLogger('Products.CMFPlone')
 
@@ -165,7 +163,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                     if user.email != member.getProperty('email'):
                         utils.setMemberProperties(
                             member, REQUEST=context.REQUEST, email=user.email)
-                        utils.addPortalMessage(_(u'Changes applied.'))
+                        utils.addPortalMessage(_('Changes applied.'))
 
                 # If reset password has been checked email user a new password
                 pw = None
@@ -176,7 +174,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                         pw = regtool.generatePassword()
                     else:
                         utils.addPortalMessage(
-                            _(u'No mailhost defined. Unable to reset passwords.'), type='error')
+                            _('No mailhost defined. Unable to reset passwords.'), type='error')
 
                 roles = user.get('roles', [])
                 if not self.is_zope_manager:
@@ -195,14 +193,14 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                 self.deleteMembers(delete)
             if users_with_reset_passwords:
                 reset_passwords_message = _(
-                    u"reset_passwords_msg",
-                    default=u"The following users have been sent an e-mail with link to reset their password: ${user_ids}",
+                    "reset_passwords_msg",
+                    default="The following users have been sent an e-mail with link to reset their password: ${user_ids}",
                     mapping={
-                        u"user_ids": ', '.join(users_with_reset_passwords),
+                        "user_ids": ', '.join(users_with_reset_passwords),
                     },
                 )
                 utils.addPortalMessage(reset_passwords_message)
-            utils.addPortalMessage(_(u'Changes applied.'))
+            utils.addPortalMessage(_('Changes applied.'))
 
     def deleteMembers(self, member_ids):
         # this method exists to bypass the 'Manage Users' permission check
@@ -212,7 +210,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
         # Delete members in acl_users.
         acl_users = context.acl_users
-        if isinstance(member_ids, six.string_types):
+        if isinstance(member_ids, str):
             member_ids = (member_ids,)
         member_ids = list(member_ids)
         for member_id in member_ids[:]:

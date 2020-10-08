@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
 from csv import writer
@@ -10,8 +9,8 @@ from Products.CMFPlone.PloneBatch import Batch
 from Products.CMFPlone.utils import safe_text
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
-from six import StringIO
-from six.moves.urllib.parse import urlparse
+from io import StringIO
+from urllib.parse import urlparse
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component.hooks import getSite
@@ -53,12 +52,12 @@ def absolutize_path(path, is_source=True):
     is_external_url = False
     if not path:
         if is_source:
-            err = _(u"You have to enter an alternative url.")
+            err = _("You have to enter an alternative url.")
         else:
-            err = _(u"You have to enter a target.")
+            err = _("You have to enter a target.")
     elif not path.startswith('/'):
         if is_source:
-            err = _(u"Alternative url path must start with a slash.")
+            err = _("Alternative url path must start with a slash.")
         else:
             # For targets, we accept external urls.
             # Do basic check.
@@ -66,32 +65,32 @@ def absolutize_path(path, is_source=True):
             if parsed.scheme in ('https', 'http') and parsed.netloc:
                 is_external_url = True
             else:
-                err = _(u"Target path must start with a slash.")
+                err = _("Target path must start with a slash.")
     elif '@@' in path:
         if is_source:
-            err = _(u"Alternative url path must not be a view.")
+            err = _("Alternative url path must not be a view.")
         else:
-            err = _(u"Target path must not be a view.")
+            err = _("Target path must not be a view.")
     else:
         context_path = "/".join(portal.getPhysicalPath())
-        path = "{0}{1}".format(context_path, path)
+        path = f"{context_path}{path}"
     if not err and not is_external_url:
         catalog = getToolByName(portal, 'portal_catalog')
         if is_source:
             # Check whether already exists in storage
             storage = getUtility(IRedirectionStorage)
             if storage.get(path):
-                err = _(u"The provided alternative url already exists!")
+                err = _("The provided alternative url already exists!")
             else:
                 # Check whether obj exists at source path.
                 # A redirect would be useless then.
                 if portal.unrestrictedTraverse(path, None) is not None:
-                    err = _(u"Cannot use a working path as alternative url.")
+                    err = _("Cannot use a working path as alternative url.")
         else:
             # Check whether obj exists at target path
             result = catalog.searchResults(path={"query": path})
             if len(result) == 0:
-                err = _(u"The provided target object does not exist.")
+                err = _("The provided target object does not exist.")
 
     return path, err
 
@@ -119,7 +118,7 @@ class RedirectsView(BrowserView):
             # Update the path accordingly, unless the user already did this.
             extra = nav_url[len(portal_url) :]
             if not redirection.startswith(extra):
-                redirection = '{0}{1}'.format(extra, redirection)
+                redirection = f'{extra}{redirection}'
         # Finally, return the (possibly edited) redirection
         return redirection
 
@@ -148,7 +147,7 @@ class RedirectsView(BrowserView):
                     manual=True,
                 )
                 status.addStatusMessage(
-                    _(u"Alternative url added."), type='info'
+                    _("Alternative url added."), type='info'
                 )
         elif 'form.button.Remove' in form:
             redirects = form.get('redirects', ())
@@ -156,11 +155,11 @@ class RedirectsView(BrowserView):
                 storage.remove(redirect)
             if len(redirects) > 1:
                 status.addStatusMessage(
-                    _(u"Alternative urls removed."), type='info'
+                    _("Alternative urls removed."), type='info'
                 )
             else:
                 status.addStatusMessage(
-                    _(u"Alternative url removed."), type='info'
+                    _("Alternative url removed."), type='info'
                 )
 
         return self.index(errors=errors)
@@ -170,7 +169,7 @@ class RedirectsView(BrowserView):
         return self.context.absolute_url() + '/@@manage-aliases'
 
 
-class RedirectionSet(object):
+class RedirectionSet:
     def __init__(self, query='', created='', manual=''):
         self.storage = getUtility(IRedirectionStorage)
 
@@ -184,7 +183,7 @@ class RedirectionSet(object):
             # min_k is /Plone/news and
             # max_k is /Plone/newt
             # Apparently that is the way to minize the keys we ask.
-            min_k = u'{0:s}/{1:s}'.format(self.portal_path, query.strip('/'))
+            min_k = '{:s}/{:s}'.format(self.portal_path, query.strip('/'))
             max_k = min_k[:-1] + chr(ord(min_k[-1]) + 1)
             self.data = self.storage._paths.keys(
                 min=min_k, max=max_k, excludemax=True
@@ -247,10 +246,10 @@ class RedirectsBatchView(PloneBatchView):
     def make_link(self, pagenumber=None, omit_params=None):
         if omit_params is None:
             omit_params = ['ajax_load']
-        url = super(RedirectsBatchView, self).make_link(
+        url = super().make_link(
             pagenumber, omit_params
         )
-        return u'{0:s}#manage-existing-aliases'.format(url)
+        return f'{url:s}#manage-existing-aliases'
 
 
 class RedirectsControlPanel(BrowserView):
@@ -305,16 +304,16 @@ class RedirectsControlPanel(BrowserView):
             for redirect in redirects:
                 storage.remove(redirect)
             if len(redirects) == 0:
-                err = _(u"No alternative urls selected for removal.")
+                err = _("No alternative urls selected for removal.")
                 status.addStatusMessage(err, type='error')
                 self.form_errors['remove_redirects'] = err
             elif len(redirects) > 1:
                 status.addStatusMessage(
-                    _(u"Alternative urls removed."), type='info'
+                    _("Alternative urls removed."), type='info'
                 )
             else:
                 status.addStatusMessage(
-                    _(u"Alternative url removed."), type='info'
+                    _("Alternative url removed."), type='info'
                 )
         elif 'form.button.Add' in form:
             err = self.add(
@@ -348,14 +347,14 @@ class RedirectsControlPanel(BrowserView):
             self.form_errors['target_path'] = target_err
 
         if err and target_err:
-            err = "{0} {1}".format(err, target_err)
+            err = f"{err} {target_err}"
         elif target_err:
             err = target_err
         else:
             if abs_redirection == abs_target:
                 err = _(
-                    u"Alternative urls that point to themselves will cause"
-                    u" an endless cycle of redirects."
+                    "Alternative urls that point to themselves will cause"
+                    " an endless cycle of redirects."
                 )
                 # TODO: detect indirect recursion
 
@@ -364,7 +363,7 @@ class RedirectsControlPanel(BrowserView):
         else:
             storage.add(abs_redirection, abs_target, manual=True)
             status.addStatusMessage(
-                _(u"Alternative url from {0} to {1} added.").format(
+                _("Alternative url from {0} to {1} added.").format(
                     abs_redirection, abs_target
                 ),
                 type='info',
@@ -376,7 +375,7 @@ class RedirectsControlPanel(BrowserView):
 
         # No file picked. Theres gotta be a better way to handle this.
         if not file.filename:
-            err = _(u"Please pick a file to upload.")
+            err = _("Please pick a file to upload.")
             status.addStatusMessage(err, type='error')
             self.form_errors['file'] = err
             return
@@ -431,18 +430,18 @@ class RedirectsControlPanel(BrowserView):
                     ):
                         # First line is a header.  Ignore this.
                         continue
-                    err = "%s %s" % (err, target_err)  # sloppy w.r.t. i18n
+                    err = f"{err} {target_err}"  # sloppy w.r.t. i18n
                 elif target_err:
                     err = target_err
                 else:
                     if abs_redirection == abs_target:
                         # TODO: detect indirect recursion
                         err = _(
-                            u"Alternative urls that point to themselves will cause"
-                            u" an endless cycle of redirects."
+                            "Alternative urls that point to themselves will cause"
+                            " an endless cycle of redirects."
                         )
             else:
-                err = _(u"Each line must have 2 or more columns.")
+                err = _("Each line must have 2 or more columns.")
 
             if not err:
                 if not had_errors:  # else don't bother
@@ -461,7 +460,7 @@ class RedirectsControlPanel(BrowserView):
             storage.update(successes)
             status.addStatusMessage(
                 _(
-                    u"${count} alternative urls added.",
+                    "${count} alternative urls added.",
                     mapping={'count': len(successes)},
                 ),
                 type='info',
@@ -473,8 +472,8 @@ class RedirectsControlPanel(BrowserView):
                     line_number=0,
                     line='',
                     message=_(
-                        u'msg_delimiter',
-                        default=u"Delimiter detected: ${delimiter}",
+                        'msg_delimiter',
+                        default="Delimiter detected: ${delimiter}",
                         mapping={'delimiter': dialect.delimiter},
                     ),
                 ),

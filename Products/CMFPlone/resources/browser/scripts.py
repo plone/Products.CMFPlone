@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.resource import ResourceView
 from Products.CMFPlone.utils import get_top_request
-from six.moves.urllib import parse
+from urllib import parse
 from zope.component import getMultiAdapter
 
 
@@ -26,7 +25,7 @@ class ScriptsView(ResourceView):
             url = parse.urlparse(data.js)
             if url.netloc == '':
                 # Local
-                src = '{0}/{1}'.format(self.site_url, data.js)
+                src = f'{self.site_url}/{data.js}'
             else:
                 src = data.js
             data = {
@@ -70,14 +69,14 @@ class ScriptsView(ResourceView):
                 resource_path = js_path.split('++plone++')[-1]
                 resource_name, resource_filepath = resource_path.split(
                     '/', 1)
-                js_location = '{0}/++plone++{1}/++unique++{2}/{3}'.format(
+                js_location = '{}/++plone++{}/++unique++{}/{}'.format(
                     self.site_url,
                     resource_name,
                     parse.quote(str(bundle.last_compilation)),
                     resource_filepath
                 )
             else:
-                js_location = '{0}/{1}?version={2}'.format(
+                js_location = '{}/{}?version={}'.format(
                     self.site_url,
                     bundle.jscompilation,
                     parse.quote(str(bundle.last_compilation))
@@ -100,7 +99,7 @@ class ScriptsView(ResourceView):
         result = []
         # We always add jquery resource
         result.append({
-            'src': '{0}/{1}'.format(
+            'src': '{}/{}'.format(
                 self.site_url,
                 self.registry.records['plone.resources/jquery.js'].value),
             'conditionalcomment': None,
@@ -109,28 +108,28 @@ class ScriptsView(ResourceView):
         if self.development:
             # We need to add require.js and config.js
             result.append({
-                'src': '{0}/{1}'.format(
+                'src': '{}/{}'.format(
                     self.site_url,
                     self.registry.records['plone.resources.less-variables'].value),  # noqa
                 'conditionalcomment': None,
                 'bundle': 'basic'
             })
             result.append({
-                'src': '{0}/{1}'.format(
+                'src': '{}/{}'.format(
                     self.site_url,
                     self.registry.records['plone.resources.lessc'].value),
                 'conditionalcomment': None,
                 'bundle': 'basic'
             })
         result.append({
-            'src': '{0}/{1}'.format(
+            'src': '{}/{}'.format(
                 self.site_url,
                 self.registry.records['plone.resources.requirejs'].value),
             'conditionalcomment': None,
             'bundle': 'basic'
         })
         result.append({
-            'src': '{0}/{1}'.format(
+            'src': '{}/{}'.format(
                 self.site_url,
                 self.registry.records['plone.resources.configjs'].value),
             'conditionalcomment': None,
@@ -141,7 +140,7 @@ class ScriptsView(ResourceView):
     def base_url(self):
         portal_state = getMultiAdapter(
             (self.context, self.request),
-            name=u'plone_portal_state'
+            name='plone_portal_state'
         )
         site_url = portal_state.portal_url()
         return site_url
@@ -155,7 +154,7 @@ class ScriptsView(ResourceView):
             result.extend(self.ordered_bundles_result())
         else:
             result = [{
-                'src': '{0}/++plone++{1}'.format(
+                'src': '{}/++plone++{}'.format(
                     self.site_url,
                     self.production_path + '/default.js'
                 ),
@@ -166,7 +165,7 @@ class ScriptsView(ResourceView):
             }]
             if not self.anonymous:
                 result.append({
-                    'src': '{0}/++plone++{1}'.format(
+                    'src': '{}/++plone++{}'.format(
                         self.site_url,
                         self.production_path + '/logged-in.js'
                     ),
@@ -193,7 +192,7 @@ class ScriptsView(ResourceView):
             result.append({
                 'bundle': 'diazo',
                 'conditionalcomment': '',
-                'src': '{0}/{1}'.format(self.site_url, origin),
+                'src': f'{self.site_url}/{origin}',
             })
 
         return result

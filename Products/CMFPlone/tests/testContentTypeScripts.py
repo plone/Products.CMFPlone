@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
 from datetime import datetime
 from plone.app.textfield import RichTextValue
 from plone.namedfile.file import NamedFile
 from plone.namedfile.file import NamedImage
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
-
-import six
 
 AddPortalTopics = 'Add portal topics'
 
@@ -24,7 +21,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testDocumentCreate(self):
         self.folder.invokeFactory(
-            'Document', id='doc', text=RichTextValue(u'data'))
+            'Document', id='doc', text=RichTextValue('data'))
         self.assertEqual(self.folder.doc.text.raw, 'data')
         self.assertEqual(self.folder.doc.Format(), 'text/html')
 
@@ -63,7 +60,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testNewsItemCreate(self):
         self.folder.invokeFactory('News Item', id='newsitem',
-                                  text=RichTextValue(u'data'), title='Foo')
+                                  text=RichTextValue('data'), title='Foo')
         self.assertEqual(self.folder.newsitem.text.raw, 'data')
         self.assertEqual(self.folder.newsitem.Title(), 'Foo')
 
@@ -121,10 +118,7 @@ class TestImageProps(PloneTestCase.PloneTestCase):
 
     def testImageComputedProps(self):
         from OFS.Image import Image
-        if six.PY2:
-            tag = Image.tag.im_func
-        else:
-            tag = Image.tag
+        tag = Image.tag
         kw = {'_title': 'some title',
               '_alt': 'alt tag',
               'height': 100,

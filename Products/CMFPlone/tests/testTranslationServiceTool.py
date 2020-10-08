@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Test toLocalizedTime script and TranslationServiceTool.
 
 from Products.CMFPlone.tests import PloneTestCase
@@ -12,24 +11,24 @@ class TestUTranslate(PloneTestCase.PloneTestCase):
 
     def testUTranslate(self):
         # Test Unicode value
-        value = self.tool.translate(u'foo', 'domain')
-        self.assertEqual(value, u'foo')
+        value = self.tool.translate('foo', 'domain')
+        self.assertEqual(value, 'foo')
 
         # Test ascii value
         value = self.tool.translate('foo', 'domain')
-        self.assertEqual(value, u'foo')
+        self.assertEqual(value, 'foo')
 
         # Test empty string
         value = self.tool.translate('', 'domain')
-        self.assertEqual(value, u'')
+        self.assertEqual(value, '')
 
         # Test empty domain
         value = self.tool.translate('foo', 'domain')
-        self.assertEqual(value, u'foo')
+        self.assertEqual(value, 'foo')
 
         # Test default is None
         value = self.tool.translate('foo', 'domain', default=None)
-        self.assertEqual(value, u'foo')
+        self.assertEqual(value, 'foo')
 
 
 class TestTranslationServiceTool(PloneTestCase.PloneTestCase):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.Five.browser import BrowserView
@@ -29,9 +28,9 @@ def _format_shims(shims):
             # function, no escaping here
             options.append('init: %s' % val['init'])
         result.append("""
-        "%s": {
-            %s
-        }""" % (name, ',\n            '.join(options)))
+        "{}": {{
+            {}
+        }}""".format(name, ',\n            '.join(options)))
     return '{' + ','.join(result) + '\n    }'
 
 

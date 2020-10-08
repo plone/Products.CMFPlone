@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.testing import \

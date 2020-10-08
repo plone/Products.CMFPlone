@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from AccessControl.requestmethod import postonly
 from AccessControl.class_init import InitializeClass
@@ -11,7 +10,7 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from six import StringIO
+from io import StringIO
 from ZODB.POSException import ConflictError
 from zope.interface import implementer
 
@@ -24,12 +23,11 @@ logger = logging.getLogger('plone.app.upgrade')
 _upgradePaths = {}
 
 
-class Addon(object):
+class Addon:
     """A profile or product.
 
     This is meant for core Plone packages, especially packages that
-    are marked as not installable (INonInstallable from
-    CMFQuickInstallerTool).  These are packages that an admin should
+    are marked as not installable.  These are packages that an admin should
     not activate, deactivate or upgrade manually, but that should be
     handled by Plone.
 
@@ -47,7 +45,7 @@ class Addon(object):
         self.check_module = check_module
 
     def __repr__(self):
-        return u'<{0} profile {1}>'.format(
+        return '<{} profile {}>'.format(
             self.__class__.__name__, self.profile_id)
 
     def safe(self):
@@ -88,18 +86,18 @@ class AddonList(list):
 # core packages that actually have upgrade steps.
 # Good start is portal_setup.listProfilesWithUpgrades()
 ADDON_LIST = AddonList([
-    Addon(profile_id=u'Products.CMFEditions:CMFEditions'),
-    Addon(profile_id=u'Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow'),
-    Addon(profile_id=u'plone.app.contenttypes:default'),
-    Addon(profile_id=u'plone.app.dexterity:default'),
-    Addon(profile_id=u'plone.app.discussion:default'),
-    Addon(profile_id=u'plone.app.event:default'),
-    Addon(profile_id=u'plone.app.iterate:plone.app.iterate'),
-    Addon(profile_id=u'plone.app.multilingual:default'),
-    Addon(profile_id=u'plone.app.querystring:default'),
-    Addon(profile_id=u'plone.app.theming:default'),
-    Addon(profile_id=u'plone.app.users:default'),
-    Addon(profile_id=u'plone.staticresources:default'),
+    Addon(profile_id='Products.CMFEditions:CMFEditions'),
+    Addon(profile_id='Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow'),
+    Addon(profile_id='plone.app.contenttypes:default'),
+    Addon(profile_id='plone.app.dexterity:default'),
+    Addon(profile_id='plone.app.discussion:default'),
+    Addon(profile_id='plone.app.event:default'),
+    Addon(profile_id='plone.app.iterate:plone.app.iterate'),
+    Addon(profile_id='plone.app.multilingual:default'),
+    Addon(profile_id='plone.app.querystring:default'),
+    Addon(profile_id='plone.app.theming:default'),
+    Addon(profile_id='plone.app.users:default'),
+    Addon(profile_id='plone.staticresources:default'),
 ])
 
 

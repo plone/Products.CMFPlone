@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import IFilterSchema
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
@@ -8,7 +7,7 @@ from zope.interface import implementer
 
 
 @implementer(IFilterSchema)
-class FilterControlPanelAdapter(object):
+class FilterControlPanelAdapter:
 
     adapts(IPloneSiteRoot)
 

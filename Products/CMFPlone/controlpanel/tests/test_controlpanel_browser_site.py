@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
 from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-from six import BytesIO
+from io import BytesIO
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
@@ -37,7 +36,7 @@ class SiteControlPanelFunctionalTest(unittest.TestCase):
         self.browser.handleErrors = False
         self.browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
+            f'Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}'
         )
 
     def test_site_control_panel_link(self):
@@ -66,34 +65,34 @@ class SiteControlPanelFunctionalTest(unittest.TestCase):
     def test_site_title_is_stored_in_registry(self):
         self.browser.open(
             "%s/@@site-controlpanel" % self.portal_url)
-        self.browser.getControl('Site title').value = u"My Site"
+        self.browser.getControl('Site title').value = "My Site"
         self.browser.getControl('Save').click()
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSchema, prefix="plone")
-        self.assertEqual(settings.site_title, u"My Site")
+        self.assertEqual(settings.site_title, "My Site")
 
     def test_site_title_can_be_looked_up_by_plone_portal_state(self):
         self.browser.open(
             "%s/@@site-controlpanel" % self.portal_url)
-        self.browser.getControl('Site title').value = u"My Site"
+        self.browser.getControl('Site title').value = "My Site"
         self.browser.getControl('Save').click()
 
         portal_state = getMultiAdapter(
             (self.portal, self.request),
-            name=u'plone_portal_state'
+            name='plone_portal_state'
         )
-        self.assertEqual(portal_state.portal_title(), u'My Site')
+        self.assertEqual(portal_state.portal_title(), 'My Site')
 
     @unittest.skip("XXX: TODO! We have to patch CMFDefault for this.")
     def test_site_title_can_be_looked_up_by_portal_title(self):
         self.browser.open(
             "%s/@@site-controlpanel" % self.portal_url)
-        self.browser.getControl('Site title').value = u"My Site"
+        self.browser.getControl('Site title').value = "My Site"
         self.browser.getControl('Save').click()
 
-        self.assertEqual(self.portal.title, u'My Site')
-        self.assertEqual(self.portal.Title(), u'My Site')
+        self.assertEqual(self.portal.title, 'My Site')
+        self.assertEqual(self.portal.Title(), 'My Site')
 
     def test_site_logo_is_stored_in_registry(self):
         self.browser.open(
@@ -109,7 +108,7 @@ class SiteControlPanelFunctionalTest(unittest.TestCase):
     def test_exposeDCMetaTags(self):
         self.browser.open(
             "%s/@@site-controlpanel" % self.portal_url)
-        self.browser.getControl('Site title').value = u"Plone Site"
+        self.browser.getControl('Site title').value = "Plone Site"
         self.browser.getControl('Expose Dublin Core metadata').selected = True
         self.browser.getControl('Save').click()
 
@@ -120,7 +119,7 @@ class SiteControlPanelFunctionalTest(unittest.TestCase):
     def test_exposeDCMetaTags_exposes_meta_tags(self):
         self.browser.open(
             "%s/@@site-controlpanel" % self.portal_url)
-        self.browser.getControl('Site title').value = u"Plone Site"
+        self.browser.getControl('Site title').value = "Plone Site"
         self.browser.getControl('Expose Dublin Core metadata').selected = True
         self.browser.getControl('Save').click()
 
@@ -131,7 +130,7 @@ class SiteControlPanelFunctionalTest(unittest.TestCase):
     def test_enable_sitemap(self):
         self.browser.open(
             "%s/@@site-controlpanel" % self.portal_url)
-        self.browser.getControl('Site title').value = u"Plone Site"
+        self.browser.getControl('Site title').value = "Plone Site"
         self.browser.getControl('Expose sitemap.xml.gz').selected = True
         self.browser.getControl('Save').click()
 
@@ -142,7 +141,7 @@ class SiteControlPanelFunctionalTest(unittest.TestCase):
     def test_enable_sitemap_enables_the_sitemap(self):
         self.browser.open(
             "%s/@@site-controlpanel" % self.portal_url)
-        self.browser.getControl('Site title').value = u"Plone Site"
+        self.browser.getControl('Site title').value = "Plone Site"
         self.browser.getControl('Expose sitemap.xml.gz').selected = True
         self.browser.getControl('Save').click()
 
@@ -160,26 +159,26 @@ class SiteControlPanelFunctionalTest(unittest.TestCase):
     def test_webstats_js(self):
         self.browser.open(
             "%s/@@site-controlpanel" % self.portal_url)
-        self.browser.getControl('Site title').value = u"Plone Site"
+        self.browser.getControl('Site title').value = "Plone Site"
         self.browser.getControl(name='form.widgets.webstats_js').value = \
-            u"<script>a=1</script>"
+            "<script>a=1</script>"
         self.browser.getControl('Save').click()
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSchema, prefix="plone")
-        self.assertEqual(settings.webstats_js, u"<script>a=1</script>")
+        self.assertEqual(settings.webstats_js, "<script>a=1</script>")
 
     def test_webstat_js_shows_up_on_site(self):
         self.browser.open(
             "%s/@@site-controlpanel" % self.portal_url)
-        self.browser.getControl('Site title').value = u"Plone Site"
+        self.browser.getControl('Site title').value = "Plone Site"
         self.browser.getControl(name='form.widgets.webstats_js').value = \
-            u"<script>a=1</script>"
+            "<script>a=1</script>"
         self.browser.getControl('Save').click()
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSchema, prefix="plone")
-        self.assertEqual(settings.webstats_js, u"<script>a=1</script>")
+        self.assertEqual(settings.webstats_js, "<script>a=1</script>")
         self.browser.open(self.portal_url)
 
         self.assertTrue("<script>a=1</script>" in self.browser.contents)

@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 # This is from Products.PloneHotfix20160830.
-from six.moves.urllib.parse import urlparse
+from urllib.parse import urlparse
 from z3c.form import widget
 
 

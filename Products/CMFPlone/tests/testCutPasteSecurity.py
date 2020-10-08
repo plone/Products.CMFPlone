@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from Acquisition import aq_base
 from OFS.CopySupport import CopyError
@@ -6,10 +5,11 @@ from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Products.CMFCore.interfaces import IContentish
 from zope.component import provideHandler, getGlobalSiteManager
 from zope.lifecycleevent.interfaces import IObjectMovedEvent
+from urllib.error import HTTPError
+
 import transaction
 
 
-from six.moves.urllib.error import HTTPError
 
 
 class TestCutPasteSecurity(PloneTestCase):

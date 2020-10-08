@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone import PloneMessageFactory as _
 from zExceptions import Forbidden
 from Products.CMFCore.utils import getToolByName
@@ -45,14 +44,14 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
                 for u in toAdd:
                     self.gtool.addPrincipalToGroup(
                         u, self.groupname, self.request)
-                self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
+                self.context.plone_utils.addPortalMessage(_('Changes made.'))
 
             toDelete = form.get('delete', [])
             if toDelete:
                 for u in toDelete:
                     self.gtool.removePrincipalFromGroup(
                         u, self.groupname, self.request)
-                self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
+                self.context.plone_utils.addPortalMessage(_('Changes made.'))
 
             search = form.get('form.button.Search', None) is not None
             edit = form.get('form.button.Edit', None) is not None and toDelete

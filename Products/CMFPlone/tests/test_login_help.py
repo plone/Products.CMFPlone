@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone import api
 from plone.testing.zope import Browser
 from Products.CMFPlone.browser.login.login_help import RequestResetPassword
@@ -51,27 +50,27 @@ class TestLoginHelp(unittest.TestCase):
         reset_password = form.subforms[0]
         reset_password.handleResetPassword(reset_password, None)
         # the field reset_password is required
-        self.assertEqual(reset_password.status, u'There were some errors.')
+        self.assertEqual(reset_password.status, 'There were some errors.')
         # reset error message
         reset_password.status = ''
 
-        self.request['form.widgets.reset_password'] = u'test'
+        self.request['form.widgets.reset_password'] = 'test'
         reset_password.handleResetPassword(reset_password, None)
         self.assertEqual(reset_password.status, '')
         self.assertEqual(len(self.portal.MailHost.messages), 0)
         # no mail was sent since the user does not exist
-        self.request['form.widgets.reset_password'] = u'test'
+        self.request['form.widgets.reset_password'] = 'test'
 
         member = api.user.get('test_user_1_')
         email = 'foo@plone.org'
         member.setMemberProperties({'email': email})
-        self.request['form.widgets.reset_password'] = u'test_user_1_'
+        self.request['form.widgets.reset_password'] = 'test_user_1_'
         reset_password.handleResetPassword(reset_password, None)
         self.assertEqual(reset_password.status, '')
         self.assertEqual(len(self.portal.MailHost.messages), 1)
         message = self.portal.MailHost.messages[0]
-        self.assertIn('To: foo@plone.org', message)
-        self.assertIn('http://nohost/plone/passwordreset/', message)
+        self.assertIn(b'To: foo@plone.org', message)
+        self.assertIn(b'http://nohost/plone/passwordreset/', message)
 
 
 class TestLoginHelpFunctional(unittest.TestCase):
@@ -140,8 +139,8 @@ class TestLoginHelpFunctional(unittest.TestCase):
             'email has been sent with your username.', self.browser.contents)
         self.assertEqual(len(self.portal.MailHost.messages), 1)
         message = self.portal.MailHost.messages[0]
-        self.assertIn('To: foo@plone.org', message)
-        self.assertIn('Your username is: test_user_1_', message)
+        self.assertIn(b'To: foo@plone.org', message)
+        self.assertIn(b'Your username is: test_user_1_', message)
 
         self.browser.getControl(
             name='form.widgets.recover_username').value = 'noemail'

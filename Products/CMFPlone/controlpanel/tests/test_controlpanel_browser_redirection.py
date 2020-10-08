@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from plone.app.redirector.interfaces import IRedirectionStorage
 from plone.app.testing import SITE_OWNER_NAME
@@ -32,7 +31,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.browser.handleErrors = False
         self.browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+            f'Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}',
         )
 
     def test_redirection_controlpanel_link(self):
@@ -69,13 +68,13 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertTrue(
             storage.has_path(storage_path),
-            u'Redirection storage should have path "{0}"'.format(storage_path),
+            f'Redirection storage should have path "{storage_path}"',
         )
 
     def test_redirection_controlpanel_remove_redirects(self):
         storage = getUtility(IRedirectionStorage)
         for i in range(31):
-            storage['/plone/alias{0}'.format(i)] = '/plone/test-folder'
+            storage[f'/plone/alias{i}'] = '/plone/test-folder'
         transaction.commit()
 
         self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
@@ -110,7 +109,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
     def test_redirection_controlpanel_remove_matching_redirects(self):
         storage = getUtility(IRedirectionStorage)
         for i in range(30):
-            storage['/plone/alias{0}'.format(i)] = '/plone/test-folder'
+            storage[f'/plone/alias{i}'] = '/plone/test-folder'
         transaction.commit()
 
         # Removing matching redirects can only happen when a filter is selected.
@@ -140,8 +139,8 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         now = DateTime('2022-02-03')
         for i in range(1000):
             storage.add(
-                '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
-                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+                '{:s}/foo/{:s}'.format(portal_path, str(i)),
+                '{:s}/bar/{:s}'.format(portal_path, str(i)),
                 now=now,
             )
         redirects = RedirectionSet()
@@ -152,7 +151,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
                 'datetime': DateTime('2022-02-03'),
                 'manual': False,
                 'path': '/foo/0',
-                'redirect': '{0:s}/foo/0'.format(portal_path),
+                'redirect': f'{portal_path:s}/foo/0',
                 'redirect-to': '/bar/0',
             },
         )
@@ -162,7 +161,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
                 'datetime': DateTime('2022-02-03'),
                 'manual': False,
                 'path': '/foo/999',
-                'redirect': '{0:s}/foo/999'.format(portal_path),
+                'redirect': f'{portal_path:s}/foo/999',
                 'redirect-to': '/bar/999',
             },
         )
@@ -173,7 +172,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
                 'datetime': DateTime('2022-02-03'),
                 'manual': False,
                 'path': '/foo/0',
-                'redirect': '{0:s}/foo/0'.format(portal_path),
+                'redirect': f'{portal_path:s}/foo/0',
                 'redirect-to': '/bar/0',
             },
         )
@@ -183,8 +182,8 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         portal_path = self.layer['portal'].absolute_url_path()
         for i in range(1000):
             storage.add(
-                '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
-                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+                '{:s}/foo/{:s}'.format(portal_path, str(i)),
+                '{:s}/bar/{:s}'.format(portal_path, str(i)),
             )
         view = getMultiAdapter(
             (self.layer['portal'], self.layer['request']),
@@ -200,8 +199,8 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
     def test_redirection_controlpanel_redirect_alias_exists(self):
         path_alias = '/alias'
         path_target = '/test-folder'
-        storage_alias = '/plone{0}'.format(path_alias)
-        storage_target = '/plone{0}'.format(path_target)
+        storage_alias = f'/plone{path_alias}'
+        storage_target = f'/plone{path_target}'
         storage = getUtility(IRedirectionStorage)
         storage.add(storage_alias, storage_target)
         transaction.commit()
@@ -213,12 +212,12 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertTrue(
             storage.get(storage_alias) == storage_target,
-            '{0} not target of alternative url!'.format(storage_target),
+            f'{storage_target} not target of alternative url!',
         )
         self.assertTrue(
             'The provided alternative url already exists!'
             in self.browser.contents,
-            u'Message "alternative url already exists" not in page!',
+            'Message "alternative url already exists" not in page!',
         )
 
     def test_redirection_controlpanel_filtering(self):
@@ -226,13 +225,13 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         portal_path = self.layer['portal'].absolute_url_path()
         for i in range(1000):
             storage.add(
-                '{0:s}/foo1/{1:s}'.format(portal_path, str(i)),
-                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+                '{:s}/foo1/{:s}'.format(portal_path, str(i)),
+                '{:s}/bar/{:s}'.format(portal_path, str(i)),
             )
         for i in range(1000):
             storage.add(
-                '{0:s}/foo2/{1:s}'.format(portal_path, str(i)),
-                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+                '{:s}/foo2/{:s}'.format(portal_path, str(i)),
+                '{:s}/bar/{:s}'.format(portal_path, str(i)),
             )
 
         redirects = RedirectionSet()
@@ -283,14 +282,14 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         portal_path = self.layer['portal'].absolute_url_path()
         for i in range(100):
             storage.add(
-                '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
-                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+                '{:s}/foo/{:s}'.format(portal_path, str(i)),
+                '{:s}/bar/{:s}'.format(portal_path, str(i)),
                 manual=False,
             )
         for i in range(100, 300):
             storage.add(
-                '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
-                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+                '{:s}/foo/{:s}'.format(portal_path, str(i)),
+                '{:s}/bar/{:s}'.format(portal_path, str(i)),
                 manual=True,
             )
 
@@ -334,8 +333,8 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         time0 = DateTime('2001-01-01')
         for i in range(400):
             storage.add(
-                '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
-                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+                '{:s}/foo/{:s}'.format(portal_path, str(i)),
+                '{:s}/bar/{:s}'.format(portal_path, str(i)),
                 now=time0 + i,
             )
 
@@ -400,7 +399,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertTrue(
             'The provided target object does not exist.'
             in self.browser.contents,
-            u'Message "target does not exist" not in page!',
+            'Message "target does not exist" not in page!',
         )
 
     def test_redirection_controlpanel_missing_slash_target(self):
@@ -414,7 +413,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertTrue(
             'Target path must start with a slash.' in self.browser.contents,
-            u'Errormessage for missing slash on target path missing',
+            'Errormessage for missing slash on target path missing',
         )
 
     def test_redirection_controlpanel_missing_slash_alias(self):
@@ -429,7 +428,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertTrue(
             'Alternative url path must start with a slash.'
             in self.browser.contents,
-            u'Errormessage for missing slash on alternative url missing',
+            'Errormessage for missing slash on alternative url missing',
         )
 
     def test_manage_aliases_standard(self):
@@ -442,7 +441,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertTrue(
             'Alternative url added.' in self.browser.contents,
-            u'Message for added alternative url missing',
+            'Message for added alternative url missing',
         )
         self.assertTrue(storage.has_path('/plone/alias'))
         self.assertEqual(storage.get('/plone/alias'), '/plone/test-folder')
@@ -464,7 +463,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertTrue(
             'Alternative urls removed.' in self.browser.contents,
-            u'Message for removed alternative url missing',
+            'Message for removed alternative url missing',
         )
         self.assertFalse('/plone/alias1' in storage)
         self.assertFalse('/plone/alias2' in storage)
@@ -486,7 +485,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertTrue(
             'Alternative url added.' in self.browser.contents,
-            u'Message for added alternative url missing',
+            'Message for added alternative url missing',
         )
         self.assertTrue(storage.has_path('/plone/test-folder/alias'))
         self.assertEqual(
@@ -501,7 +500,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertTrue(
             'Alternative url added.' in self.browser.contents,
-            u'Message for added alternative url missing',
+            'Message for added alternative url missing',
         )
         self.assertTrue(storage.has_path('/plone/test-folder/alias2'))
         self.assertEqual(
@@ -589,8 +588,8 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         storage = getUtility(IRedirectionStorage)
         portal_path = self.portal.absolute_url_path()
         storage.add(
-            '{0:s}/foo'.format(portal_path),
-            '{0:s}/test-folder'.format(portal_path),
+            f'{portal_path:s}/foo',
+            f'{portal_path:s}/test-folder',
         )
         self.assertEqual(
             ap('/foo', is_source=True),
@@ -803,8 +802,8 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         now = DateTime('2019/01/27 10:00:00 GMT-3')
         for i in range(2000):
             storage.add(
-                '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
-                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+                '{:s}/foo/{:s}'.format(portal_path, str(i)),
+                '{:s}/bar/{:s}'.format(portal_path, str(i)),
                 now=now,
                 manual=True,
             )
@@ -840,8 +839,8 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         now = DateTime('2019/01/27 10:00:00 GMT-3')
         for i in range(10):
             storage.add(
-                '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
-                '{0:s}/test-folder'.format(portal_path),
+                '{:s}/foo/{:s}'.format(portal_path, str(i)),
+                f'{portal_path:s}/test-folder',
                 now=now,
                 manual=True,
             )

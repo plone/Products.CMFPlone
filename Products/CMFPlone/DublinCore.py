@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 # Copyright (c) 2001 Zope Foundation and Contributors.
@@ -30,7 +29,6 @@ from Products.CMFPlone.permissions import ModifyPortalContent
 from Products.CMFPlone.permissions import View
 from Products.CMFPlone.utils import WWW_DIR
 
-import six
 
 _marker = []
 
@@ -48,7 +46,7 @@ def seq_strip(seq, stripper=lambda x: x.strip()):
     if isinstance(seq, tuple):
         return tuple(map(stripper, seq))
 
-    raise ValueError("%s of unsupported sequencetype %s" % (seq, type(seq)))
+    raise ValueError("{} of unsupported sequencetype {}".format(seq, type(seq)))
 
 
 def tuplize(valueName, value, splitter=lambda x: x.split()):
@@ -59,7 +57,7 @@ def tuplize(valueName, value, splitter=lambda x: x.split()):
     if isinstance(value, list):
         return seq_strip(tuple(value))
 
-    if isinstance(value, six.string_types):
+    if isinstance(value, str):
         return seq_strip(tuple(splitter(value)))
 
     raise ValueError("%s of unsupported type" % valueName)
