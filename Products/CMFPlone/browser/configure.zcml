@@ -173,6 +173,16 @@
       provides="plone.app.layout.navigation.interfaces.INavtreeStrategy"
       />
 
+   <adapter
+      name="resolveicontag"
+      factory=".iconresolver.IconTagTraverser"
+      />
+
+   <adapter
+      name="resolveiconurl"
+      factory=".iconresolver.IconURLTraverser"
+      />
+
   <browser:page
       for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="robots.txt"
