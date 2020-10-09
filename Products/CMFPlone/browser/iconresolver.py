@@ -15,16 +15,18 @@ from zope.publisher.interfaces import IPublishTraverse
 @implementer(IPublishTraverse)
 class IconBaseResolver:
 
+    prefix = 'plone.staticresources.icon.'
+
     def __init__(self, context, name):
         self.context = context
         self.name = name
 
     def __call__(self):
         registry = getUtility(IRegistry)
-        prefix = 'plone.staticresources.icon.'
         icon = prefix + self.name
         if icon in registry:
             return registry[icon]
+        raise LocationError(self.name)
 
 
 class IconURLResolver(IconBaseResolver):
