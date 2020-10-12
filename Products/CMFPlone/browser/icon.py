@@ -21,9 +21,12 @@ class IconView(BrowserView):
 
     def publishTraverse(self, request, name):
         request['TraversalRequestNameStack'] = []
+        return self
+
+    def __init__(self, context, request):
+        super(IconView, self).__init__(context, request)
         if len(self.request.path) == 1:
             self.name = request.path[0]
-        return self
 
     def __call__(self):
         icon = self.lookup(self.name)
@@ -33,6 +36,9 @@ class IconView(BrowserView):
         registry = getUtility(IRegistry)
         icon = self.prefix + name
         if icon in registry:
+            return registry[icon]
+        else:
+            icon = self.prefix + 'bug'
             return registry[icon]
 
     def url(self, name):
