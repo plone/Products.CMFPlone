@@ -32,26 +32,25 @@
 
     <p>Description to explain icon resolver</p>
 
+
     <h2>Get Icon URL</h2>
 
-    <code>
-      &lt;img src="" tal:attributes="src python:icon.url('alarm')" class="custom-class" alt="foo" /&gt;
-    </code>
+    <p>
+      <code>&lt;img src="" tal:attributes="src python:icons.url('alarm')" class="custom-class" alt="foo" /&gt;</code>
+    </p>
 
     <p>
-      <img src="${python:icon.url('alarm')}" class="custom-class" alt="foo" />
+      <img src="${python:icons.url('alarm')}" class="custom-class" alt="foo" />
     </p>
 
     <h2>Get Icon Tag</h2>
 
     <p>
-    <code>
-      &lt;tal:icon tal:replace="structure python:icon.tag('archive', tag_class='custom-class', tag_alt='foobar')" /&gt;
-    </code>
+      <code>&lt;tal:icon tal:replace="structure python:icons.tag('archive', tag_class='custom-class', tag_alt='foobar')" /&gt;</code>
     </p>
 
     <p>
-      <tal:icon tal:replace="structure python:icon.tag('archive', tag_class='custom-class', tag_alt='foobar')" />
+      <tal:icon tal:replace="structure python:icons.tag('archive', tag_class='custom-class', tag_alt='foobar')" />
     </p>
 
     <tal:comment tal:replace="nothing">
@@ -392,9 +391,9 @@
           <thead>
             <tr>
               <th class="nosort">
-                <input class="noborder" type="checkbox" src="select_all_icon.png" name="selectButton"
+                <input class="noborder" type="checkbox" src="select_all_icons.png" name="selectButton"
                   title="Select all items" onClick="toggleSelect(this,'paths:list');"
-                  tal:attributes="src string:${context/portal_url}/select_all_icon.png" alt="Select all items"
+                  tal:attributes="src string:${context/portal_url}/select_all_icons.png" alt="Select all items"
                   i18n:attributes="title label_select_all_items; alt label_select_all_items;" />
               </th>
               <th>&nbsp;Title&nbsp;</th>
@@ -483,7 +482,7 @@
           <span class="optionsToggle">
             <input type="checkbox" checked="checked" class="noborder" id="pt_toggle" value="#" name="pt_toggle"
               onclick="javascript:toggleSelect(this, 'portal_type:list', true)"
-              src="http://localhost:8080/Plone/select_all_icon.png">
+              src="http://localhost:8080/Plone/select_all_icons.png">
             <label for="pt_toggle">Select All/None</label>
           </span>
           <br>

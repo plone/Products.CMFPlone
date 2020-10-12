@@ -8,7 +8,7 @@
       tal:define="portal_state python:context.restrictedTraverse('@@plone_portal_state');
           context_state python:context.restrictedTraverse('@@plone_context_state');
           plone_view python:context.restrictedTraverse('@@plone');
-          icon python:context.restrictedTraverse('@@icon');
+          icons python:context.restrictedTraverse('@@icons');
           plone_layout python:context.restrictedTraverse('@@plone_layout');
           lang python:portal_state.language();
           view nocall:view | nocall: plone_view;

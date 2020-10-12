@@ -264,9 +264,9 @@
       />
 
   <browser:page
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      name="icon"
-      class=".icon.IconView"
+      for="*"
+      name="icons"
+      class=".icons.IconsView"
       permission="zope.Public"
       />
 
