@@ -263,4 +263,11 @@
       permission="zope2.View"
       />
 
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="icon"
+      class=".icon.IconView"
+      permission="zope.Public"
+      />
+
 </configure>

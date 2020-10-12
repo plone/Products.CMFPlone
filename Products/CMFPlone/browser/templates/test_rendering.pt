@@ -28,6 +28,17 @@
     <h5>h5. Bootstrap heading</h5>
     <h6>h6. Bootstrap heading</h6>
 
+    <section id="section-icons" tal:define="icon_view nocall:context/@@icon">
+      <h1>Icons</h1>
+
+      <p>Description to explain icon resolver</p>
+
+      <p tal:content="python:icon_view('alarm')">
+
+      <p><tal:icon tal:replace="structure python:icon_view.tag('archive', tag_alt='foobar')" /></p>
+
+    </section>
+
     <tal:comment tal:replace="nothing">
     <div id="content-core">
       <pre>Headlines</pre>
