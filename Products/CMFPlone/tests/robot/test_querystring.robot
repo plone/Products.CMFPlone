@@ -231,7 +231,7 @@ the querystring pattern
     Execute Javascript  $(window).unbind('beforeunload')
 
 querystring pattern loaded
-    Wait For Condition  return window.jQuery('.querystring-criteria-remove').size() > 0
+    Wait For Condition  return !!document.querySelector('.querystring-criteria-remove')
 
 a bunch of folders
     #We create enough items to give meaningful test results
