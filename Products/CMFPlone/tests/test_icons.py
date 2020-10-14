@@ -16,24 +16,24 @@ class IconsTest(unittest.TestCase):
     def test_icons_browser(self):
         browser = Browser(self.app)
         portal_url = self.portal.absolute_url()
-        url = portal_url + '/@@icons/bug'
+        url = portal_url + '/@@iconresolver/bug'
         browser.open(url)
         self.assertIn(b'bi bi-bug', browser.contents)
 
     def test_icons_view(self):
-        page = self.app        
-        view = page.restrictedTraverse('@@icons')
+        page = self.app
+        view = page.restrictedTraverse('@@iconresolver')
         self.assertIn(b'bi bi-bug', view.tag('bug'))
 
     def test_icons_url(self):
-        page = self.app        
-        view = page.restrictedTraverse('@@icons')
+        page = self.app
+        view = page.restrictedTraverse('@@iconresolver')
         self.assertIn(
             '++plone++static/components/bootstrap-icons/icons/bug.svg',
             view.url('bug')
         )
 
     def test_icons_tag(self):
-        page = self.app        
-        view = page.restrictedTraverse('@@icons')
+        page = self.app
+        view = page.restrictedTraverse('@@iconresolver')
         self.assertIn(b'bi bi-bug', view.tag('bug'))

@@ -265,7 +265,7 @@
 
   <browser:page
       for="*"
-      name="icons"
+      name="iconresolver"
       class=".icons.IconsView"
       permission="zope.Public"
       />
