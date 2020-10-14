@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 @implementer(IPublishTraverse)
 class IconsView(BrowserView):
 
-    prefix = "plone.staticresources.icon."
+    prefix = "plone.icon."
 
     def publishTraverse(self, request, name):
         self.name = name
