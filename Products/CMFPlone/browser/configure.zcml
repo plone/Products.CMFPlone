@@ -263,4 +263,11 @@
       permission="zope2.View"
       />
 
+  <browser:page
+      for="*"
+      name="iconresolver"
+      class=".icons.IconsView"
+      permission="zope.Public"
+      />
+
 </configure>
