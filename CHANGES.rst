@@ -12,6 +12,36 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.3.rc1 (2020-10-30)
+----------------------
+
+Bug fixes:
+
+
+- No longer doubly undo a response Content-Type change when combining bundles.
+  [maurits] (#1924)
+- Fix issue with @@search view when filtering by creation date
+  [frapell] (#3007)
+- Fixed use of own ``utils.isDefaultPage``, which should be ``defaultpage.check_default_page_via_view``.
+  [maurits] (#3130)
+- Fixed invalid escape sequences in regular expressions.
+  [maurits] (#3130)
+- Fixed deprecation warning for zope.site.hooks.
+  [maurits] (#3130)
+- PloneBatch: define ``__bool__`` as copy of ``__nonzero__``.
+  Python 3 calls ``__bool__`` when doing ``bool(batch)``.
+  [maurits] (#3175)
+- No longer consider calling ``len(batch)`` as deprecated.
+  The deprecation warning is unvoidable with current ``Products.PageTemplates`` code.
+  Fixes `issue 3176 <https://github.com/plone/Products.CMFPlone/issues/3176>`_.
+  maurits (#3176)
+- Fix tests with Products.MailHost 4.10.
+  [maurits] (#3178)
+- Robot tests: Do not use jQuery.size() but use ``.length`` instead.
+  ``.size()`` is deprecated since 1.8.
+  [thet] (#3195)
+
+
 5.2.2 (2020-08-16)
 ------------------
 
