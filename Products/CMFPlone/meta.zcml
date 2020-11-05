@@ -25,11 +25,6 @@
 
     <include package="plone.app.portlets" file="meta.zcml" />
 
-    <!-- wicked -->
-    <configure zcml:condition="installed wicked">
-      <include package="wicked.fieldevent" file="meta.zcml" />
-    </configure>
-
     <!-- z3c.autoinclude's `includePlugins` directive finds
          and executes ZCML files from any installed packages
          that provide an entry point to declare themselves a

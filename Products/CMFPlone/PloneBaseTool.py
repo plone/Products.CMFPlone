@@ -11,31 +11,13 @@ from Products.CMFCore.utils import getToolByName
 from zope.interface import implementer
 from zope.component import getMultiAdapter
 
-TempFolderClass = None
-
 # getOAI() and getExprContext copied from CMF 1.5.1+cvs
 # Copyright (c) 2002 Zope Corporation and Contributors. All Rights Reserved.
 # ZPL 2.1
 from Products.CMFCore.ActionInformation import oai
 
 
-def initializeTFC():
-    """To work around circular imports ...
-    """
-    global TempFolderClass
-    if TempFolderClass is None:
-        import pkg_resources
-        try:
-            pkg_resources.get_distribution('Products.ATContentTypes')
-        except pkg_resources.DistributionNotFound:
-            TempFolderClass = False
-        else:
-            from Products.ATContentTypes.tool.factory import TempFolder
-            TempFolderClass = TempFolder
-
-
 def getOAI(context, object=None):
-    initializeTFC()
     request = getattr(context, 'REQUEST', None)
     if request:
         cache = request.get('_oai_cache', None)
@@ -56,13 +38,8 @@ def getOAI(context, object=None):
                     # found it.
                     break
                 else:
-                    # If the parent of the object at hand is a TempFolder
-                    # don't strip off its outer acquisition context (Plone)
                     parent = aq_parent(aq_inner(folder))
-                    if getattr(parent, '__class__', None) == TempFolderClass:
-                        folder = aq_parent(folder)
-                    else:
-                        folder = parent
+                    folder = parent
         info = oai(context, folder, object)
         if request:
             cache[id(object)] = info
@@ -110,7 +87,6 @@ def createExprContext(folder, portal, object):
 
 
 def getExprContext(context, object=None):
-    initializeTFC()
     request = getattr(context, 'REQUEST', None)
     if request:
         cache = request.get('_plone_ec_cache', None)
@@ -133,13 +109,8 @@ def getExprContext(context, object=None):
                     # found it.
                     break
                 else:
-                    # If the parent of the object at hand is a TempFolder
-                    # don't strip off its outer acquisition context (Plone)
                     parent = aq_parent(aq_inner(folder))
-                    if getattr(parent, '__class__', None) == TempFolderClass:
-                        folder = aq_parent(folder)
-                    else:
-                        folder = parent
+                    folder = parent
         ec = createExprContext(folder, portal, object)
         if request:
             cache[id(object)] = ec
@@ -153,8 +124,7 @@ class PloneBaseTool:
 
     security = ClassSecurityInfo()
 
-    # overwrite getOAI and getExprContext to use our variants that understand
-    # the temp folder of portal factory
+    # overwrite getOAI and getExprContext to use our variants
     def _getOAI(self, object):
         return getOAI(self, object)
 
