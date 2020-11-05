@@ -42,71 +42,92 @@
                       <tal:username tal:condition="not:use_email_as_login">
                         <label for="userid"
                                i18n:translate="label_my_user_name_is">My user name is</label>
-                        <div tal:content="error">Validation error output</div>
 
-                        <div class="formHelp" i18n:translate="help_userid">
+                        <input class="form-control"
+                            name="userid"
+                            required
+                            id="userid" />
+
+                        <div tal:content="error" class="invalid-feedback">Validation error output</div>
+
+                        <small class="formHelp text-muted" i18n:translate="help_userid">
                             Enter your user name for verification.
-                        </div>
+                        </small>
                       </tal:username>
-                      <tal:email tal:condition="use_email_as_login">
-                        <label for="userid"
-                               i18n:translate="label_my_email_address_is">My email address is</label>
-                        <div tal:content="error">Validation error output</div>
 
-                        <div class="formHelp" i18n:translate="help_verify_email">
+                      <tal:email tal:condition="use_email_as_login">
+                        <label for="userid" class="required"
+                               i18n:translate="label_my_email_address_is">My email address is</label>
+
+                        <input class="form-control"
+                            name="userid"
+                            required
+                            id="userid" />
+
+                        <div tal:content="error" class="invalid-feedback">Validation error output</div>
+
+                        <small class="formHelp text-muted" i18n:translate="help_verify_email">
                             Enter your email address for verification.
-                        </div>
+                        </small>
                       </tal:email>
 
-                        <input name="userid" id="userid" />
                     </div>
 
                     <div class="form-group field"
                          tal:define="error errors/password | nothing;"
                          tal:attributes="class python:error and 'form-group field error' or 'form-group field'">
 
-                        <label for="password"
+                        <label for="password" class="required"
                                i18n:translate="label_new_password">New password</label>
-                        <div tal:content="error">Validation error output</div>
 
-                        <div class="formHelp"
-                             i18n:translate="help_new_password">
+                        <input class="form-control"
+                            type="password"
+                            id="password"
+                            name="password"
+                            required
+                            size="10" />
+
+                        <div tal:content="error" class="invalid-feedback">Validation error output</div>
+
+                        <small class="formHelp text-muted"
+                            i18n:translate="help_new_password">
                             Enter your new password.
-                        </div>
+                        </small>
 
-                        <input type="password"
-                               id="password"
-                               name="password"
-                               size="10" />
                     </div>
 
                     <div class="form-group field"
                          tal:define="error errors/password | nothing;"
                          tal:attributes="class python:error and 'form-group field error' or 'form-group field'">
 
-                        <label for="password2" i18n:translate="label_confirm_password">Confirm password</label>
-                        <div tal:content="error">Validation error output</div>
+                        <label for="password2"  class="required"
+                        i18n:translate="label_confirm_password">Confirm password</label>
 
-                        <div class="formHelp" i18n:translate="help_confirm_password">
+                        <input class="form-control"
+                            type="password"
+                            id="password2"
+                            name="password2"
+                            required
+                            size="10"
+                            />
+
+                        <div tal:content="error" class="invalid-feedback">Validation error output</div>
+
+                        <small class="formHelp text-muted" i18n:translate="help_confirm_password">
                             Re-enter the password. Make sure the passwords are identical.
-                        </div>
+                        </small>
 
-                        <input type="password"
-                               id="password2"
-                               name="password2"
-                               size="10"
-                               />
                     </div>
 
                     <div>
                         <div class="label">&nbsp;</div>
 
                         <div class="form-group field">
-                            <input class="context"
-                                   type="submit"
-                                   value="Set my password"
-                                   i18n:attributes="value"
-                                   />
+                            <button class="btn btn-primary"
+                                type="submit"
+                                value="Set my password"
+                                i18n:attributes="value">
+                                <span i18n:translate="">Set my password</span>
                         </div>
                     </div>
                     <input type="hidden" name="form.submitted" value="1" />
