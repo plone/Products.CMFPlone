@@ -22,7 +22,7 @@
     <div id="content-core">
         <p class="addAction">
             <a href="@@new-action"
-                class="context pat-plone-modal pull-right"
+                class="context pat-plone-modal float-right"
                 i18n:translate="">Add new action</a>
         </p>
         <section tal:repeat="category view/actions" class="portlet">
@@ -31,7 +31,7 @@
                 <ol class="configlets">
                     <li tal:repeat="action category/actions">
                         <span tal:content="action/title" i18n:translate="" />
-                        <form action="@@actions-controlpanel" class="pull-right"
+                        <form action="@@actions-controlpanel" class="float-right"
                             method="POST">
                             <input type="hidden" name="actionid"
                                 tal:attributes="value action/id" />
