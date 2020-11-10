@@ -1,6 +1,9 @@
 ---
-name: 🚀 PLIP
+name: "\U0001F680 PLIP"
 about: Plone Improvement Proposal
+title: ''
+labels: ''
+assignees: ''
 
 ---
 
