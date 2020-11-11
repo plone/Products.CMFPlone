@@ -12,6 +12,7 @@ from zope.interface import Interface
 from zope.location.interfaces import LocationError
 from zope.traversing.interfaces import ITraversable
 from zope.publisher.interfaces import IPublishTraverse
+from zExceptions import NotFound
 
 import logging
 
@@ -39,7 +40,7 @@ class IconsView(BrowserView):
         site = getSite()
         try:
             return site.restrictedTraverse(icon)
-        except Exception:
+        except NotFound:
             logger.exception(
                 f"Icon resolver lookup of '{icon}' failed, fallback to Plone icon."
             )
