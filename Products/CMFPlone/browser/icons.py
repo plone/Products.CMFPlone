@@ -40,6 +40,9 @@ class IconsView(BrowserView):
         try:
             return registry[icon]
         except KeyError:
+            if '/' in name:
+                main, tail = name.rsplit('/', 1)
+                return self.lookup(main)
             logger.exception(f"Icon resolver lookup of '{name}' failed, fallback to Plone icon.")
             return "++plone++icons/plone.svg"
 
