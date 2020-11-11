@@ -35,6 +35,7 @@ class IconsView(BrowserView):
         return fileobj(REQUEST=self.request, RESPONSE=self.request.response)
 
     def lookup(self, name):
+        __traceback_info__ = name
         registry = getUtility(IRegistry)
         icon = self.prefix + name
         try:
