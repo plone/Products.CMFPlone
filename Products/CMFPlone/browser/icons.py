@@ -22,17 +22,28 @@ logger = logging.getLogger(__name__)
 class IconsView(BrowserView):
 
     prefix = "plone.icon."
+    defaulticon = "++plone++icons/plone.svg"
 
     def publishTraverse(self, request, name):
         self.name = name
         return self
 
     def __call__(self):
-        name = getattr(self, 'name', None)
+        name = getattr(self, "name", None)
         if name is None:
             raise NotFound("No name were given as subpath.")
-        fileobj = getSite().restrictedTraverse(self.lookup(self.name))
+        fileobj = self._iconfile(self.lookup(self.name))
         return fileobj(REQUEST=self.request, RESPONSE=self.request.response)
+
+    def _iconfile(self, icon):
+        site = getSite()
+        try:
+            return site.restrictedTraverse(icon)
+        except Exception:
+            logger.exception(
+                f"Icon resolver lookup of '{icon}' failed, fallback to Plone icon."
+            )
+            return site.restrictedTraverse(self.defaulticon)
 
     def lookup(self, name):
         __traceback_info__ = name
@@ -41,11 +52,13 @@ class IconsView(BrowserView):
         try:
             return registry[icon]
         except KeyError:
-            if '/' in name:
-                main, tail = name.rsplit('/', 1)
+            if "/" in name:
+                main, tail = name.rsplit("/", 1)
                 return self.lookup(main)
-            logger.exception(f"Icon resolver lookup of '{name}' failed, fallback to Plone icon.")
-            return "++plone++icons/plone.svg"
+            logger.exception(
+                f"Icon resolver lookup of '{name}' failed, fallback to Plone icon."
+            )
+            return self.defaulticon
 
     def url(self, name):
         url = getSite().absolute_url() + "/" + self.lookup(name)
@@ -56,7 +69,7 @@ class IconsView(BrowserView):
         if not icon.endswith(".svg"):
             return f'<img src="{self.url(name)}" class="{tag_class}" alt="{tag_alt}" />'
 
-        iconfile = getSite().restrictedTraverse(icon)
+        iconfile = self._iconfile(icon)
         if isinstance(iconfile, File):
             raise NotImplementedError(
                 "Resolve icons stored in database is not yet implemented."
