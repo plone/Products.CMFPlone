@@ -5,7 +5,7 @@
       xml:lang="en" lang="en"
       metal:use-macro="context/prefs_main_template/macros/master"
       i18n:domain="plone">
-      
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
 <body>
@@ -31,8 +31,8 @@
             <input type="hidden" name="old_type_id" tal:attributes="value type_id" />
 
             <fieldset>
-                <div class="field form-group">
-                    <select name="type_id" class ="custom-select select-widget required choice-field" onchange="form.submit()">
+                <div class="field mb-3">
+                    <select name="type_id" class ="form-select select-widget required choice-field" onchange="form.submit()">
 
                         <tal:option repeat="selectable view/selectable_types">
                             <option tal:content="selectable/title" i18n:translate=""
@@ -66,7 +66,7 @@
                         Type description
                     </p>
 
-                   <div class="field form-group">
+                   <div class="field mb-3">
                         <input id="addable"
                                type="checkbox"
                                class="noborder"
@@ -123,11 +123,11 @@
                         </tal:block>
                     </div>
 
-                    <div class="field form-group">
+                    <div class="field mb-3">
                         <label for="versionpolicy" i18n:translate="types_controlpanel_versionpolicy">
                             Versioning policy:
                         </label>
-                        <select class ="custom-select select-widget required choice-field" name="versionpolicy"
+                        <select class ="form-select select-widget required choice-field" name="versionpolicy"
                                 tal:define="current_policy view/current_versioning_policy">
                             <option tal:repeat="policy view/versioning_policies"
                                     tal:attributes="value policy/id;
@@ -136,7 +136,7 @@
                         </select>
                     </div>
 
-                    <div class="field form-group">
+                    <div class="field mb-3">
                         <a tal:attributes="href string:${context/absolute_url}/@@manage-content-type-portlets?key=${type_id}&_authenticator=${token}"
                             i18n:translate="types_controlpanel_manage_portlets">
                             Manage portlets assigned to this content type
@@ -146,7 +146,7 @@
 
                 <tal:workflows define="current_wf view/current_workflow">
 
-                    <div class="field form-group">
+                    <div class="field mb-3">
                         <label i18n:translate="types_controlpanel_current_workflow">Current workflow:</label>
                         <span tal:content="current_wf/title"
                               i18n:translate="">Community Workflow</span>
@@ -161,11 +161,11 @@
                       </tal:list-type>
                     </ul>
 
-                    <div class="field form-group">
+                    <div class="field mb-3">
                         <label for="new_workflow"
                                i18n:translate="types_controlpanel_new_workflow">New workflow:</label>
 
-                        <select onchange="form.submit()" id="workflows" class ="custom-select select-widget required choice-field" name="new_workflow"
+                        <select onchange="form.submit()" id="workflows" class ="form-select select-widget required choice-field" name="new_workflow"
                             tal:define="selected_wf view/new_workflow">
 
                             <tal:wfs repeat="wf view/available_workflows">
@@ -206,11 +206,11 @@
 
                     <div tal:define="new_workflow view/new_workflow"
                          tal:condition="python:view.have_new_workflow() and not view.new_workflow_is_none() and view.new_workflow_is_different()"
-                         class="field form-group">
+                         class="field mb-3">
 
                         <label for="states" i18n:translate="types_controlpanel_state_mapping">
                             State Mapping
-                        </label>                      
+                        </label>
 
                         <table id="states"
                                class="table table-bordered table-striped"
@@ -232,7 +232,7 @@
                                             <span tal:content="state_map/old_title">Published</span>
                                         </td>
                                         <td class="align-middle">
-                                            <select tal:attributes="name string:new_wfstates.new_state:records" class ="custom-select select-widget required choice-field">
+                                            <select tal:attributes="name string:new_wfstates.new_state:records" class ="form-select select-widget required choice-field">
                                               <tal:states repeat="new_state new_wf_states">
                                                 <option
                                                     tal:attributes="value new_state/id;
@@ -253,7 +253,7 @@
 
                 </tal:workflows>
 
-                <div tal:condition="view/have_new_workflow" class="alert alert-primary form-group" role="status">
+                <div tal:condition="view/have_new_workflow" class="alert alert-primary mb-3" role="status">
                     <strong i18n:translate="">Info:</strong>
                     <span i18n:translate="types_controlpanel_warn_remap">
                         Changing the workflow of a type will take a while, and may slow down
@@ -261,7 +261,7 @@
                     </span>
                 </div>
 
-                <div class="formControls form-group">
+                <div class="formControls mb-3">
                   <input type="submit"
                          value="Save"
                          name="form.button.Save"

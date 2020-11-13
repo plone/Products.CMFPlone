@@ -33,14 +33,14 @@
                            value=""
                            tal:attributes="value options/randomstring | request/randomstring | nothing" />
 
-                    <div class="form-group field"
+                    <div class="mb-3 field"
                          tal:define="error errors/userid | nothing;
                                      use_email_as_login python:context.portal_registry['plone.use_email_as_login'];"
-                         tal:attributes="class python:error and 'form-group field error' or 'form-group field'"
+                         tal:attributes="class python:error and 'mb-3 field error' or 'mb-3 field'"
                          tal:condition="here/portal_password_reset/checkUser | nothing">
 
                       <tal:username tal:condition="not:use_email_as_login">
-                        <label for="userid"
+                        <label class="form-label" for="userid"
                                i18n:translate="label_my_user_name_is">My user name is</label>
 
                         <input class="form-control"
@@ -56,7 +56,7 @@
                       </tal:username>
 
                       <tal:email tal:condition="use_email_as_login">
-                        <label for="userid" class="required"
+                        <label class="form-label required" for="userid"
                                i18n:translate="label_my_email_address_is">My email address is</label>
 
                         <input class="form-control"
@@ -73,11 +73,11 @@
 
                     </div>
 
-                    <div class="form-group field"
+                    <div class="mb-3 field"
                          tal:define="error errors/password | nothing;"
-                         tal:attributes="class python:error and 'form-group field error' or 'form-group field'">
+                         tal:attributes="class python:error and 'mb-3 field error' or 'mb-3 field'">
 
-                        <label for="password" class="required"
+                        <label class="form-label required" for="password"
                                i18n:translate="label_new_password">New password</label>
 
                         <input class="form-control"
@@ -96,11 +96,11 @@
 
                     </div>
 
-                    <div class="form-group field"
+                    <div class="mb-3 field"
                          tal:define="error errors/password | nothing;"
-                         tal:attributes="class python:error and 'form-group field error' or 'form-group field'">
+                         tal:attributes="class python:error and 'mb-3 field error' or 'mb-3 field'">
 
-                        <label for="password2"  class="required"
+                        <label class="form-label required" for="password2"
                         i18n:translate="label_confirm_password">Confirm password</label>
 
                         <input class="form-control"
@@ -122,7 +122,7 @@
                     <div>
                         <div class="label">&nbsp;</div>
 
-                        <div class="form-group field">
+                        <div class="mb-3 field">
                             <button class="btn btn-primary"
                                 type="submit"
                                 value="Set my password"

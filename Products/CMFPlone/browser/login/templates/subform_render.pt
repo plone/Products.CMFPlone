@@ -25,12 +25,12 @@
           field description
         </p>
 
-        <div class="form-group field"
+        <div class="mb-3 field"
           tal:define="error widget/error;
                       hidden python:widget.mode == 'hidden';"
-          tal:attributes="class python:'form-group field' + (error and ' error' or '')">
+          tal:attributes="class python:'mb-3 field' + (error and ' error' or '')">
 
-          <label for=""
+          <label class="form-label" for=""
                  tal:attributes="for widget/id"
                  tal:condition="not:hidden">
             <span tal:content="widget/label">label</span>
