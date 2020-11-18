@@ -1,0 +1,26 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <interface
+      interface=".testBrowserLayerPrecedence.IMyTheme"
+      type="zope.publisher.interfaces.browser.IBrowserSkinType"
+      name="My Theme"
+      />
+
+    <browser:page
+        name="layer-test-view"
+        for="*"
+        template="default.pt"
+        permission="zope2.View"
+        />
+
+    <browser:page
+        name="layer-test-view"
+        for="*"
+        layer=".testBrowserLayerPrecedence.IMyTheme"
+        template="mytheme.pt"
+        permission="zope2.View"
+        />
+
+</configure>
