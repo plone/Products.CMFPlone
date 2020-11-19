@@ -12,6 +12,17 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.3 (2020-11-19)
+------------------
+
+Bug fixes:
+
+
+- Release Plone 5.2.3 final.
+  No changes compared to last release candidate.
+  [maurits] (#3199)
+
+
 5.2.3.rc1 (2020-10-30)
 ----------------------
 
