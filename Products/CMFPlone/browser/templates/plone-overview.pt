@@ -48,7 +48,7 @@
         <div class="col-md-12 mb-4"
              tal:condition="sites">
             <tal:loop tal:repeat="site sites">
-                <div tal:define="outdated python: True or  view.outdated(site);"
+                <div tal:define="outdated python: view.outdated(site);"
                      class="mb-3 ${python: 'p-3 alert-warning' if outdated else ''}">
                     <p tal:condition="outdated" i18n:translate="">This site configuration is outdated and needs to be upgraded:</p>
                     <a href="#" class="btn btn-primary ${python:'btn-lg' if not many and not outdated  else ''}"
