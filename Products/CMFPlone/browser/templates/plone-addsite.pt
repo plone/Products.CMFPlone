@@ -8,10 +8,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title i18n:translate="">Create a Plone site</title>
-  <link rel="stylesheet" 
-        type="text/css" 
+  <link rel="stylesheet"
+        type="text/css"
         href="${string:${context/absolute_url}/++theme++barceloneta/css/barceloneta.min.css}" />
-  <link rel="stylesheet" 
+  <link rel="stylesheet"
         type="text/css"
         href="${string:${context/absolute_url}/++resource++plone-admin-ui.css}" />
   <script type="text/javascript" tal:attributes="src string:${context/absolute_url}/++resource++jstz-1.0.4.min.js">
@@ -24,15 +24,15 @@
 
   <div class="container admin mt-5 mb-5 p-4 ">
     <header class="row">
-      <p><img src="/++resource++plone-logo.png" 
+      <p><img src="/++resource++plone-logo.png"
                width="215" height="56"
-               tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png" 
+               tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png"
                alt="Plone logo"
                i18n:attributes="alt" /></p>
     </header>
-    <form action="#" 
-    method="post" 
-    tal:attributes="action string:${context/absolute_url}/@@plone-addsite" 
+    <form action="#"
+    method="post"
+    tal:attributes="action string:${context/absolute_url}/@@plone-addsite"
     tal:define="profiles view/profiles;
                 base_profiles profiles/base;
                 default_profile profiles/default;
@@ -49,10 +49,10 @@
               Path identifier
             </label>
 
-            <input type="text" 
-                  name="site_id" 
-                  size="20" id="site_id" 
-                  class="form-control" 
+            <input type="text"
+                  name="site_id"
+                  size="20" id="site_id"
+                  class="form-control"
                   tal:attributes="value request/site_id|nothing" />
 
             <div class="form-text" i18n:translate="">
@@ -78,11 +78,11 @@
             <select name="default_language" class="form-control"
                     tal:define="browser_language view/browser_language;
                                 grouped_languages python:view.grouped_languages(browser_language)">
-              <optgroup tal:repeat="group grouped_languages" 
+              <optgroup tal:repeat="group grouped_languages"
                         tal:attributes="label group/label">
 
-                <option value="en" 
-                        tal:repeat="lang group/languages" 
+                <option value="en"
+                        tal:repeat="lang group/languages"
                         tal:attributes="value python:lang['langcode'];
                                         selected python:lang['langcode'] == browser_language"
                         tal:content="python: lang['label']">
@@ -103,11 +103,11 @@
               Default timezone
             </label>
 
-            <select id="portal_timezone" 
-                    name="portal_timezone" 
+            <select id="portal_timezone"
+                    name="portal_timezone"
                     class="form-control"
                     tal:define="tz_list view/timezones">
-              <optgroup tal:repeat="group tz_list" 
+              <optgroup tal:repeat="group tz_list"
                         tal:attributes="label group">
                 <option value="UTC" tal:repeat="tz python:tz_list[group]" tal:attributes="value tz/value"
                   tal:content="tz/label">
@@ -116,20 +116,20 @@
               </optgroup>
             </select>
             <div class="form-text" i18n:translate="">
-              The default timezone setting of the portal. 
+              The default timezone setting of the portal.
               Users will be able to set their own timezone, if available timezones are defined in the date and time settings.
             </div>
           </div>
           <div class="col-md-12 mb-3">
-            <div class="form-check" 
+            <div class="form-check"
                 tal:condition="advanced">
-              <input class="form-check-input" 
-                    id="example-content" 
-                    type="checkbox" 
-                    name="setup_content:boolean" 
+              <input class="form-check-input"
+                    id="example-content"
+                    type="checkbox"
+                    name="setup_content:boolean"
                     checked="checked" />
-              <label class="form-check-label" 
-                    for="example-content" 
+              <label class="form-check-label"
+                    for="example-content"
                     i18n:translate="">Example content</label>
               <div class="form-text" i18n:translate="">
                 Should the default example content be added to the site?
@@ -141,16 +141,16 @@
             <input type="hidden" name="setup_content:boolean" value="true" />
           </tal:content>
 
-          <div class="col-md-12" 
+          <div class="col-md-12"
                tal:condition="python: len(base_profiles) > 1">
             <div class="mb-3">
               <p class="lead" i18n:translate="">Base configuration</p>
 
               <div tal:repeat="info base_profiles"
                   class="form-check mb-3">
-                <input type="radio" 
-                      name="profile_id:string" 
-                      value="profile" 
+                <input type="radio"
+                      name="profile_id:string"
+                      value="profile"
                       class="form-check-input"
                       tal:attributes="id info/id;
                                       value info/id;
@@ -165,41 +165,42 @@
 
             </div>
           </div>
-               
 
-          <div class="col-md-12 mt-3" 
-               tal:condition="python: extension_profiles and advanced">
-            <h2 tal:omit-tag="python: not advanced" i18n:translate="">Add-ons</h2>
 
-            <div class="lead" 
-                 i18n:translate="" 
-                 tal:condition="python: advanced">
-              Select any add-ons you want to activate immediately. 
-              You can also activate add-ons after the site has been created using the Add-ons control panel.
-            </div>
+          <div class="col-md-12 mt-3"
+               tal:condition="python: extension_profiles or advanced">
+            <tal:block condition="python: advanced">
+              <h2 i18n:translate="">Add-ons</h2>
+
+              <div class="lead"
+                   i18n:translate="" >
+                Select any add-ons you want to activate immediately.
+                You can also activate add-ons after the site has been created using the Add-ons control panel.
+              </div>
+            </tal:block>
 
             <tal:loop tal:repeat="info extension_profiles">
               <tal:set tal:define="selected info/selected|nothing">
                 <tal:normal tal:condition="python: not selected or advanced">
-                  <div class="form-check mb-3" 
+                  <div class="form-check mb-3"
                       tal:condition="python: advanced">
-                    <input type="checkbox" 
-                          name="extension_ids:list" 
-                          value="${info/id}" 
-                          id="${info/id}" 
+                    <input type="checkbox"
+                          name="extension_ids:list"
+                          value="${info/id}"
+                          id="${info/id}"
                           class="form-check-input"
                           tal:attributes="checked info/selected|nothing;" />
                     <label class="form-check-label" for="${info/id}" >${info/title}</label>
-                    <div class="form-text" 
+                    <div class="form-text"
                         tal:condition="python: advanced and info['description']">
                       ${info/description}
                     </div>
                   </div>
                 </tal:normal>
                 <tal:hidden tal:condition="python: selected and not advanced">
-                  <input type="hidden"  
-                        name="extension_ids:list" 
-                        value="" 
+                  <input type="hidden"
+                        name="extension_ids:list"
+                        value=""
                         tal:attributes="value info/id;
                                         checked info/selected|nothing;" />
                 </tal:hidden>
@@ -208,7 +209,7 @@
           </div>
           <div class="col-md-12">
             <input type="hidden" name="form.submitted:boolean" value="True" />
-            <button class="btn btn-success mt-3" type="submit" name="submit" i18n:translate="">Create Plone Site</button>  
+            <button class="btn btn-success mt-3" type="submit" name="submit" i18n:translate="">Create Plone Site</button>
           </div>
       </article>
     </form>
