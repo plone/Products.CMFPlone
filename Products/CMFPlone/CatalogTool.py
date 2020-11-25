@@ -76,7 +76,6 @@ BLACKLISTED_INTERFACES = frozenset((
     'persistent.interfaces.IPersistent',
     'plone.app.imaging.interfaces.IBaseObject',
     'plone.app.iterate.interfaces.IIterateAware',
-    'plone.app.kss.interfaces.IPortalObject',
     'plone.contentrules.engine.interfaces.IRuleAssignable',
     'plone.folder.interfaces.IFolder',
     'plone.folder.interfaces.IOrderableFolder',

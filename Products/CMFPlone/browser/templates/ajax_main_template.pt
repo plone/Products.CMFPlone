@@ -75,23 +75,19 @@
 
                         <header>
                          <metal:title define-slot="content-title">
-                             <metal:comment tal:content="nothing">
-                                 If you write a custom title always use
-                                 <h1 class="documentFirstHeading"></h1> for it
-                             </metal:comment>
-                             <h1 metal:use-macro="context/kss_generic_macros/macros/generic_title_view">
-                                 Generic KSS Title. Is rendered with class="documentFirstHeading".
-                             </h1>
+                            <h1  class="documentFirstHeading">${python:context.Title()}</h1>                             
+                            <metal:comment tal:content="nothing">
+                                If you write a custom title always use
+                                <h1 class="documentFirstHeading"></h1> for it
+                            </metal:comment>
                          </metal:title>
 
                          <metal:description define-slot="content-description">
-                             <metal:comment tal:content="nothing">
-                                 If you write a custom description always use
-                                 <div class="documentDescription"></div> for it
-                             </metal:comment>
-                           <div metal:use-macro="context/kss_generic_macros/macros/generic_description_view">
-                               Generic KSS Description. Is rendered with class="documentDescription".
-                           </div>
+                            <div class="documentDescription"${python:context.Description()}></div>                         
+                            <metal:comment tal:content="nothing">
+                                If you write a custom description always use
+                                <div class="documentDescription"></div> for it
+                            </metal:comment>
                          </metal:description>
                         </header>
 
