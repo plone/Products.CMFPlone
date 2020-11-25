@@ -9,54 +9,67 @@
 
 
 <metal:main metal:fill-slot="prefs_configlet_main" i18n:domain="plone">
+  <header>
+    <a id="setup-link" class="link-parent"
+       tal:attributes="href string:$portal_url/@@overview-controlpanel"
+       i18n:translate="">
+        Site Setup
+    </a>
 
     <h1 class="documentFirstHeading"
-        i18n:translate="portal_actions_controlpanel_header">Portal actions</h1>
+      i18n:translate="portal_actions_controlpanel_header">Portal actions</h1>
 
-    <div class="documentDescription"
-       i18n:translate="portal_actions_controlpanel_description">
-      This is the portal actions configuration section, you can manage the
-      actions contained in the different action categories.
+    <div class="text-muted"
+      i18n:translate="portal_actions_controlpanel_description">
+        This is the portal actions configuration section, you can manage the
+        actions contained in the different action categories.
     </div>
-
-    <div id="content-core">
-        <p class="addAction">
-            <a href="@@new-action"
-                class="context pat-plone-modal float-right"
-                i18n:translate="">Add new action</a>
-        </p>
-        <section tal:repeat="category view/actions" class="portlet">
-            <header tal:content="category/title" class="portletHeader" />
-            <section class="portletContent">
-                <ol class="configlets">
-                    <li tal:repeat="action category/actions">
-                        <span tal:content="action/title" i18n:translate="" />
-                        <form action="@@actions-controlpanel" class="float-right"
-                            method="POST">
-                            <input type="hidden" name="actionid"
-                                tal:attributes="value action/id" />
-                            <input tal:condition="action/visible"
-                                type="submit" class="standalone" name="hide"
-                                value="Hide" i18n:attributes="value" />
-                            <input tal:condition="not:action/visible"
-                                type="submit" class="standalone" name="show"
-                                value="Show" i18n:attributes="value" />
-                            <input type="hidden" name="category"
-                                tal:attributes="value category/id" />
-                            <a class="pat-plone-modal standalone"
-                            tal:attributes="href string:${action/url}/@@action-form"
-                            i18n:translate="">Edit</a>
-                            <input type="submit" class="destructive" name="delete"
-                                value="Delete"
-                                confirm-message="Delete the action?"
-                                i18n:attributes="value; confirm-message"
-                                onclick="return confirm(this.getAttribute('confirm-message'));"/>
-                        </form>
-                    </li>
-                </ol>
-            </section>
-        </section>
-    </div>
+  </header>
+  <div id="content-core">
+    <p class="addAction">
+      <a href="@@new-action"
+        class="context pat-plone-modal btn btn-success"
+        i18n:translate="">Add new action</a>
+    </p>
+    <section tal:repeat="category view/actions" class="card mb-4">
+      <header tal:content="category/title" class="card-header" />
+      <section class="">
+        <ol class="configlets list-group list-group-flush">
+          <li tal:repeat="action category/actions"
+            class="list-group-item bg-transparent d-flex align-items-center justify-content-between">
+            <span><span tal:replace="repeat/action/number" />. <span tal:replace="action/title" i18n:translate="" /></span> 
+            <form action="@@actions-controlpanel"
+              method="POST">
+              <input type="hidden" name="actionid"
+                tal:attributes="value action/id" />
+              <input type="hidden" name="category"
+                tal:attributes="value category/id" />
+              <button tal:condition="not:action/visible"
+                type="submit" class="btn btn-sm btn-link standalone mr-5" name="show"
+                value="Show" i18n:attributes="value" >
+                <tal:icon tal:replace="structure python:icons.tag('square', tag_alt='Toggle to show')" /><span class="ml-2" i18n:translate="">visible</span>
+              </button>
+              <button tal:condition="action/visible"
+                type="submit" class="btn  btn-sm btn-link standalone mr-5" name="hide"                
+                value="Hide" i18n:attributes="value" >
+                <tal:icon tal:replace="structure python:icons.tag('check-square', tag_alt='Toggle to hide')" /><span class="ml-2" i18n:translate="">visible</span>
+              </button>
+              <a class="pat-plone-modal btn btn-sm btn-primary standalone"
+                tal:attributes="href string:${action/url}/@@action-form"
+                ><tal:icon tal:replace="structure python:icons.tag('pencil', tag_alt='Delete')" /><span i18n:translate="" class="ml-2" i18n:translate="">Edit</span></a>
+              <button type="submit" class="btn btn-sm btn-danger destructive" name="delete"
+                value="Delete"
+                confirm-message="Delete the action?"
+                i18n:attributes="value; confirm-message"
+                onclick="return confirm(this.getAttribute('confirm-message'));" >
+                <tal:icon tal:replace="structure python:icons.tag('trash', tag_alt='Delete')" /><span i18n:translate="" class="ml-2" i18n:translate="">Delete</span>
+              </button>
+            </form>
+          </li>
+        </ol>
+      </section>
+    </section>
+  </div>
 </metal:main>
 </body>
 </html>

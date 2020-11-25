@@ -5,7 +5,6 @@
       lang="en"
       metal:use-macro="context/prefs_main_template/macros/master"
       i18n:domain="plone">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
 <body>
 
@@ -15,7 +14,7 @@
                  portal_roles view/portal_roles;">
 
   <article id="content">
-
+  
     <a href=""
        class="link-parent"
        tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
@@ -160,12 +159,13 @@
 
                   <p tal:condition="not:view/groupMembers" i18n:translate="decription_no_members_assigned">There is no group or user attached to this group.</p>
 
-                  <input class="destructive"
+                  <button class="btn btn-alert"
                          type="submit"
                          name="form.button.Edit"
                          value="Remove selected groups / users"
                          i18n:attributes="value label_remove_selected_users;"
-                         tal:condition="view/groupMembers" />
+                         i18n:translate=""
+                         tal:condition="view/groupMembers">Remove selected Groups / Users</button>
 
                 <tal:addusers tal:condition="view/canAddUsers">
 
@@ -184,17 +184,19 @@
                                    tal:attributes="value view/searchString;"
                                    />
 
-                            <input type="submit"
-                                   class="searchButton"
+                            <button type="submit"
+                                   class="btn btn-primary"
                                    name="form.button.Search"
                                    value="Search"
-                                   i18n:attributes="value label_search;" />
-                            <input type="submit"
-                                   class="searchButton"
+                                   i18n:translate=""
+                                   i18n:attributes="value label_search;">Search</button>
+                            <button type="submit"
+                                   class="btn btn-secondary"
                                    name="form.button.FindAll"
                                    value="Show all"
+                                   i18n:translate=""
                                    i18n:attributes="value label_search_large;"
-                                   tal:condition="not:many_users" />
+                                   tal:condition="not:many_users">Show all</button>
                         </th>
                       </tr>
                       <tr tal:condition="batch">
@@ -304,12 +306,13 @@
                         </a>
                     </div>
 
-                    <input class="btn btn-primary"
+                    <button class="btn btn-primary"
                             type="submit"
                             name="form.button.Add"
                             value="Add selected groups and users to this group"
                             tal:condition="batch"
-                            i18n:attributes="value label_add_users_to_group;" />
+                            i18n:translate=""
+                            i18n:attributes="value label_add_users_to_group;">Add selected groups and users to this group</button>
 
                 </tal:addusers>
 

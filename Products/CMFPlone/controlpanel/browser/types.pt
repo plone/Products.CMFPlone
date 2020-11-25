@@ -6,20 +6,22 @@
       metal:use-macro="context/prefs_main_template/macros/master"
       i18n:domain="plone">
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-
 <body>
 
 <metal:main metal:fill-slot="prefs_configlet_main">
 
-<header>
-    <a id="setup-link" class="link-parent" href="http://localhost:8081/Plone3/@@overview-controlpanel">Site Setup</a>
-    <h1 class="documentFirstHeading"
-        i18n:translate="heading_type_settings">Content Settings</h1>
-    <div class="documentDescription" i18n:translate="description_types_setup">
-        Workflow, visibility and versioning settings for your content types.
-    </div>
-</header>
+    <header>
+        <a id="setup-link" class="link-parent"
+        tal:attributes="href string:$portal_url/@@overview-controlpanel"
+        i18n:translate="">
+            Site Setup
+        </a>
+        <h1 class="documentFirstHeading"
+            i18n:translate="heading_type_settings">Content Settings</h1>
+        <div class="documentDescription" i18n:translate="description_types_setup">
+            Workflow, visibility and versioning settings for your content types.
+        </div>
+    </header>
 
     <div id="content-core"
          tal:define="token context/@@authenticator/token">
@@ -32,7 +34,7 @@
 
             <fieldset>
                 <div class="field mb-3">
-                    <select name="type_id" class ="form-select select-widget required choice-field" onchange="form.submit()">
+                    <select name="type_id" class="form-select select-widget required choice-field" onchange="form.submit()">
 
                         <tal:option repeat="selectable view/selectable_types">
                             <option tal:content="selectable/title" i18n:translate=""
@@ -49,17 +51,18 @@
                         </option>
                     </select>
                     <noscript>
-                        <input type="submit"
+                        <button type="submit"
                             name="form.button.SelectContentType"
                             class="btn btn-primary"
                             value="Change"
-                            i18n:attributes="value label_change;" />
+                            i18n:translate=""
+                            i18n:attributes="value label_change;">Change</button>
                     </noscript>
                 </div>
 
                 <tal:block tal:condition="python:type_id!=''">
 
-                    <p class="discreet"
+                    <p class="text-muted"
                         tal:content="view/selected_type_description"
                         tal:condition="view/selected_type_description"
                         i18n:translate="">
@@ -127,7 +130,7 @@
                         <label for="versionpolicy" i18n:translate="types_controlpanel_versionpolicy">
                             Versioning policy:
                         </label>
-                        <select class ="form-select select-widget required choice-field" name="versionpolicy"
+                        <select class="form-select select-widget required choice-field" name="versionpolicy"
                                 tal:define="current_policy view/current_versioning_policy">
                             <option tal:repeat="policy view/versioning_policies"
                                     tal:attributes="value policy/id;
@@ -147,7 +150,7 @@
                 <tal:workflows define="current_wf view/current_workflow">
 
                     <div class="field mb-3">
-                        <label i18n:translate="types_controlpanel_current_workflow">Current workflow:</label>
+                        <label class="form-label" i18n:translate="types_controlpanel_current_workflow">Current workflow:</label>
                         <span tal:content="current_wf/title"
                               i18n:translate="">Community Workflow</span>
                     </div>
@@ -162,7 +165,7 @@
                     </ul>
 
                     <div class="field mb-3">
-                        <label for="new_workflow"
+                        <label class="form-label" for="new_workflow"
                                i18n:translate="types_controlpanel_new_workflow">New workflow:</label>
 
                         <select onchange="form.submit()" id="workflows" class ="form-select select-widget required choice-field" name="new_workflow"
@@ -182,11 +185,11 @@
                                 i18n:translate="types_controlpanel_no_workflow">No Workflow</option>
                         </select>
                         <noscript>
-                            <input type="submit"
+                            <button type="submit"
                                    name="form.button.SelectWorkflow"
-                                   class="standalone"
+                                   class="btn btn-primary"
                                    value="Change"
-                                   i18n:attributes="value label_change;" />
+                                   i18n:attributes="value label_change;">Change</button>
                         </noscript>
                     </div>
 
@@ -208,7 +211,7 @@
                          tal:condition="python:view.have_new_workflow() and not view.new_workflow_is_none() and view.new_workflow_is_different()"
                          class="field mb-3">
 
-                        <label for="states" i18n:translate="types_controlpanel_state_mapping">
+                        <label class="form-label" for="states" i18n:translate="types_controlpanel_state_mapping">
                             State Mapping
                         </label>
 
@@ -262,16 +265,19 @@
                 </div>
 
                 <div class="formControls mb-3">
-                  <input type="submit"
+                  <button type="submit"
                          value="Save"
                          name="form.button.Save"
                          class="btn btn-primary"
-                         i18n:attributes="value Save;" />
-                  <input type="submit"
+                         i18n:translate=""
+                         i18n:attributes="value Save;">Save</button>
+
+                  <button type="submit"
                          value="Cancel"
                          name="form.button.Cancel"
                          class="btn btn-secondary"
-                         i18n:attributes="value label_cancel;" />
+                         i18n:translate=""
+                         i18n:attributes="value label_cancel;">Cancel</button>
                 </div>
 
             </fieldset>

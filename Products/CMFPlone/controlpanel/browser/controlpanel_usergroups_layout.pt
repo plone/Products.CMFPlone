@@ -6,42 +6,47 @@
       metal:use-macro="here/prefs_main_template/macros/master"
       i18n:domain="plone">
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-
 <body>
 
 <div metal:fill-slot="prefs_configlet_main">
 
-  <a id="setup-link" class="link-parent"
-       tal:attributes="href string:$portal_url/@@overview-controlpanel"
-       i18n:translate="">
-        Site Setup
-    </a>
+    <a id="setup-link" class="link-parent"
+        tal:attributes="href string:$portal_url/@@overview-controlpanel"
+        i18n:translate="">
+          Site Setup
+      </a>
 
-  <h1 class="documentFirstHeading"
-      i18n:translate="">Users and Groups</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="">Users and Groups</h1>
 
-  <div metal:use-macro="context/global_statusmessage/macros/portal_message">
-    Portal status message
-  </div>
-
-  <div id="content-core">
-
-    <div class="autotabs">
-      <div class="autotoc-nav">
-        <a href="${portal_url}/@@usergroup-userprefs"
-           i18n:translate="label_users">Users</a>
-        <a href="${portal_url}/@@usergroup-groupprefs"
-           i18n:translate="label_groups">Groups</a>
-        <a class="active"
-           href="${portal_url}/@@usergroup-controlpanel"
-           i18n:translate="label_usergroup_settings">Settings</a>
-        <a href="${portal_url}/@@member-fields"
-             i18n:translate="label_member_fields">Member fields</a>
-      </div>
-      <span tal:replace="structure view/contents" />
+    <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+      Portal status message
     </div>
 
+  <div id="content">
+
+      <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a href="${portal_url}/@@usergroup-userprefs" class="nav-link"
+              i18n:translate="label_users">Users</a>
+          </li>
+          <li class="nav-item">
+            <a href="${portal_url}/@@usergroup-groupprefs" class="nav-link"
+              i18n:translate="label_groups">Groups</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active"
+              href="${portal_url}/@@usergroup-controlpanel"
+              i18n:translate="label_usergroup_settings">Settings</a>
+          </li>
+          <li class="nav-item">
+            <a href="${portal_url}/@@member-fields" class="nav-link"
+                i18n:translate="label_member_fields">Member fields</a>
+          </li>
+      </ul>
+      <div class="text-muted mt-2">
+      <span tal:replace="structure view/contents" />
+      </div>
   </div>
 
 </div>

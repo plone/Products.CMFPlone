@@ -5,7 +5,6 @@
       lang="en"
       metal:use-macro="context/prefs_main_template/macros/master"
       i18n:domain="plone">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
 <body>
 
@@ -97,7 +96,7 @@
             </tal:block>
           </table>
           <p tal:condition="not:groups" i18n:translate="text_user_not_in_any_group">This user does not belong to any group.</p>
-          <input class="btn btn-alert"
+          <button class="btn btn-alert"
                  type="submit"
                  name="form.button.Delete"
                  value="Remove from selected groups"
@@ -107,7 +106,7 @@
           <h2 tal:condition="many_groups" i18n:translate="heading_search_groups">Search for groups</h2>
           <h2 tal:condition="not:many_groups" i18n:translate="heading_assign_to_groups">Assign to groups</h2>
 
-          <table class="listing" summary="Groups">
+          <table class="table overflow-auto table-bordered table-striped text-center" summary="Groups">
             <tr>
               <th colspan="2" tal:condition="many_groups">
                 <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
@@ -118,8 +117,8 @@
                              tal:attributes="value view/searchString;"
                              />
 
-                      <input type="submit"
-                             class="btn btn-primary"
+                      <button type="submit"
+                             class="searchButton btn btn-primary"
                              name="form.button.search"
                              value="Search"
                              i18n:attributes="value label_search;" />
@@ -192,12 +191,13 @@
 
           <input type="hidden" name="form.submitted" value="1" />
 
-          <input class="btn btn-primary"
+          <button class="btn btn-primary"
                  type="submit"
                  name="form.button.Add"
                  value="Add user to selected groups"
                  tal:condition="batch"
-                 i18n:attributes="value label_add_user_to_group;" />
+                 i18n:translate=""
+                 i18n:attributes="value label_add_user_to_group;">Add user to selected groups</button>
           <input tal:replace="structure context/@@authenticator/authenticator" />
 
         </form>

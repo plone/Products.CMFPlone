@@ -6,8 +6,6 @@
       metal:use-macro="context/prefs_main_template/macros/master"
       i18n:domain="plone">
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-
 <body>
 
 <metal:main fill-slot="prefs_configlet_content"
@@ -24,52 +22,59 @@
                  portal_url context/portal_url;">
 
   <article id="content">
+    <header>
+        <a id="setup-link" class="link-parent"
+        tal:attributes="href string:$portal_url/@@overview-controlpanel"
+        i18n:translate="">
+            Site Setup
+        </a>
 
-    <a id="setup-link" class="link-parent"
-       tal:attributes="href string:$portal_url/@@overview-controlpanel"
-       i18n:translate="">
-        Site Setup
-    </a>
+        <h1 class="documentFirstHeading"
+            i18n:translate="">Users and Groups</h1>
 
-    <h1 class="documentFirstHeading"
-        i18n:translate="">Users and Groups</h1>
-
-    <div metal:use-macro="context/global_statusmessage/macros/portal_message">
-        Portal status message
-    </div>
-
-    <div id="content-core">
-
-      <div class="autotabs">
-        <div class="autotoc-nav">
-          <a href="${portal_url}/@@usergroup-userprefs"
-             i18n:translate="label_users">Users</a>
-          <a class="active"
-             href="${portal_url}/@@usergroup-groupprefs"
-             i18n:translate="label_groups">Groups</a>
-          <a href="${portal_url}/@@usergroup-controlpanel"
-             i18n:translate="label_usergroup_settings">Settings</a>
-          <a href="${portal_url}/@@member-fields"
-             i18n:translate="label_member_fields">Member fields</a>
+        <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+            Portal status message
         </div>
 
-        <p class="discreet">
-          <span tal:omit-tag=""
-                i18n:translate="description_groups_management">
-            Groups are logical collections of users, such as
-            departments and business units. Groups are not directly
-            related to permissions on a global level, you normally
-            use Roles for that - and let certain Groups have a
-            particular role.
-          </span>
-          <span tal:omit-tag=""
-                i18n:translate="description_groups_management2">
-            The symbol
-            <img i18n:name="image_link_icon"
-                 tal:replace="structure context/site_icon.png" />
-            indicates a role inherited from membership in another group.
-          </span>
-        </p>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link"
+                href="${portal_url}/@@usergroup-userprefs"
+                i18n:translate="label_users">Users</a>
+            </li>
+            <li class="nav-item">
+              <a href="${portal_url}/@@usergroup-groupprefs" class="nav-link active"
+                i18n:translate="label_groups">Groups</a>
+            </li>
+            <li class="nav-item">
+              <a href="${portal_url}/@@usergroup-controlpanel" class="nav-link"
+                i18n:translate="label_usergroup_settings">Settings</a>
+            </li>
+            <li class="nav-item">
+              <a href="${portal_url}/@@member-fields" class="nav-link"
+                i18n:translate="label_member_fields">Member fields</a>
+            </li>
+        </ul>
+
+        <div class="text-muted mt-2">
+            <span tal:omit-tag=""
+                    i18n:translate="description_groups_management">
+                Groups are logical collections of users, such as
+                departments and business units. Groups are not directly
+                related to permissions on a global level, you normally
+                use Roles for that - and let certain Groups have a
+                particular role.
+            </span>
+            <span tal:omit-tag=""
+                    i18n:translate="description_groups_management2">
+                The symbol
+                <span i18n:name="image_link_icon"><tal:icon tal:replace="structure python:icons.tag('people', tag_alt='Inherited from Group')" /></span>
+                indicates a role inherited from membership in another group.
+            </span>
+        </div>
+    </header>
+
+    <div id="content-core">
 
         <p i18n:translate="description_pas_group_listing"
            tal:condition="view/show_group_listing_warning">
@@ -82,12 +87,12 @@
         <p>
           <a class="pat-plone-modal" id="add-group"
              tal:attributes="href string:${portal_url}/@@usergroup-groupdetails">
-             <button i18n:translate="label_add_new_group" class="btn btn-primary">Add New Group</button>
+
+             <button i18n:translate="label_add_new_group" class="btn btn-success">Add New Group</button>
           </a>
         </p>
 
         <form action=""
-              class="overflow-auto"
               name="groups_search"
               method="post"
               tal:attributes="action string:$template_id">
@@ -100,68 +105,55 @@
             <input type="hidden" value="" name="showAll"
                    tal:attributes="value showAll"/>
 
-            <div class="field mb-3">
+            <div class="mb-3">
+                <label class="form-label" i18n:translate="label_group_search">Group Search</label>
+                <div class="field input-group">
+                        <input class="form-control quickSearch"
+                            type="text"
+                            name="searchstring"
+                            value=""
+                            tal:attributes="value view/searchString;"
+                            />
+                    <div class="input-group-append">
+                        <button type="submit"
+                            class="btn btn-primary"
+                            name="form.button.Search"
+                            value="Search"
+                            i18n:attributes="value label_search;"
+                            i18n:translate=""
+                            >Search</button>
 
-                <span tal:omit-tag=""
-                      i18n:translate="label_group_search">
-                    Group Search
-                </span>
-
-                <input class="quickSearch"
-                       type="text"
-                       name="searchstring"
-                       value=""
-                       tal:attributes="value view/searchString;"
-                       />
-
-                <input type="submit"
-                       class="btn btn-primary"
-                       name="form.button.Search"
-                       value="Search"
-                       i18n:attributes="value label_search;"
-                       />
-
-                <input type="submit"
-                       class="btn btn-secondary"
-                       name="form.button.FindAll"
-                       value="Show all"
-                       i18n:attributes="value label_showall;"
-                       tal:condition="not:view/many_groups"
-                       />
-
+                        <button type="submit"
+                            class="btn btn-secondary"
+                            name="form.button.FindAll"
+                            value="Show all"
+                            i18n:translate="label_showall"
+                            i18n:attributes="value label_showall;"
+                            tal:condition="not:view/many_groups"
+                            >Show all</button>
+                    </div>
+                </div>
             </div>
 
 
-            <table class="table table-bordered table-striped overflow-auto"
+            <table class="table table-responsive table-bordered table-striped text-center"
                    summary="Select roles for each group"
                    i18n:attributes="summary summary_roles_for_groups;">
-                <tbody>
-
-                    <tal:block tal:condition="search_results">
-                    <tr class="odd">
-                        <th rowspan=""
-                            i18n:translate="listingheader_group_name">
-                            Group Name
-                        </th>
-
-                        <tal:header repeat="portal_role portal_roles">
-                            <th tal:content="portal_role"
-                                i18n:translate="">
-                                Role
-                            </th>
-                        </tal:header>
-
-                        <th rowspan=""
-                            i18n:translate="listingheader_remove">
-                            Remove
-                        </th>
+                <thead tal:condition="search_results">
+                    <tr>
+                        <th  class="text-left" i18n:translate="listingheader_group_name">Group name</th>
+                        <th class="rotate" tal:repeat="portal_role portal_roles"><div tal:content="portal_role" i18n:translate="">Role</div></th>
+                        <th class="rotate bg-danger text-white"><div i18n:translate="listingheader_remove">Remove</div></th>
                     </tr>
+                </thead>
+                <tbody>
+                    <tal:block tal:condition="search_results">
 
                     <tal:block repeat="group_info batch">
                     <tr tal:define="oddrow repeat/group_info/odd;"
                         tal:attributes="class python:oddrow and 'odd' or 'even'">
 
-                        <td>
+                        <td class="text-left">
                             <input type="hidden"
                                    name=""
                                    tal:attributes="name string:group_${group_info/groupid}:list"
@@ -171,8 +163,7 @@
                             <a href="#"
                                tal:attributes="href python:portal_url+'/@@usergroup-groupmembership?'+view.makeQuery(groupname=group_info['groupid']);
                                                title group_info/description|string:''">
-                               <tal:block replace="structure context/portal_url/group.png" />&nbsp;
-                               <tal:group tal:replace="group_info/title" /> <tal:groupid tal:condition="python:group_info['groupid'] != group_info['title']">(<tal:id tal:replace="group_info/groupid" />)</tal:groupid>
+                               ${group_info/title} <span class="text-muted" tal:condition="python:group_info['groupid'] != group_info['title']">(${group_info/groupid})</span>
                            </a>
                         </td>
 
@@ -197,11 +188,11 @@
                                    tal:condition="python:explicit and not enabled and not inherited"
                                    tal:attributes="name string:group_${group_info/groupid}:list;
                                                    value portal_role" />
-                            <img tal:condition="inherited" tal:replace="structure context/site_icon.png" />
+                            <tal:icon tal:condition="inherited" tal:replace="structure python:icons.tag('people', tag_alt='Inherited from Group')" />
                           </tal:block>
                         </td>
 
-                        <td class="listingCheckbox">
+                        <td class="listingCheckbox alter-danger">
                             <input type="checkbox"
                                    class="noborder notify"
                                    name="delete:list"
@@ -241,22 +232,19 @@
                         Show all search results
                     </a>
                 </div>
-
-                <div class="formControls">
-                  <input class="btn btn-primary"
-                         type="submit"
-                         name="form.button.Modify"
-                         value="Save"
-                         i18n:attributes="value label_save;"
-                         />
-                </div>
-
             </tal:block>
-
             <input tal:replace="structure context/@@authenticator/authenticator" />
-
         </form>
-      </div>
+
+            <div class="formControls">
+                <button class="btn btn-primary"
+                        type="submit"
+                        name="form.button.Modify"
+                        value="Save"
+                        i18n:translate=""
+                        i18n:attributes="value label_apply_changes;"
+                        >Apply changes</button>
+            </div>
     </div>
   </article>
 
