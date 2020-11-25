@@ -49,9 +49,9 @@ class IconsView(BrowserView):
     def lookup(self, name):
         __traceback_info__ = name
         registry = getUtility(IRegistry)
-        icon = self.prefix + name
+        regkey = self.prefix + name
         try:
-            return registry[icon]
+            return registry[regkey]
         except KeyError:
             if "/" in name:
                 main, tail = name.rsplit("/", 1)
