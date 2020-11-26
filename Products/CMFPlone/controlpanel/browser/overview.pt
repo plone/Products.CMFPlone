@@ -104,30 +104,29 @@
           <ul class="configlets row row-cols-3 row-cols-sm-4 row-cols-lg-6 row-cols-xl-8 list-unstyled list w-100"
               tal:condition="sublist">
             <tal:actions tal:repeat="action sublist">
-                    <li class="col mb-4" tal:condition="action/visible">
-                        <a href="" class="d-block text-dark text-center py-4 rounded btn btn-light h-100"
-                            tal:define="icon action/icon;
-                                        icon_url python:'http' in action['icon']"
-                            tal:attributes="href action/url">
-                            <div class="mb-3">
-                              <img tal:condition="icon_url"
-                                src="" alt="" class="icon"
-                                tal:attributes="src action/icon;
-                                                alt action/title"
-                                i18n:attributes="alt action/title">
-
-                            <tal:icon tal:condition="not: icon_url"
-                              tal:replace="structure python:icons.tag(action['icon'] or 'controlpanel', tag_alt=action['title'])" />
-                            </div>
-                            <div tal:content="action/title"
-                                        i18n:translate=""
-                                        class="text-decoration-none text-center ">
-                                Title
-                            </div>
-                        </a>
-                    </li>
-                </tal:actions>
-              </ul>
+              <li class="col mb-4" tal:condition="action/visible">
+                  <a href="" class="d-block text-dark text-center py-4 rounded btn btn-light h-100"
+                      tal:define="icon action/icon;
+                                  icon_url python:'http' in action['icon']"
+                      tal:attributes="href action/url">
+                      <div class="mb-3">
+                        <img tal:condition="icon_url"
+                          src="" alt="" class="icon"
+                          tal:attributes="src action/icon;
+                                          alt action/title"
+                          i18n:attributes="alt action/title">
+                        <tal:icon tal:condition="not: icon_url"
+                          tal:replace="structure python:icons.tag(action['icon'] or 'controlpanel', tag_alt=action['title'])" />
+                      </div>
+                      <div tal:content="action/title"
+                                  i18n:translate=""
+                                  class="text-decoration-none text-center ">
+                          Title
+                      </div>
+                  </a>
+              </li>
+            </tal:actions>
+            </ul>
           </nav>
 
           <div class="discreet"
