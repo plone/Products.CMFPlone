@@ -10,7 +10,7 @@
                site_url controlPanel/site_url">
 
   <tal:group tal:repeat="group groups">
-    <section class="card mb-4" role="section"
+    <section class="prefs-configlet card mb-4" role="section"
         tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])"
         id="prefs-${group/id}"
         tal:condition="python:controlPanel.maySeeSomeConfiglets and configlets">
@@ -21,16 +21,24 @@
       <div class="list-group list-group-flush"
           tal:condition="configlets">
         <tal:configlets tal:repeat="configlet configlets">
-          <!-- todo readd icons from iconresolver -->
-          <a href=""
-            tal:condition="configlet/visible" 
-            class="list-group-item list-group-item-action"
-            tal:define="icon configlet/icon|nothing"
-            tal:attributes="href configlet/url">
-          <tal:configletname 
-            tal:content="configlet/title"
-            i18n:translate=""></tal:configletname>
-          </a>
+          <tal:configlet define="icon_url python:'http' in configlet['icon']">
+            <a href=""
+              tal:condition="configlet/visible" 
+              class="list-group-item list-group-item-action"
+              tal:define="icon configlet/icon|nothing"
+              tal:attributes="href configlet/url">
+              <img tal:condition="icon_url"
+                src="" alt="" class="icon"
+                tal:attributes="src configlet/icon;
+                                alt configlet/title"
+                i18n:attributes="alt configlet/title">
+              <tal:icon tal:condition="not: icon_url"
+                tal:replace="structure python:icons.tag(configlet['icon'] or 'controlpanel', tag_alt=configlet['title'])" />
+              <tal:configletname 
+                tal:content="configlet/title"
+                i18n:translate=""></tal:configletname>
+              </a>
+          </tal:configlet>
         </tal:configlets>
       </div>
     </section>
