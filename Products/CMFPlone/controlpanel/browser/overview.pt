@@ -109,11 +109,8 @@
                             tal:define="icon action/icon"
                             tal:attributes="href action/url">
                             <div class="mb-3">
-                            <img src="" alt="" class="icon"
-                                tal:attributes="src action/icon;
-                                                alt action/title"
-                                i18n:attributes="alt action/title">
-                              </div>
+                            <tal:icon tal:replace="structure python:icons.tag(action['icon'] or 'controlpanel', tag_alt=action['title'])" />
+                            </div>
                             <div tal:content="action/title"
                                         i18n:translate=""
                                         class="text-decoration-none text-center ">
