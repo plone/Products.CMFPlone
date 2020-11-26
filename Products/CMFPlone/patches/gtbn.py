@@ -31,10 +31,6 @@ def rewrap_in_request_container(obj, context=None):
 code = """
 from persistent.interfaces import IPersistent
 from OFS.interfaces import IItem
-try:
-    from Products.ATContentTypes.tool.factory import FauxArchetypeTool
-except ImportError:
-    FauxArchetypeTool = type('FauxArchetypeTool')
 
 def _getToolByName(obj, name, default=_marker):
     pass
@@ -44,7 +40,6 @@ def check_getToolByName(obj, name, default=_marker):
     if IPersistent.providedBy(result) or \
             IItem.providedBy(result) or \
             name in _tool_interface_registry or \
-            (isinstance(result, FauxArchetypeTool)) or \
             '.test' in result.__class__.__module__ or \
             result.__class__.__module__ == 'mock' or \
             result is _marker or \
