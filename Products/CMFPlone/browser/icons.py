@@ -129,7 +129,3 @@ class IconsView(BrowserView):
             __traceback_info__ = name
             modifier(svgtree, modifier_cfg)
         return etree.tostring(svgtree)
-
-
-
-

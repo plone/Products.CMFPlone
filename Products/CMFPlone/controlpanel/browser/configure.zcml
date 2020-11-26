@@ -14,6 +14,14 @@
     <role name="Site Administrator"/>
   </permission>
 
+  <!-- Control Panel Main Template -->
+  <browser:page
+      name="prefs_main_template"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".prefsmaintemplate.PrefsMainTemplate"
+      permission="plone.app.controlpanel.Overview"
+      />
+
   <!-- Control Panel Overview -->
   <browser:page
       name="overview-controlpanel"
