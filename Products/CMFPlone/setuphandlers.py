@@ -55,7 +55,6 @@ def setProfileVersion(portal):
 def assignTitles(portal):
     titles = {
         'acl_users': 'User / Group storage and authentication settings',
-        'archetype_tool': 'Archetypes specific settings',
         'caching_policy_manager': 'Settings related to proxy caching',
         'content_type_registry': 'MIME type settings',
         'error_log': 'Error and exceptions log viewer',
@@ -85,7 +84,6 @@ def assignTitles(portal):
         'portal_workflow': 'Contains workflow definitions for your portal',
         'reference_catalog': 'Catalog of content references',
         'translation_service': 'Provides access to the translation machinery',
-        'uid_catalog': 'Catalog of unique content identifiers',
     }
     for oid, obj in portal.items():
         title = titles.get(oid, None)

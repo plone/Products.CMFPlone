@@ -1,31 +1,9 @@
 # From Products.PloneHotfix20160419
 # Plus extras for properties.
 from OFS.PropertyManager import PropertyManager
-#from OFS.ZDOM import Document
-#from OFS.ZDOM import Node
 from Products.CMFPlone.Portal import PloneSite
-
-
-try:
-    from plone.dexterity.content import Item
-    from plone.dexterity.content import Container
-except ImportError:
-    class Item:
-        pass
-
-    class Container:
-        pass
-
-try:
-    from Products.ATContentTypes.content.base import ATCTContent
-    from Products.ATContentTypes.content.base import ATCTBTreeFolder
-except ImportError:
-
-    class ATCTContent:
-        pass
-
-    class ATCTBTreeFolder:
-        pass
+from plone.dexterity.content import Item
+from plone.dexterity.content import Container
 
 
 klasses = (
@@ -34,8 +12,6 @@ klasses = (
     PloneSite,
     Item,
     Container,
-    ATCTContent,
-    ATCTBTreeFolder
 )
 methods = (
     'EffectiveDate',

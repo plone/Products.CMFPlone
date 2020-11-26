@@ -50,15 +50,6 @@
   <include package=".resources" />
   <include package=".patterns" />
 
-  <!-- Archetypes -->
-  <include zcml:condition="installed Products.ATContentTypes"
-           package="Products.ATContentTypes" />
-
-  <!-- wicked -->
-  <configure zcml:condition="installed wicked">
-    <include package="wicked.plone" file="selective-atct.zcml" />
-  </configure>
-
   <!-- extra portlets -->
   <include package="plone.portlet.static" />
   <include package="plone.portlet.collection" />
