@@ -28,13 +28,6 @@ from plone.namedfile.interfaces import INamedField
 
 from plone.app.contenttypes.behaviors.leadimage import ILeadImage
 
-try:
-    from Products.ATContentTypes.interfaces.file import IFileContent
-except ImportError:
-    # or without ATContentTypes
-    class IFileContent(Interface):
-        pass
-
 
 class BaseFeedData:
 
@@ -255,7 +248,7 @@ class BaseItem(BaseFeedData):
 
     @property
     def has_enclosure(self):
-        return IFileContent.providedBy(self.context)
+        return False
 
     @lazy_property
     def file(self):

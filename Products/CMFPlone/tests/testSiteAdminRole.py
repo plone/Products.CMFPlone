@@ -18,9 +18,7 @@ class TestSiteAdministratorRole(unittest.TestCase):
         expected = {
             'Access contents information':                              1,
             'Access inactive portal content':                           1,
-            'Add ATContentTypes tools':                                 0,
             'Add Accelerated HTTP Cache Managers':                      0,
-            'Add Archetypes Tools':                                     0,
             'Add BTreeFolder2s':                                        0,
             'Add Browser Id Manager':                                   0,
             'Add CMF Action Icons Tools':                               0,
@@ -82,8 +80,6 @@ class TestSiteAdministratorRole(unittest.TestCase):
             'Add portal member':                                        1,
             'Add secure MailHost objects':                              0,
             'Allow sendto':                                             1,
-            'Archetypes Tests: Protected Type View':                    0,
-            'Archetypes Tests: Protected Type Write':                   0,
             'CMFEditions: Access previous versions':                    1,
             'CMFEditions: Apply version control':                       1,
             'CMFEditions: Checkout to location':                        1,
