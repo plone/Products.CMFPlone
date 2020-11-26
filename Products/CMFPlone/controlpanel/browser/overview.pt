@@ -17,7 +17,7 @@
     <h1 class="documentFirstHeading"
         i18n:translate="">Site Setup</h1>
 
-    <p class="documentDescription" i18n:translate="description_control_panel">
+    <p class="lead" i18n:translate="description_control_panel">
         Configuration area for Plone and add-on Products.
     </p>
   </header>
@@ -161,7 +161,7 @@
     </ul>
 
     <p tal:condition="not:view/is_dev_mode"
-        class="discreet"
+        class=""
         i18n:translate="description_production_mode">
       You are running in "production mode". This is the preferred mode of
       operation for a live Plone site, but means that some
@@ -173,7 +173,7 @@
     </p>
 
     <p tal:condition="view/is_dev_mode"
-        class="discreet"
+        class=""
         i18n:translate="description_debug_mode">
       You are running in "debug mode". This mode is intended for sites that
       are under development. This allows many configuration changes to be
