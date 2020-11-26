@@ -9,7 +9,7 @@
 
 <body>
 
-<metal:main fill-slot="prefs_configlet_content"
+<metal:main fill-slot="prefs_configlet_main"
      tal:define="template_id string:@@usergroup-groupdetails;
                  portal_roles view/portal_roles;
                  groupquery python:view.makeQuery(groupname=view.groupname);
@@ -62,7 +62,7 @@
            tal:define="token context/@@authenticator/token">
         <div class="autotabs">
 
-          <div tal:condition="view/group" class="nav nav-tabs">
+          <div tal:condition="view/group" class="nav nav-pills">
             <a href="${portal_url}/@@usergroup-groupmembership?${groupquery}" class="nav-link"
                i18n:translate="label_group_members">Group Members</a>
             <a class="nav-link active"

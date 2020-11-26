@@ -2,13 +2,13 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-    lang="en"
-    metal:use-macro="context/prefs_main_template/macros/master"
-    i18n:domain="plone">
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
 
 <body>
 
-<metal:main fill-slot="prefs_configlet_content"
+<metal:main fill-slot="prefs_configlet_main"
     tal:define="template_id string:@@usergroup-userprefs;
                 showAll python:request.get('showAll', '') and not view.newSearch and 'y';
                 Batch python:modules['Products.CMFPlone'].Batch;
@@ -20,11 +20,6 @@
     <article id="content">
 
     <header>
-        <a id="setup-link" class="link-parent"
-          tal:attributes="href string:$portal_url/@@overview-controlpanel"
-          i18n:translate="">
-            Site Setup
-        </a>
 
         <h1 class="documentFirstHeading"
             i18n:translate="">Users and Groups</h1>
@@ -33,7 +28,7 @@
           Portal status message
         </div>
 
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-pills">
             <li class="nav-item">
               <a class="nav-link active"
                 href="${portal_url}/@@usergroup-userprefs"

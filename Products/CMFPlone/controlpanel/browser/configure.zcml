@@ -17,7 +17,7 @@
   <!-- Control Panel Main Template -->
   <browser:page
       name="prefs_main_template"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="*"
       class=".prefsmaintemplate.PrefsMainTemplate"
       permission="plone.app.controlpanel.Overview"
       />

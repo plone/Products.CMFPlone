@@ -8,13 +8,13 @@
 
 <body>
 
-<metal:main fill-slot="prefs_configlet_content"
+<metal:main fill-slot="prefs_configlet_main"
      tal:define="template_id string:@@usergroup-groupmembership;
                  errors python:request.get('errors', {});
                  portal_roles view/portal_roles;">
 
   <article id="content">
-  
+
     <a href=""
        class="link-parent"
        tal:attributes="href string:$portal_url/@@usergroup-groupprefs"

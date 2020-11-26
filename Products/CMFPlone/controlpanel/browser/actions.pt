@@ -10,11 +10,6 @@
 
 <metal:main metal:fill-slot="prefs_configlet_main" i18n:domain="plone">
   <header>
-    <a id="setup-link" class="link-parent"
-       tal:attributes="href string:$portal_url/@@overview-controlpanel"
-       i18n:translate="">
-        Site Setup
-    </a>
 
     <h1 class="documentFirstHeading"
       i18n:translate="portal_actions_controlpanel_header">Portal actions</h1>
@@ -37,7 +32,7 @@
         <ol class="configlets list-group list-group-flush">
           <li tal:repeat="action category/actions"
             class="list-group-item bg-transparent d-flex align-items-center justify-content-between">
-            <span><span tal:replace="repeat/action/number" />. <span tal:replace="action/title" i18n:translate="" /></span> 
+            <span><span tal:replace="repeat/action/number" />. <span tal:replace="action/title" i18n:translate="" /></span>
             <form action="@@actions-controlpanel"
               method="POST">
               <input type="hidden" name="actionid"
@@ -50,7 +45,7 @@
                 <tal:icon tal:replace="structure python:icons.tag('square', tag_alt='Toggle to show')" /><span class="ml-2" i18n:translate="">visible</span>
               </button>
               <button tal:condition="action/visible"
-                type="submit" class="btn  btn-sm btn-link standalone mr-5" name="hide"                
+                type="submit" class="btn  btn-sm btn-link standalone mr-5" name="hide"
                 value="Hide" i18n:attributes="value" >
                 <tal:icon tal:replace="structure python:icons.tag('check-square', tag_alt='Toggle to hide')" /><span class="ml-2" i18n:translate="">visible</span>
               </button>

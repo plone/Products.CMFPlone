@@ -8,27 +8,21 @@
 
 <body>
 
-<metal:main fill-slot="prefs_configlet_content"
-     tal:define="template_id string:@@usergroup-groupprefs;
-                 errors python:request.get('errors', {});
-                 showAll python:request.get('showAll', '') and not view.newSearch and 'y';
-                 Batch python:modules['Products.CMFPlone'].Batch;
-                 b_start python:0 if showAll or view.newSearch else request.get('b_start',0);
-                 portal_roles view/portal_roles;
-                 search_results view/searchResults;
-                 b_size python:showAll and len(search_results) or 20;
-                 batch python:search_results and Batch(search_results, b_size, int(b_start), orphan=1) or None;
-                 batchformkeys python:['searchstring','_authenticator'];
-                 portal_url context/portal_url;">
+<metal:main fill-slot="prefs_configlet_main"
+            tal:define="template_id string:@@usergroup-groupprefs;
+                        errors python:request.get('errors', {});
+                        showAll python:request.get('showAll', '') and not view.newSearch and 'y';
+                        Batch python:modules['Products.CMFPlone'].Batch;
+                        b_start python:0 if showAll or view.newSearch else request.get('b_start',0);
+                        portal_roles view/portal_roles;
+                        search_results view/searchResults;
+                        b_size python:showAll and len(search_results) or 20;
+                        batch python:search_results and Batch(search_results, b_size, int(b_start), orphan=1) or None;
+                        batchformkeys python:['searchstring','_authenticator'];
+                        portal_url context/portal_url;">
 
   <article id="content">
     <header>
-        <a id="setup-link" class="link-parent"
-        tal:attributes="href string:$portal_url/@@overview-controlpanel"
-        i18n:translate="">
-            Site Setup
-        </a>
-
         <h1 class="documentFirstHeading"
             i18n:translate="">Users and Groups</h1>
 
@@ -36,7 +30,7 @@
             Portal status message
         </div>
 
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-pills">
             <li class="nav-item">
               <a class="nav-link"
                 href="${portal_url}/@@usergroup-userprefs"
