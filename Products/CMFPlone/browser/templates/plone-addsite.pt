@@ -98,7 +98,8 @@
 
           </div>
 
-          <div class="col-md-12 mb-3">
+          <div class="col-md-12 mb-3 tzx"
+               tal:omit-tag="not:advanced">
             <label for="portal_timezone" i18n:translate="" class="form-label">
               Default timezone
             </label>
@@ -120,9 +121,9 @@
               Users will be able to set their own timezone, if available timezones are defined in the date and time settings.
             </div>
           </div>
-          <div class="col-md-12 mb-3">
-            <div class="form-check"
-                tal:condition="advanced">
+          <div class="col-md-12 mb-3"
+               tal:condition="advanced">
+            <div class="form-check">
               <input class="form-check-input"
                     id="example-content"
                     type="checkbox"
@@ -137,9 +138,8 @@
             </div>
           </div>
 
-          <tal:content tal:condition="not:advanced">
-            <input type="hidden" name="setup_content:boolean" value="true" />
-          </tal:content>
+          <input tal:condition="not:advanced"
+                  type="hidden" name="setup_content:boolean" value="true" />
 
           <div class="col-md-12"
                tal:condition="python: len(base_profiles) > 1">
@@ -168,7 +168,9 @@
 
 
           <div class="col-md-12 mt-3"
-               tal:condition="python: extension_profiles or advanced">
+               tal:define="has_selected python:[p for p in extension_profiles if p.get('selected', None)]"
+               tal:condition="python: extension_profiles or advanced"
+               tal:omit-tag="python: has_selected and not advanced">
             <tal:block condition="python: advanced">
               <h2 i18n:translate="">Add-ons</h2>
 
@@ -200,14 +202,12 @@
                 <tal:hidden tal:condition="python: selected and not advanced">
                   <input type="hidden"
                         name="extension_ids:list"
-                        value=""
-                        tal:attributes="value info/id;
-                                        checked info/selected|nothing;" />
+                        value="${info/id}" />
                 </tal:hidden>
               </tal:set>
             </tal:loop>
           </div>
-          <div class="col-md-12">
+          <div class="col-md-12 mt-3">
             <input type="hidden" name="form.submitted:boolean" value="True" />
             <button class="btn btn-success mt-3" type="submit" name="submit" i18n:translate="">Create Plone Site</button>
           </div>
