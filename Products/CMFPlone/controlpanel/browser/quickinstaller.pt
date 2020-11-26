@@ -53,7 +53,7 @@
               <input type="hidden"
                       name="prefs_reinstallProducts:list"
                       tal:attributes="value pid;" />
-              <input class="standalone"
+              <input class="btn btn-secondary"
                       type="submit"
                       value="Upgrade ${pid}"
                       name="form.submitted"
@@ -107,7 +107,7 @@
                 </tal:products>
                 <span>
                   <div i18n:translate="label_product_upgrade_all_action">This can be risky, are you sure you want to do this?</div>
-                  <input class="context"
+                  <input class="btn btn-primary"
                         type="submit"
                         i18n:attributes="value"
                         value="Upgrade them ALL!"

@@ -58,22 +58,22 @@
                 </div>
 
                 <div class="formControls">
-                    <input class="context"
+                    <input class="btn btn-primary"
                            type="submit"
                            name="form.button.search"
                            value="Search"
                            i18n:attributes="value label_search;" />
-                    <input class="standalone"
+                    <input class="btn btn-secondary"
                            type="submit"
                            name="form.button.refresh"
                            value="Refresh"
                            i18n:attributes="value label_refresh;" />
-                    <input class="standalone"
+                    <input class="btn btn-secondary"
                            type="submit"
                            name="form.button.clear"
                            value="Clear Displayed Entries"
                            i18n:attributes="value label_clear_displayed_entries;" />
-                    <input class="standalone"
+                    <input class="btn btn-secondary"
                            type="submit"
                            name="form.button.showall"
                            value="Show all entries"
@@ -172,7 +172,7 @@
                 </div>
 
                 <div class="formControls">
-                    <input class="context"
+                    <input class="btn btn-primary"
                            type="submit"
                            name="submit"
                            value="Save"
