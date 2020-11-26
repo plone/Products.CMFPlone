@@ -5,8 +5,7 @@
   xmlns:zcml="http://namespaces.zope.org/zcml"
   i18n_domain="Products.CMFPlone">
 
-  <class class="plone.dexterity.content.Container"
-      zcml:condition="installed plone.dexterity">
+  <class class="plone.dexterity.content.Container">
     <implements interface="Products.CMFPlone.interfaces.syndication.ISyndicatable" />
   </class>
 
@@ -19,7 +18,6 @@
     for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
     provides="Products.CMFPlone.interfaces.syndication.ISearchFeed" />
   <adapter factory=".adapters.DexterityItem"
-    zcml:condition="installed plone.dexterity"
     for="plone.dexterity.interfaces.IDexterityContent
          Products.CMFPlone.interfaces.syndication.IFeed"
     provides="Products.CMFPlone.interfaces.syndication.IFeedItem" />
