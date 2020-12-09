@@ -95,15 +95,6 @@ class TestAttackVectorsFunctional(PloneTestCase):
             return m.group(1)
         return ''
 
-    @unittest.skip('Delete after move to ATContentTypes')
-    def test_gtbn_faux_archetypes_tool(self):
-        from Products.CMFCore.utils import FauxArchetypeTool
-        from Products.CMFPlone.utils import getToolByName
-        self.portal.portal_factory.archetype_tool = FauxArchetypeTool(
-            self.portal.archetype_tool)
-        self.assertEqual(self.portal.portal_factory.archetype_tool, getToolByName(
-            self.portal.portal_factory, 'archetype_tool'))
-
     def test_searchForMembers(self):
         res = self.publish('/plone/portal_membership/searchForMembers')
         self.assertEqual(302, res.status)
@@ -122,56 +113,9 @@ class TestAttackVectorsFunctional(PloneTestCase):
         res = self.publish("/plone/uid_catalog/resolve_url?path=/evil")
         self.assertEqual(404, res.status)
 
-    @unittest.skip('Delete after move to ATContentTypes')
-    def test_at_download(self):
-        self.setRoles(['Manager'])
-        self.portal.portal_workflow.setChainForPortalTypes(
-            ['File'], 'plone_workflow')
-        self.portal.invokeFactory('File', 'test')
-        self.portal.portal_workflow.doActionFor(self.portal.test, 'publish')
-
-        # give it a more restricted read_permission
-        self.portal.test.Schema()['file'].read_permission = 'Manage portal'
-
-        # make sure at_download disallows even though the user has View
-        # permission
-        res = self.publish('/plone/test/at_download/file')
-        self.assertEqual(res.status, 302)
-        self.assertTrue(res.headers['location'].startswith(
-            'http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
-
-    @unittest.skip('Delete after move to ATContentTypes')
-    def test_ftp(self):
-        self.setRoles(['Manager', 'Owner'])
-        self.portal.REQUEST.PARENTS = [self.app]
-        res = self.portal.news.manage_FTPlist(self.portal.REQUEST)
-        self.assertTrue(isinstance(res, str))
-        self.portal.portal_workflow.doActionFor(self.portal.news, 'hide')
-        self.setRoles(['Member'])
-        from zExceptions import Unauthorized
-        self.assertRaises(
-            Unauthorized, self.portal.news.manage_FTPlist, self.portal.REQUEST)
-
     def test_atat_does_not_return_anything(self):
         res = self.publish('/plone/@@')
         self.assertEqual(404, res.status)
-
-    @unittest.skip('Delete after move to ATContentTypes')
-    def test_go_back(self):
-        res = self.publish(
-            '/plone/front-page/go_back?last_referer=http://${request}',
-            basic=SITE_OWNER_NAME + ':' + SITE_OWNER_PASSWORD)
-        # This used to show the request as location, so something like:
-        # http://<h3>form</h3><table>... and then all kinds of data from the
-        # request.  This was fixed in PloneHotfix20121106.  For this request
-        # you then got redirected to url http://${request} which your browser
-        # obviously does not know how to handle.
-        #
-        # In PloneHotfix20160830 this fix was kept, but additionally Plone
-        # refuses to redirect to external sites by default.
-        self.assertEqual(302, res.status)
-        self.assertEqual(res.headers['location'],
-                         self.portal.absolute_url() + '/front-page')
 
     def test_getFolderContents(self):
         res = self.publish('/plone/getFolderContents')
@@ -184,17 +128,6 @@ class TestAttackVectorsFunctional(PloneTestCase):
     def test_utranslate(self):
         res = self.publish('/plone/utranslate?msgid=foo')
         self.assertEqual(403, res.status)
-
-    @unittest.skip('Delete after move to ATContentTypes')
-    def test_createObject(self):
-        res = self.publish('/plone/createObject?type_name=File&id=${foo}')
-        self.assertEqual(302, res.status)
-        self.assertTrue(
-            res.headers['location'].startswith(
-                'http://nohost/plone/portal_factory/File/${foo}/'
-                'edit?_authenticator='
-            )
-        )
 
     def test_formatColumns(self):
         # formatColumns is unused and was removed

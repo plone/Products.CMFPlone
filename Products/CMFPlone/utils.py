@@ -923,16 +923,10 @@ def check_id(
                   mapping={'name': id}))
 
     # id is good; decide if we should check for id collisions
-    portal_factory = getToolByName(context, 'portal_factory', None)
     if contained_by is not None:
         # Always check for collisions if a container was passed
         # via the contained_by parameter.
         checkForCollision = True
-    elif portal_factory is not None and portal_factory.isTemporary(context):
-        # always check for collisions if we are creating a new object
-        checkForCollision = True
-        # Climb the acquisition chain until you get at the real container.
-        contained_by = aq_parent(aq_parent(aq_parent(aq_inner(context))))
     else:
         # if we have an existing object, only check for collisions
         # if we are changing the id

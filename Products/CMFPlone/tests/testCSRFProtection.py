@@ -40,7 +40,6 @@ class AuthenticatorTestCase(PloneTestCase):
             'paths:list=news')
         self.assertFalse(self.portal.get('news', None))
 
-
     def test_PloneTool_renameObjectsByPaths(self):
         self.assertFalse(self.portal.get('foo', None))
         self.checkAuthenticator(

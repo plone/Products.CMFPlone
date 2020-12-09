@@ -4,7 +4,6 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests.dummy import Dummy, DummyWorkflowChainAdapter
 from Products.CMFCore.interfaces import IWorkflowTool
 
-
 default_user = PloneTestCase.default_user
 
 
