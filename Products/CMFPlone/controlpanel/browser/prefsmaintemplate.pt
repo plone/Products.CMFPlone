@@ -32,7 +32,7 @@
                                       active python:'active' if bool([c for c in configlets if current_url.startswith(c['url'])]) else 'inactive'"
                           tal:condition="python:configlets and controlPanel.maySeeSomeConfiglets"
                           class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle ${active}" data-toggle="dropdown" href="#" role="button" aria-expanded="false">${group/title}</a>
+                        <a class="nav-link dropdown-toggle ${active}" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">${group/title}</a>
                           <ul class="dropdown-menu">
                           <tal:loop tal:repeat="configlet configlets">
                             <li tal:condition="configlet/visible">
