@@ -124,6 +124,13 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         components.__parent__ = self
         self.setSiteManager(components)
 
+    def __setattr__(self, name, obj):
+        # handle re setting an item as an attribute
+        if self._tree is not None and name in self:
+            self[name] = obj
+        else:
+            super(PloneSite, self).__setattr__(name, obj)
+
     # From PortalObjectBase
     def getSkinsFolderName(self):
         return PORTAL_SKINS_TOOL_ID
