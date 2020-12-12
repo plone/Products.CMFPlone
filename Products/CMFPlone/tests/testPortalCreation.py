@@ -1018,3 +1018,7 @@ class TestAddPloneSite(PloneTestCase.PloneTestCase):
         # HTTP_ACCEPT_LANGUAGE on the request in factory.py).  This seems to be
         # because translations are not available in the tests.
         self.assertIn('Learn more about Plone', plonesite.text.raw)
+
+        # XXX maybe it is better to reset the sire in the @@plone-addsite view
+        # or somewhere else?
+        setSite(None)
