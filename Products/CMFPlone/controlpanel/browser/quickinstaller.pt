@@ -43,8 +43,8 @@
         <ul tal:condition="products"
             class="configlets list-group list-group-flush">
           <tal:products tal:repeat="product products">
-          <li tal:define="pid product/id;" class="list-group-item">
-            <form action="upgrade_products" method="post" class="float-right">
+          <li tal:define="pid product/id;" class="list-group-item mt-2 pb-3">
+            <form action="upgrade_products" method="post" class="float-end">
               <input type="hidden"
                       name="prefs_reinstallProducts:list"
                       tal:attributes="value pid;" />
@@ -65,7 +65,7 @@
               <em class="discreet"> – (<span tal:replace="pid">plugin.app.name</span> <span tal:replace="product/version">1.0</span>)</em>
             </div>
             <ul class="configletDetails list-group list-group-flush">
-              <li tal:define="upgrade_info product/upgrade_info" class="list-group-item">
+              <li tal:define="upgrade_info product/upgrade_info" class="list-group-item mt-2 pb-3">
                   <span i18n:translate="">
                     This addon has been upgraded.
                   </span>
@@ -93,7 +93,7 @@
             </ul>
           </li>
           </tal:products>
-          <li tal:condition="python:num_products > 1" class="list-group-item">
+          <li tal:condition="python:num_products > 1" class="list-group-item mt-2 pb-3">
             <form action="upgrade_products" method="post">
                 <tal:products  tal:repeat="product products">
                 <input type="hidden" value="product"
@@ -118,9 +118,9 @@
             id="install-products" class="card mb-4">
         <header class="card-header" i18n:translate="">Available add-ons</header>
         <ul class="configlets list-group list-group-flush">
-          <li tal:repeat="product products" class="list-group-item">
+          <li tal:repeat="product products" class="list-group-item mt-2 pb-3">
           <tal:product define="pid product/id">
-            <form action="install_products" method="post" class="float-right">
+            <form action="install_products" method="post" class="float-end">
                 <input type="hidden"
                         name="install_product"
                         tal:attributes="value pid;" />
@@ -144,7 +144,7 @@
                 tal:content="product/description">add-on description</tal:span>
               <em class="discreet"> – (<span tal:replace="pid">plugin.app.name</span> <span tal:replace="product/version">1.0</span>)</em>
             </div>
-            <div class="alert alert-warning mt-2 mb-2"
+            <div class="alert alert-warning mt-2"
                 role="status"
                 tal:condition="not:product/uninstall_profile">
               <strong i18n:translate="">Warning</strong>
@@ -160,9 +160,9 @@
             id="activated-products" class="card mb-4">
         <header class="card-header" i18n:translate="">Activated add-ons</header>
         <ul class="configlets list-group list-group-flush">
-          <li tal:repeat="product products" class="list-group-item">
+          <li tal:repeat="product products" class="list-group-item mt-2 pb-3">
           <tal:product define="pid product/id">
-            <form action="uninstall_products" method="post" class="float-right">
+            <form action="uninstall_products" method="post" class="float-end">
               <input type="hidden"
                     name="uninstall_product"
                     tal:attributes="value pid;" />
@@ -186,7 +186,7 @@
                   tal:content="product/description">add-on description</tal:span>
                 <em class="discreet"> – (<span tal:replace="pid">plugin.app.name</span> <span tal:replace="product/version">1.0</span>)</em>
               </div>
-              <div class="alert alert-info mt-2 mb-2"
+              <div class="alert alert-info mt-2"
                   role="status"
                   tal:condition="not:product/uninstall_profile">                  >
                 <strong i18n:translate="">Info</strong>
@@ -203,7 +203,7 @@
                 id="broken-products" class="card mb-4">
         <header class="card-header" i18n:translate="">Broken add-ons</header>
         <ul class="configlets list-group list-group-flush">
-          <li tal:repeat="product products" class="list-group-item">
+          <li tal:repeat="product products" class="list-group-item mt-2 pb-3">
             <h3>
               <span tal:replace="product/product_id" i18n:translate="">
                 Add-on Name
