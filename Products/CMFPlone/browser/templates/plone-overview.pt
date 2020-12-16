@@ -67,7 +67,7 @@
                                 type="hidden" name="came_from"
                                 tal:attributes="value python:view.upgrade_url(site, can_manage=True)"/>
                         <button type="submit"
-                                class="btn btn-warning mr-3"
+                                class="btn btn-warning me-3"
                                 i18n:translate="label_upgrade_hellip">Upgrade&hellip;</button>
                     </form>
                 </div>

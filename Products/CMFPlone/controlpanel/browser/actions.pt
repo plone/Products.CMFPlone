@@ -40,24 +40,24 @@
               <input type="hidden" name="category"
                 tal:attributes="value category/id" />
               <button tal:condition="not:action/visible"
-                type="submit" class="btn btn-sm btn-link standalone mr-5" name="show"
+                type="submit" class="btn btn-sm btn-link standalone me-5" name="show"
                 value="Show" i18n:attributes="value" >
-                <tal:icon tal:replace="structure python:icons.tag('square', tag_alt='Toggle to show')" /><span class="ml-2" i18n:translate="">visible</span>
+                <tal:icon tal:replace="structure python:icons.tag('square', tag_alt='Toggle to show')" /><span class="ms-2" i18n:translate="">visible</span>
               </button>
               <button tal:condition="action/visible"
-                type="submit" class="btn  btn-sm btn-link standalone mr-5" name="hide"
+                type="submit" class="btn  btn-sm btn-link standalone me-5" name="hide"
                 value="Hide" i18n:attributes="value" >
-                <tal:icon tal:replace="structure python:icons.tag('check-square', tag_alt='Toggle to hide')" /><span class="ml-2" i18n:translate="">visible</span>
+                <tal:icon tal:replace="structure python:icons.tag('check-square', tag_alt='Toggle to hide')" /><span class="ms-2" i18n:translate="">visible</span>
               </button>
               <a class="pat-plone-modal btn btn-sm btn-primary standalone"
                 tal:attributes="href string:${action/url}/@@action-form"
-                ><tal:icon tal:replace="structure python:icons.tag('plone-edit', tag_alt='Edit')" /><span i18n:translate="" class="ml-2" i18n:translate="">Edit</span></a>
+                ><tal:icon tal:replace="structure python:icons.tag('plone-edit', tag_alt='Edit')" /><span i18n:translate="" class="ms-2" i18n:translate="">Edit</span></a>
               <button type="submit" class="btn btn-sm btn-danger destructive" name="delete"
                 value="Delete"
                 confirm-message="Delete the action?"
                 i18n:attributes="value; confirm-message"
                 onclick="return confirm(this.getAttribute('confirm-message'));" >
-                <tal:icon tal:replace="structure python:icons.tag('plone-delete', tag_alt='Delete')" /><span i18n:translate="" class="ml-2" i18n:translate="">Delete</span>
+                <tal:icon tal:replace="structure python:icons.tag('plone-delete', tag_alt='Delete')" /><span i18n:translate="" class="ms-2" i18n:translate="">Delete</span>
               </button>
             </form>
           </li>
