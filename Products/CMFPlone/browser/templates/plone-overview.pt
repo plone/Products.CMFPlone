@@ -55,8 +55,8 @@
                         tal:attributes="href site/absolute_url"
                         title="Go to your instance"
                         i18n:attributes="title;">
-                        <span tal:condition="not: many" i18n:translate="">View your Plone site</span>
-                        <span tal:condition="many">${site/title} <small>(${site/id})</small></span>
+                        <tal:one condition="not: many" i18n:translate="">View your Plone site</tal:one>
+                        <tal:many condition="many">${python:site.title} <small>(${python:"/".join(site.getPhysicalPath())})</small></tal:many>
                     </a>
                     <form action=""
                             style="display: inline;"
