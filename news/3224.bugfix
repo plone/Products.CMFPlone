@@ -1,0 +1,2 @@
+Fix problem to remove username and password from email settings if there was already one set. 
+[jensens]
