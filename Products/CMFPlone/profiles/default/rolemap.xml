@@ -8,9 +8,9 @@
     <role name="Member"/>
     <role name="Owner"/>
     <role name="Reviewer"/>
-    <role name="Reader" />
-    <role name="Editor" />
-    <role name="Contributor" />
+    <role name="Reader"/>
+    <role name="Editor"/>
+    <role name="Contributor"/>
   </roles>
   <permissions>
     <permission name="Access inactive portal content"
@@ -56,9 +56,9 @@
       <role name="Manager"/>
       <role name="Site Administrator"/>
       <role name="Owner"/>
-      <role name="Reviewer" />
-      <role name="Editor" />
-      <role name="Contributor" />
+      <role name="Reviewer"/>
+      <role name="Editor"/>
+      <role name="Contributor"/>
     </permission>
     <permission name="List portal members" acquire="True">
       <role name="Manager"/>
@@ -85,6 +85,58 @@
       <role name="Site Administrator"/>
       <role name="Owner"/>
       <role name="Editor"/>
+    </permission>
+    <permission name="Plone Site Setup: Overview" acquire="True">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+    </permission>
+    <permission name="Plone Site Setup: Editing">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+    </permission>
+    <permission name="Plone Site Setup: Filtering">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+    </permission>
+    <permission name="Plone Site Setup: Language">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+    </permission>
+    <permission name="Plone Site Setup: Mail">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+    </permission>
+    <permission name="Plone Site Setup: Markup">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+    </permission>
+    <permission name="Plone Site Setup: Navigation">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+    </permission>
+    <permission name="Plone Site Setup: Search">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+    </permission>
+    <permission name="Plone Site Setup: Security">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+    </permission>
+    <permission name="Plone Site Setup: Site">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+    </permission>
+    <permission name="Plone Site Setup: Themes">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+    </permission>
+    <permission name="Plone Site Setup: Types">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+    </permission>
+    <permission name="Plone Site Setup: Users and Groups">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
     </permission>
     <permission name="Request review" acquire="True">
       <role name="Manager"/>
@@ -170,33 +222,33 @@
     </permission>
     <permission name="View"
                 acquire="True">
-        <role name="Site Administrator"/>
-        <role name="Reader" />
-        <role name="Editor" />
-        <role name="Contributor" />
+      <role name="Site Administrator"/>
+      <role name="Reader"/>
+      <role name="Editor"/>
+      <role name="Contributor"/>
     </permission>
     <permission name="Access contents information"
                 acquire="True">
-        <role name="Site Administrator"/>
-        <role name="Reader" />
-        <role name="Editor" />
-        <role name="Contributor" />
+      <role name="Site Administrator"/>
+      <role name="Reader"/>
+      <role name="Editor"/>
+      <role name="Contributor"/>
     </permission>
     <permission name="Modify portal content"
                 acquire="True">
-        <role name="Site Administrator"/>
-        <role name="Editor" />
-        <role name="Owner" />
+      <role name="Site Administrator"/>
+      <role name="Editor"/>
+      <role name="Owner"/>
     </permission>
     <permission name="Add portal member"
                 acquire="False">
-        <role name="Manager" />
-        <role name="Site Administrator"/>
-        <role name="Owner" />
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+      <role name="Owner"/>
     </permission>
     <permission name="plone.resourceeditor: Manage Sources"
                 acquire="False">
-      <role name="Manager" />
+      <role name="Manager"/>
       <role name="Site Administrator"/>
     </permission>
     <permission name="Show Toolbar"
