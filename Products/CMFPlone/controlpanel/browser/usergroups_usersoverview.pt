@@ -85,40 +85,38 @@
                           many_users view/many_users">
           <input type="hidden" name="form.submitted" value="1" />
 
-        <div class="mb-3">
-          <label class="form-label" for="quickSearch" i18n:translate="label_user_search">User Search</label>
-          <div class="field input-group">
-                <input class="form-control quickSearch"
-                        id="quickSearch"
-                        type="text"
-                        name="searchstring"
-                        value=""
-                        tal:attributes="value view/searchString;"
-                        />
-                <div class="input-group-append">
-                  <button type="submit"
-                          class="searchButton btn btn-primary"
-                          name="form.button.Search"
-                          value="Search"
-                          i18n:translate=""
-                          i18n:attributes="value label_search;"
-                          >Search</button>
 
-                  <button type="submit"
-                          class="searchButton btn btn-secondary"
-                          name="form.button.FindAll"
-                          value="Show all"
-                          i18n:translate="label_showall"
-                          i18n:attributes="value label_showall;"
-                          tal:condition="not:many_users"
-                          >Show all</button>
-                </div>
-          </div>
+        <div class="mb-3 input-group">
+          <span class="input-group-text" id="quickSearchLabel" i18n:translate="label_user_search">User Search</span>
+          <input class="form-control quickSearch"
+                  id="quickSearch"
+                  aria-labelledby="quickSearchLabel"
+                  type="text"
+                  name="searchstring"
+                  value=""
+                  tal:attributes="value view/searchString;"
+                  />
+          <button type="submit"
+                  class="searchButton btn btn-primary"
+                  name="form.button.Search"
+                  value="Search"
+                  i18n:translate=""
+                  i18n:attributes="value label_search;"
+                  >Search</button>
+
+          <button type="submit"
+                  class="searchButton btn btn-secondary"
+                  name="form.button.FindAll"
+                  value="Show all"
+                  i18n:translate="label_showall"
+                  i18n:attributes="value label_showall;"
+                  tal:condition="not:many_users"
+                  >Show all</button>
         </div>
           <table class="table table-responsive table-bordered table-striped text-center" summary="User Listing">
               <thead tal:condition="portal_users">
                 <tr>
-                  <th  class="text-left" i18n:translate="listingheader_user_name">User name</th>
+                  <th  class="text-start" i18n:translate="listingheader_user_name">User name</th>
                   <th class="rotate" tal:repeat="portal_role portal_roles"><div tal:content="portal_role" i18n:translate="">Role</div></th>
                   <th class="rotate alert-warning"><div i18n:translate="listingheader_reset_password">Reset Password</div></th>
                   <th class="rotate alert-danger"><div i18n:translate="listingheader_remove">Remove</div></th>
@@ -131,8 +129,8 @@
                                     userquery python:view.makeQuery(userid=userid);"
                         tal:attributes="class python:oddrow and 'odd' or 'even'">
 
-                        <td class="text-left">
-                            <a href="@@user-information"
+                        <td class="text-start">
+                            <a href="@@user-i0nformation"
                                tal:attributes="href string:$portal_url/@@user-information?${userquery};
                                                title userid">
                                 ${user/fullname} <span class="text-muted">(${user/login})</span>
