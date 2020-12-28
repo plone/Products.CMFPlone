@@ -78,14 +78,6 @@
             doing a specific search.
         </p>
 
-        <p>
-          <a class="pat-plone-modal" id="add-group"
-             tal:attributes="href string:${portal_url}/@@usergroup-groupdetails">
-
-             <button i18n:translate="label_add_new_group" class="btn btn-success">Add New Group</button>
-          </a>
-        </p>
-
         <form action=""
               name="groups_search"
               method="post"
@@ -100,6 +92,11 @@
                    tal:attributes="value showAll"/>
 
             <div class="mb-3 input-group">
+                <a class="pat-plone-modal me-3" id="add-group"
+                    tal:attributes="href string:${portal_url}/@@usergroup-groupdetails">
+
+                    <button i18n:translate="label_add_new_group" class="btn btn-success">Add New Group</button>
+                </a>
                 <span class="input-group-text" id="quickSearchLabel" i18n:translate="label_group_search">Group Search</span>
                 <input class="form-control quickSearch"
                     type="text"
