@@ -234,8 +234,7 @@
                  type="submit"
                  name="form.button.Modify"
                  value="Save"
-                 i18n:translate=""
-                 i18n:attributes="value label_apply_changes;"
+                 i18n:translate="label_apply_changes"
                  >Apply changes</button>
             </div>
           </div>
