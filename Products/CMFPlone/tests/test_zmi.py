@@ -95,11 +95,6 @@ class ZMITests(unittest.TestCase):
         view = self.portal.restrictedTraverse(url)
         self.assertTrue(view(), msg=f'{url} is broken')
 
-    def test_portal_form_controller(self):
-        url = 'portal_form_controller/manage_overview'
-        view = self.portal.restrictedTraverse(url)
-        self.assertTrue(view(), msg=f'{url} is broken')
-
     def test_portal_historiesstorage(self):
         url = 'portal_historiesstorage/storageStatistics'
         view = self.portal.restrictedTraverse(url)
