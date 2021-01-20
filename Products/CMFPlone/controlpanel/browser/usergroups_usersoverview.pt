@@ -58,7 +58,7 @@
     <div id="content-core">
 
       <div class="autotabs">
-        <p tal:condition="view/show_users_listing_warning" class="portalMessage warning" role="status">
+        <p tal:condition="view/show_users_listing_warning" class="alert alert-warn" role="status">
           <strong i18n:translate="">Note</strong>
           <span i18n:translate="description_pas_users_listing">Some or all of your PAS user source
           plugins do not allow listing of users, so you may not see
