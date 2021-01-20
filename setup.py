@@ -103,7 +103,6 @@ setup(
         'Products.PluggableAuthService',
         'Products.PluginRegistry',
         'Products.PortalTransforms',
-        'Products.Sessions',
         'Products.SiteErrorLog',
         'Products.statusmessages',
         'pyScss',
