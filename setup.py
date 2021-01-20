@@ -94,7 +94,6 @@ setup(
         'Products.CMFDiffTool',
         'Products.CMFDynamicViewFTI',
         'Products.CMFEditions',
-        'Products.CMFFormController',
         'Products.CMFUid',
         'Products.DCWorkflow',
         'Products.ExtendedPathIndex',
