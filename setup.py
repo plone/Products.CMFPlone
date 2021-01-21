@@ -107,7 +107,6 @@ setup(
         'Products.Sessions',
         'Products.SiteErrorLog',
         'Products.statusmessages',
-        'Products.TemporaryFolder',
         'pyScss',
         'setuptools>=36.2',
         'transaction',
