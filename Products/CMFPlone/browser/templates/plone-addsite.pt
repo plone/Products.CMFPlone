@@ -98,8 +98,7 @@
 
           </div>
 
-          <div class="col-md-12 mb-3 tzx"
-               tal:omit-tag="not:advanced">
+          <div class="col-md-12 mb-3 tzx">
             <label for="portal_timezone" i18n:translate="" class="form-label">
               Default timezone
             </label>
@@ -121,6 +120,7 @@
               Users will be able to set their own timezone, if available timezones are defined in the date and time settings.
             </div>
           </div>
+
           <div class="col-md-12 mb-3"
                tal:condition="advanced">
             <div class="form-check">
