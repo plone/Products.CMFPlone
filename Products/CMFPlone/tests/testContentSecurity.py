@@ -2,10 +2,13 @@ from AccessControl import Unauthorized
 from Acquisition import aq_base
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zExceptions.unauthorized import Unauthorized as zUnauthorized
+from zope.component import getMultiAdapter
+
 
 class TestContentSecurity(PloneTestCase):
 
     def afterSetUp(self):
+        self.request = self.layer["request"]
         self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
         self.portal.acl_users._doAddUser('user2', 'secret', ['Member'], [])
         #_ender_'s member who's not a Member usecase
@@ -14,6 +17,16 @@ class TestContentSecurity(PloneTestCase):
         self.workflow = self.portal.portal_workflow
         self.createMemberarea('user1')
         self.createMemberarea('user2')
+
+    def setup_authenticator(self):
+        from plone.protect.authenticator import createToken
+
+        self.request.form["_authenticator"] = createToken()
+
+    def get_content_status_modify_view(self, obj):
+        self.setup_authenticator()
+        view = getMultiAdapter((obj, self.request), name="content_status_modify")
+        return view
 
     def testCreateMemberContent(self):
         self.login('user1')
@@ -108,7 +121,8 @@ class TestContentSecurity(PloneTestCase):
         subfolder.unrestrictedTraverse('@@sharing').update_inherit(False)
         # Turn off local role acquisition
         subfolder.invokeFactory('Document', id='new')
-        subfolder.new.content_status_modify(workflow_action='publish')
+        view = self.get_content_status_modify_view(subfolder.new)
+        view(workflow_action='publish')
         subfolder.new.manage_addLocalRoles('user2', ('Member',))
         self.login('user2')
         # This should not raise Unauthorized
@@ -117,10 +131,12 @@ class TestContentSecurity(PloneTestCase):
     def testViewAllowedOnContentInPrivateFolder(self):
         self.login('user1')
         folder = self.membership.getHomeFolder('user1')
-        folder.content_status_modify(workflow_action='private')
+        view = self.get_content_status_modify_view(folder)
+        view(workflow_action='private')
         folder.invokeFactory('Document', id='doc1')
         doc = folder.doc1
-        doc.content_status_modify(workflow_action='publish')
+        view = self.get_content_status_modify_view(doc)
+        view(workflow_action='publish')
         doc.manage_addLocalRoles('user2', ('Owner',))
         self.login('user2')
         # This should not raise Unauthorized
@@ -160,7 +176,8 @@ class TestContentSecurity(PloneTestCase):
         subfolder = folder.subfolder
         subfolder.unrestrictedTraverse('@@sharing').update_inherit(False)
         subfolder.invokeFactory('Document', id='new')
-        subfolder.new.content_status_modify(workflow_action='publish')
+        view = self.get_content_status_modify_view(subfolder.new)
+        view(workflow_action='publish')
         subfolder.new.manage_addLocalRoles('user3', ('Member',))
         self.login('user3')
         # This shouldn't either, but strangely it never does even if the script

@@ -1,0 +1,5 @@
+Removed dependency on ``Products.TemporaryFolder``.
+Note: in your ``plone.recipe.zope2instance`` buildout part, you must set ``zodb-temporary-storage = off``,
+otherwise you get errors when starting Plone.
+See `issue 2957 <https://github.com/plone/Products.CMFPlone/issues/2957>`_.
+[maurits]
