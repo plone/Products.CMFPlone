@@ -86,21 +86,21 @@ I add a new action
   Input Text for sure  form.widgets.id  favorites
   Click Element  css=.pattern-modal-buttons > button
   Wait until page contains  favorites
-  Click Link    css=section:nth-child(7) li:last-child a
+  Click Link     css=section.category:last-child li:last-child a
   Wait until page contains  Action Settings
   Input Text for sure  form.widgets.title  My favorites
   Input Text for sure  form.widgets.url_expr  string:\${globals_view/navigationRootUrl}/favorites
   Click Element  css=.pattern-modal-buttons > button
 
 I delete an action
-  Click Button    css=section:nth-child(3) li:first-child input[name=delete]
+  Click Button    css=section:nth-child(3) li:first-child button[name=delete]
   Confirm Action
 
 I hide an action
-  Click Button    css=section:nth-child(3) li:first-child input[name=hide]
+  Click Button    css=section:nth-child(3) li:first-child button[name=hide]
 
 I unhide the action
-  Click Button    css=section:nth-child(3) li:first-child input[name=show]
+  Click Button    css=section:nth-child(3) li:first-child button[name=show]
 
 # --- THEN -------------------------------------------------------------------
 
