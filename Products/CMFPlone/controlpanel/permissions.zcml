@@ -79,4 +79,10 @@
     <role name="Site Administrator"/>
   </permission>
 
+  <permission id="plone.app.controlpanel.Relations"
+              title="Plone Site Setup: Relations">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
 </configure>

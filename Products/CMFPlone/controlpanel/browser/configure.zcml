@@ -321,4 +321,19 @@
       allowed_attributes="redirects view_url"
       />
 
+  <!-- Relations -->
+
+  <permission
+      id="Products.CMFPlone.ManageRelations"
+      title="Manage Relations"
+      />
+
+  <browser:page
+      name="Inspect relations"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".relations.RelationsInspectControlPanel"
+      template="relations_inspect.pt"
+      permission="Products.CMFPlone.ManageRelations"
+      />
+
 </configure>
