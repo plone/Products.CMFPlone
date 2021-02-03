@@ -67,16 +67,14 @@
         <input type="hidden" name="created.range:record" value="min" />
 
         <div class="mt-3">
-          <h1 i18n:translate=""
-              tal:condition="not:st">
-            Search results
-          </h1>
-          <h1 i18n:translate=""
-              tal:condition="st">
-            Search results for
-            <strong class="text-muted" id="search-term" tal:content="st" i18n:name="term">
-              Search Term
-            </strong>
+          <h1 id="search-term">
+            <span tal:condition="not:st" i18n:translate="">Search results</span>
+            <span tal:condition="st" i18n:translate="">
+              Search results for
+              <span class="text-muted" tal:content="st" i18n:name="term">
+                Search Term
+              </span>
+            </span>
           </h1>
         </div>
 
