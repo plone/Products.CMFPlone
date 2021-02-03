@@ -112,7 +112,7 @@ class Search(BrowserView):
         created = query.get('created')
         if created:
             try:
-                if created.get('query') and created['query'][0] <= EVER:
+                if created.get('query', EVER) <= EVER:
                     del query['created']
             except AttributeError:
                 # created not a mapping
