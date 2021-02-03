@@ -101,6 +101,7 @@ require([
   /* form submission */
   $('.searchPage').submit(function(e){
     e.preventDefault();
+    setBatchStart("0");
     search();
   });
 
