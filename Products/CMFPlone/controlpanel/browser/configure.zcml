@@ -329,11 +329,19 @@
       />
 
   <browser:page
-      name="Inspect relations"
+      name="inspect-relations"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".relations.RelationsInspectControlPanel"
+      class=".relations.RelationsInspectControlpanel"
       template="relations_inspect.pt"
       permission="Products.CMFPlone.ManageRelations"
+      />
+
+  <browser:page
+      name="rebuild-relations"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".relations.RelationsRebuildControlpanel"
+      template="relations_rebuild.pt"
+      permission="cmf.ManagePortal"
       />
 
 </configure>

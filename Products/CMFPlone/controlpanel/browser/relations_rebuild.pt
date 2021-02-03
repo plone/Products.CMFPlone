@@ -36,7 +36,7 @@
             <td>
               <a href=""
                  target="_blank"
-                 tal:attributes="href python:'@@relationinfo?relation={}'.format(item)"
+                 tal:attributes="href python:'@@inspect-relations?relation={}'.format(item)"
                  tal:content="python:item"
                  title="Inspect relations">
                Type
@@ -68,7 +68,7 @@
         <dd>Custom attribute/fieldname used to describe the relation</dd>
       </dl>
 
-      <form id="rebuild_relations" method="post" action="@@rebuild_relations" enctype="multipart/form-data">
+      <form id="rebuild_relations" method="post" action="@@rebuild-relations" enctype="multipart/form-data">
         <h3>Purge and rebuild relation-catalog</h3>
         <p>Clicking here will do the following:</p>
         <ul>
