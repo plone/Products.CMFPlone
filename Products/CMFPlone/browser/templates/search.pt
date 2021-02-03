@@ -9,11 +9,9 @@
 <head>
   <metal:block metal:fill-slot="head_slot">
 
-    <link rel="alternate" title="RSS 1.0" type="application/rss+xml"
-          tal:define="here_url context/@@plone_context_state/object_url;"
-          tal:condition="request/SearchableText|nothing"
-          tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}"/>
-    <link rel="home" title="Home" i18n:attributes="title" tal:attributes="href view/navroot_url" />
+    <link rel="alternate" title="RSS 1.0" type="application/rss+xml" href="${context/@@plone_context_state/object_url}/search_rss?${request/QUERY_STRING}"
+          tal:condition="request/SearchableText|nothing"/>
+    <link rel="home" title="Home" i18n:attributes="title" href="${view/navroot_url}" />
 
   </metal:block>
 
@@ -45,7 +43,7 @@
         <input type="hidden" name="sort_on" value="" />
         <input type="hidden" name="sort_order" value="" />
         <input type="hidden" id="search-batch-start" name="b_start:int" value="${request/b_start|string:0}" />
-        <input type="hidden" id="advanced-search-input" name="advanced_search" value="${python: view.show_advanced_search() and 'True' or 'False'}" />
+        <input type="hidden" id="advanced-search-input" name="advanced_search" value="${python: 'True' if view.show_advanced_search() else 'False'}" />
 
       
         <div class="input-group">
@@ -54,8 +52,8 @@
                  type="text"
                  size="25"
                  title="Search Site"
+                 value="${st}"
                  i18n:attributes="title title_search_title;"
-                 tal:attributes="value st;"
                  />
           <span class="input-group-btn">
             <input class="searchPage allowMultiSubmit btn btn-primary" type="submit"
@@ -81,8 +79,7 @@
         <div class="my-3" id="rss-subscription" i18n:domain="plone"
             tal:condition="context/@@syndication-util/search_rss_enabled">
           <a class="nav-link"
-             tal:define="here_url context/@@plone_context_state/object_url"
-             tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}">
+             href="${context/@@plone_context_state/object_url}/search_rss?${request/QUERY_STRING}">
               <img tal:replace="structure python:icons.tag('rss-fill')" />
               <span i18n:translate="title_subscribe_rss_feed">
                 Subscribe to an always-updated RSS feed.
@@ -117,20 +114,21 @@
                                   toggle_select_state python:all_checked and 'true' or 'false';">
                     <li>
                       <div class="form-check">
-                        <input type="checkbox" onchange="" name="pt_toggle" value="#" id="pt_toggle" class="form-check-input" checked="checked"
-                               tal:attributes="checked python:all_checked and 'checked' or '';" />
+                        <input type="checkbox"
+                               name="pt_toggle"
+                               value="#"
+                               id="pt_toggle"
+                               class="form-check-input"
+                               checked="${python:'checked' if all_checked else ''}" />
                         <label for="pt_toggle" class="form-check-label"
                                i18n:translate="label_toggle">Select All/None</label>
                       </div>
                     </li>
                     <li tal:repeat="type types_list">
                       <div class="form-check">
-                        <input type="checkbox" name="portal_type:list" value="#" class="form-check-input" checked="checked"
-                               tal:attributes="value type;
-                                               id string:portal_type_${repeat/type/number};
-                                               checked python:((type in request.get('portal_type', [])) or first_call) and 'checked' or ''"/>
-                        <label for="" i18n:translate="" class="form-check-label"
-                               tal:attributes="for string:portal_type_${repeat/type/number}"
+                        <input type="checkbox" name="portal_type:list" class="form-check-input" checked="checked"
+                               value="${type}" id="portal_type_${repeat/type/number}" checked="${python:'checked' if ((type in request.get('portal_type', [])) or first_call) else ''}"/>
+                        <label for="portal_type_${repeat/type/number}" i18n:translate="" class="form-check-label"
                                tal:content="python: portal_types.getTypeInfo(type).Title()" />
                       </div>
                     </li>
@@ -148,32 +146,28 @@
                     <li>
                       <div class="form-check">
                         <input type="radio" id="query-date-yesterday" name="created.query:record:date" class="form-check-input"
-                               tal:attributes="value yesterday;
-                                               checked python:checked==yesterday and 'checked' or '';" />
+                               value="${yesterday}" checked="${python:'checked' if checked==yesterday else ''" />
                         <label for="query-date-yesterday" i18n:translate="time_yesterday" class="form-check-label">Yesterday</label>
                       </div>
                     </li>
                     <li>
                       <div class="form-check">
                         <input type="radio" id="query-date-lastweek" name="created.query:record:date" class="form-check-input"
-                               tal:attributes="value lastweek;
-                                               checked python:checked==lastweek and 'checked' or '';" />
+                               value="${lastweek}" checked="${python:'checked' if checked==lastweek else ''}" />
                         <label for="query-date-lastweek" i18n:translate="time_last_week" class="form-check-label">Last week</label>
                       </div>
                     </li>
                     <li>
                       <div class="form-check">
                         <input type="radio" id="query-date-lastmonth" name="created.query:record:date" class="form-check-input"
-                               tal:attributes="value lastmonth;
-                                               checked python:checked==lastmonth and 'checked' or '';" />
+                               value="${lastmonth}" checked="${python:'checked' if checked==lastmonth else ''}" />
                         <label for="query-date-lastmonth" i18n:translate="time_last_month" class="form-check-label">Last month</label>
                       </div>
                     </li>
                     <li>
                       <div class="form-check">
                         <input type="radio" id="query-date-ever" name="created.query:record:date" class="form-check-input"
-                               tal:attributes="value ever;
-                                               checked python:checked==ever and 'checked' or '';" />
+                               value="${ever}" checked="${python:'checked' if checked==ever else ''}" />
                         <label for="query-date-ever" i18n:translate="time_ever" class="form-check-label">Ever</label>
                       </div>
                     </li>
@@ -187,10 +181,9 @@
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" i18n:translate="sort_by">Sort by</a>
             <ul class="dropdown-menu dropdown-menu-md-end" id="sorting-options">
               <li tal:repeat="item view/sort_options">
-                <a class="dropdown-item" data-sort="" tal:content="item/title"
-                   tal:attributes="href item/url;
-                                   data-sort python:item.sortkey and item.sortkey or None;
-                                   data-order python: item.reverse and 'reverse' or ''"></a>
+                <a class="dropdown-item" href="${item/url}"
+                   data-sort="${item/sortkey}" data-order="${python:'reverse' if item.reverse else ''}"
+                   tal:content="item/title">sort option</a>
               </li>
             </ul>
           </li>
@@ -204,7 +197,7 @@
 
             <div id="search-results"
                  tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;"
-                 tal:attributes="data-default-sort python:request.get('sort_on') or view.default_sort_on">
+                 data-default-sort="${python:request.get('sort_on') or view.default_sort_on}">
 
               <metal:noresults tal:condition="not: batch">
                 <div class="alert alert-info" i18n:translate="description_no_results_found">No results were found.</div>
@@ -224,11 +217,10 @@
                         <img class="thumb-icon"
                              tal:condition="hasIcon"
                              tal:replace="structure python: image_scale.tag(item, 'image', scale='icon', css_class='thumb-icon')">
-                        <a href="#"
+                        <a href="${python:(item_url + '/view') if item_type in use_view_action else item_url}"
+                           class="state-${item/review_state}"
                            tal:define="item_url item/getURL;
                                        item_type item/PortalType"
-                           tal:attributes="href python:item_type in use_view_action and (item_url + '/view') or item_url;
-                                           class string:state-${item/review_state}"
                            tal:content="python:item.getDataOrigin().pretty_title_or_id()" />
                       </span>
 
@@ -239,8 +231,7 @@
                           by
                           <tal:block tal:condition="item/Creator"
                                      tal:define="author python:context.portal_membership.getMemberInfo(item.Creator())">
-                            <a href="#"
-                               tal:attributes="href string:$navigation_root_url/author/${item/Creator}"
+                            <a href="${navigation_root_url}/author/${item/Creator}"
                                tal:content="python:author and author['fullname'] or item.Creator()"
                                tal:omit-tag="not:item/Creator"
                                i18n:name="author">
@@ -276,8 +267,8 @@
                           &mdash;
                           <tal:filedunder i18n:translate="">filed under:</tal:filedunder>
                           <span tal:repeat="category categories">
-                            <a href="" class="link-category" rel="tag" tal:content="category"
-                               tal:attributes="href string:$navigation_root_url/@@search?Subject%3Alist=${category}">
+                            <a href="${navigation_root_url}/@@search?Subject%3Alist=${category}" class="link-category" rel="tag"
+                               tal:content="category">
                               Category
                             </a><tal:separator condition="not: repeat/category/end">,</tal:separator>
                           </span>
@@ -296,12 +287,12 @@
                         <span i18n:translate="text_searchitem_location">
                           Located in
                         </span>
-                        <span tal:repeat="crumb breadcrumbs"
-                              tal:attributes="dir python:is_rtl and 'rtl' or 'ltr';">
+                        <span dir="${python:'rtl' if is_rtl else 'ltr'"
+                              tal:repeat="crumb breadcrumbs">
                           <tal:item tal:define="is_last repeat/crumb/end;
                                                 url crumb/absolute_url;
                                                 title crumb/Title">
-                            <a href="#" tal:omit-tag="not: url" tal:attributes="href url" tal:content="title">crumb</a>
+                            <a href="${url}" tal:omit-tag="not: url" tal:content="title">crumb</a>
                             <span class="breadcrumbSeparator" tal:condition="not: is_last">
                               <tal:ltr condition="not: is_rtl">/</tal:ltr>
                               <tal:rtl condition="is_rtl">/</tal:rtl>
