@@ -44,8 +44,8 @@
 
         <input type="hidden" name="sort_on" value="" />
         <input type="hidden" name="sort_order" value="" />
-        <input type="hidden" id="advanced-search-input" name="advanced_search"
-               tal:attributes="value python: view.show_advanced_search() and 'True' or 'False'" />
+        <input type="hidden" id="search-batch-start" name="b_start:int" value="${request/b_start|string:0}" />
+        <input type="hidden" id="advanced-search-input" name="advanced_search" value="${python: view.show_advanced_search() and 'True' or 'False'}" />
 
       
         <div class="input-group">
@@ -219,7 +219,7 @@
                                          allowAnonymousViewAbout python:context.portal_registry['plone.allow_anon_views_about'];
                                          show_about python:not isAnon or allowAnonymousViewAbout;
                                          image_scale portal/@@image_scale">
-                <ol class="searchResults">
+                <ol class="searchResults" start="${python:request.get('b_start', 0) + 1}">
                   <tal:results repeat="item batch">
                     <li tal:define="hasIcon item/getIcon" class="my-3 pb-3 border-bottom">
                       <span class="result-title">

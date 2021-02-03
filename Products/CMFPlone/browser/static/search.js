@@ -127,4 +127,17 @@ require([
   $('input', $filter).change(function(){
     searchDelayed();
   });
+
+  /* pagination */
+  $("#searchform").on("click", ".pagination a", function(e) {
+    var urlParams = new URLSearchParams($(e.currentTarget).attr("href")),
+        b_start = urlParams.get("b_start:int");
+    if(!b_start) {
+      // not plone pagination
+      return;
+    }
+    e.preventDefault();
+    $("#search-batch-start").attr("value", b_start);
+    search();
+  })
 });
