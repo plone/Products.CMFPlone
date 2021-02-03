@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 from collections import Counter
 from collections import defaultdict
 from five.intid.intid import addIntIdSubscriber
@@ -41,7 +40,7 @@ class RelationsRebuildControlpanel(BrowserView):
         if rebuild:
             rebuild_relations(flush_and_rebuild_intids=flush_and_rebuild_intids)
             self.done = True
-            api.portal.show_message(u'Finished! See log for details.', self.request)
+            api.portal.show_message('Finished! See log for details.', self.request)
 
         self.relations_stats = get_relations_stats()
         return self.index()
@@ -58,7 +57,7 @@ class RelationsInspectControlpanel(BrowserView):
         view_action = api.portal.get_registry_record('plone.types_use_view_action_in_listings')
 
         if not self.relation:
-            api.portal.show_message(u'Please select a relation', self.request)
+            api.portal.show_message('Please select a relation', self.request)
             return self.index()
 
         intids = queryUtility(IIntIds)
@@ -139,13 +138,13 @@ def get_all_relations():
                 })
                 info[rel.from_attribute] += 1
             except AttributeError as ex:
-                logger.info(u'Something went wrong while storing {0}: \n {1}'.format(rel, ex))
+                logger.info('Something went wrong while storing {0}: \n {1}'.format(rel, ex))
         else:
-            logger.info(u'Dropping relation {} from {} to {}'.format(rel.from_attribute, rel.from_object, rel.to_object))
+            logger.info('Dropping relation {} from {} to {}'.format(rel.from_attribute, rel.from_object, rel.to_object))
     msg = ''
     for k, v in info.items():
-        msg += u'{}: {}\n'.format(k, v)
-    logger.info(u'\nFound the following relations:\n{}'.format(msg))
+        msg += '{}: {}\n'.format(k, v)
+    logger.info('\nFound the following relations:\n{}'.format(msg))
     return results
 
 
@@ -205,7 +204,7 @@ def restore_relations(context=None, all_relations=None):
             unique_relations.append(i)
             seen_add(hashable)
         else:
-            logger.info(u'Dropping duplicate: {}'.format(hashable))
+            logger.info('Dropping duplicate: {}'.format(hashable))
 
     if len(unique_relations) < len(all_relations):
         logger.info('Dropping {0} duplicates'.format(
@@ -215,24 +214,24 @@ def restore_relations(context=None, all_relations=None):
     intids = getUtility(IIntIds)
     for index, item in enumerate(all_relations, start=1):
         if not index % 500:
-            logger.info(u'Restored {} of {} relations...'.format(index, len(all_relations)))
+            logger.info('Restored {} of {} relations...'.format(index, len(all_relations)))
         source_obj = uuidToObject(item['from_uuid'])
         target_obj = uuidToObject(item['to_uuid'])
 
         if not source_obj:
-            logger.info(u'{} is missing'.format(item['from_uuid']))
+            logger.info('{} is missing'.format(item['from_uuid']))
             continue
 
         if not target_obj:
-            logger.info(u'{} is missing'.format(item['to_uuid']))
+            logger.info('{} is missing'.format(item['to_uuid']))
             continue
 
         if not IDexterityContent.providedBy(source_obj):
-            logger.info(u'{} is no dexterity content'.format(source_obj.portal_type))
+            logger.info('{} is no dexterity content'.format(source_obj.portal_type))
             continue
 
         if not IDexterityContent.providedBy(target_obj):
-            logger.info(u'{} is no dexterity content'.format(target_obj.portal_type))
+            logger.info('{} is no dexterity content'.format(target_obj.portal_type))
             continue
 
         from_attribute = item['from_attribute']
@@ -254,7 +253,7 @@ def restore_relations(context=None, all_relations=None):
         if field_and_schema is None:
             # the from_attribute is no field
             # we could either create a fresh relation or log the case
-            logger.info(u'No field. Setting relation: {}'.format(item))
+            logger.info('No field. Setting relation: {}'.format(item))
             event._setRelation(source_obj, from_attribute, RelationValue(to_id))
             continue
 

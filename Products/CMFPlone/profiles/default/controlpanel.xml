@@ -199,4 +199,13 @@
     i18n:attributes="title">
   <permission>Manage Portal Aliases</permission>
  </configlet>
+ <configlet title="Relations" action_id="inspectrelations"
+    icon_expr="string:$portal_url/action_icon.png"
+    appId="Plone" category="plone-content"
+    condition_expr=""
+    url_expr="string:${portal_url}/@@inspect-relations"
+    visible="True"
+    i18n:attributes="title">
+  <permission>Manage Relations</permission>
+ </configlet>
 </object>

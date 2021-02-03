@@ -29,7 +29,7 @@
     <div id="content-core"
          tal:define="relations_stats python: view.relations_stats">
 
-      <form id="relationinfo" method="post" action="@@relationinfo" enctype="multipart/form-data">
+      <form id="relationinfo" method="post" action="@@inspect-relations" enctype="multipart/form-data">
 
         <div class="mb-3 field">
           <select class="form-select" aria-label="Default select example" name="relation" id="relation">
