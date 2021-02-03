@@ -80,6 +80,18 @@
           </h1>
         </div>
 
+        <div class="my-3" id="rss-subscription" i18n:domain="plone"
+            tal:condition="context/@@syndication-util/search_rss_enabled">
+          <a class="nav-link"
+             tal:define="here_url context/@@plone_context_state/object_url"
+             tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}">
+              <img tal:replace="structure python:icons.tag('rss-fill')" />
+              <span i18n:translate="title_subscribe_rss_feed">
+                Subscribe to an always-updated RSS feed.
+              </span>
+          </a>
+        </div>
+
         <ul class="nav nav-tabs">
 
           <li class="nav-item">
@@ -92,82 +104,90 @@
             </a>
           </li>
 
-          <li class="nav-item dropdown ms-auto">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" i18n:translate="label_item_type">Item type</a>
-            <ul class="dropdown-menu"
-                tal:define="portal_types portal/portal_types;
-                            types_list view/types_list;
-                            all_checked python:(len(types_list) == len(request.get('portal_type', []))) or first_call;
-                            toggle_select_state python:all_checked and 'true' or 'false';">
-              <li>
-                <div class="form-check">
-                  <input type="checkbox" onchange="" name="pt_toggle" value="#" id="pt_toggle" class="form-check-input" checked="checked"
-                         tal:attributes="checked python:all_checked and 'checked' or '';" />
-                  <label for="pt_toggle" class="form-check-label"
-                         i18n:translate="label_toggle">Select All/None</label>
+          <li class="nav-item dropdown ms-auto" id="search-filter">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" id="search-filter-toggle" i18n:translate="narrow_search_options">
+              Filter the results
+            </a>
+            <div class="dropdown-menu dropdown-menu-md-end">
+              <div class="d-flex text-nowrap">
+                <div class="mx-3">
+                  <span class="fw-bold" i18n:translate="label_item_type">Item type</span>
+                  <ul class="list-unstyled search-type-options"
+                      tal:define="portal_types portal/portal_types;
+                                  types_list view/types_list;
+                                  all_checked python:(len(types_list) == len(request.get('portal_type', []))) or first_call;
+                                  toggle_select_state python:all_checked and 'true' or 'false';">
+                    <li>
+                      <div class="form-check">
+                        <input type="checkbox" onchange="" name="pt_toggle" value="#" id="pt_toggle" class="form-check-input" checked="checked"
+                               tal:attributes="checked python:all_checked and 'checked' or '';" />
+                        <label for="pt_toggle" class="form-check-label"
+                               i18n:translate="label_toggle">Select All/None</label>
+                      </div>
+                    </li>
+                    <li tal:repeat="type types_list">
+                      <div class="form-check">
+                        <input type="checkbox" name="portal_type:list" value="#" class="form-check-input" checked="checked"
+                               tal:attributes="value type;
+                                               id string:portal_type_${repeat/type/number};
+                                               checked python:((type in request.get('portal_type', [])) or first_call) and 'checked' or ''"/>
+                        <label for="" i18n:translate="" class="form-check-label"
+                               tal:attributes="for string:portal_type_${repeat/type/number}"
+                               tal:content="python: portal_types.getTypeInfo(type).Title()" />
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-              </li>
-              <li tal:repeat="type types_list">
-                <div class="form-check">
-                  <input type="checkbox" name="portal_type:list" value="#" class="form-check-input" checked="checked"
-                         tal:attributes="value type;
-                                         id string:portal_type_${repeat/type/number};
-                                         checked python:((type in request.get('portal_type', [])) or first_call) and 'checked' or ''"/>
-                  <label for="" i18n:translate="" class="form-check-label"
-                         tal:attributes="for string:portal_type_${repeat/type/number}"
-                         tal:content="python: portal_types.getTypeInfo(type).Title()" />
+                <div class="mx-3">
+                  <span class="fw-bold" i18n:translate="label_new_items_since">New items since</span>
+                  <ul class="list-unstyled"
+                      tal:define="today python:DateTime().earliestTime();
+                                  yesterday python:(today-1).ISO();
+                                  lastweek python:(today-7).ISO();
+                                  lastmonth python:(today-31).ISO();
+                                  ever python:DateTime('1970-01-02').ISO();
+                                  checked python:request.get('created', {}).get('query', ever)">
+                    <li>
+                      <div class="form-check">
+                        <input type="radio" id="query-date-yesterday" name="created.query:record:date" class="form-check-input"
+                               tal:attributes="value yesterday;
+                                               checked python:checked==yesterday and 'checked' or '';" />
+                        <label for="query-date-yesterday" i18n:translate="time_yesterday" class="form-check-label">Yesterday</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="form-check">
+                        <input type="radio" id="query-date-lastweek" name="created.query:record:date" class="form-check-input"
+                               tal:attributes="value lastweek;
+                                               checked python:checked==lastweek and 'checked' or '';" />
+                        <label for="query-date-lastweek" i18n:translate="time_last_week" class="form-check-label">Last week</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="form-check">
+                        <input type="radio" id="query-date-lastmonth" name="created.query:record:date" class="form-check-input"
+                               tal:attributes="value lastmonth;
+                                               checked python:checked==lastmonth and 'checked' or '';" />
+                        <label for="query-date-lastmonth" i18n:translate="time_last_month" class="form-check-label">Last month</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="form-check">
+                        <input type="radio" id="query-date-ever" name="created.query:record:date" class="form-check-input"
+                               tal:attributes="value ever;
+                                               checked python:checked==ever and 'checked' or '';" />
+                        <label for="query-date-ever" i18n:translate="time_ever" class="form-check-label">Ever</label>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" i18n:translate="label_new_items_since">New items since</a>
-            <ul class="dropdown-menu"
-                tal:define="today python:DateTime().earliestTime();
-                        yesterday python:(today-1).ISO();
-                        lastweek python:(today-7).ISO();
-                        lastmonth python:(today-31).ISO();
-                        ever python:DateTime('1970-01-02').ISO();
-                        checked python:request.get('created', {}).get('query', ever)">
-              <li>
-                <div class="form-check">
-                  <input type="radio" id="query-date-yesterday" name="created.query:record:date" class="form-check-input"
-                         tal:attributes="value yesterday;
-                                         checked python:checked==yesterday and 'checked' or '';" />
-                  <label for="query-date-yesterday" i18n:translate="time_yesterday" class="form-check-label">Yesterday</label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check">
-                  <input type="radio" id="query-date-lastweek" name="created.query:record:date" class="form-check-input"
-                         tal:attributes="value lastweek;
-                                         checked python:checked==lastweek and 'checked' or '';" />
-                  <label for="query-date-lastweek" i18n:translate="time_last_week" class="form-check-label">Last week</label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check">
-                  <input type="radio" id="query-date-lastmonth" name="created.query:record:date" class="form-check-input"
-                         tal:attributes="value lastmonth;
-                                         checked python:checked==lastmonth and 'checked' or '';" />
-                  <label for="query-date-lastmonth" i18n:translate="time_last_month" class="form-check-label">Last month</label>
-                </div>
-              </li>
-              <li>
-                <div class="form-check">
-                  <input type="radio" id="query-date-ever" name="created.query:record:date" class="form-check-input"
-                         tal:attributes="value ever;
-                                         checked python:checked==ever and 'checked' or '';" />
-                  <label for="query-date-ever" i18n:translate="time_ever" class="form-check-label">Ever</label>
-                </div>
-              </li>
-            </ul>
+              </div>
+            </div>
           </li>
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" i18n:translate="sort_by">Sort by</a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu dropdown-menu-md-end" id="sorting-options">
               <li tal:repeat="item view/sort_options">
                 <a class="dropdown-item" data-sort="" tal:content="item/title"
                    tal:attributes="href item/url;
@@ -177,17 +197,6 @@
             </ul>
           </li>
 
-          <!--li class="ms-auto" id="rss-subscription" i18n:domain="plone"
-              tal:condition="context/@@syndication-util/search_rss_enabled">
-            <a class="nav-link"
-               tal:define="here_url context/@@plone_context_state/object_url"
-               tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}">
-                <img tal:replace="structure python:icons.tag('rss-fill')" />
-                <span i18n:translate="title_subscribe_rss_feed">
-                  Subscribe to an always-updated RSS feed.
-                </span>
-            </a>
-          </li-->
         </ul>
             
 
@@ -200,7 +209,7 @@
                  tal:attributes="data-default-sort python:request.get('sort_on') or view.default_sort_on">
 
               <metal:noresults tal:condition="not: batch">
-                <div class="alert alert-secondary" i18n:translate="description_no_results_found">No results were found.</div>
+                <div class="alert alert-info" i18n:translate="description_no_results_found">No results were found.</div>
               </metal:noresults>
 
               <metal:results tal:condition="batch"
@@ -210,7 +219,7 @@
                                          allowAnonymousViewAbout python:context.portal_registry['plone.allow_anon_views_about'];
                                          show_about python:not isAnon or allowAnonymousViewAbout;
                                          image_scale portal/@@image_scale">
-                <ol class="searchResults list-unstyled">
+                <ol class="searchResults">
                   <tal:results repeat="item batch">
                     <li tal:define="hasIcon item/getIcon" class="my-3 pb-3 border-bottom">
                       <span class="result-title">

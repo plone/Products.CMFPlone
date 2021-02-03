@@ -16,11 +16,11 @@ require([
 
   var $loader = $('.plone-loader');
   if($loader.length === 0){
-    $loader = $('<div class="plone-loader"><div class="loader"/></div>');
+    $loader = $('<div class="plone-loader"><div class="spinner-border text-secondary" role="status"></div></div>');
     $('body').append($loader);
   }
 
-  var $filter = $('.actionMenu');
+  var $filter = $('#search-filter');
   var $filterBtn = $('#search-filter-toggle', $filter);
   var $advSearchInput = $('#advanced-search-input');
   var $ctSelectAll = $('#pt_toggle');
