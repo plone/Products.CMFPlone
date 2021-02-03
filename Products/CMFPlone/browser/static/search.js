@@ -65,6 +65,10 @@ require([
     timeout = setTimeout(search, 200);
   };
 
+  var setBatchStart = function(b_start){
+    $("#search-batch-start").attr("value", b_start);
+  };
+
   // for sorme reason the backend always flag with active class the sorting options
   var updateSortingState = function($el){
     $('a', $sortingContainer).removeClass('active');
@@ -125,6 +129,7 @@ require([
   });
 
   $('input', $filter).change(function(){
+    setBatchStart("0");
     searchDelayed();
   });
 
@@ -137,7 +142,7 @@ require([
       return;
     }
     e.preventDefault();
-    $("#search-batch-start").attr("value", b_start);
+    setBatchStart(b_start);
     search();
   })
 });
