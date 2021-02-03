@@ -291,7 +291,7 @@
                         Cropped description
                       </div>
 
-                      <cite class="blockquote-footer"
+                      <cite class="d-block small text-muted"
                             tal:define="breadcrumbs python: view.breadcrumbs(item);
                                         is_rtl context/@@plone_portal_state/is_rtl;"
                             tal:condition='breadcrumbs'>
