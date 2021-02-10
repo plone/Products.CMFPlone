@@ -102,12 +102,6 @@ class DefaultPageTestCase(unittest.TestCase):
         # now it must acquire from portal
         self.assertEqual('d1', get_default_page(self.folder))
 
-        # fetch from i.e. portal_skins by acquisition
-        # test_rendering.pt is in portal_skins/plone_templates and so available
-        # by acquisition
-        self.folder.default_page = 'test_rendering'
-        self.assertEqual('test_rendering', get_default_page(self.folder))
-
     def test_get_default_page_step_4(self):
         # 4. Else, look up the property default_page in site_properties for
         #   magic ids and test these
