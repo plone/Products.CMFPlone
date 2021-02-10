@@ -29,7 +29,7 @@ class IconsTest(unittest.TestCase):
         page = self.app
         view = page.restrictedTraverse('@@iconresolver')
         self.assertIn(
-            '++plone++static/components/bootstrap-icons/icons/bug.svg',
+            '++plone++bootstrap-icons/bug.svg',
             view.url('bug')
         )
 
