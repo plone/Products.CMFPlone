@@ -9,7 +9,6 @@ from plone.app.linkintegrity.utils import referencedRelationship
 from plone.app.relationfield.event import update_behavior_relations
 from plone.app.uuid.utils import uuidToObject
 from plone.dexterity.interfaces import IDexterityContent
-from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.utils import iterSchemataForType
 from Products.CMFCore.interfaces import IContentish
 from Products.Five.browser import BrowserView
@@ -138,13 +137,13 @@ def get_all_relations():
                 })
                 info[rel.from_attribute] += 1
             except AttributeError as ex:
-                logger.info('Something went wrong while storing {0}: \n {1}'.format(rel, ex))
+                logger.info(f'Something went wrong while storing {rel}: \n {ex}')
         else:
-            logger.info('Dropping relation {} from {} to {}'.format(rel.from_attribute, rel.from_object, rel.to_object))
+            logger.info(f'Dropping relation {rel.from_attribute} from {rel.from_object} to {rel.to_object}')
     msg = ''
     for k, v in info.items():
-        msg += '{}: {}\n'.format(k, v)
-    logger.info('\nFound the following relations:\n{}'.format(msg))
+        msg += f'{k}: {v}\n'
+    logger.info(f'\nFound the following relations:\n{msg}')
     return results
 
 
@@ -154,20 +153,7 @@ def store_relations(context=None):
     all_relations = get_all_relations()
     portal = api.portal.get()
     IAnnotations(portal)[RELATIONS_KEY] = all_relations
-    logger.info('Stored {0} relations on the portal'.format(
-        len(all_relations))
-    )
-
-
-def export_relations(context=None):
-    """Store all relations in a annotation on the portal.
-    """
-    all_relations = get_all_relations()
-    with open('all_relations.json', 'w') as f:
-        json.dump(all_relations, f)
-        logger.info('Stored {0} relations as all_relations.json'.format(
-            len(all_relations))
-        )
+    logger.info(f'Stored {len(all_relations)} relations on the portal')
 
 
 def purge_relations(context=None):
@@ -187,9 +173,7 @@ def restore_relations(context=None, all_relations=None):
     portal = api.portal.get()
     if all_relations is None:
         all_relations = IAnnotations(portal)[RELATIONS_KEY]
-    logger.info('Loaded {0} relations to restore'.format(
-        len(all_relations))
-    )
+    logger.info(f'Loaded {len(all_relations)} relations to restore')
     update_linkintegrity = set()
     modified_items = set()
     modified_relation_lists = defaultdict(list)
@@ -198,40 +182,39 @@ def restore_relations(context=None, all_relations=None):
     unique_relations = []
     seen = set()
     seen_add = seen.add
-    for i in all_relations:
-        hashable = tuple(i.items())
+    for rel in all_relations:
+        hashable = tuple(rel.items())
         if hashable not in seen:
-            unique_relations.append(i)
+            unique_relations.append(rel)
             seen_add(hashable)
         else:
-            logger.info('Dropping duplicate: {}'.format(hashable))
+            logger.info(f'Dropping duplicate: {hashable}')
 
     if len(unique_relations) < len(all_relations):
-        logger.info('Dropping {0} duplicates'.format(
-            len(all_relations) - len(unique_relations)))
+        logger.info(f'Dropping {len(all_relations) - len(unique_relations)} duplicates')
         all_relations = unique_relations
 
     intids = getUtility(IIntIds)
     for index, item in enumerate(all_relations, start=1):
         if not index % 500:
-            logger.info('Restored {} of {} relations...'.format(index, len(all_relations)))
+            logger.info(f'Restored {index} of {len(all_relations)} relations...')
         source_obj = uuidToObject(item['from_uuid'])
         target_obj = uuidToObject(item['to_uuid'])
 
         if not source_obj:
-            logger.info('{} is missing'.format(item['from_uuid']))
+            logger.info(f'{item["from_uuid"]} is missing')
             continue
 
         if not target_obj:
-            logger.info('{} is missing'.format(item['to_uuid']))
+            logger.info(f'{item["to_uuid"]} is missing')
             continue
 
         if not IDexterityContent.providedBy(source_obj):
-            logger.info('{} is no dexterity content'.format(source_obj.portal_type))
+            logger.info(f'{source_obj} is no dexterity content')
             continue
 
         if not IDexterityContent.providedBy(target_obj):
-            logger.info('{} is no dexterity content'.format(target_obj.portal_type))
+            logger.info(f'{target_obj} is no dexterity content')
             continue
 
         from_attribute = item['from_attribute']
@@ -248,12 +231,10 @@ def restore_relations(context=None, all_relations=None):
             event._setRelation(source_obj, ITERATE_RELATION_NAME, relation)
             continue
 
-        fti = getUtility(IDexterityFTI, name=source_obj.portal_type)
-        field_and_schema = get_field_and_schema_for_fieldname(from_attribute, fti)
+        field_and_schema = get_field_and_schema_for_fieldname(from_attribute, source_obj.portal_type)
         if field_and_schema is None:
             # the from_attribute is no field
-            # we could either create a fresh relation or log the case
-            logger.info('No field. Setting relation: {}'.format(item))
+            logger.info(f'No field. Setting relation: {item}')
             event._setRelation(source_obj, from_attribute, RelationValue(to_id))
             continue
 
@@ -261,8 +242,7 @@ def restore_relations(context=None, all_relations=None):
         relation = RelationValue(to_id)
 
         if isinstance(field, RelationList):
-            logger.info('Add relation to relationslist {} from {} to {}'.format(
-                from_attribute, source_obj.absolute_url(), target_obj.absolute_url()))
+            logger.info(f'Add relation to relationslist {from_attribute} from {source_obj.absolute_url()} to {target_obj.absolute_url()}')
             if item['from_uuid'] in modified_relation_lists.get(from_attribute, []):
                 # Do not purge relations
                 existing_relations = getattr(source_obj, from_attribute, [])
@@ -276,22 +256,20 @@ def restore_relations(context=None, all_relations=None):
             continue
 
         elif isinstance(field, (Relation, RelationChoice)):
-            logger.info('Add relation {} from {} to {}'.format(
-                from_attribute, source_obj.absolute_url(), target_obj.absolute_url()))
+            logger.info(f'Add relation {from_attribute} from {source_obj.absolute_url()} to {target_obj.absolute_url()}')
             setattr(source_obj, from_attribute, relation)
             modified_items.add(item['from_uuid'])
             continue
 
         else:
             # we should never end up here!
-            logger.info('Warning: Unexpected relation {} from {} to {}'.format(
-                from_attribute, source_obj.absolute_url(), target_obj.absolute_url()))
+            logger.warn(f'Unexpected relation {from_attribute} from {source_obj.absolute_url()} to {target_obj.absolute_url()}')
 
     update_linkintegrity = set(update_linkintegrity)
-    logger.info('Updating linkintegrity for {} items'.format(len(update_linkintegrity)))
+    logger.info(f'Updating linkintegrity for {len(update_linkintegrity)} items')
     for uuid in sorted(update_linkintegrity):
         modifiedContent(uuidToObject(uuid), None)
-    logger.info('Updating relations for {} items'.format(len(modified_items)))
+    logger.info(f'Updating relations for {len(modified_items)} items')
     for uuid in sorted(modified_items):
         obj = uuidToObject(uuid)
         # updateRelations from z3c.relationfield does not properly update relations in behaviors
@@ -320,12 +298,12 @@ def get_intid(obj):
         return
 
 
-def get_field_and_schema_for_fieldname(field_id, fti):
-    """Get field and its schema from a fti.
+def get_field_and_schema_for_fieldname(field_id, portal_type):
+    """Get field and its schema from a portal_type.
     """
     # Turn form.widgets.IDublinCore.title into title
     field_id = field_id.split('.')[-1]
-    for schema in iterSchemataForType(fti):
+    for schema in iterSchemataForType(portal_type):
         field = schema.get(field_id, None)
         if field is not None:
             return (field, schema)
@@ -333,7 +311,7 @@ def get_field_and_schema_for_fieldname(field_id, fti):
 
 def cleanup_intids(context=None):
     intids = getUtility(IIntIds)
-    all_refs = ['{}.{}'.format(i.object.__class__.__module__, i.object.__class__.__name__)
+    all_refs = [f'{i.object.__class__.__module__}.{i.object.__class__.__name__}'
                 for i in intids.refs.values()]
     logger.info(Counter(all_refs))
 
@@ -342,14 +320,14 @@ def cleanup_intids(context=None):
     for ref in refs:
         intids.unregister(ref)
         count += 1
-    logger.info('Removed all {} RelationValues from IntId-tool'.format(count))
+    logger.info(f'Removed all {count} RelationValues from IntId-tool')
 
     count = 0
     for ref in intids.refs.values():
         if 'broken' in repr(ref.object):
             intids.unregister(ref)
-    logger.info('Removed {} broken refs from IntId-tool'.format(count))
-    all_refs = ['{}.{}'.format(i.object.__class__.__module__, i.object.__class__.__name__)
+    logger.info(f'Removed {count} broken refs from IntId-tool')
+    all_refs = ['{i.object.__class__.__module__}.{i.object.__class__.__name__}'
                 for i in intids.refs.values()]
     logger.info(Counter(all_refs))
 
@@ -367,7 +345,7 @@ def rebuild_intids():
     """
     def add_to_intids(obj, path):
         if IContentish.providedBy(obj):
-            logger.info('Added {0} at {1} to intid'.format(obj, path))
+            logger.info(f'Added {obj} at {path} to intid')
             addIntIdSubscriber(obj, None)
     portal = api.portal.get()
     portal.ZopeFindAndApply(portal,

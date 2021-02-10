@@ -79,8 +79,8 @@
     <role name="Site Administrator"/>
   </permission>
 
-  <permission id="plone.app.controlpanel.Relations"
-              title="Plone Site Setup: Relations">
+  <permission id="Products.CMFPlone.InspectRelations"
+              title="Inspect Relations">
     <role name="Manager"/>
     <role name="Site Administrator"/>
   </permission>

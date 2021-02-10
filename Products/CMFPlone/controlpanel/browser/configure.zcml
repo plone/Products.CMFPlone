@@ -323,17 +323,12 @@
 
   <!-- Relations -->
 
-  <permission
-      id="Products.CMFPlone.ManageRelations"
-      title="Manage Relations"
-      />
-
   <browser:page
       name="inspect-relations"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".relations.RelationsInspectControlpanel"
       template="relations_inspect.pt"
-      permission="Products.CMFPlone.ManageRelations"
+      permission="Products.CMFPlone.InspectRelations"
       />
 
   <browser:page
