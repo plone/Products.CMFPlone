@@ -1,20 +1,17 @@
 from AccessControl import ClassSecurityInfo
-from AccessControl import Permissions
 from AccessControl import Unauthorized
 from AccessControl.class_init import InitializeClass
 from Acquisition import aq_base
 from ComputedAttribute import ComputedAttribute
 from OFS.ObjectManager import REPLACEABLE
+from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from Products.CMFCore import permissions
 from Products.CMFCore.PortalObject import PortalObjectBase
-from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
-from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
-from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone import bbb
-from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
-from Products.CMFPlone.PloneFolder import OrderedContainer
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.interfaces.syndication import ISyndicatable
 from Products.CMFPlone.permissions import AddPortalContent
@@ -23,34 +20,32 @@ from Products.CMFPlone.permissions import ListPortalMembers
 from Products.CMFPlone.permissions import ModifyPortalContent
 from Products.CMFPlone.permissions import ReplyToItem
 from Products.CMFPlone.permissions import View
-from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from zope.component import queryUtility
 from zope.interface import implementer
+from five.localsitemanager.registry import PersistentComponents
+from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.dexterity.content import Container
+from Products.CMFCore.interfaces import IContentish
+from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.permissions import AddPortalMember
+from Products.CMFCore.permissions import MailForgottenPassword
+from Products.CMFCore.permissions import RequestReview
+from Products.CMFCore.permissions import ReviewPortalContent
+from Products.CMFCore.permissions import SetOwnPassword
+from Products.CMFCore.permissions import SetOwnProperties
+from Products.CMFCore.Skinnable import SkinnableObjectManager
+from Products.Five.component.interfaces import IObjectManagerSite
+from zope.component.interfaces import ComponentLookupError
+from zope.event import notify
+from zope.interface import classImplementsOnly
+from zope.interface import implementedBy
+from zope.traversing.interfaces import BeforeTraverseEvent
+
+from Products.CMFCore.PortalFolder import PortalFolderBase
 
 if bbb.HAS_ZSERVER:
     from webdav.NullResource import NullResource
 
-
-from zope.interface import classImplementsOnly, implementedBy
-
-# hackydihack
-from plone.dexterity.content import Container
-from five.localsitemanager.registry import PersistentComponents
-from Products.CMFCore.interfaces import ISiteRoot, IContentish
-from Products.Five.component.interfaces import IObjectManagerSite
-from Products.CMFCore.permissions import AddPortalMember
-from Products.CMFCore.permissions import SetOwnPassword
-from Products.CMFCore.permissions import SetOwnProperties
-from Products.CMFCore.permissions import MailForgottenPassword
-from Products.CMFCore.permissions import RequestReview
-from Products.CMFCore.permissions import ReviewPortalContent
-from Products.CMFCore.Skinnable import SkinnableObjectManager
-from plone.app.layout.navigation.interfaces import INavigationRoot
-
-from zope.event import notify
-from zope.component.interfaces import ComponentLookupError
-
-from zope.traversing.interfaces import BeforeTraverseEvent
 
 
 PORTAL_SKINS_TOOL_ID = 'portal_skins'
@@ -71,6 +66,7 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
 
     # Ensure certain attributes come from the correct base class.
     _checkId = SkinnableObjectManager._checkId
+    manage_main = PortalFolderBase.manage_main
 
     def __getattr__(self, name):
         try:
