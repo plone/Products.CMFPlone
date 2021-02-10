@@ -328,6 +328,7 @@ we expect ${NUM} hits
     #This assumes we have the 2 "Test document" and "Test folder" items from the
     #robot setup, as well as the 4 additional items from the "a bunch of folders" macro
     #works only for ${NUM} > 0
+    Sleep  0.5s
     Wait until result is no longer marked
     ${hits}=  Execute Javascript  return $('.searchResults > dd').length
     Should Be Equal As Integers  ${hits}  ${NUM}
