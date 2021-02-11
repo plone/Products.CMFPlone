@@ -23,7 +23,6 @@ class UserGroupsSettingsControlPanel(AutoExtensibleForm, form.EditForm):
     schema = IUserGroupsSettingsSchema
     id = "usergroupsettings-control-panel"
     label = _("Users and Groups")
-    description = _("User and groups settings for this site.")
     form_name = _("User/Groups settings")
     control_panel_view = "usergroups-controlpanel"
 

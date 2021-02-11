@@ -36,6 +36,12 @@
           i18n:translate="label_member_fields">Member fields</a>
       </li>
     </ul>
+
+    <p class="text-muted mt-2"
+       i18n:translate="">
+      User and groups settings for this site.
+    </p>
+
   </header>
   <div id="content" class="mt-3">
 
