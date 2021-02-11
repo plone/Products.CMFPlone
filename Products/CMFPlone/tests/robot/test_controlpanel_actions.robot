@@ -86,6 +86,8 @@ I add a new action
   Input Text for sure  form.widgets.id  favorites
   Click Element  css=.pattern-modal-buttons > button
   Wait until page contains  favorites
+  Execute JavaScript  window.scrollTo(0, document.body.scrollHeight)
+  Sleep  1
   Click Link     css=section.category:last-child li:last-child a
   Wait until page contains  Action Settings
   Input Text for sure  form.widgets.title  My favorites
