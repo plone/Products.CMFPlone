@@ -67,10 +67,16 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     def __getattr__(self, name):
         try:
             # Try DX
-            return super(PloneSite, self).__getattr__(name)
+            return super().__getattr__(name)
         except AttributeError:
             # Check portal_skins
             return SkinnableObjectManager.__getattr__(self, name)
+
+    def __delattr__(self, name):
+        try:
+            return super().__delattr__(name)
+        except AttributeError:
+            return self.__delitem__(name)
 
     # Removes the 'Components Folder'
 
