@@ -117,7 +117,7 @@ setup(
         'setuptools>=36.2',
         'six',
         'transaction',
-        'z3c.autoinclude',
+        'plone.autoinclude',
         'ZODB3',
         'Zope >= 4.0b5',
         'zope.app.locales >= 3.6.0',
