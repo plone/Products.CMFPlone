@@ -155,8 +155,7 @@ A user folder should be created when a user registers and logs in to the site
 
   # The user folder should be created
   Go to  ${PLONE_URL}/Members/joe
-  Wait until page contains  joe
-  Element Should Contain  css=h1[1]  joe
+  Wait until element contains  css=h1  joe
   Page should Not contain  This page does not seem to exist
 
 Anonymous users can view 'about' information
