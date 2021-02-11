@@ -23,10 +23,11 @@ from Products.CMFPlone.permissions import View
 from zope.component import queryUtility
 from zope.interface import implementer
 from five.localsitemanager.registry import PersistentComponents
-from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.dexterity.content import Container
+from Persistence import Persistent
 from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.permissions import AccessContentsInformation
 from Products.CMFCore.permissions import AddPortalMember
 from Products.CMFCore.permissions import MailForgottenPassword
 from Products.CMFCore.permissions import RequestReview
@@ -51,7 +52,7 @@ if bbb.HAS_ZSERVER:
 PORTAL_SKINS_TOOL_ID = 'portal_skins'
 
 
-@implementer(IPloneSiteRoot, INavigationRoot, ISiteRoot, ISyndicatable, IObjectManagerSite)
+@implementer(IPloneSiteRoot, ISiteRoot, ISyndicatable, IObjectManagerSite)
 class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     """ The Plone site object. """
 
@@ -61,6 +62,7 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     # Ensure certain attributes come from the correct base class.
     _checkId = SkinnableObjectManager._checkId
     manage_main = PortalFolderBase.manage_main
+    __setattr__ = Persistent.__setattr__
 
     def __getattr__(self, name):
         try:
@@ -77,13 +79,13 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         Container.manage_options[3:])
 
     __ac_permissions__ = (
+        (AccessContentsInformation, ()),
         (AddPortalMember, ()),
         (SetOwnPassword, ()),
         (SetOwnProperties, ()),
         (MailForgottenPassword, ()),
         (RequestReview, ()),
         (ReviewPortalContent, ()),
-
         (AddPortalContent, ()),
         (AddPortalFolders, ()),
         (ListPortalMembers, ()),
@@ -113,18 +115,6 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         components = PersistentComponents('++etc++site')
         components.__parent__ = self
         self.setSiteManager(components)
-
-    def __setattr__(self, name, obj):
-        # handle re setting an item as an attribute
-        if self._tree is not None and name in self:
-            del self[name]
-            self[name] = obj
-        else:
-            super(PloneSite, self).__setattr__(name, obj)
-
-    # From PortalObjectBase
-    def getSkinsFolderName(self):
-        return PORTAL_SKINS_TOOL_ID
 
     # From PortalObjectBase
     def __before_publishing_traverse__(self, arg1, arg2=None):
