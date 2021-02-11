@@ -39,7 +39,6 @@
     <element value="plone.allowdiscussion" />
     <element value="plone.excludefromnavigation" />
     <element value="plone.tableofcontents" />
-    <element value="plone.versioning" />
   </property>
 
   <!-- View information -->
