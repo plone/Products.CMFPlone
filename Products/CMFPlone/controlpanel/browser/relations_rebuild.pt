@@ -32,7 +32,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr tal:repeat="item python:relations_stats">
+          <tr tal:repeat="item python: sorted(relations_stats)">
             <td>
               <a href=""
                  target="_blank"
