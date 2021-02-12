@@ -40,7 +40,7 @@
         <div class="mb-3 field">
           <select class="form-select" aria-label="Default select example" name="relation" id="relation">
             <option value="">Select a relation</option>
-            <tal:rels tal:repeat="from_attribute python: relations_stats">
+            <tal:rels tal:repeat="from_attribute python: sorted(relations_stats)">
               <option tal:attributes="value python: from_attribute;
                                       selected python: relation == from_attribute"
                       tal:content="python:'{} ({})'.format(from_attribute, relations_stats[from_attribute])">
