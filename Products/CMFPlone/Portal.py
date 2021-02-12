@@ -235,14 +235,6 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     def reindexObjectSecurity(self, skip_self=False):
         pass
 
-    @security.protected(AccessContentsInformation)
-    def compute_size(self, ob):
-        """ TODO: remove this after this PR is merged
-        https://github.com/zopefoundation/Zope/pull/949
-        """
-        if hasattr(aq_base(ob), 'get_size'):
-            return super().compute_size(ob)
-
 
 # Remove the IContentish interface so we don't listen to events that won't
 # apply to the site root, ie handleUidAnnotationEvent
