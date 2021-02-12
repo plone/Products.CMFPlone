@@ -24,7 +24,6 @@ from zope.component import queryUtility
 from zope.interface import implementer
 from five.localsitemanager.registry import PersistentComponents
 from plone.dexterity.content import Container
-from Persistence import Persistent
 from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.permissions import AccessContentsInformation
@@ -48,10 +47,6 @@ if bbb.HAS_ZSERVER:
     from webdav.NullResource import NullResource
 
 
-
-PORTAL_SKINS_TOOL_ID = 'portal_skins'
-
-
 @implementer(IPloneSiteRoot, ISiteRoot, ISyndicatable, IObjectManagerSite)
 class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     """ The Plone site object. """
@@ -62,7 +57,6 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     # Ensure certain attributes come from the correct base class.
     _checkId = SkinnableObjectManager._checkId
     manage_main = PortalFolderBase.manage_main
-    __setattr__ = Persistent.__setattr__
 
     def __getattr__(self, name):
         try:
@@ -71,6 +65,14 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         except AttributeError:
             # Check portal_skins
             return SkinnableObjectManager.__getattr__(self, name)
+
+    def __setattr__(self, name, obj):
+        # handle re setting an item as an attribute
+        if self._tree is not None and name in self:
+            del self[name]
+            self[name] = obj
+        else:
+            super().__setattr__(name, obj)
 
     def __delattr__(self, name):
         try:
