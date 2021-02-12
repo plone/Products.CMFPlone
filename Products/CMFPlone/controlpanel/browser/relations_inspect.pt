@@ -29,6 +29,12 @@
     <div id="content-core"
          tal:define="relations_stats python: view.relations_stats">
 
+      <div tal:condition="python: view.broken"
+           class="portalMessage warning alert alert-warning" role="alert">
+             <strong>Warning!</strong> You have broken relations!
+             You can <a href="@@rebuild_relations">inspect and rebuild all relations</a>.
+      </div>
+
       <form id="relationinfo" method="post" action="@@inspect-relations" enctype="multipart/form-data">
 
         <div class="mb-3 field">
