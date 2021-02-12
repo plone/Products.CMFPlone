@@ -109,7 +109,6 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     _properties = (
         {'id': 'title', 'type': 'string', 'mode': 'w'},
         {'id': 'description', 'type': 'text', 'mode': 'w'},
-        {'id': 'add_permission', 'type': 'text', 'mode': 'w'},
     )
     title = ''
     description = ''
