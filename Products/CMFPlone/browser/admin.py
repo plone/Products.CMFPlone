@@ -18,6 +18,7 @@ from plone.keyring.interfaces import IKeyManager
 from plone.protect.authenticator import check as checkCSRF
 from plone.protect.interfaces import IDisableCSRFProtection
 from urllib import parse
+from ZODB.broken import Broken
 from zope.component import adapts
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.component import getUtility
@@ -55,7 +56,10 @@ class Overview(BrowserView):
 
         result = []
         secman = getSecurityManager()
-        for obj in root.values():
+        candidates = (
+            obj for obj in root.values() if not isinstance(obj, Broken)
+        )
+        for obj in candidates:
             if obj.meta_type == 'Folder':
                 result = result + self.sites(obj)
             elif IPloneSiteRoot.providedBy(obj):
@@ -66,7 +70,12 @@ class Overview(BrowserView):
         return result
 
     def outdated(self, obj):
-        mig = obj.get('portal_migration', None)
+        # Try to pick the portal_migration as an attribute
+        # (Plone 5 unmigrated site root) or as an item
+        mig = (
+            getattr(obj, "portal_migration", None)
+            or obj.get('portal_migration', None)
+        )
         if mig is not None:
             return mig.needUpgrading()
         return False
