@@ -4,24 +4,32 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
-      metal:use-macro="context/main_template/macros/master"
+      metal:use-macro="context/prefs_main_template/macros/master"
       i18n:domain="plone">
 
 <body>
 
-  <metal:content-core fill-slot="main"
-                      tal:define="inspect_backrelation python: view.inspect_backrelation;
-                                  relation python: view.relation;">
+  <metal:main metal:fill-slot="prefs_configlet_main" i18n:domain="plone"
+      tal:define="inspect_backrelation python: view.inspect_backrelation;
+                  relation python: view.relation;">
+
+      <a id="setup-link" class="link-parent"
+         tal:attributes="href string:$portal_url/@@overview-controlpanel"
+         i18n:translate="">
+          Site Setup
+      </a>
 
     <header>
       <h1 class="documentFirstHeading"
           tal:condition="python: not inspect_backrelation">
-        Inspect relation <strong tal:content="python: relation">relation</strong>
+        <span i18n:translate="">Inspect relations</span>
+        <strong tal:content="python: relation">relation</strong>
       </h1>
 
       <h1 class="documentFirstHeading"
           tal:condition="python: inspect_backrelation">
-        Inspect backrelation <strong tal:content="python: relation">backrelation</strong>
+        <span i18n:translate="">Inspect backrelations</span>
+        <strong tal:content="python: relation">backrelation</strong>
       </h1>
 
     </header>
@@ -30,7 +38,8 @@
          tal:define="relations_stats python: view.relations_stats">
 
       <div tal:condition="python: view.broken"
-           class="portalMessage warning alert alert-warning" role="alert">
+           class="portalMessage warning alert alert-warning" role="alert"
+           i18n:translate="">
              <strong>Warning!</strong> You have broken relations!
              You can <a href="@@rebuild_relations">inspect and rebuild all relations</a>.
       </div>
@@ -39,7 +48,7 @@
 
         <div class="mb-3 field">
           <select class="form-select" aria-label="Default select example" name="relation" id="relation">
-            <option value="">Select a relation</option>
+            <option value="" i18n:translate="">Select a relation</option>
             <tal:rels tal:repeat="from_attribute python: sorted(relations_stats)">
               <option tal:attributes="value python: from_attribute;
                                       selected python: relation == from_attribute"
@@ -59,29 +68,31 @@
                    type="checkbox"
                    checked="checked"
                    tal:attributes="checked python: 'checked' if inspect_backrelation else ''">
-            <label for="inspect-backrelation" class="form-check-label">
+            <label for="inspect-backrelation"
+                   class="form-check-label"
+                   i18n:translate="">
               Show backrelations
             </label>
-            <div class="form-text">Display relations grouped by their target.</div>
+            <div class="form-text" i18n:translate="">Display relations grouped by their target.</div>
           </div>
         </div>
 
-        <button class="context btn btn-primary" type="submit" name="submit" value="submit" i18n:translate="">Go!</button>
+        <button class="context btn btn-primary" type="submit" name="submit" value="submit" i18n:translate="">Inspect</button>
       </form>
 
       <table class="listing table table-striped"
              tal:condition="python:view.relations">
         <thead>
           <tr tal:condition="python: not inspect_backrelation">
-            <th>Source</th>
+            <th i18n:translate="">Source</th>
             <th>&rarr;</th>
-            <th>Target(s)</th>
+            <th i18n:translate="">Target(s)</th>
           </tr>
 
           <tr tal:condition="python: inspect_backrelation">
-            <th>Target</th>
+            <th i18n:translate="">Target</th>
             <th>&larr;</th>
-            <th>Source(s)</th>
+            <th i18n:translate="">Source(s)</th>
           </tr>
         </thead>
         <tbody>
@@ -112,9 +123,11 @@
         </tbody>
       </table>
 
+      <p><a href="@@rebuild-relations" i18n:translate="">Inspect and rebuild all relations</a>.</p>
+
     </div>
 
-  </metal:content-core>
+  </metal:main>
 
 </body>
 
