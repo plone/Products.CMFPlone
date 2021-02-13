@@ -1,4 +1,3 @@
-<h1 class="documentFirstHeading"
-  tal:define="title context/Title"
-  tal:condition="title"
-  tal:content="title">Title or id</h1>
+<h1 tal:define="title context/Title" tal:condition="title" tal:content="title">
+  Title or id
+</h1>

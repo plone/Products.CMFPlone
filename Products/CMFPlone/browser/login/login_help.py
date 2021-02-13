@@ -53,6 +53,10 @@ class RequestResetPassword(form.Form):
 
     render = ViewPageTemplateFile('templates/subform_render.pt')
 
+    def updateActions(self):
+        super(RequestResetPassword, self).updateActions()
+        self.actions['reset'].addClass('btn-primary')
+
     def updateWidgets(self):
         super().updateWidgets()
         if self.use_email_as_login():
@@ -101,6 +105,10 @@ class RequestUsername(form.Form):
     ignoreContext = True
 
     render = ViewPageTemplateFile('templates/subform_render.pt')
+
+    def updateActions(self):
+        super(RequestUsername, self).updateActions()
+        self.actions['get_username'].addClass('btn-primary')
 
     @button.buttonAndHandler(
         _('button_pwreset_get_username', default='Get your username'),

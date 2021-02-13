@@ -15,12 +15,12 @@ require([
   'use strict';
 
   var $loader = $('.plone-loader');
-  if($loader.size() === 0){
-    $loader = $('<div class="plone-loader"><div class="loader"/></div>');
+  if($loader.length === 0){
+    $loader = $('<div class="plone-loader"><div class="spinner-border text-secondary" role="status"></div></div>');
     $('body').append($loader);
   }
 
-  var $filter = $('.actionMenu');
+  var $filter = $('#search-filter');
   var $filterBtn = $('#search-filter-toggle', $filter);
   var $advSearchInput = $('#advanced-search-input');
   var $ctSelectAll = $('#pt_toggle');
@@ -65,6 +65,10 @@ require([
     timeout = setTimeout(search, 200);
   };
 
+  var setBatchStart = function(b_start){
+    $("#search-batch-start").attr("value", b_start);
+  };
+
   // for sorme reason the backend always flag with active class the sorting options
   var updateSortingState = function($el){
     $('a', $sortingContainer).removeClass('active');
@@ -97,6 +101,7 @@ require([
   /* form submission */
   $('.searchPage').submit(function(e){
     e.preventDefault();
+    setBatchStart("0");
     search();
   });
 
@@ -125,6 +130,20 @@ require([
   });
 
   $('input', $filter).change(function(){
+    setBatchStart("0");
     searchDelayed();
   });
+
+  /* pagination */
+  $("#searchform").on("click", ".pagination a", function(e) {
+    var urlParams = new URLSearchParams($(e.currentTarget).attr("href")),
+        b_start = urlParams.get("b_start:int");
+    if(!b_start) {
+      // not plone pagination
+      return;
+    }
+    e.preventDefault();
+    setBatchStart(b_start);
+    search();
+  })
 });

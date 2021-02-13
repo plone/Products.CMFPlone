@@ -317,15 +317,8 @@ class Upgrade(BrowserView):
                 REQUEST=self.request,
                 dry_run=form.get('dry_run', False),
             )
-            qi = get_installer(self.context, self.request)
-            pac_installed = qi.is_product_installed('plone.app.contenttypes')
-            pac_installable = qi.is_product_installable(
-                'plone.app.contenttypes')
-            advertise_dx_migration = pac_installable and not pac_installed
-
             return self.index(
                 report=report,
-                advertise_dx_migration=advertise_dx_migration
             )
 
         return self.index()

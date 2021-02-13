@@ -47,5 +47,5 @@ I set the site language to German
 
 the Plone user interface is in German
   Go to  ${PLONE_URL}
-  Wait until page contains  Sie sind hier
-  Page should contain  Sie sind hier
+  Wait until page contains  Lizensiert unter der
+  Page should contain  Lizensiert unter der
