@@ -140,4 +140,4 @@ the '${attribute}' attribute is preserved when a document is saved
   XPath Should Match X Times  //span[@${attribute}]  1  message=the ${attribute} tag should have been preserved
 
 success message should contain information regarding caching
-  Element Should Contain  css=.portalMessage.warning  HTML generation is heavily cached across Plone. You may have to edit existing content or restart your server to see the changes.
+  Element Should Contain  css=.alert-warning  HTML generation is heavily cached across Plone. You may have to edit existing content or restart your server to see the changes.

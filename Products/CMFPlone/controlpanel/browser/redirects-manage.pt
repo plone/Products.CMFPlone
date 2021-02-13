@@ -7,125 +7,131 @@
       i18n:domain="plone">
 
   <body>
-    <div
+    <tal:main
         metal:fill-slot="main"
         tal:define="context_state context/@@plone_context_state">
-      <h1
-          class="documentFirstHeading"
-          i18n:translate="">
-        URL Management
-      </h1>
+      <header>
+        <h1
+            class="documentFirstHeading"
+            i18n:translate="">
+          URL Management
+        </h1>
 
-      <dl
-          class="portalMessage info"
-          tal:condition="context_state/is_default_page">
-        <dt i18n:translate="">
-          Info
-        </dt>
-        <dd i18n:translate="help_aliases">
-          You are managing the alternative urls of a default view in a container.
-          To manage them for the entire container,
-          <a
-              i18n:name="go_here"
-              i18n:translate="help_aliases_go_here"
-              tal:define="folder context_state/folder"
-              tal:attributes="href string:${folder/absolute_url}/@@manage-aliases">
-            go here
-          </a>.
-        </dd>
-      </dl>
+        <dl
+            class="portalMessage info"
+            tal:condition="context_state/is_default_page">
+          <dt i18n:translate="">
+            Info
+          </dt>
+          <dd i18n:translate="help_aliases">
+            You are managing the alternative urls of a default view in a container.
+            To manage them for the entire container,
+            <a
+                i18n:name="go_here"
+                i18n:translate="help_aliases_go_here"
+                tal:define="folder context_state/folder"
+                tal:attributes="href string:${folder/absolute_url}/@@manage-aliases">
+              go here
+            </a>.
+          </dd>
+        </dl>
 
-      <p i18n:translate="description_adding_aliases">
-        Using this form, you can manage alternative urls for an item. This
-        is an easy way to make an item available under two different URLs.
-      </p>
-      <p i18n:translate="description_change_primary_url">To change the primary url of content, use Actions > Rename.</p>
+        <p i18n:translate="description_adding_aliases">
+          Using this form, you can manage alternative urls for an item. This
+          is an easy way to make an item available under two different URLs.
+        </p>
+        <p i18n:translate="description_change_primary_url">To change the primary url of content, use Actions > Rename.</p>
 
-      <form
+      </header>
+
+      <form class="mb-4"
           action="${view/view_url}"
           method="post">
-        <fieldset>
+        <fieldset class="mb-3">
           <legend i18n:translate="add_alias">
             Add a new alternative url
           </legend>
 
-          <div class="field"
+          <div class="field mb-3"
                tal:define="error options/errors/redirection|nothing"
-               tal:attributes="class python:error and 'field error' or 'field'">
-            <label
-                for="redirection"
-                i18n:translate="label_alias">
-              Alternative url path
+               tal:attributes="class python:error and 'field mb-3 error' or 'field mb-3'">
+            <label class="form-label" for="redirection">
+              <span i18n:translate="label_alias">Alternative url path</span>
+              <span
+                class="required fieldRequired"
+                title="Required"
+                i18n:attributes="title label_required">
+              </span>
             </label>
 
-            <span
-                class="fieldRequired"
-                title="Required"
-                i18n:attributes="title"
-                i18n:translate="label_required">
-              (Required)
-            </span>
-
-            <div tal:content="error">
-              Validation error output
-            </div>
-
-            <div class="formHelp" i18n:translate="help_alias">
-              Enter the absolute path where the alternative url should exist. The path must start with '/'.
-              Only urls that result in a 404 not found page will result in a redirect occurring.
+            <div class="invalid-feedback"
+              tal:content="error"
+              tal:condition="error">
+                Validation error output
             </div>
 
             <input
                 type="text"
                 name="redirection"
-                value="#"
+                value=""
                 size="40"
                 tal:attributes="value request/redirection | nothing;"/>
+
+              <small class="formHelp form-text text-muted" i18n:translate="help_alias">
+                Enter the absolute path where the alternative url should exist. The path must start with '/'.
+                Only urls that result in a 404 not found page will result in a redirect occurring.
+              </small>
           </div>
+
           <div class="formControls">
-            <input
-                class="context"
-                type="submit"
-                value="Add"
-                name="form.button.Add"
-                i18n:attributes="value" />
+            <button
+              class="btn btn-success"
+              type="submit"
+              value="Add"
+              name="form.button.Add">
+              <tal:icon tal:replace="structure python:icons.tag('plus', tag_alt='Add')" /> <span i18n:translate="">Add</span>
+            </button>
           </div>
 
         </fieldset>
       </form>
 
-      <form
+      <form class="mb-4"
           action="${view/view_url}"
+          tal:condition="python:[x for c, x in enumerate(view.redirects()) if c < 2]"
           method="post">
-        <fieldset>
+        <fieldset class="mb-3">
           <legend i18n:translate="legend_existing_aliases">
             Existing alternative urls for this item
           </legend>
 
-          <tal:redirects repeat="redirect view/redirects">
-            <div>
-              <label>
-              <input
-                  type="checkbox"
-                  class="noborder"
-                  name="redirects:tuple"
-                  value="${redirect/redirect}" />
-                ${redirect/path}
-              </label>
-            </div>
-          </tal:redirects>
+          <div class="mb-3">
+            <tal:redirects repeat="redirect view/redirects">
+              <div class="form-check">
+                <label class="form-check-label">
+                <input
+                    type="checkbox"
+                    class="form-check-input noborder"
+                    name="redirects:tuple"
+                    value="${redirect/redirect}" />
+                  ${redirect/path}
+                </label>
+              </div>
+            </tal:redirects>
+          </div>
 
           <div class="formControls">
-            <input
-                class="context"
-                type="submit"
-                value="Remove"
-                name="form.button.Remove"
-                i18n:attributes="value" />
+            <button
+              class="btn btn-danger"
+              type="submit"
+              value="Remove"
+              name="form.button.Remove">
+              <tal:icon tal:replace="structure python:icons.tag('trash', tag_alt='Trash')" /> <span i18n:translate="">Remove</span>
+            </button>
           </div>
 
         </fieldset>
       </form>
-    </div>
+    </tal:main>
   </body>
 </html>

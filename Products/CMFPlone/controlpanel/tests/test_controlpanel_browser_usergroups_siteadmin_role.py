@@ -73,8 +73,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
     def testControlPanelOverview(self):
         # make sure we can view the Site Setup page,
         # at both old and new URLs
-        view = self.portal.restrictedTraverse('plone_control_panel')
-        self.assertTrue(view())
+        self.assertFalse(self.portal.restrictedTraverse('plone_control_panel', False))
         view = self.portal.restrictedTraverse('overview-controlpanel')
         self.assertTrue(view())
 
@@ -300,12 +299,12 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
         # Manager role
         self.browser.addHeader(
             'Authorization', 'Basic siteadmin:secret')
-
+            
         self.browser.open(self.usergroups_url)
         contents = self._simplify_white_space(self.browser.contents)
         self.assertTrue(
             '<input type="checkbox" class="noborder notify" '
-            'name="delete:list" value="root" disabled="disabled" />'
+            'name="delete:list" value="root" title="Remove user " disabled="disabled" />'
             in contents)
 
         form = {

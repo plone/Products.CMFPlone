@@ -5,20 +5,21 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-    tal:define="portal_state context/@@plone_portal_state;
-        context_state context/@@plone_context_state;
-        plone_view context/@@plone;
-        plone_layout context/@@plone_layout;
-        lang portal_state/language;
-        view nocall:view | nocall: plone_view;
-        dummy python: plone_layout.mark_view(view);
-        portal_url portal_state/portal_url;
-        checkPermission nocall: context/portal_membership/checkPermission;
-        site_properties context/portal_properties/site_properties;
-        ajax_include_head request/ajax_include_head | nothing;
-        ajax_load python:True;"
-    i18n:domain="plone"
-    tal:attributes="lang lang;">
+      tal:define="portal_state python:context.restrictedTraverse('@@plone_portal_state');
+          context_state python:context.restrictedTraverse('@@plone_context_state');
+          plone_view python:context.restrictedTraverse('@@plone');
+          icons python:context.restrictedTraverse('@@iconresolver');
+          plone_layout python:context.restrictedTraverse('@@plone_layout');
+          lang python:portal_state.language();
+          view nocall:view | nocall: plone_view;
+          dummy python: plone_layout.mark_view(view);
+          portal_url python:portal_state.portal_url();
+          checkPermission python:context.restrictedTraverse('portal_membership').checkPermission;
+          site_properties python:context.restrictedTraverse('portal_properties').site_properties;
+          ajax_include_head python:request.get('ajax_include_head', False);
+          ajax_load python:False;"
+      i18n:domain="plone"
+      tal:attributes="lang lang;">
 
     <metal:cache tal:replace="structure provider:plone.httpheaders" />
 
@@ -74,23 +75,19 @@
 
                         <header>
                          <metal:title define-slot="content-title">
-                             <metal:comment tal:content="nothing">
-                                 If you write a custom title always use
-                                 <h1 class="documentFirstHeading"></h1> for it
-                             </metal:comment>
-                             <h1 metal:use-macro="context/kss_generic_macros/macros/generic_title_view">
-                                 Generic KSS Title. Is rendered with class="documentFirstHeading".
-                             </h1>
+                            <h1  class="documentFirstHeading">${python:context.Title()}</h1>
+                            <metal:comment tal:content="nothing">
+                                If you write a custom title always use
+                                <h1 class="documentFirstHeading"></h1> for it
+                            </metal:comment>
                          </metal:title>
 
                          <metal:description define-slot="content-description">
-                             <metal:comment tal:content="nothing">
-                                 If you write a custom description always use
-                                 <div class="documentDescription"></div> for it
-                             </metal:comment>
-                           <div metal:use-macro="context/kss_generic_macros/macros/generic_description_view">
-                               Generic KSS Description. Is rendered with class="documentDescription".
-                           </div>
+                            <div class="documentDescription">${python:context.Description()}></div>
+                            <metal:comment tal:content="nothing">
+                                If you write a custom description always use
+                                <div class="documentDescription"></div> for it
+                            </metal:comment>
                          </metal:description>
                         </header>
 

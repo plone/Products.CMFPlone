@@ -98,7 +98,7 @@ I add a new text field to the member fields
   Input Text  css=#add-field-form #form-widgets-title  Test Field
   Press Key  css=#add-field-form #form-widgets-title  \\09
   Select From List By Label  css=#form-widgets-factory  Text line (String)
-  Click button  css=.pattern-modal-buttons input#form-buttons-add
+  Click button  css=.pattern-modal-buttons button#form-buttons-add
   # XXX: This is really really bad! We need a UI notification like:
   # Wait until page contains  Field created.
   Sleep  1
@@ -112,7 +112,7 @@ I add a new required text field to the member fields
   Press Key  css=#add-field-form #form-widgets-title  \\09
   Select From List By Label  css=#form-widgets-factory  Text line (String)
   Select Checkbox  form.widgets.required:list
-  Click button  css=.pattern-modal-buttons input#form-buttons-add
+  Click button  css=.pattern-modal-buttons button#form-buttons-add
   # XXX: This is really really bad! We need a UI notification like:
   # Wait until page contains  Field created.
   Sleep  1
@@ -123,7 +123,7 @@ choose to show the field on registration
   Click link  css=div[data-field_id='test_field'] a.fieldSettings
   Wait Until Element Is visible  form.widgets.IUserFormSelection.forms:list
   Select Checkbox  css=#form-widgets-IUserFormSelection-forms-0
-  Click button  css=.pattern-modal-buttons input#form-buttons-save
+  Click button  css=.pattern-modal-buttons button#form-buttons-save
   # XXX: This is really really bad! We need a UI notification like:
   # Wait until page contains  Field created.
   Sleep  1
@@ -134,7 +134,7 @@ choose to show the field in the user profile
   Click link  css=div[data-field_id='test_field'] a.fieldSettings
   Wait Until Element Is visible  form.widgets.IUserFormSelection.forms:list
   Select Checkbox  css=#form-widgets-IUserFormSelection-forms-1
-  Click button  css=.pattern-modal-buttons input#form-buttons-save
+  Click button  css=.pattern-modal-buttons button#form-buttons-save
   # XXX: This is really really bad! We need a UI notification like:
   # Wait until page contains  Field created.
   Sleep  1
@@ -148,7 +148,7 @@ add a min/max constraint to the field
   Wait until page contains element  form.widgets.min_length
   Input Text  form.widgets.min_length  4
   Input Text  form.widgets.max_length  6
-  Click Button  css=.pattern-modal-buttons input#form-buttons-save
+  Click Button  css=.pattern-modal-buttons button#form-buttons-save
   Sleep  1
 
 

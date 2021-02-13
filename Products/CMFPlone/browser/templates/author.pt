@@ -155,7 +155,7 @@
                           <div class="formControls" tal:condition="isAnon">
                           <form
                             tal:attributes="action string:$portal_url/login">
-                             <input class="standalone"
+                             <input class="btn btn-secondary"
                                  type="submit"
                                  value="Log in to send feedback"
                                  i18n:attributes="value label_login_to_send_feedback;"
