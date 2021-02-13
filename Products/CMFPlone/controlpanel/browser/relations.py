@@ -207,8 +207,17 @@ def restore_relations(context=None, all_relations=None):
     for index, item in enumerate(all_relations, start=1):
         if not index % 500:
             logger.info(f'Restored {index} of {len(all_relations)} relations...')
-        source_obj = uuidToObject(item['from_uuid'])
-        target_obj = uuidToObject(item['to_uuid'])
+
+        try:
+            source_obj = uuidToObject(item['from_uuid'])
+        except KeyError:
+            # brain exists but no object
+            source_obj = None
+        try:
+            target_obj = uuidToObject(item['to_uuid'])
+        except KeyError:
+            # brain exists but no object
+            target_obj = None
 
         if not source_obj:
             logger.info(f'{item["from_uuid"]} is missing')
