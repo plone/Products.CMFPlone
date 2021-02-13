@@ -1,7 +1,6 @@
 from collections import Counter
 from collections import defaultdict
 from five.intid.intid import addIntIdSubscriber
-from plone import api
 from plone.app.iterate.dexterity import ITERATE_RELATION_NAME
 from plone.app.iterate.dexterity.relation import StagingRelationValue
 from plone.app.linkintegrity.handlers import modifiedContent
@@ -10,8 +9,11 @@ from plone.app.relationfield.event import update_behavior_relations
 from plone.app.uuid.utils import uuidToObject
 from plone.dexterity.interfaces import IDexterityContent
 from plone.dexterity.utils import iterSchemataForType
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import IContentish
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser import BrowserView
+from Products.statusmessages.interfaces import IStatusMessage
 from z3c.relationfield import event
 from z3c.relationfield import RelationValue
 from z3c.relationfield.event import updateRelations
@@ -22,6 +24,7 @@ from zc.relation.interfaces import ICatalog
 from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
 from zope.component import queryUtility
+from zope.component.hooks import getSite
 from zope.intid.interfaces import IIntIds
 
 import json
@@ -39,7 +42,8 @@ class RelationsRebuildControlpanel(BrowserView):
         if rebuild:
             rebuild_relations(flush_and_rebuild_intids=flush_and_rebuild_intids)
             self.done = True
-            api.portal.show_message('Finished! See log for details.', self.request)
+            IStatusMessage(self.request).addStatusMessage(
+                _('Finished! See log for details.'), 'info')
 
         self.relations_stats, self.broken = get_relations_stats()
         return self.index()
@@ -53,10 +57,12 @@ class RelationsInspectControlpanel(BrowserView):
 
         self.relations = []
         self.relations_stats, self.broken = get_relations_stats()
-        view_action = api.portal.get_registry_record('plone.types_use_view_action_in_listings')
+        registry = getUtility(IRegistry)
+        view_action = registry['plone.types_use_view_action_in_listings']
 
         if not self.relation:
-            api.portal.show_message('Please select a relation', self.request)
+            IStatusMessage(self.request).addStatusMessage(
+                _('Please select a relation'), 'info')
             return self.index()
 
         intids = queryUtility(IIntIds)
@@ -144,8 +150,8 @@ def get_all_relations():
         else:
             logger.info(f'Dropping relation {rel.from_attribute} from {rel.from_object} to {rel.to_object}')
     msg = ''
-    for k, v in info.items():
-        msg += f'{k}: {v}\n'
+    for key, value in info.items():
+        msg += f'{key}: {value}\n'
     logger.info(f'\nFound the following relations:\n{msg}')
     return results
 
@@ -154,7 +160,7 @@ def store_relations(context=None):
     """Store all relations in a annotation on the portal.
     """
     all_relations = get_all_relations()
-    portal = api.portal.get()
+    portal = getSite()
     IAnnotations(portal)[RELATIONS_KEY] = all_relations
     logger.info(f'Stored {len(all_relations)} relations on the portal')
 
@@ -173,7 +179,7 @@ def restore_relations(context=None, all_relations=None):
     """Restore relations from a annotation on the portal.
     """
 
-    portal = api.portal.get()
+    portal = getSite()
     if all_relations is None:
         all_relations = IAnnotations(portal)[RELATIONS_KEY]
     logger.info(f'Loaded {len(all_relations)} relations to restore')
@@ -350,7 +356,7 @@ def rebuild_intids():
         if IContentish.providedBy(obj):
             logger.info(f'Added {obj} at {path} to intid')
             addIntIdSubscriber(obj, None)
-    portal = api.portal.get()
+    portal = getSite()
     portal.ZopeFindAndApply(portal,
                             search_sub=True,
                             apply_func=add_to_intids)
