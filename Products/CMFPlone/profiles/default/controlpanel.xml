@@ -200,7 +200,7 @@
   <permission>Manage Portal Aliases</permission>
  </configlet>
  <configlet title="Relations" action_id="inspectrelations"
-    icon_expr="string:$portal_url/action_icon.png"
+    icon_expr="string:share-fill"
     appId="Plone" category="plone-content"
     condition_expr=""
     url_expr="string:${portal_url}/@@inspect-relations"
