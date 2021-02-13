@@ -85,15 +85,15 @@
         />
 
     <browser:viewletManager
-        name="plone.documentactions"
-        provides=".interfaces.IDocumentActions"
+        name="plone.belowcontenttitle"
+        provides=".interfaces.IBelowContentTitle"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
-        name="plone.belowcontenttitle"
-        provides=".interfaces.IBelowContentTitle"
+        name="plone.belowcontentdescription"
+        provides=".interfaces.IBelowContentDescription"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
@@ -229,7 +229,7 @@
 
     <!-- Render the social media body tags -->
     <browser:viewlet
-        name="plone.abovecontenttitle.socialtags"
+        name="plone.socialtags"
         manager=".interfaces.IAboveContentTitle"
         class=".social.SocialTagsViewlet"
         template="social_tags_body.pt"
@@ -246,12 +246,21 @@
 
     <!-- The related items -->
     <browser:viewlet
-        name="plone.belowcontentbody.relateditems"
+        name="plone.relateditems"
         manager=".interfaces.IBelowContentBody"
         class=".content.ContentRelatedItems"
         view="plone.app.layout.globals.interfaces.IViewView"
         permission="zope2.View"
         />
+
+    <!-- Render the document actions -->
+    <browser:viewlet
+        name="plone.documentactions"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContent"
+        class=".content.DocumentActionsViewlet"
+        permission="zope2.View"
+        />
+
 
     <!-- Render the workflow history as a view -->
     <browser:view
@@ -274,14 +283,6 @@
         for="*"
         name="historyview"
         class=".content.HistoryByLineView"
-        permission="zope2.View"
-        />
-
-    <!-- Render the document actions -->
-    <browser:viewlet
-        name="plone.abovecontenttitle.documentactions"
-        manager=".interfaces.IBelowContentBody"
-        class=".content.DocumentActionsViewlet"
         permission="zope2.View"
         />
 
@@ -312,16 +313,32 @@
 
     <!-- Render the document byline -->
     <browser:viewlet
-        name="plone.belowcontenttitle.documentbyline"
+        name="plone.documentbyline"
         manager=".interfaces.IBelowContentTitle"
         class=".content.DocumentBylineViewlet"
         permission="zope2.View"
         />
 
+    <!-- Render the contributors section -->
+    <browser:viewlet
+        name="plone.contributors"
+        manager=".interfaces.IBelowContentBody"
+        template="document_contributors.pt"
+        permission="zope2.View"
+        />
+
+    <!-- Render the rights section -->
+    <browser:viewlet
+        name="plone.rights"
+        manager=".interfaces.IBelowContentBody"
+        template="document_rights.pt"
+        permission="zope2.View"
+        />
+
     <!-- Render the keywords -->
     <browser:viewlet
-        name="plone.belowcontenttitle.keywords"
-        manager=".interfaces.IBelowContent"
+        name="plone.keywords"
+        manager=".interfaces.IBelowContentBody"
         view="plone.app.layout.globals.interfaces.IViewView"
         template="keywords.pt"
         permission="zope2.View"
@@ -338,17 +355,6 @@
 
     <!-- Render table of contents -->
     <browser:viewlet
-        zcml:condition="installed Products.ATContentTypes"
-        name="plone.tableofcontents"
-        for="Products.ATContentTypes.interfaces.IATDocument"
-        manager=".interfaces.IAboveContentBody"
-        class=".common.TableOfContentsViewlet"
-        permission="zope2.View"
-        />
-
-    <!-- Render table of contents for DX -->
-    <browser:viewlet
-        zcml:condition="installed plone.app.contenttypes"
         name="plone.tableofcontents"
         for="plone.app.contenttypes.behaviors.tableofcontents.ITableOfContents"
         manager=".interfaces.IAboveContentBody"

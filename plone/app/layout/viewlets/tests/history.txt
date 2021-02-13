@@ -72,7 +72,7 @@ The history viewlet now shows a Revert button.
 
     >>> browser.follow(url='@@historyview')
     >>> browser.contents
-    '...<input class="destructive" type="submit" value="Revert to this revision"...'
+    '...<button class="btn btn-warning" type="submit">Revert to this revision</button>...'
 
 After action success, user is redirected to Document, reverted to chosen revision.
 
@@ -80,4 +80,4 @@ After action success, user is redirected to Document, reverted to chosen revisio
     >>> browser.url in urldoc2
     True
     >>> browser.contents
-    '...<div class="documentDescription description">First revision</div>...'
+    '...<p class="lead">First revision</p>...'

@@ -283,6 +283,14 @@ class LayoutPolicy(BrowserView):
         else:
             body_classes.add("thumbs-off")
 
+        # classes for column visibility: col-content, col-one, col-two:
+        body_classes.add("col-content")
+        if self.have_portlets('plone.leftcolumn', view):
+            body_classes.add("col-one")
+        if self.have_portlets('plone.rightcolumn', view):
+            body_classes.add("col-two")
+
+
         # permissions required. Useful to theme frontend and backend
         # differently
         permissions = []

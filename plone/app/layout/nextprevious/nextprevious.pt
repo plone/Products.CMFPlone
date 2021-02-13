@@ -1,23 +1,18 @@
-<div xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-     xmlns:tal="http://xml.zope.org/namespaces/tal"
+<section id="section-next-prev"
      tal:define="enabled view/enabled|nothing;
                  isViewTemplate view/isViewTemplate|nothing"
      tal:condition="python:enabled and isViewTemplate"
-     tal:omit-tag=""
      i18n:domain="plone">
 
   <tal:block define="portal_url view/site_url;">
 
-    <nav class="pagination"
+    <nav class="pagination justify-content-between"
          tal:define="next view/next;
                      previous view/previous"
          tal:condition="python:previous is not None or next is not None">
 
-      <ul>
-
-        <li class="previous" tal:condition="previous">
-          <a title="Go to previous item"
+          <a class="btn btn-sm btn-outline-secondary align-self-start previous" tal:condition="previous"
+              title="Go to previous item"
               i18n:attributes="title title_previous_item"
               tal:attributes="href previous/url">
             <span class="arrow"></span>
@@ -26,10 +21,8 @@
               <span i18n:name="itemtitle" tal:replace="previous/title" />
             </span>
           </a>
-        </li>
 
-        <li class="next" tal:condition="next">
-          <a title="Go to next item"
+          <a class="btn btn-sm btn-outline-secondary align-self-end next" tal:condition="next" title="Go to next item"
               i18n:attributes="title title_next_item"
               tal:attributes="href next/url">
             <span i18n:translate="label_next_item" class="label">
@@ -38,14 +31,10 @@
             </span>
             <span class="arrow"></span>
           </a>
-        </li>
 
-        &nbsp;
-
-      </ul>
 
     </nav>
 
   </tal:block>
 
-</div>
+</section>

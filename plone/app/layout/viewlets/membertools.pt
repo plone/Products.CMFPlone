@@ -6,10 +6,10 @@
 
   <p class="hiddenStructure" i18n:translate="heading_member_tools">Member tools</p>
 
-  <div class="dropdown pull-right" id="portal-membertools"
+  <div class="dropdown float-end" id="portal-membertools"
       tal:condition="python:view.user_actions and not view.anonymous">
       <a id="user-name"
-         class="dropdown-toggle" data-toggle="dropdown"
+         class="dropdown-toggle" data-bs-toggle="dropdown"
          tal:attributes="href view/homelink_url">
          <span tal:replace="view/user_name">John</span>
          <span class="caret"></span>

@@ -1,39 +1,27 @@
-<div class="relatedItems"
-     i18n:domain="plone"
-     tal:define="related view/related_items"
-     tal:condition="related">
-    <div class="visualClear" id="clear-space-before-relatedItemBox"><!-- --></div>
-    <div id="relatedItemBox"
-              tal:define="plone_view nocall:context/@@plone;
-                          plone_layout nocall:context/@@plone_layout;
-                          normalizeString nocall:plone_view/normalizeString;
-                          context_state nocall:context/@@plone_context_state;
-                          use_view_action python:context.portal_registry.get('types_use_view_action_in_listings', []);">
-        <header i18n:translate="label_related_items">Related content</header>
-        <ul>
-          <li tal:repeat="item related">
-            <span tal:define="desc                item/Description;
-                              item_type           item/portal_type;
-                              item_type_class     python:'contenttype-' + normalizeString(item_type);
-                              item_wf_state       item/review_state|python: context_state.workflow_state();
-                              item_wf_state_class python: 'state-' + normalizeString(item_wf_state);
-                              item_url            item/getURL|item/absolute_url;
-                              item_url            python:(item_type in use_view_action) and item_url+'/view' or item_url;
-                              item_has_image      python:item.getIcon"
-                              tal:attributes="title item_type">
-              <a tal:attributes="href  item_url">
-                 <img class="thumb-icon"
-                      tal:define="getIcon python:item.getURL() +'/@@images/image/icon'"
-                      tal:condition="item_has_image"
-                      tal:attributes="src  string:$getIcon;alt item/Description">
-                  <span tal:attributes="class string:$item_type_class $item_wf_state_class url;"
-                        tal:content="item/pretty_title_or_id">
-                          Item Title</span>
-                  <span class="discreet"
-                        tal:content="item/Description">description</span>
-               </a>
-            </span>
-          </li>
-        </ul>
+<section id="section-related" i18n:domain="plone"
+    tal:define="related view/related_items; plone_view nocall:context/@@plone;
+                plone_layout nocall:context/@@plone_layout;
+                normalizeString nocall:plone_view/normalizeString;
+                context_state nocall:context/@@plone_context_state;
+                use_view_action python:context.portal_registry.get('types_use_view_action_in_listings', []);"
+    tal:condition="related">
+
+    <header class="section-heading" i18n:translate="section_related_heading">
+      Related content
+    </header>
+
+    <!-- section content -->
+    <tal:items tal:repeat="item related">
+    <div class="media position-relative" tal:define="desc item/Description; item_type item/portal_type; item_type_class python:'contenttype-' + normalizeString(item_type); item_wf_state item/review_state|python: context_state.workflow_state(); item_wf_state_class python: 'state-' + normalizeString(item_wf_state); item_url item/getURL|item/absolute_url; item_url python:(item_type in use_view_action) and item_url+'/view' or item_url; item_has_image python:item.getIcon;">
+
+      <div class="media-body">
+        <div><a href="${item_url}" class="h6 stretched-link">${item/pretty_title_or_id}</a></div>
+        <small>${item/Description}</small>
+      </div>
+
+      <img src="" class="ms-3" tal:define="getIcon python:item.getURL() +'/@@images/image/thumb'" tal:condition="item_has_image" tal:attributes="src string:$getIcon; alt item/Description">
+
     </div>
-</div>
+    </tal:items>
+
+</section>

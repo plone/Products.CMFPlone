@@ -184,3 +184,10 @@ class TestLayoutView(unittest.TestCase):
         settings.external_links_open_new_window = True
         body_class = view.bodyClass(template, view)
         self.assertTrue("pat-markspeciallinks" in body_class)
+
+    def testBodyClassColMarker(self):
+        context = self.portal["front-page"]
+        view = context.restrictedTraverse("view")
+        layout_view = context.restrictedTraverse("@@plone_layout")
+        body_class = layout_view.bodyClass(view, layout_view)
+        assert "col-content" in body_class

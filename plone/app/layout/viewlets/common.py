@@ -235,8 +235,8 @@ class GlobalSectionsViewlet(ViewletBase):
         u'<label for="navitem-{uid}" role="button" aria-label="{title}"></label>'  # noqa: E 501
     )
     _item_markup_template = (
-        u'<li class="{id}{has_sub_class}">'
-        u'<a href="{url}" class="state-{review_state}"{aria_haspopup}>{title}</a>{opener}'  # noqa: E 501
+        u'<li class="{id}{has_sub_class} nav-item">'
+        u'<a href="{url}" class="state-{review_state} nav-link"{aria_haspopup}>{title}</a>{opener}'  # noqa: E 501
         u"{sub}"
         u"</li>"
     )
@@ -467,6 +467,7 @@ class PersonalBarViewlet(ViewletBase):
                 "href": action["url"],
                 "id": "personaltools-{}".format(action["id"]),
                 "target": action.get("link_target", None),
+                "icon": action.get("icon", None),
             }
             modal = action.get("modal")
             if modal:
