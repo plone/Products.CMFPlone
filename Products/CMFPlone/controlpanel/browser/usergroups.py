@@ -23,7 +23,6 @@ class UserGroupsSettingsControlPanel(AutoExtensibleForm, form.EditForm):
     schema = IUserGroupsSettingsSchema
     id = "usergroupsettings-control-panel"
     label = _("Users and Groups")
-    description = _("User and groups settings for this site.")
     form_name = _("User/Groups settings")
     control_panel_view = "usergroups-controlpanel"
 
@@ -34,7 +33,7 @@ class UserGroupsSettingsControlPanel(AutoExtensibleForm, form.EditForm):
     def updateActions(self):
         super().updateActions()
         if self.actions and 'save' in self.actions:
-            self.actions['save'].addClass('context')
+            self.actions['save'].addClass('btn-primary')
 
 
 class ControlPanelFormWrapper(layout.FormWrapper):

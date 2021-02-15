@@ -75,6 +75,6 @@ searching for '${search_term}' will not return any results
   Input Text  xpath=//form[@id='searchform']//input[@name='SearchableText']  ${search_term}
   Submit Form  name=searchform
   Wait until page contains  items matching your search terms
-  XPath Should Match X Times  //strong[@id='search-results-number' and contains(.,'0')]  1
+  XPath Should Match X Times  //span[@id='search-results-number' and contains(.,'0')]  1
 
 

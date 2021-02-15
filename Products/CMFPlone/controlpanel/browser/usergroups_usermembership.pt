@@ -8,7 +8,7 @@
 
 <body>
 
-<metal:main fill-slot="prefs_configlet_content"
+<metal:main fill-slot="prefs_configlet_main"
      tal:define="template_id string:@@usergroup-usermembership;
                  portal context/@@plone_portal_state/portal;
                  userid view/userid;
@@ -96,7 +96,7 @@
             </tal:block>
           </table>
           <p tal:condition="not:groups" i18n:translate="text_user_not_in_any_group">This user does not belong to any group.</p>
-          <input class="destructive"
+          <button class="btn btn-alert"
                  type="submit"
                  name="form.button.Delete"
                  value="Remove from selected groups"
@@ -106,7 +106,7 @@
           <h2 tal:condition="many_groups" i18n:translate="heading_search_groups">Search for groups</h2>
           <h2 tal:condition="not:many_groups" i18n:translate="heading_assign_to_groups">Assign to groups</h2>
 
-          <table class="listing" summary="Groups">
+          <table class="table overflow-auto table-bordered table-striped text-center" summary="Groups">
             <tr>
               <th colspan="2" tal:condition="many_groups">
                 <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
@@ -117,8 +117,8 @@
                              tal:attributes="value view/searchString;"
                              />
 
-                      <input type="submit"
-                             class="searchButton"
+                      <button type="submit"
+                             class="searchButton btn btn-primary"
                              name="form.button.search"
                              value="Search"
                              i18n:attributes="value label_search;" />
@@ -191,12 +191,13 @@
 
           <input type="hidden" name="form.submitted" value="1" />
 
-          <input class="context"
+          <button class="btn btn-primary"
                  type="submit"
                  name="form.button.Add"
                  value="Add user to selected groups"
                  tal:condition="batch"
-                 i18n:attributes="value label_add_user_to_group;" />
+                 i18n:translate=""
+                 i18n:attributes="value label_add_user_to_group;">Add user to selected groups</button>
           <input tal:replace="structure context/@@authenticator/authenticator" />
 
         </form>

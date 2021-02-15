@@ -1408,7 +1408,8 @@ class IUserGroupsSettingsSchema(Interface):
             'user interface and behaviour of Plone for this '
             'case by allowing you to search for groups instead '
             'of listing all of them.'),
-        default=False
+        default=False,
+        required=False,
     )
 
     many_users = schema.Bool(
@@ -1421,7 +1422,8 @@ class IUserGroupsSettingsSchema(Interface):
             'interface and behaviour of Plone for this case by '
             'allowing you to search for users instead of '
             'listing all of them.'),
-        default=False
+        default=False,
+        required=False,
     )
 
 

@@ -63,7 +63,6 @@ insert link
     Click Link  css=.pattern-relateditems-container .favorites a.fav[href='/']
     Wait Until Element Is Visible  css=.pattern-relateditems-result-select.selectable
     Click Link  css=.pattern-relateditems-result-select.selectable
-    Input Text  css=.plone-modal-body [name="title"]  SomeTitle
     Click Button  css=.plone-modal-footer .plone-btn-primary
     Select Frame  css=.mce-edit-area iframe
     Execute Javascript  window.getSelection().removeAllRanges()

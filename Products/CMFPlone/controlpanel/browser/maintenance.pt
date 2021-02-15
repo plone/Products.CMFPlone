@@ -14,38 +14,40 @@
 
          <metal:block define-macro="header">
 
-             <dl tal:define="status view/status"
+             <div tal:define="status view/status"
                  tal:condition="status"
                  role="status"
-                 class="portalMessage info">
-                 <dt i18n:translate="">
+                 class="alert alert-info">
+                 <strong i18n:translate="">
                      Info
-                 </dt>
-                 <dd tal:content="view/status" />
-             </dl>
+                 </strong>
+                 <span tal:content="view/status" />
+                </div>
 
          </metal:block>
 
-         <a href=""
-            id="setup-link"
-            tal:attributes="href string:$portal_url/@@overview-controlpanel"
-            i18n:translate="">
-             Site Setup
-         </a>
+         <header>
+            <a href=""
+                id="setup-link"
+                tal:attributes="href string:$portal_url/@@overview-controlpanel"
+                i18n:translate="">
+                Site Setup
+            </a>
 
-         <h1 class="documentFirstHeading"
-             i18n:translate=""
-             tal:condition="view/label"
-             tal:content="view/label"
-             metal:define-slot="heading">
-             Do something
-         </h1>
+            <h1 class="documentFirstHeading"
+                i18n:translate=""
+                tal:condition="view/label"
+                tal:content="view/label"
+                metal:define-slot="heading">
+                Do something
+            </h1>
 
-         <div class="documentDescription" i18n:translate=""
-            tal:condition="view/description"
-            tal:content="view/description">
-             Description
-         </div>
+            <div class="documentDescription" i18n:translate=""
+                tal:condition="view/description"
+                tal:content="view/description">
+                Description
+            </div>
+        </header>
 
         <div id="content-core">
 
@@ -55,27 +57,29 @@
                   class="edit-form"
                   enctype="multipart/form-data">
 
-                <fieldset>
+                <fieldset class="mb-4">
                     <legend i18n:translate="heading_zope_server">
                         Zope Server
                     </legend>
 
                     <div id="actionsView" class="formControls">
                         <span class="actionButtons">
-                            <input type="submit"
+                            <button type="submit"
                                    id="form.buttons.shutdown"
                                    name="form.buttons.shutdown"
                                    value="Shut down"
-                                   i18n:attributes="value"
-                                   class="standalone" />
+                                   class="btn btn-danger">
+                                <span i18n:translate="">Shut down</span>
+                            </button>
 
-                            <input tal:condition="view/isRestartable"
+                            <button tal:condition="view/isRestartable"
                                    type="submit"
                                    id="form.buttons.restart"
                                    name="form.buttons.restart"
                                    value="Restart"
-                                   i18n:attributes="value"
-                                   class="standalone" />
+                                   class="btn btn-danger">
+                                <span i18n:translate="">Restart</span>
+                            </button>
 
                         </span>
                     </div>
@@ -97,7 +101,7 @@
                 <div metal:define-slot="extra_info" tal:replace="nothing">
                 </div>
 
-                <fieldset>
+                <fieldset class="mb-4">
                     <legend tal:define="form_name view/form_name|nothing"
                             tal:condition="form_name"
                             tal:content="form_name">Form name</legend>
@@ -126,12 +130,12 @@
 
                     <div id="actionsView" class="formControls">
                         <span class="actionButtons">
-                            <input type="submit"
+                            <button type="submit"
                                    id="form.buttons.pack"
                                    name="form.buttons.pack"
                                    value="Pack"
-                                   i18n:attributes="value"
-                                   class="standalone" />
+                                   class="btn btn-danger">
+                                <span i18n:translate="">Pack</span>
                         </span>
                     </div>
 

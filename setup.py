@@ -14,6 +14,7 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Framework :: Plone",
+        "Framework :: Plone :: Core",
         "Framework :: Plone :: 6.0",
         "Framework :: Zope",
         "Framework :: Zope :: 4",

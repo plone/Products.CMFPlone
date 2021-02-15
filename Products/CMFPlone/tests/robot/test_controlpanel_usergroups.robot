@@ -72,7 +72,7 @@ I click show all users
   Wait until page contains  User Search
 
 I go to Groups control panel
-  Click link  Groups
+  Click link  xpath=//*[@id='content']//header//a[contains(text(), 'Groups')]
   Wait until page contains  Group Search
 
 I click show all groups
@@ -115,12 +115,12 @@ all groups should be shown
   Page should contain  Site Administrators
 
 showing all users is disabled
-  Click link  Users
+  Click link  xpath=//*[@id='content']//header//a[contains(text(), 'Users')]
   Wait until page contains  User Search
   Page should not contain  Show all
 
 showing all groups is disabled
-  Click link  Groups
+  Click link  xpath=//*[@id='content']//header//a[contains(text(), 'Groups')]
   Wait until page contains  Group Search
   Page should not contain  Show all
 

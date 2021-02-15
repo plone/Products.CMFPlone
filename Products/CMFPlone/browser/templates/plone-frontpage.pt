@@ -11,7 +11,7 @@
 
   <div class="hero">
     <h1>Welcome!</h1>
-    <p><a class="context" href="https://plone.com" target="_blank">Learn more about Plone</a></p>
+    <p><a class="btn btn-primary" href="https://plone.com" target="_blank">Learn more about Plone</a></p>
   </div>
 
   <p class="discreet">

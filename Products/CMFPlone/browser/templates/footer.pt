@@ -6,8 +6,9 @@
       tal:omit-tag=""
       i18n:domain="plone">
 
-  <aside class="portlet portletClassic" id="portal-footer-signature" metal:define-macro="portlet">
-    <div class="portletContent">
+  <div class="card card-classic" id="portal-footer-signature" metal:define-macro="portlet">
+
+    <div class="card-body">
       <span i18n:translate="description_copyright" tal:omit-tag="">
       The
       <span i18n:name="plonecms" tal:omit-tag="">
@@ -31,5 +32,7 @@
                 <a href="http://creativecommons.org/licenses/GPL/2.0/" i18n:translate="label_gnu_gpl_licence">GNU GPL license</a></span>.
       </span>
     </div>
-  </aside>
+
+  </div>
+
 </html>

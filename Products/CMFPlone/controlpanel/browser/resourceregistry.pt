@@ -10,27 +10,23 @@
 
 
 <metal:main metal:fill-slot="prefs_configlet_main" i18n:domain="plone">
+  <header>
 
-    <a href=""
-       id="setup-link"
-       tal:attributes="href string:$portal_url/@@overview-controlpanel"
-       i18n:translate="">
-       Site Setup
-    </a>
     <h1 class="documentFirstHeading"
         i18n:translate="">Resource Registries</h1>
 
-    <div class="documentDescription"
+    <div class="text-muted"
        i18n:translate="">
       Configure, enable, disable, debug and build Plone JavaScript/LESS/CSS resources.
       Plone utilizes RequireJS and LESS CSS to build its resources.
       Re-building a Plone bundle TTW requires a modern web browser.
     </div>
+  </header>
 
    <div id="content-core">
       <span tal:replace="structure context/@@authenticator/authenticator"/>
       <div class="pat-resourceregistry" tal:attributes="data-pat-resourceregistry view/config">
-        <div class="portalMessage info" role="status">
+        <div class="alert alert-info" role="status">
           <strong i18n:translate="">Info</strong>
           <span i18n:translate="">If you see this, it is because there was an error rendering the resource registry
           configuration. It's possible you saved a bundle that gives a JavaScript error
