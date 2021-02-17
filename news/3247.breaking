@@ -1,2 +1,3 @@
 PLIP 3211 - Remove RequireJS.
+PLIP 3211 - Remove default resource jQuery. It is added to the global namespace via the bundle.
 [MrTango]
