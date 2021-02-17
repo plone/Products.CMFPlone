@@ -66,13 +66,6 @@ class IBundleRegistry(zope.interface.Interface):
             "does not apply if the bundle is merged)."),
         required=False)
 
-    conditionalcomment = schema.ASCIILine(
-        title=_("Conditional comment"),
-        description=_(
-            "In case you want to render this resource on conditional comment "
-            "(it does not apply if the bundle is merged)."),
-        required=False)
-
     resources = schema.List(
         title=_("Loaded resources"),
         description=_(
