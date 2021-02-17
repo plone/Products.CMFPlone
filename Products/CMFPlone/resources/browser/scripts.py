@@ -13,7 +13,6 @@ class ScriptsView(ResourceView):
         resources_to_add,
         result,
         bundle_name="none",
-        resetrjs=False,
         conditionalcomment="",
     ):
         resources = self.get_resources()
@@ -31,10 +30,6 @@ class ScriptsView(ResourceView):
                 "bundle": bundle_name,
                 "conditionalcomment": conditionalcomment,
                 "src": src,
-                # Reset RequireJS if bundle is in non-compile to
-                # avoid "Mismatched anonymous define()" in legacy
-                # scripts.
-                "resetrjs": resetrjs,
             }
             result.append(data)
 
@@ -45,7 +40,6 @@ class ScriptsView(ResourceView):
                 bundle.resources,
                 result,
                 bundle_name=bundle.name,
-                resetrjs=bundle.compile is False,
                 conditionalcomment=bundle.conditionalcomment,
             )
             return
@@ -111,48 +105,6 @@ class ScriptsView(ResourceView):
                 "bundle": "basic",
             }
         )
-        if self.development:
-            # We need to add require.js and config.js
-            result.append(
-                {
-                    "src": "{}/{}".format(
-                        self.site_url,
-                        self.registry.records["plone.resources.less-variables"].value,
-                    ),  # noqa
-                    "conditionalcomment": None,
-                    "bundle": "basic",
-                }
-            )
-            result.append(
-                {
-                    "src": "{}/{}".format(
-                        self.site_url,
-                        self.registry.records["plone.resources.lessc"].value,
-                    ),
-                    "conditionalcomment": None,
-                    "bundle": "basic",
-                }
-            )
-        result.append(
-            {
-                "src": "{}/{}".format(
-                    self.site_url,
-                    self.registry.records["plone.resources.requirejs"].value,
-                ),
-                "conditionalcomment": None,
-                "bundle": "basic",
-            }
-        )
-        result.append(
-            {
-                "src": "{}/{}".format(
-                    self.site_url,
-                    self.registry.records["plone.resources.configjs"].value,
-                ),
-                "conditionalcomment": None,
-                "bundle": "basic",
-            }
-        )
         return result
 
     def base_url(self):
@@ -163,9 +115,6 @@ class ScriptsView(ResourceView):
         return site_url
 
     def scripts(self):
-        """The requirejs scripts, the ones that are not resources are loaded on
-        configjs.py
-        """
         if self.debug_mode or self.development or not self.production_path:
             result = self.default_resources()
             result.extend(self.ordered_bundles_result())
