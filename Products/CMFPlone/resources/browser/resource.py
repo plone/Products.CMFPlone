@@ -13,7 +13,9 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
-from Products.CMFPlone.resources.browser.combine import get_production_resource_directory  # noqa
+from Products.CMFPlone.resources.browser.combine import (
+    get_production_resource_directory,
+)  # noqa
 from Products.CMFPlone.resources.bundle import Bundle
 from Products.CMFPlone.utils import get_top_request
 from zope import component
@@ -32,9 +34,7 @@ class ResourceBase:
     @property
     @memoize
     def anonymous(self):
-        return _getAuthenticatedUser(
-            self.context
-        ).getUserName() == 'Anonymous User'
+        return _getAuthenticatedUser(self.context).getUserName() == "Anonymous User"
 
     @property
     @memoize
@@ -50,21 +50,20 @@ class ResourceBase:
             return True
         if self.anonymous and not self.debug_mode:
             return False
-        return self.registry.records['plone.resources.development'].value
+        return self.registry.records["plone.resources.development"].value
 
     @property
     def debug_mode(self):
         return getConfiguration().debug_mode
 
     def develop_bundle(self, bundle, attr):
-        return (
-            RESOURCE_DEVELOPMENT_MODE or
-            (self.development and getattr(bundle, attr, False))
+        return RESOURCE_DEVELOPMENT_MODE or (
+            self.development and getattr(bundle, attr, False)
         )
 
     @property
     def last_legacy_import(self):
-        return self.registry.records['plone.resources.last_legacy_import'].value  # noqa
+        return self.registry.records["plone.resources.last_legacy_import"].value  # noqa
 
     def evaluateExpression(self, expression, context):
         """Evaluate an object's TALES condition to see if it should be
@@ -72,17 +71,17 @@ class ResourceBase:
         """
         try:
             if expression.text and context is not None:
-                portal = getToolByName(context, 'portal_url').getPortalObject()
+                portal = getToolByName(context, "portal_url").getPortalObject()
 
                 # Find folder (code courtesy of CMFCore.ActionsTool)
-                if context is None or not hasattr(context, 'aq_base'):
+                if context is None or not hasattr(context, "aq_base"):
                     folder = portal
                 else:
                     folder = context
                     # Search up the containment hierarchy until we find an
                     # object that claims it's PrincipiaFolderish.
                     while folder is not None:
-                        if getattr(aq_base(folder), 'isPrincipiaFolderish', 0):
+                        if getattr(aq_base(folder), "isPrincipiaFolderish", 0):
                             # found it.
                             break
                         else:
@@ -91,7 +90,7 @@ class ResourceBase:
                 __traceback_info__ = (folder, portal, context, expression)
                 ec = createExprContext(folder, portal, context)
                 # add 'context' as an alias for 'object'
-                ec.setGlobal('context', context)
+                ec.setGlobal("context", context)
                 return expression(ec)
             else:
                 return True
@@ -100,8 +99,7 @@ class ResourceBase:
 
     def update(self):
         self.portal_state = getMultiAdapter(
-            (self.context, self.request),
-            name='plone_portal_state'
+            (self.context, self.request), name="plone_portal_state"
         )
         self.site_url = self.portal_state.portal_url()
         self.registry = getUtility(IRegistry)
@@ -113,19 +111,17 @@ class ResourceBase:
             # Check if Diazo is enabled
             theme = policy.get_theme() or None
 
-        self.diazo_production_css = getattr(theme, 'production_css', None)
-        self.diazo_development_css = getattr(theme, 'development_css', None)
-        self.diazo_production_js = getattr(theme, 'production_js', None)
-        self.diazo_development_js = getattr(theme, 'development_js', None)
-        self.theme_enabled_bundles = getattr(theme, 'enabled_bundles', [])
-        self.theme_disabled_bundles = getattr(theme, 'disabled_bundles', [])
+        self.diazo_production_css = getattr(theme, "production_css", None)
+        self.diazo_development_css = getattr(theme, "development_css", None)
+        self.diazo_production_js = getattr(theme, "production_js", None)
+        self.diazo_development_js = getattr(theme, "development_js", None)
+        self.theme_enabled_bundles = getattr(theme, "enabled_bundles", [])
+        self.theme_disabled_bundles = getattr(theme, "disabled_bundles", [])
 
     def get_bundles(self):
         result = {}
         records = self.registry.collectionOfInterface(
-            IBundleRegistry,
-            prefix="plone.bundles",
-            check=False
+            IBundleRegistry, prefix="plone.bundles", check=False
         )
         for name, record in records.items():
             result[name] = Bundle(record)
@@ -133,9 +129,7 @@ class ResourceBase:
 
     def get_resources(self):
         return self.registry.collectionOfInterface(
-            IResourceRegistry,
-            prefix="plone.resources",
-            check=False
+            IResourceRegistry, prefix="plone.resources", check=False
         )
 
     def eval_expression(self, expression, bundle_name):
@@ -145,20 +139,17 @@ class ResourceBase:
         cooked_expression = None
         if cache is not None:
             cooked_expression = cache.query(
-                'plone.bundles.cooked_expressions',
+                "plone.bundles.cooked_expressions",
                 key=dict(prefix=bundle_name),
-                default=None
+                default=None,
             )
-        if (
-            cooked_expression is None or
-            cooked_expression.text != expression
-        ):
+        if cooked_expression is None or cooked_expression.text != expression:
             cooked_expression = Expression(expression)
             if cache is not None:
                 cache.set(
                     cooked_expression,
-                    'plone.bundles.cooked_expressions',
-                    key=dict(prefix=bundle_name)
+                    "plone.bundles.cooked_expressions",
+                    key=dict(prefix=bundle_name),
                 )
         return self.evaluateExpression(cooked_expression, self.context)
 
@@ -173,17 +164,17 @@ class ResourceBase:
         disabled_bundles = set(self.theme_disabled_bundles)
 
         # Request set bundles
-        enabled_bundles.update(getattr(request, 'enabled_bundles', []))
-        disabled_bundles.update(getattr(request, 'disabled_bundles', []))
+        enabled_bundles.update(getattr(request, "enabled_bundles", []))
+        disabled_bundles.update(getattr(request, "disabled_bundles", []))
 
         for key, bundle in self.get_bundles().items():
             # The diazo manifest and request bundles are more important than
             # the disabled bundle on registry.
             # We can access the site with diazo.off=1 without diazo bundles
             if (
-                key in disabled_bundles or
-                (key not in enabled_bundles and not bundle.enabled) or
-                not self.eval_expression(bundle.expression, bundle.name)
+                key in disabled_bundles
+                or (key not in enabled_bundles and not bundle.enabled)
+                or not self.eval_expression(bundle.expression, bundle.name)
             ):
                 continue
 
@@ -197,9 +188,9 @@ class ResourceBase:
         inserted = []
         depends_on = {}
         for key, bundle in self.get_cooked_bundles():
-            if bundle.depends is None or bundle.depends == '':
+            if bundle.depends is None or bundle.depends == "":
                 # its the first one
-                if not(production and bundle.merge_with):
+                if not (production and bundle.merge_with):
                     self.get_data(bundle, result)
                 inserted.append(key)
             else:
@@ -217,7 +208,7 @@ class ResourceBase:
                     continue
                 found = True
                 for bundle in bundles_to_add:
-                    if not(production and bundle.merge_with):
+                    if not (production and bundle.merge_with):
                         self.get_data(bundle, result)
                     inserted.append(bundle.name)
                 del depends_on[key]
@@ -227,11 +218,10 @@ class ResourceBase:
         # The ones that does not get the dependencies
         for bundles_to_add in depends_on.values():
             for bundle in bundles_to_add:
-                if not(production and bundle.merge_with):
+                if not (production and bundle.merge_with):
                     self.get_data(bundle, result)
         return result
 
 
 class ResourceView(ResourceBase, ViewletBase):
-    """Viewlet Information for script rendering.
-    """
+    """Viewlet Information for script rendering."""

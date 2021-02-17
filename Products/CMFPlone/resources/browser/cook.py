@@ -7,7 +7,9 @@ from plone.resource.interfaces import IResourceDirectory
 from plone.subrequest import subrequest
 from Products.CMFPlone.interfaces.resources import IBundleRegistry
 from Products.CMFPlone.interfaces.resources import IResourceRegistry
-from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
+from Products.CMFPlone.interfaces.resources import (
+    OVERRIDE_RESOURCE_DIRECTORY_NAME,
+)  # noqa
 from Products.CMFPlone.resources.browser.combine import combine_bundles
 from scss import Compiler
 from zExceptions import NotFound
@@ -19,7 +21,7 @@ from zope.interface import alsoProvides
 import logging
 
 
-logger = logging.getLogger('Products.CMFPlone')
+logger = logging.getLogger("Products.CMFPlone")
 
 REQUIREJS_RESET_PREFIX = """
 /* reset requirejs definitions so that people who
@@ -44,19 +46,20 @@ REQUIREJS_RESET_POSTFIX = """
 
 
 def cookWhenChangingSettings(context, bundle=None):
-    """When our settings are changed, re-cook the not compilable bundles
-    """
+    """When our settings are changed, re-cook the not compilable bundles"""
     registry = getUtility(IRegistry)
     resources = registry.collectionOfInterface(
-        IResourceRegistry, prefix="plone.resources", check=False)
+        IResourceRegistry, prefix="plone.resources", check=False
+    )
     if bundle is None:
         # default to cooking legacy bundle
         bundles = registry.collectionOfInterface(
-            IBundleRegistry, prefix="plone.bundles", check=False)
-        if 'plone-legacy' in bundles:
-            bundle = bundles['plone-legacy']
+            IBundleRegistry, prefix="plone.bundles", check=False
+        )
+        if "plone-legacy" in bundles:
+            bundle = bundles["plone-legacy"]
         else:
-            bundle = bundles.setdefault('plone-legacy')
+            bundle = bundles.setdefault("plone-legacy")
             bundle.resources = []
 
     if not bundle.resources:
@@ -69,14 +72,14 @@ def cookWhenChangingSettings(context, bundle=None):
 
     if not js_path and not css_path:
         logger.warning(
-            'No js_path or css_path found. We need a plone.resource '
-            'based resource path in order to store the compiled JS and CSS.'
+            "No js_path or css_path found. We need a plone.resource "
+            "based resource path in order to store the compiled JS and CSS."
         )
         return
 
     # Let's join all css and js
-    css_compiler = Compiler(output_style='compressed')
-    cooked_css = ''
+    css_compiler = Compiler(output_style="compressed")
+    cooked_css = ""
     cooked_js = REQUIREJS_RESET_PREFIX
     siteUrl = getSite().absolute_url()
     request = getRequest()
@@ -87,52 +90,43 @@ def cookWhenChangingSettings(context, bundle=None):
 
         if css_path:
             for css_resource in resource.css:
-                css_url = siteUrl + '/' + css_resource
+                css_url = siteUrl + "/" + css_resource
                 response = subrequest(css_url)
                 if response.status == 200:
-                    logger.info('Cooking css %s', css_resource)
+                    logger.info("Cooking css %s", css_resource)
                     css = response.getBody()
-                    if css_resource[-8:] != '.min.css':
+                    if css_resource[-8:] != ".min.css":
                         css = css_compiler.compile_string(css)
                     if not isinstance(css, str):
-                        css = css.decode('utf8')
-                    cooked_css += '\n/* Resource: {} */\n{}\n'.format(
-                        css_resource,
-                        css
-                    )
+                        css = css.decode("utf8")
+                    cooked_css += "\n/* Resource: {} */\n{}\n".format(css_resource, css)
                 else:
-                    cooked_css +=\
-                        '\n/* Could not find resource: {} */\n\n'.format(
-                            css_resource
-                        )
-                    logger.warning('Could not find resource: %s', css_resource)
+                    cooked_css += "\n/* Could not find resource: {} */\n\n".format(
+                        css_resource
+                    )
+                    logger.warning("Could not find resource: %s", css_resource)
         if not resource.js or not js_path:
             continue
-        js_url = siteUrl + '/' + resource.js
+        js_url = siteUrl + "/" + resource.js
         response = subrequest(js_url)
         if response.status == 200:
-            logger.info('Cooking js %s', resource.js)
+            logger.info("Cooking js %s", resource.js)
             js = response.getBody()
             if not isinstance(js, str):
-                js = js.decode('utf8')
+                js = js.decode("utf8")
             try:
-                cooked_js += '\n/* resource: {} */\n{}'.format(
+                cooked_js += "\n/* resource: {} */\n{}".format(
                     resource.js,
-                    js if resource.js.endswith('.min.js') else
-                    es5.minify_print(js)
+                    js if resource.js.endswith(".min.js") else es5.minify_print(js),
                 )
             except SyntaxError:
-                cooked_js +=\
-                    '\n/* Resource (error cooking): {} */\n{}'.format(
-                        resource.js,
-                        js
-                    )
-                logger.warning('Error cooking resource: %s', resource.js)
+                cooked_js += "\n/* Resource (error cooking): {} */\n{}".format(
+                    resource.js, js
+                )
+                logger.warning("Error cooking resource: %s", resource.js)
         else:
-            logger.warning('Could not find resource: %s', resource.js)
-            cooked_js += '\n/* Could not find resource: {} */\n\n'.format(
-                js_url
-            )
+            logger.warning("Could not find resource: %s", resource.js)
+            cooked_js += "\n/* Could not find resource: {} */\n\n".format(js_url)
 
     cooked_js += REQUIREJS_RESET_POSTFIX
 
@@ -144,24 +138,26 @@ def cookWhenChangingSettings(context, bundle=None):
     def _write_resource(resource_path, cooked_string):
         if not resource_path:
             return
-        if '++plone++' in resource_path:
-            resource_path = resource_path.split('++plone++')[-1]
-        if '/' in resource_path:
-            resource_name, resource_filepath = resource_path.split('/', 1)
+        if "++plone++" in resource_path:
+            resource_path = resource_path.split("++plone++")[-1]
+        if "/" in resource_path:
+            resource_name, resource_filepath = resource_path.split("/", 1)
         else:
-            resource_name = 'legacy'
+            resource_name = "legacy"
             resource_filepath = resource_path
         if resource_name not in container:
             container.makeDirectory(resource_name)
-        if not isinstance(cooked_string, bytes):  # handle Error of OFS.Image  # noqa: E501
-            cooked_string = cooked_string.encode('ascii', errors='ignore')
+        if not isinstance(
+            cooked_string, bytes
+        ):  # handle Error of OFS.Image  # noqa: E501
+            cooked_string = cooked_string.encode("ascii", errors="ignore")
         try:
             folder = container[resource_name]
             fi = BytesIO(cooked_string)
             folder.writeFile(resource_filepath, fi)
-            logger.info('Writing cooked resource: %s', resource_path)
+            logger.info("Writing cooked resource: %s", resource_path)
         except NotFound:
-            logger.warning('Error writing cooked resource: %s', resource_path)
+            logger.warning("Error writing cooked resource: %s", resource_path)
 
     _write_resource(js_path, cooked_js)
     _write_resource(css_path, cooked_css)
