@@ -23,27 +23,6 @@ import logging
 
 logger = logging.getLogger("Products.CMFPlone")
 
-REQUIREJS_RESET_PREFIX = """
-/* reset requirejs definitions so that people who
-   put requirejs in legacy compilation do not get errors */
-var _old_define = define;
-var _old_require = require;
-define = undefined;
-require = undefined;
-try{
-"""
-REQUIREJS_RESET_POSTFIX = """
-}catch(e){
-    // log it
-    if (typeof console !== "undefined"){
-        console.log('Error loading javascripts!' + e);
-    }
-}finally{
-    define = _old_define;
-    require = _old_require;
-}
-"""
-
 
 def cookWhenChangingSettings(context, bundle=None):
     """When our settings are changed, re-cook the not compilable bundles"""
@@ -80,7 +59,7 @@ def cookWhenChangingSettings(context, bundle=None):
     # Let's join all css and js
     css_compiler = Compiler(output_style="compressed")
     cooked_css = ""
-    cooked_js = REQUIREJS_RESET_PREFIX
+    cooked_js = ""
     siteUrl = getSite().absolute_url()
     request = getRequest()
     for package in bundle.resources or []:
@@ -127,8 +106,6 @@ def cookWhenChangingSettings(context, bundle=None):
         else:
             logger.warning("Could not find resource: %s", resource.js)
             cooked_js += "\n/* Could not find resource: {} */\n\n".format(js_url)
-
-    cooked_js += REQUIREJS_RESET_POSTFIX
 
     persistent_directory = getUtility(IResourceDirectory, name="persistent")
     if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
