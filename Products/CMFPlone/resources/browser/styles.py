@@ -32,7 +32,6 @@ class StylesBase(ResourceBase):
             data = {
                 "rel": rel,
                 "bundle": bundle.name if bundle else "none",
-                "conditionalcomment": bundle.conditionalcomment if bundle else "",
                 "src": src,
             }
             yield data
@@ -81,7 +80,6 @@ class StylesBase(ResourceBase):
                     {
                         "bundle": bundle.name,
                         "rel": "stylesheet",
-                        "conditionalcomment": bundle.conditionalcomment,
                         "src": css_location,
                     }
                 )
@@ -111,7 +109,6 @@ class StylesBase(ResourceBase):
                     "src": "{}/++plone++{}".format(
                         self.site_url, self.production_path + "/default.css"
                     ),
-                    "conditionalcomment": None,
                     "rel": "stylesheet",
                     "bundle": "production",
                 },
@@ -122,7 +119,6 @@ class StylesBase(ResourceBase):
                         "src": "{}/++plone++{}".format(
                             self.site_url, self.production_path + "/logged-in.css"
                         ),
-                        "conditionalcomment": None,
                         "rel": "stylesheet",
                         "bundle": "production",
                     }
@@ -157,7 +153,7 @@ class StylesBase(ResourceBase):
             if extension != "" and extension != "css":
                 rel = "stylesheet/%s" % extension
 
-            data = {"rel": rel, "conditionalcomment": "", "src": src, "bundle": "diazo"}
+            data = {"rel": rel, "src": src, "bundle": "diazo"}
 
             result.append(data)
 
@@ -165,7 +161,6 @@ class StylesBase(ResourceBase):
         if self.custom_css:
             custom_css = {
                 "rel": "stylesheet",
-                "conditionalcomment": "",
                 "src": "{}/custom.css?timestamp={}".format(
                     self.site_url,
                     self.custom_css_timestamp,
