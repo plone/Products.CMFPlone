@@ -13,7 +13,6 @@ class ScriptsView(ResourceView):
         resources_to_add,
         result,
         bundle_name="none",
-        conditionalcomment="",
     ):
         resources = self.get_resources()
         for resource in resources_to_add:
@@ -28,7 +27,6 @@ class ScriptsView(ResourceView):
                 src = data.js
             data = {
                 "bundle": bundle_name,
-                "conditionalcomment": conditionalcomment,
                 "src": src,
             }
             result.append(data)
@@ -40,7 +38,6 @@ class ScriptsView(ResourceView):
                 bundle.resources,
                 result,
                 bundle_name=bundle.name,
-                conditionalcomment=bundle.conditionalcomment,
             )
             return
         if (
@@ -84,7 +81,6 @@ class ScriptsView(ResourceView):
             result.append(
                 {
                     "bundle": bundle.name,
-                    "conditionalcomment": bundle.conditionalcomment,
                     "src": js_location,
                     "async": load_async,
                     "defer": load_defer,
@@ -107,7 +103,6 @@ class ScriptsView(ResourceView):
                     "src": "{}/++plone++{}".format(
                         self.site_url, self.production_path + "/default.js"
                     ),
-                    "conditionalcomment": None,
                     "bundle": "production",
                     "async": None,  # Do not load ``async`` or
                     "defer": None,  # ``defer`` for production bundles.
@@ -119,7 +114,6 @@ class ScriptsView(ResourceView):
                         "src": "{}/++plone++{}".format(
                             self.site_url, self.production_path + "/logged-in.js"
                         ),
-                        "conditionalcomment": None,
                         "bundle": "production",
                         "async": None,  # Do not load ``async`` or
                         "defer": None,  # ``defer`` for production bundles.
@@ -143,7 +137,6 @@ class ScriptsView(ResourceView):
             result.append(
                 {
                     "bundle": "diazo",
-                    "conditionalcomment": "",
                     "src": f"{self.site_url}/{origin}",
                 }
             )
