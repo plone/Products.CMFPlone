@@ -91,22 +91,6 @@ class ScriptsView(ResourceView):
                 }
             )
 
-    def default_resources(self):
-        """Default resources used by Plone itself"""
-        result = []
-        # We always add jquery resource
-        result.append(
-            {
-                "src": "{}/{}".format(
-                    self.site_url,
-                    self.registry.records["plone.resources/jquery.js"].value,
-                ),
-                "conditionalcomment": None,
-                "bundle": "basic",
-            }
-        )
-        return result
-
     def base_url(self):
         portal_state = getMultiAdapter(
             (self.context, self.request), name="plone_portal_state"
@@ -116,8 +100,7 @@ class ScriptsView(ResourceView):
 
     def scripts(self):
         if self.debug_mode or self.development or not self.production_path:
-            result = self.default_resources()
-            result.extend(self.ordered_bundles_result())
+            result = self.ordered_bundles_result()
         else:
             result = [
                 {
