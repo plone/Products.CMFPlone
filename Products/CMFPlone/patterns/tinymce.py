@@ -110,7 +110,7 @@ class TinyMCESettingsGenerator:
             "plugins": ["plonelink", "ploneimage", "importcss"] + settings.plugins,
             "external_plugins": {},
             "toolbar": settings.toolbar,
-            "entity_encoding": settings.entity_encoding,
+            "entity_encoding": list(settings.entity_encoding),
             "importcss_append": True,
             "importcss_file_filter": importcss_file_filter,
             "browser_spellcheck": True,
