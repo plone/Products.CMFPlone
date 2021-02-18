@@ -1,0 +1,6 @@
+Plone 6 with markup update for Bootstrap.
+Extensive overhaul of Plone ui elements based on Bootstrap components.
+Introduction of icon resolver with use of icon_epr definitions.
+[1letter, agitator, ale-rt, balavec, ericof, erral, frapell, fredvd, fulv, gomez, jensens, krissik,
+mauritsvanrees,  mrtango, nilshofer, petschki, santonelli, thet, thomasmassmann, tkimngyuen,
+tschorr]
