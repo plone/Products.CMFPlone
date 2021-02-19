@@ -12,6 +12,16 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.4rc1 (2021-02-19)
+---------------------
+
+Bug fixes:
+
+
+- Bumped metadata version to 5211.
+  [maurits] (#5211)
+
+
 5.2.3 (2020-11-19)
 ------------------
 
