@@ -45,7 +45,6 @@
         <input type="hidden" id="search-batch-start" name="b_start:int" value="${request/b_start|string:0}" />
         <input type="hidden" id="advanced-search-input" name="advanced_search" value="${python: 'True' if view.show_advanced_search() else 'False'}" />
 
-      
         <div class="input-group">
           <input class="searchPage form-control"
                  name="SearchableText"
@@ -146,7 +145,7 @@
                     <li>
                       <div class="form-check">
                         <input type="radio" id="query-date-yesterday" name="created.query:record:date" class="form-check-input"
-                               value="${yesterday}" checked="${python:'checked' if checked==yesterday else ''" />
+                               value="${yesterday}" checked="${python:'checked' if checked==yesterday else ''}" />
                         <label for="query-date-yesterday" i18n:translate="time_yesterday" class="form-check-label">Yesterday</label>
                       </div>
                     </li>
@@ -189,7 +188,6 @@
           </li>
 
         </ul>
-            
 
         <div id="search-results-wrapper">
 
@@ -287,7 +285,7 @@
                         <span i18n:translate="text_searchitem_location">
                           Located in
                         </span>
-                        <span dir="${python:'rtl' if is_rtl else 'ltr'"
+                        <span dir="${python:'rtl' if is_rtl else 'ltr'}"
                               tal:repeat="crumb breadcrumbs">
                           <tal:item tal:define="is_last repeat/crumb/end;
                                                 url crumb/absolute_url;
