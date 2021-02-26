@@ -71,6 +71,23 @@ class AddonsControlPanelFunctionalTest(unittest.TestCase):
             '%s/prefs_install_products_form' % self.portal_url)
         self.assertNotIn('Installed', self.browser.contents)
         self.assertNotIn('Uninstalled', self.browser.contents)
+
+        # In a fresh site there should be no uninstall buttons.
+        # If there is one, it is likely an upgrade profile that should be hidden.
+        # This could change: we might for example install a theme by default
+        # but make it uninstallable.  The logic in this test should be updated then.
+        try:
+            button = self.browser.getControl('Uninstall', index=0)
+        except LookupError:
+            # This is good.
+            pass
+        else:
+            # We cannot easily see what the Uninstall button is for.
+            # We have to get the form with a private attribute.
+            raise AssertionError(
+                f"Uninstall button found. Probably an upgrade profile needs to be hidden. {button._form.text}"
+            )
+
         # It is hard to determine which exact product will be installed
         # by clicking on a button, because they are all called 'Install'.
         # We install all available products.
