@@ -1,4 +1,5 @@
 from collections import defaultdict
+from operator import itemgetter
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.relationhelper import get_relations_stats
@@ -67,7 +68,7 @@ class RelationsInspectControlpanel(BrowserView):
             url = obj.absolute_url() + '/view' if use_view_action else obj.absolute_url()
             item = {}
             item['column_1'] = {
-                'title': obj.title,
+                'title': obj.title_or_id(),
                 'url': url,
                 'portal_type': obj.portal_type,
             }
@@ -77,10 +78,10 @@ class RelationsInspectControlpanel(BrowserView):
                 use_view_action = obj.portal_type in view_action
                 url = obj.absolute_url() + '/view' if use_view_action else obj.absolute_url()
                 item['column_2'].append({
-                    'title': obj.title,
+                    'title': obj.title_or_id(),
                     'url': url,
                     'portal_type': obj.portal_type,
                     })
             self.relations.append(item)
-
+        self.relations.sort(key=lambda x: x['column_1']['title'])
         return self.index()
