@@ -12,6 +12,16 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.4rc2 (2021-03-02)
+---------------------
+
+Bug fixes:
+
+
+- Fixed tests in combination with Products.PluggableAuthService 2.6.0.
+  [maurits] (#3251)
+
+
 5.2.4rc1 (2021-02-19)
 ---------------------
 
