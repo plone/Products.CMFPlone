@@ -5,8 +5,8 @@ from plone.app.layout.viewlets.common import GlobalSectionsViewlet
 from plone.app.layout.viewlets.common import LogoViewlet
 from plone.app.layout.viewlets.common import TitleViewlet
 from plone.app.layout.viewlets.common import ViewletBase
-from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.app.layout.viewlets.tests.base import ViewletsFunctionalTestCase
+from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.app.testing import setRoles
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD

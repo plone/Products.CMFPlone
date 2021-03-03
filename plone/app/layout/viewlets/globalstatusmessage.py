@@ -4,6 +4,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.i18nmessageid import MessageFactory
 
+
 _ = MessageFactory('plone')
 
 MTYPES_DISPLAY = {
