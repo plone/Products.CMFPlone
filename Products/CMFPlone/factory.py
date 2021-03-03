@@ -18,6 +18,7 @@ _CONTENT_PROFILE = 'plone.app.contenttypes:plone-content'
 
 # A little hint for PloneTestCase
 _IMREALLYPLONE5 = True
+_IMREALLYPLONE6 = True
 
 logger = getLogger('Plone')
 
