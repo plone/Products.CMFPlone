@@ -45,8 +45,7 @@ except ImportError:
 @implementer(IViewlet)
 @total_ordering
 class ViewletBase(BrowserView):
-    """ Base class with common functions for link viewlets.
-    """
+    """Base class with common functions for link viewlets."""
 
     def __init__(self, context, request, view, manager=None):
         super(ViewletBase, self).__init__(context, request)
@@ -82,13 +81,11 @@ class ViewletBase(BrowserView):
         raise NotImplementedError("`index` method must be implemented by subclass.")
 
     def __lt__(self, other):
-        """ Sort by name
-        """
+        """Sort by name"""
         return self.__name__ < other.__name__
 
     def __eq__(self, other):
-        """ Check for equality
-        """
+        """Check for equality"""
         return id(self) == id(other)
 
 
@@ -279,7 +276,10 @@ class GlobalSectionsViewlet(ViewletBase):
         for tab in self.portal_tabs:
             entry = tab.copy()
             entry.update(
-                {"path": "/".join((navtree_path, tab["id"])), "uid": tab["id"],}
+                {
+                    "path": "/".join((navtree_path, tab["id"])),
+                    "uid": tab["id"],
+                }
             )
             if "review_state" not in entry:
                 entry["review_state"] = None
@@ -299,7 +299,10 @@ class GlobalSectionsViewlet(ViewletBase):
             return ret
 
         query = {
-            "path": {"query": self.navtree_path, "depth": self.navtree_depth,},
+            "path": {
+                "query": self.navtree_path,
+                "depth": self.navtree_depth,
+            },
             "portal_type": {"query": self.settings.displayed_types},
             "Language": self.current_language,
             "sort_on": self.settings.sort_tabs_on,
@@ -366,7 +369,12 @@ class GlobalSectionsViewlet(ViewletBase):
             )
         else:
             item.update(
-                {"sub": sub, "opener": "", "aria_haspopup": "", "has_sub_class": "",}
+                {
+                    "sub": sub,
+                    "opener": "",
+                    "aria_haspopup": "",
+                    "has_sub_class": "",
+                }
             )
         if "title" in item and item["title"]:
             item["title"] = escape(item["title"])
@@ -474,7 +482,7 @@ class PersonalBarViewlet(ViewletBase):
                 info["class"] = "pat-plone-modal"
                 if '"title":' in modal:
                     modal = json.loads(modal)
-                    modal['title'] = translate(_(modal['title']), context=self.request)
+                    modal["title"] = translate(_(modal["title"]), context=self.request)
                     modal = json.dumps(modal)
 
                 info["data-pat-plone-modal"] = modal

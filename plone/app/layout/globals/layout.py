@@ -13,7 +13,9 @@ from Products.CMFPlone.interfaces.controlpanel import ILinkSchema
 from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.Five.browser.metaconfigure import ViewMixinForTemplates
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile as ZopeViewPageTemplateFile  # noqa
+from zope.browserpage.viewpagetemplatefile import (
+    ViewPageTemplateFile as ZopeViewPageTemplateFile,
+)
 from zope.component import adapter
 from zope.component import getAdapters
 from zope.component import getMultiAdapter
@@ -39,8 +41,7 @@ TEMPLATE_CLASSES = (
 
 @implementer(ILayoutPolicy)
 class LayoutPolicy(BrowserView):
-    """A view that gives access to various layout related functions.
-    """
+    """A view that gives access to various layout related functions."""
 
     @property
     @memoize
@@ -57,8 +58,7 @@ class LayoutPolicy(BrowserView):
             alsoProvides(view, IViewView)
 
     def hide_columns(self, column_left, column_right):
-        """Returns a CSS class matching the current column status.
-        """
+        """Returns a CSS class matching the current column status."""
         if not column_right and not column_left:
             return "visualColumnHideOneTwo"
         if column_right and not column_left:
@@ -95,8 +95,7 @@ class LayoutPolicy(BrowserView):
 
     @memoize
     def icons_visible(self):
-        """Returns True if icons should be shown or False otherwise.
-        """
+        """Returns True if icons should be shown or False otherwise."""
         context = self.context
         membership = getToolByName(context, "portal_membership")
         anon = membership.isAnonymousUser()
@@ -114,8 +113,7 @@ class LayoutPolicy(BrowserView):
 
     @memoize
     def thumb_visible(self):
-        """Returns True if thumbs should be shown or False otherwise.
-        """
+        """Returns True if thumbs should be shown or False otherwise."""
         context = self.context
         membership = getToolByName(context, "portal_membership")
         anon = membership.isAnonymousUser()
@@ -150,8 +148,7 @@ class LayoutPolicy(BrowserView):
         return icon
 
     def _toolbar_classes(self):
-        """current toolbar controlling classes
-        """
+        """current toolbar controlling classes"""
         if not self._context_state.is_toolbar_visible():
             return set()
 
@@ -285,11 +282,10 @@ class LayoutPolicy(BrowserView):
 
         # classes for column visibility: col-content, col-one, col-two:
         body_classes.add("col-content")
-        if self.have_portlets('plone.leftcolumn', view):
+        if self.have_portlets("plone.leftcolumn", view):
             body_classes.add("col-one")
-        if self.have_portlets('plone.rightcolumn', view):
+        if self.have_portlets("plone.rightcolumn", view):
             body_classes.add("col-two")
-
 
         # permissions required. Useful to theme frontend and backend
         # differently
@@ -343,6 +339,5 @@ class DefaultBodyClasses(object):
         self.request = request
 
     def get_classes(self, template, view):
-        """Default body classes adapter.
-        """
+        """Default body classes adapter."""
         return []

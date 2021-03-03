@@ -13,8 +13,7 @@ from zope.component import getUtility
 
 
 class TestSocialViewlet(ViewletsTestCase):
-    """Test the content views viewlet.
-    """
+    """Test the content views viewlet."""
 
     def setUp(self):
         super(TestSocialViewlet, self).setUp()

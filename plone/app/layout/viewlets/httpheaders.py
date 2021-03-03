@@ -19,8 +19,7 @@ class HeaderViewlet(ViewletBase):
 
 
 class HTTPCachingHeaders(HeaderViewlet):
-    """Replace the old global_cache_settings/macros/cacheheaders
-    """
+    """Replace the old global_cache_settings/macros/cacheheaders"""
 
     def getHeaders(self):
         lang = getattr(self.context, "Language", None)

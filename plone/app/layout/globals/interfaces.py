@@ -4,8 +4,7 @@ from zope.interface import Interface
 
 
 class IInterfaceInformation(Interface):
-    """A view that gives information about interfaces provided by its context
-    """
+    """A view that gives information about interfaces provided by its context"""
 
     def provides(dotted_name):
         """Given an interface dotted name, determine if the context provides
@@ -18,12 +17,11 @@ class IInterfaceInformation(Interface):
         """
 
     def names_and_descriptions(dotted_name, all):
-        """ Returns a list of pairs (name, description) for a given
+        """Returns a list of pairs (name, description) for a given
         interface"""
 
     def get_interfaces():
-        """Returns the list of interfaces which are implemented by the object
-        """
+        """Returns the list of interfaces which are implemented by the object"""
 
     def get_base_interface():
         """Returns all base interfaces of an object but no direct interfaces
@@ -45,8 +43,7 @@ class IInterfaceInformation(Interface):
 
 
 class ILayoutPolicy(Interface):
-    """A view that gives access to various layout related functions.
-    """
+    """A view that gives access to various layout related functions."""
 
     def mark_view(view):
         """Adds a marker interface to the view if it is "the" view for the
@@ -54,8 +51,7 @@ class ILayoutPolicy(Interface):
         """
 
     def hide_columns(column_left, column_right):
-        """Returns a CSS class matching the current column status.
-        """
+        """Returns a CSS class matching the current column status."""
 
     def have_portlets(manager_name, view=None):
         """Determine whether a column should be shown. The left column is
@@ -63,8 +59,7 @@ class ILayoutPolicy(Interface):
         """
 
     def icons_visible():
-        """Returns True if icons should be shown or False otherwise.
-        """
+        """Returns True if icons should be shown or False otherwise."""
 
     def getIcon(item):
         """
@@ -78,33 +73,26 @@ class ILayoutPolicy(Interface):
         """
 
     def bodyClass(template, view):
-        """Returns the CSS class to be used on the body tag.
-        """
+        """Returns the CSS class to be used on the body tag."""
 
 
 class ITools(Interface):
-    """A view that gives access to common tools
-    """
+    """A view that gives access to common tools"""
 
     def actions():
-        """The portal_actions tool
-        """
+        """The portal_actions tool"""
 
     def catalog():
-        """The portal_catalog tool
-        """
+        """The portal_catalog tool"""
 
     def membership():
-        """The portal_membership tool
-        """
+        """The portal_membership tool"""
 
     def properties():
-        """The portal_properties tool
-        """
+        """The portal_properties tool"""
 
     def types():
-        """The portal_types tool
-        """
+        """The portal_types tool"""
 
     def url():
         """The portal_url tool"""
@@ -114,73 +102,56 @@ class ITools(Interface):
 
 
 class IPortalState(Interface):
-    """A view that gives access to the current state of the portal
-    """
+    """A view that gives access to the current state of the portal"""
 
     def portal():
-        """The portal object
-        """
+        """The portal object"""
 
     def portal_title():
-        """The title of the portal object
-        """
+        """The title of the portal object"""
 
     def portal_url():
-        """The URL of the portal object
-        """
+        """The URL of the portal object"""
 
     def navigation_root():
-        """The navigation root object
-        """
+        """The navigation root object"""
 
     def navigation_root_title():
-        """The title of the navigation root object
-        """
+        """The title of the navigation root object"""
 
     def navigation_root_path():
-        """ path of the navigation root
-        """
+        """path of the navigation root"""
 
     def navigation_root_url():
-        """The URL of the navigation root
-        """
+        """The URL of the navigation root"""
 
     def default_language():
-        """The default language in the portal
-        """
+        """The default language in the portal"""
 
     def language():
-        """The current language
-        """
+        """The current language"""
 
     def locale():
-        """Get the current locale
-        """
+        """Get the current locale"""
 
     def is_rtl():
-        """Whether or not the portal is being viewed in an RTL language
-        """
+        """Whether or not the portal is being viewed in an RTL language"""
 
     def member():
-        """The current authenticated member
-        """
+        """The current authenticated member"""
 
     def anonymous():
-        """Whether or not the current member is Anonymous
-        """
+        """Whether or not the current member is Anonymous"""
 
     def friendly_types():
-        """Get a list of portal types considered "end user" types
-        """
+        """Get a list of portal types considered "end user" types"""
 
 
 class IContextState(Interface):
-    """A view that gives access to the state of the current context
-    """
+    """A view that gives access to the state of the current context"""
 
     def current_page_url():
-        """The URL to the current page, including template and query string.
-        """
+        """The URL to the current page, including template and query string."""
 
     def current_base_url():
         """The current "actual" URL from the request, excluding the query
@@ -209,8 +180,7 @@ class IContextState(Interface):
         """
 
     def view_template_id():
-        """The id of the view template of the context
-        """
+        """The id of the view template of the context"""
 
     def is_view_template():
         """Return True if the currentl URL (in the request) refers to the
@@ -218,52 +188,40 @@ class IContextState(Interface):
         """
 
     def object_url():
-        """The URL of the current object
-        """
+        """The URL of the current object"""
 
     def object_title():
-        """The prettified title of the current object
-        """
+        """The prettified title of the current object"""
 
     def workflow_state():
-        """The workflow state of the current object
-        """
+        """The workflow state of the current object"""
 
     def parent():
-        """The direct parent of the current object
-        """
+        """The direct parent of the current object"""
 
     def folder():
-        """The current canonical folder
-        """
+        """The current canonical folder"""
 
     def is_folderish():
-        """True if this is a folderish object, structural or not
-        """
+        """True if this is a folderish object, structural or not"""
 
     def is_structural_folder():
-        """True if this is a structural folder
-        """
+        """True if this is a structural folder"""
 
     def is_default_page():
-        """True if this is the default page of its folder
-        """
+        """True if this is the default page of its folder"""
 
     def is_portal_root():
-        """True if this is the portal or the default page in the portal
-        """
+        """True if this is the portal or the default page in the portal"""
 
     def is_editable():
-        """Whether or not the current object is editable
-        """
+        """Whether or not the current object is editable"""
 
     def is_locked():
-        """Whether or not the current object is locked
-        """
+        """Whether or not the current object is locked"""
 
     def is_toolbar_visible():
-        """Wether toolbar is visible or not in the actual context
-        """
+        """Wether toolbar is visible or not in the actual context"""
 
     def actions(category):
         """The filtered actions in the context. You can restrict the actions
@@ -283,12 +241,11 @@ class IViewView(Interface):
 
 
 class IBodyClassAdapter(Interface):
-    """Adapter interface for retrieving extra body classes.
-    """
+    """Adapter interface for retrieving extra body classes."""
 
 
 class IPatternsSettingsRenderer(Interface):
-    """ Interface for the adapter that renders the settings for patterns
+    """Interface for the adapter that renders the settings for patterns
 
     DEPRECATED
     """

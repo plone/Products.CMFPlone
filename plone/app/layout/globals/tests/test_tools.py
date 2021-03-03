@@ -6,8 +6,7 @@ import unittest
 
 
 class TestToolsView(unittest.TestCase):
-    """Tests the global tools view.
-    """
+    """Tests the global tools view."""
 
     layer = INTEGRATION_TESTING
 

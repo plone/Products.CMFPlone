@@ -29,6 +29,5 @@ class AnalyticsViewlet(BrowserView):
             return u""
 
     def update(self):
-        """ The viewlet manager _updateViewlets requires this method
-        """
+        """The viewlet manager _updateViewlets requires this method"""
         pass

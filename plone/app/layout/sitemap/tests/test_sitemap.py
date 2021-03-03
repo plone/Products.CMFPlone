@@ -156,7 +156,9 @@ class SiteMapTestCase(unittest.TestCase):
         # removing content
         login(self.portal, TEST_USER_NAME)
         self.portal.manage_delObjects(
-            ["published",]
+            [
+                "published",
+            ]
         )
         logout()
 

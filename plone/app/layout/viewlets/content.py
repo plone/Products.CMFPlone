@@ -71,7 +71,10 @@ class DocumentBylineViewlet(ViewletBase):
 
     def show(self):
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISecuritySchema, prefix="plone",)
+        settings = registry.forInterface(
+            ISecuritySchema,
+            prefix="plone",
+        )
         return not self.anonymous or settings.allow_anon_views_about
 
     def creator(self):
@@ -91,8 +94,7 @@ class DocumentBylineViewlet(ViewletBase):
         return False
 
     def toLocalizedTime(self, time, long_format=None, time_only=None):
-        """Convert time to localized time
-        """
+        """Convert time to localized time"""
         util = getToolByName(self.context, "translation_service")
         return util.ulocalized_time(
             time, long_format, time_only, self.context, domain="plonelocales"
@@ -156,7 +158,10 @@ class HistoryByLineView(BrowserView):
 
     def show(self):
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISecuritySchema, prefix="plone",)
+        settings = registry.forInterface(
+            ISecuritySchema,
+            prefix="plone",
+        )
         return not self.anonymous or settings.allow_anon_views_about
 
     def show_history(self):
@@ -212,8 +217,7 @@ class HistoryByLineView(BrowserView):
         return False
 
     def toLocalizedTime(self, time, long_format=None, time_only=None):
-        """Convert time to localized time
-        """
+        """Convert time to localized time"""
         util = getToolByName(self.context, "translation_service")
         return util.ulocalized_time(
             time, long_format, time_only, self.context, domain="plonelocales"
@@ -431,14 +435,21 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
             )
             if can_diff:
                 if version_id > 0:
-                    info["diff_previous_url"] = (
-                        "%s/@@history?one=%s&two=%s&_authenticator=%s"
-                        % (context_url, version_id, version_id - 1, token)
+                    info[
+                        "diff_previous_url"
+                    ] = "%s/@@history?one=%s&two=%s&_authenticator=%s" % (
+                        context_url,
+                        version_id,
+                        version_id - 1,
+                        token,
                     )
                 if not rt.isUpToDate(context, version_id):
-                    info["diff_current_url"] = (
-                        "%s/@@history?one=current&two=%s&_authenticator=%s"
-                        % (context_url, version_id, token)
+                    info[
+                        "diff_current_url"
+                    ] = "%s/@@history?one=current&two=%s&_authenticator=%s" % (
+                        context_url,
+                        version_id,
+                        token,
                     )
             if can_revert:
                 info["revert_url"] = "%s/revertversion" % context_url
@@ -472,8 +483,7 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
         return history
 
     def toLocalizedTime(self, time, long_format=None, time_only=None):
-        """Convert time to localized time
-        """
+        """Convert time to localized time"""
         return DateTime(time).ISO()
         # util = getToolByName(self.context, 'translation_service')
         # return util.ulocalized_time(

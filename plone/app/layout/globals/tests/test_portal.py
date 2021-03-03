@@ -19,8 +19,7 @@ import zope.interface
 
 
 class TestPortalStateView(unittest.TestCase):
-    """Ensure that the basic redirector setup is successful.
-    """
+    """Ensure that the basic redirector setup is successful."""
 
     layer = INTEGRATION_TESTING
 

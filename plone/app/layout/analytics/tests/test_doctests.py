@@ -20,7 +20,10 @@ def test_suite():
     suite.addTests(
         [
             layered(
-                doctest.DocFileSuite(test, optionflags=OPTIONFLAGS,),
+                doctest.DocFileSuite(
+                    test,
+                    optionflags=OPTIONFLAGS,
+                ),
                 layer=FUNCTIONAL_TESTING,
             )
             for test in normal_testfiles

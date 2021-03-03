@@ -12,8 +12,7 @@ import six
 
 @implementer(INavtreeStrategy)
 class NavtreeStrategyBase(object):
-    """Basic navigation tree strategy that does nothing.
-    """
+    """Basic navigation tree strategy that does nothing."""
 
     __allow_access_to_unprotected_subobjects__ = 1
 

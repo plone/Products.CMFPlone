@@ -12,8 +12,7 @@ deprecated(
 
 
 class INavigationRoot(Interface):
-    """A marker interface for signaling the navigation root.
-    """
+    """A marker interface for signaling the navigation root."""
 
 
 class INavigationQueryBuilder(Interface):
@@ -23,7 +22,7 @@ class INavigationQueryBuilder(Interface):
 
     def __call__():
         """Returns a mapping describing a catalog query used to build a
-           navigation structure.
+        navigation structure.
         """
 
 

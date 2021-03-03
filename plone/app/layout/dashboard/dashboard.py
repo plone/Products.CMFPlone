@@ -20,8 +20,7 @@ class IDashboard(Interface):
 
 @implementer(IDashboard)
 class DashboardView(BrowserView):
-    """Power the dashboard
-    """
+    """Power the dashboard"""
 
     def __call__(self):
         self.request.set("disable_border", 1)

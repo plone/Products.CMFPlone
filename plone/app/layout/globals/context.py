@@ -30,8 +30,7 @@ BLACKLISTED_CATEGORIES = (
 
 @implementer(IContextState)
 class ContextState(BrowserView):
-    """Information about the state of the current context
-    """
+    """Information about the state of the current context"""
 
     @memoize
     def current_page_url(self):
@@ -236,10 +235,18 @@ class ContextState(BrowserView):
         ttool = getToolByName(context, "portal_types")
         actions = []
         actions.extend(
-            ttool.listActionInfos(object=context, category=category, max=max,)
+            ttool.listActionInfos(
+                object=context,
+                category=category,
+                max=max,
+            )
         )
         actions.extend(
-            atool.listActionInfos(object=context, categories=(category,), max=max,)
+            atool.listActionInfos(
+                object=context,
+                categories=(category,),
+                max=max,
+            )
         )
         return actions
 

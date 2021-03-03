@@ -62,7 +62,10 @@ class AuthorViewlet(ViewletBase):
     def show(self):
         anonymous = self.portal_state.anonymous()
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISecuritySchema, prefix="plone",)
+        settings = registry.forInterface(
+            ISecuritySchema,
+            prefix="plone",
+        )
         return not anonymous or settings.allow_anon_views_about
 
     def render(self):

@@ -12,8 +12,7 @@ from zope.interface import implementer
 
 
 class BaseIcon(object):
-    """Helper base class for html rendering
-    """
+    """Helper base class for html rendering"""
 
     __allow_access_to_unprotected_subobjects__ = True
 
@@ -92,8 +91,7 @@ class CatalogBrainContentIcon(BaseIcon):
 
     @view.memoize_contextless
     def extensions_mimetype(self):
-        """Return a dict {'.pdf': 'PDF Document', '.ods': '
-        """
+        """Return a dict {'.pdf': 'PDF Document', '.ods': '"""
         mtr = getToolByName(self.context, "mimetypes_registry")
         mimetypes = mtr.mimetypes()
         extensions = {}

@@ -4,8 +4,7 @@ from zope.interface import Interface
 
 
 class IContentIcon(Interface):
-    """An icon for a piece of content
-    """
+    """An icon for a piece of content"""
 
     width = Attribute("The width of the icon (required).")
 
@@ -26,5 +25,4 @@ class IContentIcon(Interface):
     )
 
     def html_tag():
-        """Return a HTML string that is the tag for rendering this icon.
-        """
+        """Return a HTML string that is the tag for rendering this icon."""

@@ -38,8 +38,7 @@ HACKED = '<script>alert("hacked")</script>'
 
 
 class TestViewletBase(ViewletsTestCase):
-    """Test the base class for the viewlets.
-    """
+    """Test the base class for the viewlets."""
 
     def test_update(self):
         request = self.layer["request"]
@@ -54,8 +53,7 @@ class TestViewletBase(ViewletsTestCase):
 
 
 class TestContentViewsViewlet(ViewletsTestCase):
-    """Test the content views viewlet.
-    """
+    """Test the content views viewlet."""
 
     def setUp(self):
         super(TestContentViewsViewlet, self).setUp()
@@ -104,8 +102,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
 
 
 class TestTitleViewsViewlet(ViewletsTestCase):
-    """Test the title viewlet.
-    """
+    """Test the title viewlet."""
 
     def setUp(self):
         super(TestTitleViewsViewlet, self).setUp()
@@ -119,8 +116,7 @@ class TestTitleViewsViewlet(ViewletsTestCase):
             pass
 
     def test_title_viewlet_on_portal(self):
-        """Title viewlet renders navigation root title
-        """
+        """Title viewlet renders navigation root title"""
         self._invalidateRequestMemoizations()
         setRoles(self.portal, TEST_USER_ID, ["Manager", "Member"])
         self.app.REQUEST["ACTUAL_URL"] = self.portal.absolute_url()
@@ -135,8 +131,7 @@ class TestTitleViewsViewlet(ViewletsTestCase):
         self.assertEqual(viewlet.site_title, u"S\xfcper Site")
 
     def test_title_viewlet_on_content(self):
-        """Title viewlet renders navigation root title
-        """
+        """Title viewlet renders navigation root title"""
         self._invalidateRequestMemoizations()
         setRoles(self.portal, TEST_USER_ID, ["Manager", "Member"])
         self.app.REQUEST["ACTUAL_URL"] = self.folder.test.absolute_url()
@@ -151,8 +146,7 @@ class TestTitleViewsViewlet(ViewletsTestCase):
         self.assertEqual(viewlet.site_title, u"Test default page &mdash; S\xfcper Site")
 
     def test_title_viewlet_with_navigation_root(self):
-        """Title viewlet renders navigation root title
-        """
+        """Title viewlet renders navigation root title"""
         self._invalidateRequestMemoizations()
         setRoles(self.portal, TEST_USER_ID, ["Manager", "Member"])
         self.app.REQUEST["ACTUAL_URL"] = self.folder.test.absolute_url()
@@ -163,12 +157,10 @@ class TestTitleViewsViewlet(ViewletsTestCase):
 
 
 class TestLogoViewlet(ViewletsTestCase):
-    """Test the site logo viewlet.
-    """
+    """Test the site logo viewlet."""
 
     def _set_site(self, context):
-        """Set context as a site.
-        """
+        """Set context as a site."""
         # Set the portal's getSiteManager method on context.
         # This is a hackish way to make setSite work without creating a site
         # with five.localsitemanager.
@@ -231,8 +223,7 @@ class TestLogoViewlet(ViewletsTestCase):
 
 
 class TestGlobalSectionsViewlet(ViewletsTestCase):
-    """Test the global sections views viewlet.
-    """
+    """Test the global sections views viewlet."""
 
     def setUp(self):
         self.portal = self.layer["portal"]
@@ -250,8 +241,7 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
         return gsv.navtree
 
     def test_globalnav_respects_types_use_view_action_in_listings(self):
-        """ Test selected tabs with a INavigationroot folder involved
-        """
+        """Test selected tabs with a INavigationroot folder involved"""
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
         self.portal.invokeFactory("Image", "image", title=u"Söme Image")
         self.portal.invokeFactory("File", "file", title=u"Some File")
@@ -265,8 +255,7 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
         self.assertIn('href="http://nohost/plone/doc"', html)
 
     def test_globalnav_navigation_depth(self):
-        """ Test selected tabs with a INavigationroot folder involved
-        """
+        """Test selected tabs with a INavigationroot folder involved"""
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
         registry = getUtility(IRegistry)
         registry["plone.navigation_depth"] = 3
@@ -294,7 +283,8 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
             [u"Subfolder", u"Sübfolder 2"],
         )
         self.assertListEqual(
-            [x["title"] for x in navtree["/plone/folder/subfolder"]], [u"Sub2folder"],
+            [x["title"] for x in navtree["/plone/folder/subfolder"]],
+            [u"Sub2folder"],
         )
 
         gsv = GlobalSectionsViewlet(self.portal, request, None)
@@ -315,13 +305,16 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
         navtree = self._get_navtree()
         self.assertListEqual(sorted(navtree), ["/plone"])
         self.assertListEqual(
-            [item["path"] for item in navtree["/plone"]], ["/plone/index_html"],
+            [item["path"] for item in navtree["/plone"]],
+            ["/plone/index_html"],
         )
 
     def test_generate_tabs_non_folderish(self):
         self.registry["plone.nonfolderish_tabs"] = False
         self.portal.invokeFactory(
-            "Document", "test-doc", title=u"A simple document (àèìòù)",
+            "Document",
+            "test-doc",
+            title=u"A simple document (àèìòù)",
         )
         navtree = self._get_navtree()
         self.assertListEqual(sorted(navtree), ["/plone", "/plone/Members"])
@@ -332,10 +325,14 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
 
     def test_generate_tabs_sorted(self):
         self.portal.invokeFactory(
-            "Document", "test-doc-2", title=u"Document 2",
+            "Document",
+            "test-doc-2",
+            title=u"Document 2",
         )
         self.portal.invokeFactory(
-            "Document", "test-doc-1", title=u"Document 1",
+            "Document",
+            "test-doc-1",
+            title=u"Document 1",
         )
         navtree = self._get_navtree()
         # default sorting by position in parent
@@ -389,14 +386,20 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
         )
         navtree = self._get_navtree()
         self.assertListEqual(
-            [item["path"] for item in navtree["/plone"]], ["/plone/index_html",],
+            [item["path"] for item in navtree["/plone"]],
+            [
+                "/plone/index_html",
+            ],
         )
 
     def test_generate_tabs_filter_on_state(self):
         self.registry["plone.filter_on_workflow"] = True
         navtree = self._get_navtree()
         self.assertListEqual(
-            [item["path"] for item in navtree["/plone"]], ["/plone/index_html",],
+            [item["path"] for item in navtree["/plone"]],
+            [
+                "/plone/index_html",
+            ],
         )
         self.registry["plone.workflow_states_to_show"] = (u"private",)
         navtree = self._get_navtree()
@@ -421,7 +424,9 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
 
     def test_generate_tabs_exclude_from_nav(self):
         self.portal.invokeFactory(
-            "Folder", "test-folder", title=u"Test folder",
+            "Folder",
+            "test-folder",
+            title=u"Test folder",
         )
         self.portal.invokeFactory(
             "Folder",
@@ -430,20 +435,27 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
             exclude_from_nav=True,
         )
         self.portal["excluded-folder"].invokeFactory(
-            "Folder", "sub-folder", title=u"Sub folder",
+            "Folder",
+            "sub-folder",
+            title=u"Sub folder",
         )
 
         navtree = self._get_navtree()
         self.assertListEqual(
             [item["path"] for item in navtree["/plone"]],
-            ["/plone/index_html", "/plone/Members", "/plone/test-folder",],
+            [
+                "/plone/index_html",
+                "/plone/Members",
+                "/plone/test-folder",
+            ],
         )
 
         # Check also that we we have proper nesting
         self.registry["plone.navigation_depth"] = 2
         navtree = self._get_navtree()
         self.assertListEqual(
-            sorted(navtree), ["/plone", "/plone/Members", "/plone/excluded-folder"],
+            sorted(navtree),
+            ["/plone", "/plone/Members", "/plone/excluded-folder"],
         )
         self.assertListEqual(
             [item["path"] for item in navtree["/plone/excluded-folder"]],
@@ -464,7 +476,8 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
         self.registry["plone.navigation_depth"] = 2
         navtree = self._get_navtree()
         self.assertListEqual(
-            sorted(navtree), ["/plone", "/plone/Members", "/plone/excluded-folder"],
+            sorted(navtree),
+            ["/plone", "/plone/Members", "/plone/excluded-folder"],
         )
         self.assertListEqual(
             [item["path"] for item in navtree["/plone"]],
@@ -479,7 +492,8 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
         self.portal["excluded-folder"]["sub-folder"].reindexObject()
         navtree = self._get_navtree()
         self.assertListEqual(
-            sorted(navtree), ["/plone", "/plone/Members"],
+            sorted(navtree),
+            ["/plone", "/plone/Members"],
         )
         self.assertListEqual(
             [item["path"] for item in navtree["/plone"]],

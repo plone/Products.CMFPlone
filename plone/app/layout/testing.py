@@ -29,8 +29,10 @@ class Fixture(PloneSandboxLayer):
 
 FIXTURE = Fixture()
 INTEGRATION_TESTING = IntegrationTesting(
-    bases=(FIXTURE,), name="plone.app.layout:Integration",
+    bases=(FIXTURE,),
+    name="plone.app.layout:Integration",
 )
 FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(FIXTURE,), name="plone.app.layout:Functional",
+    bases=(FIXTURE,),
+    name="plone.app.layout:Functional",
 )

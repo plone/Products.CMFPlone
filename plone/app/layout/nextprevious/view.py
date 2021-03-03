@@ -9,8 +9,7 @@ from zope.component import getMultiAdapter
 
 
 class NextPreviousView(BrowserView):
-    """Information about next/previous navigation
-    """
+    """Information about next/previous navigation"""
 
     def next(self):
         provider = self._provider()

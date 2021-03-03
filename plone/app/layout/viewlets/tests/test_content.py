@@ -29,8 +29,7 @@ else:
     from plone.dexterity.fti import DexterityFTI
 
     class IMyDexterityItem(Interface):
-        """ Dexterity test type
-        """
+        """Dexterity test type"""
 
 
 class TestDocumentBylineViewletView(ViewletsTestCase):
@@ -44,7 +43,10 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
         self.context = self.folder["doc1"]
 
         registry = getUtility(IRegistry)
-        self.security_settings = registry.forInterface(ISecuritySchema, prefix="plone",)
+        self.security_settings = registry.forInterface(
+            ISecuritySchema,
+            prefix="plone",
+        )
 
     def _get_viewlet(self):
         request = self.app.REQUEST
@@ -111,7 +113,10 @@ class TestHistoryBylineViewletView(ViewletsTestCase):
         self.context = self.folder["doc1"]
 
         registry = getUtility(IRegistry)
-        self.security_settings = registry.forInterface(ISecuritySchema, prefix="plone",)
+        self.security_settings = registry.forInterface(
+            ISecuritySchema,
+            prefix="plone",
+        )
 
     def _get_viewlet(self):
         request = self.app.REQUEST

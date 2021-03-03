@@ -23,8 +23,7 @@ RIGHT_TO_LEFT = ["ar", "fa", "he", "ps"]
 
 @implementer(IPortalState)
 class PortalState(BrowserView):
-    """Information about the state of the portal
-    """
+    """Information about the state of the portal"""
 
     @memoize_contextless
     def portal(self):

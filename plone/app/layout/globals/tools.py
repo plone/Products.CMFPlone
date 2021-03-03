@@ -8,8 +8,7 @@ from zope.interface import implementer
 
 @implementer(ITools)
 class Tools(BrowserView):
-    """Common tools
-    """
+    """Common tools"""
 
     @memoize_contextless
     def actions(self):

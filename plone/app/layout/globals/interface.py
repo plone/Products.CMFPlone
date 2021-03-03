@@ -63,7 +63,7 @@ class InterfaceInformation(BrowserView):
 
     @memoize
     def names_and_descriptions(self, dotted_name, all=0):
-        """ Returns a list of pairs (name, description) for a given
+        """Returns a list of pairs (name, description) for a given
         interface"""
         iface = resolveInterface(dotted_name)
         nd = iface.namesAndDescriptions(all=all)
@@ -71,8 +71,7 @@ class InterfaceInformation(BrowserView):
 
     @memoize
     def get_interfaces(self):
-        """Returns the list of interfaces which are implemented by the object
-        """
+        """Returns the list of interfaces which are implemented by the object"""
         return tuple(providedBy(aq_base(self.context)).flattened())
 
     def get_base_interface(self):
@@ -112,7 +111,10 @@ class InterfaceInformation(BrowserView):
                 )
             else:
                 attributes.append(
-                    {"name": desc.getName(), "doc": _trim_doc_string(desc.getDoc()),}
+                    {
+                        "name": desc.getName(),
+                        "doc": _trim_doc_string(desc.getDoc()),
+                    }
                 )
 
         result = {

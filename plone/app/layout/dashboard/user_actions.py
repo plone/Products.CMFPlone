@@ -4,8 +4,7 @@ from zope.component import getMultiAdapter
 
 
 class UserActionsView(BrowserView):
-    """Power the useraction fallback page
-    """
+    """Power the useraction fallback page"""
 
     def user_actions(self):
         context_state = getMultiAdapter(
