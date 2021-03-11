@@ -74,8 +74,8 @@ Then I can see only "${type}" when creating a document
   Wait until page contains  Add Page
   with the label  Title   Input Text    My Document
   Click Link  Settings
-  Page should contain element  name=form.widgets.IShortName.id
-  Input Text  name=form.widgets.IShortName.id  this-is-my-custom-short-name
+  Page should contain element  name=form.widgets.id
+  Input Text  name=form.widgets.id  this-is-my-custom-short-name
   Click Button  Save
   Wait until page contains  Item created
   Location should be  ${PLONE_URL}/this-is-my-custom-short-name/view

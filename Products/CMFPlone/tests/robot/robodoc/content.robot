@@ -114,7 +114,7 @@ Show new folder add form
     Click link  folder
 
     Wait until element is visible
-    ...  css=#form-widgets-IDublinCore-title
+    ...  css=#form-widgets-title
 
     Capture and crop page screenshot
     ...  ${CURDIR}/_robot/adding-folders_add-form.png
@@ -176,7 +176,7 @@ Show new link add form
     Click link  link
 
     Wait until element is visible
-    ...  css=#form-widgets-IDublinCore-title
+    ...  css=#form-widgets-title
 
     Capture and crop page screenshot
     ...  ${CURDIR}/_robot/adding-links_add-form.png
@@ -299,7 +299,7 @@ Show basic content properties tab
     Update element style  portal-footer  display  none
 
     Wait until element is visible
-    ...  css=#form-widgets-IDublinCore-title
+    ...  css=#form-widgets-title
 
     Capture and crop page screenshot
     ...  ${CURDIR}/_robot/basicpropertiestabs.png

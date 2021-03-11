@@ -31,12 +31,12 @@ First create a folder and a demo collection:
 
     >>> browser.getLink('Collection').click()
     >>> collection_title = 'Collection'
-    >>> browser.getControl(name='form.widgets.IDublinCore.title').value = collection_title
+    >>> browser.getControl(name='form.widgets.title').value = collection_title
     >>> collection_description = 'Description. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.'
-    >>> browser.getControl(name='form.widgets.IDublinCore.description').value = collection_description
+    >>> browser.getControl(name='form.widgets.description').value = collection_description
     >>> collection_text = '<p>Text. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
-    >>> browser.getControl(name='form.widgets.IRichTextBehavior.text').value = collection_text
-    >>> browser.getControl(name='form.widgets.IRichTextBehavior.text.mimeType').value = ['text/html']
+    >>> browser.getControl(name='form.widgets.text').value = collection_text
+    >>> browser.getControl(name='form.widgets.text.mimeType').value = ['text/html']
     >>> browser.getControl('Save').click()
 
 Now let's login and visit the collection in the test browser:

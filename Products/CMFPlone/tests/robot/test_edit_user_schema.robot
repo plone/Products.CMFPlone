@@ -121,8 +121,8 @@ choose to show the field on registration
   Go to  ${PLONE_URL}/@@member-fields
   Wait until page contains element  css=div[data-field_id='test_field']
   Click link  css=div[data-field_id='test_field'] a.fieldSettings
-  Wait Until Element Is visible  form.widgets.IUserFormSelection.forms:list
-  Select Checkbox  css=#form-widgets-IUserFormSelection-forms-0
+  Wait Until Element Is visible  form.widgets.forms:list
+  Select Checkbox  css=#form-widgets-forms-0
   Click button  css=.pattern-modal-buttons input#form-buttons-save
   # XXX: This is really really bad! We need a UI notification like:
   # Wait until page contains  Field created.
@@ -132,8 +132,8 @@ choose to show the field in the user profile
   Go to  ${PLONE_URL}/@@member-fields
   Wait until page contains element  css=div[data-field_id='test_field']
   Click link  css=div[data-field_id='test_field'] a.fieldSettings
-  Wait Until Element Is visible  form.widgets.IUserFormSelection.forms:list
-  Select Checkbox  css=#form-widgets-IUserFormSelection-forms-1
+  Wait Until Element Is visible  form.widgets.forms:list
+  Select Checkbox  css=#form-widgets-forms-1
   Click button  css=.pattern-modal-buttons input#form-buttons-save
   # XXX: This is really really bad! We need a UI notification like:
   # Wait until page contains  Field created.

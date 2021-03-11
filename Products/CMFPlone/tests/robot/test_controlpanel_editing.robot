@@ -79,10 +79,10 @@ I enable lock on through the web
 I can see an id field in the settings tab when I create a document
   Go To  ${PLONE_URL}/++add++Document
   Given patterns are loaded
-  Execute Javascript  $('#form-widgets-IDublinCore-title').val('My Document'); return 0;
+  Execute Javascript  $('#form-widgets-title').val('My Document'); return 0;
   Click Link  Settings
-  Page should contain element  name=form.widgets.IShortName.id
-  Input Text  name=form.widgets.IShortName.id  this-is-my-custom-short-name
+  Page should contain element  name=form.widgets.id
+  Input Text  name=form.widgets.id  this-is-my-custom-short-name
   Click Button  Save
   Wait until page contains  Item created
   Location should be  ${PLONE_URL}/this-is-my-custom-short-name/view

@@ -51,7 +51,7 @@ browser.
 Now that the document has been added, we can edit it, but we pretend
 we don't know better and forget to type in a Title:
 
-    >>> browser.getControl(name='form.widgets.IRichTextBehavior.text').value = 'About me'
+    >>> browser.getControl(name='form.widgets.text').value = 'About me'
     >>> browser.getControl('Save').click()
     >>> 'Required input is missing.' in browser.contents
     True
@@ -111,7 +111,7 @@ We edit the document properties:
 
 We make sure the language is English at the beginning:
 
-    >>> browser.getControl(name='form.widgets.IDublinCore.language').displayValue
+    >>> browser.getControl(name='form.widgets.language').displayValue
     ['English']
 
 And the content language is set to the default:
@@ -121,8 +121,8 @@ And the content language is set to the default:
 
 Now set the language to German:
 
-    >>> browser.getControl(name='form.widgets.IDublinCore.language').value = ['de']
-    >>> browser.getControl(name='form.widgets.IDublinCore.language').displayValue
+    >>> browser.getControl(name='form.widgets.language').value = ['de']
+    >>> browser.getControl(name='form.widgets.language').displayValue
     ['Deutsch']
 
     >>> browser.getControl('Save').click()
@@ -186,7 +186,7 @@ between cut and paste, the page should say so and not give a stacktrace.
 
     >>> browser.open('http://nohost/plone')
     >>> browser.getLink('Page').click()
-    >>> browser.getControl(name='form.widgets.IRichTextBehavior.text').value = ''
+    >>> browser.getControl(name='form.widgets.text').value = ''
     >>> browser.getControl('Title').value = 'Op een dag'
     >>> browser.getControl('Save').click()
     >>> 'Op een dag' in browser.contents

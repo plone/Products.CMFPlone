@@ -284,7 +284,7 @@ I trigger the add a new user action
 a document '${title}' in the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Document
     Wait For Condition  return window.jQuery('.autotoc-nav .active:visible').length > 0
-    Execute Javascript  $('#form-widgets-IDublinCore-title').val('${title}'); return 0;
+    Execute Javascript  $('#form-widgets-title').val('${title}'); return 0;
     Click Button  Save
 
 I set the default content view of the test folder

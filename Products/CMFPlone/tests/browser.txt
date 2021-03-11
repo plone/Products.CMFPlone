@@ -25,7 +25,7 @@ Create object
 
     >>> browser.open('http://nohost/plone')
     >>> browser.getLink('Collection').click()
-    >>> browser.getControl(name='form.widgets.IDublinCore.title').value = 'News'
+    >>> browser.getControl(name='form.widgets.title').value = 'News'
     >>> browser.getControl('Save').click()
     >>> browser.getLink('Summary view').click()
     >>> browser.getLink('Publish').click()

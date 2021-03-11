@@ -14,31 +14,31 @@ a document
     [Arguments]  ${title}
     Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Document
     Given patterns are loaded
-    Execute Javascript  $('#form-widgets-IDublinCore-title').val('${title}'); return 0;
+    Execute Javascript  $('#form-widgets-title').val('${title}'); return 0;
     Click Button  Save
 
 a folder
     [Arguments]  ${title}
     Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Folder
     Given patterns are loaded
-    Execute Javascript  $('#form-widgets-IDublinCore-title').val('${title}'); return 0;
+    Execute Javascript  $('#form-widgets-title').val('${title}'); return 0;
     Click Button  Save
 
 a folder '${foldername}' with a document '${documentname}'
     Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Folder
     Given patterns are loaded
-    Execute Javascript  $('#form-widgets-IDublinCore-title').val('${foldername}'); return 0;
+    Execute Javascript  $('#form-widgets-title').val('${foldername}'); return 0;
     Click Button  Save
     Go to  ${PLONE_URL}/${TEST_FOLDER}/folder/edit
     Given patterns are loaded
-    Execute Javascript  $('#form-widgets-IDublinCore-title').val('${documentname}'); return 0;
+    Execute Javascript  $('#form-widgets-title').val('${documentname}'); return 0;
     Click Button  Save
 
 a collection
     [Arguments]  ${title}
     Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Collection
     Given patterns are loaded
-    Execute Javascript  $('#form-widgets-IDublinCore-title').val('${title}'); return 0;
+    Execute Javascript  $('#form-widgets-title').val('${title}'); return 0;
     Click Button  Save
 
 a site owner
@@ -50,7 +50,7 @@ the site root
 a test folder
     Go to  ${PLONE_URL}/++add++Folder
     Given patterns are loaded
-    Execute Javascript  $('#form-widgets-IDublinCore-title').val('Test Folder'); return 0;
+    Execute Javascript  $('#form-widgets-title').val('Test Folder'); return 0;
     Click Button  Save
 
 the test folder

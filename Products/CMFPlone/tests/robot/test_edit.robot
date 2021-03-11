@@ -152,5 +152,5 @@ no other tab is shown
 at least one other item
     Go to  ${PLONE_URL}/++add++Document
     Given patterns are loaded
-    Execute Javascript  $('#form-widgets-IDublinCore-title').val('${TITLE}'); return 0;
+    Execute Javascript  $('#form-widgets-title').val('${TITLE}'); return 0;
     Click Button  Save

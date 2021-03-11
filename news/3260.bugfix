@@ -1,0 +1,1 @@
+- Update tests to match `ignorePrefix = True`. See https://github.com/plone/plone.dexterity/pull/145 [@avoinea]

@@ -158,10 +158,10 @@ Create sample content for history
 
     Go to  ${PLONE_URL}/samplepage
     Click element  css=#contentview-edit a
-    Click element  css=#form-widgets-IDublinCore-title
-    Input text  css=#form-widgets-IDublinCore-title  Hurray
-    Click element  css=#form-widgets-IVersionable-changeNote
-    Input text  css=#form-widgets-IVersionable-changeNote  Title should be Hurray, not Sample Page.
+    Click element  css=#form-widgets-title
+    Input text  css=#form-widgets-title  Hurray
+    Click element  css=#form-widgets-changeNote
+    Input text  css=#form-widgets-changeNote  Title should be Hurray, not Sample Page.
     Click button  css=#form-buttons-save
 
 Show history
