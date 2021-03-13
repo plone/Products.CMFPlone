@@ -41,7 +41,6 @@ setup(
         'ExtensionClass',
         'five.customerize',
         'five.localsitemanager',
-        'mockup',
         'Pillow',
         'plone.api >= 1.4.4',
         'plone.app.content',
