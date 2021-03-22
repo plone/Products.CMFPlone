@@ -1,2 +1,2 @@
-Add IMREALLYPLONE6 Python marker
+Add PLONE60MARKER (and PLONE52MARKER) Python marker
 [sneridagh]
