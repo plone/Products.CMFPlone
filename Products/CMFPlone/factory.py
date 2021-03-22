@@ -16,8 +16,14 @@ _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
 _TYPES_PROFILE = 'plone.app.contenttypes:default'
 _CONTENT_PROFILE = 'plone.app.contenttypes:plone-content'
 
-# A little hint for PloneTestCase
+# A little hint for PloneTestCase (pre-Plone 6.0)
 _IMREALLYPLONE5 = True
+
+# Marker hints for code that needs to know the major Plone version
+# Works the same way than zcml condition hints so it contains the current and the
+# last ones
+PLONE52MARKER = True
+PLONE60MARKER = True
 
 logger = getLogger('Plone')
 
