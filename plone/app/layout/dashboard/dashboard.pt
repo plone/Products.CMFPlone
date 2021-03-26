@@ -43,10 +43,10 @@
             </span>
           </nav>
 
-          <div id="dashboard">
-            <div class="visualClear">
-              <!-- -->
-            </div>
+
+          <div
+              id="dashboard"
+              class="row row-cols-2">
             <div
                 id="dashboard-portlets1"
                 tal:content="structure provider:plone.dashboard1" />
@@ -60,9 +60,7 @@
                 id="dashboard-portlets4"
                 tal:content="structure provider:plone.dashboard4" />
           </div>
-          <div class="visualClear">
-            <!-- -->
-          </div>
+
         </div>
 
       </tal:b>
