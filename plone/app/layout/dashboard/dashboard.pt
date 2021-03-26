@@ -46,7 +46,7 @@
 
           <div
               id="dashboard"
-              class="row row-cols-2">
+              class="row row-cols-1 row-cols-md-2">
             <div
                 id="dashboard-portlets1"
                 tal:content="structure provider:plone.dashboard1" />
