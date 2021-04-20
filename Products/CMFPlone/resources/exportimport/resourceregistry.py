@@ -12,10 +12,9 @@ from zope.interface.interfaces import ComponentLookupError
 
 
 def importResRegistry(context, reg_id, reg_title, filename):
-    """Import resource registry.
-    """
+    """Import resource registry."""
     site = context.getSite()
-    logger = context.getLogger('resourceregistry')
+    logger = context.getLogger("resourceregistry")
 
     body = context.readDataFile(filename)
     if body is None:
@@ -28,7 +27,7 @@ def importResRegistry(context, reg_id, reg_title, filename):
         logger.warning("%s: Import adapter missing." % reg_title)
         return
     try:
-        importer.registry = getToolByName(site, 'portal_registry')
+        importer.registry = getToolByName(site, "portal_registry")
     except AttributeError:
         # Upgrade 3.x no registry there
         importer.registry = None
@@ -42,20 +41,21 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
     registry = None
 
     def _importNode(self, node):
-        """Import the object from the DOM node.
-        """
+        """Import the object from the DOM node."""
         if self.registry is None:
             # Upgrade 3.x no registry there
             return
         resources = self.registry.collectionOfInterface(
-            IResourceRegistry, prefix="plone.resources", check=False)
+            IResourceRegistry, prefix="plone.resources", check=False
+        )
 
         bundles = self.registry.collectionOfInterface(
-            IBundleRegistry, prefix="plone.bundles", check=False)
-        if 'plone-legacy' in bundles:
-            legacy = bundles['plone-legacy']
+            IBundleRegistry, prefix="plone.bundles", check=False
+        )
+        if "plone-legacy" in bundles:
+            legacy = bundles["plone-legacy"]
         else:
-            legacy = bundles.setdefault('plone-legacy')
+            legacy = bundles.setdefault("plone-legacy")
             legacy.resources = []
             legacy.enabled = True
 
@@ -69,36 +69,40 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
             position = res_id = None
             for key, value in child.attributes.items():
                 key = str(key)
-                if key == 'update':
+                if key == "update":
                     continue
-                if key == 'remove' and value in (True, 'true', 'True'):
+                if key == "remove" and value in (True, "true", "True"):
                     add = False
                     remove = True
                     continue
-                if key in ('position-before', 'insert-before'):
-                    position = ('before', queryUtility(
-                        IIDNormalizer).normalize(str(value)))
+                if key in ("position-before", "insert-before"):
+                    position = (
+                        "before",
+                        queryUtility(IIDNormalizer).normalize(str(value)),
+                    )
                     continue
-                if key in ('position-after', 'insert-after'):
-                    position = ('after', queryUtility(
-                        IIDNormalizer).normalize(str(value)))
+                if key in ("position-after", "insert-after"):
+                    position = (
+                        "after",
+                        queryUtility(IIDNormalizer).normalize(str(value)),
+                    )
                     continue
-                if key in ('position-top', 'insert-top'):
-                    position = ('*',)
+                if key in ("position-top", "insert-top"):
+                    position = ("*",)
                     continue
-                if key in ('position-bottom', 'insert-bottom'):
-                    position = ('',)
+                if key in ("position-bottom", "insert-bottom"):
+                    position = ("",)
                     continue
-                if key == 'id':
+                if key == "id":
                     if value in self.resource_blacklist:
                         add = False
                         data.clear()
                         break
                     res_id = queryUtility(IIDNormalizer).normalize(str(value))
-                    data['url'] = str(value)
-                elif value.lower() == 'false':
+                    data["url"] = str(value)
+                elif value.lower() == "false":
                     data[key] = False
-                elif value.lower() == 'true':
+                elif value.lower() == "true":
                     data[key] = True
                 else:
                     try:
@@ -108,11 +112,11 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
 
             if add:
                 proxy = resources.setdefault(res_id)
-                if self.resource_type == 'javascript':
-                    proxy.js = data['url']
-                elif self.resource_type == 'stylesheet':
-                    proxy.css = [data['url']]
-                if 'enabled' in data and not data['enabled']:
+                if self.resource_type == "javascript":
+                    proxy.js = data["url"]
+                elif self.resource_type == "stylesheet":
+                    proxy.css = [data["url"]]
+                if "enabled" in data and not data["enabled"]:
                     # if we are disabling it, we need to remove from legacy
                     # resources
                     if res_id in legacy.resources:
@@ -124,23 +128,23 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                     # re-add same resource multiple times
                     legacy.resources.remove(res_id)
                 if position is None:
-                    position = ('',)
-                if position[0] == '*':
+                    position = ("",)
+                if position[0] == "*":
                     legacy.resources.insert(0, res_id)
-                elif position[0] == '':
+                elif position[0] == "":
                     legacy.resources.append(res_id)
-                elif position[0] == 'after':
+                elif position[0] == "after":
                     if position[1] in legacy.resources:
                         legacy.resources.insert(
-                            legacy.resources.index(position[1]) + 1,
-                            res_id)
+                            legacy.resources.index(position[1]) + 1, res_id
+                        )
                     else:
                         legacy.resources.append(res_id)
-                elif position[0] == 'before':
+                elif position[0] == "before":
                     if position[1] in legacy.resources:
                         legacy.resources.insert(
-                            legacy.resources.index(position[1]),
-                            res_id)
+                            legacy.resources.index(position[1]), res_id
+                        )
                     else:
                         legacy.resources.append(res_id)
 
@@ -154,9 +158,9 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
             # not sure this is necessary...
             legacy.resources = legacy.resources
 
-        if 'plone.resources.last_legacy_import' in self.registry.records:  # noqa
+        if "plone.resources.last_legacy_import" in self.registry.records:  # noqa
             self.registry.records[
-                'plone.resources.last_legacy_import'
+                "plone.resources.last_legacy_import"
             ].value = datetime.now()
             try:
                 cookWhenChangingSettings(self.context, legacy)

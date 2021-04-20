@@ -4,7 +4,7 @@ from zope.component import queryUtility
 
 
 def combine(context):
-    logger = context.getLogger('bundles')
+    logger = context.getLogger("bundles")
     registry = queryUtility(IRegistry)
 
     if registry is None:
@@ -12,14 +12,14 @@ def combine(context):
         return
 
     # Look for a keyword in registry.xml or the registry directory.
-    filepaths = ['registry.xml']
-    if context.isDirectory('registry'):
-        for filename in context.listDirectory('registry'):
-            filepaths.append('registry/' + filename)
+    filepaths = ["registry.xml"]
+    if context.isDirectory("registry"):
+        for filename in context.listDirectory("registry"):
+            filepaths.append("registry/" + filename)
     found = False
     for filepath in filepaths:
         body = context.readDataFile(filepath)
-        if body is not None and b'IBundleRegistry' in body:
+        if body is not None and b"IBundleRegistry" in body:
             found = True
             break
     if not found:

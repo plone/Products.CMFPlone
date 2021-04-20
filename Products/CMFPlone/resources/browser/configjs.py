@@ -20,18 +20,22 @@ def _format_shims(shims):
     result = []
     for name, val in shims.items():
         options = []
-        if val.get('exports'):
-            options.append('exports: "%s"' % val['exports'])
-        if val.get('deps'):
-            options.append('deps: ' + json.dumps(val['deps']))
-        if val.get('init'):
+        if val.get("exports"):
+            options.append('exports: "%s"' % val["exports"])
+        if val.get("deps"):
+            options.append("deps: " + json.dumps(val["deps"]))
+        if val.get("init"):
             # function, no escaping here
-            options.append('init: %s' % val['init'])
-        result.append("""
+            options.append("init: %s" % val["init"])
+        result.append(
+            """
         "{}": {{
             {}
-        }}""".format(name, ',\n            '.join(options)))
-    return '{' + ','.join(result) + '\n    }'
+        }}""".format(
+                name, ",\n            ".join(options)
+            )
+        )
+    return "{" + ",".join(result) + "\n    }"
 
 
 class RequireJsView(BrowserView):
@@ -49,7 +53,8 @@ class RequireJsView(BrowserView):
 
     def registryResources(self):
         return self.registry.collectionOfInterface(
-            IResourceRegistry, prefix="plone.resources", check=False)
+            IResourceRegistry, prefix="plone.resources", check=False
+        )
 
     def get_requirejs_config(self):
         """
@@ -68,16 +73,16 @@ class RequireJsView(BrowserView):
                 inits = script.init
                 if exports or deps or inits:
                     shims[name] = {}
-                    if exports not in ('', None):
-                        shims[name]['exports'] = exports
-                    if deps not in ('', None):
-                        shims[name]['deps'] = deps.split(',')
-                    if inits not in ('', None):
-                        shims[name]['init'] = inits
+                    if exports not in ("", None):
+                        shims[name]["exports"] = exports
+                    if deps not in ("", None):
+                        shims[name]["deps"] = deps.split(",")
+                    if inits not in ("", None):
+                        shims[name]["init"] = inits
             if script.url:
                 # Resources available under name-url name
                 src = script.url
-                paths[name + '-url'] = src
+                paths[name + "-url"] = src
         return (paths, shims)
 
 
@@ -86,11 +91,5 @@ class ConfigJsView(RequireJsView):
 
     def __call__(self):
         (paths, shims) = self.get_requirejs_config()
-        self.request.response.setHeader(
-            'Content-Type',
-            'application/javascript'
-        )
-        return configjs % (
-            json.dumps(paths, indent=4),
-            _format_shims(shims)
-        )
+        self.request.response.setHeader("Content-Type", "application/javascript")
+        return configjs % (json.dumps(paths, indent=4), _format_shims(shims))

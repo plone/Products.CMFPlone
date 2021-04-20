@@ -35,22 +35,23 @@ less.modifyVars({
 
 
 class LessConfiguration(BrowserView):
-    """Browser view that gets the definition of less variables on plone.
-    """
+    """Browser view that gets the definition of less variables on plone."""
 
     def registry(self):
         registryUtility = getUtility(IRegistry)
-        return registryUtility.records['plone.lessvariables'].value
+        return registryUtility.records["plone.lessvariables"].value
 
     def resource_registry(self):
         registryUtility = getUtility(IRegistry)
         return registryUtility.collectionOfInterface(
-            IResourceRegistry, prefix="plone.resources", check=False)
+            IResourceRegistry, prefix="plone.resources", check=False
+        )
 
     def __call__(self):
         registry = self.registry()
-        portal_state = getMultiAdapter((self.context, self.request),
-                                       name='plone_portal_state')
+        portal_state = getMultiAdapter(
+            (self.context, self.request), name="plone_portal_state"
+        )
         site_url = portal_state.portal_url()
         result = ""
         result += "sitePath: '\"%s\"',\n" % site_url
@@ -60,7 +61,7 @@ class LessConfiguration(BrowserView):
         result += "barcelonetaPath: '\"%s/++theme++barceloneta\"',\n" % site_url
 
         less_vars_params = {
-            'site_url': site_url,
+            "site_url": site_url,
         }
 
         # Storing variables to use them on further vars
@@ -76,30 +77,29 @@ class LessConfiguration(BrowserView):
             for css in value.css:
 
                 url = urlparse(css)
-                if url.netloc == '':
+                if url.netloc == "":
                     # Local
                     src = f"{site_url}/{css}"
                 else:
                     src = "%s" % (css)
                 # less vars can't have dots on it
-                result += "'{}': '\"{}\"',\n".format(name.replace('.', '_'), src)
+                result += "'{}': '\"{}\"',\n".format(name.replace(".", "_"), src)
 
-        self.request.response.setHeader("Content-Type",
-                                        "application/javascript")
+        self.request.response.setHeader("Content-Type", "application/javascript")
 
         try:
-            debug_level = int(self.request.get('debug', 2))
+            debug_level = int(self.request.get("debug", 2))
         except:
             debug_level = 2
         return lessconfig % (debug_level, result, result)
 
 
 class LessModifyConfiguration(LessConfiguration):
-
     def __call__(self):
         registry = self.registry()
-        portal_state = getMultiAdapter((self.context, self.request),
-                                       name='plone_portal_state')
+        portal_state = getMultiAdapter(
+            (self.context, self.request), name="plone_portal_state"
+        )
         site_url = portal_state.portal_url()
         result2 = ""
         result2 += "'@sitePath': '\"%s\"',\n" % site_url
@@ -109,7 +109,7 @@ class LessModifyConfiguration(LessConfiguration):
         result2 += "'@barcelonetaPath: '\"%s/++theme++barceloneta\"',\n" % site_url
 
         less_vars_params = {
-            'site_url': site_url,
+            "site_url": site_url,
         }
 
         # Storing variables to use them on further vars
@@ -120,8 +120,7 @@ class LessModifyConfiguration(LessConfiguration):
             t = SafeFormatter(value).safe_format(**less_vars_params)
             result2 += f"'@{name}': \"{t}\",\n"
 
-        self.request.response.setHeader("Content-Type",
-                                        "application/javascript")
+        self.request.response.setHeader("Content-Type", "application/javascript")
 
         return lessmodify % (result2)
 
@@ -134,21 +133,23 @@ class LessDependency(BrowserView):
     def registry(self):
         registryUtility = getUtility(IRegistry)
         return registryUtility.collectionOfInterface(
-            IResourceRegistry, prefix="plone.resources", check=False)
+            IResourceRegistry, prefix="plone.resources", check=False
+        )
 
     def __call__(self):
-        portal_state = getMultiAdapter((self.context, self.request),
-                                       name='plone_portal_state')
+        portal_state = getMultiAdapter(
+            (self.context, self.request), name="plone_portal_state"
+        )
         site_url = portal_state.portal_url()
 
         registry = self.registry()
-        resource = self.request.get('resource', None)
+        resource = self.request.get("resource", None)
         result = ""
         if resource:
             if resource in registry:
                 for css in registry[resource].css:
                     url = urlparse(css)
-                    if url.netloc == '':
+                    if url.netloc == "":
                         # Local
                         src = f"{site_url}/{css}"
                     else:

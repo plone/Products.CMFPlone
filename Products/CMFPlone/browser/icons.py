@@ -39,13 +39,16 @@ def _add_aria_title(svgtree, cfg):
 
 SVG_MODIFER['add_aria_title'] = _add_aria_title
 
+ADDITIONAL_CLASSES = [
+    # this classes are added to all svg root elements
+    "plone-icon",
+]
 
 def _add_css_class(svgtree, cfg):
-    if not cfg.get('cssclass', False):
-        return
+    cssclass = cfg.get('cssclass', "")
     root = svgtree.getroot()
     current = root.attrib.get('class', '')
-    root.attrib['class'] = f"{cfg['cssclass']} {current}"
+    root.attrib['class'] = f"{' '.join(ADDITIONAL_CLASSES)} {cfg['cssclass']} {current}"
 
 SVG_MODIFER['add_css_class'] = _add_css_class
 

@@ -27,7 +27,7 @@ class Bundle:
         self.data = data
 
     def _real_path(self, ctx):
-        if ctx == 'js':
+        if ctx == "js":
             resource_path = self.data.jscompilation
         else:
             resource_path = self.data.csscompilation
@@ -35,12 +35,12 @@ class Bundle:
             resource = getSite().restrictedTraverse(resource_path)
         except (NotFound, KeyError):
             return None, None
-        if resource.__module__ == 'Products.Five.metaclass':
+        if resource.__module__ == "Products.Five.metaclass":
             try:
-                return 'fs', resource.chooseContext().path
+                return "fs", resource.chooseContext().path
             except:
                 try:
-                    return 'fs', resource.context.path
+                    return "fs", resource.context.path
                 except:
                     try:
                         if callable(resource):
@@ -50,21 +50,21 @@ class Bundle:
                     except:
                         return None, None
         elif isinstance(resource, FilesystemFile):
-            return 'fs', resource.path
+            return "fs", resource.path
         elif isinstance(resource, FileResource):
-            return 'fs', resource.chooseContext().path
+            return "fs", resource.chooseContext().path
         elif isinstance(resource, DirectoryResource):
-            return 'fs', resource.context.path
+            return "fs", resource.context.path
         elif isinstance(resource, FilesystemResourceDirectory):
-            return 'fs', resource.directory
+            return "fs", resource.directory
         elif isinstance(resource, FSFile):
-            return 'zodb', resource._filepath
+            return "zodb", resource._filepath
         else:
-            return 'zodb', None
+            return "zodb", None
 
     @property
     def name(self):
-        return self.data.__prefix__.split('/', 1)[1].rstrip('.')
+        return self.data.__prefix__.split("/", 1)[1].rstrip(".")
 
     @property
     def last_compilation(self):
@@ -74,11 +74,11 @@ class Bundle:
         always.
         """
         mods = []
-        for ctx in ['js', 'css']:
+        for ctx in ["js", "css"]:
             loc, path = self._real_path(ctx)
-            if loc == 'fs' and os.path.exists(path):
+            if loc == "fs" and os.path.exists(path):
                 mods.append(datetime.fromtimestamp(os.path.getmtime(path)))
-            elif loc == 'zodb':
+            elif loc == "zodb":
                 self.data.last_compilation
         if self.data.last_compilation and mods:
             if self.data.last_compilation > max(mods):
@@ -97,8 +97,5 @@ class Bundle:
 
     def __repr__(self):
         return '<{}.{} object "{}" at {}>'.format(
-            self.__class__.__module__,
-            self.__class__.__name__,
-            self.name,
-            id(self)
+            self.__class__.__module__, self.__class__.__name__, self.name, id(self)
         )
