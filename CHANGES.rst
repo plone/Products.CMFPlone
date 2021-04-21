@@ -8,6 +8,27 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0a1 (2021-04-20)
+--------------------
+
+Breaking changes:
+
+
+- Update for Plone 6 with Bootstrap markup
+  [agitator, ale-rt, jensens, mauritsvanrees, mrtango, pbauer, petschki] (#250)
+- Update dashboard for Plone 6 with Bootstrap markup
+  [1letter] (#252)
+
+
+New features:
+
+
+- add col visibility marker classes to body tag
+  [MrTango] (#238)
+- add icon_expr to actions dict
+  [agitator] (#2967)
+
+
 3.4.6 (2020-09-28)
 ------------------
 
