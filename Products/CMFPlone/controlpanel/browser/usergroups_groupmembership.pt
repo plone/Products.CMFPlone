@@ -15,18 +15,18 @@
 
   <article id="content">
 
-    <a href=""
-       class="link-parent"
-       tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
-       i18n:translate="label_up_to_groups_overview">
-      Up to Groups Overview
-    </a>
-
     <tal:ifnogroups tal:condition="not:view/group | nothing">
       <h1 class="documentFirstHeading"
           i18n:translate="heading_group_members">Group Members</h1>
 
-      <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
+           i18n:translate="label_up_to_groups_overview">
+          Up to Groups Overview
+        </a>
+
+       <div metal:use-macro="context/global_statusmessage/macros/portal_message">
         Portal status message
       </div>
 
@@ -53,7 +53,14 @@
           <h1 class="documentFirstHeading"
               i18n:translate="heading_group_members_of">Group: <span i18n:name="groupname" tal:replace="view/grouptitle">groupname</span></h1>
 
-          <div id="content-core"
+            <a href=""
+               class="link-parent mb-3 d-block"
+               tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
+               i18n:translate="label_up_to_groups_overview">
+              Up to Groups Overview
+            </a>
+
+            <div id="content-core"
                tal:define="token context/@@authenticator/token">
 
             <div tal:condition="view/group" class="nav nav-pills">

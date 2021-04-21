@@ -22,17 +22,31 @@
     i18n:attributes="title">
   <permission>Plone Site Setup: Site</permission>
  </configlet>
- <configlet title="Users and Groups" action_id="UsersGroups"
+ <configlet title="Users" action_id="UsersGroups"
     appId="UsersGroups" category="plone-users" condition_expr=""
-    icon_expr="string:people"
+    icon_expr="string:person"
     url_expr="string:${portal_url}/@@usergroup-userprefs" visible="True"
     i18n:attributes="title">
   <permission>Plone Site Setup: Users and Groups</permission>
  </configlet>
- <configlet title="Users and Groups" action_id="UsersGroups2"
-    appId="UsersGroups" category="plone-users" condition_expr=""
+ <configlet title="Groups" action_id="UsersGroups2"
+    appId="UsersGroups2" category="plone-users" condition_expr=""
     icon_expr="string:people"
-    url_expr="string:${portal_url}/@@usergroup-groupprefs" visible="False"
+    url_expr="string:${portal_url}/@@usergroup-groupprefs" visible="True"
+    i18n:attributes="title">
+  <permission>Plone Site Setup: Users and Groups</permission>
+ </configlet>
+ <configlet title="User and Group Settings" action_id="UsersGroupsSettings"
+    appId="UsersGroupsSettings" category="plone-users" condition_expr=""
+    icon_expr="string:toggles"
+    url_expr="string:${portal_url}/@@usergroup-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Plone Site Setup: Users and Groups</permission>
+ </configlet>
+ <configlet title="Member Fields" action_id="MemberFields"
+    appId="MemberFields" category="plone-users" condition_expr=""
+    icon_expr="string:card-list"
+    url_expr="string:${portal_url}/@@member-fields" visible="True"
     i18n:attributes="title">
   <permission>Plone Site Setup: Users and Groups</permission>
  </configlet>
