@@ -81,7 +81,7 @@ I click show all groups
   Wait until page contains  Group Search
 
 I create new group
-  Click button  Add New Group
+  Click link  Add New Group
   Wait until page contains element  name=addname
   patterns are loaded
   Input Text  name=addname  my-new-group
