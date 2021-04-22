@@ -37,7 +37,7 @@ class TypesRegistryIntegrationTest(unittest.TestCase):
         ]
         self.assertTrue('UsersGroups' in actions)
         self.assertTrue('UsersGroups2' in actions)
-        self.assertTrue('UsersGroupSettings' in actions)
+        self.assertTrue('UsersGroupsSettings' in actions)
         self.assertTrue('MemberFields' in actions)
 
     def test_many_groups_setting(self):
