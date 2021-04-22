@@ -15,7 +15,7 @@ CONTENT_TESTS = [
     'base_tag_not_present.txt',
     'browser.txt',
     'browser_collection_views.txt',
-    'csrf.txt',
+    'csrf.rst',
     'link_redirect_view.txt',
 ]
 OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)

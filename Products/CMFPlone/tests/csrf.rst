@@ -9,7 +9,9 @@ protection in Plone 3.1 actually works. Plone 3.1 comes with the
 packages implemented for `PLIP 224: CSRF protection framework
 <http://plone.org/products/plone/roadmap/224>`_, so they already
 should have been set up. This can be checked indirectly by making
-sure the authenticator view exists:
+sure the authenticator view exists
+
+::
 
   >>> app = layer['app']
   >>> portal = layer['portal']
@@ -29,7 +31,9 @@ support javascript, the submit button needs to be hit manually in this test,
 but that shouldn't make a difference in terms of testing if the protection
 framework actually works.
 
-So first we need a logged in user with manager rights:
+So first we need a logged in user with manager rights
+
+::
 
   >>> import transaction; transaction.commit()
   >>> from plone.app.testing import SITE_OWNER_NAME
@@ -47,7 +51,7 @@ So first we need a logged in user with manager rights:
 Coincidentally the portal happens to be configured for users to get to pick
 their own passwords. Again, this is only relevant for this test as otherwise
 outgoing mails would have to be handled making things unnecessarily
-complicated:
+complicated::
 
   >>> from zope.component import getUtility
   >>> from Products.CMFPlone.interfaces import IMailSchema

@@ -199,7 +199,7 @@
   <browser:page
       name="usergroup-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".usergroups.UserGroupsSettingsPanelView"
+      class=".usergroups.UserGroupsSettingsControlPanel"
       permission="plone.app.controlpanel.UsersAndGroups"
       />
 
