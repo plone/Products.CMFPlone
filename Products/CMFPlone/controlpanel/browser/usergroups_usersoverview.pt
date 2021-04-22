@@ -60,11 +60,10 @@
 
 
         <div class="mb-3 input-group">
-          <a class="pat-plone-modal me-3" id="add-user"
+          <a class="pat-plone-modal me-3 btn btn-success " id="add-user"
              data-pat-plone-modal="{&quot;actionOptions&quot;: {&quot;displayInModal&quot;: false}}"
-             tal:attributes="href string:${portal_url}/@@new-user">
-             <button i18n:translate="label_add_new_user" id="add-new-user" class="context btn btn-success">Add New User</button>
-          </a>
+             tal:attributes="href string:${portal_url}/@@new-user"
+             i18n:translate="label_add_new_user">Add New User</a>
           <span class="input-group-text" id="quickSearchLabel" i18n:translate="label_user_search">User Search</span>
           <input class="form-control quickSearch"
                   id="quickSearch"
