@@ -141,8 +141,10 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.app = self.layer['app']
         self.portal = self.layer['portal']
         self.portal_url = self.portal.absolute_url()
-        self.usergroups_url = "%s/@@usergroup-userprefs" % self.portal_url
+        self.users_url = "%s/@@usergroup-userprefs" % self.portal_url
         self.groups_url = "%s/@@usergroup-groupprefs" % self.portal_url
+        self.settings_url = "%s/@@usergroup-controlpanel" % self.portal_url
+        self.memberfields_url = "%s/@@member-fields" % self.portal_url
         self._generateGroups()
         self._generateUsers()
         transaction.commit()
@@ -154,41 +156,39 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
             f'Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}'
         )
 
-    def test_usergroups_control_panel_link(self):
-        self.browser.open(
-            "%s/@@overview-controlpanel" % self.portal_url)
-        self.browser.getLink('Users and Groups').click()
+    def test_usergroups_control_panel_link_users(self):
+        self.browser.open("%s/@@overview-controlpanel" % self.portal_url)
+        self.browser.getLink('Users').click()
         self.assertEqual(
             self.browser.url,
-            self.usergroups_url
+            self.users_url
+        )
+    def test_usergroups_control_panel_link_users(self):
+        self.browser.open("%s/@@overview-controlpanel" % self.portal_url)
+        self.browser.getLink('Groups').click()
+        self.assertEqual(
+            self.browser.url,
+            self.groups_url
         )
 
-    def test_usergroups_groups_link(self):
-        self.browser.open(self.usergroups_url)
-        self.browser.getLink(url="/@@usergroup-groupprefs").click()
+    def test_usergroups_control_panel_link_settings(self):
+        self.browser.open("%s/@@overview-controlpanel" % self.portal_url)
+        self.browser.getLink('User and Group Settings').click()
         self.assertEqual(
             self.browser.url,
-            "%s/@@usergroup-groupprefs" % self.portal_url
+            self.settings_url
         )
 
-    def test_usergroups_settings_link(self):
-        self.browser.open(self.usergroups_url)
-        self.browser.getLink(url="/@@usergroup-controlpanel").click()
+    def test_usergroups_control_panel_link_settings(self):
+        self.browser.open("%s/@@overview-controlpanel" % self.portal_url)
+        self.browser.getLink('Member Fields').click()
         self.assertEqual(
             self.browser.url,
-            "%s/@@usergroup-controlpanel" % self.portal_url
-        )
-
-    def test_usergroups_memberfields_link(self):
-        self.browser.open(self.usergroups_url)
-        self.browser.getLink(url="/@@member-fields").click()
-        self.assertEqual(
-            self.browser.url,
-            "%s/@@member-fields" % self.portal_url
+            self.memberfields_url
         )
 
     def test_user_search_by_name(self):
-        self.browser.open(self.usergroups_url)
+        self.browser.open(self.users_url)
         self.browser.getControl(name='searchstring').value = 'Richard'
         self.browser.getControl(name='form.button.Search').click()
         self.assertIn('Richard Ramirez', self.browser.contents)
@@ -196,25 +196,25 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.assertIn('Émilie Richard', self.browser.contents)
 
     def test_user_search_by_name_accent(self):
-        self.browser.open(self.usergroups_url)
+        self.browser.open(self.users_url)
         self.browser.getControl(name='searchstring').value = 'Émilie'
         self.browser.getControl(name='form.button.Search').click()
         self.assertIn('Émilie Richard', self.browser.contents)
 
     def test_user_search_by_id(self):
-        self.browser.open(self.usergroups_url)
+        self.browser.open(self.users_url)
         self.browser.getControl(name='searchstring').value = 'TWrMCLIo'
         self.browser.getControl(name='form.button.Search').click()
         self.assertIn('Autumn Brooks', self.browser.contents)
 
     def test_user_search_by_mail(self):
-        self.browser.open(self.usergroups_url)
+        self.browser.open(self.users_url)
         self.browser.getControl(name='searchstring').value = 'DohPmgIa@'
         self.browser.getControl(name='form.button.Search').click()
         self.assertIn('Gracie Diaz', self.browser.contents)
 
     def test_user_show_all(self):
-        self.browser.open(self.usergroups_url)
+        self.browser.open(self.users_url)
         self.browser.getControl(name='form.button.FindAll').click()
 
         # Check that first 10 members (sorted by fullname) are shown.
@@ -224,7 +224,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
             self.assertIn(member['fullname'], self.browser.contents)
 
     def test_user_show_all_with_search_term(self):
-        self.browser.open(self.usergroups_url)
+        self.browser.open(self.users_url)
         self.browser.getControl(name='searchstring').value = 'no-user'
         self.browser.getControl(name='form.button.FindAll').click()
 
@@ -232,7 +232,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.assertIn('Avery Cooper', self.browser.contents)
 
     def test_user_add_new_link(self):
-        self.browser.open(self.usergroups_url)
+        self.browser.open(self.users_url)
         self.browser.getLink(id='add-user').click()
         self.assertEqual(
             self.browser.url,
@@ -240,7 +240,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         )
 
     def test_user_modify_roles(self):
-        self.browser.open(self.usergroups_url)
+        self.browser.open(self.users_url)
         self.browser.getControl(name='searchstring').value = 'TWrMCLIo'
         self.browser.getControl(name='form.button.Search').click()
 
@@ -254,7 +254,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(name='form.button.Modify').click()
 
         # Check that contributor role is now enabled for this user
-        self.browser.open(self.usergroups_url)
+        self.browser.open(self.users_url)
         self.browser.getControl(name='searchstring').value = 'TWrMCLIo'
         self.browser.getControl(name='form.button.Search').click()
         self.assertTrue(self.browser.getControl(
@@ -262,7 +262,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         ).getControl(value='Contributor').selected)
 
     def test_user_delete(self):
-        self.browser.open(self.usergroups_url)
+        self.browser.open(self.users_url)
         self.browser.getControl(name='searchstring').value = 'TWrMCLIo'
         self.browser.getControl(name='form.button.Search').click()
         self.assertIn('Autumn Brooks', self.browser.contents)
@@ -393,11 +393,11 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl('Save').click()
 
         # Check that show all button for users is no longer available
-        self.browser.open(self.usergroups_url)
+        self.browser.open(self.users_url)
         self.assertNotIn('Show all', self.browser.contents)
 
         # Check that empty search does not trigger show all
-        self.browser.open(self.usergroups_url)
+        self.browser.open(self.users_url)
         self.browser.getControl(name='searchstring').value = ''
 
     def test_usergroups_settings_many_groups(self):

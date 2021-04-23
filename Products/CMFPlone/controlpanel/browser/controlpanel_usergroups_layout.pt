@@ -12,30 +12,11 @@
 
   <header>
     <h1 class="documentFirstHeading"
-        i18n:translate="">Users and Groups</h1>
+        i18n:translate="">User and Groups Settings</h1>
 
     <div metal:use-macro="context/global_statusmessage/macros/portal_message">
       Portal status message
     </div>
-    <ul class="nav nav-pills">
-      <li class="nav-item">
-        <a class="nav-link"
-          href="${portal_url}/@@usergroup-userprefs"
-          i18n:translate="label_users">Users</a>
-      </li>
-      <li class="nav-item">
-        <a href="${portal_url}/@@usergroup-groupprefs" class="nav-link"
-          i18n:translate="label_groups">Groups</a>
-      </li>
-      <li class="nav-item">
-        <a href="${portal_url}/@@usergroup-controlpanel" class="nav-link active"
-          i18n:translate="label_usergroup_settings">Settings</a>
-      </li>
-      <li class="nav-item">
-        <a href="${portal_url}/@@member-fields" class="nav-link"
-          i18n:translate="label_member_fields">Member fields</a>
-      </li>
-    </ul>
 
     <p class="text-muted mt-2"
        i18n:translate="">

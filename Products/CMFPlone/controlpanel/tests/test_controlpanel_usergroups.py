@@ -31,13 +31,14 @@ class TypesRegistryIntegrationTest(unittest.TestCase):
 
     def test_usergroups_in_controlpanel(self):
         self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
-        self.assertTrue(
-            'UsersGroups'
-            in [
-                a.getAction(self)['id']
-                for a in self.controlpanel.listActions()
-            ]
-        )
+        actions = [
+            a.getAction(self)['id']
+            for a in self.controlpanel.listActions()
+        ]
+        self.assertTrue('UsersGroups' in actions)
+        self.assertTrue('UsersGroups2' in actions)
+        self.assertTrue('UsersGroupsSettings' in actions)
+        self.assertTrue('MemberFields' in actions)
 
     def test_many_groups_setting(self):
         self.assertTrue(hasattr(self.settings, 'many_groups'))

@@ -24,31 +24,11 @@
   <article id="content">
     <header>
         <h1 class="documentFirstHeading"
-            i18n:translate="">Users and Groups</h1>
+            i18n:translate="">Groups</h1>
 
         <div metal:use-macro="context/global_statusmessage/macros/portal_message">
             Portal status message
         </div>
-
-        <ul class="nav nav-pills">
-            <li class="nav-item">
-              <a class="nav-link"
-                href="${portal_url}/@@usergroup-userprefs"
-                i18n:translate="label_users">Users</a>
-            </li>
-            <li class="nav-item">
-              <a href="${portal_url}/@@usergroup-groupprefs" class="nav-link active"
-                i18n:translate="label_groups">Groups</a>
-            </li>
-            <li class="nav-item">
-              <a href="${portal_url}/@@usergroup-controlpanel" class="nav-link"
-                i18n:translate="label_usergroup_settings">Settings</a>
-            </li>
-            <li class="nav-item">
-              <a href="${portal_url}/@@member-fields" class="nav-link"
-                i18n:translate="label_member_fields">Member fields</a>
-            </li>
-        </ul>
 
         <div class="text-muted mt-2">
             <span tal:omit-tag=""
@@ -92,11 +72,9 @@
                    tal:attributes="value showAll"/>
 
             <div class="mb-3 input-group">
-                <a class="pat-plone-modal me-3" id="add-group"
-                    tal:attributes="href string:${portal_url}/@@usergroup-groupdetails">
-
-                    <button i18n:translate="label_add_new_group" class="btn btn-success">Add New Group</button>
-                </a>
+                <a class="pat-plone-modal btn btn-success me-3" id="add-group"
+                    tal:attributes="href string:${portal_url}/@@usergroup-groupdetails"
+                    i18n:translate="label_add_new_group">Add New Group</a>
                 <span class="input-group-text" id="quickSearchLabel" i18n:translate="label_group_search">Group Search</span>
                 <input class="form-control quickSearch"
                     type="text"
