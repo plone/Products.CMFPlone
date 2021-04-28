@@ -1,9 +1,4 @@
-<script type="text/javascript">
-window.PORTAL_URL = "${view/site_url}";
-window.__patternslib_public_path__ = PORTAL_URL + "/++plone++static/bundle-plone/";
-</script>
-
-<script type="text/javascript" 
+<script type="text/javascript"
     tal:repeat="script view/scripts"
     tal:attributes="src script/src;
                     data-bundle script/bundle;
