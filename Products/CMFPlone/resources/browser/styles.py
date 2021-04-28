@@ -60,6 +60,10 @@ class StylesBase(ResourceBase):
                     cookWhenChangingSettings(self.context, bundle)
 
             if bundle.csscompilation:
+                cache_key = ""
+                if not self.development:
+                    cache_key = parse.quote(str(bundle.last_compilation))
+
                 css_path = bundle.csscompilation
                 if "++plone++" in css_path:
                     resource_path = css_path.split("++plone++")[-1]
@@ -67,18 +71,18 @@ class StylesBase(ResourceBase):
                     css_location = "{}/++plone++{}/++unique++{}/{}".format(
                         self.site_url,
                         resource_name,
-                        parse.quote(str(bundle.last_compilation)),
+                        cache_key,
                         resource_filepath,
                     )
                 elif css_path.startswith("http"):
-                    css_location = "{}?version={}".format(
-                        css_path, parse.quote(str(bundle.last_compilation))
+                    css_location = "{}{}".format(
+                        css_path, "?version={}".format(cache_key) if cache_key else ""
                     )
                 else:
-                    css_location = "{}/{}?version={}".format(
+                    css_location = "{}/{}{}".format(
                         self.site_url,
                         bundle.csscompilation,
-                        parse.quote(str(bundle.last_compilation)),
+                        "?version={}".format(cache_key) if cache_key else "",
                     )
                 result.append(
                     {
