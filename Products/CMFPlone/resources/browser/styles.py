@@ -10,7 +10,7 @@ from zope.component import getUtility
 
 class StylesBase(ResourceBase):
 
-    """ Information for style rendering. """
+    """Information for style rendering."""
 
     def get_urls(self, style, bundle):
         """
@@ -69,6 +69,10 @@ class StylesBase(ResourceBase):
                         resource_name,
                         parse.quote(str(bundle.last_compilation)),
                         resource_filepath,
+                    )
+                elif css_path.startswith("http"):
+                    css_location = "{}?version={}".format(
+                        css_path, parse.quote(str(bundle.last_compilation))
                     )
                 else:
                     css_location = "{}/{}?version={}".format(
