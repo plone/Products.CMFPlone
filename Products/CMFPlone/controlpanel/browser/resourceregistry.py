@@ -398,8 +398,6 @@ class ResourceRegistryControlPanelView(RequireJsView):
         base_url = self.context.absolute_url()
         resources = self.get_resources()
 
-        less_url = self.registry['plone.resources.lessc']
-        rjs_url = self.registry['plone.resources.rjs']
 
         data = {
             'development': self.registry['plone.resources.development'],
@@ -410,9 +408,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
             'css': {},
             'baseUrl': base_url,
             'manageUrl': '%s/@@resourceregistry-controlpanel' % base_url,
-            'lessUrl': f'{base_url}/{less_url}',
             'lessConfigUrl': '%s/less-variables.js' % base_url,
-            'rjsUrl': rjs_url,
             'patternoptions': self.registry['plone.patternoptions']
         }
         bundles = self.get_bundles()
