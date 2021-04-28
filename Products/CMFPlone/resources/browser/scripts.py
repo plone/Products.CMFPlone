@@ -54,6 +54,10 @@ class ScriptsView(ResourceView):
             # defined because the compiling is done outside of plone
             cookWhenChangingSettings(self.context, bundle)
         if bundle.jscompilation:
+            cache_key = ""
+            if not self.development:
+                cache_key = parse.quote(str(bundle.last_compilation))
+
             js_path = bundle.jscompilation
             if "++plone++" in js_path:
                 resource_path = js_path.split("++plone++")[-1]
@@ -61,18 +65,18 @@ class ScriptsView(ResourceView):
                 js_location = "{}/++plone++{}/++unique++{}/{}".format(
                     self.site_url,
                     resource_name,
-                    parse.quote(str(bundle.last_compilation)),
+                    cache_key,
                     resource_filepath,
                 )
             elif js_path.startswith("http"):
-                js_location = "{}?version={}".format(
-                    js_path, parse.quote(str(bundle.last_compilation))
+                js_location = "{}{}".format(
+                    js_path, "?version={}".format(cache_key) if cache_key else ""
                 )
             else:
-                js_location = "{}/{}?version={}".format(
+                js_location = "{}/{}{}".format(
                     self.site_url,
                     bundle.jscompilation,
-                    parse.quote(str(bundle.last_compilation)),
+                    "?version={}".format(cache_key) if cache_key else "",
                 )
 
             load_async = (
