@@ -64,6 +64,10 @@ class ScriptsView(ResourceView):
                     parse.quote(str(bundle.last_compilation)),
                     resource_filepath,
                 )
+            elif js_path.startswith("http"):
+                js_location = "{}?version={}".format(
+                    js_path, parse.quote(str(bundle.last_compilation))
+                )
             else:
                 js_location = "{}/{}?version={}".format(
                     self.site_url,
