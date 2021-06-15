@@ -96,7 +96,7 @@ class IconsView(BrowserView):
             if "/" in name:
                 main, tail = name.rsplit("/", 1)
                 return self.lookup(main)
-            logger.exception(
+            logger.info(
                 f"Icon resolver lookup of '{name}' failed, fallback to Plone icon."
             )
             return self.defaulticon
