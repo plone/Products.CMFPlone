@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
-from Testing.makerequest import makerequest
+from plone.app.testing import login
+from plone.app.testing import logout
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.testing.zope import Browser
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
+from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
+from Testing.makerequest import makerequest
+from zExceptions import NotFound
 from zExceptions import Unauthorized
 
 import re
 import six
+import transaction
 import unittest
 
 
@@ -202,3 +209,120 @@ class TestAttackVectorsFunctional(PloneTestCase):
         # formatColumns is unused and was removed
         res = self.publish('/plone/formatColumns?items:list=')
         self.assertIn(res.status, [403, 404])
+
+
+class TestFunctional(unittest.TestCase):
+    # The class above is rather old-style.
+    # Let's try a more modern approach, with a layer.
+    layer = PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
+
+    def get_admin_browser(self):
+        browser = Browser(self.layer["app"])
+        browser.handleErrors = False
+        browser.addHeader(
+            "Authorization",
+            "Basic {0}:{1}".format(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+        )
+        return browser
+
+    def test_plonetool(self):
+        base_url = self.layer["portal"].absolute_url() + "/plone_utils"
+        browser = self.get_admin_browser()
+        method_names = (
+            "addPortalMessage",
+            "browserDefault",
+            "getReviewStateTitleFor",
+            "portal_utf8",
+            "urlparse",
+            "urlunparse",
+            "utf8_portal",
+            "getOwnerName",
+            "normalizeString",
+            "getEmptyTitle",
+        )
+        for method_name in method_names:
+            with self.assertRaises(NotFound):
+                browser.open(base_url + "/" + method_name)
+
+    def test_hotfix_20160419(self):
+        """Test old hotfix.
+
+        CMFPlone has patches/publishing.py, containing
+        the publishing patch from Products.PloneHotfix20160419.
+        This avoids publishing some methods inherited from Zope or CMF,
+        which upstream does not want to fix, considering it no problem
+        to have these methods available.  I can imagine that.
+        But in Plone we have decided otherwise.
+
+        Problem: the patch did not work on Python 3.
+        This was fixed in hotfix 20210518.
+        """
+        portal = self.layer["portal"]
+        portal.invokeFactory("Document", "doc")
+        transaction.commit()
+        portal_url = portal.absolute_url()
+        doc_url = portal.doc.absolute_url()
+        browser = self.get_admin_browser()
+        method_names = (
+            "EffectiveDate",
+            "ExpirationDate",
+            "getAttributes",
+            "getChildNodes",
+            "getFirstChild",
+            "getLastChild",
+            "getLayout",
+            "getNextSibling",
+            "getNodeName",
+            "getNodeType",
+            "getNodeValue",
+            "getOwnerDocument",
+            "getParentNode",
+            "getPhysicalPath",
+            "getPreviousSibling",
+            "getTagName",
+            "hasChildNodes",
+            "Type",
+            # From PropertyManager:
+            "getProperty",
+            "propertyValues",
+            "propertyItems",
+            "propertyMap",
+            "hasProperty",
+            "getPropertyType",
+            "propertyIds",
+            "propertyLabel",
+            "propertyDescription",
+        )
+        for method_name in method_names:
+            with self.assertRaises(NotFound):
+                browser.open(portal_url + "/" + method_name)
+            with self.assertRaises(NotFound):
+                browser.open(doc_url + "/" + method_name)
+
+    def test_quick_installer_security(self):
+        # Products.CMFQuickInstallerTool has a fix.
+        # But CMFPlone overrides the tool class, so let's check.
+        portal = self.layer["portal"]
+        qi = getToolByName(portal, "portal_quickinstaller", None)
+        if qi is None:
+            return
+
+        # Make sure we are anonymous.
+        logout()
+        logout()
+        # Unrestricted traversal should work, restricted not.
+        qi = portal.unrestrictedTraverse("portal_quickinstaller")
+        with self.assertRaises(Unauthorized):
+            portal.restrictedTraverse("portal_quickinstaller")
+        for obj_id in qi.objectIds():
+            qi.unrestrictedTraverse(obj_id)
+            with self.assertRaises(Unauthorized):
+                qi.restrictedTraverse(obj_id)
+
+        # Authenticated with role Manager, we can view whatever we want.
+        login(portal, SITE_OWNER_NAME)
+        qi = portal.unrestrictedTraverse("portal_quickinstaller")
+        qi = portal.restrictedTraverse("portal_quickinstaller")
+        for obj_id in qi.objectIds():
+            qi.unrestrictedTraverse(obj_id)
+            qi.restrictedTraverse(obj_id)
