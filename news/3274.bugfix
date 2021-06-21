@@ -1,0 +1,3 @@
+Removed the docstring from various methods to avoid making them available via a url.
+From `Products.PloneHotfix20210518 <https://plone.org/security/hotfix/20210518/reflected-xss-in-various-spots>`_.
+[maurits]
