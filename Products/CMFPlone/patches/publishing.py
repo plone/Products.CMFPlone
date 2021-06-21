@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # From Products.PloneHotfix20160419
 # Plus extras for properties.
+# Plus Products.PloneHotfix20210518.
 from OFS.PropertyManager import PropertyManager
 #from OFS.ZDOM import Document
 #from OFS.ZDOM import Node
@@ -27,6 +28,25 @@ except ImportError:
 
     class ATCTBTreeFolder(object):
         pass
+
+
+def delete_method_docstring(klass, method_name):
+    # Delete the docstring from the class method.
+    # Objects must have a docstring to be published.
+    # So this avoids them getting published.
+    method = getattr(klass, method_name, None)
+    if method is None:
+        return
+    if hasattr(method, "im_func"):
+        # Only Python 2 has im_func.
+        # Python 3 has __func__, but only on methods of instances, not classes.
+        if hasattr(method.im_func, "__doc__"):
+            del method.im_func.__doc__
+    else:
+        # This would fail on Python 2 with an AttributeError:
+        # "attribute '__doc__' of 'instancemethod' objects is not writable"
+        if hasattr(method, "__doc__"):
+            del method.__doc__
 
 
 klasses = (
@@ -61,10 +81,7 @@ methods = (
 
 for klass in klasses:
     for method_name in methods:
-        method = getattr(klass, method_name, None)
-        if (method is not None and hasattr(method, 'im_func') and
-                hasattr(method.im_func, '__doc__')):
-            del method.im_func.__doc__
+        delete_method_docstring(klass, method_name)
 
 property_methods = (
     'getProperty',
@@ -79,7 +96,4 @@ property_methods = (
 )
 
 for method_name in property_methods:
-    method = getattr(PropertyManager, method_name, None)
-    if (method is not None and hasattr(method, 'im_func') and
-            hasattr(method.im_func, '__doc__')):
-        del method.im_func.__doc__
+    delete_method_docstring(PropertyManager, method_name)
