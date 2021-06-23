@@ -11,4 +11,9 @@
         ruleset="plone.stableResource"
         />
 
+    <cache:ruleset
+      for=".favicon.SiteFavicon"
+      ruleset="plone.stableResource"
+      />
+
 </configure>

@@ -25,10 +25,22 @@
       name="plone-logo.png"
       />
 
+  <browser:resource
+       file="static/plone-favicon.ico"
+       name="plone-favicon.ico"
+       />
+
   <browser:page
       for="*"
       name="site-logo"
       class=".sitelogo.SiteLogo"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      for="*"
+      name="site-favicon"
+      class=".favicon.SiteFavicon"
       permission="zope.Public"
       />
 
