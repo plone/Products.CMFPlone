@@ -1,0 +1,1 @@
+<span tal:condition="nocall:modules/AccessControl/SecurityManagement">hacked</span>

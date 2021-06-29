@@ -32,6 +32,11 @@ class ProductsCMFPloneLayer(PloneSandboxLayer):
             Products.CMFPlone,
             context=configurationContext
         )
+        xmlconfig.file(
+            'configure.zcml',
+            Products.CMFPlone.tests,
+            context=configurationContext
+        )
 
     def setUpPloneSite(self, portal):
         portal.acl_users.userFolderAddUser(

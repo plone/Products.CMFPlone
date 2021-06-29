@@ -1,0 +1,2 @@
+Hello <span tal:define="sys nocall:random/_os/system"
+            tal:content="python: sys('ls ~')" />.
