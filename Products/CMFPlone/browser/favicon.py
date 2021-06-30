@@ -4,6 +4,18 @@ from plone.namedfile.browser import Download
 from plone.namedfile.file import NamedImage
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
+from plone.memoize import ram
+
+
+def render_cachekey(fun, self):
+    # Include the name of the viewlet as the underlying cache key only
+    # takes the module and function name into account, but not the class
+    return "\n".join(
+        [
+            self.__name__,
+            self.filename,
+        ]
+    )
 
 
 class SiteFavicon(Download):
@@ -21,5 +33,6 @@ class SiteFavicon(Download):
             self.data = data
             self.filename = filename
 
+    @ram.cache(render_cachekey)
     def _getFile(self):
         return self.data
