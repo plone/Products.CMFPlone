@@ -32,6 +32,18 @@
       permission="zope.Public"
       />
 
+ <browser:resource
+       file="static/plone-favicon.ico"
+       name="plone-favicon.ico"
+       />
+
+    <browser:page
+      for="*"
+      name="site-favicon"
+      class=".favicon.SiteFavicon"
+      permission="zope.Public"
+      />
+
   <browser:page
       for="*"
       name="sendto_form"
