@@ -59,7 +59,8 @@ I click the '${link_name}' link
     Click Link  ${link_name}
 
 I select all the elements
-    Element should be visible  css=.pat-structure .select-all
+    Wait until page contains element  css=.pat-structure .select-all
+    Wait until page contains element  css=.itemRow
     Click Element  css=.pat-structure .select-all
 
 the four elements got selected
