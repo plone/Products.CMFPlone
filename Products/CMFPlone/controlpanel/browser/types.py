@@ -54,7 +54,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
     form_name = _("Types settings")
     control_panel_view = "content-controlpanel"
     template = ViewPageTemplateFile('types.pt')
-    behavior_name = 'plone.app.versioningbehavior.behaviors.IVersionable'
+    behavior_name = 'plone.versioning'
 
     @button.buttonAndHandler(_('Save'), name='save')
     def handleSave(self, action):
@@ -94,7 +94,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         if self.behavior_name not in behaviors:
             behaviors.append(self.behavior_name)
         # locking must be turned on for versioning support on the type
-        locking = 'plone.app.lockingbehavior.behaviors.ILocking'
+        locking = 'plone.locking'
         if locking not in behaviors:
             behaviors.append(locking)
 
