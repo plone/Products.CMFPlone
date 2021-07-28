@@ -39,7 +39,7 @@
 
     <browser:page
       for="*"
-      name="site-favicon"
+      name="favicon"
       class=".favicon.SiteFavicon"
       permission="zope.Public"
       />
