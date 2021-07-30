@@ -12,6 +12,27 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.5rc1 (2021-07-31)
+---------------------
+
+New features:
+
+
+- Add PLONE52MARKER Python marker
+  [sneridagh] (#3257)
+
+
+Bug fixes:
+
+
+- Removed the docstring from various methods to avoid making them available via a url.
+  From the `Products.PloneHotfix20210518 reflected XSS fix <https://plone.org/security/hotfix/20210518/reflected-xss-in-various-spots>`_.
+  [maurits] (#3274)
+- Add the remote code execution fix from the `Products.PloneHotfix20210518 expressions patch <https://plone.org/security/hotfix/20210518/remote-code-execution-via-traversal-in-expressions>`_.
+  We need this because Zope 4.6.2 is too strict for us.
+  [maurits] (#3274)
+
+
 5.2.4 (2021-03-03)
 ------------------
 
