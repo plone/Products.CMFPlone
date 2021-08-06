@@ -2,7 +2,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = '5.2.5rc2.dev0'
+version = '5.2.5'
 
 
 setup(
