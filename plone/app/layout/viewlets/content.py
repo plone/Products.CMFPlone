@@ -77,7 +77,7 @@ class DocumentBylineViewlet(ViewletBase):
         )
         return not self.anonymous or settings.display_publication_date_in_byline
 
-    def show_author(self):
+    def show_about(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(
             ISecuritySchema,

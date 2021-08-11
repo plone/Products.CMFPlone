@@ -1,7 +1,7 @@
 <section id="section-byline" i18n:domain="plone" tal:condition="view/show">
 
   <tal:creator tal:define="creator_short_form view/creator;" 
-      tal:condition="python:creator_short_form and view.show_author()">
+      tal:condition="python:creator_short_form and view.show_about()">
 
   <tal:name tal:define="creator_long_form string:?author=${creator_short_form};
                         creator_is_openid python:'/' in creator_short_form;
