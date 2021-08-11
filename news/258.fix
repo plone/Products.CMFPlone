@@ -1,0 +1,2 @@
+Show document_byline to public if `display_publication_date_in_byline` in site controlpanel is active. Only show author if `allow_anon_views_about` in security controlpanel is active. Show `modification_date` if not published or `modification_date` is greater that `effective_date`.
+[agitator]
