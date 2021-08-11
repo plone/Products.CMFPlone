@@ -220,6 +220,6 @@
     url_expr="string:${portal_url}/@@inspect-relations"
     visible="True"
     i18n:attributes="title">
-  <permission>Manage Relations</permission>
+  <permission>Inspect Relations</permission>
  </configlet>
 </object>
