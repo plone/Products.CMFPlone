@@ -811,7 +811,7 @@ Bug fixes:
 - Gruntfile generation no longer fails on introspecting resourceDirectory
   configurations using a plone.browserlayer layer, by loading all layers
   configured for the site used during generation.
-  Fixes Issue `#2080`_.
+  Fixes `issue 2080 <https://github.com/plone/Products.CMFPlone/issues/2080>`_.
   [seanupton]
 
 - fixed css-classes for thumb scales ...
@@ -3036,7 +3036,7 @@ Fixes:
 
 
 4.2.1.1 (2012-08-23)
-------------------
+--------------------
 
 - Fixed i18n of image view improvement introduced in 4.2.1.
   [vincentfretin]
@@ -3056,8 +3056,10 @@ Fixes:
   [thomasdesvenain]
 
 - Improve image view:
+
     - Add a download button.
     - Display View button only if image is a web format (jpeg, png, gif...)
+
   [thomasdesvenain]
 
 - zope.globalrequest is a required dependency on tests.
