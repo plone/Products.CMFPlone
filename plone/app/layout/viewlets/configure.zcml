@@ -283,7 +283,7 @@
         for="*"
         name="historyview"
         class=".content.HistoryByLineView"
-        permission="zope2.View"
+        permission="cmf.ModifyPortalContent"
         />
 
     <!-- Manage portlets Fallback link -->
