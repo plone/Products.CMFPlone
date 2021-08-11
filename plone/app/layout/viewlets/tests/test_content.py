@@ -43,6 +43,10 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
         self.context = self.folder["doc1"]
 
         registry = getUtility(IRegistry)
+        self.site_settings = registry.forInterface(
+            ISiteSchema,
+            prefix="plone",
+        )
         self.security_settings = registry.forInterface(
             ISecuritySchema,
             prefix="plone",
@@ -58,9 +62,9 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
         # configure our portal to enable publication date on pages globally on
         # the site
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema, prefix="plone")
+        # settings = registry.forInterface(ISiteSchema, prefix="plone")
 
-        settings.display_publication_date_in_byline = True
+        self.site_settings.display_publication_date_in_byline = True
 
         logout()
         viewlet = self._get_viewlet()
@@ -76,30 +80,52 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
 
         # now switch off publication date globally on the site and see if
         # viewlet returns None for publication date
-        settings.display_publication_date_in_byline = False
+        self.site_settings.display_publication_date_in_byline = False
         self.assertEqual(viewlet.pub_date(), None)
 
     def test_anonymous_users_see_byline_if_show_enabled(self):
-        self.security_settings.allow_anon_views_about = True
+        self.site_settings.display_publication_date_in_byline = True
         logout()
         viewlet = self._get_viewlet()
         self.assertTrue(viewlet.show())
 
     def test_anonymous_users_dont_see_byline_if_show_disabled(self):
-        self.security_settings.allow_anon_views_about = False
+        self.site_settings.display_publication_date_in_byline = False
         logout()
         viewlet = self._get_viewlet()
         self.assertFalse(viewlet.show())
 
     def test_logged_users_see_byline_if_show_enabled(self):
-        self.security_settings.allow_anon_views_about = True
+        self.site_settings.display_publication_date_in_byline = True
         viewlet = self._get_viewlet()
         self.assertTrue(viewlet.show())
 
     def test_logged_users_see_byline_if_show_disabled(self):
-        self.security_settings.allow_anon_views_about = False
+        self.site_settings.display_publication_date_in_byline = False
         viewlet = self._get_viewlet()
         self.assertTrue(viewlet.show())
+
+    def test_anonymous_users_see_about_if_show_enabled(self):
+        self.security_settings.allow_anon_views_about = True
+        logout()
+        viewlet = self._get_viewlet()
+        self.assertTrue(viewlet.show_about())
+
+    def test_anonymous_users_dont_see_about_if_show_disabled(self):
+        self.security_settings.allow_anon_views_about = False
+        logout()
+        viewlet = self._get_viewlet()
+        self.assertFalse(viewlet.show_about())
+
+    def test_logged_users_see_about_if_show_enabled(self):
+        self.security_settings.allow_anon_views_about = True
+        viewlet = self._get_viewlet()
+        self.assertTrue(viewlet.show_about())
+
+    def test_logged_users_see_about_if_show_disabled(self):
+        self.security_settings.allow_anon_views_about = False
+        viewlet = self._get_viewlet()
+        self.assertTrue(viewlet.show_about())
 
 
 class TestHistoryBylineViewletView(ViewletsTestCase):

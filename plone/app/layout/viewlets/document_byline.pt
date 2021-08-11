@@ -1,6 +1,7 @@
 <section id="section-byline" i18n:domain="plone" tal:condition="view/show">
 
-  <tal:creator tal:define="creator_short_form view/creator;" tal:condition="creator_short_form">
+  <tal:creator tal:define="creator_short_form view/creator;" 
+      tal:condition="python:creator_short_form and view.show_about()">
 
   <tal:name tal:define="creator_long_form string:?author=${creator_short_form};
                         creator_is_openid python:'/' in creator_short_form;
@@ -21,13 +22,15 @@
   </tal:name>
   </tal:creator>
 
-  <tal:dates define="published view/pub_date; modified context/ModificationDate">
+  <tal:dates define="published view/pub_date; 
+                     modified context/ModificationDate;
+                     show_modification_date python:view.show_modification_date()">
   <span class="documentPublished" tal:condition="published">
     <span i18n:translate="box_published">published</span>
-    <span tal:content="python:context.toLocalizedTime(published)">Published</span><tal:sep condition="modified">,</tal:sep>
+    <span tal:content="python:context.toLocalizedTime(published)">Published</span><tal:sep condition="show_modification_date">,</tal:sep>
   </span>
 
-  <span class="documentModified" tal:condition="modified">
+  <span class="documentModified" tal:condition="show_modification_date">
     <span i18n:translate="box_last_modified">
       last modified
     </span>

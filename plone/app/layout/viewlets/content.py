@@ -72,6 +72,14 @@ class DocumentBylineViewlet(ViewletBase):
     def show(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(
+            ISiteSchema,
+            prefix="plone",
+        )
+        return not self.anonymous or settings.display_publication_date_in_byline
+
+    def show_about(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(
             ISecuritySchema,
             prefix="plone",
         )
@@ -87,6 +95,11 @@ class DocumentBylineViewlet(ViewletBase):
     def authorname(self):
         author = self.author()
         return author and author["fullname"] or self.creator()
+
+    def show_modification_date(self):
+        return not self.context.effective_date or (
+            self.context.effective_date.Date() < self.context.modification_date.Date()
+        )
 
     def isExpired(self):
         if base_hasattr(self.context, "expires"):
