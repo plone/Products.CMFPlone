@@ -13,7 +13,6 @@ from Products.PageTemplates.expression import TrustedBoboAwareZopeTraverse as Tr
 from Products.PageTemplates.Expressions import boboAwareZopeTraverse as traverse_function
 from Products.PageTemplates.Expressions import trustedBoboAwareZopeTraverse as trusted_traverse_function
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from random import _os
 from zExceptions import NotFound
 from zExceptions import Unauthorized
 
