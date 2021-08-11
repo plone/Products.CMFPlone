@@ -1,6 +1,6 @@
 .. This file should contain the changes for the last release only, which
    will be included on the package's page on pypi. All older entries are
-   kept in HISTORY.txt
+   kept in docs/HISTORY.rst
 
 Changelog
 =========
