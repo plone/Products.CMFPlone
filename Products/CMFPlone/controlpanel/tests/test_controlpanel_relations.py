@@ -1,9 +1,9 @@
 from persistent.list import PersistentList
-from plone import api
 from plone.app.testing import TEST_USER_ID, setRoles
 from Products.CMFPlone.controlpanel.browser.relations import get_relations_stats
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from z3c.relationfield import RelationValue
+from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.intid.interfaces import IIntIds
 from zope.lifecycleevent import modified
@@ -21,18 +21,10 @@ class TestRelationsControlpanel(unittest.TestCase):
         setRoles(self.portal, TEST_USER_ID, ('Manager',))
 
     def test_relations_stats(self):
-        doc1 = api.content.create(
-            container=self.portal,
-            type='Document',
-            title='doc1',
-            id='doc1',
-            )
-        doc2 = api.content.create(
-            container=self.portal,
-            type='Document',
-            title='doc2',
-            id='doc2',
-            )
+        self.portal.invokeFactory('Document', id='doc1', title='doc1')
+        doc1 = self.portal['doc1']
+        self.portal.invokeFactory('Document', id='doc2', title='doc2')
+        doc2 = self.portal['doc2']
         intids = getUtility(IIntIds)
         doc1.relatedItems = PersistentList()
         doc1.relatedItems.append(RelationValue(intids.getId(doc2)))
@@ -43,29 +35,18 @@ class TestRelationsControlpanel(unittest.TestCase):
         stats, broken = get_relations_stats()
         self.assertEqual(dict(stats), {'relatedItems': 1})
         self.assertEqual(dict(broken), {})
-        view = api.content.get_view('inspect-relations', self.portal, self.request)
+        view = getMultiAdapter((self.portal, self.request), name='inspect-relations')
         self.assertTrue(view())
         self.assertTrue(view(relation='relatedItems'))
 
     def test_relations_stats_broken(self):
-        doc1 = api.content.create(
-            container=self.portal,
-            type='Document',
-            title='doc1',
-            id='doc1',
-            )
-        doc2 = api.content.create(
-            container=self.portal,
-            type='Document',
-            title='doc2',
-            id='doc2',
-            )
-        doc3 = api.content.create(
-            container=self.portal,
-            type='Document',
-            title='doc3',
-            id='doc3',
-            )
+        self.portal.invokeFactory('Document', id='doc1', title='doc1')
+        doc1 = self.portal['doc1']
+        self.portal.invokeFactory('Document', id='doc2', title='doc2')
+        doc2 = self.portal['doc2']
+        self.portal.invokeFactory('Document', id='doc3', title='doc3')
+        doc3 = self.portal['doc3']
+
         intids = getUtility(IIntIds)
         doc1.relatedItems = PersistentList()
         doc1.relatedItems.append(RelationValue(intids.getId(doc2)))
@@ -78,29 +59,17 @@ class TestRelationsControlpanel(unittest.TestCase):
         stats, broken = get_relations_stats()
         self.assertEqual(dict(stats), {'relatedItems': 1})
         self.assertEqual(dict(broken), {'relatedItems': 1})
-        view = api.content.get_view('inspect-relations', self.portal, self.request)
+        view = getMultiAdapter((self.portal, self.request), name='inspect-relations')
         self.assertTrue(view())
         self.assertTrue(view(relation='relatedItems'))
 
     def test_rebuild_relations(self):
-        doc1 = api.content.create(
-            container=self.portal,
-            type='Document',
-            title='doc1',
-            id='doc1',
-            )
-        doc2 = api.content.create(
-            container=self.portal,
-            type='Document',
-            title='doc2',
-            id='doc2',
-            )
-        doc3 = api.content.create(
-            container=self.portal,
-            type='Document',
-            title='doc3',
-            id='doc3',
-            )
+        self.portal.invokeFactory('Document', id='doc1', title='doc1')
+        doc1 = self.portal['doc1']
+        self.portal.invokeFactory('Document', id='doc2', title='doc2')
+        doc2 = self.portal['doc2']
+        self.portal.invokeFactory('Document', id='doc3', title='doc3')
+        doc3 = self.portal['doc3']
         intids = getUtility(IIntIds)
         doc1_intid = intids.getId(doc1)
         doc2_intid = intids.getId(doc2)
@@ -117,7 +86,7 @@ class TestRelationsControlpanel(unittest.TestCase):
         self.assertEqual(dict(stats), {'relatedItems': 2})
         self.assertEqual(dict(broken), {})
 
-        view = api.content.get_view('rebuild-relations', self.portal, self.request)
+        view = getMultiAdapter((self.portal, self.request), name='rebuild-relations')
         results = view(rebuild=True)
 
         # relations are the same after a rebuild
@@ -141,31 +110,19 @@ class TestRelationsControlpanel(unittest.TestCase):
         self.assertEqual(dict(broken), {'relatedItems': 1})
 
         # broken relations are gone after rebuilding
-        view = api.content.get_view('rebuild-relations', self.portal, self.request)
+        view = getMultiAdapter((self.portal, self.request), name='rebuild-relations')
         results = view(rebuild=True)
         stats, broken = get_relations_stats()
         self.assertEqual(dict(stats), {'relatedItems': 1})
         self.assertEqual(dict(broken), {})
 
     def test_rebuild_relations_with_intid(self):
-        doc1 = api.content.create(
-            container=self.portal,
-            type='Document',
-            title='doc1',
-            id='doc1',
-            )
-        doc2 = api.content.create(
-            container=self.portal,
-            type='Document',
-            title='doc2',
-            id='doc2',
-            )
-        doc3 = api.content.create(
-            container=self.portal,
-            type='Document',
-            title='doc3',
-            id='doc3',
-            )
+        self.portal.invokeFactory('Document', id='doc1', title='doc1')
+        doc1 = self.portal['doc1']
+        self.portal.invokeFactory('Document', id='doc2', title='doc2')
+        doc2 = self.portal['doc2']
+        self.portal.invokeFactory('Document', id='doc3', title='doc3')
+        doc3 = self.portal['doc3']
         intids = getUtility(IIntIds)
         doc1_intid = intids.getId(doc1)
         doc2_intid = intids.getId(doc2)
@@ -181,7 +138,7 @@ class TestRelationsControlpanel(unittest.TestCase):
         self.assertEqual(dict(stats), {'relatedItems': 2})
         self.assertEqual(dict(broken), {})
 
-        view = api.content.get_view('rebuild-relations', self.portal, self.request)
+        view = getMultiAdapter((self.portal, self.request), name='rebuild-relations')
         results = view(rebuild=True, flush_and_rebuild_intids=True)
 
         # relations are the same after a rebuild
