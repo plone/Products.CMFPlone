@@ -7,17 +7,6 @@ from zope.component import getUtility
 from plone.memoize import ram
 
 
-def render_cachekey(fun, self):
-    # Include the name of the viewlet as the underlying cache key only
-    # takes the module and function name into account, but not the class
-    return "\n".join(
-        [
-            self.__name__,
-            self.filename,
-        ]
-    )
-
-
 class SiteFavicon(Download):
 
     def __init__(self, context, request):
@@ -33,6 +22,5 @@ class SiteFavicon(Download):
             self.data = data
             self.filename = filename
 
-    @ram.cache(render_cachekey)
-    def _getFile(self):
+    def _getFile(self):  # todo add caching
         return self.data
