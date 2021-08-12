@@ -1,2 +1,2 @@
-Include a controlpanel for relations.
-[loechel]
+Include a controlpanel to inspect and rebuild relations.
+[pbauer]
