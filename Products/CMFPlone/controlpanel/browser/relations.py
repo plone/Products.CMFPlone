@@ -57,6 +57,11 @@ class RelationsInspectControlpanel(BrowserView):
         for rel in relation_catalog.findRelations(query):
             if rel.isBroken():
                 continue
+            try:
+                hasattr(rel, 'from_id')
+                hasattr(rel, 'to_id')
+            except IntIdMissingError:
+                continue
             if self.inspect_backrelation:
                 info[rel.to_id].append(rel.from_id)
             else:
