@@ -79,4 +79,10 @@
     <role name="Site Administrator"/>
   </permission>
 
+  <permission id="Products.CMFPlone.InspectRelations"
+              title="Inspect Relations">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
 </configure>
