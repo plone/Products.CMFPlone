@@ -11,6 +11,7 @@ from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.intid.interfaces import IIntIds
+from zope.intid.interfaces import IntIdMissingError
 
 import logging
 
