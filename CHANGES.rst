@@ -8,6 +8,36 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0a2 (2021-09-01)
+--------------------
+
+Breaking changes:
+
+
+- Update for Plone 6 with Bootstrap markup
+  [agitator, ale-rt, jensens, mauritsvanrees, mrtango, pbauer, petschki] (#250)
+- Update dashboard for Plone 6 with Bootstrap markup
+  [1letter] (#252)
+
+
+New features:
+
+
+- add col visibility marker classes to body tag
+  [MrTango] (#238)
+- Protect @@historyview with Modify portal content permission. Fixes https://github.com/plone/Products.CMFPlone/issues/3297
+  [pbauer] (#257)
+- add icon_expr to actions dict
+  [agitator] (#2967)
+
+
+Bug fixes:
+
+
+- Show document_byline to public if `display_publication_date_in_byline` in site controlpanel is active. Only show author if `allow_anon_views_about` in security controlpanel is active. Show `modification_date` if not published or `modification_date` is greater that `effective_date`.
+  [agitator] (#258)
+
+
 4.0.0a1 (2021-04-20)
 --------------------
 
