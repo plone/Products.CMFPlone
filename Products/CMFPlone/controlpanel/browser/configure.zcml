@@ -321,4 +321,22 @@
       allowed_attributes="redirects view_url"
       />
 
+  <!-- Relations -->
+
+  <browser:page
+      name="inspect-relations"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".relations.RelationsInspectControlpanel"
+      template="relations_inspect.pt"
+      permission="Products.CMFPlone.InspectRelations"
+      />
+
+  <browser:page
+      name="rebuild-relations"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".relations.RelationsRebuildControlpanel"
+      template="relations_rebuild.pt"
+      permission="cmf.ManagePortal"
+      />
+
 </configure>
