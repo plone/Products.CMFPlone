@@ -3,10 +3,23 @@ from AccessControl import Unauthorized
 from AccessControl.class_init import InitializeClass
 from Acquisition import aq_base
 from ComputedAttribute import ComputedAttribute
+from five.localsitemanager.registry import PersistentComponents
 from OFS.ObjectManager import REPLACEABLE
+from plone.dexterity.content import Container
 from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from Products.CMFCore import permissions
+from Products.CMFCore.interfaces import IContentish
+from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.permissions import AccessContentsInformation
+from Products.CMFCore.permissions import AddPortalMember
+from Products.CMFCore.permissions import MailForgottenPassword
+from Products.CMFCore.permissions import RequestReview
+from Products.CMFCore.permissions import ReviewPortalContent
+from Products.CMFCore.permissions import SetOwnPassword
+from Products.CMFCore.permissions import SetOwnProperties
+from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFCore.PortalObject import PortalObjectBase
+from Products.CMFCore.Skinnable import SkinnableObjectManager
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import UniqueObject
@@ -20,28 +33,15 @@ from Products.CMFPlone.permissions import ListPortalMembers
 from Products.CMFPlone.permissions import ModifyPortalContent
 from Products.CMFPlone.permissions import ReplyToItem
 from Products.CMFPlone.permissions import View
-from zope.component import queryUtility
-from zope.interface import implementer
-from five.localsitemanager.registry import PersistentComponents
-from plone.dexterity.content import Container
-from Products.CMFCore.interfaces import IContentish
-from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFCore.permissions import AccessContentsInformation
-from Products.CMFCore.permissions import AddPortalMember
-from Products.CMFCore.permissions import MailForgottenPassword
-from Products.CMFCore.permissions import RequestReview
-from Products.CMFCore.permissions import ReviewPortalContent
-from Products.CMFCore.permissions import SetOwnPassword
-from Products.CMFCore.permissions import SetOwnProperties
-from Products.CMFCore.Skinnable import SkinnableObjectManager
 from Products.Five.component.interfaces import IObjectManagerSite
+from zope.component import queryUtility
 from zope.component.interfaces import ComponentLookupError
 from zope.event import notify
 from zope.interface import classImplementsOnly
 from zope.interface import implementedBy
+from zope.interface import implementer
 from zope.traversing.interfaces import BeforeTraverseEvent
 
-from Products.CMFCore.PortalFolder import PortalFolderBase
 
 if bbb.HAS_ZSERVER:
     from webdav.NullResource import NullResource
