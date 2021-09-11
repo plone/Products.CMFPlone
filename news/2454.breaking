@@ -1,0 +1,3 @@
+Use Dexterity for the Plone Site root object.
+This is `PLIP 2454 <https://github.com/plone/Products.CMFPlone/issues/2454>`_.
+[jaroel, ale-rt]

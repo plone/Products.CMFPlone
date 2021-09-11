@@ -419,18 +419,16 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(True, registry['plone.lock_on_ttw_edit'])
 
     def testPortalFTIIsDynamicFTI(self):
-        # Plone Site FTI should be a DynamicView FTI
+        # Plone Site FTI should be a Dexterity FTI
         fti = self.portal.getTypeInfo()
-        self.assertEqual(
-            fti.meta_type, 'Factory-based Type Information with dynamic views'
-        )
+        self.assertEqual(fti.meta_type, 'Dexterity FTI')
 
     def testPloneSiteFTIHasMethodAliases(self):
         # Should add method aliases to the Plone Site FTI
         expected_aliases = {
             '(Default)': '(dynamic view)',
             'view': '(selected layout)',
-            'edit': '@@site-controlpanel',
+            'edit': '@@edit',
             'sharing': '@@sharing',
         }
         fti = self.portal.getTypeInfo()
@@ -531,13 +529,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 self.fail(
                     "Actions tool still has visible 'syndication' action"
                 )
-
-    def testObjectButtonActionsInvisibleOnPortalRoot(self):
-        # only a manager would have proper permissions
-        self.setRoles(['Manager', 'Member'])
-        acts = self.actions.listFilteredActionsFor(self.portal)
-        buttons = acts.get('object_buttons', [])
-        self.assertEqual(0, len(buttons))
 
     def testObjectButtonActionsInvisibleOnPortalDefaultDocument(self):
         # only a manager would have proper permissions
@@ -1023,8 +1014,11 @@ class TestAddPloneSite(PloneTestCase.PloneTestCase):
         self.request.form['default_language'] = 'en'
         self.addsite()
         plonesite = self.app.plonesite1
-        fp = plonesite['front-page']
         # Unfortunately, the next test passes even without the fix (overriding
         # HTTP_ACCEPT_LANGUAGE on the request in factory.py).  This seems to be
         # because translations are not available in the tests.
-        self.assertIn('Learn more about Plone', fp.text.raw)
+        self.assertIn('Learn more about Plone', plonesite.text.raw)
+
+        # XXX maybe it is better to reset the sire in the @@plone-addsite view
+        # or somewhere else?
+        setSite(None)

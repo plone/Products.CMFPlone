@@ -70,7 +70,12 @@ class Overview(BrowserView):
         return result
 
     def outdated(self, obj):
-        mig = obj.get('portal_migration', None)
+        # Try to pick the portal_migration as an attribute
+        # (Plone 5 unmigrated site root) or as an item
+        mig = (
+            getattr(obj, "portal_migration", None)
+            or obj.get('portal_migration', None)
+        )
         if mig is not None:
             return mig.needUpgrading()
         return False
