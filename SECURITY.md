@@ -16,4 +16,6 @@ Please do **NOT** create a public bug report if you think this may be a security
 Instead, please contact the Plone Security Team via email: security@plone.org.
 See also https://plone.org/security/report
 
-Only bug reports submitted directly to the security team email will be treated as responsible disclosure. Any offered for sale to third parties or submitted to public bug bounty programmes will be treated as irresponsible public disclosure. We will not confirm any submissions on third party platforms such as "huntr" or "hackerone" and to not give permission for those systems to accept reports.
+Only bug reports submitted directly to the security team email will be treated as responsible disclosure.
+Any offered for sale to third parties or submitted to public bug bounty programmes will be treated as irresponsible public disclosure.
+We will not confirm any submissions on third party platforms such as "huntr" or "hackerone" and do not give permission for those systems to accept reports on our behalf or to represent themselves as a conduit for vulnerability reports.
