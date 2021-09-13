@@ -465,8 +465,11 @@ class CatalogTool(PloneBaseTool, BaseTool):
         idxs = list(self.indexes())
 
         def indexObject(obj, path):
-            if (base_hasattr(obj, 'reindexObject') and
-                    safe_callable(obj.reindexObject)):
+            if (
+                obj != self
+                and base_hasattr(obj, 'reindexObject')
+                and safe_callable(obj.reindexObject)
+            ):
                 try:
                     self.reindexObject(obj, idxs=idxs)
                     # index conversions from plone.app.discussion
