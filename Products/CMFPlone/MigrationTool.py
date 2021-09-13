@@ -88,6 +88,7 @@ class AddonList(list):
 ADDON_LIST = AddonList([
     Addon(profile_id='Products.CMFEditions:CMFEditions'),
     Addon(profile_id='Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow'),
+    Addon(profile_id='plone.app.caching:default'),
     Addon(profile_id='plone.app.contenttypes:default'),
     Addon(profile_id='plone.app.dexterity:default'),
     Addon(profile_id='plone.app.discussion:default'),

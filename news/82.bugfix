@@ -1,0 +1,2 @@
+Add ``plone.app.caching`` to the list of add-ons that is upgraded when upgrading Plone.
+[maurits]
