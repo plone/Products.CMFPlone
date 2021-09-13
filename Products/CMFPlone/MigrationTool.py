@@ -85,15 +85,26 @@ class AddonList(list):
 # List of upgradeable packages.  Obvious items to add here, are all
 # core packages that actually have upgrade steps.
 # Good start is portal_setup.listProfilesWithUpgrades()
+# Please use 'check_module' for packages that are not direct dependencies
+# of Products.CMFPlone, but of the Plone package.
 ADDON_LIST = AddonList([
     Addon(profile_id='Products.CMFEditions:CMFEditions'),
-    Addon(profile_id='Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow'),
-    Addon(profile_id='plone.app.caching:default'),
+    Addon(
+        profile_id='Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow',
+        check_module='Products.CMFPlacefulWorkflow'
+    ),
+    Addon(
+        profile_id='plone.app.caching:default',
+        check_module='plone.app.caching'
+    ),
     Addon(profile_id='plone.app.contenttypes:default'),
     Addon(profile_id='plone.app.dexterity:default'),
     Addon(profile_id='plone.app.discussion:default'),
     Addon(profile_id='plone.app.event:default'),
-    Addon(profile_id='plone.app.iterate:plone.app.iterate'),
+    Addon(
+        profile_id='plone.app.iterate:plone.app.iterate',
+        check_module='plone.app.iterate'
+    ),
     Addon(profile_id='plone.app.multilingual:default'),
     Addon(profile_id='plone.app.querystring:default'),
     Addon(profile_id='plone.app.theming:default'),
