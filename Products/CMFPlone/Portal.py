@@ -235,6 +235,11 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     def reindexObjectSecurity(self, skip_self=False):
         pass
 
+    def UID(self):
+        # XXX: workaround that allows the catalog to be cleared and rebuilt,
+        # see https://github.com/plone/Products.CMFPlone/issues/3312
+        return
+
 
 # Remove the IContentish interface so we don't listen to events that won't
 # apply to the site root, ie handleUidAnnotationEvent
