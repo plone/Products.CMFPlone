@@ -47,7 +47,6 @@ setup(
         "Products.CMFCore",
         "Products.CMFDynamicViewFTI",
         "Products.CMFEditions >=1.2.2",
-        "Products.CMFPlone >=5.0b3.dev0",
         "setuptools",
         "six",
         "zope.component",
