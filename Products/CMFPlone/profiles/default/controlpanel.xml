@@ -100,7 +100,7 @@
   <permission>Plone Site Setup: Types</permission>
  </configlet>
  <configlet title="Markup" action_id="MarkupSettings" appId="MarkupSettings"
-    category="plone-content" condition_expr="" 
+    category="plone-content" condition_expr=""
     icon_expr="string:code-slash"
     url_expr="string:${portal_url}/@@markup-controlpanel" visible="True"
     i18n:attributes="title">

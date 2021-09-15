@@ -33,7 +33,7 @@
           </p>
           <div clas="list-group">
             <div class="list-group-item" tal:repeat="dup view/duplicates">
-              <span tal:content="python:dup[0]" />: 
+              <span tal:content="python:dup[0]" />:
               <span tal:repeat="account python:dup[1]" tal:content="account" />
             </div>
           </div>
