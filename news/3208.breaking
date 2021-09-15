@@ -1,3 +1,0 @@
-Remove `meta_type` index and metadata from catalog. 
-Both were unused in Plone core and rarely used in addons.
-[jensens]
