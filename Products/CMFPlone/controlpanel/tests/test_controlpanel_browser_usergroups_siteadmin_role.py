@@ -298,7 +298,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
         # Manager role
         self.browser.addHeader(
             'Authorization', 'Basic siteadmin:secret')
-            
+
         self.browser.open(self.usergroups_url)
         contents = self._simplify_white_space(self.browser.contents)
         self.assertTrue(
