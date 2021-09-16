@@ -76,18 +76,6 @@ def write_js(context, folder, meta_bundle):
     registry = getUtility(IRegistry)
     resources = []
 
-    # default resources
-    if meta_bundle == "default" and registry.records.get("plone.resources/jquery.js"):
-        resources.append(
-            get_resource(context, registry.records["plone.resources/jquery.js"].value)
-        )
-        resources.append(
-            get_resource(context, registry.records["plone.resources.requirejs"].value)
-        )
-        resources.append(
-            get_resource(context, registry.records["plone.resources.configjs"].value)
-        )
-
     # bundles
     bundles = registry.collectionOfInterface(
         IBundleRegistry, prefix="plone.bundles", check=False

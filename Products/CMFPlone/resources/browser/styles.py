@@ -10,7 +10,7 @@ from zope.component import getUtility
 
 class StylesBase(ResourceBase):
 
-    """ Information for style rendering. """
+    """Information for style rendering."""
 
     def get_urls(self, style, bundle):
         """
@@ -32,7 +32,6 @@ class StylesBase(ResourceBase):
             data = {
                 "rel": rel,
                 "bundle": bundle.name if bundle else "none",
-                "conditionalcomment": bundle.conditionalcomment if bundle else "",
                 "src": src,
             }
             yield data
@@ -61,6 +60,10 @@ class StylesBase(ResourceBase):
                     cookWhenChangingSettings(self.context, bundle)
 
             if bundle.csscompilation:
+                cache_key = ""
+                if not self.development:
+                    cache_key = parse.quote(str(bundle.last_compilation))
+
                 css_path = bundle.csscompilation
                 if "++plone++" in css_path:
                     resource_path = css_path.split("++plone++")[-1]
@@ -68,20 +71,23 @@ class StylesBase(ResourceBase):
                     css_location = "{}/++plone++{}/++unique++{}/{}".format(
                         self.site_url,
                         resource_name,
-                        parse.quote(str(bundle.last_compilation)),
+                        cache_key,
                         resource_filepath,
                     )
+                elif css_path.startswith("http"):
+                    css_location = "{}{}".format(
+                        css_path, "?version={}".format(cache_key) if cache_key else ""
+                    )
                 else:
-                    css_location = "{}/{}?version={}".format(
+                    css_location = "{}/{}{}".format(
                         self.site_url,
                         bundle.csscompilation,
-                        parse.quote(str(bundle.last_compilation)),
+                        "?version={}".format(cache_key) if cache_key else "",
                     )
                 result.append(
                     {
                         "bundle": bundle.name,
                         "rel": "stylesheet",
-                        "conditionalcomment": bundle.conditionalcomment,
                         "src": css_location,
                     }
                 )
@@ -111,7 +117,6 @@ class StylesBase(ResourceBase):
                     "src": "{}/++plone++{}".format(
                         self.site_url, self.production_path + "/default.css"
                     ),
-                    "conditionalcomment": None,
                     "rel": "stylesheet",
                     "bundle": "production",
                 },
@@ -122,7 +127,6 @@ class StylesBase(ResourceBase):
                         "src": "{}/++plone++{}".format(
                             self.site_url, self.production_path + "/logged-in.css"
                         ),
-                        "conditionalcomment": None,
                         "rel": "stylesheet",
                         "bundle": "production",
                     }
@@ -157,7 +161,7 @@ class StylesBase(ResourceBase):
             if extension != "" and extension != "css":
                 rel = "stylesheet/%s" % extension
 
-            data = {"rel": rel, "conditionalcomment": "", "src": src, "bundle": "diazo"}
+            data = {"rel": rel, "src": src, "bundle": "diazo"}
 
             result.append(data)
 
@@ -165,7 +169,6 @@ class StylesBase(ResourceBase):
         if self.custom_css:
             custom_css = {
                 "rel": "stylesheet",
-                "conditionalcomment": "",
                 "src": "{}/custom.css?timestamp={}".format(
                     self.site_url,
                     self.custom_css_timestamp,

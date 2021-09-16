@@ -13,8 +13,6 @@ class ScriptsView(ResourceView):
         resources_to_add,
         result,
         bundle_name="none",
-        resetrjs=False,
-        conditionalcomment="",
     ):
         resources = self.get_resources()
         for resource in resources_to_add:
@@ -29,12 +27,7 @@ class ScriptsView(ResourceView):
                 src = data.js
             data = {
                 "bundle": bundle_name,
-                "conditionalcomment": conditionalcomment,
                 "src": src,
-                # Reset RequireJS if bundle is in non-compile to
-                # avoid "Mismatched anonymous define()" in legacy
-                # scripts.
-                "resetrjs": resetrjs,
             }
             result.append(data)
 
@@ -45,8 +38,6 @@ class ScriptsView(ResourceView):
                 bundle.resources,
                 result,
                 bundle_name=bundle.name,
-                resetrjs=bundle.compile is False,
-                conditionalcomment=bundle.conditionalcomment,
             )
             return
         if (
@@ -63,6 +54,10 @@ class ScriptsView(ResourceView):
             # defined because the compiling is done outside of plone
             cookWhenChangingSettings(self.context, bundle)
         if bundle.jscompilation:
+            cache_key = ""
+            if not self.development:
+                cache_key = parse.quote(str(bundle.last_compilation))
+
             js_path = bundle.jscompilation
             if "++plone++" in js_path:
                 resource_path = js_path.split("++plone++")[-1]
@@ -70,14 +65,18 @@ class ScriptsView(ResourceView):
                 js_location = "{}/++plone++{}/++unique++{}/{}".format(
                     self.site_url,
                     resource_name,
-                    parse.quote(str(bundle.last_compilation)),
+                    cache_key,
                     resource_filepath,
                 )
+            elif js_path.startswith("http"):
+                js_location = "{}{}".format(
+                    js_path, "?version={}".format(cache_key) if cache_key else ""
+                )
             else:
-                js_location = "{}/{}?version={}".format(
+                js_location = "{}/{}{}".format(
                     self.site_url,
                     bundle.jscompilation,
-                    parse.quote(str(bundle.last_compilation)),
+                    "?version={}".format(cache_key) if cache_key else "",
                 )
 
             load_async = (
@@ -90,70 +89,11 @@ class ScriptsView(ResourceView):
             result.append(
                 {
                     "bundle": bundle.name,
-                    "conditionalcomment": bundle.conditionalcomment,
                     "src": js_location,
                     "async": load_async,
                     "defer": load_defer,
                 }
             )
-
-    def default_resources(self):
-        """Default resources used by Plone itself"""
-        result = []
-        # We always add jquery resource
-        result.append(
-            {
-                "src": "{}/{}".format(
-                    self.site_url,
-                    self.registry.records["plone.resources/jquery.js"].value,
-                ),
-                "conditionalcomment": None,
-                "bundle": "basic",
-            }
-        )
-        if self.development:
-            # We need to add require.js and config.js
-            result.append(
-                {
-                    "src": "{}/{}".format(
-                        self.site_url,
-                        self.registry.records["plone.resources.less-variables"].value,
-                    ),  # noqa
-                    "conditionalcomment": None,
-                    "bundle": "basic",
-                }
-            )
-            result.append(
-                {
-                    "src": "{}/{}".format(
-                        self.site_url,
-                        self.registry.records["plone.resources.lessc"].value,
-                    ),
-                    "conditionalcomment": None,
-                    "bundle": "basic",
-                }
-            )
-        result.append(
-            {
-                "src": "{}/{}".format(
-                    self.site_url,
-                    self.registry.records["plone.resources.requirejs"].value,
-                ),
-                "conditionalcomment": None,
-                "bundle": "basic",
-            }
-        )
-        result.append(
-            {
-                "src": "{}/{}".format(
-                    self.site_url,
-                    self.registry.records["plone.resources.configjs"].value,
-                ),
-                "conditionalcomment": None,
-                "bundle": "basic",
-            }
-        )
-        return result
 
     def base_url(self):
         portal_state = getMultiAdapter(
@@ -163,19 +103,14 @@ class ScriptsView(ResourceView):
         return site_url
 
     def scripts(self):
-        """The requirejs scripts, the ones that are not resources are loaded on
-        configjs.py
-        """
         if self.debug_mode or self.development or not self.production_path:
-            result = self.default_resources()
-            result.extend(self.ordered_bundles_result())
+            result = self.ordered_bundles_result()
         else:
             result = [
                 {
                     "src": "{}/++plone++{}".format(
                         self.site_url, self.production_path + "/default.js"
                     ),
-                    "conditionalcomment": None,
                     "bundle": "production",
                     "async": None,  # Do not load ``async`` or
                     "defer": None,  # ``defer`` for production bundles.
@@ -187,7 +122,6 @@ class ScriptsView(ResourceView):
                         "src": "{}/++plone++{}".format(
                             self.site_url, self.production_path + "/logged-in.js"
                         ),
-                        "conditionalcomment": None,
                         "bundle": "production",
                         "async": None,  # Do not load ``async`` or
                         "defer": None,  # ``defer`` for production bundles.
@@ -211,7 +145,6 @@ class ScriptsView(ResourceView):
             result.append(
                 {
                     "bundle": "diazo",
-                    "conditionalcomment": "",
                     "src": f"{self.site_url}/{origin}",
                 }
             )

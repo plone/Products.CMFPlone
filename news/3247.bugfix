@@ -1,0 +1,1 @@
+Fix TinyMCE configuration JSON serialization and cast entity_encoding to a list.
