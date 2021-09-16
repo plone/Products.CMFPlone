@@ -32,7 +32,7 @@ require([
   if (window.history && window.history.pushState){
     $(window).bind('popstate', function () {
       /* we're just going to cheat and reload the page so
-         we aren't keep moving around state here.. 
+         we aren't keep moving around state here..
          Here, I'm lazy, we're not using react here... */
       window.location = window.location.href;
     });

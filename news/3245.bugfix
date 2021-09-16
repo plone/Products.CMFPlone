@@ -1,1 +1,0 @@
-Fix migration when we have broken objects in the app root (e.g. the temp_folder)

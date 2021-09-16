@@ -1,5 +1,7 @@
 from logging import getLogger
 from plone.registry.interfaces import IRegistry
+from plone.uuid.handlers import addAttributeUUID
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.interfaces import INonInstallable
@@ -10,6 +12,7 @@ from zope.component import queryUtility
 from zope.component.hooks import setSite
 from zope.event import notify
 from zope.interface import implementer
+from zope.lifecycleevent import ObjectCreatedEvent
 
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
@@ -120,8 +123,12 @@ def addPloneSite(context, site_id, title='Plone site', description='',
                  extension_ids=(), setup_content=True,
                  default_language='en', portal_timezone='UTC'):
     """Add a PloneSite to the context."""
-    context._setObject(site_id, PloneSite(site_id))
-    site = context._getOb(site_id)
+
+    site = PloneSite(site_id)
+    notify(ObjectCreatedEvent(site))
+    context[site_id] = site
+
+    site = context[site_id]
     site.setLanguage(default_language)
     # Set the accepted language for the rest of the request.  This makes sure
     # the front-page text gets the correct translation also when your browser

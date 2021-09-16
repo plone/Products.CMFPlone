@@ -11,10 +11,10 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Plone</title>
-  <link rel="stylesheet" 
-        type="text/css" 
+  <link rel="stylesheet"
+        type="text/css"
         href="${string:${context/absolute_url}/++theme++barceloneta/css/barceloneta.min.css}" />
-  <link rel="stylesheet" 
+  <link rel="stylesheet"
         type="text/css"
         href="${string:${context/absolute_url}/++resource++plone-admin-ui.css}" />
 </head>
@@ -24,9 +24,9 @@
                   many python:len(sites) > 1;">
   <div class="container admin mt-5 mb-5 p-4">
     <header class="row">
-        <p><img src="/++resource++plone-logo.png" 
+        <p><img src="/++resource++plone-logo.png"
                  width="215" height="56"
-                 tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png" 
+                 tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png"
                  alt="Plone logo"
                  i18n:attributes="alt" /></p>
         <h1 i18n:translate="">Plone is up and running.</h1>
@@ -41,7 +41,7 @@
               title="Plone Community Home"
               i18n:attributes="title label_plone_org_title;">plone.org</a>.
           </p>
-      
+
     </header>
 
     <article class="row mb-5">
@@ -75,11 +75,11 @@
         </div>
         <div class="col-md-12">
             <h2 i18n:translate="" >Add Plone site</h2>
-            <p i18n:translate="" 
+            <p i18n:translate=""
                tal:condition="sites">
                 You can add another Plone site to the server.
             </p>
-            <p i18n:translate="" 
+            <p i18n:translate=""
                tal:condition="not:sites"
                class="alert-warning p-1">
                 Your Plone site has not been added yet.

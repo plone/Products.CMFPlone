@@ -313,7 +313,7 @@ Now rename
   >>> browser.getControl(name='entries.role_Editor:records').value
   []
 
-Change the value of the second _authenticator and check for Exception  
+Change the value of the second _authenticator and check for Exception
 
   >>> browser.getControl(name='_authenticator', index=1).value = 'invalid!'
   >>> browser.getControl(name='entries.role_Editor:records').value = ['True']
