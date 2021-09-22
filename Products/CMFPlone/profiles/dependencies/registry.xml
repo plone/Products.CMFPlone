@@ -18,6 +18,8 @@
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.ISiteSchema"
            prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ITinyMCESchema"
+           prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IDateAndTimeSchema"
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IMarkupSchema"
