@@ -487,7 +487,7 @@ class ITinyMCEPluginSchema(Interface):
         missing_value=[],
         default=[
             'edit', 'table', 'format',
-            'tools' 'view', 'insert'])
+            'tools', 'view', 'insert'])
 
     menu = schema.Text(
         title=_('label_tinymce_menu', 'Menu'),
@@ -503,7 +503,7 @@ class ITinyMCEPluginSchema(Interface):
             'view': {
                 'title': 'View',
                 'items': 'visualaid visualchars visualblocks preview '
-                         'fullpage fullscreen',
+                         'fullpage fullscreen code',
             },
             'format': {
                 'title': 'Format',
@@ -517,7 +517,7 @@ class ITinyMCEPluginSchema(Interface):
             'tools': {
                 'title': 'Tools',
                 'items': 'spellchecker charmap emoticons insertdatetime '
-                         'layer code'
+                         'layer'
             }
         })
     )
