@@ -1,7 +1,0 @@
-<script type="text/javascript"
-    tal:repeat="script view/scripts"
-    tal:attributes="src script/src;
-                    data-bundle script/bundle;
-                    async script/async|nothing;
-                    defer script/defer|nothing"></script>
-
