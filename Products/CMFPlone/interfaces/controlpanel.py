@@ -679,7 +679,7 @@ class ITinyMCEResourceTypesSchema(Interface):
             'Numeric: Characters will be converted into numeric entities. '
             'Raw: All characters will be stored in non-entity form '
             'except these XML default entities: amp lt gt quot'),
-        missing_value=set(),
+        # missing_value=set(),
         vocabulary=SimpleVocabulary(
             [SimpleTerm('named', 'named', _('Named')),
              SimpleTerm('numeric', 'numeric', _('Numeric')),
