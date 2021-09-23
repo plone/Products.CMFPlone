@@ -1,16 +1,17 @@
+from zope.deprecation import deprecate
+
 import os
 
 
 RESOURCE_DEVELOPMENT_MODE = os.getenv("FEDEV", "").lower() == "true"
 
 
+@deprecate(
+    "Adding single resources is no longer supported in Plone 6, use 'add_bundle_on_request' instead"
+)
 def add_resource_on_request(request, resource):
-    """Adds the resource to the request"""
-    if not isinstance(resource, str):
-        raise ValueError("add_resource_on_request expects a string value for resource")
-    request.enabled_resources = getattr(request, "enabled_resources", [])
-    if resource not in request.enabled_resources:
-        request.enabled_resources.append(resource)
+    """(DEPRECATED) Adds the resource to the request"""
+    return
 
 
 def add_bundle_on_request(request, bundle):
