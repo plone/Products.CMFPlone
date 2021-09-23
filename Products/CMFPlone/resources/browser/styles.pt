@@ -1,6 +1,0 @@
-<link rel="style"
-    tal:repeat="style view/styles"
-    tal:attributes="href style/src;
-                    rel style/rel;
-                    data-bundle style/bundle;" />
-
