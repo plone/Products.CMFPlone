@@ -1,0 +1,11 @@
+Completely (almost) rewritten ResourceRegistries to simplify CSS/JS handling.
+Removed >1600LOC.
+Only bundles are registered, but some of its old registry properties are deprecated and unused.
+Sane dependency resolution using "webresource".
+Single resources are no longer supported, so no TTW compile or `plone_compile_resources` - all related code is gone.
+Property `merge_with` is no longer needed in HTTP/2 times and merging here unsupported.
+Unique key for delivery is based on hash of bundle file, `last_compilation` property is deprecated.
+A new traverser ensures uniqueness.
+Other related bundle properties are also deprecated.
+Comes with new, reduced control panel.
+[jensens]

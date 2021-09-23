@@ -13,49 +13,80 @@
   <header>
 
     <h1 class="documentFirstHeading"
-        i18n:translate="">Resource Registries</h1>
+        i18n:translate="">Resource Registry</h1>
 
     <div class="text-muted"
        i18n:translate="">
-      Configure, enable, disable, debug and build Plone JavaScript/LESS/CSS resources.
-      Plone utilizes RequireJS and LESS CSS to build its resources.
-      Re-building a Plone bundle TTW requires a modern web browser.
+      Configure Plone JavaScript/CSS resource bundles.
     </div>
   </header>
 
    <div id="content-core">
-      <span tal:replace="structure context/@@authenticator/authenticator"/>
-      <div class="pat-resourceregistry" tal:attributes="data-pat-resourceregistry view/config">
-        <div class="alert alert-info" role="status">
-          <strong i18n:translate="">Info</strong>
-          <span i18n:translate="">If you see this, it is because there was an error rendering the resource registry
-          configuration. It's possible you saved a bundle that gives a JavaScript error
-          and it is preventing the resource registry from loading.</span>
+    <div class="accordion" id="accordionRR" tal:define="dummy python:view.process_form()">
+      <div class="accordion-item "
+           tal:repeat="bundle python:view.bundles_data">
+           <h2 class="accordion-header" id="heading-${python:bundle['name']}">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${python:bundle['name']}" aria-expanded="false" aria-controls="collapse-${python:bundle['name']}">
+              <span tal:condition="python:bundle['name'] and bundle['enabled']" i18n:translate="" class="me-2"><tal:icon tal:replace="structure python:icons.tag('file-check', tag_alt='Enabled bundle')" /></span>
+              <span tal:condition="python:bundle['name'] and not bundle['enabled']" i18n:translate="" class="me-2"><tal:icon tal:replace="structure python:icons.tag('file-x', tag_alt='Disabled bundle')" /></span>
+              <span tal:condition="python:not bundle['name']" i18n:translate="" class="me-2"><tal:icon tal:replace="structure python:icons.tag('file-plus', tag_alt='Add a bundle')" /></span>
+              <strong tal:condition="python:bundle['name']">${python:bundle["name"]}</strong>
+              <strong tal:condition="python:not bundle['name']">Add new bundle</strong>
+            </button>
+          </h2>
+          <div id="collapse-${python:bundle['name']}" class="accordion-collapse ${python:'' if bundle['name'] == request.form.get('name', None) else 'collapse'}" aria-labelledby="heading${python:bundle['name']}" data-bs-parent="#accordionRR">
+            <div class="accordion-body">
+              <form method="post" action="${python:context.absolute_url()}/@@resourceregistry-controlpanel">
+                <input type="hidden" name="original_name" value="${python:bundle['name']}" />
+                <div class="mb-3">
+                  <label for="name" class="form-label">Name</label>
+                  <input type="text" class="form-control" name="name" value="${python:bundle['name']}"/>
+                </div>
+                <div class="mb-3">
+                  <label for="jscompilation" class="form-label">Javascript</label>
+                  <input type="text" class="form-control" name="jscompilation" value="${python:bundle['jscompilation']}"/>
+                </div>
+                <div class="mb-3">
+                  <label for="csscompilation" class="form-label">CSS</label>
+                  <input type="text" class="form-control" name="csscompilation" value="${python:bundle['csscompilation']}"/>
+                </div>
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" value="" name="enabled" ${python:"checked" if bundle["enabled"] else ''} />
+                  <label class="form-check-label" for="enabled">
+                    enabled
+                  </label>
+                </div>
+                <div class="mb-3">
+                  <label for="expression" class="form-label">Condition</label>
+                  <input type="text" class="form-control" name="expression" value="${python:bundle['expression']}" placeholder="expression"/>
+                </div>
+                <div class="mb-3">
+                  <label for="depends" class="form-label">Depends on</label>
+                  <input type="text" class="form-control" name="depends" value="${python:bundle['depends']}" />
+                </div>
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" value="1" name="load_async" ${python:"checked" if bundle["load_async"] else ''} />
+                  <label class="form-check-label" for="load_async">
+                    Async
+                  </label>
+                </div>
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" value="1" name="load_defer" ${python:"checked" if bundle["load_defer"] else ''} />
+                  <label class="form-check-label" for="load_defer">
+                    Defer
+                  </label>
+                </div>
+                <div class="mb-3">
+                  <button tal:condition="python:bundle['name']" name="action" value="update" type="submit" class="btn btn-primary me-1">Save</button>
+                  <button tal:condition="python:not bundle['name']" name="action" value="add" type="submit" class="btn btn-success me-1">Add</button>
+                  <button tal:condition="python:bundle['name']" name="action" value="delete" type="submit" class="btn btn-danger">Delete</button>
+                </div>
+              </form>
+          </div>
         </div>
-        <h2 i18n:translate="">Available Options</h2>
-        <ul>
-          <li i18n:translate="">Reload the page. There could be a intermittent issue.</li>
-          <li i18n:translate="">Go to the <a i18n:name="configuration_registry" i18n:translate=""
-              href="${portal_url}/portal_registry">Configuration Registry</a>
-              and manually edit the configuration to enable development mode
-              on the resource registry and try to rebuild.</li>
-          <li><span i18n:translate="" tal:omit-tag="">You can also attempt to delete your customizations/builds and see if that fixes it.</span>
-            <ul>
-              <tal:overrides tal:repeat="override python: view.get_overrides()">
-                <li>
-                  <form method="POST">
-                    <input type="hidden" name="action" value="delete-file" />
-                    <input type="hidden" name="response" value="html" />
-                    <input type="hidden" name="filepath" value="${override}" />
-                    <input type="submit" value="Delete ${override}" i18n:attributes="value" />
-                  </form>
-                </li>
-              </tal:overrides>
-            </ul>
-          </li>
-        </ul>
       </div>
     </div>
+   </div>
 </metal:main>
 
 </body>
