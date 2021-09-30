@@ -102,6 +102,9 @@ class CatalogNavigationTabs(BrowserView):
         query['is_default_page'] = False
 
         if not navigation_settings.show_excluded_items:
+            # Note:
+            # Careful with that axe, Eugene!
+            # This introduces a performance decrease.
             query['exclude_from_nav'] = False
 
         if not navigation_settings.nonfolderish_tabs:

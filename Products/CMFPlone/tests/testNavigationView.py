@@ -502,12 +502,12 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         # Everything shows up by default
         tabs = view.topLevelTabs(actions=[])
         self.assertTrue(tabs)
-        self.assertEqual(len(tabs), 8)
+        self.assertEqual(len(tabs), 7)
 
         # Only the folders show up (Members, news, events, folder1, folder2)
         self.navigation_settings.nonfolderish_tabs = False
         tabs = view.topLevelTabs(actions=[])
-        self.assertEqual(len(tabs), 5)
+        self.assertEqual(len(tabs), 4)
 
     def testTabsRespectFolderOrder(self):
         # See if reordering causes a change in the tab order
@@ -604,18 +604,18 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         tab_names = [t['id'] for t in tabs]
         self.assertNotIn('folder2', tab_names)
 
-        # but if we're inside, it should be visible
-        view = self.view_class(self.portal.folder2, self.request)
-        tabs = view.topLevelTabs(actions=[])
-        tab_names = [t['id'] for t in tabs]
-        self.assertIn('folder2', tab_names)
-
-        # Now we flip the setting for plone.show_excluded_items
-        self.navigation_settings.show_excluded_items = False
+        # if we're inside, it also should stay hidden
         view = self.view_class(self.portal.folder2, self.request)
         tabs = view.topLevelTabs(actions=[])
         tab_names = [t['id'] for t in tabs]
         self.assertNotIn('folder2', tab_names)
+
+        # Now we flip the setting for plone.show_excluded_items
+        self.navigation_settings.show_excluded_items = True
+        view = self.view_class(self.portal.folder2, self.request)
+        tabs = view.topLevelTabs(actions=[])
+        tab_names = [t['id'] for t in tabs]
+        self.assertIn('folder2', tab_names)
 
     def testTabsRespectsTypesWithViewAction(self):
         # With a type in types_use_view_action_in_listings as current action it
