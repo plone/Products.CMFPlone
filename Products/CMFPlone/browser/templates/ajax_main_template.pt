@@ -83,7 +83,7 @@
                          </metal:title>
 
                          <metal:description define-slot="content-description">
-                            <div class="documentDescription">${python:context.Description()}></div>
+                            <div class="documentDescription">${python:context.Description()}</div>
                             <metal:comment tal:content="nothing">
                                 If you write a custom description always use
                                 <div class="documentDescription"></div> for it
