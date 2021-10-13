@@ -134,21 +134,21 @@ class NavigationControlPanelAdapterTest(unittest.TestCase):
     def test_get_show_excluded_items(self):
         self.assertEqual(
             getAdapter(self.portal, INavigationSchema).show_excluded_items,
-            True
+            False
         )
-        self.navigation_settings.show_excluded_items = False
+        self.navigation_settings.show_excluded_items = True
         self.assertEqual(
             getAdapter(self.portal, INavigationSchema).show_excluded_items,
-            False
+            True
         )
 
     def test_set_show_excluded_items(self):
         self.assertEqual(
             self.navigation_settings.show_excluded_items,
-            True
+            False
         )
-        getAdapter(self.portal, INavigationSchema).show_excluded_items = False
+        getAdapter(self.portal, INavigationSchema).show_excluded_items = True
         self.assertEqual(
             self.navigation_settings.show_excluded_items,
-            False
+            True
         )
