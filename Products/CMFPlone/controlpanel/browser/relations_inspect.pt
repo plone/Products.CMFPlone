@@ -47,7 +47,7 @@
       <form id="relationinfo" method="post" action="@@inspect-relations" enctype="multipart/form-data">
 
         <div class="mb-3 field">
-          <select class="form-select" aria-label="Default select example" name="relation" id="relation">
+          <select class="form-select" i18n:attributes="aria-label label_default_select_example" aria-label="Default select example" name="relation" id="relation">
             <option value="" i18n:translate="">Select a relation</option>
             <tal:rels tal:repeat="from_attribute python: sorted(relations_stats)">
               <option tal:attributes="value python: from_attribute;
