@@ -8,7 +8,7 @@
 
   <nav class="navbar navbar-expand-md navbar-dark bg-primary pat-navigationmarker" id="portal-globalnav-wrapper">
     <div class="container">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#portal-globalnav-collapse" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#portal-globalnav-collapse" aria-controls="navbarNav" aria-expanded="false" i18n:attributes="aria-label label_toggle_navigation" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 

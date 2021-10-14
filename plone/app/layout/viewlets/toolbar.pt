@@ -8,7 +8,7 @@
       <a class="plone-toolbar-logo">
         <img alt="Plone Toolbar" tal:attributes="src view/get_toolbar_logo" />
       </a>
-      <a class="plone-toolbar-switcher" tal:condition="view/show_switcher"><span>Left-Top switcher</span></a>
+      <a class="plone-toolbar-switcher" tal:condition="view/show_switcher"><span i18n:translate="label_toolbar_switcher">Left-Top switcher</span></a>
       <nav>
         <ul class="plone-toolbar-main">
           <div tal:replace="structure view/base_render">

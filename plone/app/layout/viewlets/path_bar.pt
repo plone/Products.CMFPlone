@@ -1,5 +1,5 @@
 
-<nav id="plone-breadcrumb" aria-label="breadcrumb" i18n:domain="plone" tal:define="breadcrumbs python:view.breadcrumbs">
+<nav id="plone-breadcrumb" i18n:attributes="label_breadcrumb" aria-label="breadcrumb" i18n:domain="plone" tal:define="breadcrumbs python:view.breadcrumbs">
   <div class="container">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a i18n:translate="tabs_home" href="${python:view.navigation_root_url}">Home</a></li>
