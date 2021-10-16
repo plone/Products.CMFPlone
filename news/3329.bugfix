@@ -4,14 +4,14 @@ Setting it to ``True`` can introduce a performance problem.
 No upgrade step!
 Previous behavior is just kept, unless you override it manually.
 See: #3055, first comment.
-Use this registry snippet to set it false:
-```
-<?xml version="1.0"?>
-<registry>
-  <records prefix="plone" interface="Products.CMFPlone.interfaces.controlpanel.INavigationSchema">
-    <value key="show_excluded_items">False</value>
-  </records>
-</registry>
-```
+Use this registry snippet to set it false::
+
+    <?xml version="1.0"?>
+    <registry>
+      <records prefix="plone" interface="Products.CMFPlone.interfaces.controlpanel.INavigationSchema">
+        <value key="show_excluded_items">False</value>
+      </records>
+    </registry>
+
 Fixes: #3035
 [thet]
