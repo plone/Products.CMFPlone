@@ -12,6 +12,40 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.0a1.dev1 (2021-10-16)
+-------------------------
+
+Bug fixes:
+
+
+- Use HTML5 meta charset.
+  [malthe] (#2025)
+- add icon_expr to view/edit action for @@iconresolver
+  [petschki] (#3327)
+- Set the "Show excluded items" (``show_excluded_items``) to False per default.
+  Setting it to ``True`` can introduce a performance problem.
+  ``False`` should be the default, also from user expectation for the ``exclude_from_nav`` setting on content items.
+  No upgrade step!
+  Previous behavior is just kept, unless you override it manually.
+  See: #3055, first comment.
+  Use this registry snippet to set it false::
+
+      <?xml version="1.0"?>
+      <registry>
+        <records prefix="plone" interface="Products.CMFPlone.interfaces.controlpanel.INavigationSchema">
+          <value key="show_excluded_items">False</value>
+        </records>
+      </registry>
+
+  Fixes: #3035
+  [thet] (#3329)
+- Remove typo in ajax_main_template
+  [petschki] (#3333)
+- Fix some template issues to have properly translated messages (#3334)
+- Updated metadata version to 6001.
+  [maurits] (#6001)
+
+
 6.0.0a1.dev0 (2021-09-15)
 -------------------------
 
