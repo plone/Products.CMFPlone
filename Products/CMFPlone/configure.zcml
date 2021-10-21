@@ -98,10 +98,10 @@
       trusted="y"
       />
 
-  <!-- include plone plugins with z3c.autoinclude -->
-  <includePlugins
+  <!-- include plone plugins with plone.autoinclude -->
+  <autoIncludePlugins
       zcml:condition="not-have disable-autoinclude"
-      package="plone"
+      target="plone"
       file="configure.zcml"
       />
 
