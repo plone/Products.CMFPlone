@@ -12,10 +12,10 @@
         component="Products.CMFPlone.unicodeconflictresolver.UTF8EncodingConflictResolver"
         />
 
-    <!-- include plone plugins with z3c.autoinclude -->
-    <includePluginsOverrides
+    <!-- include plone plugins with plone.autoinclude -->
+    <autoIncludePluginsOverrides
         zcml:condition="not-have disable-autoinclude"
-        package="plone"
+        target="plone"
         file="overrides.zcml"
         />
 
