@@ -12,6 +12,16 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.6 (2021-10-22)
+------------------
+
+Bug fixes:
+
+
+- Release Plone 5.2.6 final.
+  No changes compared to last release candidate. (#3336)
+
+
 5.2.6rc1 (2021-10-16)
 ---------------------
 
