@@ -298,8 +298,7 @@
             <button class="btn btn-danger"
               type="submit"
               value="Remove selected"
-              name="form.button.Remove"
-              i18n:translate="" >
+              name="form.button.Remove">
                 <tal:icon tal:replace="structure python:icons.tag('trash', tag_alt='Trash')" /> <span i18n:translate="">Remove selected</span>
             </button>
             <button class="btn btn-danger"
