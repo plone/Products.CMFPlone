@@ -222,19 +222,6 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         # Override DefaultDublinCoreImpl's test, since we are always viewable.
         return 1
 
-    # Ensure portals don't get cataloged.
-    def indexObject(self):
-        pass
-
-    def unindexObject(self):
-        pass
-
-    def reindexObject(self, idxs=None):
-        pass
-
-    def reindexObjectSecurity(self, skip_self=False):
-        pass
-
 
 # Remove the IContentish interface so we don't listen to events that won't
 # apply to the site root, ie handleUidAnnotationEvent
