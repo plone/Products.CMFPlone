@@ -25,7 +25,7 @@
                   <ul class="nav nav-tabs">
                     <li class="nav-item"
                         tal:define="overview_url string:$portal_url/@@overview-controlpanel">
-                      <a class="nav-link ${python:'active' if overview_url in current_url else ''}" aria-current="page" href="${overview_url}">Overview</a>
+                      <a class="nav-link ${python:'active' if overview_url in current_url else ''}" aria-current="page" href="${overview_url}" i18n:translate="">Site Setup</a>
                     </li>
                     <tal:group tal:repeat="group groups">
                       <li tal:define="configlets python:controlPanel.enumConfiglets(group=group['id']);

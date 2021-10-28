@@ -28,7 +28,7 @@
               tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png"
               alt="Plone logo"
               i18n:attributes="alt" /></p>
-      <h1 i18n:translate="">You are now logged out.<h1>
+      <h1 i18n:translate="">You are now logged out.</h1>
       <a href="${context/absolute_url}"
           class="btn btn-primary"
           i18n:translate="">

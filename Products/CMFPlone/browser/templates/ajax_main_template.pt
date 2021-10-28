@@ -24,7 +24,7 @@
     <metal:cache tal:replace="structure provider:plone.httpheaders" />
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
 
     <tal:ajaxhead condition="ajax_include_head">
     <div tal:replace="structure provider:plone.htmlhead" />
@@ -83,7 +83,7 @@
                          </metal:title>
 
                          <metal:description define-slot="content-description">
-                            <div class="documentDescription">${python:context.Description()}></div>
+                            <div class="documentDescription">${python:context.Description()}</div>
                             <metal:comment tal:content="nothing">
                                 If you write a custom description always use
                                 <div class="documentDescription"></div> for it

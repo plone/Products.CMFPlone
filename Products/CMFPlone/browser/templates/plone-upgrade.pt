@@ -32,7 +32,7 @@
                     i18n:attributes="alt" /></p>
             <h1>
               <span i18n:translate="">Upgrade this site</span>
-            <h1>
+            </h1>
             <h2>${context/Title} <small>(${context/getId})</small></h2>
             <p class="lead" i18n:translate="">
                 More information about the upgrade procedure can be found in the documentation section of plone.org in the

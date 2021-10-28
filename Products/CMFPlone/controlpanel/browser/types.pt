@@ -183,7 +183,7 @@
                                    name="form.button.SelectWorkflow"
                                    class="btn btn-primary"
                                    value="Change"
-                                   i18n:attributes="value label_change;">Change</button>
+                                   i18n:attributes="value label_change;" i18n:translate="label_change">Change</button>
                         </noscript>
                     </div>
 
