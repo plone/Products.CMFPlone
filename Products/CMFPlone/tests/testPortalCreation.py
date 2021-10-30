@@ -86,6 +86,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             'portal_workflow' in self.actions.listActionProviders()
         )
 
+    def testPortalIsIndexed(self):
+        # The Plone site should be cataloged
+        res = self.catalog(getId="plone")
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res[0].getId, "plone")
+        self.assertEqual(res[0].Title, "Welcome to Plone")
+
     def testMembersFolderMetaType(self):
         # Members folder should have meta_type 'Dexterity Container'
         members = self.membership.getMembersFolder()

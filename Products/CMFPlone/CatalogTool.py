@@ -488,6 +488,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
                     pass
         self.manage_catalogClear()
         portal = aq_parent(aq_inner(self))
+        indexObject(portal, '')
         portal.ZopeFindAndApply(
             portal,
             search_sub=True,
