@@ -467,6 +467,7 @@ class ITinyMCEPluginSchema(Interface):
             SimpleTerm('table', 'table', 'table'),
             SimpleTerm('textcolor', 'textcolor', 'textcolor'),
             SimpleTerm('textpattern', 'textpattern', 'textpattern'),
+            SimpleTerm('template', 'template', 'template'),
             SimpleTerm('visualblocks', 'visualblocks', 'visualblocks'),
             SimpleTerm('visualchars', 'visualchars', 'visualchars'),
             SimpleTerm('wordcount', 'wordcount', 'wordcount')
