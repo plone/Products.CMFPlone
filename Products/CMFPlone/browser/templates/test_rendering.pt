@@ -53,6 +53,32 @@
       <tal:icon tal:replace="structure python:icons.tag('archive', tag_class='custom-class', tag_alt='foobar')" />
     </p>
 
+    <div class="alert alert-primary" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+    <div class="alert alert-secondary" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+    <div class="alert alert-success" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+    <div class="alert alert-info" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+    <div class="alert alert-warning" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+    <div class="alert alert-danger" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+    <div class="alert alert-light" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+    <div class="alert alert-dark" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+
+
     <tal:comment tal:replace="nothing">
     <div id="content-core">
       <pre>Headlines</pre>
