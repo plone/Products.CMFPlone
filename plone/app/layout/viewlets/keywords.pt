@@ -1,0 +1,19 @@
+<section id="section-category" i18n:domain="plone" tal:define="categories context/Subject|nothing; url_quote nocall:modules/Products.PythonScripts.standard/url_quote" tal:condition="categories">
+
+  <div class="viewlet keywords-viewlet">
+
+    <header class="card-title section-heading d-none" i18n:translate="section_keywords_heading">
+      Keywords
+    </header>
+
+    <tal:repeat tal:repeat="category categories">
+    <a href="#" rel="nofollow" class="btn btn-sm btn-outline-primary"
+      tal:define="quotedCat python:url_quote(category)"
+      tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/@@search?Subject%3Alist=${quotedCat}">
+      <span tal:content="category"></span>
+    </a>
+    </tal:repeat>
+
+  </div>
+
+</section>

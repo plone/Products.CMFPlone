@@ -1,0 +1,25 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     tal:define="enabled view/enabled|nothing;
+                 isViewTemplate view/isViewTemplate|nothing"
+     tal:condition="python:enabled and isViewTemplate"
+     tal:omit-tag="">
+
+    <link rel="previous"
+          href=""
+          title="Go to previous item"
+          tal:define="previous view/previous"
+          tal:condition="previous"
+          i18n:attributes="title title_previous_item"
+          tal:attributes="href previous/url" />
+
+    <link rel="next"
+          href=""
+          title="Go to next item"
+          tal:define="next view/next"
+          tal:condition="next"
+          i18n:attributes="title title_next_item"
+          tal:attributes="href next/url" />
+
+</div>

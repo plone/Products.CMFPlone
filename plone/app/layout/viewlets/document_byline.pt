@@ -1,0 +1,48 @@
+<section id="section-byline" i18n:domain="plone" tal:condition="view/show">
+
+  <tal:creator tal:define="creator_short_form view/creator;" 
+      tal:condition="python:creator_short_form and view.show_about()">
+
+  <tal:name tal:define="creator_long_form string:?author=${creator_short_form};
+                        creator_is_openid python:'/' in creator_short_form;
+                        creator_id python:(creator_short_form, creator_long_form)[creator_is_openid];">
+
+    <span class="documentAuthor">
+
+      <tal:i18n i18n:translate="label_by_author">
+      by
+      <a href="#"
+         tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${creator_id}"
+         tal:content="view/authorname"
+         tal:omit-tag="python:view.author() is None"
+         i18n:name="author">Roland Barthes</a>
+      </tal:i18n>
+         —
+    </span>
+  </tal:name>
+  </tal:creator>
+
+  <tal:dates define="published view/pub_date; 
+                     modified context/ModificationDate;
+                     show_modification_date python:view.show_modification_date()">
+  <span class="documentPublished" tal:condition="published">
+    <span i18n:translate="box_published">published</span>
+    <span tal:content="python:context.toLocalizedTime(published)">Published</span><tal:sep condition="show_modification_date">,</tal:sep>
+  </span>
+
+  <span class="documentModified" tal:condition="show_modification_date">
+    <span i18n:translate="box_last_modified">
+      last modified
+    </span>
+    <span tal:content="python:context.toLocalizedTime(modified)">
+      Modified
+    </span>
+  </span>
+  </tal:dates>
+
+  <tal:expired tal:condition="view/isExpired">
+    —
+    <span class="state-expired" i18n:translate="time_expired">expired</span>
+  </tal:expired>
+
+</section>

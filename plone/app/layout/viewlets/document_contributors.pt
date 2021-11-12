@@ -1,0 +1,11 @@
+<section id="section-contributors" class="text-muted" i18n:domain="plone" tal:define="contributors context/Contributors" tal:condition="contributors">
+
+    <header class="section-heading" i18n:translate="section_contributors_heading">
+      Contributors
+    </header>
+
+    <small><span tal:omit-tag="" tal:content="python: ', '.join(contributors)">John Doe</span></small>
+
+
+</section>
+

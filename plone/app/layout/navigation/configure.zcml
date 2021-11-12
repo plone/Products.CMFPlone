@@ -1,0 +1,9 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <class class=".navtree.NavtreeStrategyBase">
+        <allow interface=".interfaces.INavtreeStrategy" />
+    </class>
+
+</configure>

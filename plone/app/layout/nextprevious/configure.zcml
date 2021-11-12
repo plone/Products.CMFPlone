@@ -1,0 +1,33 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <!-- We need this both in the viewlet and in Plone's header for rel links,
+         so define a view and use it in both places. Note that the actual
+         values are request memoized, so the calculations will only be
+         performed once.
+     -->
+
+    <browser:page
+        for="*"
+        name="plone_nextprevious_view"
+        class=".view.NextPreviousView"
+        permission="zope.Public"
+        allowed_attributes="next previous enabled"
+        />
+
+    <browser:viewlet
+        name="plone.nextprevious"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContent"
+        class=".view.NextPreviousViewlet"
+        permission="zope2.View"
+        />
+
+    <browser:viewlet
+        name="plone.nextprevious.links"
+        manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
+        class=".view.NextPreviousLinksViewlet"
+        permission="zope2.View"
+        />
+
+</configure>

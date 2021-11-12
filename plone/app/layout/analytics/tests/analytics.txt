@@ -1,0 +1,50 @@
+We need a view on the content.
+
+    >>> request = layer['request']
+    >>> portal = layer['portal']
+    >>> from zope.publisher.browser import BrowserView
+    >>> view = BrowserView(portal, request)
+
+    >>> from plone.app.layout.viewlets.interfaces import IPortalFooter
+    >>> from Products.Five.viewlet.manager import ViewletManager
+    >>> Footer = ViewletManager('left', IPortalFooter)
+
+Now we can instantiate the manager.
+
+    >>> manager = Footer(portal, request, view)
+    >>> manager.update()
+    >>> for viewlet in manager.viewlets:
+    ...     if viewlet.__name__ == "plone.analytics":
+    ...         analytics = viewlet
+    ...         break
+
+When no analytics (webstats_js) code is set up the viewlet will not be rendered:
+
+    >>> analytics.webstats_js == u""
+    True
+    >>> text = manager.render()
+    >>> 'id="plone-analytics"' in text
+    False
+
+Set the analytics code through the controlpanel and verify it renders properly:
+
+    >>> from plone.registry.interfaces import IRegistry
+    >>> from zope.component import getUtility
+    >>> from Products.CMFPlone.interfaces import ISiteSchema
+    >>> registry = getUtility(IRegistry)
+    >>> site_settings = registry.forInterface(ISiteSchema, prefix="plone")
+    >>> site_settings.webstats_js = u"<script>window.title='Hello'</script>"
+    >>> analytics.webstats_js == site_settings.webstats_js
+    True
+    >>> text = manager.render()
+    >>> 'id="plone-analytics"' in text
+    True
+    >>> site_settings.webstats_js in text
+    True
+
+Now enter some non-ascii text
+
+    >>> site_settings.webstats_js = u"<script>window.title='C\xedsa\u0159'</script>"
+    >>> text = manager.render()
+    >>> site_settings.webstats_js in text
+    True

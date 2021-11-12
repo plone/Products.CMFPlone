@@ -1,0 +1,42 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
+
+  <adapter for="*
+                zope.publisher.interfaces.browser.IBrowserRequest
+                Products.ZCatalog.CatalogBrains.AbstractCatalogBrain"
+           factory=".icons.CatalogBrainContentIcon"
+           provides=".interfaces.IContentIcon" />
+
+  <adapter for="*
+                zope.publisher.interfaces.browser.IBrowserRequest
+                Products.CMFCore.interfaces.IDynamicType"
+           factory=".icons.CMFContentIcon"
+           provides=".interfaces.IContentIcon" />
+
+  <adapter for="*
+                zope.publisher.interfaces.browser.IBrowserRequest
+                plone.dexterity.interfaces.IDexterityContent"
+           factory=".icons.DefaultContentIcon"
+           provides=".interfaces.IContentIcon" />
+
+
+  <adapter for="*
+                zope.publisher.interfaces.browser.IBrowserRequest
+                Products.CMFCore.TypesTool.FactoryTypeInformation"
+           factory=".icons.FTIContentIcon"
+           provides=".interfaces.IContentIcon" />
+
+  <adapter for="*
+                zope.publisher.interfaces.browser.IBrowserRequest
+                Products.CMFPlone.interfaces.IPloneSiteRoot"
+           factory=".icons.PloneSiteContentIcon"
+           provides=".interfaces.IContentIcon" />
+
+  <adapter for="*
+                zope.publisher.interfaces.browser.IBrowserRequest
+                *"
+           factory=".icons.DefaultContentIcon"
+           provides=".interfaces.IContentIcon" />
+
+</configure>

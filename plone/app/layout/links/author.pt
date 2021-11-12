@@ -1,0 +1,12 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     tal:define="navigation_root_url view/navigation_root_url"
+     tal:omit-tag=""
+     i18n:domain="plone">
+    <link rel="author"
+          href=""
+          title="Author information"
+          i18n:attributes="title title_author_info"
+          tal:attributes="href string:${navigation_root_url}/author/${context/Creator|nothing}" />
+</div>

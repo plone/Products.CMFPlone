@@ -1,0 +1,27 @@
+<section id="section-related" i18n:domain="plone"
+    tal:define="related view/related_items; plone_view nocall:context/@@plone;
+                plone_layout nocall:context/@@plone_layout;
+                normalizeString nocall:plone_view/normalizeString;
+                context_state nocall:context/@@plone_context_state;
+                use_view_action python:context.portal_registry.get('types_use_view_action_in_listings', []);"
+    tal:condition="related">
+
+    <header class="section-heading" i18n:translate="section_related_heading">
+      Related content
+    </header>
+
+    <!-- section content -->
+    <tal:items tal:repeat="item related">
+    <div class="media position-relative" tal:define="desc item/Description; item_type item/portal_type; item_type_class python:'contenttype-' + normalizeString(item_type); item_wf_state item/review_state|python: context_state.workflow_state(); item_wf_state_class python: 'state-' + normalizeString(item_wf_state); item_url item/getURL|item/absolute_url; item_url python:(item_type in use_view_action) and item_url+'/view' or item_url; item_has_image python:item.getIcon;">
+
+      <div class="media-body">
+        <div><a href="${item_url}" class="h6 stretched-link">${item/pretty_title_or_id}</a></div>
+        <small>${item/Description}</small>
+      </div>
+
+      <img src="" class="ms-3" tal:define="getIcon python:item.getURL() +'/@@images/image/thumb'" tal:condition="item_has_image" tal:attributes="src string:$getIcon; alt item/Description">
+
+    </div>
+    </tal:items>
+
+</section>

@@ -1,0 +1,40 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
+
+    <browser:viewlet
+        name="plone.links.favicon"
+        manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
+        class=".viewlets.FaviconViewlet"
+        permission="zope2.View"
+        />
+
+    <browser:viewlet
+        name="plone.links.search"
+        manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
+        class=".viewlets.SearchViewlet"
+        permission="zope2.View"
+        />
+
+    <browser:viewlet
+        name="plone.links.author"
+        manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
+        class=".viewlets.AuthorViewlet"
+        permission="zope2.View"
+        />
+
+    <browser:viewlet
+        name="plone.links.RSS"
+        manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
+        class=".viewlets.RSSViewlet"
+        permission="zope2.View"
+        />
+
+    <browser:viewlet
+        name="plone.links.canonical_url"
+        manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
+        class=".viewlets.CanonicalURL"
+        permission="zope2.View"
+        />
+
+</configure>

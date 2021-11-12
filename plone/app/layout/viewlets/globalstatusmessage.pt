@@ -1,0 +1,17 @@
+<tal:statusmsg tal:define="icons nocall: context/@@iconresolver"
+               tal:repeat="message python:view.messages">
+
+    <div tal:define="mtype message/type | nothing;
+                     display_info python:view.display_info_for_mtype(mtype);"
+         tal:condition="mtype"
+         class="portalMessage ${python:display_info['cssclass']}"
+         role="alert">
+        <tal:icon tal:replace="structure python:icons.tag(display_info['icon'], tag_alt=display_info['msg'], tag_class='statusmessage-icon mb-1 me-2')" />
+        <strong>${python:display_info['msg']}</strong>
+        <span class="content"
+              tal:replace="structure message/message | nothing" i18n:translate="">
+            The status message.
+        </span>
+    </div>
+
+</tal:statusmsg>

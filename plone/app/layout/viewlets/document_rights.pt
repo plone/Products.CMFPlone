@@ -1,0 +1,9 @@
+<section id="section-rights" class="text-muted" i18n:domain="plone" tal:define="rights context/Rights" tal:condition="rights">
+
+    <header class="section-heading" i18n:translate="section_rights_heading">
+      Rights
+    </header>
+
+    <small tal:content="rights">Copyleft NiceCorp Inc.</small>
+
+</section>

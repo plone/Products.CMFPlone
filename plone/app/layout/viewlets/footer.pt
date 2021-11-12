@@ -1,0 +1,5 @@
+<div class="row">
+	<div class="col-xs-12">
+		<div tal:on-error="nothing" tal:replace="structure view/render_footer_portlets" />
+	</div>
+</div>

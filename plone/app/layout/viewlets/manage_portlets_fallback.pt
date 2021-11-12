@@ -1,0 +1,14 @@
+<div tal:condition="view/available" class="row managePortlets-row">
+	<tal:comment tal:condition="nothing">
+		**********
+		NEEDED COL
+		**********
+	</tal:comment>
+    <a class="managePortletsFallback"
+        tal:attributes="href string:${view/object_url}/@@manage-portlets"
+        i18n:domain="plone"
+        i18n:translate="manage_portlets_link">
+        Manage portlets
+    </a>
+
+</div>

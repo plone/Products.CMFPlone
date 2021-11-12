@@ -1,0 +1,70 @@
+<div class="reviewHistory"
+     id="review-history"
+     i18n:domain="plone"
+     tal:define="history view/workflowHistory;">
+    <tal:history tal:condition="history">
+      <dl id="history" class="collapsible inline collapsedOnLoad">
+        <dt class="collapsibleHeader" i18n:translate="label_history">History</dt>
+        <dd class="collapsibleContent">
+
+        <table class="listing nosort" summary="Review History"
+               i18n:attributes="summary summary_review_history;">
+
+          <tr>
+            <th i18n:translate="listingheader_action">Action</th>
+            <th i18n:translate="listingheader_performed_by">Performed by</th>
+            <th i18n:translate="listingheader_date_and_time">Date and Time</th>
+            <th i18n:translate="listingheader_comment">Comment</th>
+          </tr>
+
+          <metal:block tal:repeat="item history">
+            <tr tal:define="odd repeat/item/odd;
+                            rhComments item/comments|nothing;
+                            state item/review_state|nothing"
+                tal:attributes="class python:odd and 'even' or 'odd'"
+                tal:condition="item/action">
+              <td i18n:translate="" tal:content="item/transition_title"
+                  tal:attributes="class string:state-${state}">
+                action
+              </td>
+
+              <td tal:define="actorid python:item.get('actorid');
+                              actor python:item.get('actor');
+                              fullname actor/fullname|nothing;
+                              username actor/username|nothing">
+                <a href="/Members/runyaga"
+                   tal:condition="item/actor_home"
+                   tal:attributes="href item/actor_home"
+                   tal:content="python:fullname or username or actorid">
+                  runyaga
+                </a>
+                <span tal:condition="not: item/actor_home"
+                      tal:replace="python:fullname or username or actorid"
+                />
+              </td>
+
+              <td>
+                <span tal:replace="python:context.toLocalizedTime(item['time'],long_format=True)" />
+                <span tal:condition="item/effective_date|nothing">
+                  (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>:
+                  <span tal:replace="python: context.toLocalizedTime(item['effective_date'],long_format=True)"></span>)
+                </span>
+              </td>
+
+              <td>
+                <span tal:condition="rhComments">
+                  <span tal:replace="rhComments"> some comments </span>
+                </span>
+
+                <span tal:condition="not: rhComments" i18n:translate="no_comments">
+                  No comments.
+                </span>
+              </td>
+            </tr>
+          </metal:block>
+        </table>
+
+        </dd>
+      </dl>
+    </tal:history>
+</div>

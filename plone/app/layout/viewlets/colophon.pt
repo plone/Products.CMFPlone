@@ -1,0 +1,14 @@
+<div id="portal-colophon"
+     i18n:domain="plone">
+<div class="colophonWrapper">
+<ul>
+  <li>
+    <a href="http://plone.com" target="_blank"
+       title="This site was built using the Plone Open Source CMS/WCM."
+       i18n:attributes="title title_built_with_plone;"
+       i18n:translate="label_powered_by_plone">
+      Powered by Plone &amp; Python</a>
+  </li>
+</ul>
+</div>
+</div>

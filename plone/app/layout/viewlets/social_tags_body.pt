@@ -1,0 +1,6 @@
+<span id="social-tags-body" style="display: none"
+      itemscope itemtype="http://schema.org/WebPage">
+  <span tal:repeat="tag view/body_tags"
+        tal:attributes="itemprop tag/itemprop|nothing"
+        tal:content="tag/content|nothing" />
+</span>

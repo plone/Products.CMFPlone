@@ -1,0 +1,62 @@
+<div id="portal-searchbox"
+     i18n:domain="plone"
+     tal:define="navigation_root_url view/navigation_root_url;">
+
+    <form id="searchGadget_form"
+          action="@@search"
+          role="search"
+          tal:attributes="action string:${navigation_root_url}/@@search;
+                          data-pat-livesearch string:ajaxUrl:${navigation_root_url}/@@ajax-search;
+                          class python: view.livesearch and 'pat-livesearch form-inline' or 'form-inline'">
+
+        <div class="LSBox">
+        <label class="hiddenStructure"
+               for="searchGadget"
+               i18n:translate="text_search">Search Site</label>
+
+        <div class="searchSection">
+            <input id="searchbox_currentfolder_only"
+                   class="noborder form-check-input"
+                   type="checkbox"
+                   name="path"
+                   tal:attributes="value view/folder_path;
+                                   checked request/form/path|nothing"
+                   />
+            <label for="searchbox_currentfolder_only"
+                   i18n:translate="label_searchbox_currentfolder_only"
+                   class="form-check-label"
+                   style="cursor: pointer">
+                only in current section
+            </label>
+        </div>
+        <div class="row row-cols-lg-auto g-0 align-items-center flex-nowrap">
+          <input name="SearchableText"
+                type="text"
+                size="18"
+                value=""
+                id="searchGadget"
+                title="Search Site"
+                placeholder="Search Site"
+                i18n:attributes="title title_search_site;
+                                  placeholder title_search_site"
+                tal:attributes="value request/form/SearchableText|nothing;"
+                class="searchField form-control" />
+          <input class="searchButton btn btn-secondary"
+                type="submit"
+                value="Search"
+                i18n:attributes="value label_search;" />
+       </div>
+
+      </div>
+    </form>
+
+    <div id="portal-advanced-search"
+         class="hiddenStructure">
+        <a href="#"
+           tal:attributes="href string:${navigation_root_url}/@@search"
+           i18n:translate="label_advanced_search">
+            Advanced Search&hellip;
+        </a>
+    </div>
+
+</div>

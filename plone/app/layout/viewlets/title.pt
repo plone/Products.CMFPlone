@@ -1,0 +1,1 @@
+<title tal:content="structure view/site_title">Site Title</title>
