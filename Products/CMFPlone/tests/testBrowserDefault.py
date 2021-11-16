@@ -278,10 +278,10 @@ class TestPortalBrowserDefault(unittest.TestCase):
         self.assertFalseDiff(resolved, target)
 
     def testDefaultViews(self):
-        self.assertEqual(self.portal.getLayout(), 'listing_view')
+        self.assertEqual(self.portal.getLayout(), 'document_view')
         self.assertEqual(self.portal.getDefaultPage(), 'front-page')
         self.assertEqual(self.portal.defaultView(), 'front-page')
-        self.assertEqual(self.portal.getDefaultLayout(), 'listing_view')
+        self.assertEqual(self.portal.getDefaultLayout(), 'document_view')
         layoutKeys = [v[0] for v in self.portal.getAvailableLayouts()]
         self.assertTrue('listing_view' in layoutKeys)
         self.assertEqual(self.portal.__browser_default__(None),
@@ -297,7 +297,7 @@ class TestPortalBrowserDefault(unittest.TestCase):
         self.assertEqual(self.portal.getLayout(), 'summary_view')
         self.assertEqual(self.portal.getDefaultPage(), None)
         self.assertEqual(self.portal.defaultView(), 'summary_view')
-        self.assertEqual(self.portal.getDefaultLayout(), 'listing_view')
+        self.assertEqual(self.portal.getDefaultLayout(), 'document_view')
         layoutKeys = [v[0] for v in self.portal.getAvailableLayouts()]
         self.assertTrue('summary_view' in layoutKeys)
 
@@ -327,8 +327,8 @@ class TestPortalBrowserDefault(unittest.TestCase):
                          (self.portal, ['ad', ]))
 
         # still have layout settings
-        self.assertEqual(self.portal.getLayout(), 'listing_view')
-        self.assertEqual(self.portal.getDefaultLayout(), 'listing_view')
+        self.assertEqual(self.portal.getLayout(), 'document_view')
+        self.assertEqual(self.portal.getDefaultLayout(), 'document_view')
         layoutKeys = [v[0] for v in self.portal.getAvailableLayouts()]
         self.assertTrue('listing_view' in layoutKeys)
 
@@ -373,13 +373,13 @@ class TestPortalBrowserDefault(unittest.TestCase):
 
     def testMissingTemplatesIgnored(self):
         self.portal.getTypeInfo() \
-            .manage_changeProperties(view_methods=['listing_view', 'foo'])
+            .manage_changeProperties(view_methods=['document_view', 'foo'])
         views = [v[0] for v in self.portal.getAvailableLayouts()]
-        self.assertTrue(views == ['listing_view'])
+        self.assertTrue(views == ['document_view'])
 
     def testMissingPageIgnored(self):
         self.portal.setDefaultPage('inexistent')
         self.assertEqual(self.portal.getDefaultPage(), None)
-        self.assertEqual(self.portal.defaultView(), 'listing_view')
+        self.assertEqual(self.portal.defaultView(), 'document_view')
         self.assertEqual(self.portal.__browser_default__(None),
-                         (self.portal, ['listing_view', ]))
+                         (self.portal, ['document_view', ]))
