@@ -1,3 +1,4 @@
+from App.config import getConfiguration
 from plone.registry import field
 from plone.registry.interfaces import IRegistry
 from plone.registry.record import Record
@@ -42,6 +43,13 @@ class ResourceRegistryControlPanelView(BrowserView):
             "load_defer": False,
         })
         return result
+
+    def global_debug_mode(self):
+        return getConfiguration().debug_mode
+
+    def debug_mode(self):
+        registry = getUtility(IRegistry)
+        return registry["plone.resources.development"]
 
     def _add(self):
         name = self.request.form.get("name", None)
@@ -91,6 +99,7 @@ class ResourceRegistryControlPanelView(BrowserView):
         for field_name, value in data.items():
             full_name = record.__prefix__ + field_name
             record.__registry__[full_name] = value
+        self._switch_cache(False)
 
     def _delete(self):
         name = self.request.form.get("original_name", None)
@@ -99,7 +108,12 @@ class ResourceRegistryControlPanelView(BrowserView):
             IStatusMessage(self.request).addStatusMessage(_(f"Expected record {name} missing."), "error")
             return
         del bundles[name]
+        self._switch_cache(False)
         IStatusMessage(self.request).addStatusMessage(_("Record deleted."), "info")
+
+    def _switch_cache(self, state):
+        registry = getUtility(IRegistry)
+        registry["plone.resources.development"] = state
 
     def process_form(self):
         if self.request["method"] != "POST":
@@ -111,6 +125,10 @@ class ResourceRegistryControlPanelView(BrowserView):
             self._update()
         elif action == "delete":
             self._delete()
+        elif action == "activate_cache":
+            self._switch_cache(True)
+        elif action == "deactivate_cache":
+            self._switch_cache(False)
         else:
             raise ValueError("Invalid form data")
         self.request.response.redirect(self.request['ACTUAL_URL'])

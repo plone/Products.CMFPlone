@@ -22,6 +22,47 @@
   </header>
 
    <div id="content-core">
+    <div tal:condition="python:view.global_debug_mode()"
+         class="portalMessage statusmessage statusmessage-info alert alert-info"
+         role="alert">
+        <tal:icon tal:replace="structure python:icons.tag('plone-statusmessage-info', tag_alt='', tag_class='statusmessage-icon mb-1 me-2')" />
+        <strong i18n:translate="">Global Debug Mode Activated</strong>
+        <span class="content"
+              i18n:translate="">
+            This is great for development.
+            Resource hashes will be recalculated on each request.
+            This is expensive, do not use use in production!
+        </span>
+    </div>
+    <form tal:condition="python:not view.global_debug_mode() and view.debug_mode()"
+          method="post" action="${python:context.absolute_url()}/@@resourceregistry-controlpanel">
+      <div class="portalMessage statusmessage statusmessage-info alert alert-warning"
+         role="alert">
+          <button name="action" value="deactivate_cache" type="submit" class="btn btn-primary ms-1 me-1 mb-1 float-end">Deactivate</button>
+        <tal:icon tal:replace="structure python:icons.tag('plone-statusmessage-warning', tag_alt='', tag_class='statusmessage-icon mb-1')" />
+        <strong i18n:translate="">Resource Debug Mode Activated</strong>
+        <span class="content"
+              i18n:translate="">
+            Resources are not cached in Plone.
+            Their hashes will be recalculated on each request.
+            This is expensive, do not use use in production!
+        </span>
+      </div>
+    </form>
+    <form tal:condition="python:not view.global_debug_mode() and not view.debug_mode()"
+          method="post" action="${python:context.absolute_url()}/@@resourceregistry-controlpanel">
+      <div class="portalMessage statusmessage statusmessage-info alert alert-info"
+         role="alert">
+          <button name="action" value="activate_cache" type="submit" class="btn btn-primary ms-1 me-1 mb-1 float-end">Activate Debug Mode</button>
+        <tal:icon tal:replace="structure python:icons.tag('plone-statusmessage-info', tag_alt='', tag_class='statusmessage-icon mb-1')" />
+        <strong i18n:translate="">Production Mode Activated</strong>
+        <span class="content"
+              i18n:translate="">
+            Resources are fast and hashes are cached in Plone.
+            Changes in resource settings are not applied directly.
+        </span>
+      </div>
+    </form>
     <div class="accordion" id="accordionRR" tal:define="dummy python:view.process_form()">
       <div class="accordion-item "
            tal:repeat="bundle python:view.bundles_data">
@@ -85,6 +126,23 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="mt-3">
+      <h2 i18n:translate="">Additional Resources</h2>
+      <p i18n:translate="">After the above resources, the following might get loaded:</p>
+      <dl>
+        <dt i18n:translate="">Theme CSS and JavaScript</dt>
+        <dd i18n:translate="">
+          The activated Plone-Theme usually provides one CSS bundle and sometimes a javascript bundle.
+        </dd>
+        <dt i18n:translate="">Custom CSS</dt>
+        <dd i18n:translate="">
+          At last a custom CSS is loaded, if non-empty.
+          It can be used to override the previous loaded CSS.
+          It is provided for tinkerers and those in need of urgent through-the-web changes.
+          Hint: <a href="${python:context.absolute_url()}/@@theming-controlpanel#autotoc-item-autotoc-1" i18n:name="link" i18n:translate="">Edit the Custom CSS in the Theming-Control-Panel</a>.
+        </dd>
+      </dl>
     </div>
    </div>
 </metal:main>
