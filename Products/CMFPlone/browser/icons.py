@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from io import BytesIO
 from lxml import etree
 from OFS.Image import File
 from plone.registry.interfaces import IRegistry
@@ -79,12 +80,12 @@ class IconsView(BrowserView):
     def _iconfile(self, icon):
         site = getSite()
         try:
-            return site.restrictedTraverse(icon)
+            return site.unrestrictedTraverse(icon)
         except NotFound:
             logger.exception(
                 f"Icon resolver lookup of '{icon}' failed, fallback to Plone icon."
             )
-            return site.restrictedTraverse(self.defaulticon)
+            return site.unrestrictedTraverse(self.defaulticon)
 
     def lookup(self, name):
         __traceback_info__ = name
@@ -112,16 +113,20 @@ class IconsView(BrowserView):
 
         iconfile = self._iconfile(icon)
         if isinstance(iconfile, File):
-            raise NotImplementedError(
-                "Resolve icons stored in database is not yet implemented."
-            )
-        try:
-            with open(iconfile.path, "rb") as fh:
+            fh = BytesIO(iconfile.data)
+            try:
                 svgtree = etree.parse(fh)
-        except etree.XMLSyntaxError:
-            logger.exception(f"SVG File: {iconfile.path}")
-            with open(iconfile.path, "rb") as fh:
-                return fh.read()
+            except etree.XMLSyntaxError:
+                logger.exception(f"SVG File from Database: {iconfile.absolute_url()}")
+                return iconfile.data
+        else:
+            try:
+                with open(iconfile.path, "rb") as fh:
+                    svgtree = etree.parse(fh)
+            except etree.XMLSyntaxError:
+                logger.exception(f"SVG File: {iconfile.path}")
+                with open(iconfile.path, "rb") as fh:
+                    return fh.read()
         if svgtree.docinfo.root_name.lower() != 'svg':
             raise ValueError(f"SVG file content root tag mismatch (not svg but {svgtree.docinfo.root_name}): {iconfile.path}")
         modifier_cfg = {
