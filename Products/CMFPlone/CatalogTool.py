@@ -276,9 +276,14 @@ def mime_type(obj):
     return aq_base(obj).getPrimaryField().getContentType(obj)
 
 
-@indexer(Interface)
-def location(obj):
-    return obj.getField('location').get(obj)
+# BBB: This adapter is for compatibility and should be removed in Plone 6.
+try:
+    from Products.Archetypes.interfaces import IBaseObject
+    @indexer(IBaseObject)
+    def location(obj):
+        return obj.getField('location').get(obj)
+except ImportError:
+    pass
 
 
 @implementer(IPloneCatalogTool)
