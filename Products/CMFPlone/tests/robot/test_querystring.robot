@@ -317,8 +317,10 @@ I expect to be in Simple mode
     Wait Until Element Is Not Visible  css=div#select2-drop-mask
 
 open the select box titled ${NAME}
+    ${select_criteria_selector}  Set Variable  .querystring-criteria-${NAME} .select2-container a
+    Wait Until Element Is Visible  css=${select_criteria_selector}
     Click Element  css=body
-    Click Element  css=.querystring-criteria-${NAME} .select2-container a
+    Click Element  css=${select_criteria_selector}
 
 select index type ${INDEX}
     ${input_selector}  Set Variable  .select2-drop-active[style*="display: block;"] input
