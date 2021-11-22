@@ -319,7 +319,6 @@ I expect to be in Simple mode
 open the select box titled ${NAME}
     ${select_criteria_selector}  Set Variable  .querystring-criteria-${NAME} .select2-container a
     Wait Until Element Is Visible  css=${select_criteria_selector}
-    Click Element  css=body
     Click Element  css=${select_criteria_selector}
 
 select index type ${INDEX}
