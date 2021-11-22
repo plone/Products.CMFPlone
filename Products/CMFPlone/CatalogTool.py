@@ -255,11 +255,6 @@ def mime_type(obj):
     return aq_base(obj).getPrimaryField().getContentType(obj)
 
 
-@indexer(Interface)
-def location(obj):
-    return obj.getField('location').get(obj)
-
-
 @implementer(IPloneCatalogTool)
 class CatalogTool(PloneBaseTool, BaseTool):
     """Plone's catalog tool"""
