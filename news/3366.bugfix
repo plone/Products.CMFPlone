@@ -1,2 +1,2 @@
-In Portal: use security decorators and remove dead code that wont work in Py 3 anyway if called (cmp).
+In Portal: use security decorators
 [jensens]
