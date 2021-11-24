@@ -191,8 +191,7 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         PloneSite.inheritedAttribute('manage_beforeDelete')(self, container,
                                                             item)
 
-    security.declareProtected(permissions.DeleteObjects, 'manage_delObjects')
-
+    @security.protected(permissions.DeleteObjects)
     def manage_delObjects(self, ids=None, REQUEST=None):
         """We need to enforce security."""
         if ids is None:
@@ -212,9 +211,7 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         """
         return self()
 
-    security.declareProtected(permissions.AccessContentsInformation,
-                              'folderlistingFolderContents')
-
+    @security.protected(permissions.AccessContentsInformation)
     def folderlistingFolderContents(self, contentFilter=None):
         """Calls listFolderContents in protected only by ACI so that
         folder_listing can work without the List folder contents permission.
