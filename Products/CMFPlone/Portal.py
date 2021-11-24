@@ -6,7 +6,6 @@ from ComputedAttribute import ComputedAttribute
 from five.localsitemanager.registry import PersistentComponents
 from OFS.ObjectManager import REPLACEABLE
 from plone.dexterity.content import Container
-from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from Products.CMFCore import permissions
 from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.interfaces import ISiteRoot
@@ -206,17 +205,6 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         reference browser.
         """
         return self.listFolderContents(contentFilter)
-
-    security.declarePublic('availableLanguages')
-
-    def availableLanguages(self):
-        util = queryUtility(IMetadataLanguageAvailability)
-        languages = util.getLanguageListing()
-        languages.sort(lambda x, y: cmp(x[1], y[1]))
-        # Put language neutral at the top.
-        languages.insert(0, ('', _('Language neutral (site default)')))
-
-        return languages
 
     def isEffective(self, date):
         # Override DefaultDublinCoreImpl's test, since we are always viewable.
