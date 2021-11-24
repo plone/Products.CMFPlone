@@ -33,7 +33,6 @@ from Products.CMFPlone.permissions import ModifyPortalContent
 from Products.CMFPlone.permissions import ReplyToItem
 from Products.CMFPlone.permissions import View
 from Products.Five.component.interfaces import IObjectManagerSite
-from zope.component import queryUtility
 from zope.interface.interfaces import ComponentLookupError
 from zope.event import notify
 from zope.interface import classImplementsOnly
