@@ -6,7 +6,6 @@ from ComputedAttribute import ComputedAttribute
 from five.localsitemanager.registry import PersistentComponents
 from OFS.ObjectManager import REPLACEABLE
 from plone.dexterity.content import Container
-from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from Products.CMFCore import permissions
 from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.interfaces import ISiteRoot
@@ -34,7 +33,6 @@ from Products.CMFPlone.permissions import ModifyPortalContent
 from Products.CMFPlone.permissions import ReplyToItem
 from Products.CMFPlone.permissions import View
 from Products.Five.component.interfaces import IObjectManagerSite
-from zope.component import queryUtility
 from zope.interface.interfaces import ComponentLookupError
 from zope.event import notify
 from zope.interface import classImplementsOnly
@@ -174,8 +172,7 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         PloneSite.inheritedAttribute('manage_beforeDelete')(self, container,
                                                             item)
 
-    security.declareProtected(permissions.DeleteObjects, 'manage_delObjects')
-
+    @security.protected(permissions.DeleteObjects)
     def manage_delObjects(self, ids=None, REQUEST=None):
         """We need to enforce security."""
         if ids is None:
@@ -195,9 +192,7 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         """
         return self()
 
-    security.declareProtected(permissions.AccessContentsInformation,
-                              'folderlistingFolderContents')
-
+    @security.protected(permissions.AccessContentsInformation)
     def folderlistingFolderContents(self, contentFilter=None):
         """Calls listFolderContents in protected only by ACI so that
         folder_listing can work without the List folder contents permission.
@@ -206,17 +201,6 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         reference browser.
         """
         return self.listFolderContents(contentFilter)
-
-    security.declarePublic('availableLanguages')
-
-    def availableLanguages(self):
-        util = queryUtility(IMetadataLanguageAvailability)
-        languages = util.getLanguageListing()
-        languages.sort(lambda x, y: cmp(x[1], y[1]))
-        # Put language neutral at the top.
-        languages.insert(0, ('', _('Language neutral (site default)')))
-
-        return languages
 
     def isEffective(self, date):
         # Override DefaultDublinCoreImpl's test, since we are always viewable.
