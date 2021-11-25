@@ -91,6 +91,7 @@ setup(
         'plone.session',
         'plone.staticresources',
         'plone.subrequest',
+        'plone.synchronize',
         'plone.theme',
         'plonetheme.barceloneta',
         'Products.CMFCore',
