@@ -137,6 +137,16 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
 
         super(PloneSite, self).__before_publishing_traverse__(arg1, arg2)
 
+    # Concept from OFS.OrderSupport
+    @security.protected(permissions.AccessContentsInformation)
+    def tpValues(self):
+        # Return a list of subobjects, used by ZMI tree tag (and only there).
+        # see also https://github.com/plone/Products.CMFPlone/issues/3323
+        return sorted(
+            (obj for obj in self.objectValues() if getattr(aq_base(obj), 'isPrincipiaFolderish', False)),
+            key=lambda obj: obj.getId(),
+        )
+
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
         of index_html """
