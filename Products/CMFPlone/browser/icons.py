@@ -1,17 +1,11 @@
-# -*- coding: utf-8 -*-
 from lxml import etree
 from OFS.Image import File
 from plone.registry.interfaces import IRegistry
 from Products.Five.browser import BrowserView
-from Products.CMFCore.interfaces import ISiteRoot
 from zExceptions import NotFound
-from zope.component import adapter
 from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
-from zope.interface import Interface
-from zope.location.interfaces import LocationError
-from zope.traversing.interfaces import ITraversable
 from zope.publisher.interfaces import IPublishTraverse
 from zExceptions import NotFound
 
@@ -58,21 +52,39 @@ def _strip_id(svgtree, cfg):
 
 SVG_MODIFER['strip_id'] = _strip_id
 
-
 @implementer(IPublishTraverse)
 class IconsView(BrowserView):
 
     prefix = "plone.icon."
     defaulticon = "++plone++icons/plone.svg"
 
-    def publishTraverse(self, request, name):
-        self.name = name
+    def publishTraverse(self, request, part):
+        """Subpath detection
+
+        - "@@iconsresolver/plone-copy" delivers the file.
+        - "@@iconsresolver/get_file/plone-copy" delivers the file too.
+        - "@@iconsresolver/get_url/plone-copy" delivers url to the file.
+        - "@@iconsresolver/get_tag/plone-copy" delivers image tag or the SVG data.
+        - "@@iconsresolver/get_tag/plone-copy?class=my-css-info&alt=Plone-Copy-Icon" delivers image tag or the SVG data.
+        """
+        breakpoint()
+        variety = getattr(self, "variety", None)
+        if variety is None and part in ["get_tag", 'get_url', 'get_file']:
+            self.variety = part
+            return self
+        if variety is None:
+            self.variety = "get_file"
+        self.name = part
         return self
 
     def __call__(self):
         name = getattr(self, "name", None)
         if name is None:
             raise NotFound("No name were given as subpath.")
+        if self.variety == "get_tag":
+            return self.tag(self.name, tag_class=self.request.get("class", ""), tag_alt=self.request.get("alt", ""))
+        elif self.variety == "get_url":
+            return self.url(self.name)
         fileobj = self._iconfile(self.lookup(self.name))
         return fileobj(REQUEST=self.request, RESPONSE=self.request.response)
 
