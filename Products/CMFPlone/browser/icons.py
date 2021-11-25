@@ -67,7 +67,6 @@ class IconsView(BrowserView):
         - "@@iconsresolver/get_tag/plone-copy" delivers image tag or the SVG data.
         - "@@iconsresolver/get_tag/plone-copy?class=my-css-info&alt=Plone-Copy-Icon" delivers image tag or the SVG data.
         """
-        breakpoint()
         variety = getattr(self, "variety", None)
         if variety is None and part in ["get_tag", 'get_url', 'get_file']:
             self.variety = part
