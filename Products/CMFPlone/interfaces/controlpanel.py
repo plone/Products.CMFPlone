@@ -836,7 +836,7 @@ class INavigationSchema(Interface):
             'If an item has been excluded from navigation should it be '
             'shown in navigation when viewing content contained within it '
             'or within a subfolder.'),
-        default=True,
+        default=False,
         required=False)
 
     root = schema.TextLine(

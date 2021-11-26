@@ -15,7 +15,10 @@ class PloneBaseResource:
     @property
     def file_data(self):
         """Fetch data from using a resource via traversal"""
-        return get_resource(self.context, self.resource)
+        data = get_resource(self.context, self.resource)
+        if isinstance(data, str):
+            data = data.encode('utf8')
+        return data
 
 
 class PloneScriptResource(PloneBaseResource, ScriptResource):

@@ -33,6 +33,14 @@ from zope.publisher.interfaces import IRequest
 from zope.schema.interfaces import IVocabularyFactory
 
 import logging
+import pkg_resources
+
+
+try:
+    pkg_resources.get_distribution("plone.volto")
+    HAS_VOLTO = True
+except pkg_resources.DistributionNotFound:
+    HAS_VOLTO = False
 LOGGER = logging.getLogger('Products.CMFPlone')
 
 
@@ -49,6 +57,7 @@ class AppTraverser(DefaultPublishTraverse):
 
 
 class Overview(BrowserView):
+    has_volto = HAS_VOLTO
 
     def sites(self, root=None):
         if root is None:
@@ -146,10 +155,22 @@ class AddPloneSite(BrowserView):
         'plone.app.caching:default',
         'plonetheme.barceloneta:default',
     )
+    # Let's have a separate list for Volto.
+    volto_default_extension_profiles = (
+        'plone.app.caching:default',
+        # We could choose to not install Barceloneta:
+        'plonetheme.barceloneta:default',
+        'plone.volto:default',
+        'plone.volto:default-homepage'
+    )
 
     def profiles(self):
         base_profiles = []
         extension_profiles = []
+        if HAS_VOLTO and not self.request.get('classic'):
+            selected_extension_profiles = self.volto_default_extension_profiles
+        else:
+            selected_extension_profiles = self.default_extension_profiles
 
         # profiles available for install/uninstall, but hidden at the time
         # the Plone site is created
@@ -165,7 +186,7 @@ class AddPloneSite(BrowserView):
                info.get('for') in (IPloneSiteRoot, None):
                 profile_id = info.get('id')
                 if profile_id not in not_installable:
-                    if profile_id in self.default_extension_profiles:
+                    if profile_id in selected_extension_profiles:
                         info['selected'] = 'selected'
                     extension_profiles.append(info)
 

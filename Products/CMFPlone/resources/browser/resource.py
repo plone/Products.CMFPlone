@@ -5,6 +5,7 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from App.config import getConfiguration
 from plone.app.layout.viewlets.common import ViewletBase
+from plone.app.theming.interfaces import IThemeSettings
 from plone.app.theming.utils import theming_policy
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.Expression import createExprContext
@@ -56,7 +57,6 @@ class ResourceBase:
         )
         if not getattr(self, "registry", None):
             self.registry = getUtility(IRegistry)
-
         theme = None
         policy = theming_policy(self.request)
         if policy.isThemeEnabled():
@@ -148,7 +148,7 @@ class ResourceBase:
         if themedata["production_js"]:
             # we ignore development_js for external detection
             external = themedata["production_js"].startswith("http")
-            theme_script_resource = PloneScriptResource(
+            PloneScriptResource(
                 context=self.context,
                 name="theme",
                 depends="",
@@ -170,7 +170,7 @@ class ResourceBase:
         if themedata["production_css"]:
             # we ignore development_css for external detection
             external = themedata["production_css"].startswith("http")
-            theme_resource_css = PloneStyleResource(
+            PloneStyleResource(
                 context=self.context,
                 name="theme",
                 depends="",
@@ -187,6 +187,23 @@ class ResourceBase:
                 media="all",
                 rel="stylesheet",
             )
+
+        # add Custom CSS
+        registry = getUtility(IRegistry)
+        theme_settings = registry.forInterface(IThemeSettings, False)
+        if theme_settings.custom_css:
+            PloneStyleResource(
+                context=self.context,
+                name="custom",
+                depends="",
+                resource="@@custom.css",
+                include=True,
+                unique=unique,
+                group=root_group_css,
+                media="all",
+                rel="stylesheet",
+            )
+
         self.renderer = {}
         setattr(self.request, REQUEST_CACHE_KEY, self.renderer)
         resolver_js = webresource.ResourceResolver(root_group_js)
