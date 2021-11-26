@@ -1,0 +1,3 @@
+Add plone.synchronize as dependency, because plone.dexterity 2.10.5 has removed this dependency.
+Core Plone does not need the package anymore, but in case someone uses it, it is not nice to lose it in a bugfix release of Plone.
+[maurits]
