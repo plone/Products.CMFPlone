@@ -12,6 +12,17 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.0a1 (2021-10-22)
+--------------------
+
+Bug fixes:
+
+
+- Release Plone 6.0.0a1.
+  No changes since previous release.
+  [maurits] (#3341)
+
+
 6.0.0a1.dev1 (2021-10-16)
 -------------------------
 

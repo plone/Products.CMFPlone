@@ -255,11 +255,6 @@ def mime_type(obj):
     return aq_base(obj).getPrimaryField().getContentType(obj)
 
 
-@indexer(Interface)
-def location(obj):
-    return obj.getField('location').get(obj)
-
-
 @implementer(IPloneCatalogTool)
 class CatalogTool(PloneBaseTool, BaseTool):
     """Plone's catalog tool"""
@@ -488,6 +483,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
                     pass
         self.manage_catalogClear()
         portal = aq_parent(aq_inner(self))
+        indexObject(portal, '')
         portal.ZopeFindAndApply(
             portal,
             search_sub=True,

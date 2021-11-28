@@ -1,7 +1,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = '6.0.0a1.dev2'
+version = '6.0.0a2.dev0'
 
 
 setup(
@@ -42,6 +42,7 @@ setup(
         'ExtensionClass',
         'five.customerize',
         'five.localsitemanager',
+        'lxml',
         'mockup',
         'Pillow',
         'plone.api >= 1.4.4',

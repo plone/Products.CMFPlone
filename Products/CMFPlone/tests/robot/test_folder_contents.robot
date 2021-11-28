@@ -61,7 +61,9 @@ I click the '${link_name}' link
 I select all the elements
     Wait until page contains element  css=.pat-structure .select-all
     Wait until page contains element  css=.itemRow
-    Click Element  css=.pat-structure .select-all
+    ${select_all_selector}  Set Variable  .pat-structure .select-all
+    Wait Until Element Is Visible  css=${select_all_selector}
+    Click Element  css=${select_all_selector}
 
 the four elements got selected
     Checkbox Should Be Selected  css=tr[data-id="doc1"] input
