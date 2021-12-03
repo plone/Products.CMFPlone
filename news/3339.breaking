@@ -1,3 +1,0 @@
-PLIP 3339: Replace ``z3c.autoinclude`` with ``plone.autoinclude``.
-Note: ``includeDependencies`` is no longer supported.
-[maurits, tschorr]

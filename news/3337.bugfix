@@ -1,3 +1,0 @@
-Fixes #3337: 
-Remove dead code that wont work in Py 3 anyway if called (cmp).
-[jensens]

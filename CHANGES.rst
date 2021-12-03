@@ -12,6 +12,47 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.0a2 (2021-12-03)
+--------------------
+
+Breaking changes:
+
+
+- PLIP 3339: Replace ``z3c.autoinclude`` with ``plone.autoinclude``.
+  Note: ``includeDependencies`` is no longer supported.
+  [maurits, tschorr] (#3339)
+
+
+New features:
+
+
+- On Zope root, create Volto site by default.
+  [maurits] (#3344)
+
+
+Bug fixes:
+
+
+- Move prefs_error_log* from skins to browser views
+  [jmevissen] (#3241)
+- The Plone site root is cataloged (#3314)
+- Fix #3323DX-Site-Root: ZMI Nav-Tree is no longer expandable.
+  [jensens] (#3323)
+- Fixes #3337: 
+  Remove dead code that wont work in Py 3 anyway if called (cmp).
+  [jensens] (#3337)
+- Remove DYNAMIC_CONTENT from translation files
+  [erral] (#3342)
+- Remove adapter for index location. [wesleybl] (#3347)
+- Use document_view as default for site root.
+  [agitator] (#3354)
+- Add missing lxml dependency [MrTango] (#3356)
+- Fixes #3352 - dependency indirection on plone.app.iterate [jensens] (#3357)
+- In Portal: use security decorators
+  [jensens] (#3366)
+- Updated metadata version to 6002.  [maurits] (#6002)
+
+
 6.0.0a1 (2021-10-22)
 --------------------
 
