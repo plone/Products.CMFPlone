@@ -93,12 +93,12 @@
 
                         <tal:entry tal:repeat="entry entries">
                         <tr tal:define="oddrow repeat/entry/odd;"
-                            tal:attributes="class python:test(oddrow, 'even', 'odd')"
-                            tal:condition="python: test(entry['time'] > updatetime,1,0)">
+                            tal:attributes="class python: oddrow and 'odd' or 'even'"
+                            tal:condition="python: entry['time'] > updatetime">
 
                             <td
                                 tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;"
-                                tal:content="python:toLocalizedTime(DateTime(entry['time']), long_format=True)">13:04:41</td>
+                                tal:content="python:toLocalizedTime(entry['time'], long_format=True)">13:04:41</td>
                             <td tal:content="string:${entry/username} (${entry/userid})">joe</td>
                             <td>
                                 <a href="showEntry"

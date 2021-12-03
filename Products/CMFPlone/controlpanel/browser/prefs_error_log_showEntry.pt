@@ -47,7 +47,7 @@
                     <dt i18n:translate="label_time">Time</dt>
                     <dd
                         tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;"
-                        tal:content="python:toLocalizedTime(DateTime(entry['time']), long_format=True)"></dd>
+                        tal:content="python:toLocalizedTime(entry['time'], long_format=True)"></dd>
 
                     <dt align="left" valign="top"
                         i18n:translate="label_user_name">User Name</dt>
