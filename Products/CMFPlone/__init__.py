@@ -112,6 +112,9 @@ def initialize(context):
     # Make cgi.escape available TTW
     ModuleSecurityInfo('cgi').declarePublic('escape')
 
+    # Make warnings available TTW
+    ModuleSecurityInfo('warnings').declarePublic('warn')
+
     # Apply monkey patches
     from Products.CMFPlone import patches  # noqa
 
