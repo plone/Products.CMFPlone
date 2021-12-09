@@ -22,7 +22,7 @@ from zope.interface import implementer
 def get_url(item):
     if not item:
         return None
-    if hasattr(aq_base(item), 'getURL'):
+    if hasattr(aq_base(item), "getURL"):
         # Looks like a brain
         return item.getURL()
     return item.absolute_url()
@@ -31,7 +31,7 @@ def get_url(item):
 def get_id(item):
     if not item:
         return None
-    getId = getattr(item, 'getId')
+    getId = getattr(item, "getId")
     if not utils.safe_callable(getId):
         # Looks like a brain
         return getId
@@ -40,21 +40,19 @@ def get_id(item):
 
 def get_view_url(context):
     registry = getUtility(IRegistry)
-    view_action_types = registry.get(
-        'plone.types_use_view_action_in_listings', [])
+    view_action_types = registry.get("plone.types_use_view_action_in_listings", [])
     item_url = get_url(context)
     name = get_id(context)
 
-    if item_url and getattr(context, 'portal_type', {}) in view_action_types:
-        item_url += '/view'
-        name += '/view'
+    if item_url and getattr(context, "portal_type", {}) in view_action_types:
+        item_url += "/view"
+        name += "/view"
 
     return name, item_url
 
 
 @implementer(ISiteMap)
 class CatalogSiteMap(BrowserView):
-
     def siteMap(self):
         context = aq_inner(self.context)
 
@@ -62,72 +60,60 @@ class CatalogSiteMap(BrowserView):
         query = queryBuilder()
         strategy = getMultiAdapter((context, self), INavtreeStrategy)
 
-        return buildFolderTree(
-            context, obj=context,
-            query=query, strategy=strategy
-        )
+        return buildFolderTree(context, obj=context, query=query, strategy=strategy)
 
 
 @implementer(INavigationTabs)
 class CatalogNavigationTabs(BrowserView):
-
     def _getNavQuery(self):
         # check whether we only want actions
         registry = getUtility(IRegistry)
         navigation_settings = registry.forInterface(
-            INavigationSchema,
-            prefix="plone",
-            check=False
+            INavigationSchema, prefix="plone", check=False
         )
-        customQuery = getattr(self.context, 'getCustomNavQuery', False)
+        customQuery = getattr(self.context, "getCustomNavQuery", False)
         if customQuery is not None and utils.safe_callable(customQuery):
             query = customQuery()
         else:
             query = {}
 
-        query['path'] = {
-            'query': getNavigationRoot(self.context),
-            'depth': 1
-        }
-        query['portal_type'] = [t for t in navigation_settings.displayed_types]
-        query['sort_on'] = navigation_settings.sort_tabs_on
+        query["path"] = {"query": getNavigationRoot(self.context), "depth": 1}
+        query["portal_type"] = [t for t in navigation_settings.displayed_types]
+        query["sort_on"] = navigation_settings.sort_tabs_on
         if navigation_settings.sort_tabs_reversed:
-            query['sort_order'] = 'reverse'
+            query["sort_order"] = "reverse"
         else:
-            query['sort_order'] = 'ascending'
+            query["sort_order"] = "ascending"
 
         if navigation_settings.filter_on_workflow:
-            query['review_state'] = navigation_settings.workflow_states_to_show
+            query["review_state"] = navigation_settings.workflow_states_to_show
 
-        query['is_default_page'] = False
+        query["is_default_page"] = False
 
         if not navigation_settings.show_excluded_items:
             # Note:
             # Careful with that axe, Eugene!
             # This introduces a performance decrease.
-            query['exclude_from_nav'] = False
+            query["exclude_from_nav"] = False
 
         if not navigation_settings.nonfolderish_tabs:
-            query['is_folderish'] = True
+            query["is_folderish"] = True
 
         return query
 
-    def topLevelTabs(self, actions=None, category='portal_tabs'):
+    def topLevelTabs(self, actions=None, category="portal_tabs"):
         context = aq_inner(self.context)
         registry = getUtility(IRegistry)
         navigation_settings = registry.forInterface(
-            INavigationSchema,
-            prefix="plone",
-            check=False
+            INavigationSchema, prefix="plone", check=False
         )
-        mtool = getToolByName(context, 'portal_membership')
+        mtool = getToolByName(context, "portal_membership")
         member = mtool.getAuthenticatedMember().id
-        catalog = getToolByName(context, 'portal_catalog')
+        catalog = getToolByName(context, "portal_catalog")
 
         if actions is None:
             context_state = getMultiAdapter(
-                (context, self.request),
-                name='plone_context_state'
+                (context, self.request), name="plone_context_state"
             )
             actions = context_state.actions(category)
 
@@ -136,7 +122,7 @@ class CatalogNavigationTabs(BrowserView):
         # first the actions
         for actionInfo in actions:
             data = actionInfo.copy()
-            data['name'] = data['title']
+            data["name"] = data["title"]
             self.customize_entry(data)
             result.append(data)
 
@@ -153,20 +139,22 @@ class CatalogNavigationTabs(BrowserView):
                 return (get_id(item), item.getRemoteUrl)
             return get_view_url(item)
 
-        context_path = '/'.join(context.getPhysicalPath())
+        context_path = "/".join(context.getPhysicalPath())
 
         # now add the content to results
         for item in rawresult:
-            if item.exclude_from_nav and not context_path.startswith(item.getPath()):  # noqa: E501
+            if item.exclude_from_nav and not context_path.startswith(
+                item.getPath()
+            ):  # noqa: E501
                 # skip excluded items if they're not in our context path
                 continue
             cid, item_url = _get_url(item)
             data = {
-                'name': utils.pretty_title_or_id(context, item),
-                'id': item.getId,
-                'url': item_url,
-                'description': item.Description,
-                'review_state': item.review_state
+                "name": utils.pretty_title_or_id(context, item),
+                "id": item.getId,
+                "url": item_url,
+                "description": item.Description,
+                "review_state": item.review_state,
             }
             self.customize_entry(data, item)
             result.append(data)
@@ -177,21 +165,21 @@ class CatalogNavigationTabs(BrowserView):
         """a little helper to enlarge customizability."""
         pass
 
+
 @implementer(INavigationBreadcrumbs)
 class CatalogNavigationBreadcrumbs(BrowserView):
-
     def breadcrumbs(self):
         context = aq_inner(self.context)
-        catalog = getToolByName(context, 'portal_catalog')
+        catalog = getToolByName(context, "portal_catalog")
         query = {}
 
         # Check to see if the current page is a folder default view, if so
         # get breadcrumbs from the parent folder
         if check_default_page_via_view(context, self.request):
-            currentPath = '/'.join(utils.parent(context).getPhysicalPath())
+            currentPath = "/".join(utils.parent(context).getPhysicalPath())
         else:
-            currentPath = '/'.join(context.getPhysicalPath())
-        query['path'] = {'query': currentPath, 'navtree': 1, 'depth': 0}
+            currentPath = "/".join(context.getPhysicalPath())
+        query["path"] = {"query": currentPath, "navtree": 1, "depth": 0}
 
         rawresult = catalog(**query)
 
@@ -213,15 +201,15 @@ class CatalogNavigationBreadcrumbs(BrowserView):
 
             cid, item_url = get_view_url(item)
             data = {
-                'Title': utils.pretty_title_or_id(context, item),
-                'absolute_url': item_url
+                "Title": utils.pretty_title_or_id(context, item),
+                "absolute_url": item_url,
             }
             result.append(data)
         return result
 
+
 @implementer(INavigationBreadcrumbs)
 class PhysicalNavigationBreadcrumbs(BrowserView):
-
     def breadcrumbs(self):
         context = aq_inner(self.context)
         request = self.request
@@ -230,12 +218,14 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         name, item_url = get_view_url(context)
 
         if container is None:
-            return ({
-                'absolute_url': item_url,
-                'Title': utils.pretty_title_or_id(context, context),
-            },)
+            return (
+                {
+                    "absolute_url": item_url,
+                    "Title": utils.pretty_title_or_id(context, context),
+                },
+            )
 
-        view = getMultiAdapter((container, request), name='breadcrumbs_view')
+        view = getMultiAdapter((container, request), name="breadcrumbs_view")
         base = tuple(view.breadcrumbs())
 
         # Some things want to be hidden from the breadcrumbs
@@ -243,15 +233,16 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
             return base
 
         rootPath = getNavigationRoot(context)
-        itemPath = '/'.join(context.getPhysicalPath())
+        itemPath = "/".join(context.getPhysicalPath())
 
         # don't show default pages in breadcrumbs or pages above the navigation
         # root
-        if not check_default_page_via_view(context, request) \
-           and not rootPath.startswith(itemPath):
+        if not check_default_page_via_view(
+            context, request
+        ) and not rootPath.startswith(itemPath):
             entry = {
-                'absolute_url': item_url,
-                'Title': utils.pretty_title_or_id(context, context),
+                "absolute_url": item_url,
+                "Title": utils.pretty_title_or_id(context, context),
             }
             self.customize_entry(entry, context)
             base += (entry,)
@@ -261,9 +252,9 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         """a little helper to enlarge customizability."""
         pass
 
+
 @implementer(INavigationBreadcrumbs)
 class RootPhysicalNavigationBreadcrumbs(BrowserView):
-
     def breadcrumbs(self):
         # XXX Root never gets included, it's hardcoded as 'Home' in
         # the template. We will fix and remove the hardcoding and fix
