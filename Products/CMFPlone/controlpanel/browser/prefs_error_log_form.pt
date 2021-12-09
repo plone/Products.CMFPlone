@@ -157,6 +157,7 @@
                     <label for="ignored_exceptions"
                            i18n:translate="label_ignored_exception">Ignored exception types</label>
 
+                    <br>
                     <textarea name="ignored_exceptions:lines"
                               id="ignored_exceptions"
                               cols="40"
