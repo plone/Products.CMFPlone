@@ -6,22 +6,6 @@ from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 
-class PrefsErrorLogForm(BrowserView):
-
-    template = ViewPageTemplateFile('prefs_error_log_form.pt')
-
-    def __call__(self):
-        return self.template(self)
-
-
-class PrefsErrorLogShowEntry(BrowserView):
-
-    template = ViewPageTemplateFile('prefs_error_log_showEntry.pt')
-
-    def __call__(self):
-        return self.template(self)
-
-
 class PrefsErrorLogUpdate(BrowserView):
 
     def __call__(self):
