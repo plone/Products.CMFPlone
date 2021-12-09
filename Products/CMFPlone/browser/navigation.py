@@ -219,7 +219,6 @@ class CatalogNavigationBreadcrumbs(BrowserView):
             result.append(data)
         return result
 
-
 @implementer(INavigationBreadcrumbs)
 class PhysicalNavigationBreadcrumbs(BrowserView):
 
@@ -250,12 +249,17 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         # root
         if not check_default_page_via_view(context, request) \
            and not rootPath.startswith(itemPath):
-            base += ({
+            entry = {
                 'absolute_url': item_url,
                 'Title': utils.pretty_title_or_id(context, context),
-            },)
+            }
+            self.customize_entry(entry, context)
+            base += (entry,)
         return base
 
+    def customize_entry(self, entry, context=None):
+        """a little helper to enlarge customizability."""
+        pass
 
 @implementer(INavigationBreadcrumbs)
 class RootPhysicalNavigationBreadcrumbs(BrowserView):
