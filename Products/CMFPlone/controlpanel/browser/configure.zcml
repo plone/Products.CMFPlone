@@ -115,14 +115,14 @@
   <browser:page
       name="prefs_error_log_form"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".prefs_error_log_form.PrefsErrorLogForm"
+      template="prefs_error_log_form.pt"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
       name="prefs_error_log_showEntry"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".prefs_error_log_form.PrefsErrorLogShowEntry"
+      template="prefs_error_log_showEntry.pt"
       permission="cmf.ManagePortal"
       />
 
