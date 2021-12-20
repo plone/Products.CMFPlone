@@ -82,6 +82,9 @@ class TestRelationsControlpanel(unittest.TestCase):
         # api.relation.create(doc1, doc2, 'relatedItems')
         # api.relation.create(doc1, doc3, 'relatedItems')
 
+        # Make sure the catalog index queue is flushed.
+        self.portal.portal_catalog.searchResults({})
+
         stats, broken = get_relations_stats()
         self.assertEqual(dict(stats), {'relatedItems': 2})
         self.assertEqual(dict(broken), {})
@@ -133,6 +136,9 @@ class TestRelationsControlpanel(unittest.TestCase):
         modified(doc1)
         # api.relation.create(doc1, doc2, 'relatedItems')
         # api.relation.create(doc1, doc3, 'relatedItems')
+
+        # Make sure the catalog index queue is flushed.
+        self.portal.portal_catalog.searchResults({})
 
         stats, broken = get_relations_stats()
         self.assertEqual(dict(stats), {'relatedItems': 2})
