@@ -1,22 +1,14 @@
 from plone.app.testing import logout
+from plone.registry import field as regfield
+from plone.registry import Record
 from plone.registry.interfaces import IRegistry
-from plone.resource.interfaces import IResourceDirectory
-from plone.subrequest import subrequest
 from Products.CMFPlone.interfaces import IBundleRegistry
-from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
 from Products.CMFPlone.resources import add_bundle_on_request
 from Products.CMFPlone.resources import remove_bundle_on_request
 from Products.CMFPlone.resources.browser.resource import ScriptsView
 from Products.CMFPlone.resources.browser.resource import StylesView
 from Products.CMFPlone.tests import PloneTestCase
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from unittest import mock
 from zope.component import getUtility
-from plone.registry import Record
-from plone.registry import field as regfield
-
-import json
-import os
 
 
 class TestScriptsViewlet(PloneTestCase.PloneTestCase):
@@ -38,8 +30,8 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
         view.update()
         rendered = view.render()
-        self.assertTrue('async=' not in rendered)
-        self.assertTrue('defer=' not in rendered)
+        self.assertTrue("async=" not in rendered)
+        self.assertTrue("defer=" not in rendered)
 
     def test_bundle_defernot_async(self):
         bundle = self._make_test_bundle()
@@ -56,8 +48,8 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
         view.update()
         rendered = view.render()
-        self.assertTrue('async=' not in rendered)
-        self.assertTrue('defer=' in rendered)
+        self.assertTrue("async=" not in rendered)
+        self.assertTrue("defer=" in rendered)
 
     def test_bundle_defernot_async(self):
         bundle = self._make_test_bundle()
@@ -67,8 +59,8 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
         view.update()
         rendered = view.render()
-        self.assertTrue('async=' in rendered)
-        self.assertTrue('defer=' not in rendered)
+        self.assertTrue("async=" in rendered)
+        self.assertTrue("defer=" not in rendered)
 
     def test_bundle_defer_async(self):
         bundle = self._make_test_bundle()
@@ -77,8 +69,8 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
         view.update()
         rendered = view.render()
-        self.assertTrue('async=' in rendered)
-        self.assertTrue('defer=' in rendered)
+        self.assertTrue("async=" in rendered)
+        self.assertTrue("defer=" in rendered)
 
     def test_scripts_viewlet(self):
         scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
@@ -164,6 +156,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         scripts.update()
         result = scripts.render()
         self.assertNotIn("http://test.foo/test.css", result)
+
 
 class TestStylesViewlet(PloneTestCase.PloneTestCase):
     def test_styles_viewlet(self):
