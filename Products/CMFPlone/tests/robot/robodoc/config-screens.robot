@@ -141,10 +141,6 @@ Show Resource Registry screen
     Capture and crop page screenshot
     ...  ${CURDIR}/_robot/resource-registry.png
     ...  css=#content
-    Click link  Less Variables
-    Capture and crop page screenshot
-    ...  ${CURDIR}/_robot/less-variables.png
-    ...  css=#content
 
 Show Search setup screen
     Go to  ${PLONE_URL}/@@search-controlpanel
