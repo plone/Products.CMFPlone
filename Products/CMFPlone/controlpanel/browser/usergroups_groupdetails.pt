@@ -93,14 +93,6 @@
                             tal:attributes="value view/groupname | string:"/>
                   </div>
 
-                   <tal:set tal:condition="targetobject/management_page_charset|nothing"
-                            tal:define="dummy python:request.set('management_page_charset_tag','')" />
-
-                   <tal:set tal:condition="not:targetobject/management_page_charset|nothing">
-                      <tal:defines define="dummy python:request.set('management_page_charset','UTF-8');
-                                           dummy python:request.set('management_page_charset_tag','UTF-8:');" />
-                   </tal:set>
-
                   <tal:properties repeat="property targetobject/propertyMap">
                       <div class="field mb-3"
                            tal:define="id property/id;
@@ -125,14 +117,18 @@
 
                       <input type="text" name="id" size="35" class="form-control"
                               tal:condition="python:type in ('float','date')"
-                              tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
+                              tal:attributes="name string:$id:$type;
                                               id id;
                                               value python:propertyvalue if propertyvalue else '';
                                               disabled disabled;" />
-
+                      <tal:comment condition="nothing">
+                        Unicode property types, like ustring, are deprecated and should not be used in Plone 6 (Zope 5).
+                        Core Plone should not need them, but there could be custom groups that use them,
+                        so we keep the compatibility checks in here.
+                      </tal:comment>
                       <input type="text" name="string and ustring" size="35" class="form-control"
                               tal:condition="python:type in ('string','ustring')"
-                              tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
+                              tal:attributes="name string:$id:$type;
                                               id id;
                                               value python:propertyvalue if propertyvalue else '';
                                               disabled disabled;" />
@@ -149,7 +145,7 @@
 
                       <input name="tokens and utokens" value="" type="text" size="35" class="form-control"
                               tal:condition="python:type in ('tokens', 'utokens')"
-                              tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
+                              tal:attributes="name string:$id:$type;
                                               value python:propertyvalue if propertyvalue else '';
                                               disabled disabled;" />
 
@@ -157,7 +153,7 @@
                               rows="6"
                               cols="35"
                               tal:condition="python: type in ('text', 'utext')"
-                              tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
+                              tal:attributes="name string:$id:$type;
                                               disabled disabled;"
                               tal:content="propertyvalue">some data</textarea>
 
@@ -165,7 +161,7 @@
                               rows="6"
                               cols="35"
                               tal:condition="python: type in ('lines', 'ulines')"
-                              tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
+                              tal:attributes="name string:$id:$type;
                                               disabled disabled;"
                               tal:content="python: propertyvalue and '\n'.join(propertyvalue) or ''">
                       </textarea>
@@ -176,7 +172,7 @@
                                       select_value python:select_variable and path('context/%s' %select_variable) or [];">
 
                       <select name="selection" tal:condition="python:type in ('selection',)"
-                          tal:attributes="name string:$id:${request/management_page_charset_tag}text;
+                          tal:attributes="name string:$id:text;
                                           disabled disabled;">
                           <tal:values repeat="option select_value">
                               <option tal:attributes="SELECTED python:'SELECTED' if propertyvalue==option else ''"
@@ -185,7 +181,7 @@
                       </select>
 
                       <select name="multiple selection" multiple="multiple" tal:condition="python:type in ('multiple selection',)"
-                              tal:attributes="name string:$id:${request/management_page_charset_tag}list:string;
+                              tal:attributes="name string:$id:list:string;
                                               size python:min(7, len(select_value));
                                               disabled disabled;">
                           <tal:values repeat="option select_value">
