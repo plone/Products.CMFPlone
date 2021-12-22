@@ -14,37 +14,32 @@ class IResourceRegistry(zope.interface.Interface):
 
     # DEPRECATED
 
-    url = schema.ASCIILine(
-        title=_("Resources base URL"),
-        required=False)
+    url = schema.ASCIILine(title=_("Resources base URL"), required=False)
 
-    js = schema.ASCIILine(
-        title=_("Main js file"),
-        required=False)
+    js = schema.ASCIILine(title=_("Main js file"), required=False)
 
     css = schema.List(
         title=_("CSS/LESS files"),
         value_type=schema.ASCIILine(title=_("URL")),
         default=[],
-        required=False)
+        required=False,
+    )
 
-    init = schema.ASCIILine(
-        title=_("Init instruction for shim"),
-        required=False)
+    init = schema.ASCIILine(title=_("Init instruction for shim"), required=False)
 
     deps = schema.ASCIILine(
         title=_("Dependencies for shim"),
         description=_("Comma separated values of resource for shim"),
-        required=False)
+        required=False,
+    )
 
-    export = schema.ASCIILine(
-        title=_("Export vars for shim"),
-        required=False)
+    export = schema.ASCIILine(title=_("Export vars for shim"), required=False)
 
     conf = schema.Text(
         title=_("Configuration in JSON for the widget"),
         description=_("Should be accessible on @@getWCconfig?id=name"),
-        required=False)
+        required=False,
+    )
 
 
 class IBundleRegistry(zope.interface.Interface):

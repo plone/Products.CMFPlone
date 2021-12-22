@@ -1,5 +1,4 @@
 from .utils import get_resource
-from urllib.parse import quote_plus
 from webresource import ScriptResource
 from webresource import StyleResource
 
@@ -17,7 +16,7 @@ class PloneBaseResource:
         """Fetch data from using a resource via traversal"""
         data = get_resource(self.context, self.resource)
         if isinstance(data, str):
-            data = data.encode('utf8')
+            data = data.encode("utf8")
         return data
 
 
