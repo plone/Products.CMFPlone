@@ -27,7 +27,8 @@ class ResourceBase:
     """Information for script rendering.
 
     This is a mixin base class for a browser view, a viewlet or a tile
-    or anything similar with a context and a request set on initialization.
+    or anything similar with a context and a request set on
+    initialization.
     """
 
     @property
@@ -218,8 +219,7 @@ class ResourceBase:
 
     def evaluateExpression(self, expression, context):
         """Evaluate an object's TALES condition to see if it should be
-        displayed.
-        """
+        displayed."""
         try:
             if expression.text and context is not None:
                 portal = getToolByName(context, "portal_url").getPortalObject()
@@ -285,7 +285,7 @@ class ScriptsView(ResourceView):
 
 
 class StylesView(ResourceView):
-    """Styles Viewlet"""
+    """Styles Viewlet."""
 
     def index(self):
         rendered = self._rendered_cache
