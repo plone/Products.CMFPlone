@@ -1,7 +1,5 @@
 from App.config import getConfiguration
-from plone.registry import field
 from plone.registry.interfaces import IRegistry
-from plone.registry.record import Record
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.Five.browser import BrowserView
@@ -9,6 +7,8 @@ from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getUtility
 
 import operator
+
+
 class ResourceRegistryControlPanelView(BrowserView):
     @property
     def _bundles(self):
@@ -21,27 +21,31 @@ class ResourceRegistryControlPanelView(BrowserView):
     def bundles_data(self):
         result = []
         for name, record in self._bundles.items():
-            result.append({
-                "name": name,
-                "jscompilation": record.jscompilation,
-                "csscompilation": record.csscompilation,
-                "expression": record.expression,
-                "enabled": record.enabled,
-                "depends": record.depends,
-                "load_async": record.load_async,
-                "load_defer": record.load_defer,
-            })
-        result = list(sorted(result, key=operator.itemgetter('name')))
-        result.append({
-            "name": "",
-            "jscompilation": "",
-            "csscompilation": "",
-            "expression": "",
-            "enabled": False,
-            "depends": "",
-            "load_async": False,
-            "load_defer": False,
-        })
+            result.append(
+                {
+                    "name": name,
+                    "jscompilation": record.jscompilation,
+                    "csscompilation": record.csscompilation,
+                    "expression": record.expression,
+                    "enabled": record.enabled,
+                    "depends": record.depends,
+                    "load_async": record.load_async,
+                    "load_defer": record.load_defer,
+                }
+            )
+        result = list(sorted(result, key=operator.itemgetter("name")))
+        result.append(
+            {
+                "name": "",
+                "jscompilation": "",
+                "csscompilation": "",
+                "expression": "",
+                "enabled": False,
+                "depends": "",
+                "load_async": False,
+                "load_defer": False,
+            }
+        )
         return result
 
     def global_debug_mode(self):
@@ -54,29 +58,41 @@ class ResourceRegistryControlPanelView(BrowserView):
     def _add(self):
         name = self.request.form.get("name", None)
         if name is None or name == "":
-            IStatusMessage(self.request).addStatusMessage(_("Name can not be empty."), "error")
+            IStatusMessage(self.request).addStatusMessage(
+                _("Name can not be empty."), "error"
+            )
             return
         bundles = self._bundles
         if name in bundles:
-            IStatusMessage(self.request).addStatusMessage(_(f"Record {name} already exists."), "error")
+            IStatusMessage(self.request).addStatusMessage(
+                _(f"Record {name} already exists."), "error"
+            )
             return
         record = bundles.add(name)
         self._set_data_from_form(record)
-        IStatusMessage(self.request).addStatusMessage(_(f"Record {name} created."), "info")
+        IStatusMessage(self.request).addStatusMessage(
+            _(f"Record {name} created."), "info"
+        )
 
     def _update(self):
         new_name = self.request.form.get("name", None)
         if new_name is None or new_name == "":
-            IStatusMessage(self.request).addStatusMessage(_("Name can not be empty."), "error")
+            IStatusMessage(self.request).addStatusMessage(
+                _("Name can not be empty."), "error"
+            )
             return
         original_name = self.request.form.get("original_name", None)
         bundles = self._bundles
         if new_name != original_name:
             if original_name not in bundles:
-                IStatusMessage(self.request).addStatusMessage(_("Expected record missing."), "error")
+                IStatusMessage(self.request).addStatusMessage(
+                    _("Expected record missing."), "error"
+                )
                 return
             if new_name in bundles:
-                IStatusMessage(self.request).addStatusMessage(_(f"Record name {new_name} already taken."), "error")
+                IStatusMessage(self.request).addStatusMessage(
+                    _(f"Record name {new_name} already taken."), "error"
+                )
                 return
             record = bundles[original_name]
             del bundles[original_name]
@@ -88,11 +104,7 @@ class ResourceRegistryControlPanelView(BrowserView):
 
     def _set_data_from_form(self, record):
         names = record.__schema__.names()
-        data = {
-            k: v
-            for k, v in self.request.form.items()
-            if k in names
-        }
+        data = {k: v for k, v in self.request.form.items() if k in names}
         bool_names = ["enabled", "load_async", "load_defer"]
         for bool_name in bool_names:
             data[bool_name] = bool_name in data
@@ -105,7 +117,9 @@ class ResourceRegistryControlPanelView(BrowserView):
         name = self.request.form.get("original_name", None)
         bundles = self._bundles
         if name not in bundles:
-            IStatusMessage(self.request).addStatusMessage(_(f"Expected record {name} missing."), "error")
+            IStatusMessage(self.request).addStatusMessage(
+                _(f"Expected record {name} missing."), "error"
+            )
             return
         del bundles[name]
         self._switch_cache(False)
@@ -118,7 +132,7 @@ class ResourceRegistryControlPanelView(BrowserView):
     def process_form(self):
         if self.request["method"] != "POST":
             return
-        action = self.request.form['action']
+        action = self.request.form["action"]
         if action == "add":
             self._add()
         elif action == "update":
@@ -131,4 +145,4 @@ class ResourceRegistryControlPanelView(BrowserView):
             self._switch_cache(False)
         else:
             raise ValueError("Invalid form data")
-        self.request.response.redirect(self.request['ACTUAL_URL'])
+        self.request.response.redirect(self.request["ACTUAL_URL"])
