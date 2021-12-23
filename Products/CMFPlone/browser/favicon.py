@@ -22,5 +22,5 @@ class SiteFavicon(Download):
             self.data = data
             self.filename = filename
 
-    def _getFile(self):  # todo add caching
+    def _getFile(self):
         return self.data
