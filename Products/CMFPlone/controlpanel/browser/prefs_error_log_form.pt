@@ -37,7 +37,7 @@
             </div>
 
             <table class="table table-responsive table-bordered table-striped" tal:condition="entries">
-              <caption i18n:translate="summary_exception_log">Exception Log (most recent first)</caption>
+              <caption i18n:translate="summary_exception_log">Error Log (most recent first)</caption>
 
               <thead>
                 <tr>
