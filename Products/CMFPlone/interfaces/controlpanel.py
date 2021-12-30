@@ -1015,7 +1015,6 @@ class ISiteSchema(Interface):
         title=_('Site Favicon Mimetype'),
         description=_('Automatically setted Mimetype of the Favicon'),
         required=False,
-        readonly=True,
         default='image/x-icon'
     )
 
