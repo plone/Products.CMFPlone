@@ -75,24 +75,6 @@
               </tbody>
             </table>
 
-            <div class="formControls">
-              <input class="btn btn-secondary"
-                     type="submit"
-                     name="form.button.refresh"
-                     value="Refresh"
-                     i18n:attributes="value label_refresh;" />
-              <input class="btn btn-secondary"
-                     type="submit"
-                     name="form.button.clear"
-                     value="Clear Displayed Entries"
-                     i18n:attributes="value label_clear_displayed_entries;" />
-              <input class="btn btn-secondary"
-                     type="submit"
-                     name="form.button.showall"
-                     value="Show all entries"
-                     i18n:attributes="value label_show_all_entries;" />
-            </div>
-
           </fieldset>
         </form>
 
