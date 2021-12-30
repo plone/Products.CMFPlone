@@ -1005,6 +1005,13 @@ class ISiteSchema(Interface):
         required=False,
     )
 
+    site_favicon_mimetype = schema.TextLine(
+        title=_('MIME type of the site favicon'),
+        description=_('MIME type of the favicon (automatically set when a new favicon is uploaded)'),
+        required=False,
+        default='image/x-icon'
+    )
+
     site_favicon = schema.Bytes(
         title=_('Site Favicon'),
         description=_('This shows a custom favicon on your site.'),
