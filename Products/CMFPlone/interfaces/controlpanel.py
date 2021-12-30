@@ -1005,6 +1005,20 @@ class ISiteSchema(Interface):
         required=False,
     )
 
+    site_favicon = schema.Bytes(
+        title=_('Site Favicon'),
+        description=_('This shows a custom favicon on your site.'),
+        required=False,
+    )
+
+    site_favicon_mimetype = schema.TextLine(
+        title=_('Site Favicon Mimetype'),
+        description=_('Automatically setted Mimetype of the Favicon'),
+        required=False,
+        readonly=True,
+        default='image/x-icon'
+    )
+
     exposeDCMetaTags = schema.Bool(
         title=_('Expose Dublin Core metadata'),
         description=_('Exposes the Dublin Core properties as metatags.'),
