@@ -111,32 +111,32 @@
       permission="cmf.ManagePortal"
       />
 
-  <!-- Prefs Error Log Form Control Panel -->
+  <!-- Error Log Form Control Panel -->
   <browser:page
-      name="prefs_error_log_form"
+      name="error-log-form"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      template="prefs_error_log_form.pt"
+      template="error_log_form.pt"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
-      name="prefs_error_log_showEntry"
+      name="error-log-showEntry"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      template="prefs_error_log_showEntry.pt"
+      template="error_log_showEntry.pt"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
-      name="prefs_error_log_update"
+      name="error-log-update"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".prefs_error_log_form.PrefsErrorLogUpdate"
+      class=".error_log_form.ErrorLogUpdate"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
-      name="prefs_error_log_setProperties"
+      name="error-log-setProperties"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".prefs_error_log_form.PrefsErrorLogSetProperties"
+      class=".error_log_form.ErrorLogSetProperties"
       permission="cmf.ManagePortal"
       />
 

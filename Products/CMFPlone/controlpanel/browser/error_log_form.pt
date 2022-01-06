@@ -30,7 +30,7 @@
     <div id="content-core">
       <div id="layout-contents">
 
-        <form class="mb-4" action="prefs_error_log_update" method="get">
+        <form class="mb-4" action="@@error-log-update" method="get">
           <fieldset class="mb-3" tal:define="entries context/error_log/getLogEntries">
             <div class="field" tal:condition="not:entries" i18n:translate="legend_lognoexceptions">
               No exceptions logged.
@@ -62,7 +62,7 @@
                     <td tal:content="string:${entry/username} (${entry/userid})">joe</td>
                     <td>
                       <a href="showEntry"
-                         tal:attributes="href string:prefs_error_log_showEntry?id=${entry/id}">
+                         tal:attributes="href string:@@error-log-showEntry?id=${entry/id}">
                         <span tal:replace="entry/type">AttributeError</span>:
                         <span tal:define="value entry/value"
                               tal:content="python: len(value) &lt; 70 and value or value[:70] + '...'">
@@ -78,7 +78,7 @@
           </fieldset>
         </form>
 
-        <form class="mb-4" action="prefs_error_log_update" method="get">
+        <form class="mb-4" action="@@error-log-update" method="get">
           <fieldset class="mb-3">
             <legend i18n:translate="label_search_entry">
               Search for an error log entry <span class="formHelp"> (such as "1257962690.640.49636048561")
@@ -104,7 +104,7 @@
 
         <hr />
 
-        <form class="mb-4" action="prefs_error_log_setProperties" method="post">
+        <form class="mb-4" action="@@error-log-setProperties" method="post">
           <fieldset class="mb-3" tal:define="props context/error_log/getProperties">
 
             <legend i18n:translate="legend_logdetails">Log details</legend>
