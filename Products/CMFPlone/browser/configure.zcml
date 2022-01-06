@@ -217,11 +217,6 @@
       for="plone.app.layout.navigation.interfaces.INavigationRoot"
       />
 
-  <browser:resource
-      name="search.js"
-      file="static/search.js"
-      />
-
   <!-- AtD Support -->
   <browser:page
       for="*"
