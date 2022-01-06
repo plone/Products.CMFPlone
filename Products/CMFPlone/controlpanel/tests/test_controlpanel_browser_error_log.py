@@ -55,7 +55,7 @@ class ErrorLogControlPanelFunctionalTest(unittest.TestCase):
         }
 
         set_properties_view = getMultiAdapter((self.portal, self.request),
-                                name='prefs_error_log_setProperties')
+                                name='error-log-set-properties')
         set_properties_view()
 
         error_log_properties = self.portal.error_log.getProperties()

@@ -16,7 +16,7 @@ class ErrorLogUpdate(BrowserView):
                 member.setProperties(error_log_update=0.0)
                 self.context.plone_utils.addPortalMessage(_('Showing all entries'))
                 return self.request.RESPONSE.redirect(self.context.absolute_url() + '/@@error-log-form')
-            return self.request.RESPONSE.redirect(self.context.absolute_url() + '/@@error-log-showEntry?id=%s' % search)
+            return self.request.RESPONSE.redirect(self.context.absolute_url() + '/@@error-log-show-entry?id=%s' % search)
 
         elif getattr(self.request, 'form.button.showall', None) is not None:
             member.setProperties(error_log_update=0.0)

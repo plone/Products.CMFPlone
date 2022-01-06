@@ -120,9 +120,9 @@
       />
 
   <browser:page
-      name="error-log-showEntry"
+      name="error-log-show-entry"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      template="error_log_showEntry.pt"
+      template="error_log_show_entry.pt"
       permission="cmf.ManagePortal"
       />
 
@@ -134,7 +134,7 @@
       />
 
   <browser:page
-      name="error-log-setProperties"
+      name="error-log-set-properties"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".error_log_form.ErrorLogSetProperties"
       permission="cmf.ManagePortal"
