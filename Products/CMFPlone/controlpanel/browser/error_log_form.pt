@@ -62,7 +62,7 @@
                     <td tal:content="string:${entry/username} (${entry/userid})">joe</td>
                     <td>
                       <a href="showEntry"
-                         tal:attributes="href string:@@error-log-showEntry?id=${entry/id}">
+                         tal:attributes="href string:@@error-log-show-entry?id=${entry/id}">
                         <span tal:replace="entry/type">AttributeError</span>:
                         <span tal:define="value entry/value"
                               tal:content="python: len(value) &lt; 70 and value or value[:70] + '...'">
@@ -104,7 +104,7 @@
 
         <hr />
 
-        <form class="mb-4" action="@@error-log-setProperties" method="post">
+        <form class="mb-4" action="@@error-log-set-properties" method="post">
           <fieldset class="mb-3" tal:define="props context/error_log/getProperties">
 
             <legend i18n:translate="legend_logdetails">Log details</legend>
