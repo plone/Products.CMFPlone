@@ -20,7 +20,7 @@
     <div id="content-core">
         <a href=""
            class="link-parent"
-           tal:attributes="href string:$portal_url/prefs_error_log_form"
+           tal:attributes="href string:$portal_url/@@error-log-form"
            i18n:translate="label_back_to_errorlog">
         Back to Error Log
         </a>
