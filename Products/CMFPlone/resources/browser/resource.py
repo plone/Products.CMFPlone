@@ -4,20 +4,20 @@ from Acquisition import aq_parent
 from App.config import getConfiguration
 from plone.app.layout.viewlets.common import ViewletBase
 from plone.app.theming.utils import theming_policy
+from plone.base.interfaces import IBundleRegistry
+from plone.base.interfaces import IResourceRegistry
+from plone.base.utils import get_top_request
 from plone.memoize.view import memoize
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.Expression import createExprContext
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import _getAuthenticatedUser
 from Products.CMFCore.utils import getToolByName
-from plone.base.interfaces import IBundleRegistry
-from plone.base.interfaces import IResourceRegistry
 from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
-from Products.CMFPlone.resources.browser.combine import (
+from Products.CMFPlone.resources.browser.combine import (  # noqa
     get_production_resource_directory,
-)  # noqa
+)
 from Products.CMFPlone.resources.bundle import Bundle
-from Products.CMFPlone.utils import get_top_request
 from zope import component
 from zope.component import getMultiAdapter
 from zope.component import getUtility
