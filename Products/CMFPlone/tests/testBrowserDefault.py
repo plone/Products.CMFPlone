@@ -9,7 +9,7 @@ from plone.testing.zope import Browser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from Products.CMFPlone.utils import _createObjectByType
-from Products.CMFPlone.utils import safe_nativestring
+from plone.base.utils import safe_nativestring
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from zope.component import getUtility
 

@@ -15,7 +15,7 @@ class Py23DocChecker(doctest.OutputChecker):
 def test_suite():
     suites = (
         doctest.DocFileSuite(
-            'messages.txt',
+            'messages.rst',
             package='Products.CMFPlone.tests',
             checker=Py23DocChecker(),
             ),
