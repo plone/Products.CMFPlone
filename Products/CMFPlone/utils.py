@@ -391,7 +391,7 @@ def transaction_note(note):
     if (len(T.description) + len(note)) >= 65533:
         log('Transaction note too large omitting %s' % str(note))
     else:
-        T.note(base_utils.safe_unicode(note))
+        T.note(base_utils.safe_text(note))
 
 
 def base_hasattr(obj, name):

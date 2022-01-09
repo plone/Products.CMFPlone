@@ -10,7 +10,7 @@ from plone.base.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.PasswordResetTool import ExpiredRequestError
 from Products.CMFPlone.PasswordResetTool import InvalidRequestError
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name
-from Products.CMFPlone.utils import safe_unicode
+from plone.base.utils import safe_text
 from Products.CMFPlone.utils import safeToInt
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -38,7 +38,7 @@ class PasswordResetToolView(BrowserView):
 
     def encode_mail_header(self, text):
         """ Encodes text into correctly encoded email header """
-        return Header(safe_unicode(text), 'utf-8')
+        return Header(safe_text(text), 'utf-8')
 
     def encoded_mail_sender(self):
         """ returns encoded version of Portal name <portal_email> """
@@ -54,7 +54,7 @@ class PasswordResetToolView(BrowserView):
             _(
                 'mailtemplate_user_account_info',
                 default='User Account Information for ${portal_name}',
-                mapping={'portal_name': safe_unicode(portal_name)},
+                mapping={'portal_name': safe_text(portal_name)},
             ),
             context=self.request,
         )

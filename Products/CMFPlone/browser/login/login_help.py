@@ -7,7 +7,7 @@ from plone.base.interfaces import ILoginHelpForm
 from plone.base.interfaces import ILoginHelpFormSchema
 from plone.base.interfaces import ISecuritySchema
 from plone.base.interfaces.controlpanel import IMailSchema
-from Products.CMFPlone.utils import safe_unicode
+from plone.base.utils import safe_text
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 from smtplib import SMTPException
@@ -180,7 +180,7 @@ class RequestUsername(form.Form):
 
     def encode_mail_header(self, text):
         """ Encodes text into correctly encoded email header """
-        return Header(safe_unicode(text), 'utf-8')
+        return Header(safe_text(text), 'utf-8')
 
     def encoded_mail_sender(self):
         """ returns encoded version of Portal name <portal_email> """

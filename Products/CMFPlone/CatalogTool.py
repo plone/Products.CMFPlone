@@ -27,7 +27,7 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import human_readable_size
 from Products.CMFPlone.utils import safe_callable
-from Products.CMFPlone.utils import safe_unicode
+from plone.base.utils import safe_text
 from Products.ZCatalog.ZCatalog import ZCatalog
 from time import process_time
 from zExceptions import Unauthorized
@@ -173,7 +173,7 @@ def sortable_title(obj):
 
         if isinstance(title, str):
             # Ignore case, normalize accents, strip spaces
-            sortabletitle = mapUnicode(safe_unicode(title)).lower().strip()
+            sortabletitle = mapUnicode(safe_text(title)).lower().strip()
             # Replace numbers with zero filled numbers
             sortabletitle = num_sort_regex.sub(zero_fill, sortabletitle)
             # Truncate to prevent bloat, take bits from start and end
