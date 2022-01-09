@@ -7,9 +7,9 @@ from plone.app.z3cform.utils import call_callables
 from plone.registry.interfaces import IRegistry
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.interfaces._content import IFolderish
-from Products.CMFPlone.interfaces import ILinkSchema
-from Products.CMFPlone.interfaces import IPatternsSettings
-from Products.CMFPlone.interfaces import IPloneSiteRoot
+from plone.base.interfaces import ILinkSchema
+from plone.base.interfaces import IPatternsSettings
+from plone.base.interfaces import IPloneSiteRoot
 from Products.CMFPlone.patterns.tinymce import TinyMCESettingsGenerator
 from Products.CMFPlone.utils import get_portal
 from zope.component import getUtility

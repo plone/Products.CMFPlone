@@ -1,6 +1,6 @@
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_INTEGRATION_TESTING
-from Products.CMFPlone.interfaces import ISecuritySchema
+from plone.base.interfaces import ISecuritySchema
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
 from zope.component import getAdapter

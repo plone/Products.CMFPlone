@@ -4,9 +4,9 @@ from plone.resource.interfaces import IResourceDirectory
 from plone.subrequest import subrequest
 from Products.CMFPlone.controlpanel.browser.resourceregistry import OverrideFolderManager  # noqa
 from Products.CMFPlone.controlpanel.browser.resourceregistry import ResourceRegistryControlPanelView  # noqa
-from Products.CMFPlone.interfaces import IBundleRegistry
-from Products.CMFPlone.interfaces import IResourceRegistry
-from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
+from plone.base.interfaces import IBundleRegistry
+from plone.base.interfaces import IResourceRegistry
+from plone.base.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from Products.CMFPlone.resources import add_bundle_on_request
 from Products.CMFPlone.resources import add_resource_on_request
 from Products.CMFPlone.resources import remove_bundle_on_request

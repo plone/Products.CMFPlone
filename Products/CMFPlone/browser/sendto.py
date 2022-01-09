@@ -1,5 +1,5 @@
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+from plone.base.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.utils import pretty_title_or_id
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.MailHost.interfaces import IMailHost

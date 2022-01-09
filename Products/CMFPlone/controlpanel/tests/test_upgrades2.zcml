@@ -7,7 +7,7 @@
       name="testfixture2"
       title="Plone Test Fixture 2"
       directory="profiles/testfixture"
-      for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
+      for="plone.base.interfaces.ITestCasePloneSiteRoot"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 

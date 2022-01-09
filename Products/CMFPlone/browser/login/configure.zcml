@@ -145,7 +145,7 @@
 
     <browser:page
         name="explainPWResetTool"
-        for="Products.CMFPlone.interfaces.IPWResetTool"
+        for="plone.base.interfaces.IPWResetTool"
         class=".password_reset.ExplainPWResetToolView"
         template="templates/explainPWResetTool.pt"
         permission="zope2.ViewManagementScreens"

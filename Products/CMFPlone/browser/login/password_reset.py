@@ -5,8 +5,8 @@ from plone.memoize import view
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import IPasswordResetToolView
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+from plone.base.interfaces import IPasswordResetToolView
+from plone.base.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.PasswordResetTool import ExpiredRequestError
 from Products.CMFPlone.PasswordResetTool import InvalidRequestError
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name

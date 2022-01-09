@@ -1,4 +1,4 @@
-from Products.CMFPlone.interfaces import IMailSchema
+from plone.base.interfaces import IMailSchema
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID, setRoles

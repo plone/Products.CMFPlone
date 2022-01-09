@@ -1,9 +1,9 @@
 from DateTime import DateTime
 from plone.z3cform.layout import wrap_form
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces.syndication import IFeed
-from Products.CMFPlone.interfaces.syndication import IFeedSettings
-from Products.CMFPlone.interfaces.syndication import ISearchFeed
+from plone.base.interfaces.syndication import IFeed
+from plone.base.interfaces.syndication import IFeedSettings
+from plone.base.interfaces.syndication import ISearchFeed
 from Products.Five import BrowserView
 from uuid import NAMESPACE_OID
 from uuid import uuid3

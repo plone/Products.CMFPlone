@@ -1,5 +1,5 @@
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import IResourceRegistry
+from plone.base.interfaces import IResourceRegistry
 from Products.Five.browser import BrowserView
 from zope.component import getUtility
 

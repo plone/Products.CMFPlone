@@ -5,9 +5,9 @@ from plone.protect.interfaces import IDisableCSRFProtection
 from plone.registry.interfaces import IRegistry
 from plone.resource.interfaces import IResourceDirectory
 from plone.subrequest import subrequest
-from Products.CMFPlone.interfaces.resources import IBundleRegistry
-from Products.CMFPlone.interfaces.resources import IResourceRegistry
-from Products.CMFPlone.interfaces.resources import (
+from plone.base.interfaces.resources import IBundleRegistry
+from plone.base.interfaces.resources import IResourceRegistry
+from plone.base.interfaces.resources import (
     OVERRIDE_RESOURCE_DIRECTORY_NAME,
 )  # noqa
 from Products.CMFPlone.resources.browser.combine import combine_bundles

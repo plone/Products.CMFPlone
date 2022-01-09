@@ -10,8 +10,8 @@ from Products.CMFCore.Expression import createExprContext
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import _getAuthenticatedUser
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import IBundleRegistry
-from Products.CMFPlone.interfaces import IResourceRegistry
+from plone.base.interfaces import IBundleRegistry
+from plone.base.interfaces import IResourceRegistry
 from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
 from Products.CMFPlone.resources.browser.combine import (
     get_production_resource_directory,

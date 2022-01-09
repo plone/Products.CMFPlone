@@ -15,7 +15,7 @@ assumptions that are not true for Plone forms.
   >>> from zope.component import getUtility
   >>> registry = getUtility(IRegistry, context=layer['portal'])
 
-  >>> from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+  >>> from plone.base.interfaces.controlpanel import IMailSchema
   >>> mail_settings = registry.forInterface(IMailSchema, prefix="plone")
   >>> mail_settings.smtp_host = u'localhost'
   >>> mail_settings.email_from_address = 'smith@example.com'
@@ -523,7 +523,7 @@ Test passwordreset BrowserView
 
     >>> portal = layer['portal']
     >>> mail_settings.email_from_name = u'Old\u0159ich a Bo\u017eena'
-    >>> from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
+    >>> from plone.base.interfaces.controlpanel import ISiteSchema
     >>> site_settings = registry.forInterface(ISiteSchema, prefix='plone')
     >>> site_settings.site_title = u'Koko\u0159\xedn Portal'
 

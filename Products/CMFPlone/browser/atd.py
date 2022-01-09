@@ -2,8 +2,8 @@ from Products.CMFCore.utils import getToolByName
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from http import client as http_client
-from Products.CMFPlone.interfaces import ITinyMCESchema
-from Products.CMFPlone.interfaces.atd import IATDProxyView
+from plone.base.interfaces import ITinyMCESchema
+from plone.base.interfaces.atd import IATDProxyView
 from zope.interface import implementer
 
 

@@ -24,8 +24,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone import bbb
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
-from Products.CMFPlone.interfaces.syndication import ISyndicatable
+from plone.base.interfaces.siteroot import IPloneSiteRoot
+from plone.base.interfaces.syndication import ISyndicatable
 from Products.CMFPlone.permissions import AddPortalContent
 from Products.CMFPlone.permissions import AddPortalFolders
 from Products.CMFPlone.permissions import ListPortalMembers

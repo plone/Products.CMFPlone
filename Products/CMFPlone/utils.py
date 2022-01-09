@@ -26,8 +26,8 @@ from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFPlone import bbb
-from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
-from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
+from plone.base.interfaces.controlpanel import IImagingSchema
+from plone.base.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.log import log
 from ZODB.POSException import ConflictError
 from zope.component import getMultiAdapter
@@ -620,7 +620,7 @@ def getHighPixelDensityScales():
 
 
 def getSiteLogo(site=None):
-    from Products.CMFPlone.interfaces import ISiteSchema
+    from plone.base.interfaces import ISiteSchema
     from plone.formwidget.namedfile.converter import b64decode_file
     if site is None:
         site = getSite()

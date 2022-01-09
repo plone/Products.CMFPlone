@@ -4,8 +4,8 @@ from io import BytesIO
 from plone.registry.interfaces import IRegistry
 from plone.resource.file import FilesystemFile
 from plone.resource.interfaces import IResourceDirectory
-from Products.CMFPlone.interfaces import IBundleRegistry
-from Products.CMFPlone.interfaces.resources import (
+from plone.base.interfaces import IBundleRegistry
+from plone.base.interfaces.resources import (
     OVERRIDE_RESOURCE_DIRECTORY_NAME,
 )  # noqa
 from zExceptions import NotFound

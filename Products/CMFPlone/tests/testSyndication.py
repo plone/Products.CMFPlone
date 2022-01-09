@@ -3,12 +3,12 @@ from Products.CMFCore.utils import getToolByName
 from AccessControl import Unauthorized
 from plone.app.textfield import RichTextValue
 from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.interfaces.syndication import IFeedSettings
-from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
+from plone.base.interfaces.syndication import IFeedSettings
+from plone.base.interfaces.syndication import ISiteSyndicationSettings
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 from zExceptions import NotFound
-from Products.CMFPlone.interfaces.syndication import IFeed
+from plone.base.interfaces.syndication import IFeed
 from Products.CMFPlone.browser.syndication.adapters import DexterityItem
 
 

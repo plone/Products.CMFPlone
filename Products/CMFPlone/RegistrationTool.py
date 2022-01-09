@@ -17,7 +17,7 @@ from Products.CMFCore.RegistrationTool import RegistrationTool as BaseTool
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import ISecuritySchema
+from plone.base.interfaces import ISecuritySchema
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
 from Products.PluggableAuthService.interfaces.authservice import IPluggableAuthService  # noqa: E501

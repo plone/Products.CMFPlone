@@ -1,6 +1,6 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import INonInstallable
+from plone.base.interfaces import INonInstallable
 from Products.Five.browser import BrowserView
 from Products.GenericSetup import EXTENSION
 from Products.GenericSetup.tool import UNKNOWN

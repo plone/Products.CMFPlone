@@ -4,9 +4,9 @@ from plone.registry import field
 from plone.registry.interfaces import IRegistry
 from plone.registry.record import Record
 from plone.resource.interfaces import IResourceDirectory
-from Products.CMFPlone.interfaces import IBundleRegistry
-from Products.CMFPlone.interfaces import IResourceRegistry
-from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
+from plone.base.interfaces import IBundleRegistry
+from plone.base.interfaces import IResourceRegistry
+from plone.base.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from Products.CMFPlone.resources import add_bundle_on_request
 from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
 from Products.CMFPlone.resources.browser.configjs import RequireJsView

@@ -3,8 +3,8 @@ from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.theming.utils import theming_policy
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import IFilterSchema
-from Products.CMFPlone.interfaces import ITinyMCESchema
+from plone.base.interfaces import IFilterSchema
+from plone.base.interfaces import ITinyMCESchema
 from Products.CMFPlone.utils import get_portal
 from Products.CMFPlone.utils import safe_unicode
 from zope.component import getUtility

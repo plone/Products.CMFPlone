@@ -2,7 +2,7 @@ from plone.resource.traversal import ResourceTraverser
 from zope.component import queryUtility
 from plone.resource.interfaces import IResourceDirectory
 from plone.resource.interfaces import IUniqueResourceRequest
-from Products.CMFPlone.interfaces.resources import (
+from plone.base.interfaces.resources import (
     OVERRIDE_RESOURCE_DIRECTORY_NAME)
 from Products.PageTemplates.Expressions import getEngine
 from Products.PageTemplates.Expressions import getTrustedEngine

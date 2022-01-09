@@ -1,6 +1,6 @@
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import IBundleRegistry
-from Products.CMFPlone.interfaces import IResourceRegistry
+from plone.base.interfaces import IBundleRegistry
+from plone.base.interfaces import IResourceRegistry
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zope.component import getUtility
 

@@ -25,7 +25,7 @@
   <!-- Control Panel Overview -->
   <browser:page
       name="overview-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".overview.OverviewControlPanel"
       permission="plone.app.controlpanel.Overview"
       />
@@ -33,7 +33,7 @@
   <!-- Editing Control Panel -->
   <browser:page
       name="editing-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".editing.EditingControlPanel"
       permission="plone.app.controlpanel.Editing"
       />
@@ -41,7 +41,7 @@
   <!-- Filter Control Panel -->
   <browser:page
       name="filter-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".filter.FilterControlPanelView"
       permission="plone.app.controlpanel.Filtering"
       />
@@ -49,7 +49,7 @@
   <!-- TinyMCE Control Panel -->
   <browser:page
       name="tinymce-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".tinymce.TinyMCEControlPanel"
       permission="plone.app.controlpanel.TinyMCE"
       />
@@ -57,7 +57,7 @@
   <!-- Language Control Panel -->
   <browser:page
       name="language-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".language.LanguageControlPanel"
       permission="plone.app.controlpanel.Language"
       />
@@ -65,7 +65,7 @@
   <!-- Maintenance Control Panel -->
   <browser:page
       name="maintenance-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".maintenance.MaintenanceControlPanel"
       permission="cmf.ManagePortal"
       />
@@ -73,7 +73,7 @@
   <!-- Mail Control Panel -->
   <browser:page
       name="mail-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".mail.MailControlPanel"
       permission="plone.app.controlpanel.Mail"
       />
@@ -81,7 +81,7 @@
   <!-- Navigation Control Panel -->
   <browser:page
       name="navigation-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".navigation.NavigationControlPanel"
       permission="plone.app.controlpanel.Navigation"
       />
@@ -89,7 +89,7 @@
   <!-- Search Control Panel -->
   <browser:page
       name="search-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".search.SearchControlPanel"
       permission="plone.app.controlpanel.Search"
       />
@@ -97,7 +97,7 @@
   <!-- Security Control Panel -->
   <browser:page
       name="security-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".security.SecurityControlPanel"
       permission="plone.app.controlpanel.Security"
       />
@@ -105,7 +105,7 @@
   <!-- Security Control Panel - EMail Login -->
   <browser:page
       name="migrate-to-emaillogin"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".security.EmailLogin"
       template="emaillogin.pt"
       permission="cmf.ManagePortal"
@@ -114,28 +114,28 @@
   <!-- Error Log Form Control Panel -->
   <browser:page
       name="error-log-form"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       template="error_log_form.pt"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
       name="error-log-show-entry"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       template="error_log_show_entry.pt"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
       name="error-log-update"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".error_log_form.ErrorLogUpdate"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
       name="error-log-set-properties"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".error_log_form.ErrorLogSetProperties"
       permission="cmf.ManagePortal"
       />
@@ -143,7 +143,7 @@
   <!-- Site Control Panel -->
   <browser:page
       name="site-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".site.SiteControlPanel"
       permission="plone.app.controlpanel.Site"
       />
@@ -151,7 +151,7 @@
   <!-- Date and Time Control panel -->
   <browser:page
       name="dateandtime-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".dateandtime.DateAndTimeControlPanel"
       permission="plone.app.controlpanel.Site"
       />
@@ -159,7 +159,7 @@
   <!-- Types Control panel -->
   <browser:page
       name="content-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".types.TypesControlPanel"
       permission="plone.app.controlpanel.Types"
       />
@@ -167,7 +167,7 @@
   <!-- Resource Registry -->
   <browser:page
       name="resourceregistry-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".resourceregistry.ResourceRegistryControlPanelView"
       permission="plone.app.controlpanel.Site"
       template="resourceregistry.pt"
@@ -176,7 +176,7 @@
   <!-- Markup Control Panel -->
   <browser:page
       name="markup-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".markup.MarkupControlPanel"
       permission="plone.app.controlpanel.Markup"
       />
@@ -184,13 +184,13 @@
   <!-- Syndication Control Panel -->
   <browser:page
       name="syndication-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".syndication.SyndicationControlPanel"
       permission="cmf.ManagePortal"
       />
   <browser:page
       name="syndication-settings"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".syndication.SyndicationControlPanel"
       permission="cmf.ManagePortal"
       />
@@ -198,14 +198,14 @@
   <!-- Usergroup Control Panel -->
   <browser:page
       name="usergroup-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".usergroups.UserGroupsSettingsPanelView"
       permission="plone.app.controlpanel.UsersAndGroups"
       />
 
   <browser:page
       name="usergroup-userprefs"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".usergroups_usersoverview.UsersOverviewControlPanel"
       permission="plone.app.controlpanel.UsersAndGroups"
       template="usergroups_usersoverview.pt"
@@ -213,7 +213,7 @@
 
   <browser:page
       name="usergroup-groupprefs"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".usergroups_groupsoverview.GroupsOverviewControlPanel"
       permission="plone.app.controlpanel.UsersAndGroups"
       template="usergroups_groupsoverview.pt"
@@ -221,7 +221,7 @@
 
   <browser:page
       name="usergroup-groupmembership"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".usergroups_groupmembership.GroupMembershipControlPanel"
       permission="plone.app.controlpanel.UsersAndGroups"
       template="usergroups_groupmembership.pt"
@@ -229,7 +229,7 @@
 
   <browser:page
       name="usergroup-usermembership"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".usergroups_usermembership.UserMembershipControlPanel"
       permission="plone.app.controlpanel.UsersAndGroups"
       template="usergroups_usermembership.pt"
@@ -237,7 +237,7 @@
 
   <browser:page
       name="usergroup-groupdetails"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".usergroups_groupdetails.GroupDetailsControlPanel"
       permission="plone.app.controlpanel.UsersAndGroups"
       template="usergroups_groupdetails.pt"
@@ -256,7 +256,7 @@
 
   <browser:page
       name="prefs_install_products_form"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".quickinstaller.ManageProductsView"
       permission="cmf.ManagePortal"
       template="quickinstaller.pt"
@@ -264,21 +264,21 @@
 
   <browser:page
       name="upgrade_products"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".quickinstaller.UpgradeProductsView"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
       name="install_products"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".quickinstaller.InstallProductsView"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
       name="uninstall_products"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".quickinstaller.UninstallProductsView"
       permission="cmf.ManagePortal"
       />
@@ -286,7 +286,7 @@
   <!-- Social Media Control Panel -->
   <browser:page
       name="social-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".socialmedia.SocialControlPanel"
       permission="plone.app.controlpanel.Site"
       />
@@ -294,7 +294,7 @@
   <!-- Imaging Control Panel -->
   <browser:page
       name="imaging-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".imaging.ImagingControlPanel"
       permission="plone.app.controlpanel.Imaging"
       />
@@ -302,7 +302,7 @@
   <!-- Portal actions -->
   <browser:page
       name="actions-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".actions.ActionListControlPanel"
       permission="cmf.ManagePortal"
       />
@@ -318,7 +318,7 @@
 
   <browser:page
       name="new-action"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".actions.NewActionControlPanel"
       permission="cmf.ManagePortal"
       />
@@ -335,7 +335,7 @@
 
   <browser:page
       name="redirection-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".redirects.RedirectsControlPanel"
       template="redirects-controlpanel.pt"
       permission="Products.CMFPlone.ManagePortalAliases"
@@ -354,7 +354,7 @@
 
   <browser:page
       name="inspect-relations"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".relations.RelationsInspectControlpanel"
       template="relations_inspect.pt"
       permission="Products.CMFPlone.InspectRelations"
@@ -362,7 +362,7 @@
 
   <browser:page
       name="rebuild-relations"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".relations.RelationsRebuildControlpanel"
       template="relations_rebuild.pt"
       permission="cmf.ManagePortal"

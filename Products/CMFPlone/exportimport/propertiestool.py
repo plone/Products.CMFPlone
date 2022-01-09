@@ -11,9 +11,9 @@ from Products.GenericSetup.utils import XMLAdapterBase
 from Products.GenericSetup.utils import ObjectManagerHelpers
 from Products.GenericSetup.utils import PropertyManagerHelpers
 from Products.CMFPlone.PropertiesTool import SimpleItemWithProperties
-from Products.CMFPlone.interfaces \
+from plone.base.interfaces \
     import IPropertiesTool as IPlonePropertiesTool
-from Products.CMFPlone.interfaces import ISimpleItemWithProperties
+from plone.base.interfaces import ISimpleItemWithProperties
 
 _FILENAME = 'propertiestool.xml'
 

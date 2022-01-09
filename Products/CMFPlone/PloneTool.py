@@ -25,14 +25,14 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone import utils
-from Products.CMFPlone.defaultpage import check_default_page_via_view
-from Products.CMFPlone.defaultpage import get_default_page_via_view
+from plone.base.defaultpage import check_default_page_via_view
+from plone.base.defaultpage import get_default_page_via_view
 from Products.CMFPlone.events import ReorderedEvent
-from Products.CMFPlone.interfaces import INonStructuralFolder
-from Products.CMFPlone.interfaces import IPloneTool
-from Products.CMFPlone.interfaces import ISearchSchema
-from Products.CMFPlone.interfaces import ISecuritySchema
-from Products.CMFPlone.interfaces import ISiteSchema
+from plone.base.interfaces import INonStructuralFolder
+from plone.base.interfaces import IPloneTool
+from plone.base.interfaces import ISearchSchema
+from plone.base.interfaces import ISecuritySchema
+from plone.base.interfaces import ISiteSchema
 from Products.CMFPlone.log import log
 from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.log import log_exc
@@ -525,7 +525,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     @security.public
     def getDefaultPage(self, obj, request=None):
         # Given a folderish item, find out if it has a default-page using
-        # the lookup rules of Plone (see Products.CMFPlone/defaultpage.py).
+        # the lookup rules of Plone (see plone.base.defaultpage).
         # Lookup happens over a view, for which in theory a different
         # implementation may be used.
         if request is None:

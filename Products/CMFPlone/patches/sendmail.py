@@ -1,5 +1,5 @@
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import IMailSchema
+from plone.base.interfaces import IMailSchema
 from transaction._transaction import Status
 from zope.component import getUtility
 from zope.sendmail.mailer import _SMTPState

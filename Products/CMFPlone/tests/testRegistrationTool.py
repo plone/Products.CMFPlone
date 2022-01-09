@@ -3,7 +3,7 @@ import unittest
 from AccessControl import Unauthorized
 from Products.CMFCore.permissions import AddPortalMember
 from Products.CMFPlone.RegistrationTool import _checkEmail
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema, ISiteSchema
+from plone.base.interfaces.controlpanel import IMailSchema, ISiteSchema
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost

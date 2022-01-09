@@ -2,8 +2,8 @@ from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.controlpanel.events import ConfigurationChangedEvent
-from Products.CMFPlone.interfaces import ISearchSchema
-from Products.CMFPlone.interfaces import ITypesSchema
+from plone.base.interfaces import ISearchSchema
+from plone.base.interfaces import ITypesSchema
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage

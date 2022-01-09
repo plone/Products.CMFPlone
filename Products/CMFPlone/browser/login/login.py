@@ -3,12 +3,12 @@ from plone.app.users.browser.passwordpanel import PasswordPanel
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import IForcePasswordChange
-from Products.CMFPlone.interfaces import IInitialLogin
-from Products.CMFPlone.interfaces import ILoginForm
-from Products.CMFPlone.interfaces import ILoginFormSchema
-from Products.CMFPlone.interfaces import IRedirectAfterLogin
-from Products.CMFPlone.interfaces import ISecuritySchema
+from plone.base.interfaces import IForcePasswordChange
+from plone.base.interfaces import IInitialLogin
+from plone.base.interfaces import ILoginForm
+from plone.base.interfaces import ILoginFormSchema
+from plone.base.interfaces import IRedirectAfterLogin
+from plone.base.interfaces import ISecuritySchema
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from urllib import parse

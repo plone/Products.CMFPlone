@@ -3,10 +3,10 @@ from email.header import Header
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import ILoginHelpForm
-from Products.CMFPlone.interfaces import ILoginHelpFormSchema
-from Products.CMFPlone.interfaces import ISecuritySchema
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+from plone.base.interfaces import ILoginHelpForm
+from plone.base.interfaces import ILoginHelpFormSchema
+from plone.base.interfaces import ISecuritySchema
+from plone.base.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage

@@ -12,7 +12,7 @@ from OFS.PropertyManager import PropertyManager
 from OFS.SimpleItem import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.interfaces \
+from plone.base.interfaces \
     import IPropertiesTool, ISimpleItemWithProperties
 from Products.CMFPlone.utils import WWW_DIR
 from Products.MailHost.interfaces import IMailHost

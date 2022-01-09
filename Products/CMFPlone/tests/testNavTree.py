@@ -13,7 +13,7 @@ from zope.interface import implementer
 
 
 from Products.CMFPlone.PloneFolder import PloneFolder
-from Products.CMFPlone.interfaces import INonStructuralFolder
+from plone.base.interfaces import INonStructuralFolder
 
 default_user = PloneTestCase.default_user
 

@@ -1,5 +1,5 @@
 from plone.resource.interfaces import IResourceDirectory
-from Products.CMFPlone.interfaces.resources import (
+from plone.base.interfaces.resources import (
     OVERRIDE_RESOURCE_DIRECTORY_NAME,
 )
 from zope.component import getUtility

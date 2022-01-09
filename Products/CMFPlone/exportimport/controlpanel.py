@@ -23,7 +23,7 @@ from Products.GenericSetup.utils import XMLAdapterBase
 from Products.CMFCore.interfaces import IActionProvider
 from Products.CMFCore.utils import getToolByName
 
-from Products.CMFPlone.interfaces import IControlPanel
+from plone.base.interfaces import IControlPanel
 
 
 class ControlPanelXMLAdapter(XMLAdapterBase):

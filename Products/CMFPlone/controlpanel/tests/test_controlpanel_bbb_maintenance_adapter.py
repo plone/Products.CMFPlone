@@ -1,4 +1,4 @@
-from Products.CMFPlone.interfaces import IMaintenanceSchema
+from plone.base.interfaces import IMaintenanceSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles

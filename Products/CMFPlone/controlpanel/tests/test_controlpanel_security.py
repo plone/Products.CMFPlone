@@ -1,5 +1,5 @@
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import ISecuritySchema
+from plone.base.interfaces import ISecuritySchema
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID, setRoles

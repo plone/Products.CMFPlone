@@ -1,6 +1,6 @@
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
+from plone.base.interfaces import IUserGroupsSettingsSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zope.component import getMultiAdapter
 from zope.component import getUtility

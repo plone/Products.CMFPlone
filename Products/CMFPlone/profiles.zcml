@@ -8,7 +8,7 @@
       title="Plone Site"
       directory="profiles/default"
       description="Profile for a default Plone."
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       post_handler="Products.CMFPlone.setuphandlers.importFinalSteps"
       />
 
@@ -17,7 +17,7 @@
       title="Mandatory dependencies for a Plone site"
       directory="profiles/dependencies"
       description="Load all profiles from other packages/products that are needed for a full Plone site."
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
@@ -26,7 +26,7 @@
       title="Plone Test Fixture"
       directory="profiles/testfixture"
       description="Extension profile to configure a test fixture"
-      for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
+      for="plone.base.interfaces.ITestCasePloneSiteRoot"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 

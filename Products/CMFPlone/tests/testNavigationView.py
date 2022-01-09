@@ -3,9 +3,9 @@ from Products.CMFPlone.browser.navigation import CatalogNavigationBreadcrumbs
 from Products.CMFPlone.browser.navigation import CatalogNavigationTabs
 from Products.CMFPlone.browser.navigation import CatalogSiteMap
 from Products.CMFPlone.browser.navigation import PhysicalNavigationBreadcrumbs
-from Products.CMFPlone.interfaces import IHideFromBreadcrumbs
-from Products.CMFPlone.interfaces import INavigationSchema
-from Products.CMFPlone.interfaces import ITypesSchema
+from plone.base.interfaces import IHideFromBreadcrumbs
+from plone.base.interfaces import INavigationSchema
+from plone.base.interfaces import ITypesSchema
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests.utils import folder_position
