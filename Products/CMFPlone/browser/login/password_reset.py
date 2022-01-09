@@ -1,22 +1,23 @@
 from AccessControl.SecurityManagement import getSecurityManager
 from email.header import Header
 from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.base.interfaces import IPasswordResetToolView
+from plone.base.interfaces.controlpanel import IMailSchema
+from plone.base.utils import safe_text
+from plone.base.utils import safeToInt
 from plone.memoize import view
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from plone.base.interfaces import IPasswordResetToolView
-from plone.base.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.PasswordResetTool import ExpiredRequestError
 from Products.CMFPlone.PasswordResetTool import InvalidRequestError
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name
-from plone.base.utils import safe_text
-from Products.CMFPlone.utils import safeToInt
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PlonePAS.events import UserInitialLoginInEvent
 from Products.PlonePAS.events import UserLoggedInEvent
-from Products.PluggableAuthService.interfaces.plugins import ICredentialsUpdatePlugin  # noqa
+from Products.PluggableAuthService.interfaces.plugins import \
+    ICredentialsUpdatePlugin
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getMultiAdapter
 from zope.component import getUtility
