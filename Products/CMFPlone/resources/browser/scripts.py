@@ -1,6 +1,6 @@
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.resource import ResourceView
-from Products.CMFPlone.utils import get_top_request
+from plone.base.utils import get_top_request
 from urllib import parse
 from zope.component import getMultiAdapter
 
