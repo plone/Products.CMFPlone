@@ -28,7 +28,9 @@ from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFPlone import bbb
 from plone.base.interfaces.controlpanel import IImagingSchema
 from plone.base.interfaces.siteroot import IPloneSiteRoot
-from Products.CMFPlone.log import log
+from Products.CMFPlone.log import log  # noqa - for python scripts
+from Products.CMFPlone.log import log_exc  # noqa - for python scripts
+from Products.CMFPlone.log import log_deprecated  # noqa - for python scripts
 from ZODB.POSException import ConflictError
 from zope.component import getMultiAdapter
 from zope.component import getUtility
