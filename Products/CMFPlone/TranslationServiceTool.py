@@ -15,8 +15,8 @@ from .i18nl10n import weekdayname_msgid
 from .i18nl10n import weekdayname_msgid_abbr
 from .i18nl10n import weekdayname_msgid_short
 from OFS.SimpleItem import SimpleItem
+from plone.base import PloneLocalesMessageFactory as PLMF
 from Products.CMFCore.utils import UniqueObject
-from Products.CMFPlone import PloneLocalesMessageFactory as PLMF
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from zope.i18n import translate

@@ -1,16 +1,17 @@
 from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
 from AccessControl import Unauthorized
+from AccessControl.class_init import InitializeClass
 from AccessControl.requestmethod import postonly
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from AccessControl.class_init import InitializeClass
 from ComputedAttribute import ComputedAttribute
 from DateTime import DateTime
 from email.utils import getaddresses
 from OFS.ObjectManager import bad_id
 from OFS.SimpleItem import SimpleItem
+from plone.base.utils import safe_text
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import IDublinCore
 from Products.CMFCore.interfaces import IMutableDublinCore
@@ -32,14 +33,13 @@ from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.interfaces import ISiteSchema
+from Products.CMFPlone.log import log
 from Products.CMFPlone.log import log_deprecated
+from Products.CMFPlone.log import log_exc
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone.utils import base_hasattr
-from Products.CMFPlone.utils import log
-from Products.CMFPlone.utils import log_exc
 from Products.CMFPlone.utils import safe_hasattr
-from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import transaction_note
 from Products.statusmessages.interfaces import IStatusMessage
 from urllib import parse
@@ -262,7 +262,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             msg = relative_path + '/' + obj.title_or_id() \
                 + ' has been modified.'
         if not transaction.get().description:
-            transaction_note(safe_unicode(msg))
+            transaction_note(safe_text(msg))
 
     @security.public
     def contentEdit(self, obj, **kwargs):

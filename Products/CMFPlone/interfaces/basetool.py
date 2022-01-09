@@ -1,16 +1,3 @@
-from zope.interface import Interface
+from zope.deprecation import moved
 
-
-class IPloneBaseTool(Interface):
-    """Marker interface for plone tools
-    """
-
-
-class IPloneTool(Interface):
-    """Marker interface for the plone utils tool.
-    """
-
-
-class IPloneCatalogTool(Interface):
-    """Marker interface for Plone's catalog tool
-    """
+moved('plone.base.interfaces.basetool', 'Version 7.0')

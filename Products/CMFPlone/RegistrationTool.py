@@ -9,6 +9,7 @@ from Acquisition import aq_base
 from Acquisition import aq_chain
 from email import message_from_string
 from hashlib import md5
+from plone.base.permissions import ManagePortal
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.permissions import AddPortalMember
@@ -17,7 +18,6 @@ from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import ISecuritySchema
-from Products.CMFPlone.permissions import ManagePortal
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
 from Products.PluggableAuthService.interfaces.authservice import IPluggableAuthService  # noqa: E501

@@ -1,16 +1,3 @@
-from zope.interface import Interface
+from zope.deprecation import moved
 
-
-class IDefaultPage(Interface):
-    """Interface for a view that can determine if its context is the
-    default page or not.
-    """
-
-    def isDefaultPage(obj):
-        """Finds out if the given obj is the default page for the
-        adapted object.
-        """
-
-    def getDefaultPage():
-        """Returns the id of the default page for the adapted object.
-        """
+moved('plone.base.interfaces.defaultpage', 'Version 7.0')
