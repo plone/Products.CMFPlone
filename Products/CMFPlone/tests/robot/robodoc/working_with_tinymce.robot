@@ -39,14 +39,14 @@ Show TinyMCE image
 
     Click element  css=#mceu_15 button
     Wait until element is visible
-    ...  css=h2.plone-modal-title
+    ...  css=h2.modal-title
     Wait until element is visible
     ...  css=div.common-controls
-    
+
     Capture and crop page screenshot
     ...  ${CURDIR}/_robot/tinymce-imgdialog.png
     ...  css=div.outer-wrapper
-    ...  css=div.plone-modal-content
+    ...  css=div.modal-content
 
 Show TinyMCE insert links
     Go to  ${PLONE_URL}/samplepage
@@ -61,7 +61,7 @@ Show TinyMCE insert links
     Capture and crop page screenshot
     ...  ${CURDIR}/_robot/tinymce-linkdialog.png
     ...  css=div.outer-wrapper
-    ...  css=div.plone-modal-content
+    ...  css=div.modal-content
 
 Show TinyMCE insert tables
     Go to  ${PLONE_URL}/samplepage
