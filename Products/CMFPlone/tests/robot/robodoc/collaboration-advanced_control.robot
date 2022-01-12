@@ -37,8 +37,8 @@ Show state menu
 
     Click link  workflow-transition-advanced
     Wait until element is visible
-    ...   css=div.plone-modal-content
+    ...   css=div.modal-content
 
     Capture and crop page screenshot
     ...  ${CURDIR}/_robot/workflow-advanced.png
-    ...  css=div.plone-modal-wrapper
+    ...  css=div.modal-wrapper
