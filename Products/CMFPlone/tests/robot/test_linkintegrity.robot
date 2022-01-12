@@ -85,7 +85,7 @@ a link in rich text
   Click Element  xpath=(//span[contains(., 'Foo')])
   Wait until page contains  Foo
 
-  Click Button  css=.plone-modal-footer .plone-btn-primary
+  Click Button  css=.modal-footer .plone-btn-primary
   Click Button  css=#form-buttons-save
 
 
