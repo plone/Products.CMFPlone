@@ -184,9 +184,8 @@ UUID should be used for the user id
   Input text for sure  __ac_password  supersecret
   Click Button  Log in
   Wait until page contains  You are now logged in
-
   # XXX: Here we can't really test that this is a uuid, since it's random, so
   # we just check that user id is not equal to username or email
-  ${userid}=  Get Text  xpath=//li[@id='portal-personaltools']//li[contains(@class, 'plone-toolbar-submenu-header')]//span
+  ${userid}=  Get Text  xpath=//a[@id='personaltools-menulink']
   Should Not Be Equal As Strings  ${userid}  joe
   Should Not Be Equal As Strings  ${userid}  joe@test.com
