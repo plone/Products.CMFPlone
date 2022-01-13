@@ -41,8 +41,8 @@ class ErrorLogControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open("%s/@@overview-controlpanel" % self.portal_url)
         self.browser.getLink('Errors').click()
 
-        self.assertEqual(self.browser.url, "%s/prefs_error_log_form" % self.portal_url)
-        self.assertIn('<h1 class="documentFirstHeading">Error log</h1>', self.browser.contents)
+        self.assertEqual(self.browser.url, "%s/@@error-log-form" % self.portal_url)
+        self.assertIn('<h1>Error log</h1>', self.browser.contents)
 
     def test_error_log_set_properties(self):
         self.assertEqual(self.error_log_properties['keep_entries'], 20)
@@ -55,7 +55,7 @@ class ErrorLogControlPanelFunctionalTest(unittest.TestCase):
         }
 
         set_properties_view = getMultiAdapter((self.portal, self.request),
-                                name='prefs_error_log_setProperties')
+                                name='error-log-set-properties')
         set_properties_view()
 
         error_log_properties = self.portal.error_log.getProperties()

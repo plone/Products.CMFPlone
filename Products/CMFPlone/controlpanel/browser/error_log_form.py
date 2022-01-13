@@ -3,10 +3,9 @@ from DateTime import DateTime
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import safe_nativestring
 from Products.Five import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 
-class PrefsErrorLogUpdate(BrowserView):
+class ErrorLogUpdate(BrowserView):
 
     def __call__(self):
         member = api.user.get_current()
@@ -16,24 +15,24 @@ class PrefsErrorLogUpdate(BrowserView):
             if search == '':
                 member.setProperties(error_log_update=0.0)
                 self.context.plone_utils.addPortalMessage(_('Showing all entries'))
-                return self.request.RESPONSE.redirect(self.context.absolute_url() + '/prefs_error_log_form')
-            return self.request.RESPONSE.redirect(self.context.absolute_url() + '/prefs_error_log_showEntry?id=%s' % search)
+                return self.request.RESPONSE.redirect(self.context.absolute_url() + '/@@error-log-form')
+            return self.request.RESPONSE.redirect(self.context.absolute_url() + '/@@error-log-show-entry?id=%s' % search)
 
         elif getattr(self.request, 'form.button.showall', None) is not None:
             member.setProperties(error_log_update=0.0)
             self.context.plone_utils.addPortalMessage(_('Showing all entries'))
-            return self.request.RESPONSE.redirect(self.context.absolute_url() + '/prefs_error_log_form')
+            return self.request.RESPONSE.redirect(self.context.absolute_url() + '/@@error-log-form')
 
         elif getattr(self.request, 'form.button.clear', None) is not None:
             member.setProperties(error_log_update=DateTime().timeTime())
             self.context.plone_utils.addPortalMessage(_('Entries cleared'))
-            return self.request.RESPONSE.redirect(self.context.absolute_url() + '/prefs_error_log_form')
+            return self.request.RESPONSE.redirect(self.context.absolute_url() + '/@@error-log-form')
 
         else:
-            return self.request.RESPONSE.redirect(self.context.absolute_url() + '/prefs_error_log_form')
+            return self.request.RESPONSE.redirect(self.context.absolute_url() + '/@@error-log-form')
 
 
-class PrefsErrorLogSetProperties(BrowserView):
+class ErrorLogSetProperties(BrowserView):
 
     def __call__(self):
         keep_entries = self.request.form.get('keep_entries')
@@ -44,4 +43,4 @@ class PrefsErrorLogSetProperties(BrowserView):
         self.context.error_log.setProperties(keep_entries, copy_to_zlog, ignored_exceptions)
         self.context.plone_utils.addPortalMessage(_('Changes made.'))
 
-        return self.request.RESPONSE.redirect(self.context.absolute_url() + '/prefs_error_log_form')
+        return self.request.RESPONSE.redirect(self.context.absolute_url() + '/@@error-log-form')
