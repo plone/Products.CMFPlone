@@ -32,12 +32,7 @@
       permission="zope.Public"
       />
 
- <browser:resource
-       file="static/favicon.ico"
-       name="favicon.ico"
-       />
-
-    <browser:page
+  <browser:page
       for="*"
       name="favicon"
       class=".favicon.SiteFavicon"
