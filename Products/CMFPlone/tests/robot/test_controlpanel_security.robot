@@ -11,7 +11,6 @@ Resource  keywords.robot
 Test Setup  Run keywords  Plone Test Setup
 Test Teardown  Run keywords  Plone Test Teardown
 
-
 *** Test Cases ***************************************************************
 
 Scenario: Enable self registration in the Security Control Panel
@@ -143,6 +142,8 @@ A user folder should be created when a user registers and logs in to the site
   Input Text for sure  form.widgets.email  joe@test.com
   Input Text for sure  form.widgets.password  supersecret
   Input Text for sure  form.widgets.password_ctl  supersecret
+  Set Focus To Element  css=#form-buttons-register
+  Wait Until Element Is Visible  css=#form-buttons-register
   Click Button  Register
 
   # I login to the site
@@ -175,6 +176,8 @@ UUID should be used for the user id
   Input Text for sure  form.widgets.email  joe@test.com
   Input Text for sure  form.widgets.password  supersecret
   Input Text for sure  form.widgets.password_ctl  supersecret
+  Set Focus To Element  css=#form-buttons-register
+  Wait Until Element Is Visible  css=#form-buttons-register
   Click Button  Register
 
   # I login to the site
