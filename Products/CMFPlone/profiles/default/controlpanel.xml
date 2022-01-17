@@ -88,7 +88,7 @@
  <configlet title="Errors" action_id="errorLog" appId="ErrorLog"
     category="plone-security" condition_expr=""
     icon_expr="string:exclamation-square"
-    url_expr="string:${portal_url}/prefs_error_log_form" visible="True"
+    url_expr="string:${portal_url}/@@error-log-form" visible="True"
     i18n:attributes="title">
   <permission>Manage portal</permission>
  </configlet>
