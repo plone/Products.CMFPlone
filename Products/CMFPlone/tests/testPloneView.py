@@ -151,3 +151,8 @@ class TestPloneView(PloneTestCase.PloneTestCase):
     def testSiteEncoding(self):
         view = Plone(self.portal, self.app.REQUEST)
         self.assertEqual('utf-8', view.site_encoding())
+
+    def test_human_readable_size(self):
+        view = Plone(self.portal, self.app.REQUEST)
+        from Products.CMFPlone.utils import human_readable_size
+        self.assertIs(view.human_readable_size, human_readable_size)
