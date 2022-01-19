@@ -69,23 +69,23 @@ a page to edit
 
 a link in rich text
   Go To  ${PLONE_URL}/bar/edit
-  Wait until element is visible  css=.mce-edit-area iframe
-  Select Frame  css=.mce-edit-area iframe
+  Wait until element is visible  css=.tox-edit-area iframe
+  Select Frame  css=.tox-edit-area iframe
   Input text  css=.mce-content-body  foo
   Execute Javascript    function selectElementContents(el) {var range = document.createRange(); range.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);} var el = document.getElementById("tinymce"); selectElementContents(el);
   UnSelect Frame
-  Click Button  css=div[aria-label="Insert/edit link"] button
+  Click Button  css=button[aria-label="Insert/edit link"]
 
   Given patterns are loaded
   Wait until element is visible  css=.pat-relateditems .select2-input.select2-default
   Click Element  css=.pat-relateditems .select2-input.select2-default
-  Wait until element is visible  css=.pattern-relateditems-result.one-level-up a.pattern-relateditems-result-browse
-  Click Element  css=.pattern-relateditems-result.one-level-up a.pattern-relateditems-result-browse
+  Wait until element is visible  css=.pat-relateditems-result.one-level-up a.pat-relateditems-result-browse
+  Click Element  css=.pat-relateditems-result.one-level-up a.pat-relateditems-result-browse
   Wait until element is visible  xpath=(//span[contains(., 'Foo')])
   Click Element  xpath=(//span[contains(., 'Foo')])
   Wait until page contains  Foo
 
-  Click Button  css=.modal-footer .plone-btn-primary
+  Click Button  css=.modal-footer .btn-primary
   Click Button  css=#form-buttons-save
 
 
@@ -142,10 +142,10 @@ remove link to page
   Go To  ${PLONE_URL}/bar
   Wait until element is visible  css=#contentview-edit a
   Click Link  css=#contentview-edit a
-  Wait until element is visible  css=.mce-edit-area iframe
-  Select Frame  css=.mce-edit-area iframe
+  Wait until element is visible  css=.tox-edit-area iframe
+  Select Frame  css=.tox-edit-area iframe
   Input text  css=.mce-content-body  foo
   Execute Javascript    function selectElementContents(el) {var range = document.createRange(); range.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);} var el = document.getElementById("tinymce"); selectElementContents(el);
   UnSelect Frame
-  Click Button  css=div[aria-label="Remove link"] button
+  Click Button  css=button[aria-label="Remove link"]
   Click Button  css=#form-buttons-save
