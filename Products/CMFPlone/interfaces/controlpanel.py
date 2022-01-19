@@ -320,6 +320,14 @@ class ITinyMCELayoutSchema(Interface):
         default=False,
         required=False)
 
+    inline = schema.Bool(
+        title=_('Run TinyMCE in inline mode.'),
+        description=_('The inline editing mode is useful when creating user '
+                      'experiences where you want the editing view of the page '
+                      'to be merged with the reading view of the page.'),
+        default=False,
+        required=False)
+
     # TODO: add validation to assert % and px in the value
     editor_width = schema.TextLine(
         title=_('Editor width'),
@@ -348,10 +356,7 @@ class ITinyMCELayoutSchema(Interface):
                       'tinymce-content-css setting are also added.'),
         value_type=schema.TextLine(),
         missing_value=[],
-        default=[
-            '++plone++static/components/tinymce/'
-            'skins/lightgray/content.min.css'
-        ],
+        default=[],
         required=False)
 
     header_styles = schema.List(
@@ -447,7 +452,8 @@ class ITinyMCEPluginSchema(Interface):
             SimpleTerm('contextmenu', 'contextmenu', 'contextmenu'),
             SimpleTerm('directionality', 'directionality', 'directionality'),
             SimpleTerm('emoticons', 'emoticons', 'emoticons'),
-            SimpleTerm('fullpage', 'fullpage', 'fullpage'),
+            # Disabled: It will wrap text in <html> and <body> tags which we never want
+            # SimpleTerm('fullpage', 'fullpage', 'fullpage'),
             SimpleTerm('fullscreen', 'fullscreen', 'fullscreen'),
             SimpleTerm('hr', 'hr', 'hr'),
             SimpleTerm('insertdatetime', 'insertdatetime', 'insertdatetime'),
