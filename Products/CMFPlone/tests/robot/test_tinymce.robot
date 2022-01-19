@@ -50,29 +50,31 @@ an uploaded image
     Create content  type=Image  title=an-image
 
 text inserted into wysiwyg
-    Select Frame  css=.mce-edit-area iframe
+    Wait Until Element Is Visible  css=.tox-edit-area iframe
+    Select Frame  css=.tox-edit-area iframe
     Input text  css=.mce-content-body  foobar
     UnSelect Frame
 
 insert link
-    Select Frame  css=.mce-edit-area iframe
+    Select Frame  css=.tox-edit-area iframe
     Execute Javascript    function selectElementContents(el) {var range = document.createRange(); range.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);} var el = document.getElementById("tinymce"); selectElementContents(el);
     UnSelect Frame
-    Click Button  css=div[aria-label="Insert/edit link"] button
-    Click Button  css=.pattern-relateditems-container button.favorites
-    Click Link  css=.pattern-relateditems-container .favorites a.fav[href='/']
+    Click Button  css=button[aria-label="Insert/edit link"]
+    Click Button  css=.pat-relateditems-container button.favorites
+    debug
+    Click Link  css=.pat-relateditems-container .favorites a.fav[href='/']
     Wait Until Element Is Visible  css=.pattern-relateditems-result-select.selectable
     Click Link  css=.pattern-relateditems-result-select.selectable
     Click Button  css=.modal-footer .plone-btn-primary
-    Select Frame  css=.mce-edit-area iframe
+    Select Frame  css=.tox-edit-area iframe
     Execute Javascript  window.getSelection().removeAllRanges()
     UnSelect Frame
     Wait Until Element Is Not Visible  css=.modal-footer .plone-btn-primary
 
 insert image
-    Click Button  css=div[aria-label="Insert/edit image"] button
-    Click Button  css=.pattern-relateditems-container button.favorites
-    Click Link  css=.pattern-relateditems-container .favorites a.fav[href='/']
+    Click Button  css=button[aria-label="Insert/edit image"]
+    Click Button  css=.pat-relateditems-container button.favorites
+    Click Link  css=.pat-relateditems-container .favorites a.fav[href='/']
     Wait Until Element Is Visible  css=.pattern-relateditems-result-select.selectable
     Click Link  css=.pattern-relateditems-result-select.selectable
     Input Text  css=.modal-body [name="title"]  SomeTitle
