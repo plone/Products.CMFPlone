@@ -211,3 +211,7 @@ class Plone(BrowserView):
         return getMultiAdapter(
             (context, self.request),
             name='plone_patterns_settings')()
+
+    @property
+    def human_readable_size(self):
+        return utils.human_readable_size
