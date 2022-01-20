@@ -34,6 +34,13 @@
 
   <browser:page
       for="*"
+      name="favicon"
+      class=".favicon.SiteFavicon"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      for="*"
       name="sendto_form"
       class=".sendto.SendToForm"
       permission="Products.CMFPlone.AllowSendto"
