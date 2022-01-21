@@ -296,7 +296,7 @@ I search in ${NAME} subfolder in the related items widget
     mark results
     Click Element  css=ul.select2-choices
     Wait Until Page Contains  ${NAME}
-    Click Element  //a[contains(concat(' ', normalize-space(@class), ' '), ' pattern-relateditems-result-select ')]//span[contains(text(),'${NAME}')]
+    Click Element  //a[contains(concat(' ', normalize-space(@class), ' '), ' pat-relateditems-result-select ')]//span[contains(text(),'${NAME}')]
 
 I expect to be in Advanced mode
     open the select box titled operator
