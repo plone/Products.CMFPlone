@@ -1455,7 +1455,9 @@ class ISocialMediaSchema(Interface):
         description=_('Include meta tags on pages to give hints to '
                       'social media on how to better render your pages '
                       'when shared'),
-        default=True)
+        default=True,
+        required=False,
+    )
 
     twitter_username = schema.ASCIILine(
         title=_('Twitter username'),
