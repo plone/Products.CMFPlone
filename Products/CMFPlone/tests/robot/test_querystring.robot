@@ -134,10 +134,10 @@ Scenario Event end date query
     and the querystring pattern
     # Before date
     When I activate the default operator in the criteria Event end date
-    and Execute Javascript  $('.querystring-criteria-value .pattern-pickadate-date-wrapper > input[type="text"]').pickadate('picker').set('select', new Date(2018, 7, 1))
+    and Execute Javascript  $('.querystring-criteria-value input[type="date"]').val('2018-07-01')
     Then we do not expect any hits
 
-    # When Execute Javascript  $('.querystring-criteria-value .pattern-pickadate-date-wrapper > input[type="text"]').pickadate('picker').set('select', new Date(2018, 7, 6))
+    # When Execute Javascript  $('.querystring-criteria-value input[type="date"]').val('2018-07-06')
 
     # !!! BUG in plone.app.robotframework?
     # File "~/.buildout/shared-eggs/plone.app.event-3.2.1-py3.6.egg/plone/app/event/recurrence.py", line 77, in occurrences
@@ -245,9 +245,9 @@ a bunch of folders
 
 a bunch of events
     ${F1}=  a bunch of folders
-    Create content  type=Event  title=Event1  start=2018-08-01 15:00  end=2018-08-01 17:00  container=${F1}
-    Create content  type=Event  title=Event2  start=2018-08-05 16:00  end=2018-08-07 11:00  container=${F1}
-    Create content  type=Event  title=Event3  start=2018-08-05 16:30  open_end-empty-marker=1  container=${F1}
+    Create content  type=Event  title=Event1  start=2018-08-01T15:00  end=2018-08-01T17:00  container=${F1}
+    Create content  type=Event  title=Event2  start=2018-08-05T16:00  end=2018-08-07T11:00  container=${F1}
+    Create content  type=Event  title=Event3  start=2018-08-05T16:30  open_end-empty-marker=1  container=${F1}
     Create content  type=Event  title=Event4  start=2018-08-06  end=2018-08-06  whole_day-empty-marker=1  container=${F1}
 
 I activate the default operator in the criteria ${CRITERIA}
