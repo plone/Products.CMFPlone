@@ -180,7 +180,7 @@ Scenario: New user overlay remains on wrong data
       And I trigger the add a new user action
      When I send the register form
      Then overlay should remain open
-      And overlay shows an error
+      And overlay requires to compile a field
 
 Scenario: New user overlay closes on valid data
     Given a logged-in site administrator
@@ -249,6 +249,9 @@ login overlay shows an error
 
 overlay shows an error
     Wait Until Page Contains  There were errors
+
+overlay requires to compile a field
+    Wait Until Page Contains  This field is required
 
 I '${action}' the form
     Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.modal-footer button[name="form.buttons.${action}"]
