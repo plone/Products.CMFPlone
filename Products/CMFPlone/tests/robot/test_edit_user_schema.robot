@@ -99,9 +99,13 @@ I add a new text field to the member fields
   Press Key  css=#add-field-form #form-widgets-title  \\09
   Select From List By Label  css=#form-widgets-factory  Text line (String)
   Click button  css=.pattern-modal-buttons button#form-buttons-add
-  # XXX: This is really really bad! We need a UI notification like:
-  # Wait until page contains  Field created.
-  Sleep  1
+  Wait until page contains  Field added successfully.
+
+I Open the test_field Settings
+  Go to  ${PLONE_URL}/@@member-fields
+  Wait until page contains element  css=div[data-field_id='test_field']
+  Set Focus To Element  css=div[data-field_id='test_field'] a.fieldSettings
+  Wait Until Keyword Succeeds  3  100ms  Click link  css=div[data-field_id='test_field'] a.fieldSettings
 
 I add a new required text field to the member fields
   Go to  ${PLONE_URL}/@@member-fields
@@ -113,38 +117,28 @@ I add a new required text field to the member fields
   Select From List By Label  css=#form-widgets-factory  Text line (String)
   Select Checkbox  form.widgets.required:list
   Click button  css=.pattern-modal-buttons button#form-buttons-add
-  # XXX: This is really really bad! We need a UI notification like:
-  # Wait until page contains  Field created.
-  Sleep  1
+  Wait until page contains  Field added successfully.
 
 choose to show the field on registration
-  Go to  ${PLONE_URL}/@@member-fields
-  Wait until page contains element  css=div[data-field_id='test_field']
-  Click link  css=div[data-field_id='test_field'] a.fieldSettings
+  I Open the test_field Settings
   Wait Until Element Is visible  form.widgets.IUserFormSelection.forms:list
   Select Checkbox  css=#form-widgets-IUserFormSelection-forms-0
   Click button  css=.pattern-modal-buttons button#form-buttons-save
-  # XXX: This is really really bad! We need a UI notification like:
-  # Wait until page contains  Field created.
-  Sleep  1
+  Wait until page contains  Data successfully updated.
 
 choose to show the field in the user profile
-  Go to  ${PLONE_URL}/@@member-fields
-  Wait until page contains element  css=div[data-field_id='test_field']
-  Click link  css=div[data-field_id='test_field'] a.fieldSettings
+  I Open the test_field Settings
   Wait Until Element Is visible  form.widgets.IUserFormSelection.forms:list
   Select Checkbox  css=#form-widgets-IUserFormSelection-forms-1
   Click button  css=.pattern-modal-buttons button#form-buttons-save
-  # XXX: This is really really bad! We need a UI notification like:
-  # Wait until page contains  Field created.
-  Sleep  1
+  Wait until page contains  Data successfully updated.
 
 I move the new field to the top
   # XXX: Drag and drop is not working!!!
   Drag And Drop  xpath=//div[@data-field_id="test_field"]//span[contains(@class, "draghandle")]  xpath=//div[@data-field_id="home_page"]
 
 add a min/max constraint to the field
-  Click Link  xpath=//div[@data-field_id='test_field']//a[contains(@class, 'fieldSettings')]
+  I Open the test_field Settings
   Wait until page contains element  form.widgets.min_length
   Input Text  form.widgets.min_length  4
   Input Text  form.widgets.max_length  6
@@ -169,11 +163,11 @@ a logged-in user will see the field in the user profile
 
 a logged-in user will see the required field in the user profile
   a logged-in user will see the field in the user profile
-  XPath Should Match X Times  //div[@id='formfield-form-widgets-test_field']//span[contains(@class, 'required')]  1  message=test_field should be required
+  Page Should Contain Element  //div[@id='formfield-form-widgets-test_field']//span[contains(@class, 'required')]  limit=1  message=test_field should be required
 
 a logged-in user will see the field on top of the user profile
   a logged-in user will see the field in the user profile
-  XPath Should Match X Times  //form[@id='form']/div[1]//input[@id='form-widgets-test_field']  1  message=test_field should be on top
+  Page Should Contain Element  //form[@id='form']/div[1]//input[@id='form-widgets-test_field']  limit=1  message=test_field should be on top
 
 a logged-in user will see a field with min/max constraints
   a logged-in user will see the field in the user profile
