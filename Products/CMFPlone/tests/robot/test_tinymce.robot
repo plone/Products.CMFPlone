@@ -61,7 +61,6 @@ insert link
     UnSelect Frame
     Click Button  css=button[aria-label="Insert/edit link"]
     Click Button  css=.pat-relateditems-container button.favorites
-    debug
     Click Link  css=.pat-relateditems-container .favorites a.fav[href='/']
     Wait Until Element Is Visible  css=.pattern-relateditems-result-select.selectable
     Click Link  css=.pattern-relateditems-result-select.selectable
