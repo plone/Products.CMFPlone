@@ -177,6 +177,7 @@ a logged-in user will see the field on top of the user profile
 
 a logged-in user will see a field with min/max constraints
   a logged-in user will see the field in the user profile
+  Input Text  form.widgets.email  test@plone.org
   Input Text  form.widgets.test_field  1
   Click Button  Save
   Wait until page contains  There were some errors.
