@@ -12,6 +12,22 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.7rc1 (2022-01-25)
+---------------------
+
+Bug fixes:
+
+
+- Add plone.synchronize as dependency, because plone.dexterity 2.10.5 has removed this dependency.
+  Core Plone does not need the package anymore, but in case someone uses it, it is not nice to lose it in a bugfix release of Plone.
+  [maurits] (#157)
+- The portal catalog will not try to index itself anymore [ale-rt] (#3312)
+- Load adapter for index location, only if Archetypes is installed. [wesleybl] (#3347)
+- Add missing lxml dependency [MrTango] (#3356)
+- Update metadata version to 5215, Plone 5.2.7.
+  [maurits] (#5215)
+
+
 5.2.6 (2021-10-22)
 ------------------
 
