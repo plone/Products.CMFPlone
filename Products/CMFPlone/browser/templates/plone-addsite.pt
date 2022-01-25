@@ -75,7 +75,7 @@
           <div class="col-md-12 mb-3">
             <label for="default_language" class="form-label" i18n:translate="">Language</label>
 
-            <select name="default_language" class="form-control"
+            <select name="default_language" class="form-select"
                     tal:define="browser_language view/browser_language;
                                 grouped_languages python:view.grouped_languages(browser_language)">
               <optgroup tal:repeat="group grouped_languages"
@@ -105,7 +105,7 @@
 
             <select id="portal_timezone"
                     name="portal_timezone"
-                    class="form-control"
+                    class="form-select"
                     tal:define="tz_list view/timezones">
               <optgroup tal:repeat="group tz_list"
                         tal:attributes="label group">
