@@ -17,10 +17,18 @@ from zope.component import getUtility
 from zope.component import queryUtility
 from zope.ramcache.interfaces import ram
 
+import logging
 import webresource
 
+logger = logging.getLogger(__name__)
 
 REQUEST_CACHE_KEY = "_WEBRESOURCE_CACHE_"
+
+GRACEFUL_DEPENDENCY_REWRITE = {
+    "plone-base": "plone",
+    "plone-legacy": "plone",
+    "plone-logged-in": "plone",
+}
 
 
 class ResourceBase:
@@ -93,6 +101,11 @@ class ResourceBase:
             request_enabled_bundles.update(getattr(request, "enabled_bundles", []))
             request_disabled_bundles.update(getattr(request, "disabled_bundles", []))
 
+        # collect names
+        js_names = {name for name, rec in records.items() if rec.jscompilation}
+        css_names = {name for name, rec in records.items() if rec.csscompilation}
+
+        # register
         for name, record in records.items():
             include = record.enabled
             include = include or name in theme_enabled_bundles
@@ -107,11 +120,26 @@ class ResourceBase:
 
                 include = current_expression
             if record.jscompilation:
+                depends = record.depends or ""
+                if depends and depends not in js_names:
+                    msg = f"Bundle '{name}' has a non existing dependeny on '{record.depends}'. "
+                    if depends not in GRACEFUL_DEPENDENCY_REWRITE:
+                        logger.error(
+                            msg + "Bundle ignored (JS) - This may break your site!"
+                        )
+                        continue
+                    graceful_depends = GRACEFUL_DEPENDENCY_REWRITE[depends]
+                    logger.error(
+                        msg
+                        + f"Bundle dependency (JS) graceful rewritten to '{graceful_depends}' "
+                        + "Fallback will be removed in Plone 7."
+                    )
+                    depends = graceful_depends
                 external = record.jscompilation.startswith("http")
                 resource = PloneScriptResource(
                     context=self.context,
                     name=name,
-                    depends=record.depends or "",
+                    depends=depends,
                     resource=record.jscompilation if not external else None,
                     compressed=record.jscompilation if not external else None,
                     include=include,
@@ -124,11 +152,26 @@ class ResourceBase:
                     integrity=not external,
                 )
             if record.csscompilation:
+                depends = record.depends or ""
+                if depends and depends not in css_names:
+                    msg = f"Bundle '{name}' has a non existing dependeny on '{record.depends}'. "
+                    if depends not in GRACEFUL_DEPENDENCY_REWRITE:
+                        logger.error(
+                            msg + "Bundle ignored (CSS) - This may break your site!"
+                        )
+                        continue
+                    graceful_depends = GRACEFUL_DEPENDENCY_REWRITE[depends]
+                    logger.error(
+                        msg
+                        + f"Bundle dependency (CSS) graceful rewritten to '{graceful_depends}' "
+                        + "Fallback will be removed in Plone 7."
+                    )
+                    depends = graceful_depends
                 external = record.csscompilation.startswith("http")
                 resource = PloneStyleResource(
                     context=self.context,
                     name=name,
-                    depends=record.depends or "",
+                    depends=depends,
                     resource=record.csscompilation if not external else None,
                     compressed=record.csscompilation if not external else None,
                     include=include,
