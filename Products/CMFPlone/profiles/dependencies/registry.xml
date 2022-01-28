@@ -91,6 +91,7 @@
   <record name="plone.resources.development">
     <field type="plone.registry.field.Bool">
       <title>Frontend development mode</title>
+      <required>False</required>
     </field>
     <value>False</value>
   </record>
