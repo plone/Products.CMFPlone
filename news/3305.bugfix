@@ -1,4 +1,0 @@
-Removed management_page_charset support from usergroup-groupdetails page.
-This is related to deprecated unicode property types, like ustring.
-Part of `issue 3305 <https://github.com/plone/Products.CMFPlone/issues/3305>`_.
-[maurits]
