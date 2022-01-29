@@ -26,7 +26,7 @@ class SiteFavicon(Download):
             self.filename = filename
         else:
             basedir = os.path.dirname(os.path.dirname(__file__))
-            with open(os.path.join(basedir, "skins", "plone_images", "favicon.ico"), "rb") as icon:
+            with open(os.path.join(basedir, "skins", "plone_images", "default-favicon.ico"), "rb") as icon:
                 data = NamedImage(data=icon.read(), contentType="image/vnd.microsoft.icon", filename="favicon.ico")
             self.data = data
             self.filename = "favicon.ico"
