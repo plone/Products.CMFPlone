@@ -80,7 +80,7 @@ def get_resource(context, path):
     return result
 
 
-def write_js(context, folder, meta_bundle):
+def write_js(context, folder):
     registry = getUtility(IRegistry)
     resources = []
 
@@ -89,7 +89,7 @@ def write_js(context, folder, meta_bundle):
         IBundleRegistry, prefix="plone.bundles", check=False
     )
     for bundle in bundles.values():
-        if bundle.merge_with == meta_bundle and bundle.jscompilation:
+        if bundle.jscompilation:
             resource = get_resource(context, bundle.jscompilation)
             if not resource:
                 continue
@@ -100,11 +100,11 @@ def write_js(context, folder, meta_bundle):
         if not isinstance(script, bytes):
             script = script.encode()
         fi.write(script + b"\n")
-    folder.writeFile(meta_bundle + ".js", fi)
-    logger.info('Wrote combined JS bundle "%s".' % meta_bundle)
+    folder.writeFile("plone.js", fi)
+    logger.info('Wrote JS bundle.')
 
 
-def write_css(context, folder, meta_bundle):
+def write_css(context, folder):
     registry = getUtility(IRegistry)
     resources = []
 
@@ -112,7 +112,7 @@ def write_css(context, folder, meta_bundle):
         IBundleRegistry, prefix="plone.bundles", check=False
     )
     for bundle in bundles.values():
-        if bundle.merge_with == meta_bundle and bundle.csscompilation:
+        if bundle.csscompilation:
             css = get_resource(context, bundle.csscompilation)
             if not css:
                 continue
@@ -132,8 +132,8 @@ def write_css(context, folder, meta_bundle):
         if not isinstance(script, bytes):
             script = script.encode()
         fi.write(script + b"\n")
-    folder.writeFile(meta_bundle + ".css", fi)
-    logger.info('Wrote combined CSS bundle "%s".' % meta_bundle)
+    folder.writeFile("plone.css", fi)
+    logger.info('Wrote CSS bundle.')
 
 
 def get_override_directory(context):
@@ -157,8 +157,6 @@ def combine_bundles(context):
     production_folder.writeFile("timestamp.txt", fi)
 
     # generate new combined bundles
-    write_js(context, production_folder, "default")
-    write_js(context, production_folder, "logged-in")
-    write_css(context, production_folder, "default")
-    write_css(context, production_folder, "logged-in")
+    write_js(context, production_folder)
+    write_css(context, production_folder)
     logger.info("Finished bundle compilation.")
