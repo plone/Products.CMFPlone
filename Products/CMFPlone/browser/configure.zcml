@@ -42,7 +42,7 @@
   <!-- handles the case of apps like RSS agents blindly accessing /favicon.ico -->
   <browser:page
       for="*"
-      name="favicon.icon"
+      name="favicon.ico"
       class=".favicon.SiteFavicon"
       permission="zope.Public"
       />
