@@ -32,8 +32,9 @@
       permission="zope.Public"
       />
 
+  <!-- handles the case of the /favicon path defined in plone.app.layout viewlets.py:FaviconViewlet -->
   <browser:page
-      for="*"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="favicon"
       class=".favicon.SiteFavicon"
       permission="zope.Public"
@@ -41,7 +42,7 @@
 
   <!-- handles the case of apps like RSS agents blindly accessing /favicon.ico -->
   <browser:page
-      for="*"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="favicon.ico"
       class=".favicon.SiteFavicon"
       permission="zope.Public"
