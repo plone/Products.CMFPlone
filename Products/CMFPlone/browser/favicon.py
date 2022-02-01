@@ -1,4 +1,4 @@
-import os
+from os.path import dirname
 
 from Products.CMFPlone.interfaces import ISiteSchema
 from plone.formwidget.namedfile.converter import b64decode_file
@@ -10,7 +10,6 @@ from zope.component import getUtility
 
 
 class SiteFavicon(Download):
-
     def __init__(self, context, request):
         super().__init__(context, request)
         self.filename = None
@@ -18,18 +17,22 @@ class SiteFavicon(Download):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSchema, prefix="plone")
-        if getattr(settings, 'site_favicon', False):
+        mimetype = "image/vnd.microsoft.icon"
+        filename = "favicon.ico"
+        if getattr(settings, "site_favicon", False):
+            # The user has customized the favicon via the Site configlet.
             filename, data = b64decode_file(settings.site_favicon)
-            mimetype = getattr(settings, 'site_favicon_mimetype', "image/vnd.microsoft.icon")
-            data = NamedImage(data=data, contentType=mimetype, filename=filename)
-            self.data = data
-            self.filename = filename
+            # Retrieve the MIME type auto-set by the configlet, with a
+            # valid fallback to a well-known MIME type.
+            mimetype = getattr(settings, "site_favicon_mimetype", mimetype)
         else:
-            basedir = os.path.dirname(os.path.dirname(__file__))
-            with open(os.path.join(basedir, "skins", "plone_images", "default-favicon.ico"), "rb") as icon:
-                data = NamedImage(data=icon.read(), contentType="image/vnd.microsoft.icon", filename="favicon.ico")
-            self.data = data
-            self.filename = "favicon.ico"
+            # No registry favicon, we use our static copy here.
+            # Defaults were set above before the if branch.
+            fallback_path = os.path.join(dirname(__file__), "static", filename)
+            with open(fallback_path, "rb") as icon:
+                data = icon.read()
+        self.data = NamedImage(data=data, contentType=mimetype, filename=filename)
+        self.filename = filename
 
     def _getFile(self):
         return self.data
