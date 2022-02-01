@@ -3,13 +3,13 @@ from os.path import dirname
 from Products.CMFPlone.interfaces import ISiteSchema
 from plone.formwidget.namedfile.converter import b64decode_file
 from plone.memoize import ram
-from plone.namedfile.browser import Download
+from plone.namedfile.browser import DisplayFile
 from plone.namedfile.file import NamedImage
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 
 
-class SiteFavicon(Download):
+class SiteFavicon(DisplayFile):
     def __init__(self, context, request):
         super().__init__(context, request)
         self.filename = None
