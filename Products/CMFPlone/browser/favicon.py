@@ -1,4 +1,4 @@
-from os.path import dirname
+from os.path import dirname, join
 
 from Products.CMFPlone.interfaces import ISiteSchema
 from plone.formwidget.namedfile.converter import b64decode_file
@@ -34,7 +34,7 @@ class SiteFavicon(DisplayFile):
         else:
             # No registry favicon, we use our static copy here.
             # Defaults were set above before the if branch.
-            fallback_path = os.path.join(dirname(__file__), "static", filename)
+            fallback_path = join(dirname(__file__), "static", filename)
             with open(fallback_path, "rb") as icon:
                 data = icon.read()
         self.data = NamedImage(data=data, contentType=mimetype, filename=filename)
