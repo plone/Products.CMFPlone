@@ -14,6 +14,12 @@ class SiteFavicon(DisplayFile):
         super().__init__(context, request)
         self.filename = None
         self.data = None
+        # The following attribute disables the use of an allowlist that
+        # would otherwise cause image/vnd.microsoft.icon MIMEtyped files
+        # to be served as downloads.  This allowlist list is sadly not
+        # complete, at the top of the plone.namedfile.browser.py, but
+        # fixing that is beyond the scope of this pull request.
+        self.use_denylist = True
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSchema, prefix="plone")
