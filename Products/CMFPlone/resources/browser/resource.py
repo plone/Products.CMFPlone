@@ -104,6 +104,7 @@ class ResourceBase:
         # collect names
         js_names = {name for name, rec in records.items() if rec.jscompilation}
         css_names = {name for name, rec in records.items() if rec.csscompilation}
+        all_names = {name for name, rec in records.items() if rec.jscompilation or rec.csscompilation}
 
         # register
         for name, record in records.items():
@@ -122,19 +123,22 @@ class ResourceBase:
             if record.jscompilation:
                 depends = record.depends or ""
                 if depends and depends not in js_names:
-                    msg = f"Bundle '{name}' has a non existing dependeny on '{record.depends}'. "
-                    if depends not in GRACEFUL_DEPENDENCY_REWRITE:
+                    if depends in all_names:
+                        depends = None
+                    else:
+                        msg = f"Bundle '{name}' has a non existing dependeny on '{record.depends}'. "
+                        if depends not in GRACEFUL_DEPENDENCY_REWRITE:
+                            logger.error(
+                                msg + "Bundle ignored (JS) - This may break your site!"
+                            )
+                            continue
+                        graceful_depends = GRACEFUL_DEPENDENCY_REWRITE[depends]
                         logger.error(
-                            msg + "Bundle ignored (JS) - This may break your site!"
+                            msg
+                            + f"Bundle dependency (JS) graceful rewritten to '{graceful_depends}' "
+                            + "Fallback will be removed in Plone 7."
                         )
-                        continue
-                    graceful_depends = GRACEFUL_DEPENDENCY_REWRITE[depends]
-                    logger.error(
-                        msg
-                        + f"Bundle dependency (JS) graceful rewritten to '{graceful_depends}' "
-                        + "Fallback will be removed in Plone 7."
-                    )
-                    depends = graceful_depends
+                        depends = graceful_depends
                 external = record.jscompilation.startswith("http")
                 resource = PloneScriptResource(
                     context=self.context,
@@ -154,19 +158,22 @@ class ResourceBase:
             if record.csscompilation:
                 depends = record.depends or ""
                 if depends and depends not in css_names:
-                    msg = f"Bundle '{name}' has a non existing dependeny on '{record.depends}'. "
-                    if depends not in GRACEFUL_DEPENDENCY_REWRITE:
+                    if depends in all_names:
+                        depends = None
+                    else:
+                        msg = f"Bundle '{name}' has a non existing dependeny on '{record.depends}'. "
+                        if depends not in GRACEFUL_DEPENDENCY_REWRITE:
+                            logger.error(
+                                msg + "Bundle ignored (CSS) - This may break your site!"
+                            )
+                            continue
+                        graceful_depends = GRACEFUL_DEPENDENCY_REWRITE[depends]
                         logger.error(
-                            msg + "Bundle ignored (CSS) - This may break your site!"
+                            msg
+                            + f"Bundle dependency (CSS) graceful rewritten to '{graceful_depends}' "
+                            + "Fallback will be removed in Plone 7."
                         )
-                        continue
-                    graceful_depends = GRACEFUL_DEPENDENCY_REWRITE[depends]
-                    logger.error(
-                        msg
-                        + f"Bundle dependency (CSS) graceful rewritten to '{graceful_depends}' "
-                        + "Fallback will be removed in Plone 7."
-                    )
-                    depends = graceful_depends
+                        depends = graceful_depends
                 external = record.csscompilation.startswith("http")
                 resource = PloneStyleResource(
                     context=self.context,
