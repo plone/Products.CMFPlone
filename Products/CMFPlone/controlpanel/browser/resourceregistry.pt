@@ -66,8 +66,8 @@
     <div class="accordion" id="accordionRR" tal:define="dummy python:view.process_form()">
       <div class="accordion-item "
            tal:repeat="bundle python:view.bundles_data">
-           <h2 class="accordion-header" id="heading-${python:bundle['name']}">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${python:bundle['name']}" aria-expanded="false" aria-controls="collapse-${python:bundle['name']}">
+           <h2 class="accordion-header" id="heading-${python:bundle['safe_name']}">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${python:bundle['safe_name']}" aria-expanded="false" aria-controls="collapse-${python:bundle['safe_name']}">
               <span tal:condition="python:bundle['name'] and bundle['enabled']" i18n:translate="" class="me-2"><tal:icon tal:replace="structure python:icons.tag('file-check', tag_alt='Enabled bundle')" /></span>
               <span tal:condition="python:bundle['name'] and not bundle['enabled']" i18n:translate="" class="me-2"><tal:icon tal:replace="structure python:icons.tag('file-x', tag_alt='Disabled bundle')" /></span>
               <span tal:condition="python:not bundle['name']" i18n:translate="" class="me-2"><tal:icon tal:replace="structure python:icons.tag('file-plus', tag_alt='Add a bundle')" /></span>
@@ -75,7 +75,7 @@
               <strong tal:condition="python:not bundle['name']">Add new bundle</strong>
             </button>
           </h2>
-          <div id="collapse-${python:bundle['name']}" class="accordion-collapse ${python:'' if bundle['name'] == request.form.get('name', None) else 'collapse'}" aria-labelledby="heading${python:bundle['name']}" data-bs-parent="#accordionRR">
+          <div id="collapse-${python:bundle['safe_name']}" class="accordion-collapse ${python:'' if bundle['name'] == request.form.get('name', None) else 'collapse'}" aria-labelledby="heading${python:bundle['safe_name']}" data-bs-parent="#accordionRR">
             <div class="accordion-body">
               <form method="post" action="${python:context.absolute_url()}/@@resourceregistry-controlpanel">
                 <input type="hidden" name="original_name" value="${python:bundle['name']}" />
