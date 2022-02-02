@@ -16,11 +16,6 @@ mtool = getToolByName(portal, 'portal_membership')
 if mtool.isAnonymousUser():
     return False
 
-# Temporary content cannot be changed through EE (raises AttributeError)
-portal_factory = getToolByName(portal, 'portal_factory', None)
-if portal_factory and portal_factory.isTemporary(context):
-    return False
-
 # Check if the member property
 member = mtool.getAuthenticatedMember()
 if not member.getProperty('ext_editor', False):
