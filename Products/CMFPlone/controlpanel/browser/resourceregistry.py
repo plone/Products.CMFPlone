@@ -24,6 +24,7 @@ class ResourceRegistryControlPanelView(BrowserView):
             result.append(
                 {
                     "name": name,
+                    "safe_name": name.replace(".", "-"),
                     "jscompilation": record.jscompilation,
                     "csscompilation": record.csscompilation,
                     "expression": record.expression,
@@ -37,6 +38,7 @@ class ResourceRegistryControlPanelView(BrowserView):
         result.append(
             {
                 "name": "",
+                "safe_name": "",
                 "jscompilation": "",
                 "csscompilation": "",
                 "expression": "",
