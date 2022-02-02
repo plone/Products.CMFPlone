@@ -1009,7 +1009,7 @@ class ISiteSchema(Interface):
         title=_('MIME type of the site favicon'),
         description=_('MIME type of the favicon (automatically set when a new favicon is uploaded)'),
         required=False,
-        default='image/x-icon'
+        default='image/vnd.microsoft.icon'
     )
 
     site_favicon = schema.Bytes(
