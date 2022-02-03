@@ -10,21 +10,18 @@ from zope.component import getUtility
 
 
 class SiteFavicon(DisplayFile):
+    # The following attribute disables the use of an allowlist that
+    # would otherwise cause image/vnd.microsoft.icon MIMEtyped files
+    # to be served as downloads.  This allowlist list is sadly not
+    # complete, at the top of the plone.namedfile.browser.py, but
+    # fixing that is beyond the scope of this pull request.
+    use_denylist = True
+
     def __init__(self, context, request):
         super().__init__(context, request)
-        self.filename = None
-        self.data = None
-        # The following attribute disables the use of an allowlist that
-        # would otherwise cause image/vnd.microsoft.icon MIMEtyped files
-        # to be served as downloads.  This allowlist list is sadly not
-        # complete, at the top of the plone.namedfile.browser.py, but
-        # fixing that is beyond the scope of this pull request.
-        self.use_denylist = True
 
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema, prefix="plone")
         mimetype = "image/vnd.microsoft.icon"
-        filename = "favicon.ico"
+        settings = getUtility(IRegistry).forInterface(ISiteSchema, prefix="plone")
         if getattr(settings, "site_favicon", False):
             # The user has customized the favicon via the Site configlet.
             filename, data = b64decode_file(settings.site_favicon)
@@ -32,8 +29,8 @@ class SiteFavicon(DisplayFile):
             # valid fallback to a well-known MIME type.
             mimetype = getattr(settings, "site_favicon_mimetype", mimetype)
         else:
-            # No registry favicon, we use our static copy here.
-            # Defaults were set above before the if branch.
+            # No registry favicon, we use Plone's static copy here.
+            filename = "favicon.ico"
             fallback_path = join(dirname(__file__), "static", filename)
             with open(fallback_path, "rb") as icon:
                 data = icon.read()
