@@ -1,5 +1,3 @@
-from os.path import dirname, join
-
 from Products.CMFPlone.interfaces import ISiteSchema
 from plone.formwidget.namedfile.converter import b64decode_file
 from plone.memoize import ram
@@ -7,6 +5,8 @@ from plone.namedfile.browser import DisplayFile
 from plone.namedfile.file import NamedImage
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
+
+import os.path
 
 
 class SiteFavicon(DisplayFile):
@@ -31,7 +31,7 @@ class SiteFavicon(DisplayFile):
         else:
             # No registry favicon, we use Plone's static copy here.
             filename = "favicon.ico"
-            fallback_path = join(dirname(__file__), "static", filename)
+            fallback_path = os.path.join(os.path.dirname(__file__), "static", filename)
             with open(fallback_path, "rb") as icon:
                 data = icon.read()
         self.data = NamedImage(data=data, contentType=mimetype, filename=filename)
