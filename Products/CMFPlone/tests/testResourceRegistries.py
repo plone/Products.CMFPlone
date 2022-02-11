@@ -76,7 +76,8 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
         scripts.update()
         results = scripts.render()
-        self.assertNotIn(
+        self.assertIn("++plone++static/bundle-jquery/jquery.min.js", results)
+        self.assertIn(
             "++plone++static/bundle-bootstrap/js/bootstrap.bundle.min.js", results
         )
         self.assertIn("++plone++static/bundle-plone/bundle.min.js", results)
@@ -87,7 +88,8 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
         scripts.update()
         results = scripts.render()
-        self.assertNotIn(
+        self.assertIn("++plone++static/bundle-jquery/jquery.min.js", results)
+        self.assertIn(
             "++plone++static/bundle-bootstrap/js/bootstrap.bundle.min.js", results
         )
         self.assertIn("++plone++static/bundle-plone/bundle.min.js", results)
