@@ -189,7 +189,7 @@ def restore_relations(context=None, all_relations=None):
         try:
             to_id = intids.getId(target_obj)
         except KeyError as e:
-            logger.info(f'No intid for {target_obj}')
+            logger.warning(f'No intid for {target_obj}')
             continue
 
         if from_attribute == referencedRelationship:
