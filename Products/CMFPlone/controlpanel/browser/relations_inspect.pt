@@ -41,7 +41,7 @@
            class="portalMessage warning alert alert-warning" role="alert"
            i18n:translate="">
              <strong>Warning!</strong> You have broken relations!
-             You can <a href="@@rebuild_relations">inspect and rebuild all relations</a>.
+             You can <a href="@@rebuild-relations">inspect and rebuild all relations</a>.
       </div>
 
       <form id="relationinfo" method="post" action="@@inspect-relations" enctype="multipart/form-data">
