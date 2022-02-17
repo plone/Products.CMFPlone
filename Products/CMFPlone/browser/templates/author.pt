@@ -192,7 +192,7 @@
                           </h2>
 
                           <div metal:define-macro="user_content_listing">
-                          <table class="vertical listing"
+                          <table class="table"
                                  summary="Lists content written by an author grouped by content type"
                                  i18n:attributes="summary summary_author_content_list;">
                               <thead>
