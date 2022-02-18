@@ -425,6 +425,8 @@ class ITinyMCELayoutSchema(Interface):
             "Superscript|superscript|superscript",
             "Subscript|subscript|subscript",
             "Code|code|code",
+            "Text in 2 columns|textcolumns2|textcolumns2",
+            "Text in 3 columns|textcolumns3|textcolumns3",
         ],
     )
 
@@ -486,6 +488,8 @@ class ITinyMCELayoutSchema(Interface):
                     "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,picture",
                     "classes": "text-justify",
                 },
+                "textcolumns2": {"selector": "p", "classes": "text-columns-2"},
+                "textcolumns3": {"selector": "p", "classes": "text-columns-3"}
             }
         ),
         required=True,
