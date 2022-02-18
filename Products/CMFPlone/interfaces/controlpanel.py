@@ -471,19 +471,19 @@ class ITinyMCELayoutSchema(Interface):
                 "discreet": {"inline": "span", "classes": "discreet"},
                 "clearfix": {"block": "div", "classes": "clearfix"},
                 "alignleft": {
-                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img,audio,video,picture",
+                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,picture",
                     "classes": "text-start",
                 },
                 "aligncenter": {
-                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img,audio,video,picture",
+                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,picture",
                     "classes": "text-center",
                 },
                 "alignright": {
-                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img,audio,video,picture",
+                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,picture",
                     "classes": "text-end",
                 },
                 "alignjustify": {
-                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img,audio,video,picture",
+                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,picture",
                     "classes": "text-justify",
                 },
             }
