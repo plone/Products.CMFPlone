@@ -425,8 +425,8 @@ class ITinyMCELayoutSchema(Interface):
             "Superscript|superscript|superscript",
             "Subscript|subscript|subscript",
             "Code|code|code",
-            "Text in 2 columns|textcolumns2|textcolumns2",
-            "Text in 3 columns|textcolumns3|textcolumns3",
+            "Text in 2 columns|textcolumns2",
+            "Text in 3 columns|textcolumns3",
         ],
     )
 
@@ -444,10 +444,10 @@ class ITinyMCELayoutSchema(Interface):
         value_type=schema.TextLine(),
         missing_value=[],
         default=[
-            "Left|alignleft|alignleft",
-            "Center|aligncenter|aligncenter",
-            "Right|alignright|alignright",
-            "Justify|alignjustify|alignjustify",
+            "Left|alignleft|align-left",
+            "Center|aligncenter|align-center",
+            "Right|alignright|align-right",
+            "Justify|alignjustify|align-justify",
         ],
     )
 
@@ -473,19 +473,19 @@ class ITinyMCELayoutSchema(Interface):
                 "discreet": {"inline": "span", "classes": "discreet"},
                 "clearfix": {"block": "div", "classes": "clearfix"},
                 "alignleft": {
-                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,picture",
+                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table",
                     "classes": "text-start",
                 },
                 "aligncenter": {
-                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,picture",
+                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table",
                     "classes": "text-center",
                 },
                 "alignright": {
-                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,picture",
+                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table",
                     "classes": "text-end",
                 },
                 "alignjustify": {
-                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,picture",
+                    "selector": "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table",
                     "classes": "text-justify",
                 },
                 "textcolumns2": {"selector": "p", "classes": "text-columns-2"},
