@@ -57,6 +57,8 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
         if server_name:
             if "ZServer" in server_name:
                 server_name = "ZServer"
+            elif "/" in server_name:
+                server_name = server_name.split("/")[0]
             try:
                 server = pkg_resources.get_distribution(server_name)
                 server_version = server.version
