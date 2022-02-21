@@ -66,3 +66,8 @@ class TestControlPanel(unittest.TestCase):
         # If new plone.portal_timezone is set, return False
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertFalse(view.timezone_warning())
+
+    def test_gunicorn_server_name(self):
+        self.request["SERVER_SOFTWARE"] = "gunicorn/19.6.0"
+        view = self.portal.restrictedTraverse("@@overview-controlpanel")
+        self.assertEqual(view.server_info()["server_name"], "gunicorn")
