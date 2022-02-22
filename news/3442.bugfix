@@ -1,0 +1,2 @@
+Fix overview-controlpanel view for Gunicorn WSGI HTTP Server.
+[bsuttor]
