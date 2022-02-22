@@ -57,13 +57,6 @@
     i18n:attributes="title">
   <permission>Set own properties</permission>
  </configlet>
- <configlet title="Change Password" action_id="MemberPassword" appId="Plone"
-    category="Member" condition_expr="python:member.canPasswordSet()"
-    icon_expr="string:lock"
-    url_expr="string:${portal_url}/password_form" visible="True"
-    i18n:attributes="title">
-  <permission>Set own password</permission>
- </configlet>
  <configlet title="Mail" action_id="MailHost" appId="MailHost"
     category="plone-general" condition_expr=""
     icon_expr="string:envelope-open"
