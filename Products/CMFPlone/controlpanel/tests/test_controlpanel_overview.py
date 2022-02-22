@@ -71,3 +71,7 @@ class TestControlPanel(unittest.TestCase):
         self.request["SERVER_SOFTWARE"] = "gunicorn/19.6.0"
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertEqual(view.server_info()["server_name"], "gunicorn")
+        self.request["SERVER_SOFTWARE"] = "bad-gunicorn-name/19.6.0"
+        view = self.portal.restrictedTraverse("@@overview-controlpanel")
+        with self.assertWarns(Warning):
+            view.server_info()["server_name"]

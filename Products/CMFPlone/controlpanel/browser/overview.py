@@ -12,6 +12,7 @@ from zope.component import getUtility
 from ZPublisher.HTTPRequest import WSGIRequest
 
 import pkg_resources
+import warnings
 
 try:
     import plone.app.event
@@ -62,11 +63,11 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
             try:
                 server = pkg_resources.get_distribution(server_name)
                 server_version = server.version
-            except (
-                pkg_resources.DistributionNotFound,
-                pkg_resources.RequirementParseError,
-            ):
-                pass
+            except Exception:
+                warnings.warn(
+                    "Cannot find or parse version for %r"
+                    % self.request.get("SERVER_SOFTWARE"),
+                )
         return {
             "wsgi": wsgi,
             "server_name": server_name,
