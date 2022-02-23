@@ -140,6 +140,7 @@ setup(
             'plone.app.testing',
             'zope.globalrequest',
             'zope.testing',
+            'gunicorn',
         ]
     },
 )
