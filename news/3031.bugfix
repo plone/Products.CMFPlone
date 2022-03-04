@@ -1,0 +1,5 @@
+Remove Configlets, Change Member Password and Member Prefs not needed in Overview Controlpanel
+both Views available via User Control Panel
+
+the deleton of "Change Member Password" Configlet remove also the issue #3031
+[1letter]
