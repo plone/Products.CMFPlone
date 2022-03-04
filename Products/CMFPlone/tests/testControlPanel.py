@@ -13,8 +13,8 @@ class TestControlPanel(unittest.TestCase):
         # get the expected default groups and configlets
         self.groups = ['Plone', 'Products']
         self.configlets = ['QuickInstaller', 'MailHost',
-                           'UsersGroups', 'MemberPrefs', 'PortalSkin',
-                           'MemberPassword', 'ZMI', 'SecuritySettings',
+                           'UsersGroups', 'PortalSkin',
+                           'ZMI', 'SecuritySettings',
                            'NavigationSettings', 'SearchSettings',
                            'errorLog', 'PloneReconfig', 'TypesSettings',
                            'FilterSettings',
