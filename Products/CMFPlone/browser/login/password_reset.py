@@ -1,4 +1,5 @@
 from AccessControl.SecurityManagement import getSecurityManager
+from DateTime import DateTime
 from email.header import Header
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.memoize import view
@@ -108,8 +109,9 @@ class PasswordResetView(BrowserView):
             # with the given userid
             user = getSecurityManager().getUser()
 
-        login_time = user.getProperty('login_time', None)
-        if login_time is None:
+        default = DateTime('2000/01/01')
+        login_time = user.getProperty('login_time', default)
+        if login_time == default:
             notify(UserInitialLoginInEvent(user))
         else:
             notify(UserLoggedInEvent(user))
