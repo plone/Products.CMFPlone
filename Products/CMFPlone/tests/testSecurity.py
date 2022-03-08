@@ -159,7 +159,8 @@ class TestFunctional(unittest.TestCase):
         return browser
 
     def test_plonetool(self):
-        base_url = self.layer["portal"].absolute_url() + "/plone_utils"
+        portal_url = self.layer["portal"].absolute_url()
+        base_url = portal_url + "/plone_utils"
         browser = self.get_admin_browser()
         method_names = (
             "addPortalMessage",
@@ -173,6 +174,9 @@ class TestFunctional(unittest.TestCase):
             "normalizeString",
             "getEmptyTitle",
         )
+        # First open a url that actually works.
+        # This avoids an error with zope.component 5+.
+        browser.open(portal_url)
         for method_name in method_names:
             with self.assertRaises(NotFound):
                 browser.open(base_url + "/" + method_name)
@@ -226,6 +230,9 @@ class TestFunctional(unittest.TestCase):
             "propertyLabel",
             "propertyDescription",
         )
+        # First open a url that actually works.
+        # This avoids an error with zope.component 5+.
+        browser.open(portal_url)
         for method_name in method_names:
             with self.assertRaises(NotFound):
                 browser.open(portal_url + "/" + method_name)
