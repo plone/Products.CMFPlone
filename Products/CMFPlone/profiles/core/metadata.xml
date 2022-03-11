@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<metadata>
+  <description>
+    Extension profile that sets up the core Plone portal state required by dependency profiles.
+  </description>
+  <version>6005</version>
+</metadata>

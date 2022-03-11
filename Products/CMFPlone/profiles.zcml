@@ -7,8 +7,17 @@
       name="plone"
       title="Plone Site"
       directory="profiles/default"
-      description="Profile for a default Plone."
+      description="Base profile that sets up a complete Plone portal including core functionality and required dependency profiles."
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      />
+
+  <genericsetup:registerProfile
+      name="core"
+      title="Plone Site Core"
+      directory="profiles/core"
+      description="Extension profile that sets up the core Plone portal state required by dependency profiles."
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
       post_handler="Products.CMFPlone.setuphandlers.importFinalSteps"
       />
 
@@ -19,6 +28,7 @@
       description="Load all profiles from other packages/products that are needed for a full Plone site."
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       provides="Products.GenericSetup.interfaces.EXTENSION"
+      post_handler="Products.CMFPlone.setuphandlers.importAfterDependencies"
       />
 
   <genericsetup:registerProfile

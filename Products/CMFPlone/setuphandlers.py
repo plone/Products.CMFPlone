@@ -109,7 +109,8 @@ def dummy_import_step(context):
 
 
 def importFinalSteps(context):
-    """Final Plone import steps.
+    """
+    Final Plone import steps before dependency profiles.
 
     This was an import step, but is now registered as post_handler
     specifically for our main 'plone' (profiles/default) profile.
@@ -132,10 +133,11 @@ def importFinalSteps(context):
     # Set out default profile version.
     setProfileVersion(site)
 
-    # Install our dependencies
-    st = getToolByName(site, "portal_setup")
-    st.runAllImportStepsFromProfile(
-        "profile-Products.CMFPlone:dependencies")
+def importAfterDependencies(context):
+    """
+    Final Plone import steps after dependency profiles.
+    """
+    site = getSite()
 
     assignTitles(site)
     replace_local_role_manager(site)

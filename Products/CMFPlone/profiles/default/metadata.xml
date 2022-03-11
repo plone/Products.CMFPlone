@@ -1,4 +1,11 @@
 <?xml version="1.0"?>
 <metadata>
-  <version>6004</version>
+  <description>
+    Base profile that sets up a complete Plone portal including core functionality and required dependency profiles.
+  </description>
+  <version>6005</version>
+  <dependencies>
+    <dependency>profile-Products.CMFPlone:core</dependency>
+    <dependency>profile-Products.CMFPlone:dependencies</dependency>
+  </dependencies>
 </metadata>
