@@ -3,6 +3,10 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone">
 
+  <!--
+      Must run/include/use no import steps directly so that the profile can be imported
+      to upgrade dependency profiles without resetting changed portal state/properties.
+  -->
   <genericsetup:registerProfile
       name="plone"
       title="Plone Site"

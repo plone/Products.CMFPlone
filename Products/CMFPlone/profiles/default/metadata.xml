@@ -1,5 +1,9 @@
 <?xml version="1.0"?>
 <metadata>
+  <!--
+      Must run/include/use no import steps directly so that the profile can be imported
+      to upgrade dependency profiles without resetting changed portal state/properties.
+  -->
   <description>
     Base profile that sets up a complete Plone portal including core functionality and required dependency profiles.
   </description>

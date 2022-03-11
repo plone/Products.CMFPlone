@@ -10,6 +10,7 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.GenericSetup import tool
 from io import StringIO
 from ZODB.POSException import ConflictError
 from zope.interface import implementer
@@ -87,8 +88,8 @@ class AddonList(list):
 # Good start is portal_setup.listProfilesWithUpgrades()
 # Please use 'check_module' for packages that are not direct dependencies
 # of Products.CMFPlone, but of the Plone package.
+# Note that dependencies of these profiles are not # upgraded recursively.
 ADDON_LIST = AddonList([
-    Addon(profile_id='Products.CMFEditions:CMFEditions'),
     Addon(
         profile_id='Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow',
         check_module='Products.CMFPlacefulWorkflow'
@@ -99,7 +100,6 @@ ADDON_LIST = AddonList([
     ),
     Addon(profile_id='plone.app.contenttypes:default'),
     Addon(profile_id='plone.app.dexterity:default'),
-    Addon(profile_id='plone.app.discussion:default'),
     Addon(profile_id='plone.app.event:default'),
     Addon(
         profile_id='plone.app.iterate:default',
@@ -107,9 +107,6 @@ ADDON_LIST = AddonList([
     ),
     Addon(profile_id='plone.app.multilingual:default'),
     Addon(profile_id='plone.app.querystring:default'),
-    Addon(profile_id='plone.app.theming:default'),
-    Addon(profile_id='plone.app.users:default'),
-    Addon(profile_id='plone.staticresources:default'),
 ])
 
 
@@ -242,47 +239,13 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Does this thing now need recataloging?
         return self._needRecatalog
 
-    security.declareProtected(ManagePortal, 'listUpgrades')
-
-    def listUpgrades(self):
-        # List available upgrade steps for our default profile.
-        # Do not include upgrade steps for too new versions:
-        # using a newer plone.app.upgrade version should not give problems.
-        setup = getToolByName(self, 'portal_setup')
-        fs_version = self.getFileSystemVersion()
-        steps = setup.listUpgrades(_DEFAULT_PROFILE)
-        upgrades = []
-        for upgrade_step in steps:
-            if isinstance(upgrade_step, list):
-                # This is a nested list of upgrade steps,
-                # which must have the same destination.
-                # So take the first one.
-                if not upgrade_step:
-                    # Empty list, not sure if this can happen in practice.
-                    continue
-                dest = upgrade_step[0].get('sdest')
-            else:
-                dest = upgrade_step.get('sdest')
-            if dest > fs_version and dest != 'all':
-                break
-            upgrades.append(upgrade_step)
-        return upgrades
-
     security.declareProtected(ManagePortal, 'upgrade')
 
     def upgrade(self, REQUEST=None, dry_run=None, swallow_errors=True):
         # Perform the upgrade.
         setup = getToolByName(self, 'portal_setup')
-
         # This sets the profile version if it wasn't set yet
         version = self.getInstanceVersion()
-        upgrades = self.listUpgrades()
-        steps = []
-        for u in upgrades:
-            if isinstance(u, list):
-                steps.extend(u)
-            else:
-                steps.append(u)
 
         try:
             stream = StringIO()
@@ -296,25 +259,15 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 logger.info("Dry run selected.")
 
             logger.info("Starting the migration from version: %s" % version)
-
-            for step in steps:
-                try:
-                    step['step'].doStep(setup)
-                    setup.setLastVersionForProfile(
-                        _DEFAULT_PROFILE, step['dest'])
-                    logger.info("Ran upgrade step: %s" % step['title'])
-                except (ConflictError, KeyboardInterrupt):
-                    raise
-                except:
-                    logger.error("Upgrade aborted. Error:\n", exc_info=True)
-
-                    if not swallow_errors:
-                        raise
-                    else:
-                        # abort transaction to safe the zodb
-                        transaction.abort()
-                        break
-
+            # Unfortunately, the only way `Products.GenericSetup` supports recursive
+            # upgrading of dependency profiles is by importing the top-level profile.
+            # Use a profile that runs/includes/uses no import steps directly to delegate
+            # upgrading of dependency profiles to that logic.
+            setup.runAllImportStepsFromProfile(
+                _DEFAULT_PROFILE,
+                purge_old=False,
+                dependency_strategy=tool.DEPENDENCY_STRATEGY_UPGRADE,
+            )
             logger.info("End of upgrade path, main migration has finished.")
 
             if self.needUpgrading():
