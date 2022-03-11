@@ -107,6 +107,14 @@ ADDON_LIST = AddonList([
     ),
     Addon(profile_id='plone.app.multilingual:default'),
     Addon(profile_id='plone.app.querystring:default'),
+    Addon(
+        profile_id='plone.restapi:default',
+        check_module='plone.restapi'
+    ),
+    Addon(
+        profile_id='plone.volto:default',
+        check_module='plone.volto'
+    ),
 ])
 
 
