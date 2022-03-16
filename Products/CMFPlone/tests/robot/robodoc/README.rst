@@ -62,7 +62,7 @@ or
 
 .. code:: bash
 
-   $ CONFIGURE_PACKAGES=plone.app.iterate APPLY_PROFILES=plone.app.contenttypes:plone-content,plone.app.iterate:plone.app.iterate bin/robot-server plone.app.robotframework.PLONE_ROBOT_TESTING
+   $ CONFIGURE_PACKAGES=plone.app.iterate APPLY_PROFILES=plone.app.contenttypes:plone-content,plone.app.iterate:default bin/robot-server plone.app.robotframework.PLONE_ROBOT_TESTING
 
 and
 

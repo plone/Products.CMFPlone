@@ -8,7 +8,7 @@ Suite Teardown  Common Suite Teardown
 *** Variables ***
 
 @{CONFIGURE_PACKAGES}  plone.app.iterate
-@{APPLY_PROFILES}  plone.app.contenttypes:plone-content  plone.app.iterate:plone.app.iterate
+@{APPLY_PROFILES}  plone.app.contenttypes:plone-content  plone.app.iterate:default
 # ${REGISTER_TRANSLATIONS}  ${CURDIR}/../../_locales
 
 *** Test Cases ***
