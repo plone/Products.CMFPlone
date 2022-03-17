@@ -61,7 +61,12 @@
 
         <div class="mb-3 input-group">
           <a class="pat-plone-modal me-3 btn btn-success " id="add-user"
-             data-pat-plone-modal="{&quot;actionOptions&quot;: {&quot;disableAjaxFormSubmit&quot;: true}}"
+             data-pat-plone-modal='{
+                "actionOptions": {
+                  "redirectOnResponse": true,
+                  "redirectToUrl": "${portal_url}/@@usergroup-userprefs"
+                }
+              }'
              tal:attributes="href string:${portal_url}/@@new-user"
              i18n:translate="label_add_new_user">Add New User</a>
           <span class="input-group-text" id="quickSearchLabel" i18n:translate="label_user_search">User Search</span>
@@ -95,8 +100,8 @@
                 <tr>
                   <th  class="text-start" i18n:translate="listingheader_user_name">User name</th>
                   <th class="rotate" tal:repeat="portal_role portal_roles"><div tal:content="portal_role" i18n:translate="">Role</div></th>
-                  <th class="rotate alert-warning"><div i18n:translate="listingheader_reset_password">Reset Password</div></th>
-                  <th class="rotate alert-danger"><div i18n:translate="listingheader_remove">Remove</div></th>
+                  <th class="rotate table-warning"><div i18n:translate="listingheader_reset_password">Reset Password</div></th>
+                  <th class="rotate table-danger"><div i18n:translate="listingheader_remove">Remove</div></th>
                 </tr>
               </thead>
               <tbody>
@@ -139,7 +144,7 @@
 
                         </td>
 
-                        <td class="listingCheckbox alert-warning">
+                        <td class="listingCheckbox table-warning">
                           <input type="checkbox"
                                  class="noborder"
                                  name="users.resetpassword:records"
@@ -149,7 +154,7 @@
                                                  disabled python:user['can_set_password'] and default or 'disabled'" />
                         </td>
 
-                        <td class="listingCheckbox alert-danger">
+                        <td class="listingCheckbox table-danger">
                           <input type="checkbox"
                                          class="noborder notify"
                                          name="delete:list"

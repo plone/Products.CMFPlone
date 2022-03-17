@@ -251,7 +251,7 @@ overlay shows an error
     Wait Until Page Contains  There were errors
 
 overlay requires to compile a field
-    Wait Until Page Contains  This field is required
+    Wait Until Page Contains  Required input is missing
 
 I '${action}' the form
     Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.modal-footer button[name="form.buttons.${action}"]
