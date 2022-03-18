@@ -102,7 +102,9 @@ class LoginForm(form.EditForm):
             widgetname_password = '__ac_password'
 
         self.widgets['ac_name'].name = widgetname_login
+        self.widgets['ac_name'].id = widgetname_login
         self.widgets['ac_password'].name = widgetname_password
+        self.widgets['ac_password'].id = widgetname_password
 
         if self.use_email_as_login():
             self.widgets['ac_name'].label = _('label_email',
