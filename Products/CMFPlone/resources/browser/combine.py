@@ -5,15 +5,23 @@ from plone.registry.interfaces import IRegistry
 from plone.resource.file import FilesystemFile
 from plone.resource.interfaces import IResourceDirectory
 from Products.CMFPlone.interfaces import IBundleRegistry
-from Products.CMFPlone.interfaces.resources import (
-    OVERRIDE_RESOURCE_DIRECTORY_NAME,
-)  # noqa
+from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from zExceptions import NotFound
 from zope.component import getUtility
 from zope.component import queryUtility
 
 import logging
 import re
+import zope.deferredimport
+
+
+zope.deferredimport.initialize()
+
+zope.deferredimport.deprecated(
+    "Import from Products.CMFPlone.resources.utils instead",
+    PRODUCTION_RESOURCE_DIRECTORY="Products.CMFPlone:resources.utils.PRODUCTION_RESOURCE_DIRECTORY",
+    get_override_directory="Products.CMFPlone:resources.utils.get_override_directory",
+)
 
 
 PRODUCTION_RESOURCE_DIRECTORY = "production"
@@ -75,18 +83,6 @@ def get_resource(context, path):
 def write_js(context, folder, meta_bundle):
     registry = getUtility(IRegistry)
     resources = []
-
-    # default resources
-    if meta_bundle == "default" and registry.records.get("plone.resources/jquery.js"):
-        resources.append(
-            get_resource(context, registry.records["plone.resources/jquery.js"].value)
-        )
-        resources.append(
-            get_resource(context, registry.records["plone.resources.requirejs"].value)
-        )
-        resources.append(
-            get_resource(context, registry.records["plone.resources.configjs"].value)
-        )
 
     # bundles
     bundles = registry.collectionOfInterface(

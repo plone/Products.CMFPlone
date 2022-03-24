@@ -49,13 +49,17 @@ the search control panel
 
 I enable livesearch
   Select Checkbox  form.widgets.enable_livesearch:list
+  Set Focus To Element  css=#form-buttons-save
+  Wait Until Element Is Visible  css=#form-buttons-save
   Click Button  Save
   Wait until page contains  Changes saved
 
 I exclude the '${portal_type}' type from search
   # Make sure we see the checkbox, in expanded in jenkins it gets a bit under the toolbar
-  Click Link  css=a.plone-toolbar-logo
+  Set Focus To Element  xpath=//input[@name='form.widgets.types_not_searched:list' and @value='${portal_type}']
   Unselect Checkbox  xpath=//input[@name='form.widgets.types_not_searched:list' and @value='${portal_type}']
+  Set Focus To Element  css=#form-buttons-save
+  Wait Until Element Is Visible  css=#form-buttons-save
   Click Button  Save
   Wait until page contains  Changes saved
 
