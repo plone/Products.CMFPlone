@@ -33,6 +33,13 @@
       />
 
   <browser:page
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      name="favicon.ico"
+      class=".favicon.SiteFavicon"
+      permission="zope.Public"
+      />
+
+  <browser:page
       for="*"
       name="sendto_form"
       class=".sendto.SendToForm"
@@ -210,11 +217,6 @@
       for="plone.app.layout.navigation.interfaces.INavigationRoot"
       />
 
-  <browser:resource
-      name="search.js"
-      file="static/search.js"
-      />
-
   <!-- AtD Support -->
   <browser:page
       for="*"
@@ -267,6 +269,20 @@
       name="test-rendering"
       for="*"
       class=".test_rendering.TestRenderingView"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      name="test-rendering-cheatsheet"
+      for="*"
+      class=".test_rendering.TestRenderingCheatsheetView"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      name="test-rendering-icons"
+      for="*"
+      class=".test_rendering.TestRenderingIconsView"
       permission="zope2.View"
       />
 

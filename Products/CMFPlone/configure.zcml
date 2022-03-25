@@ -36,8 +36,6 @@
   <include package="plone.protect" />
   <include package="plone.indexer" />
 
-  <!-- mockup -->
-  <include package="mockup" />
   <include package="plone.staticresources" />
 
   <!-- viewlets zope 3 layers support for themes -->

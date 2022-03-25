@@ -33,7 +33,14 @@ class PloneBundlesTraverser(ResourceTraverser):
             return super().traverse(name, remaining)
 
         resource_path = req.environ['PATH_INFO'].split('++plone++')[-1]
-        resource_name, resource_filepath = resource_path.split('/', 1)
+        try:
+            resource_name, resource_filepath = resource_path.split('/', 1)
+        except ValueError:
+            # Not the path info / url that we expected.
+            # So the request is not for a resource,
+            # but for a page that traverses to a resource.
+            # The standard resource traverser can handle this.
+            return super().traverse(name, remaining)
 
         # If we have additional traversers in the path we should not use them
         # in the file lookup

@@ -93,6 +93,7 @@ ADDON_LIST = AddonList([
         profile_id='Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow',
         check_module='Products.CMFPlacefulWorkflow'
     ),
+    Addon(profile_id='Products.PlonePAS:PlonePAS'),
     Addon(
         profile_id='plone.app.caching:default',
         check_module='plone.app.caching'
@@ -109,7 +110,16 @@ ADDON_LIST = AddonList([
     Addon(profile_id='plone.app.querystring:default'),
     Addon(profile_id='plone.app.theming:default'),
     Addon(profile_id='plone.app.users:default'),
+    Addon(
+        profile_id='plone.restapi:default',
+        check_module='plone.restapi'
+    ),
+    Addon(profile_id='plone.session:default'),
     Addon(profile_id='plone.staticresources:default'),
+    Addon(
+        profile_id='plone.volto:default',
+        check_module='plone.volto'
+    ),
 ])
 
 

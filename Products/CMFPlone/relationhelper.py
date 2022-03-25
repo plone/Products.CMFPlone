@@ -186,7 +186,11 @@ def restore_relations(context=None, all_relations=None):
             continue
 
         from_attribute = item['from_attribute']
-        to_id = intids.getId(target_obj)
+        try:
+            to_id = intids.getId(target_obj)
+        except KeyError as e:
+            logger.warning(f'No intid for {target_obj}')
+            continue
 
         if from_attribute == referencedRelationship:
             # Ignore linkintegrity for now. We'll rebuilt it at the end!

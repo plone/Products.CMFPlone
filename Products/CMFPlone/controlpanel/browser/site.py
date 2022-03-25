@@ -16,6 +16,7 @@ class SiteControlPanelForm(controlpanel.RegistryEditForm):
     def updateFields(self):
         super().updateFields()
         self.fields['site_logo'].widgetFactory = NamedImageFieldWidget
+        self.fields['site_favicon'].widgetFactory = NamedImageFieldWidget
 
     def updateWidgets(self):
         super().updateWidgets()

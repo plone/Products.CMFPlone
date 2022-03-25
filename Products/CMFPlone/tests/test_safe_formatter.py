@@ -324,28 +324,6 @@ class TestFunctionalSafeFormatter(PloneTestCase):
         # We expect a json string back.
         self.assertTrue(response.body, '{"error_type": "None"}')
 
-    def test_resource_registry_vector(self):
-        for vector in ('less-variables.js', 'less-modify.js'):
-            src = '''
-class ctx:
-  def format(self, *args, **kwargs):
-    self.foo=context
-    return "foo"
-
-context.portal_registry['plone.lessvariables']['foo'] = ctx()
-context.portal_registry['plone.lessvariables']['bar'] = "{foo.foo.__class__}"
-js = context.restrictedTraverse("%s")
-return js()
-''' % vector
-            from Products.PythonScripts.PythonScript import PythonScript
-            script = PythonScript('evil')
-            script._filepath = 'evil'
-            script.write(src)
-            self.portal.evil = script
-            output = self.publish('/plone/evil')
-            self.assertFalse(
-                b'Products.CMFPlone.Portal.PloneSite' in output.body)
-
     def test_cook_zope2_page_templates_bad_key_str(self):
         from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
         pt = ZopePageTemplate('mytemplate', BAD_KEY_STR)

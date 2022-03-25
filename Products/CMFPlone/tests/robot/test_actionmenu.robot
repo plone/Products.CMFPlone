@@ -107,11 +107,11 @@ I click outside of menu
 
 workflow link is clicked
     # store current state
-    ${OLD_STATE} =  Get Text  xpath=(//span[contains(@class,'state-')])[2]
+    ${OLD_STATE} =  Get Text  xpath=(//span[contains(@class,'state-')])
     Set Suite Variable  ${OLD_STATE}  ${OLD_STATE}
     Given patterns are loaded
     Click Link  xpath=//li[@id='plone-contentmenu-workflow']/a
-    Click Link  xpath=(//li[@id='plone-contentmenu-workflow']/ul/li/a)[1]
+    Click Link  xpath=(//li[@id='plone-contentmenu-workflow']/div/ul/li/a)[1]
     Page Should Contain  Item state changed.
     # FIXME: The above 'Click Link' fails on Internet Explorer, but the
     # following keywords 'workflow link is clicked softly' passes. Until we
@@ -140,17 +140,17 @@ Open Menu
 Open Action Menu
     Given patterns are loaded
     Click link  xpath=//li[@id='plone-contentmenu-actions']/a
-    Wait until keyword succeeds  5  1  Element Should Be Visible  css=.plonetoolbar-content-action
+    Wait until keyword succeeds  5  1  Element Should Be Visible  css=#plone-contentmenu-actions .collapse
 
 I copy the page
     Open Action Menu
-    Click Link  link=Copy
+    Click Link  css=#plone-contentmenu-actions .actionicon-object_buttons-copy
     Page should contain  copied
 
 I paste
     Go to  ${PLONE_URL}
     Open Action Menu
-    Click Link  link=Paste
+    Click Link  css=#plone-contentmenu-actions .actionicon-object_buttons-paste
 
 
 # --- THEN -------------------------------------------------------------------
@@ -183,7 +183,7 @@ I should see '${message}' in the page
 
 state should have changed
     Wait until page contains  Item state changed
-    ${NEW_STATE} =  Get Text  xpath=(//span[contains(@class,'state-')])[2]
+    ${NEW_STATE} =  Get Text  xpath=(//span[contains(@class,'state-')])
     # Should Not Be Equal  ${NEW_STATE}  ${OLD_STATE}
 
 second menu should be visible

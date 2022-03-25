@@ -50,20 +50,6 @@
     i18n:attributes="title">
   <permission>Plone Site Setup: Users and Groups</permission>
  </configlet>
- <configlet title="Personal Preferences" action_id="MemberPrefs" appId="Plone"
-    category="Member" condition_expr=""
-    icon_expr="string:person"
-    url_expr="string:${portal_url}/@@personal-preferences" visible="True"
-    i18n:attributes="title">
-  <permission>Set own properties</permission>
- </configlet>
- <configlet title="Change Password" action_id="MemberPassword" appId="Plone"
-    category="Member" condition_expr="python:member.canPasswordSet()"
-    icon_expr="string:lock"
-    url_expr="string:${portal_url}/password_form" visible="True"
-    i18n:attributes="title">
-  <permission>Set own password</permission>
- </configlet>
  <configlet title="Mail" action_id="MailHost" appId="MailHost"
     category="plone-general" condition_expr=""
     icon_expr="string:envelope-open"
