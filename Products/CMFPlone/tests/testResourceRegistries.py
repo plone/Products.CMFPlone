@@ -247,3 +247,103 @@ class TestStylesViewlet(PloneTestCase.PloneTestCase):
         scripts.update()
         result = scripts.render()
         self.assertNotIn("http://test.foo/test.min.js", result)
+
+
+class TestExpressions(PloneTestCase.PloneTestCase):
+
+    def setUp(self):
+        # Add three bundles with three different expressions.
+        registry = getUtility(IRegistry)
+        data = {
+            "jscompilation": ("http://test.foo/test.min.js", regfield.TextLine()),
+            "csscompilation": ("http://test.foo/test.css", regfield.TextLine()),
+            "expression": ("python: False", regfield.TextLine()),
+            "enabled": (True, regfield.Bool()),
+            "depends": ("", regfield.TextLine()),
+            "load_async": (True, regfield.Bool()),
+            "load_defer": (True, regfield.Bool()),
+        }
+        for key, regdef in data.items():
+            record = Record(regdef[1])
+            record.value = regdef[0]
+            registry.records[f"plone.bundles/testbundle.{key}"] = record
+
+        data = {
+            "jscompilation": ("http://test2.foo/member.min.js", regfield.TextLine()),
+            "csscompilation": ("http://test2.foo/member.css", regfield.TextLine()),
+            "expression": ("python: member is not None", regfield.TextLine()),
+            "enabled": (True, regfield.Bool()),
+            "depends": ("", regfield.TextLine()),
+            "load_async": (True, regfield.Bool()),
+            "load_defer": (True, regfield.Bool()),
+        }
+        for key, regdef in data.items():
+            record = Record(regdef[1])
+            record.value = regdef[0]
+            registry.records[f"plone.bundles/testbundle2.{key}"] = record
+
+        data = {
+            "jscompilation": ("http://test3.foo/test.min.js", regfield.TextLine()),
+            "csscompilation": ("http://test3.foo/test.css", regfield.TextLine()),
+            "expression": ("python: True", regfield.TextLine()),
+            "enabled": (True, regfield.Bool()),
+            "depends": ("", regfield.TextLine()),
+            "load_async": (True, regfield.Bool()),
+            "load_defer": (True, regfield.Bool()),
+        }
+        for key, regdef in data.items():
+            record = Record(regdef[1])
+            record.value = regdef[0]
+            registry.records[f"plone.bundles/testbundle3.{key}"] = record
+
+    def test_styles_authenticated(self):
+        styles = StylesView(self.layer["portal"], self.layer["request"], None)
+        styles.update()
+        results = styles.render()
+        # Check that standard resources are still there, signalling that
+        # rendering works without throwing an exception.
+        self.assertIn("++theme++barceloneta/css/barceloneta.min.css", results)
+        self.assertIn("http://nohost/plone/++webresource++", results)
+        # Test our additional bundles.
+        # self.assertNotIn("http://test.foo/test.css", results)
+        self.assertIn("http://test2.foo/member.css", results)
+        self.assertIn("http://test3.foo/test.css", results)
+
+    def test_styles_anonymous(self):
+        logout()
+        styles = StylesView(self.layer["portal"], self.layer["request"], None)
+        styles.update()
+        results = styles.render()
+        # Check that standard resources are still there, signalling that
+        # rendering works without throwing an exception.
+        self.assertIn("++theme++barceloneta/css/barceloneta.min.css", results)
+        self.assertIn("http://nohost/plone/++webresource++", results)
+        # Test our additional bundles.
+        # self.assertNotIn("http://test.foo/test.css", results)
+        self.assertNotIn("http://test2.foo/member.css", results)
+        self.assertIn("http://test3.foo/test.css", results)
+
+    def test_scripts_authenticated(self):
+        scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        scripts.update()
+        results = scripts.render()
+        # Check that standard resources are still there, signalling that
+        # rendering works without throwing an exception.
+        self.assertIn("++plone++static/bundle-plone/bundle.min.js", results)
+        # The first one should be included, the second one not.
+        # self.assertNotIn("http://test.foo/test.min.js", results)
+        self.assertIn("http://test2.foo/member.min.js", results)
+        self.assertIn("http://test3.foo/test.min.js", results)
+
+    def test_scripts_anonymous(self):
+        logout()
+        scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        scripts.update()
+        results = scripts.render()
+        # Check that standard resources are still there, signalling that
+        # rendering works without throwing an exception.
+        self.assertIn("++plone++static/bundle-plone/bundle.min.js", results)
+        # The first one should be included, the second one not.
+        # self.assertNotIn("http://test.foo/test.min.js", results)
+        self.assertNotIn("http://test2.foo/member.min.js", results)
+        self.assertIn("http://test3.foo/test.min.js", results)

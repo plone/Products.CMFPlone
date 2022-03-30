@@ -1,21 +1,13 @@
 from ..webresource import PloneScriptResource
 from ..webresource import PloneStyleResource
-from Acquisition import aq_base
-from Acquisition import aq_inner
-from Acquisition import aq_parent
 from App.config import getConfiguration
 from plone.app.layout.viewlets.common import ViewletBase
 from plone.app.theming.interfaces import IThemeSettings
 from plone.app.theming.utils import theming_policy
 from plone.registry.interfaces import IRegistry
-from Products.CMFCore.Expression import createExprContext
-from Products.CMFCore.Expression import Expression
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IBundleRegistry
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-from zope.component import queryUtility
-from zope.ramcache.interfaces import ram
 
 import logging
 import webresource
@@ -114,12 +106,6 @@ class ResourceBase:
             include = include or name in request_enabled_bundles
             include = include and name not in request_disabled_bundles
 
-            if include and record.expression:
-
-                def current_expression():
-                    return self.eval_expression(record.expression, name)
-
-                include = current_expression
             if record.jscompilation:
                 depends = record.depends or ""
                 if depends and depends not in js_names:
@@ -147,6 +133,7 @@ class ResourceBase:
                     resource=record.jscompilation if not external else None,
                     compressed=record.jscompilation if not external else None,
                     include=include,
+                    expression=record.expression,
                     unique=unique,
                     group=registry_group_js,
                     url=record.jscompilation if external else None,
@@ -182,6 +169,7 @@ class ResourceBase:
                     resource=record.csscompilation if not external else None,
                     compressed=record.csscompilation if not external else None,
                     include=include,
+                    expression=record.expression,
                     unique=unique,
                     group=registry_group_css,
                     url=record.csscompilation if external else None,
@@ -266,57 +254,6 @@ class ResourceBase:
         self.renderer["css"] = webresource.ResourceRenderer(
             resolver_css, base_url=self.portal_state.portal_url()
         )
-
-    def evaluateExpression(self, expression, context):
-        """Evaluate an object's TALES condition to see if it should be
-        displayed."""
-        try:
-            if expression.text and context is not None:
-                portal = getToolByName(context, "portal_url").getPortalObject()
-
-                # Find folder (code courtesy of CMFCore.ActionsTool)
-                if context is None or not hasattr(context, "aq_base"):
-                    folder = portal
-                else:
-                    folder = context
-                    # Search up the containment hierarchy until we find an
-                    # object that claims it's PrincipiaFolderish.
-                    while folder is not None:
-                        if getattr(aq_base(folder), "isPrincipiaFolderish", 0):
-                            # found it.
-                            break
-                        else:
-                            folder = aq_parent(aq_inner(folder))
-
-                __traceback_info__ = (folder, portal, context, expression)
-                ec = createExprContext(folder, portal, context)
-                # add 'context' as an alias for 'object'
-                ec.setGlobal("context", context)
-                return expression(ec)
-            return True
-        except AttributeError:
-            return True
-
-    def eval_expression(self, expression, bundle_name):
-        if not expression:
-            return True
-        cache = queryUtility(ram.IRAMCache)
-        cooked_expression = None
-        if cache is not None:
-            cooked_expression = cache.query(
-                "plone.bundles.cooked_expressions",
-                key=dict(prefix=bundle_name),
-                default=None,
-            )
-        if cooked_expression is None or cooked_expression.text != expression:
-            cooked_expression = Expression(expression)
-            if cache is not None:
-                cache.set(
-                    cooked_expression,
-                    "plone.bundles.cooked_expressions",
-                    key=dict(prefix=bundle_name),
-                )
-        return self.evaluateExpression(cooked_expression, self.context)
 
 
 class ResourceView(ResourceBase, ViewletBase):
