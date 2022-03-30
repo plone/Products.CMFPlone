@@ -382,18 +382,15 @@ class ITinyMCELayoutSchema(Interface):
     content_css = schema.List(
         title=_("Choose the CSS used in WYSIWYG Editor Area"),
         description=_(
-            "This option enables you to specify a custom CSS file "
-            "that provides content CSS. "
-            "This CSS file is the one used within the editor "
-            "(the editable area). In addition to what is listed, "
-            "here the plone bundle CSS and diazo themes using the "
-            "tinymce-content-css setting are also added."
+            "This option enables you to specify CSS files "
+            "that will be used within the the editable area of the editor "
+            "(e.g. ++plone++mystyles/tinymce.css). "
+            "In addition to what is listed here, "
+            "the barceloneta bundle CSS is also added."
         ),
         value_type=schema.TextLine(),
         missing_value=[],
-        default=[
-            "++plone++static/components/tinymce/" "skins/lightgray/content.min.css"
-        ],
+        default=[],
         required=False,
     )
 
