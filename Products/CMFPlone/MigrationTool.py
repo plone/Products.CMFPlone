@@ -79,7 +79,7 @@ class AddonList(list):
         setup = getToolByName(context, 'portal_setup')
         for addon in self:
             if addon.safe():
-                setup.upgradeProfile(addon.profile_id)
+                setup.upgradeProfile(addon.profile_id, quiet=True)
 
 
 # List of upgradeable packages.  Obvious items to add here, are all
