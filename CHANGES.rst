@@ -12,6 +12,39 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.0a3 (2022-01-28)
+--------------------
+
+New features:
+
+
+- add a new entry in site-controlpanel to change the favicon and its MIME-type
+  The favicon can be a .ico/png or SVG-file
+  [talarias] (plip-barceloneta_lts_favicon)
+- The @@plone view exposes the human_readable_size helper
+  [ale-rt] (#3146)
+- Allow ``from warnings import warn`` and ``warn("message", DeprecationWarning)`` TTW, like in Python Scripts.
+  [jensens] (#3376)
+- Customize breadcrumbs hook ``customize_entry`` for subclasses (like already in global navigation).
+  [jensens] (#3377)
+
+
+Bug fixes:
+
+
+- Cleanup Error Log Form after Review
+  [jmevissen] (#3241)
+- Removed management_page_charset support from usergroup-groupdetails page.
+  This is related to deprecated unicode property types, like ustring.
+  Part of `issue 3305 <https://github.com/plone/Products.CMFPlone/issues/3305>`_.
+  [maurits] (#3305)
+- Update Controlpanel Error Log Form Layout
+  Rename ControlPanel Error Log Form View prefs_error_log_form -> error-log-form
+  [jmevissen] (#3393)
+- Use label_site_administration instead of label_site_admin in error and mail_password_form templates (#3397)
+- Updated metadata version to 6003.  [maurits] (#6003)
+
+
 6.0.0a2 (2021-12-03)
 --------------------
 

@@ -11,7 +11,6 @@ Resource  keywords.robot
 Test Setup  Run keywords  Plone Test Setup
 Test Teardown  Run keywords  Plone Test Teardown
 
-
 *** Test Cases ***************************************************************
 
 Scenario: Enable self registration in the Security Control Panel
@@ -143,6 +142,8 @@ A user folder should be created when a user registers and logs in to the site
   Input Text for sure  form.widgets.email  joe@test.com
   Input Text for sure  form.widgets.password  supersecret
   Input Text for sure  form.widgets.password_ctl  supersecret
+  Set Focus To Element  css=#form-buttons-register
+  Wait Until Element Is Visible  css=#form-buttons-register
   Click Button  Register
 
   # I login to the site
@@ -175,6 +176,8 @@ UUID should be used for the user id
   Input Text for sure  form.widgets.email  joe@test.com
   Input Text for sure  form.widgets.password  supersecret
   Input Text for sure  form.widgets.password_ctl  supersecret
+  Set Focus To Element  css=#form-buttons-register
+  Wait Until Element Is Visible  css=#form-buttons-register
   Click Button  Register
 
   # I login to the site
@@ -184,9 +187,8 @@ UUID should be used for the user id
   Input text for sure  __ac_password  supersecret
   Click Button  Log in
   Wait until page contains  You are now logged in
-
   # XXX: Here we can't really test that this is a uuid, since it's random, so
   # we just check that user id is not equal to username or email
-  ${userid}=  Get Text  xpath=//li[@id='portal-personaltools']//li[contains(@class, 'plone-toolbar-submenu-header')]//span
+  ${userid}=  Get Text  xpath=//a[@id='personaltools-menulink']
   Should Not Be Equal As Strings  ${userid}  joe
   Should Not Be Equal As Strings  ${userid}  joe@test.com

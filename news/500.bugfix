@@ -1,0 +1,2 @@
+Fixed tests when run with ``zope.component`` 5+.
+[maurits]

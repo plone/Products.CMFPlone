@@ -45,6 +45,8 @@ the social control panel
 I disable social
   UnSelect Checkbox  form.widgets.share_social_data:list
   Sleep  2
+  Set Focus To Element  css=#form-buttons-save
+  Wait Until Element Is Visible  css=#form-buttons-save
   Click Button  Save
   Wait until page contains  Changes saved
 
@@ -53,6 +55,8 @@ I provide social settings
   Input Text  name=form.widgets.facebook_app_id  123456
   Input Text  name=form.widgets.facebook_username  plonecms
   Sleep  2
+  Set Focus To Element  css=#form-buttons-save
+  Wait Until Element Is Visible  css=#form-buttons-save
   Click Button  Save
   Wait until page contains  Changes saved
 

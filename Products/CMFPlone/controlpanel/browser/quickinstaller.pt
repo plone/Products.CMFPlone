@@ -188,7 +188,7 @@
               </div>
               <div class="alert alert-info mt-2 mb-0"
                   role="status"
-                  tal:condition="not:product/uninstall_profile">                  >
+                  tal:condition="not:product/uninstall_profile">
                 <strong i18n:translate="">Info</strong>
                 <span i18n:translate="">This product cannot be uninstalled!</span>
             </div>

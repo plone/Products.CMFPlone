@@ -18,7 +18,7 @@
         tal:content="structure view/description">Form description</p>
 
       <div id="content-core">
-        <form action="." method="post"
+        <form action="." method="post" novalidate
           tal:attributes="action view/action; enctype view/enctype"
           tal:define="subforms view/subforms">
 
