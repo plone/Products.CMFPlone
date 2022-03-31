@@ -1,0 +1,2 @@
+Remove dependency on mockup. Mockup is now a npm package only and as such a dependency of plone.staticresources.
+[thet]

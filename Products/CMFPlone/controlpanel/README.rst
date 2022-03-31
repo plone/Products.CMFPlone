@@ -132,7 +132,7 @@ Navigation Control Panel
   ()
 
   >>> navigation_settings.show_excluded_items
-  True
+  False
 
 
 Search Control Panel

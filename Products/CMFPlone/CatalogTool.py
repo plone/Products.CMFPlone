@@ -255,11 +255,6 @@ def mime_type(obj):
     return aq_base(obj).getPrimaryField().getContentType(obj)
 
 
-@indexer(Interface)
-def location(obj):
-    return obj.getField('location').get(obj)
-
-
 @implementer(IPloneCatalogTool)
 class CatalogTool(PloneBaseTool, BaseTool):
     """Plone's catalog tool"""
@@ -465,8 +460,11 @@ class CatalogTool(PloneBaseTool, BaseTool):
         idxs = list(self.indexes())
 
         def indexObject(obj, path):
-            if (base_hasattr(obj, 'reindexObject') and
-                    safe_callable(obj.reindexObject)):
+            if (
+                obj != self
+                and base_hasattr(obj, 'reindexObject')
+                and safe_callable(obj.reindexObject)
+            ):
                 try:
                     self.reindexObject(obj, idxs=idxs)
                     # index conversions from plone.app.discussion
@@ -485,6 +483,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
                     pass
         self.manage_catalogClear()
         portal = aq_parent(aq_inner(self))
+        indexObject(portal, '')
         portal.ZopeFindAndApply(
             portal,
             search_sub=True,

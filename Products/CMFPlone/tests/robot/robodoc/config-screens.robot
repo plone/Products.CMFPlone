@@ -78,7 +78,7 @@ Show Editing setup screen
     ...  css=#content
 
 Show Error log setup screen
-    Go to  ${PLONE_URL}/prefs_error_log_form
+    Go to  ${PLONE_URL}/@@error-log-form
     Capture and crop page screenshot
     ...  ${CURDIR}/_robot/errorlog-setup.png
     ...  css=#content
@@ -140,10 +140,6 @@ Show Resource Registry screen
     Go to  ${PLONE_URL}/@@resourceregistry-controlpanel
     Capture and crop page screenshot
     ...  ${CURDIR}/_robot/resource-registry.png
-    ...  css=#content
-    Click link  Less Variables
-    Capture and crop page screenshot
-    ...  ${CURDIR}/_robot/less-variables.png
     ...  css=#content
 
 Show Search setup screen

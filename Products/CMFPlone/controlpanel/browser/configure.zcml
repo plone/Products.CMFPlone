@@ -111,6 +111,35 @@
       permission="cmf.ManagePortal"
       />
 
+  <!-- Error Log Form Control Panel -->
+  <browser:page
+      name="error-log-form"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      template="error_log_form.pt"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="error-log-show-entry"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      template="error_log_show_entry.pt"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="error-log-update"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".error_log_form.ErrorLogUpdate"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="error-log-set-properties"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".error_log_form.ErrorLogSetProperties"
+      permission="cmf.ManagePortal"
+      />
+
   <!-- Site Control Panel -->
   <browser:page
       name="site-controlpanel"

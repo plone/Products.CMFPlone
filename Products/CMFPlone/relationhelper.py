@@ -1,8 +1,6 @@
 from collections import Counter
 from collections import defaultdict
 from five.intid.intid import addIntIdSubscriber
-from plone.app.iterate.dexterity import ITERATE_RELATION_NAME
-from plone.app.iterate.dexterity.relation import StagingRelationValue
 from plone.app.linkintegrity.handlers import modifiedContent
 from plone.app.linkintegrity.utils import referencedRelationship
 from plone.app.relationfield.event import update_behavior_relations
@@ -26,6 +24,18 @@ from zope.intid.interfaces import IIntIds
 from zope.intid.interfaces import ObjectMissingError
 
 import logging
+import pkg_resources
+
+try:
+    # "iterate" is not a dependency of CMFPlone, but a consumer of it
+    pkg_resources.get_distribution("plone.app.iterate")
+except pkg_resources.DistributionNotFound:
+    HAS_ITERATE = False
+else:
+    HAS_ITERATE = True
+    from plone.app.iterate.dexterity import ITERATE_RELATION_NAME
+    from plone.app.iterate.dexterity.relation import StagingRelationValue
+
 
 logger = logging.getLogger(__name__)
 
@@ -176,14 +186,18 @@ def restore_relations(context=None, all_relations=None):
             continue
 
         from_attribute = item['from_attribute']
-        to_id = intids.getId(target_obj)
+        try:
+            to_id = intids.getId(target_obj)
+        except KeyError as e:
+            logger.warning(f'No intid for {target_obj}')
+            continue
 
         if from_attribute == referencedRelationship:
             # Ignore linkintegrity for now. We'll rebuilt it at the end!
             update_linkintegrity.add(item['from_uuid'])
             continue
 
-        if from_attribute == ITERATE_RELATION_NAME:
+        if HAS_ITERATE and from_attribute == ITERATE_RELATION_NAME:
             # Iterate relations are not set as values of fields
             relation = StagingRelationValue(to_id)
             event._setRelation(source_obj, ITERATE_RELATION_NAME, relation)

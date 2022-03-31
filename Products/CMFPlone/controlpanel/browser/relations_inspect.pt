@@ -41,13 +41,13 @@
            class="portalMessage warning alert alert-warning" role="alert"
            i18n:translate="">
              <strong>Warning!</strong> You have broken relations!
-             You can <a href="@@rebuild_relations">inspect and rebuild all relations</a>.
+             You can <a href="${portal_url}/@@rebuild-relations">inspect and rebuild all relations</a>.
       </div>
 
-      <form id="relationinfo" method="post" action="@@inspect-relations" enctype="multipart/form-data">
+      <form id="relationinfo" method="post" action="${portal_url}/@@inspect-relations" enctype="multipart/form-data">
 
         <div class="mb-3 field">
-          <select class="form-select" aria-label="Default select example" name="relation" id="relation">
+          <select class="form-select" i18n:attributes="aria-label label_default_select_example" aria-label="Default select example" name="relation" id="relation">
             <option value="" i18n:translate="">Select a relation</option>
             <tal:rels tal:repeat="from_attribute python: sorted(relations_stats)">
               <option tal:attributes="value python: from_attribute;
@@ -123,7 +123,7 @@
         </tbody>
       </table>
 
-      <p><a href="@@rebuild-relations" i18n:translate="">Inspect and rebuild all relations</a>.</p>
+      <p><a href="${portal_url}/@@rebuild-relations" i18n:translate="">Inspect and rebuild all relations</a>.</p>
 
     </div>
 

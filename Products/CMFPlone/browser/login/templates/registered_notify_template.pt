@@ -13,7 +13,7 @@ Precedence: bulk
      tal:omit-tag=""
      tal:define="fullname python:member.getProperty('fullname')">
     Welcome <span i18n:name="fullname" tal:replace="fullname" />,
-  
+
     Your user account has been created.
   Your username is <span i18n:name="member" tal:replace="python:member.getUserName()" />.
   Please activate it by visiting

@@ -1,4 +1,0 @@
-Removed dependency on Products.Sessions.
-It is still pulled in by Products.PluggableAuthService though.
-See also `CMFPlacefulWorkflow issue 35 <https://github.com/plone/Products.CMFPlacefulWorkflow/issues/35>`_.
-[maurits]

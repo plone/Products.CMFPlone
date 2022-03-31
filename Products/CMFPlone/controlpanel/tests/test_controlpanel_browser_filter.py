@@ -103,5 +103,5 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
         ds = datastream('dummy_name')
         self.assertEqual(
             self.safe_html.convert(good_html, ds).getData(),
-            '<p/>'
+            '<p></p>'
         )

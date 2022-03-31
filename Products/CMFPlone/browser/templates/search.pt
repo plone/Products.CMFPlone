@@ -32,7 +32,7 @@
           id="searchform"
           action="@@search"
           role="search"
-          class="searchPage pat-formautofocus"
+          class="searchPage pat-formautofocus pat-search"
           tal:define="portal context/@@plone_portal_state/portal;
                       first_call not:request/advanced_search|nothing;
                       st python:request.get('SearchableText', '');
@@ -310,8 +310,6 @@
         </div>
 
     </form>
-
-    <script type="text/javascript" src="${context/portal_url}/++resource++search.js"></script>
   </div>
 
 </body>

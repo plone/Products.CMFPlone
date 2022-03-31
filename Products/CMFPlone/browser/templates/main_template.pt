@@ -24,7 +24,7 @@
     <metal:cache tal:replace="structure provider:plone.httpheaders" />
 
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
 
     <div tal:replace="structure provider:plone.htmlhead" />
 
@@ -56,6 +56,10 @@
 
     <header id="portal-top" i18n:domain="plone">
       <div tal:replace="structure provider:plone.portaltop" />
+      <div id="portal-header">
+        <div tal:replace="structure provider:plone.portalheader" />
+      </div>
+
     </header>
 
     <div id="portal-mainnavigation" tal:content="structure provider:plone.mainnavigation">
