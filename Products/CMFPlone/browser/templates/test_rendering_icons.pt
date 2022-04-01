@@ -12,13 +12,13 @@
 
     <ul class="nav nav-tabs mb-3">
       <li class="nav-item">
-        <a class="nav-link active" href="${portal_url}/@@test-rendering">Test Rendering</a>
+        <a class="nav-link" href="${portal_url}/@@test-rendering">Test Rendering</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="${portal_url}/@@test-rendering-cheatsheet">Bootstrap Cheatsheet</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${portal_url}/@@test-rendering-icons">Icons</a>
+        <a class="nav-link active" href="${portal_url}/@@test-rendering-icons">Icons</a>
       </li>
     </ul>
 
