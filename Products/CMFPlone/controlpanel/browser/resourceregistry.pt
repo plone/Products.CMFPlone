@@ -38,7 +38,7 @@
           method="post" action="${python:context.absolute_url()}/@@resourceregistry-controlpanel">
       <div class="portalMessage statusmessage statusmessage-info alert alert-warning"
          role="alert">
-          <button name="action" value="deactivate_cache" type="submit" class="btn btn-primary ms-1 me-1 mb-1 float-end">Deactivate</button>
+          <button name="action" value="deactivate_cache" type="submit" class="btn btn-primary ms-1 me-1 mb-1 float-end" i18n:translate="">Deactivate</button>
         <tal:icon tal:replace="structure python:icons.tag('plone-statusmessage-warning', tag_alt='', tag_class='statusmessage-icon mb-1')" />
         <strong i18n:translate="">Resource Debug Mode Activated</strong>
         <span class="content"
@@ -53,7 +53,7 @@
           method="post" action="${python:context.absolute_url()}/@@resourceregistry-controlpanel">
       <div class="portalMessage statusmessage statusmessage-info alert alert-info"
          role="alert">
-          <button name="action" value="activate_cache" type="submit" class="btn btn-primary ms-1 me-1 mb-1 float-end">Activate Debug Mode</button>
+          <button name="action" value="activate_cache" type="submit" class="btn btn-primary ms-1 me-1 mb-1 float-end" i18n:translate="">Activate Debug Mode</button>
         <tal:icon tal:replace="structure python:icons.tag('plone-statusmessage-info', tag_alt='', tag_class='statusmessage-icon mb-1')" />
         <strong i18n:translate="">Production Mode Activated</strong>
         <span class="content"
@@ -72,7 +72,7 @@
               <span tal:condition="python:bundle['name'] and not bundle['enabled']" i18n:translate="" class="me-2"><tal:icon tal:replace="structure python:icons.tag('file-x', tag_alt='Disabled bundle')" /></span>
               <span tal:condition="python:not bundle['name']" i18n:translate="" class="me-2"><tal:icon tal:replace="structure python:icons.tag('file-plus', tag_alt='Add a bundle')" /></span>
               <strong tal:condition="python:bundle['name']">${python:bundle["name"]}</strong>
-              <strong tal:condition="python:not bundle['name']">Add new bundle</strong>
+              <strong tal:condition="python:not bundle['name']" i18n:translate="">Add new bundle</strong>
             </button>
           </h2>
           <div id="collapse-${python:bundle['safe_name']}" class="accordion-collapse ${python:'' if bundle['name'] == request.form.get('name', None) else 'collapse'}" aria-labelledby="heading${python:bundle['safe_name']}" data-bs-parent="#accordionRR">
@@ -80,7 +80,7 @@
               <form method="post" action="${python:context.absolute_url()}/@@resourceregistry-controlpanel">
                 <input type="hidden" name="original_name" value="${python:bundle['name']}" />
                 <div class="mb-3">
-                  <label for="name" class="form-label">Name</label>
+                  <label for="name" class="form-label" i18n:translate="label_bundle_name">Name</label>
                   <input type="text" class="form-control" name="name" value="${python:bundle['name']}"/>
                 </div>
                 <div class="mb-3">
@@ -93,34 +93,34 @@
                 </div>
                 <div class="form-check mb-3">
                   <input class="form-check-input" type="checkbox" value="" name="enabled" ${python:"checked" if bundle["enabled"] else ''} />
-                  <label class="form-check-label" for="enabled">
+                  <label class="form-check-label" for="enabled" i18n:translate="label_bundle_enabled">
                     enabled
                   </label>
                 </div>
                 <div class="mb-3">
-                  <label for="expression" class="form-label">Condition</label>
+                  <label for="expression" class="form-label" i18n:translate="label_bundle_condition">Condition</label>
                   <input type="text" class="form-control" name="expression" value="${python:bundle['expression']}" placeholder="expression"/>
                 </div>
                 <div class="mb-3">
-                  <label for="depends" class="form-label">Depends on</label>
+                  <label for="depends" class="form-label" i18n:translate="">Depends on</label>
                   <input type="text" class="form-control" name="depends" value="${python:bundle['depends']}" />
                 </div>
                 <div class="form-check mb-3">
                   <input class="form-check-input" type="checkbox" value="1" name="load_async" ${python:"checked" if bundle["load_async"] else ''} />
-                  <label class="form-check-label" for="load_async">
+                  <label class="form-check-label" for="load_async" i18n:translate="label_bundle_js_load_async">
                     Async
                   </label>
                 </div>
                 <div class="form-check mb-3">
                   <input class="form-check-input" type="checkbox" value="1" name="load_defer" ${python:"checked" if bundle["load_defer"] else ''} />
-                  <label class="form-check-label" for="load_defer">
+                  <label class="form-check-label" for="load_defer" i18n:translate="label_bundle_js_load_defer">
                     Defer
                   </label>
                 </div>
                 <div class="mb-3">
-                  <button tal:condition="python:bundle['name']" name="action" value="update" type="submit" class="btn btn-primary me-1">Save</button>
-                  <button tal:condition="python:not bundle['name']" name="action" value="add" type="submit" class="btn btn-success me-1">Add</button>
-                  <button tal:condition="python:bundle['name']" name="action" value="delete" type="submit" class="btn btn-danger">Delete</button>
+                  <button tal:condition="python:bundle['name']" name="action" value="update" type="submit" class="btn btn-primary me-1" i18n:translate="">Save</button>
+                  <button tal:condition="python:not bundle['name']" name="action" value="add" type="submit" class="btn btn-success me-1" i18n:translate="">Add</button>
+                  <button tal:condition="python:bundle['name']" name="action" value="delete" type="submit" class="btn btn-danger" i18n:translate="">Delete</button>
                 </div>
               </form>
           </div>
