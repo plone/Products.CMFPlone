@@ -42,29 +42,29 @@ Test for "template id" in <body> tag. See tickets #9111/#8777
 
     >>> browser.open('http://nohost/plone/front-page')
     >>> browser.contents
-    '...<body ... class="...template-document_view...'
+    '...<body ...class="...template-document_view...'
 
     >>> browser.contents
-    '...<body ... class="...portaltype-document...'
+    '...<body ...class="...portaltype-document...'
 
     >>> browser.contents
-    '...<body ... class="...site-plone...'
+    '...<body ...class="...site-plone...'
 
     >>> browser.contents
-    '...<body ... class="...section-front-page...'
+    '...<body ...class="...section-front-page...'
 
     >>> browser.open('http://nohost/plone/news')
     >>> browser.contents
-    '...<body ... class="...portaltype-collection...'
+    '...<body ...class="...portaltype-collection...'
 
     >>> browser.contents
-    '...<body ... class="...template-summary_view...'
+    '...<body ...class="...template-summary_view...'
 
     >>> browser.contents
-    '...<body ... class="...section-news...'
+    '...<body ...class="...section-news...'
 
     >>> browser.contents
-    '...<body ... class="...site-plone...'
+    '...<body ...class="...site-plone...'
 
 Login
 
@@ -77,10 +77,10 @@ Test explicit browser view
 
     >>> browser.open('http://nohost/plone/@@dashboard')
     >>> browser.contents
-    '...<body ... class="...template-dashboard...'
+    '...<body ...class="...template-dashboard...'
 
     >>> browser.contents
-    '...<body ... class="...portaltype-plone-site...'
+    '...<body ...class="...portaltype-plone-site...'
 
     >>> browser.contents
-    '...<body ... class="...site-plone...'
+    '...<body ...class="...site-plone...'

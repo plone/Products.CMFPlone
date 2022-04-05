@@ -20,7 +20,7 @@
             It meets the Web Content Accessibility Guidelines
 	    (<a href="https://www.w3.org/TR/WCAG20/"><acronym i18n:name="wcag"
                   title="Web Content Accessibility Guidelines"
-                  i18n:attributes="title title_wcag;">WCAG</acronym> v2.0</a>) level 'AA' for people with disabilities,
+                  i18n:attributes="title title_wcag;">WCAG</acronym> v2.1</a>) level 'AA' for people with disabilities,
             including blindness and low vision, deafness and hearing loss, learning disabilities,
             cognitive limitations, limited movement, speech disabilities, photosensitivity,
             and combinations of these.</tal:i18n></p>
@@ -54,7 +54,7 @@
         A number of checkpoints in
         <acronym i18n:name="wcag"
                  title="Web Content Accessibility Guidelines"
-                 i18n:attributes="title title_wcag;">WCAG</acronym> 2.0 and <acronym i18n:name="atag"
+                 i18n:attributes="title title_wcag;">WCAG</acronym> 2.1 and <acronym i18n:name="atag"
                  title="Authoring Tool Accessibility Guidelines"
                  i18n:attributes="title title_atag;">ATAG</acronym> 2.0 guidelines are
         subjective; there may be instances where interpretations vary.

@@ -14,6 +14,7 @@ Test Teardown  Run keywords  Plone Test Teardown
 
 *** Test cases ***************************************************************
 
+
 Scenario: Select All items
     Given a logged-in site administrator
       and a folder with four pages
@@ -23,25 +24,25 @@ Scenario: Select All items
       and the four elements got selected
       and the clear selection link appears
 
-#Scenario: Clear selection
-#    Given a site owner
-#      And four dummy pages on test folder
-#      And the folder contents view
-#      And I select all the elements
-#     When I clear the selection
-#     Then no elements should be selected
+Scenario: Clear selection
+   Given a logged-in site administrator
+     and a folder with four pages
+     and the folder contents view
+     And I select all the elements
+    When I clear the selection
+    Then no elements should be selected
 
-# XXX: This scenario only works on Firefox. In Chrome fails to do the Mouse Up
-# and Mouse Down correctly.
-#Scenario: Reorder Folder Contents
-#    Given a site owner
-#      And four dummy pages on test folder
-#     When the folder contents view
-#     Then the order should be 1 > 2 > 3 > 4
-#     When I reorder the elements
-#     Then the new order should be 4 > 3 > 2 > 1
+Scenario: Reorder Folder Contents
+   Given a logged-in site administrator
+     and a folder with four pages
+     and the folder contents view
+    Then The Order Should Be  1   2   3   4
+    When I reorder the elements
+    Then The Order Should Be  4   3   2   1
+
 
 *** Keywords *****************************************************************
+
 
 a folder with four pages
     ${folder_uid}=  Create content  type=Folder  title=My Folder
@@ -79,7 +80,7 @@ the clear selection link appears
     Page Should Contain Element  css=a.remove-all
 
 I clear the selection
-    Click link  id=selected
+    Click link  id=btn-selected-items
     Click link  css=a.remove-all
 
 no elements should be selected
@@ -88,41 +89,17 @@ no elements should be selected
     Checkbox Should Not Be Selected  css=tr[data-id="doc3"] input
     Checkbox Should Not Be Selected  css=tr[data-id="doc4"] input
 
-the order should be 1 > 2 > 3 > 4
-    Should be above  css=tr[data-id="doc1"]  css=tr[data-id="doc2"]
-    Should be above  css=tr[data-id="doc2"]  css=tr[data-id="doc3"]
-    Should be above  css=tr[data-id="doc3"]  css=tr[data-id="doc4"]
-
 I reorder the elements
-    # Moving items could fail on a fast computer
-    Set Selenium Speed  0.1 seconds
+    Click link  css=#btn-structure-rearrange
+    Click element  name=reversed
+    Click button  css=#popover-structure-rearrange .btn-primary
+    Wait until page contains  Successfully rearranged folder
 
-    # Moves the doc2 page above the doc1 page
-    Reorder Element  folder-contents-item-doc1  folder-contents-item-doc2
-
-    # Moves the doc4 page above the doc2 page
-    Reorder Element  folder-contents-item-doc4  folder-contents-item-doc3
-    Reorder Element  folder-contents-item-doc4  folder-contents-item-doc1
-    Reorder Element  folder-contents-item-doc4  folder-contents-item-doc2
-
-    # Moves the doc3 page above the doc2 page
-    Reorder Element  folder-contents-item-doc3  folder-contents-item-doc1
-    Reorder Element  folder-contents-item-doc3  folder-contents-item-doc2
-
-    # Go back to normal speed
-    Set Selenium Speed  0 seconds
-
-the new order should be 4 > 3 > 2 > 1
-    Should be above  css=tr#folder-contents-item-doc4  css=tr#folder-contents-item-doc3
-    Should be above  css=tr#folder-contents-item-doc3  css=tr#folder-contents-item-doc2
-    Should be above  css=tr#folder-contents-item-doc2  css=tr#folder-contents-item-doc1
-
-Reorder Element
-    [arguments]  ${element}  ${destination}
-
-    Mouse Down  xpath=//tr[@id='${element}']/td
-    Mouse Up    xpath=//tr[@id='${destination}']/td
-    Mouse Out   xpath=//tr[@id='${element}']/td
+The Order Should Be
+    [Arguments]  ${first}  ${second}  ${third}  ${fourth}
+    Should be above  css=tr[data-id="doc${first}"]   css=tr[data-id="doc${second}"]
+    Should be above  css=tr[data-id="doc${second}"]  css=tr[data-id="doc${third}"]
+    Should be above  css=tr[data-id="doc${third}"]   css=tr[data-id="doc${fourth}"]
 
 Should be above
     [Arguments]  ${locator1}  ${locator2}

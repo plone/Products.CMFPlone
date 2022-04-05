@@ -32,7 +32,7 @@ class TinyMCESettingsGenerator:
         return theming_policy().get_theme()
 
     def get_content_css(self, style_css=""):
-        files = [f"{self.nav_root_url}/++plone++static/plone-compiled.css"]
+        files = []
         if style_css:
             files.extend(style_css.split(","))
         content_css = self.settings.content_css or []
@@ -94,9 +94,7 @@ class TinyMCESettingsGenerator:
 
     def get_tiny_config(self):
         settings = self.settings
-        importcss_file_filter = "%s/++plone++static/tinymce-styles.css" % (
-            self.nav_root_url
-        )
+        importcss_file_filter = ""
 
         theme = self.get_theme()
         if theme and getattr(theme, "tinymce_styles_css", None):
