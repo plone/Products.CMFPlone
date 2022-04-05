@@ -1,1 +1,0 @@
-Add TinyMCE alignment classes, to avoid style usage [MrTango]

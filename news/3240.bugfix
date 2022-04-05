@@ -1,3 +1,0 @@
-Removed no longer used ``password_form.pt`` and ``plone_change_password.py``.
-No longer register now empty skin layers ``plone_prefs`` and ``plone_form_scripts``.
-[maurits]

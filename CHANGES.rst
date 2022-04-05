@@ -12,6 +12,103 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.0a4.dev0 (2022-04-06)
+-------------------------
+
+Breaking changes:
+
+
+- PLIP 3211:
+
+  - Remove RequireJS.
+  - Remove default resource jQuery. It is added to the global namespace via the bundle.
+  - Remove support for conditional comments in script and style tags.
+    It's not supported since IE10.
+    See: https://en.wikipedia.org/wiki/Conditional_comment
+
+  [MrTango, thet] (#3247)
+- Remove dependency on mockup. Mockup is now a npm package only and as such a dependency of plone.staticresources.
+  [thet] (#3247)
+- New resource registry to simplify CSS/JS registration.
+
+  - Completely (almost) rewritten ResourceRegistry based on the "webresource" project.
+  - removed >1600LOC.
+  - Sane dependency resolution using "webresource".
+  - Only "bundles" are registered - support of "resources" and "bundle resources" is removed.
+  - Some of the old bundle registry properties are deprecated and unused.
+  - Removed TTW compilation of bundles via r.js and less.js.
+  - Property `merge_with` is no longer needed in HTTP/2 times and merging here unsupported.
+  - Unique key for delivery is based on hash of bundle file, `last_compilation` property is deprecated.
+  - A new traverser ensures uniqueness.
+  - Other related bundle properties are also deprecated.
+  - Comes with new, server side generated control panel.
+
+  [jensens] (#3325)
+
+
+New features:
+
+
+- PLIP #3279: Implement modern images scales. Add huge (1600px), great (1200px), larger (1000px), teaser (600px). Amend preview and mini (remove height constraint).
+  [tisto] (#3279)
+- Add TinyMCE template plugin to the plugins vocabulary [MrTango] (#3351)
+- Add TinyMCE alignment classes, to avoid style usage [MrTango] (#3440)
+- Compatibility with z3c.form >= 4
+  [petschki] (#3459)
+
+
+Bug fixes:
+
+
+- Fixed evaluating expressions on resources, and especially loading ``plone.session`` resources.
+  Fixes `plone.session` issue 23 <https://github.com/plone/plone.session/issues/23>_.
+  [maurits] (#23)
+- Handle /favicon.ico accesses on Plone sites. (#282)
+- Fixed tests when run with ``zope.component`` 5+.
+  [maurits] (#500)
+- Remove Configlets, Change Member Password and Member Prefs not needed in Overview Controlpanel
+  both Views available via User Control Panel
+
+  the deleton of "Change Member Password" Configlet remove also the issue #3031
+  [1letter] (#3031)
+- Removed no longer used ``password_form.pt`` and ``plone_change_password.py``.
+  No longer register now empty skin layers ``plone_prefs`` and ``plone_form_scripts``.
+  [maurits] (#3240)
+- Fix TinyMCE configuration JSON serialization and cast entity_encoding to a list. (#3247)
+- Make author template barceloneta/bs5 ready. Add some CSS classes to Markup. 
+  [1letter] (#3290)
+- Use behavior-names instead of python-paths in types-controlpanel
+  [pbauer] (#3294)
+- Fix broken link in the RelationsInspectControlpanel
+  prepend absolute portal url to links
+  add RelationsControlPanelFunctionalTest
+  [1letter] (#3322)
+- Fix missing closing BODY tag in insufficient_privileges.pt
+  [1letter] (#3374)
+- Reorganize viewlets after removing the plone.header viewlet in plone.app.layout
+  [erral] (#3416)
+- Fix `login-help` validation
+  [petschki] (#3422)
+- Fix info message (char left over) in quickinstaller template
+  [laulaz] (#3430)
+- Fix overview-controlpanel view for Gunicorn WSGI HTTP Server.
+  [bsuttor] (#3442)
+- Fix detection of initial login time [MrTango] (#3447)
+- Updated the list of core profiles that are upgraded during a Plone upgrade.
+  Added ``Products.PlonePAS`` and ``plone.session``, and the optional ``plone.restapi`` and ``plone.volto``.
+  [maurits] (#3453)
+- Remove obsolete css files previously used in tinymce.
+  [pbauer] (#3463)
+- Add missing i18n:translate tags
+  [erral] (#3467)
+- Remove obsolte combine_bundles and related code.
+  [pbauer] (#3468)
+- Enhanced folder_contents robot tests
+  [petschki] (#3478)
+- Updated metadata version to 6004.
+  [maurits] (#6004)
+
+
 6.0.0a3 (2022-01-28)
 --------------------
 
