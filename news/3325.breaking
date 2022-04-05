@@ -11,4 +11,5 @@ New resource registry to simplify CSS/JS registration.
 - A new traverser ensures uniqueness.
 - Other related bundle properties are also deprecated.
 - Comes with new, server side generated control panel.
+
 [jensens]
