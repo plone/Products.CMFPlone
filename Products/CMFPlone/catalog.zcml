@@ -3,7 +3,7 @@
     <!-- Register the default indexable object wrapper -->
     <adapter
         for="Products.CMFCore.interfaces.ICatalogAware
-             Products.CMFPlone.interfaces.IPloneCatalogTool"
+             plone.base.interfaces.IPloneCatalogTool"
         factory="plone.indexer.wrapper.IndexableObjectWrapper"
         provides="plone.indexer.interfaces.IIndexableObject"
         />

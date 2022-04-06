@@ -2,7 +2,7 @@ from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import IFilterSchema
+from plone.base.interfaces import IFilterSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from Products.PortalTransforms.data import datastream
 from zope.component import getMultiAdapter

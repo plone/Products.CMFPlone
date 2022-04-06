@@ -3,6 +3,7 @@ from plone.registry.interfaces import IRegistry
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
 import unittest
 
 
@@ -22,7 +23,7 @@ class DefaultPageTestCase(unittest.TestCase):
         self.folder.setDefaultPage('d1')
         self.folder.invokeFactory('Document', 'index_html', title="Doc 2")
 
-        from Products.CMFPlone.defaultpage import get_default_page
+        from plone.base.defaultpage import get_default_page
         self.assertEqual('index_html', get_default_page(self.folder))
 
     def test_get_default_page_step_2(self):
@@ -55,7 +56,7 @@ class DefaultPageTestCase(unittest.TestCase):
         )
 
         # now test since we're sure everythings set up correctly
-        from Products.CMFPlone.defaultpage import get_default_page
+        from plone.base.defaultpage import get_default_page
         self.assertEqual('d1', get_default_page(self.folder))
 
         # missing here:
@@ -67,7 +68,7 @@ class DefaultPageTestCase(unittest.TestCase):
         #    acquisition in place
         # 3.1 look for a content in the container with the id, no acquisition!
         self.folder.invokeFactory('Document', 'd1', title="Doc 1")
-        from Products.CMFPlone.defaultpage import get_default_page
+        from plone.base.defaultpage import get_default_page
 
         # set doc d1 must work
         self.folder.default_page = 'd1'
@@ -97,7 +98,7 @@ class DefaultPageTestCase(unittest.TestCase):
         # 3.2 look for a content at portal, with acquisition
         self.portal.invokeFactory('Document', 'd1', title="Doc 1")
         self.folder.default_page = 'd1'
-        from Products.CMFPlone.defaultpage import get_default_page
+        from plone.base.defaultpage import get_default_page
 
         # now it must acquire from portal
         self.assertEqual('d1', get_default_page(self.folder))
@@ -109,5 +110,5 @@ class DefaultPageTestCase(unittest.TestCase):
         registry['plone.default_page'] = ['d1']
         self.folder.invokeFactory('Document', 'd1', title="Doc 1")
 
-        from Products.CMFPlone.defaultpage import get_default_page
+        from plone.base.defaultpage import get_default_page
         self.assertEqual('d1', get_default_page(self.folder))

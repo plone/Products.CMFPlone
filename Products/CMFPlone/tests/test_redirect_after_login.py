@@ -2,8 +2,8 @@ from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.testing.zope import Browser
 from Products.CMFPlone.browser.login.login import LoginForm
-from Products.CMFPlone.interfaces import IInitialLogin
-from Products.CMFPlone.interfaces import IRedirectAfterLogin
+from plone.base.interfaces import IInitialLogin
+from plone.base.interfaces import IRedirectAfterLogin
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zope.interface import implementer

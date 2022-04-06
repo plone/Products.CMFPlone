@@ -37,7 +37,7 @@ class PropertySheetXMLAdapterTests(BodyAdapterTestCase):
             'displayPublicationDateInByline', True, 'boolean')
 
     def setUp(self):
-        from Products.CMFPlone.interfaces import ISimpleItemWithProperties
+        from plone.base.interfaces import ISimpleItemWithProperties
         from Products.GenericSetup.interfaces import ISetupEnviron
         from Products.GenericSetup.interfaces import IBody
         provideAdapter(
@@ -66,8 +66,8 @@ class PropertiesToolXMLAdapterTests(BodyAdapterTestCase):
     def setUp(self):
         from Products.CMFPlone.exportimport.propertiestool \
             import SimpleItemWithPropertiesXMLAdapter
-        from Products.CMFPlone.interfaces import IPropertiesTool
-        from Products.CMFPlone.interfaces import ISimpleItemWithProperties
+        from plone.base.interfaces import IPropertiesTool
+        from plone.base.interfaces import ISimpleItemWithProperties
         from Products.GenericSetup.interfaces import ISetupEnviron
         from Products.GenericSetup.interfaces import IBody
         provideAdapter(

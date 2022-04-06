@@ -1,6 +1,6 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+from plone.base.interfaces.controlpanel import IMailSchema
 from Products.MailHost.MailHost import MailHostError
 from Products.statusmessages.interfaces import IStatusMessage
 from logging import getLogger

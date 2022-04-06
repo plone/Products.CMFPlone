@@ -1,4 +1,4 @@
-from Products.CMFPlone.interfaces import IMarkupSchema
+from plone.base.interfaces import IMarkupSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility

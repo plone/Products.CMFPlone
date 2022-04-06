@@ -2,7 +2,7 @@ from zope.interface import Interface, implementer
 from zope.component import adapter
 from Acquisition import aq_base
 from Products.CMFCore.interfaces import IWorkflowTool
-from Products.CMFPlone.interfaces import IWorkflowChain
+from plone.base.interfaces import IWorkflowChain
 
 
 @adapter(Interface, IWorkflowTool)

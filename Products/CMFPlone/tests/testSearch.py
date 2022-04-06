@@ -11,7 +11,7 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 
-from Products.CMFPlone.interfaces import ISearchSchema
+from plone.base.interfaces import ISearchSchema
 
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.textfield import RichTextValue

@@ -8,7 +8,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
-from Products.CMFPlone.interfaces import IMigrationTool
+from plone.base.interfaces import IMigrationTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from io import StringIO
 from ZODB.POSException import ConflictError

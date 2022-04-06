@@ -5,7 +5,7 @@ from plone.testing.zope import Browser
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
-from Products.CMFPlone.interfaces import IMailSchema
+from plone.base.interfaces import IMailSchema
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 

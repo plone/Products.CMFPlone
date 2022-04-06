@@ -1,6 +1,6 @@
 from AccessControl.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
-from Products.CMFPlone.interfaces import IPloneBaseTool
+from plone.base.interfaces import IPloneBaseTool
 from Acquisition import aq_base
 from Acquisition import aq_parent
 from Acquisition import aq_inner

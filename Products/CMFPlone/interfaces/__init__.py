@@ -1,69 +1,65 @@
-# flake8: noqa
-from Products.CMFPlone.interfaces.basetool import IPloneBaseTool
-from Products.CMFPlone.interfaces.basetool import IPloneCatalogTool
-from Products.CMFPlone.interfaces.basetool import IPloneTool
-from Products.CMFPlone.interfaces.breadcrumbs import IHideFromBreadcrumbs
-from Products.CMFPlone.interfaces.constrains import IConstrainTypes
-from Products.CMFPlone.interfaces.constrains import ISelectableConstrainTypes
-from Products.CMFPlone.interfaces.controlpanel import IActionSchema
-from Products.CMFPlone.interfaces.controlpanel import IControlPanel
-from Products.CMFPlone.interfaces.controlpanel import IDateAndTimeSchema
-from Products.CMFPlone.interfaces.controlpanel import IEditingSchema
-from Products.CMFPlone.interfaces.controlpanel import IFilterSchema
-from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
-from Products.CMFPlone.interfaces.controlpanel import ILinkSchema
-from Products.CMFPlone.interfaces.controlpanel import ILoginSchema
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema
-from Products.CMFPlone.interfaces.controlpanel import IMaintenanceSchema
-from Products.CMFPlone.interfaces.controlpanel import IMarkupSchema
-from Products.CMFPlone.interfaces.controlpanel import INavigationSchema
-from Products.CMFPlone.interfaces.controlpanel import INewActionSchema
-from Products.CMFPlone.interfaces.controlpanel import ISearchSchema
-from Products.CMFPlone.interfaces.controlpanel import ISecuritySchema
-from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
-from Products.CMFPlone.interfaces.controlpanel import ISocialMediaSchema
-from Products.CMFPlone.interfaces.controlpanel import ITinyMCEAdvancedSchema
-from Products.CMFPlone.interfaces.controlpanel import ITinyMCELayoutSchema
-from Products.CMFPlone.interfaces.controlpanel import ITinyMCEPluginSchema
-from Products.CMFPlone.interfaces.controlpanel import ITinyMCEResourceTypesSchema
-from Products.CMFPlone.interfaces.controlpanel import ITinyMCESchema
-from Products.CMFPlone.interfaces.controlpanel import ITinyMCESpellCheckerSchema
-from Products.CMFPlone.interfaces.controlpanel import ITypesSchema
-from Products.CMFPlone.interfaces.controlpanel import IUserGroupsSettingsSchema
-from Products.CMFPlone.interfaces.events import IConfigurationChangedEvent
-from Products.CMFPlone.interfaces.events import IReorderedEvent
-from Products.CMFPlone.interfaces.events import ISiteManagerCreatedEvent
-from Products.CMFPlone.interfaces.installable import INonInstallable
-from Products.CMFPlone.interfaces.interface import IInterfaceTool
-from Products.CMFPlone.interfaces.language import ILanguage
-from Products.CMFPlone.interfaces.login import IForcePasswordChange
-from Products.CMFPlone.interfaces.login import IInitialLogin
-from Products.CMFPlone.interfaces.login import ILogin
-from Products.CMFPlone.interfaces.login import ILoginForm
-from Products.CMFPlone.interfaces.login import ILoginFormSchema
-from Products.CMFPlone.interfaces.login import ILoginHelpForm
-from Products.CMFPlone.interfaces.login import ILoginHelpFormSchema
-from Products.CMFPlone.interfaces.login import IRedirectAfterLogin
-from Products.CMFPlone.interfaces.migration import IMigrationTool
-from Products.CMFPlone.interfaces.password_reset import IPasswordResetToolView
-from Products.CMFPlone.interfaces.password_reset import IPWResetTool
-from Products.CMFPlone.interfaces.patterns import IPatternsSettings
-from Products.CMFPlone.interfaces.properties import IPropertiesTool
-from Products.CMFPlone.interfaces.properties import ISimpleItemWithProperties
-from Products.CMFPlone.interfaces.resources import IBundleRegistry
-from Products.CMFPlone.interfaces.resources import IResourceRegistry
-from Products.CMFPlone.interfaces.siteroot import IMigratingPloneSiteRoot
-from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
-from Products.CMFPlone.interfaces.siteroot import ITestCasePloneSiteRoot
-from Products.CMFPlone.interfaces.structure import INonStructuralFolder
-from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
-from Products.CMFPlone.interfaces.translationservice import ITranslationServiceTool
-from Products.CMFPlone.interfaces.workflow import IWorkflowChain
-
 from zope.deferredimport import deprecated
 
-
 deprecated(
-    "It has been moved to plone.i18n.interfaces, import from there instead.",
-    ILanguageSchema='plone.i18n.interfaces:ILanguageSchema',
+    "Moved to plone.base.interfaces, import from there instead (removed in Plone 7).",
+    IPloneBaseTool="plone.base.interfaces.basetool:IPloneBaseTool",
+    IPloneCatalogTool="plone.base.interfaces.basetool:IPloneCatalogTool",
+    IPloneTool="plone.base.interfaces.basetool:IPloneTool",
+    IHideFromBreadcrumbs="plone.base.interfaces.breadcrumbs:IHideFromBreadcrumbs",
+    IConstrainTypes="plone.base.interfaces.constrains:IConstrainTypes",
+    ISelectableConstrainTypes="plone.base.interfaces.constrains:ISelectableConstrainTypes",
+    IActionSchema="plone.base.interfaces.controlpanel:IActionSchema",
+    IControlPanel="plone.base.interfaces.controlpanel:IControlPanel",
+    IDateAndTimeSchema="plone.base.interfaces.controlpanel:IDateAndTimeSchema",
+    IEditingSchema="plone.base.interfaces.controlpanel:IEditingSchema",
+    IFilterSchema="plone.base.interfaces.controlpanel:IFilterSchema",
+    IImagingSchema="plone.base.interfaces.controlpanel:IImagingSchema",
+    ILinkSchema="plone.base.interfaces.controlpanel:ILinkSchema",
+    ILoginSchema="plone.base.interfaces.controlpanel:ILoginSchema",
+    IMailSchema="plone.base.interfaces.controlpanel:IMailSchema",
+    IMaintenanceSchema="plone.base.interfaces.controlpanel:IMaintenanceSchema",
+    IMarkupSchema="plone.base.interfaces.controlpanel:IMarkupSchema",
+    INavigationSchema="plone.base.interfaces.controlpanel:INavigationSchema",
+    INewActionSchema="plone.base.interfaces.controlpanel:INewActionSchema",
+    ISearchSchema="plone.base.interfaces.controlpanel:ISearchSchema",
+    ISecuritySchema="plone.base.interfaces.controlpanel:ISecuritySchema",
+    ISiteSchema="plone.base.interfaces.controlpanel:ISiteSchema",
+    ISocialMediaSchema="plone.base.interfaces.controlpanel:ISocialMediaSchema",
+    ITinyMCEAdvancedSchema="plone.base.interfaces.controlpanel:ITinyMCEAdvancedSchema",
+    ITinyMCELayoutSchema="plone.base.interfaces.controlpanel:ITinyMCELayoutSchema",
+    ITinyMCEPluginSchema="plone.base.interfaces.controlpanel:ITinyMCEPluginSchema",
+    ITinyMCEResourceTypesSchema="plone.base.interfaces.controlpanel:ITinyMCEResourceTypesSchema",
+    ITinyMCESchema="plone.base.interfaces.controlpanel:ITinyMCESchema",
+    ITinyMCESpellCheckerSchema="plone.base.interfaces.controlpanel:ITinyMCESpellCheckerSchema",
+    ITypesSchema="plone.base.interfaces.controlpanel:ITypesSchema",
+    IUserGroupsSettingsSchema="plone.base.interfaces.controlpanel:IUserGroupsSettingsSchema",
+    IConfigurationChangedEvent="plone.base.interfaces.events:IConfigurationChangedEvent",
+    IReorderedEvent="plone.base.interfaces.events:IReorderedEvent",
+    ISiteManagerCreatedEvent="plone.base.interfaces.events:ISiteManagerCreatedEvent",
+    INonInstallable="plone.base.interfaces.installable:INonInstallable",
+    IInterfaceTool="plone.base.interfaces.interface:IInterfaceTool",
+    ILanguage="plone.base.interfaces.language:ILanguage",
+    IForcePasswordChange="plone.base.interfaces.login:IForcePasswordChange",
+    IInitialLogin="plone.base.interfaces.login:IInitialLogin",
+    ILogin="plone.base.interfaces.login:ILogin",
+    ILoginForm="plone.base.interfaces.login:ILoginForm",
+    ILoginFormSchema="plone.base.interfaces.login:ILoginFormSchema",
+    ILoginHelpForm="plone.base.interfaces.login:ILoginHelpForm",
+    ILoginHelpFormSchema="plone.base.interfaces.login:ILoginHelpFormSchema",
+    IRedirectAfterLogin="plone.base.interfaces.login:IRedirectAfterLogin",
+    IMigrationTool="plone.base.interfaces.migration:IMigrationTool",
+    IPasswordResetToolView="plone.base.interfaces.password_reset:IPasswordResetToolView",
+    IPWResetTool="plone.base.interfaces.password_reset:IPWResetTool",
+    IPatternsSettings="plone.base.interfaces.patterns:IPatternsSettings",
+    IPropertiesTool="plone.base.interfaces.properties:IPropertiesTool",
+    ISimpleItemWithProperties="plone.base.interfaces.properties:ISimpleItemWithProperties",
+    IBundleRegistry="plone.base.interfaces.resources:IBundleRegistry",
+    IResourceRegistry="plone.base.interfaces.resources:IResourceRegistry",
+    IMigratingPloneSiteRoot="plone.base.interfaces.siteroot:IMigratingPloneSiteRoot",
+    IPloneSiteRoot="plone.base.interfaces.siteroot:IPloneSiteRoot",
+    ITestCasePloneSiteRoot="plone.base.interfaces.siteroot:ITestCasePloneSiteRoot",
+    INonStructuralFolder="plone.base.interfaces.structure:INonStructuralFolder",
+    ISiteSyndicationSettings="plone.base.interfaces.syndication:ISiteSyndicationSettings",
+    ITranslationServiceTool="plone.base.interfaces.translationservice:ITranslationServiceTool",
+    IWorkflowChain="plone.base.interfaces.workflow:IWorkflowChain",
 )

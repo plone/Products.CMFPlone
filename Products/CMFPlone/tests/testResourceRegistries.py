@@ -2,7 +2,7 @@ from plone.app.testing import logout
 from plone.registry import field as regfield
 from plone.registry import Record
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import IBundleRegistry
+from plone.base.interfaces import IBundleRegistry
 from Products.CMFPlone.resources import add_bundle_on_request
 from Products.CMFPlone.resources import remove_bundle_on_request
 from Products.CMFPlone.resources.browser.resource import ScriptsView

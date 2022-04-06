@@ -4,7 +4,7 @@ from plone.uuid.handlers import addAttributeUUID
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.events import SiteManagerCreatedEvent
-from Products.CMFPlone.interfaces import INonInstallable
+from plone.base.interfaces import INonInstallable
 from Products.CMFPlone.Portal import PloneSite
 from Products.GenericSetup.tool import SetupTool
 from Products.statusmessages.interfaces import IStatusMessage

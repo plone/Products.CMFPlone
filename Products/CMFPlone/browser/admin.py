@@ -4,8 +4,8 @@ from OFS.interfaces import IApplication
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.factory import addPloneSite
-from Products.CMFPlone.interfaces import INonInstallable
-from Products.CMFPlone.interfaces import IPloneSiteRoot
+from plone.base.interfaces import INonInstallable
+from plone.base.interfaces import IPloneSiteRoot
 from Products.CMFPlone.utils import get_installer
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.GenericSetup import BASE, EXTENSION

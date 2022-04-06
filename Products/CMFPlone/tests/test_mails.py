@@ -4,7 +4,7 @@ from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.registry.interfaces import IRegistry
 from plone.testing import layered
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+from plone.base.interfaces.controlpanel import IMailSchema
 from zope.component import getUtility
 
 import doctest

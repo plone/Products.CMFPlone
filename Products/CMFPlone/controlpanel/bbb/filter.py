@@ -1,5 +1,5 @@
-from Products.CMFPlone.interfaces import IFilterSchema
-from Products.CMFPlone.interfaces import IPloneSiteRoot
+from plone.base.interfaces import IFilterSchema
+from plone.base.interfaces import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
 from zope.component import adapts
 from zope.component import getUtility

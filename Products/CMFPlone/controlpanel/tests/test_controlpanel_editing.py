@@ -1,5 +1,5 @@
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import IEditingSchema
+from plone.base.interfaces import IEditingSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.registry.interfaces import IRegistry
 from zope.component import getMultiAdapter

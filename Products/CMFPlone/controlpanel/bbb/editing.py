@@ -2,9 +2,9 @@ from zope.component import adapts
 from zope.interface import implementer
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import IPloneSiteRoot
+from plone.base.interfaces import IPloneSiteRoot
 
-from Products.CMFPlone.interfaces import IEditingSchema
+from plone.base.interfaces import IEditingSchema
 
 
 @implementer(IEditingSchema)

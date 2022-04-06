@@ -1,11 +1,3 @@
-from zope.interface import Interface
+from zope.deprecation import moved
 
-
-# Language-support
-class ILanguage(Interface):
-
-    def get_language(self):
-        """ return the contents language """
-
-    def set_language(self):
-        """ return the contents language """
+moved('plone.base.interfaces.language', 'Version 7.0')

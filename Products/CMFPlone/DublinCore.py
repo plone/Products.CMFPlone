@@ -12,22 +12,21 @@
 ##############################################################################
 """ Dublin Core support for content types. """
 
+from AccessControl.class_init import InitializeClass
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from AccessControl.SecurityManagement import getSecurityManager
 from Acquisition import aq_base
-from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 from DateTime.DateTime import DateTime
 from OFS.PropertyManager import PropertyManager
-from zope.interface import implementer
-
+from plone.base.permissions import ModifyPortalContent
+from plone.base.permissions import View
 from Products.CMFCore.interfaces import ICatalogableDublinCore
 from Products.CMFCore.interfaces import IDublinCore
 from Products.CMFCore.interfaces import IMutableDublinCore
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.permissions import ModifyPortalContent
-from Products.CMFPlone.permissions import View
 from Products.CMFPlone.utils import WWW_DIR
+from zope.interface import implementer
 
 
 _marker = []

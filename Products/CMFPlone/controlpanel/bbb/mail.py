@@ -1,5 +1,5 @@
-from Products.CMFPlone.interfaces import IPloneSiteRoot
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+from plone.base.interfaces import IPloneSiteRoot
+from plone.base.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.utils import safe_hasattr
 from plone.registry.interfaces import IRegistry
 from zope.component import adapts

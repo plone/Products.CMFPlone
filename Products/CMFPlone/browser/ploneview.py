@@ -111,7 +111,7 @@ class Plone(BrowserView):
             return text
         converted = False
         if not isinstance(text, str):
-            text = utils.safe_unicode(text)
+            text = utils.safe_text(text)
             converted = True
         if len(text) > length:
             text = text[:length]

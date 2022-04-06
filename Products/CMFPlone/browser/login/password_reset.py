@@ -2,22 +2,23 @@ from AccessControl.SecurityManagement import getSecurityManager
 from DateTime import DateTime
 from email.header import Header
 from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.base.interfaces import IPasswordResetToolView
+from plone.base.interfaces.controlpanel import IMailSchema
+from plone.base.utils import safe_text
+from plone.base.utils import safeToInt
 from plone.memoize import view
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import IPasswordResetToolView
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.PasswordResetTool import ExpiredRequestError
 from Products.CMFPlone.PasswordResetTool import InvalidRequestError
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name
-from Products.CMFPlone.utils import safe_unicode
-from Products.CMFPlone.utils import safeToInt
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PlonePAS.events import UserInitialLoginInEvent
 from Products.PlonePAS.events import UserLoggedInEvent
-from Products.PluggableAuthService.interfaces.plugins import ICredentialsUpdatePlugin  # noqa
+from Products.PluggableAuthService.interfaces.plugins import \
+    ICredentialsUpdatePlugin
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -39,7 +40,7 @@ class PasswordResetToolView(BrowserView):
 
     def encode_mail_header(self, text):
         """ Encodes text into correctly encoded email header """
-        return Header(safe_unicode(text), 'utf-8')
+        return Header(safe_text(text), 'utf-8')
 
     def encoded_mail_sender(self):
         """ returns encoded version of Portal name <portal_email> """
@@ -55,7 +56,7 @@ class PasswordResetToolView(BrowserView):
             _(
                 'mailtemplate_user_account_info',
                 default='User Account Information for ${portal_name}',
-                mapping={'portal_name': safe_unicode(portal_name)},
+                mapping={'portal_name': safe_text(portal_name)},
             ),
             context=self.request,
         )

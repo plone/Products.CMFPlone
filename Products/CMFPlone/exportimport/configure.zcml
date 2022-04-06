@@ -114,14 +114,14 @@
   <adapter
      factory=".propertiestool.PlonePropertiesToolXMLAdapter"
      provides="Products.GenericSetup.interfaces.IBody"
-     for="Products.CMFPlone.interfaces.IPropertiesTool
+     for="plone.base.interfaces.IPropertiesTool
           Products.GenericSetup.interfaces.ISetupEnviron"
      />
 
   <adapter
      factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
      provides="Products.GenericSetup.interfaces.IBody"
-     for="Products.CMFPlone.interfaces.ISimpleItemWithProperties
+     for="plone.base.interfaces.ISimpleItemWithProperties
           Products.GenericSetup.interfaces.ISetupEnviron"
      />
 
@@ -142,7 +142,7 @@
   <adapter
      factory=".controlpanel.ControlPanelXMLAdapter"
      provides="Products.GenericSetup.interfaces.IBody"
-     for="Products.CMFPlone.interfaces.IControlPanel
+     for="plone.base.interfaces.IControlPanel
           Products.GenericSetup.interfaces.ISetupEnviron"
      />
 

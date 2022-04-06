@@ -12,10 +12,10 @@ from OFS.interfaces import IItem
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
-from Products.CMFPlone.interfaces.syndication import IFeed
-from Products.CMFPlone.interfaces.syndication import IFeedItem
-from Products.CMFPlone.interfaces.syndication import ISearchFeed
-from Products.CMFPlone.interfaces.syndication import IFeedSettings
+from plone.base.interfaces.syndication import IFeed
+from plone.base.interfaces.syndication import IFeedItem
+from plone.base.interfaces.syndication import ISearchFeed
+from plone.base.interfaces.syndication import IFeedSettings
 from Products.CMFPlone.utils import getSiteLogo
 
 from plone.registry.interfaces import IRegistry

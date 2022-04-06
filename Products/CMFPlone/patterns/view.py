@@ -1,6 +1,6 @@
 # This module delivers the global patterns settings
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import IPatternsSettings
+from plone.base.interfaces import IPatternsSettings
 from zope.component import getAdapters
 from zope.component import getMultiAdapter
 from zope.component import getUtility
