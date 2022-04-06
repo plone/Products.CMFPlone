@@ -94,7 +94,7 @@ setup(
         'Products.CMFUid',
         'Products.DCWorkflow',
         'Products.ExtendedPathIndex',
-        'Products.GenericSetup >= 2.0',
+        'Products.GenericSetup >= 2.2.0',
         'Products.isurlinportal',
         'Products.MimetypesRegistry',
         'Products.PlonePAS',

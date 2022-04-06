@@ -260,22 +260,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         # using a newer plone.app.upgrade version should not give problems.
         setup = getToolByName(self, 'portal_setup')
         fs_version = self.getFileSystemVersion()
-        steps = setup.listUpgrades(_DEFAULT_PROFILE)
-        upgrades = []
-        for upgrade_step in steps:
-            if isinstance(upgrade_step, list):
-                # This is a nested list of upgrade steps,
-                # which must have the same destination.
-                # So take the first one.
-                if not upgrade_step:
-                    # Empty list, not sure if this can happen in practice.
-                    continue
-                dest = upgrade_step[0].get('sdest')
-            else:
-                dest = upgrade_step.get('sdest')
-            if dest > fs_version and dest != 'all':
-                break
-            upgrades.append(upgrade_step)
+        upgrades = setup.listUpgrades(_DEFAULT_PROFILE, dest=fs_version)
         return upgrades
 
     security.declareProtected(ManagePortal, 'upgrade')
