@@ -1,14 +1,12 @@
+from plone.base.interfaces import IReorderedEvent
+from plone.base.interfaces import ISiteManagerCreatedEvent
+from plone.base.utils import get_installer
 from zope.interface import implementer
 from zope.interface.interfaces import ObjectEvent
-from Products.CMFPlone.utils import get_installer
-
-from .interfaces import ISiteManagerCreatedEvent
-from .interfaces import IReorderedEvent
 
 
 @implementer(ISiteManagerCreatedEvent)
 class SiteManagerCreatedEvent(ObjectEvent):
-
     pass
 
 

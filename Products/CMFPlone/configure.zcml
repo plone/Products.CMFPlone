@@ -61,7 +61,6 @@
   <include package=".browser" />
   <include package=".exportimport" />
 
-  <include file="deprecated.zcml"/>
   <include file="profiles.zcml"/>
   <include file="catalog.zcml" />
 

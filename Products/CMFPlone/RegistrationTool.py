@@ -9,6 +9,8 @@ from Acquisition import aq_base
 from Acquisition import aq_chain
 from email import message_from_string
 from hashlib import md5
+from plone.base import PloneMessageFactory as _
+from plone.base.interfaces import ISecuritySchema
 from plone.base.permissions import ManagePortal
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import ISiteRoot
@@ -16,11 +18,9 @@ from Products.CMFCore.permissions import AddPortalMember
 from Products.CMFCore.RegistrationTool import RegistrationTool as BaseTool
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
-from plone.base.interfaces import ISecuritySchema
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
-from Products.PluggableAuthService.interfaces.authservice import IPluggableAuthService  # noqa: E501
+from Products.PluggableAuthService.interfaces.authservice import IPluggableAuthService
 from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin
 from Products.PluggableAuthService.permissions import SetOwnPassword
 from smtplib import SMTPException

@@ -1,11 +1,11 @@
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from plone.base.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
 from plone.resource.file import FilesystemFile
 from plone.resource.interfaces import IResourceDirectory
 from Products.CMFCore.Expression import createExprContext
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
 from zExceptions import NotFound
 from zope.component import queryUtility
 
