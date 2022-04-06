@@ -5,6 +5,15 @@ from Acquisition import aq_base
 from ComputedAttribute import ComputedAttribute
 from five.localsitemanager.registry import PersistentComponents
 from OFS.ObjectManager import REPLACEABLE
+from plone.base import PloneMessageFactory as _
+from plone.base.interfaces.siteroot import IPloneSiteRoot
+from plone.base.interfaces.syndication import ISyndicatable
+from plone.base.permissions import AddPortalContent
+from plone.base.permissions import AddPortalFolders
+from plone.base.permissions import ListPortalMembers
+from plone.base.permissions import ModifyPortalContent
+from plone.base.permissions import ReplyToItem
+from plone.base.permissions import View
 from plone.dexterity.content import Container
 from Products.CMFCore import permissions
 from Products.CMFCore.interfaces import IContentish
@@ -23,21 +32,12 @@ from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone import bbb
-from Products.CMFPlone import PloneMessageFactory as _
-from plone.base.interfaces.siteroot import IPloneSiteRoot
-from plone.base.interfaces.syndication import ISyndicatable
-from Products.CMFPlone.permissions import AddPortalContent
-from Products.CMFPlone.permissions import AddPortalFolders
-from Products.CMFPlone.permissions import ListPortalMembers
-from Products.CMFPlone.permissions import ModifyPortalContent
-from Products.CMFPlone.permissions import ReplyToItem
-from Products.CMFPlone.permissions import View
 from Products.Five.component.interfaces import IObjectManagerSite
-from zope.interface.interfaces import ComponentLookupError
 from zope.event import notify
 from zope.interface import classImplementsOnly
 from zope.interface import implementedBy
 from zope.interface import implementer
+from zope.interface.interfaces import ComponentLookupError
 from zope.traversing.interfaces import BeforeTraverseEvent
 
 
