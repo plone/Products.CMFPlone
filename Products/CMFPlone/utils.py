@@ -14,11 +14,16 @@ from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
 from html import escape
 from OFS.CopySupport import CopyError
+from OFS.interfaces import IWriteLock
 from os.path import abspath
 from os.path import join
 from os.path import split
 from plone.base import PloneMessageFactory as _
 from plone.base import utils as base_utils
+from plone.base.interfaces import ISiteSchema
+from plone.base.interfaces.controlpanel import IImagingSchema
+from plone.base.interfaces.siteroot import IPloneSiteRoot
+from plone.formwidget.namedfile.converter import b64decode_file
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.permissions import AddPortalContent
@@ -26,11 +31,9 @@ from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFPlone import bbb
-from plone.base.interfaces.controlpanel import IImagingSchema
-from plone.base.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.log import log  # noqa - for python scripts
-from Products.CMFPlone.log import log_exc  # noqa - for python scripts
 from Products.CMFPlone.log import log_deprecated  # noqa - for python scripts
+from Products.CMFPlone.log import log_exc  # noqa - for python scripts
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import providedBy
@@ -39,7 +42,6 @@ from zope.component.hooks import getSite
 from zope.deferredimport import deprecated as deprecated_import
 from zope.deprecation import deprecate
 from zope.interface import implementedBy
-from zope.publisher.interfaces.browser import IBrowserRequest
 
 import OFS
 import pkg_resources
@@ -49,31 +51,28 @@ import transaction  # noqa - for python scripts
 import zope.interface
 
 
-# todo: check below if this is still needed
-ClassType = type
-
-if bbb.HAS_ZSERVER:
-    from webdav.interfaces import IWriteLock
-else:
-    from OFS.interfaces import IWriteLock
-
 deprecated_import(
     "Import from plone.base.utils instead (will be removed in Plone 7)",
+    base_hasattr='plone.base.utils:base_hasattr',
+    check_id='plone.base.utils:check_id',
     get_installer='plone.base.utils:get_installer',
     get_top_request='plone.base.utils:get_top_request',
     get_top_site_from_url='plone.base.utils:get_top_site_from_url',
+    get_user_friendly_types='plone.base.utils:get_user_friendly_types',
+    getEmptyTitle='plone.base.utils:get_empty_title',
     human_readable_size='plone.base.utils:human_readable_size',
-    safe_bytes='plone.base.utils:safe_bytes',
-    safe_text='plone.base.utils:safe_text',
-    safeToInt='plone.base.utils:safe_to_int',
-    base_hasattr='plone.base.utils:base_hasattr',
-    safe_hasattr='plone.base.utils:safe_hasattr',
-    safe_callable='plone.base.utils:safe_callable',
     isExpired='plone.base.utils:is_expired',
     pretty_title_or_id='plone.base.utils:pretty_title_or_id',
-    getEmptyTitle='plone.base.utils:get_empty_title',
+    safe_bytes='plone.base.utils:safe_bytes',
+    safe_callable='plone.base.utils:safe_callable',
+    safe_hasattr='plone.base.utils:safe_hasattr',
+    safe_text='plone.base.utils:safe_text',
+    safeToInt='plone.base.utils:safe_int',
     transaction_note='plone.base.utils:transaction_note',
-
+)
+deprecated_import(
+    "Import from plone.namedfile.utils instead (will be removed in Plone 7)",
+    getHighPixelDensityScales="plone.namedfile.utils:getHighPixelDensityScales",
 )
 
 @deprecate("Use plone.base.utils.safe_bytes instead (will be removed in Plone 7)")
@@ -144,82 +143,6 @@ def createSiteMap(context, request, sitemap=False):
     view = getMultiAdapter((context, request), name='sitemap_builder_view')
     return view.siteMap()
 
-
-
-<<<<<<< HEAD
-def isExpired(content):
-    """ Find out if the object is expired (copied from skin script) """
-
-    expiry = None
-
-    # NOTE: We also accept catalog brains as 'content' so that the
-    # catalog-based folder_contents will work. It's a little magic, but
-    # it works.
-
-    # ExpirationDate should have an ISO date string, which we need to
-    # convert to a DateTime
-
-    # Try DC accessor first
-    if base_hasattr(content, 'ExpirationDate'):
-        expiry = content.ExpirationDate
-
-    # Try the direct way
-    if not expiry and base_hasattr(content, 'expires'):
-        expiry = content.expires
-
-    # See if we have a callable
-    if safe_callable(expiry):
-        expiry = expiry()
-
-    # Convert to DateTime if necessary, ExpirationDate may return 'None'
-    if expiry and expiry != 'None' and isinstance(expiry, str):
-        expiry = DateTime(expiry)
-
-    if isinstance(expiry, DateTime) and expiry.isPast():
-        return 1
-    return 0
-
-
-def pretty_title_or_id(context, obj, empty_value=_marker):
-    """Return the best possible title or id of an item, regardless
-       of whether obj is a catalog brain or an object, but returning an
-       empty title marker if the id is not set (i.e. it's auto-generated).
-    """
-    # if safe_hasattr(obj, 'aq_explicit'):
-    #    obj = obj.aq_explicit
-    # title = getattr(obj, 'Title', None)
-    title = None
-    if base_hasattr(obj, 'Title'):
-        title = getattr(obj, 'Title', None)
-    if safe_callable(title):
-        title = title()
-    if title:
-        return title
-    item_id = getattr(obj, 'getId', None)
-    if safe_callable(item_id):
-        item_id = item_id()
-    if item_id:
-        return item_id
-    if empty_value is _marker:
-        empty_value = getEmptyTitle(context)
-    return empty_value
-
-
-def getEmptyTitle(context, translated=True):
-    """Returns string to be used for objects with no title or id"""
-    # The default is an extra fancy unicode elipsis
-    empty = b'\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d'.decode('utf8')
-    if translated:
-        if context is not None:
-            if not IBrowserRequest.providedBy(context):
-                context = aq_get(context, 'REQUEST', None)
-        empty = translate('title_unset', domain='plone',
-                          context=context, default=empty)
-    return empty
-
-
-=======
->>>>>>> 432212be3 (move basic utils to plone.base)
 def typesToList(context):
     registry = getUtility(IRegistry)
     return registry.get('plone.displayed_types', ())
@@ -355,7 +278,7 @@ def versionTupleFromString(v_str):
     else:
         groups = list(match.groups())
         for i in (0, 1, 2, 4):
-            groups[i] = base_utils.safe_to_int(groups[i])
+            groups[i] = base_utils.safe_int(groups[i])
         if groups[3] is None:
             groups[3] = 'final'
         elif groups[3] in rl_abbr.keys():
@@ -563,14 +486,7 @@ def getQuality():
     return QUALITY_DEFAULT
 
 
-def getHighPixelDensityScales():
-    from plone.namedfile.utils import getHighPixelDensityScales as func
-    return func()
-
-
 def getSiteLogo(site=None):
-    from plone.base.interfaces import ISiteSchema
-    from plone.formwidget.namedfile.converter import b64decode_file
     if site is None:
         site = getSite()
     registry = getUtility(IRegistry)

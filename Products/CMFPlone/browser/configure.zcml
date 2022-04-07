@@ -230,7 +230,7 @@
   <browser:page
       for="OFS.interfaces.ITraversable"
       name="default_page"
-      class=".defaultpage.DefaultPage"
+      class="plone.base.defaultpage.DefaultPageView"
       permission="zope.Public"
       allowed_interface="plone.base.interfaces.defaultpage.IDefaultPage"
       />

@@ -1,6 +1,7 @@
 from DateTime import DateTime
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.base.utils import get_user_friendly_types
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.navtree import getNavigationRoot
@@ -160,10 +161,9 @@ class Search(BrowserView):
         return query
 
     def filter_types(self, types):
-        plone_utils = getToolByName(self.context, 'plone_utils')
         if not isinstance(types, list):
             types = [types]
-        return plone_utils.getUserFriendlyTypes(types)
+        return get_user_friendly_types(types)
 
     def types_list(self):
         # only show those types that have any content

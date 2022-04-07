@@ -15,7 +15,6 @@ from plone.base.defaultpage import check_default_page_via_view
 from plone.base.defaultpage import get_default_page_via_view
 from plone.base.interfaces import INonStructuralFolder
 from plone.base.interfaces import IPloneTool
-from plone.base.interfaces import ISearchSchema
 from plone.base.interfaces import ISecuritySchema
 from plone.base.interfaces import ISiteSchema
 from plone.base.utils import base_hasattr
@@ -39,7 +38,6 @@ from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone import utils
 from Products.CMFPlone.events import ReorderedEvent
 from Products.CMFPlone.log import log
-from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.log import log_exc
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.statusmessages.interfaces import IStatusMessage
@@ -903,7 +901,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return result
 
     @security.public
-    def getUserFriendlyTypes(self, typesList=[]):
+    def getUserFriendlyTypes(self, typesList=None):
         # Get a list of types which are considered "user friendly" for search
         # and selection purposes.
         #
@@ -949,9 +947,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     # has on the objects to be deleted.  The restrictedTraverse and
     # manage_delObjects calls should handle permission checks for us.
     @security.public
+    @deprecated(
+        "deleteObjectsByPaths is deprecated, you should use. "
+        "plone.api.content.delete. This method no longer does link integrity checks"
+    )
     def deleteObjectsByPaths(self, paths, handle_errors=True, REQUEST=None):
-        log_deprecated("deleteObjectsByPaths is deprecated, you should use. "
-                       "plone.api.content.delete. This method no longer does link integrity checks")  # noqa
         failure = {}
         success = []
         # use the portal for traversal in case we have relative paths
