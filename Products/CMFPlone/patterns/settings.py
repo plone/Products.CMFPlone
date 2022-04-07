@@ -7,6 +7,7 @@ from plone.app.z3cform.utils import call_callables
 from plone.registry.interfaces import IRegistry
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.interfaces._content import IFolderish
+from plone.base.interfaces import IImagingSchema
 from plone.base.interfaces import ILinkSchema
 from plone.base.interfaces import IPatternsSettings
 from plone.base.interfaces import IPloneSiteRoot
@@ -71,12 +72,10 @@ class PatternSettingsAdapter:
         return result
 
     @property
-    def image_scales(self):
-        factory = getUtility(IVocabularyFactory, "plone.app.vocabularies.ImagesScales")
-        vocabulary = factory(self.context)
-        ret = [{"title": translate(it.title), "value": it.value} for it in vocabulary]
-        ret = sorted(ret, key=lambda it: it["title"])
-        return json.dumps(ret)
+    def image_srcsets(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IImagingSchema, prefix="plone", check=False)
+        return settings.image_srcsets
 
     def tinymce(self):
         """
@@ -129,7 +128,7 @@ class PatternSettingsAdapter:
         configuration = {
             "base_url": self.context.absolute_url(),
             "imageTypes": image_types,
-            "imageScales": self.image_scales,
+            "imageSrcsets": self.image_srcsets,
             "linkAttribute": "UID",
             # This is for loading the languages on tinymce
             "loadingBaseUrl": "{}/++plone++static/components/tinymce-builded/"
