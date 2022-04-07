@@ -1,4 +1,4 @@
-from Products.CMFPlone.interfaces import IEditingSchema
+from plone.base.interfaces import IEditingSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.app.linkintegrity.utils import linkintegrity_enabled
 from plone.app.testing import SITE_OWNER_NAME

@@ -4,7 +4,7 @@ from itertools import chain
 from Acquisition import aq_inner
 from Products.CMFPlone.utils import normalizeString
 from zope.component import getAdapter
-from Products.CMFPlone.interfaces import ISecuritySchema
+from plone.base.interfaces import ISecuritySchema
 from zope.component import getMultiAdapter
 from AccessControl import getSecurityManager
 from Products.Five.browser import BrowserView
@@ -15,7 +15,7 @@ from plone.autoform.form import AutoExtensibleForm
 from Products.CMFPlone import PloneMessageFactory as _
 from z3c.form import form
 
-from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
+from plone.base.interfaces import IUserGroupsSettingsSchema
 from z3c.form import button
 
 

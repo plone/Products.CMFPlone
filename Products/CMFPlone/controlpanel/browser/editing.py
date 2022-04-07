@@ -1,5 +1,5 @@
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import IEditingSchema
+from plone.base.interfaces import IEditingSchema
 from plone.app.registry.browser import controlpanel
 from z3c.form import interfaces
 

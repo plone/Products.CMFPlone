@@ -2,8 +2,8 @@ from Acquisition import Implicit
 from plone.app.testing import SITE_OWNER_NAME
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import IReorderedEvent
-from Products.CMFPlone.interfaces import ISearchSchema
+from plone.base.interfaces import IReorderedEvent
+from plone.base.interfaces import ISearchSchema
 from Products.CMFPlone.tests import PloneTestCase
 from zope.component import getGlobalSiteManager
 from zope.component import getUtility

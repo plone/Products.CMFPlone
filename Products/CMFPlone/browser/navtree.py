@@ -12,7 +12,7 @@ from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
-from Products.CMFPlone.interfaces import INavigationSchema
+from plone.base.interfaces import INavigationSchema
 from zope.component import getMultiAdapter, queryUtility
 from zope.component import getUtility
 from zope.interface import implementer

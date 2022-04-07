@@ -14,13 +14,13 @@
       factory=".settings.PatternSettingsAdapter"
       for="* * *"
       name="pattern_settings"
-      provides="Products.CMFPlone.interfaces.IPatternsSettings"
+      provides="plone.base.interfaces.IPatternsSettings"
   />
   <!-- deprecated name -->
   <adapter
       factory=".settings.PatternSettingsAdapter"
       for="* * *"
       name="plone_settings"
-      provides="Products.CMFPlone.interfaces.IPatternsSettings"
+      provides="plone.base.interfaces.IPatternsSettings"
   />
 </configure>

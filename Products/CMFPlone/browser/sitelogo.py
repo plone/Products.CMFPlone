@@ -1,4 +1,4 @@
-from Products.CMFPlone.interfaces import ISiteSchema
+from plone.base.interfaces import ISiteSchema
 from plone.formwidget.namedfile.converter import b64decode_file
 from plone.namedfile.browser import Download
 from plone.namedfile.file import NamedImage

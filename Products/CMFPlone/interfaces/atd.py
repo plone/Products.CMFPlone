@@ -1,11 +1,3 @@
-from zope.interface import Interface
+from zope.deprecation import moved
 
-
-class IATDProxyView(Interface):
-    """ Proxy view for the 'After the Deadline" spellchecker
-    """
-
-    def checkDocument(self):
-        """ Proxy for the AtD service's checkDocument function
-            See http://www.afterthedeadline.com/api.slp for more info.
-        """
+moved('plone.base.interfaces.atd', 'Version 7.0')

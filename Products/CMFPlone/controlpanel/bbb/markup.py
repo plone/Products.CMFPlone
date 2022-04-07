@@ -1,5 +1,5 @@
-from Products.CMFPlone.interfaces import IMarkupSchema
-from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
+from plone.base.interfaces import IMarkupSchema
+from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
 from zope.component import adapts
 from zope.component import getUtility

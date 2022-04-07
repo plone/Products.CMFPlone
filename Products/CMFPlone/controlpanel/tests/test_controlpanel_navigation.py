@@ -1,5 +1,5 @@
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import INavigationSchema
+from plone.base.interfaces import INavigationSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.registry.interfaces import IRegistry
 from zope.component import getMultiAdapter

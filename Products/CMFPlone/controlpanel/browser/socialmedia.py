@@ -1,5 +1,5 @@
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import ISocialMediaSchema
+from plone.base.interfaces import ISocialMediaSchema
 from plone.app.registry.browser import controlpanel
 
 

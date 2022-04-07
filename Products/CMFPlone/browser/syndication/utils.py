@@ -5,10 +5,10 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.interface import implementer
 from zope.component import getUtility
 
-from Products.CMFPlone.interfaces.syndication import ISyndicationUtil
-from Products.CMFPlone.interfaces.syndication import IFeedSettings
-from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
-from Products.CMFPlone.interfaces.syndication import ISyndicatable
+from plone.base.interfaces.syndication import ISyndicationUtil
+from plone.base.interfaces.syndication import IFeedSettings
+from plone.base.interfaces.syndication import ISiteSyndicationSettings
+from plone.base.interfaces.syndication import ISyndicatable
 
 from plone.registry.interfaces import IRegistry
 from plone.memoize.view import memoize

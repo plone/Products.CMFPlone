@@ -1,7 +1,9 @@
 from App.ImageFile import ImageFile
+
 import os
 import sys
 import pkg_resources
+import zope.deferredimport
 
 __version__ = pkg_resources.require("Products.CMFPlone")[0].version
 
@@ -16,6 +18,13 @@ misc_ = {'plone_icon': ImageFile(
     cmfplone_globals)}
 
 DISCUSSION_ANNOTATION_KEY = 'plone.app.discussion:conversation'
+
+zope.deferredimport.initialize()
+zope.deferredimport.deprecated(
+    "Import from plone.base instead (to be removed in Plone 7)",
+    PloneMessageFactory='plone.base:PloneMessageFactory',
+    PloneLocalesMessageFactory='plone.base:PloneMessageFactory',
+)
 
 
 def initialize(context):
@@ -199,16 +208,7 @@ def initialize(context):
         visibility=None
     )
 
-
-# Import PloneMessageFactory to create messages in the plone domain
-from zope.i18nmessageid import MessageFactory
-PloneMessageFactory = MessageFactory('plone')
-
-# Import PloneLocalesMessageFactory to create messages in the
-# plonelocales domain
-from zope.i18nmessageid import MessageFactory
-PloneLocalesMessageFactory = MessageFactory('plonelocales')
-
 # Apply early monkey patches.  For these patches, it is too late if we do this
 # in the initialize method.
 from Products.CMFPlone import earlypatches  # noqa
+

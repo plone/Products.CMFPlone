@@ -3,8 +3,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.controlpanel.utils import migrate_to_email_login
 from Products.CMFPlone.controlpanel.utils import migrate_from_email_login
-from Products.CMFPlone.interfaces import IConfigurationChangedEvent
-from Products.CMFPlone.interfaces import ISecuritySchema
+from plone.base.interfaces import IConfigurationChangedEvent
+from plone.base.interfaces import ISecuritySchema
 from Products.CMFPlone.utils import safe_hasattr
 from plone.registry.interfaces import IRecordModifiedEvent
 from zope.component import adapter

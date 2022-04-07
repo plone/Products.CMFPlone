@@ -1,5 +1,5 @@
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import IMarkupSchema
+from plone.base.interfaces import IMarkupSchema
 from plone.app.registry.browser import controlpanel
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 

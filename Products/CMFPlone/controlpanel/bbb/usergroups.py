@@ -3,8 +3,8 @@ from zope.component import getUtility
 from zope.interface import implementer
 from zope.component.hooks import getSite
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
-from Products.CMFPlone.interfaces import IPloneSiteRoot
+from plone.base.interfaces import IUserGroupsSettingsSchema
+from plone.base.interfaces import IPloneSiteRoot
 
 
 @implementer(IUserGroupsSettingsSchema)

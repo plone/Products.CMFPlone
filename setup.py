@@ -67,6 +67,7 @@ setup(
         'plone.app.vocabularies',
         'plone.app.workflow',
         'plone.batching',
+        'plone.base',
         'plone.browserlayer >= 2.1.5',
         'plone.contentrules',
         'plone.folder',

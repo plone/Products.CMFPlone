@@ -6,7 +6,7 @@ from plone.batching.browser import PloneBatchView
 from plone.memoize.view import memoize
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.PloneBatch import Batch
-from Products.CMFPlone.utils import safe_text
+from plone.base.utils import safe_text
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from io import StringIO

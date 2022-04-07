@@ -6,7 +6,7 @@ from Products.CMFCore.tests.base.dummy import DummyContent
 
 from Acquisition import aq_parent
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import ILoginSchema
+from plone.base.interfaces import ILoginSchema
 from zope.component import getSiteManager
 
 

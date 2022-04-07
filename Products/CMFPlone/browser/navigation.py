@@ -10,9 +10,9 @@ from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
 from Products.CMFPlone.browser.interfaces import INavigationTabs
 from Products.CMFPlone.browser.interfaces import ISiteMap
 from Products.CMFPlone.browser.navtree import SitemapQueryBuilder
-from Products.CMFPlone.defaultpage import check_default_page_via_view
-from Products.CMFPlone.interfaces import IHideFromBreadcrumbs
-from Products.CMFPlone.interfaces import INavigationSchema
+from plone.base.defaultpage import check_default_page_via_view
+from plone.base.interfaces import IHideFromBreadcrumbs
+from plone.base.interfaces import INavigationSchema
 from Products.Five import BrowserView
 from zope.component import getMultiAdapter
 from zope.component import getUtility

@@ -1,5 +1,5 @@
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import ISiteSchema
+from plone.base.interfaces import ISiteSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.registry.interfaces import IRegistry
 from zope.component import getMultiAdapter

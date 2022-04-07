@@ -1,5 +1,5 @@
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import ISearchSchema
+from plone.base.interfaces import ISearchSchema
 from Products.CMFPlone.controlpanel.widgets import ReverseCheckBoxFieldWidget
 from plone.app.registry.browser import controlpanel
 from zope.component import queryUtility

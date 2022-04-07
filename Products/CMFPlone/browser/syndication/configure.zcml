@@ -6,7 +6,7 @@
   i18n_domain="Products.CMFPlone">
 
   <class class="plone.dexterity.content.Container">
-    <implements interface="Products.CMFPlone.interfaces.syndication.ISyndicatable" />
+    <implements interface="plone.base.interfaces.syndication.ISyndicatable" />
   </class>
 
   <adapter factory=".settings.FeedSettings" />
@@ -15,15 +15,15 @@
   <adapter factory=".adapters.CollectionFeed"
     for="plone.app.contenttypes.interfaces.ICollection" />
   <adapter factory=".adapters.SearchFeed"
-    for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
-    provides="Products.CMFPlone.interfaces.syndication.ISearchFeed" />
+    for="plone.base.interfaces.siteroot.IPloneSiteRoot"
+    provides="plone.base.interfaces.syndication.ISearchFeed" />
   <adapter factory=".adapters.DexterityItem"
     for="plone.dexterity.interfaces.IDexterityContent
-         Products.CMFPlone.interfaces.syndication.IFeed"
-    provides="Products.CMFPlone.interfaces.syndication.IFeedItem" />
+         plone.base.interfaces.syndication.IFeed"
+    provides="plone.base.interfaces.syndication.IFeedItem" />
 
   <browser:page
-    for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
+    for="plone.base.interfaces.syndication.ISyndicatable"
     name="synPropertiesForm"
     class=".views.SettingsFormView"
     permission="cmf.ModifyPortalContent"
@@ -33,12 +33,12 @@
     for="*"
     name="syndication-util"
     class=".utils.SyndicationUtil"
-    allowed_interface="Products.CMFPlone.interfaces.syndication.ISyndicationUtil"
+    allowed_interface="plone.base.interfaces.syndication.ISyndicationUtil"
     permission="zope2.View"
     />
 
   <browser:page
-    for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
+    for="plone.base.interfaces.syndication.ISyndicatable"
     class=".views.FeedView"
     name="atom.xml"
     permission="zope2.View"
@@ -46,14 +46,14 @@
     />
 
   <browser:page
-    for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
+    for="plone.base.interfaces.syndication.ISyndicatable"
     class=".views.FeedView"
     name="rss.xml"
     permission="zope2.View"
     template="templates/rss.xml.pt"
     />
   <browser:page
-    for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
+    for="plone.base.interfaces.syndication.ISyndicatable"
     class=".views.FeedView"
     name="RSS"
     permission="zope2.View"
@@ -61,7 +61,7 @@
     />
 
   <browser:page
-    for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
+    for="plone.base.interfaces.syndication.ISyndicatable"
     class=".views.FeedView"
     name="itunes.xml"
     permission="zope2.View"
@@ -77,7 +77,7 @@
     />
 
   <browser:page
-    for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
+    for="plone.base.interfaces.syndication.ISyndicatable"
     class=".views.NewsMLFeedView"
     name="newsml.xml"
     permission="zope2.View"
