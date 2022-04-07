@@ -1,3 +1,0 @@
-MigrationTool: use more standard ``listUpgrades`` code from GenericSetup 2.2.0.
-I ported our special logic there.
-[maurits]
