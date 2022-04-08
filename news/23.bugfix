@@ -1,3 +1,0 @@
-Fixed evaluating expressions on resources, and especially loading ``plone.session`` resources.
-Fixes `plone.session` issue 23 <https://github.com/plone/plone.session/issues/23>_.
-[maurits]

@@ -1,3 +1,0 @@
-Updated the list of core profiles that are upgraded during a Plone upgrade.
-Added ``Products.PlonePAS`` and ``plone.session``, and the optional ``plone.restapi`` and ``plone.volto``.
-[maurits]

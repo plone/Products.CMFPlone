@@ -1,7 +1,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = '6.0.0a4.dev0'
+version = '6.0.0a5.dev0'
 
 
 setup(
@@ -95,7 +95,7 @@ setup(
         'Products.CMFUid',
         'Products.DCWorkflow',
         'Products.ExtendedPathIndex',
-        'Products.GenericSetup >= 2.0',
+        'Products.GenericSetup >= 2.2.0',
         'Products.isurlinportal',
         'Products.MimetypesRegistry',
         'Products.PlonePAS',

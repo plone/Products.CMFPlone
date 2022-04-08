@@ -1,5 +1,6 @@
 from DateTime import DateTime
 from plone.app.contentlisting.interfaces import IContentListing
+from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.navtree import getNavigationRoot
@@ -249,27 +250,37 @@ class AjaxSearch(Search):
 
         registry = queryUtility(IRegistry)
         length = registry.get('plone.search_results_description_length')
+        show_images = registry.get('plone.search_show_images')
+        if show_images:
+            image_scale = registry.get('plone.search_image_scale')
+            # image_scaling = getMultiAdapter((self.context, self.request), name='image_scale')
+            self.image_scaling = getMultiAdapter((INavigationRoot(self.context), self.request), name='image_scale')
         plone_view = getMultiAdapter(
             (self.context, self.request), name='plone')
-        registry = getUtility(IRegistry)
         view_action_types = registry.get(
             'plone.types_use_view_action_in_listings', [])
         for item in batch:
             url = item.getURL()
             if item.portal_type in view_action_types:
                 url = '%s/view' % url
+            img_tag = None
+            if show_images:
+                img_tag = self.get_image_tag(item, image_scale)
             items.append({
                 'id': item.UID,
                 'title': item.Title,
                 'description': plone_view.cropText(item.Description, length),
                 'url': url,
                 'state': item.review_state if item.review_state else None,
+                'img_tag': img_tag,
             })
         return json.dumps({
             'total': len(results),
             'items': items
         })
 
+    def get_image_tag(self, item, image_scale):
+        return self.image_scaling.tag(item, "image", scale=image_scale)
 
 class SortOption:
 
