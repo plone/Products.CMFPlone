@@ -463,7 +463,7 @@ class TestSiteMap(PloneTestCase.PloneTestCase):
         view = self.view_class(self.portal, self.request)
         sitemap = view.siteMap()
         self.assertEqual(sitemap['children'][-1]['item'].getPath(),
-                         '/plone/folder2/file21')
+                         '/plone/folder2/doc23')
 
 
 class TestBasePortalTabs(PloneTestCase.PloneTestCase):
