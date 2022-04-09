@@ -1,11 +1,9 @@
+from plone.schema import Email
+from Products.CMFPlone import PloneMessageFactory as _
 from zope import schema
 from zope.interface import Interface
 
-from plone.schema import Email
-
 import zope.deferredimport
-
-from Products.CMFPlone import PloneMessageFactory as _
 
 
 # This is used as a persistent marker interface, we need to provide an upgrade
@@ -197,11 +195,11 @@ class IGlobalStatusMessage(Interface):
 class IPlone(Interface):
     """ """
 
-    def getCurrentUrl():
-        """ Returns the actual url plus the query string. """
+    def cropText(text, length, ellipsis):
+        """ Crop text on a word boundary """
 
-    def uniqueItemIndex(pos=0):
-        """Return an index iterator."""
+    def patterns_settings():
+        """ returns mockup pattern settings """
 
     def toLocalizedTime(time, long_format=None, time_only=None):
         """ The time parameter must be either a string that is suitable for
@@ -218,11 +216,21 @@ class IPlone(Interface):
         """Normalizes a title to an id.
         """
 
+    # deprecated
+    def uniqueItemIndex(pos=0):
+        """Return an index iterator."""
+
+    # deprecated
+    def getCurrentUrl():
+        """ Returns the actual url plus the query string. """
+
+    # deprecated
     def isDefaultPageInFolder():
         """ Returns a boolean indicating whether the current context is the
             default page of its parent folder.
         """
 
+    # deprecated
     def isStructuralFolder():
         """Checks if a given object is a "structural folder".
 
@@ -231,19 +239,23 @@ class IPlone(Interface):
         as a folder by the navtree, the tab generation etc.
         """
 
+    # deprecated
     def navigationRootPath():
         """Get the current navigation root path
         """
 
+    # deprecated
     def navigationRootUrl():
         """Get the url to the current navigation root
         """
 
+    # deprecated
     def getParentObject():
         """Returns the parent of the current object, equivalent to
            aq_inner(aq_parent(context)), or context.aq_inner.getParentNode()
         """
 
+    # deprecated
     def getCurrentFolder():
         """If the context is the default page of a folder or is not itself a
            folder, the parent is returned, otherwise the object itself is
@@ -252,43 +264,44 @@ class IPlone(Interface):
            ui.
         """
 
+    # deprecated
     def getCurrentFolderUrl():
         """Returns the URL of the current folder as determined by
            self.getCurrentFolder(), used heavily in actions.
         """
 
+    # deprecated
     def getCurrentObjectUrl():
         """Returns the URL of the current object unless that object is a
            folder default page, in which case it returns the parent.
         """
 
+    # deprecated
     def isFolderOrFolderDefaultPage():
         """Returns true only if the current object is either a folder (as
            determined by isStructuralFolder) or the default page in context.
         """
 
+    # deprecated
     def isPortalOrPortalDefaultPage():
         """Returns true only if the current object is either the portal object
            or the default page of the portal.
         """
 
+    # deprecated
     def getViewTemplateId():
         """Returns the template Id corresponding to the default view method of
            the context object.
         """
 
+    # deprecated
     def showToolbar():
         """Returns true if the editable border should be shown
         """
 
-    def cropText(text, length, ellipsis):
-        """ Crop text on a word boundary """
-
+    # deprecated
     def site_encoding():
         """ returns site encoding """
-
-    def patterns_settings():
-        """ returns mockup pattern settings """
 
 
 class ISendToForm(Interface):

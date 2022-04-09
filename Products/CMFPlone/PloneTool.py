@@ -941,17 +941,19 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if getMethodAliases is not None \
                 and utils.safe_callable(getMethodAliases):
             return getMethodAliases()
-        return
 
-    # This is public because we don't know what permissions the user
-    # has on the objects to be deleted.  The restrictedTraverse and
-    # manage_delObjects calls should handle permission checks for us.
     @security.public
-    @deprecated(
-        "deleteObjectsByPaths is deprecated, you should use. "
-        "plone.api.content.delete. This method no longer does link integrity checks"
-    )
+    @postonly
     def deleteObjectsByPaths(self, paths, handle_errors=True, REQUEST=None):
+        # do not use zope.deprecation, because stacked decorators are not workings
+        import warnings
+        warnings.warn(
+            "deleteObjectsByPaths is deprecated, "
+            "you should use 'plone.api.content.delete'. "
+            "This method no longer does link integrity checks.",
+            DeprecationWarning
+        )
+
         failure = {}
         success = []
         # use the portal for traversal in case we have relative paths
@@ -977,7 +979,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     raise
         transaction_note('Deleted %s' % (', '.join(success)))
         return success, failure
-    deleteObjectsByPaths = postonly(deleteObjectsByPaths)
 
     @security.public
     def renameObjectsByPaths(self, paths, new_ids, new_titles,

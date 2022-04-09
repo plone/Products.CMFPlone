@@ -154,6 +154,7 @@ def normalizeString(text, context=None, encoding=None):
     return queryUtility(IIDNormalizer).normalize(text)
 
 
+@deprecate("Unused. Will be removed in Plone 6.1")
 class RealIndexIterator:
     """The 'real' version of the IndexIterator class, that's actually
     used to generate unique indexes.
