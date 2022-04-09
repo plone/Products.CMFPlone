@@ -10,7 +10,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from Products.CMFPlone.utils import _createObjectByType
 from plone.base.utils import safe_text
-from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from zope.component import getUtility
 
 import difflib
@@ -166,7 +165,7 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         data = self.portal.file.file.data
         self.assertEqual(self.browser.contents.encode('utf8'), data)
 
-    # Ensure index_html acquisition and replaceablewrapper
+    # Ensure index_html acquisition
 
     def testIndexHtmlNotAcquired(self):
         self.portal.folder.invokeFactory('Document', 'index_html')
@@ -176,12 +175,6 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
             self.putils.browserDefault(self.portal.folder.subfolder),
             (self.portal.folder.subfolder, [layout])
         )
-
-    def testIndexHtmlReplaceableWrapper(self):
-        self.portal.document.index_html = ReplaceableWrapper(None)
-        layout = self.portal.document.getLayout()
-        self.assertEqual(self.putils.browserDefault(self.portal.document),
-                         (self.portal.document, [layout]))
 
     # Test behaviour of __call__
 

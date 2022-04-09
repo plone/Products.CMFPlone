@@ -4,9 +4,6 @@ from Products.CMFPlone.CatalogTool import CatalogTool
 from Products.CMFPlone.MigrationTool import MigrationTool
 from Products.CMFPlone.PloneControlPanel import PloneConfiglet
 from Products.CMFPlone.PloneControlPanel import PloneControlPanel
-from Products.CMFPlone.PloneFolder import BasePloneFolder
-from Products.CMFPlone.PloneFolder import OrderedContainer
-from Products.CMFPlone.PloneFolder import PloneFolder
 from Products.CMFPlone.PloneTool import PloneTool
 from Products.CMFPlone.Portal import PloneSite
 from Products.CMFPlone.PropertiesTool import PropertiesTool
@@ -261,7 +258,6 @@ testClasses = [
     (CatalogTool, ()),
     (MigrationTool, ()),
     (PloneControlPanel, ()), (PloneConfiglet, ()),
-    (OrderedContainer, ()), (BasePloneFolder, ()), (PloneFolder, ()),
     (PloneTool, ()),
     (PloneSite, ()),
     (PropertiesTool, ()), (SimpleItemWithProperties, ()),
