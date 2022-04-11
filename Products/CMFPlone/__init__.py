@@ -131,14 +131,6 @@ def initialize(context):
     # pipeline registry
     from Products.CMFPlone import UnicodeSplitter  # noqa
 
-    # Plone content
-
-    # Usage of PloneFolder is discouraged.
-    from Products.CMFPlone import PloneFolder
-
-    contentClasses = (PloneFolder.PloneFolder, )
-    contentConstructors = (PloneFolder.addPloneFolder, )
-
     # CMFCore tools
     from Products.CMFCore import CachingPolicyManager
 
@@ -182,12 +174,6 @@ def initialize(context):
         icon='tool.gif',
     ).initialize(context)
 
-    ContentInit(
-        'Plone Content',
-        content_types=contentClasses,
-        permission=ADD_CONTENT_PERMISSION,
-        extra_constructors=contentConstructors,
-    ).initialize(context)
 
     from AccessControl.Permissions import view_management_screens
     from Products.CMFPlone.Portal import PloneSite
