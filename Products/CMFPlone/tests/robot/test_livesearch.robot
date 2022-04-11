@@ -30,14 +30,11 @@ Scenario: Livesearch with image results
      When I search for  My News
      Then the livesearch results should contain  My News with Image
       and expected livesearch results  1
-     Then Page should not contain image  css=.livesearch-results li.search-result .col.img img
-     When I enable images in results in search controlpanel
-      and I search for  My News
-     Then the livesearch results should contain  My News with Image
-      and expected livesearch results  1
       and Page should contain image  css=.livesearch-results li.search-result .col.img img
 
-
+     When I disable images in results in search controlpanel
+      and I search for  My News
+     Then Page should not contain image  css=.livesearch-results li.search-result .col.img img
 
 
 *** Keywords *****************************************************************
@@ -79,9 +76,9 @@ expected livesearch results
     ${count} =  Get Element Count  css=.livesearch-results li.search-result
     Should Be Equal as Numbers  ${count}  ${num}
 
-I enable images in results in search controlpanel
+I disable images in results in search controlpanel
     Go to  ${PLONE_URL}/@@search-controlpanel
     Wait until page contains  Search Settings
-    Select Checkbox  form.widgets.search_show_images:list
+    Unselect Checkbox  form.widgets.search_show_images:list
     Click Button  Save
     Wait until page contains  Changes saved
