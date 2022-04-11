@@ -431,9 +431,8 @@ limitations, which is why we need to log in as the portal owner first:
   >>> app_browser.addHeader('Authorization', 'Basic app:secret')
   >>> app_browser.open('http://nohost/plone/@@overview-controlpanel')
   >>> app_browser.getLink('Maintenance').click()
-  >>> app_browser.getControl(name='_authenticator', index=0).value = 'invalid!'
-  >>> app_browser.getControl(name='_authenticator', index=1).value = 'invalid!'
-  >>> app_browser.getControl('Shut down').click()
+  >>> app_browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> app_browser.getControl(name='form.buttons.pack').click()
   Traceback (most recent call last):
   ...
   zExceptions.Forbidden: Form authenticator is invalid.

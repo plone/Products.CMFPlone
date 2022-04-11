@@ -1,10 +1,10 @@
-from Products.CMFPlone.testing import \
-    PRODUCTS_CMFPLONE_INTEGRATION_TESTING
-from Products.CMFCore.utils import getToolByName
-from plone.base.interfaces import ISecuritySchema
-from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
-from zope.component import getAdapter
+from plone.app.testing import TEST_USER_ID
+from plone.base.interfaces import ISecuritySchema
+from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+from zope.component import getUtility
 
 import unittest
 
@@ -17,7 +17,8 @@ class SecurityControlPanelEventsTest(unittest.TestCase):
         self.portal = self.layer['portal']
         self.request = self.layer['request']
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
-        self.security_settings = getAdapter(self.portal, ISecuritySchema)
+        registry = getUtility(IRegistry)
+        self.security_settings = registry.forInterface(ISecuritySchema, prefix="plone")
 
     def _create_user(self, user_id=None, email=None):
         """Helper function for creating a test user."""

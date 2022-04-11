@@ -1,55 +1,39 @@
-from Products.CMFCore.permissions import ManagePortal
-from ZTUtils import make_query
-from itertools import chain
-from Acquisition import aq_inner
-from Products.CMFPlone.utils import normalizeString
-from zope.component import getAdapter
-from plone.base.interfaces import ISecuritySchema
-from zope.component import getMultiAdapter
 from AccessControl import getSecurityManager
-from Products.Five.browser import BrowserView
-from Products.CMFCore.utils import getToolByName
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from plone.z3cform import layout
-from plone.autoform.form import AutoExtensibleForm
-from Products.CMFPlone import PloneMessageFactory as _
-from z3c.form import form
-
+from Acquisition import aq_inner
+from itertools import chain
+from plone.app.registry.browser import controlpanel
+from plone.base.interfaces import ISecuritySchema
 from plone.base.interfaces import IUserGroupsSettingsSchema
-from z3c.form import button
+from plone.registry.interfaces import IRegistry
+from Products.CMFCore.permissions import ManagePortal
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import normalizeString
+from Products.Five.browser import BrowserView
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+from ZTUtils import make_query
 
 
-class UserGroupsSettingsControlPanel(AutoExtensibleForm, form.EditForm):
+class UserGroupsSettingsControlPanelForm(controlpanel.RegistryEditForm):
     schema = IUserGroupsSettingsSchema
     id = "usergroupsettings-control-panel"
     label = _("Users and Groups")
-    form_name = _("User/Groups settings")
-    control_panel_view = "usergroups-controlpanel"
-
-    @button.buttonAndHandler(_('label_save', default="Save"), name='save')
-    def handleApply(self, action):
-        super().handleApply(self, action)
-
-    def updateActions(self):
-        super().updateActions()
-        if self.actions and 'save' in self.actions:
-            self.actions['save'].addClass('btn-primary')
+    schema_prefix = "plone"
 
 
-class ControlPanelFormWrapper(layout.FormWrapper):
+class UserGroupsSettingsControlPanel(controlpanel.ControlPanelFormWrapper):
     """Use this form as the plone.z3cform layout wrapper to get the control
     panel layout.
     """
-
-    index = ViewPageTemplateFile('controlpanel_usergroups_layout.pt')
-
-
-UserGroupsSettingsPanelView = layout.wrap_form(
-    UserGroupsSettingsControlPanel, ControlPanelFormWrapper
-)
+    form = UserGroupsSettingsControlPanelForm
 
 
 class UsersGroupsControlPanelView(BrowserView):
+
+    def settings(self, iface):
+        registry = getUtility(IRegistry)
+        return registry.forInterface(iface, prefix="plone")
 
     @property
     def portal_roles(self):
@@ -58,15 +42,15 @@ class UsersGroupsControlPanelView(BrowserView):
 
     @property
     def many_users(self):
-        return getAdapter(aq_inner(self.context), IUserGroupsSettingsSchema).many_users
+        return self.settings(IUserGroupsSettingsSchema).many_users
 
     @property
     def many_groups(self):
-        return getAdapter(aq_inner(self.context), IUserGroupsSettingsSchema).many_groups
+        return self.settings(IUserGroupsSettingsSchema).many_groups
 
     @property
     def email_as_username(self):
-        return getAdapter(aq_inner(self.context), ISecuritySchema).get_use_email_as_login()
+        return self.settings(ISecuritySchema).use_email_as_login
 
     def makeQuery(self, **kw):
         return make_query(**kw)

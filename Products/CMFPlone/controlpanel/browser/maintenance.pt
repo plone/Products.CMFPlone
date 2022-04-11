@@ -52,45 +52,6 @@
         <div id="content-core">
 
             <form action="."
-                  tal:attributes="action request/URL"
-                  method="post"
-                  class="edit-form"
-                  enctype="multipart/form-data">
-
-                <fieldset class="mb-4">
-                    <legend i18n:translate="heading_zope_server">
-                        Zope Server
-                    </legend>
-
-                    <div id="actionsView" class="formControls">
-                        <span class="actionButtons">
-                            <button type="submit"
-                                   id="form.buttons.shutdown"
-                                   name="form.buttons.shutdown"
-                                   value="Shut down"
-                                   class="btn btn-danger">
-                                <span i18n:translate="">Shut down</span>
-                            </button>
-
-                            <button tal:condition="view/isRestartable"
-                                   type="submit"
-                                   id="form.buttons.restart"
-                                   name="form.buttons.restart"
-                                   value="Restart"
-                                   class="btn btn-danger">
-                                <span i18n:translate="">Restart</span>
-                            </button>
-
-                        </span>
-                    </div>
-
-                </fieldset>
-
-                <input tal:replace="structure context/@@authenticator/authenticator" />
-
-            </form>
-
-            <form action="."
                   metal:define-macro="master"
                   tal:attributes="action request/URL"
                   method="post"

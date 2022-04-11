@@ -69,6 +69,10 @@
       class=".maintenance.MaintenanceControlPanel"
       permission="cmf.ManagePortal"
       />
+  <adapter
+      factory=".maintenance.MaintenanceControlPanelAdapter"
+      for="*"
+      />
 
   <!-- Mail Control Panel -->
   <browser:page
@@ -199,7 +203,7 @@
   <browser:page
       name="usergroup-controlpanel"
       for="plone.base.interfaces.IPloneSiteRoot"
-      class=".usergroups.UserGroupsSettingsPanelView"
+      class=".usergroups.UserGroupsSettingsControlPanel"
       permission="plone.app.controlpanel.UsersAndGroups"
       />
 
