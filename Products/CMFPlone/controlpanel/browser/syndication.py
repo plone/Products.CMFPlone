@@ -1,10 +1,10 @@
-from Products.CMFCore.utils import getToolByName
-from zope.i18nmessageid import MessageFactory
-from plone.base.interfaces.syndication import ISiteSyndicationSettings
 from plone.app.registry.browser import controlpanel
-from z3c.form import button
-from Products.statusmessages.interfaces import IStatusMessage
 from plone.app.z3cform.widget import SelectFieldWidget
+from plone.base.interfaces.syndication import ISiteSyndicationSettings
+from Products.CMFCore.utils import getToolByName
+from Products.statusmessages.interfaces import IStatusMessage
+from z3c.form import button
+from zope.i18nmessageid import MessageFactory
 
 
 _ = MessageFactory('plone')

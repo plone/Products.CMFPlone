@@ -471,8 +471,8 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertEqual(storage.get('/plone/alias3'), '/plone/test-folder')
 
     def test_manage_aliases_navigation_root(self):
-        from zope.interface import alsoProvides
         from plone.app.layout.navigation.interfaces import INavigationRoot
+        from zope.interface import alsoProvides
 
         storage = getUtility(IRedirectionStorage)
         folder = self.portal['test-folder']

@@ -1,11 +1,12 @@
-from plone.base.interfaces import IEditingSchema
-from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.app.linkintegrity.utils import linkintegrity_enabled
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.base.interfaces import IEditingSchema
 from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from zope.component import getUtility
+
 import unittest
 
 

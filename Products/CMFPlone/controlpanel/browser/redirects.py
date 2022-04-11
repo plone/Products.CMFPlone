@@ -1,15 +1,15 @@
+from csv import writer
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
-from csv import writer
+from io import StringIO
 from plone.app.redirector.interfaces import IRedirectionStorage
+from plone.base.utils import safe_text
 from plone.batching.browser import PloneBatchView
 from plone.memoize.view import memoize
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.PloneBatch import Batch
-from plone.base.utils import safe_text
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
-from io import StringIO
 from urllib.parse import urlparse
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -19,6 +19,7 @@ from zope.i18nmessageid import MessageFactory
 import csv
 import logging
 import tempfile
+
 
 try:
     # use this to stream csv data if we can
