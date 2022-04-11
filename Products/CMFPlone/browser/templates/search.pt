@@ -75,30 +75,19 @@
           </h1>
         </div>
 
-        <div class="my-3" id="rss-subscription" i18n:domain="plone"
-            tal:condition="context/@@syndication-util/search_rss_enabled">
-          <a class="nav-link"
-             href="${context/@@plone_context_state/object_url}/search_rss?${request/QUERY_STRING}">
-              <img tal:replace="structure python:icons.tag('rss-fill')" />
-              <span i18n:translate="title_subscribe_rss_feed">
-                Subscribe to an always-updated RSS feed.
-              </span>
-          </a>
-        </div>
+        <div class="d-flex mb-2">
 
-        <ul class="nav nav-tabs">
-
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">
-              <span i18n:translate="batch_x_items_matching_your_criteria" i18n:domain="plone" id="results-count" >
-                <span i18n:name="number" id="search-results-number" class="badge bg-primary"
+          <div class="flex-fill">
+            <a class="nav-link active ps-2" aria-current="page" href="#">
+              <span i18n:translate="batch_x_items_matching_your_criteria" class="d-flex" i18n:domain="plone" id="results-count" >
+                <span i18n:name="number" id="search-results-number" class="badge bg-primary me-2 d-flex justify-content-center align-items-center"
                       tal:content="batch/sequence_length|string:0">234</span>
                   items matching your search terms.
               </span>
             </a>
-          </li>
+          </div>
 
-          <li class="nav-item dropdown ms-auto" id="search-filter">
+          <div class="nav-item dropdown" id="search-filter">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" id="search-filter-toggle" i18n:translate="narrow_search_options">
               Filter the results
             </a>
@@ -174,9 +163,9 @@
                 </div>
               </div>
             </div>
-          </li>
+          </div>
 
-          <li class="nav-item dropdown">
+          <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" i18n:translate="sort_by">Sort by</a>
             <ul class="dropdown-menu dropdown-menu-md-end" id="sorting-options">
               <li tal:repeat="item view/sort_options">
@@ -185,16 +174,18 @@
                    tal:content="item/title">sort option</a>
               </li>
             </ul>
-          </li>
+          </div>
 
-        </ul>
+        </div>
 
         <div id="search-results-wrapper">
 
           <metal:searchresults define-macro="search_results">
 
             <div id="search-results"
-                 tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;"
+                 tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;
+                             show_images python:view.show_images;
+                             search_image_scale python:view.search_image_scale;"
                  data-default-sort="${python:request.get('sort_on') or view.default_sort_on}">
 
               <metal:noresults tal:condition="not: batch">
@@ -208,96 +199,107 @@
                                          allowAnonymousViewAbout python:context.portal_registry['plone.allow_anon_views_about'];
                                          show_about python:not isAnon or allowAnonymousViewAbout;
                                          image_scale portal/@@image_scale">
-                <ol class="searchResults" start="${python:request.get('b_start', 0) + 1}">
+                <ol class="searchResults list-group list-group-numbered" start="${python:request.get('b_start', 0) + 1}">
                   <tal:results repeat="item batch">
-                    <li tal:define="hasIcon item/getIcon" class="my-3 pb-3 border-bottom">
-                      <span class="result-title">
-                        <img class="thumb-icon"
-                             tal:condition="hasIcon"
-                             tal:replace="structure python: image_scale.tag(item, 'image', scale='icon', css_class='thumb-icon')">
-                        <a href="${python:(item_url + '/view') if item_type in use_view_action else item_url}"
-                           class="state-${item/review_state}"
-                           tal:define="item_url item/getURL;
-                                       item_type item/PortalType"
-                           tal:content="python:item.getDataOrigin().pretty_title_or_id()" />
-                      </span>
+                    <li tal:define="hasIcon item/getIcon" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start  fs-4">
+                      <div class="ms-2 me-auto">
+                        <div class="result-title">
+                          <a href="${python:(item_url + '/view') if item_type in use_view_action else item_url}"
+                            class="state-${item/review_state}"
+                            tal:define="item_url item/getURL;
+                                        item_type item/PortalType">
+                                        <span tal:replace="python:item.getDataOrigin().pretty_title_or_id()"></span>
+                          </a>
+                        </div>
 
-                      <small class="text-muted" i18n:domain="plone"
-                            tal:condition="show_about">
-                        <span class="documentAuthor"
-                              i18n:translate="label_by_author">
-                          by
-                          <tal:block tal:condition="item/Creator"
-                                     tal:define="author python:context.portal_membership.getMemberInfo(item.Creator())">
-                            <a href="${navigation_root_url}/author/${item/Creator}"
-                               tal:content="python:author and author['fullname'] or item.Creator()"
-                               tal:omit-tag="not:item/Creator"
-                               i18n:name="author">
-                                Bob Dobalina
-                            </a>
-                          </tal:block>
-                        </span>
-                        <span tal:define="publication_date item/EffectiveDate;
-                                          modification_date item/ModificationDate">
+                        <small class="text-muted small fs-6" i18n:domain="plone"
+                              tal:condition="show_about">
+                          <span class="documentAuthor"
+                                i18n:translate="label_by_author">
+                            by
+                            <tal:block tal:condition="item/Creator"
+                                      tal:define="author python:context.portal_membership.getMemberInfo(item.Creator())">
+                              <a href="${navigation_root_url}/author/${item/Creator}"
+                                tal:content="python:author and author['fullname'] or item.Creator()"
+                                tal:omit-tag="not:item/Creator"
+                                i18n:name="author">
+                                  Bob Dobalina
+                              </a>
+                            </tal:block>
+                          </span>
+                          <span tal:define="publication_date item/EffectiveDate;
+                                            modification_date item/ModificationDate">
 
-                          <span class="documentPublished" tal:condition="python: publication_date != 'None'">
+                            <span class="documentPublished" tal:condition="python: publication_date != 'None'">
+                              &mdash;
+                              <span i18n:translate="box_published">
+                                published
+                              </span>
+                              <span tal:replace="python:toLocalizedTime(publication_date, long_format=0)">
+                                August 16, 2001 at 23:35:59
+                              </span>
+                            </span>
+
+                            <span class="documentModified" tal:condition="python: modification_date != publication_date">
+                              &mdash;
+                              <span i18n:translate="box_last_modified">
+                                last modified
+                              </span>
+                              <span tal:replace="python:toLocalizedTime(modification_date, long_format=1)">
+                                August 16, 2001 at 23:35:59
+                              </span>
+                            </span>
+                          </span>
+                          <span tal:define="categories item/Subject|nothing"
+                                tal:condition="categories">
                             &mdash;
-                            <span i18n:translate="box_published">
-                              published
-                            </span>
-                            <span tal:replace="python:toLocalizedTime(publication_date, long_format=0)">
-                              August 16, 2001 at 23:35:59
+                            <tal:filedunder i18n:translate="">filed under:</tal:filedunder>
+                            <span tal:repeat="category categories">
+                              <a href="${navigation_root_url}/@@search?Subject%3Alist=${category}" class="link-category" rel="tag"
+                                tal:content="category">
+                                Category
+                              </a><tal:separator condition="not: repeat/category/end">,</tal:separator>
                             </span>
                           </span>
+                        </small>
 
-                          <span class="documentModified" tal:condition="python: modification_date != publication_date">
-                            &mdash;
-                            <span i18n:translate="box_last_modified">
-                              last modified
-                            </span>
-                            <span tal:replace="python:toLocalizedTime(modification_date, long_format=1)">
-                              August 16, 2001 at 23:35:59
-                            </span>
-                          </span>
-                        </span>
-                        <span tal:define="categories item/Subject|nothing"
-                              tal:condition="categories">
-                          &mdash;
-                          <tal:filedunder i18n:translate="">filed under:</tal:filedunder>
-                          <span tal:repeat="category categories">
-                            <a href="${navigation_root_url}/@@search?Subject%3Alist=${category}" class="link-category" rel="tag"
-                               tal:content="category">
-                              Category
-                            </a><tal:separator condition="not: repeat/category/end">,</tal:separator>
-                          </span>
-                        </span>
-                      </small>
+                        <div class="croppedDescription mt-2 mb-2 fs-5 fw-light"
+                          tal:condition="item/CroppedDescription" tal:content="item/CroppedDescription">
+                          Cropped description
+                        </div>
 
-                      <div class="croppedDescription"
-                         tal:condition="item/CroppedDescription" tal:content="item/CroppedDescription">
-                        Cropped description
+                        <cite class="d-block small text-muted fs-6"
+                              tal:define="breadcrumbs python: view.breadcrumbs(item);
+                                          is_rtl context/@@plone_portal_state/is_rtl;"
+                              tal:condition='breadcrumbs'>
+                          <span i18n:translate="text_searchitem_location">
+                            Located in
+                          </span>
+                          <span dir="${python:'rtl' if is_rtl else 'ltr'}"
+                                tal:repeat="crumb breadcrumbs">
+                            <tal:item tal:define="is_last repeat/crumb/end;
+                                                  url crumb/absolute_url;
+                                                  title crumb/Title">
+                              <a href="${url}" tal:omit-tag="not: url" tal:content="title">crumb</a>
+                              <span class="breadcrumbSeparator" tal:condition="not: is_last">
+                                <tal:ltr condition="not: is_rtl">/</tal:ltr>
+                                <tal:rtl condition="is_rtl">/</tal:rtl>
+                              </span>
+                            </tal:item>
+                          </span>
+                        </cite>
+
                       </div>
 
-                      <cite class="d-block small text-muted"
-                            tal:define="breadcrumbs python: view.breadcrumbs(item);
-                                        is_rtl context/@@plone_portal_state/is_rtl;"
-                            tal:condition='breadcrumbs'>
-                        <span i18n:translate="text_searchitem_location">
-                          Located in
-                        </span>
-                        <span dir="${python:'rtl' if is_rtl else 'ltr'}"
-                              tal:repeat="crumb breadcrumbs">
-                          <tal:item tal:define="is_last repeat/crumb/end;
-                                                url crumb/absolute_url;
-                                                title crumb/Title">
-                            <a href="${url}" tal:omit-tag="not: url" tal:content="title">crumb</a>
-                            <span class="breadcrumbSeparator" tal:condition="not: is_last">
-                              <tal:ltr condition="not: is_rtl">/</tal:ltr>
-                              <tal:rtl condition="is_rtl">/</tal:rtl>
-                            </span>
-                          </tal:item>
-                        </span>
-                      </cite>
+                      <a href="${python:(item_url + '/view') if item_type in use_view_action else item_url}"
+                          class="state-${item/review_state}"
+                          tal:define="item_url item/getURL;
+                                    item_type item/PortalType">
+                          <img class="thumb-icon"
+                            tal:condition="python: show_images and hasIcon"
+                            tal:replace="structure python: image_scale.tag(item, 'image', scale=search_image_scale, css_class='thumb-icon')">
+                      </a>
+
                     </li>
                   </tal:results>
                 </ol>
@@ -307,6 +309,17 @@
 
           </metal:searchresults>
 
+        </div>
+
+        <div class="my-3" id="rss-subscription" i18n:domain="plone"
+            tal:condition="context/@@syndication-util/search_rss_enabled">
+          <a class="mx-2 text-decoration-none -flex  align-items-center"
+             href="${context/@@plone_context_state/object_url}/search_rss?${request/QUERY_STRING}">
+              <img tal:replace="structure python:icons.tag('rss-fill')" />
+              <span i18n:translate="title_subscribe_rss_feed" class="ms-1">
+                Subscribe to an always-updated RSS feed.
+              </span>
+          </a>
         </div>
 
     </form>
