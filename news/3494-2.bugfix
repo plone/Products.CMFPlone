@@ -1,0 +1,2 @@
+Remove ZServer specific code to shutdown and restart a Zope instance TTW (maintenance controlpanel).
+[jensens]
