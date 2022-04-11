@@ -231,6 +231,16 @@ class Search(BrowserView):
             self._navroot_url = state.navigation_root_url()
         return self._navroot_url
 
+    @property
+    def show_images(self):
+        registry = queryUtility(IRegistry)
+        return registry.get('plone.search_show_images')
+
+    @property
+    def search_image_scale(self):
+        registry = queryUtility(IRegistry)
+        return registry.get('plone.search_image_scale')
+
 
 class AjaxSearch(Search):
 
