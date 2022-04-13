@@ -145,7 +145,7 @@ class ResourceBase:
                         )
                         depends = graceful_depends
                 external = record.jscompilation.startswith("http")
-                resource = PloneScriptResource(
+                PloneScriptResource(
                     context=self.context,
                     name=name,
                     depends=depends,
@@ -181,7 +181,7 @@ class ResourceBase:
                         )
                         depends = graceful_depends
                 external = record.csscompilation.startswith("http")
-                resource = PloneStyleResource(
+                PloneStyleResource(
                     context=self.context,
                     name=name,
                     depends=depends,
