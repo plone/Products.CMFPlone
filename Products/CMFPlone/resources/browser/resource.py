@@ -50,7 +50,7 @@ class ResourceBase:
         hashtool.update(self.__class__.__name__.encode('utf8'))
         hashtool.update(site.absolute_url().encode('utf8'))
         e_bundles, d_bundles = self._request_bundles()
-        for bundle in e_bundles + d_bundles:
+        for bundle in e_bundles | d_bundles:
             hashtool.update(bundle.encode('utf8'))
         return f"_v_renderend_cache_{hashtool.hexdigest()}"
 
