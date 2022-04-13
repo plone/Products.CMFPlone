@@ -1,0 +1,3 @@
+Bugfix: Resource viewlet cache took not enough factors into account (like base url).
+[jnsens]
+
