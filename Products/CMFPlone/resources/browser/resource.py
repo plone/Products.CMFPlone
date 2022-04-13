@@ -6,15 +6,14 @@ from plone.app.theming.interfaces import IThemeSettings
 from plone.app.theming.utils import theming_policy
 from plone.base.interfaces import IBundleRegistry
 from plone.registry.interfaces import IRegistry
-from Products.CMFCore.Expression import createExprContext
-from Products.CMFCore.Expression import Expression
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
 from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.component.hooks import getSite
 
+import hashlib
 import logging
 import webresource
+
 
 logger = logging.getLogger(__name__)
 
@@ -35,19 +34,39 @@ class ResourceBase:
     initialization.
     """
 
+    def _request_bundles(self):
+        request = self.request
+        request_enabled_bundles = set(getattr(request, "enabled_bundles", []))
+        request_disabled_bundles = set(getattr(request, "disabled_bundles", []))
+        # include sub/parent request
+        while request.get("PARENT_REQUEST", None):
+            request = request["PARENT_REQUEST"]
+            request_enabled_bundles.update(getattr(request, "enabled_bundles", []))
+            request_disabled_bundles.update(getattr(request, "disabled_bundles", []))
+        return request_enabled_bundles, request_disabled_bundles
+
+    def _cache_attr_name(self, site):
+        hashtool = hashlib.sha256()
+        hashtool.update(self.__class__.__name__)
+        hashtool.update(site.absolute_url())
+        e_bundles, d_bundles = self._request_bundles()
+        for bundle in e_bundles + d_bundles:
+            hashtool.update(bundle)
+        return f"_v_renderend_cache_{hashtool.hexdigest()}"
+
     @property
     def _rendered_cache(self):
         if getConfiguration().debug_mode:
             return
         self.registry = getUtility(IRegistry)
         if not self.registry["plone.resources.development"]:
-            return getattr(
-                self.context, f"_v_renderend_cached_{self.__class__.__name__}", None
-            )
+            site = getSite()
+            return getattr(site, self._cache_attr_name(site), None)
 
     @_rendered_cache.setter
     def _rendered_cache(self, value):
-        setattr(self.context, f"_v_renderend_cached_{self.__class__.__name__}", value)
+        site = getSite()
+        setattr(site, self._cache_attr_name(site), value)
 
     def update(self):
         # cache on request
@@ -87,15 +106,7 @@ class ResourceBase:
 
         theme_enabled_bundles = getattr(theme, "enabled_bundles", [])
         theme_disabled_bundles = getattr(theme, "disabled_bundles", [])
-
-        # include sub/parent request
-        request = self.request
-        request_enabled_bundles = set(getattr(request, "enabled_bundles", []))
-        request_disabled_bundles = set(getattr(request, "disabled_bundles", []))
-        while request.get("PARENT_REQUEST", None):
-            request = request["PARENT_REQUEST"]
-            request_enabled_bundles.update(getattr(request, "enabled_bundles", []))
-            request_disabled_bundles.update(getattr(request, "disabled_bundles", []))
+        request_enabled_bundles = request_disabled_bundles = self._request_bundles()
 
         # collect names
         js_names = {name for name, rec in records.items() if rec.jscompilation}
