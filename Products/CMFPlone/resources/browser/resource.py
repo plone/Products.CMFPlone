@@ -106,7 +106,7 @@ class ResourceBase:
 
         theme_enabled_bundles = getattr(theme, "enabled_bundles", [])
         theme_disabled_bundles = getattr(theme, "disabled_bundles", [])
-        request_enabled_bundles = request_disabled_bundles = self._request_bundles()
+        request_enabled_bundles, request_disabled_bundles = self._request_bundles()
 
         # collect names
         js_names = {name for name, rec in records.items() if rec.jscompilation}
