@@ -75,7 +75,6 @@ class PatternSettingsAdapter:
     def image_srcsets(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IImagingSchema, prefix="plone", check=False)
-<<<<<<< HEAD
         editor_srcsets = {}
         for k, srcset in settings.image_srcsets.items():
             hide_in_editor = srcset.get("hideInEditor")
@@ -89,9 +88,6 @@ class PatternSettingsAdapter:
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IImagingSchema, prefix="plone", check=False)
         return settings.image_captioning
-=======
-        return settings.image_srcsets
->>>>>>> 6751589c8 (tinymce pat settings from image_scales to image_srcsets)
 
     def tinymce(self):
         """
@@ -145,10 +141,7 @@ class PatternSettingsAdapter:
             "base_url": self.context.absolute_url(),
             "imageTypes": image_types,
             "imageSrcsets": self.image_srcsets,
-<<<<<<< HEAD
             "imageCaptioningEnabled": self.image_captioning,
-=======
->>>>>>> 6751589c8 (tinymce pat settings from image_scales to image_srcsets)
             "linkAttribute": "UID",
             # This is for loading the languages on tinymce
             "loadingBaseUrl": "{}/++plone++static/components/tinymce-builded/"
