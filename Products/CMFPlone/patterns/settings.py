@@ -75,7 +75,13 @@ class PatternSettingsAdapter:
     def image_srcsets(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IImagingSchema, prefix="plone", check=False)
-        return settings.image_srcsets
+        editor_srcsets = {}
+        for k, srcset in settings.image_srcsets.items():
+            hide_in_editor = srcset.get("hideInEditor")
+            if hide_in_editor:
+                continue
+            editor_srcsets[k] = srcset
+        return editor_srcsets
 
     def tinymce(self):
         """
