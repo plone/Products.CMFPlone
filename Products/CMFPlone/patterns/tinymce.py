@@ -95,6 +95,7 @@ class TinyMCESettingsGenerator:
     def get_tiny_config(self):
         settings = self.settings
         importcss_file_filter = ""
+        importcss_selector_filter = ".tiny-"
 
         theme = self.get_theme()
         if theme and getattr(theme, "tinymce_styles_css", None):
@@ -111,6 +112,7 @@ class TinyMCESettingsGenerator:
             "entity_encoding": settings.entity_encoding,
             "importcss_append": True,
             "importcss_file_filter": importcss_file_filter,
+            "importcss_selector_filter": importcss_selector_filter,
             "browser_spellcheck": True,
         }
         toolbar_additions = settings.custom_buttons or []
