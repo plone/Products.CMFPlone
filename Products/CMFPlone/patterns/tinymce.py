@@ -94,8 +94,7 @@ class TinyMCESettingsGenerator:
 
     def get_tiny_config(self):
         settings = self.settings
-        importcss_file_filter = ""
-        importcss_selector_filter = ".tiny-"
+        importcss_file_filter = "tinymce-formats.css"
 
         theme = self.get_theme()
         if theme and getattr(theme, "tinymce_styles_css", None):
@@ -105,14 +104,13 @@ class TinyMCESettingsGenerator:
 
         tiny_config = {
             "resize": "both" if settings.resizing else False,
-            "content_css": self.get_content_css(importcss_file_filter),
+            "content_css": self.get_content_css(),
             "plugins": ["plonelink", "ploneimage", "importcss"] + settings.plugins,
             "external_plugins": {},
             "toolbar": settings.toolbar,
             "entity_encoding": settings.entity_encoding,
             "importcss_append": True,
             "importcss_file_filter": importcss_file_filter,
-            "importcss_selector_filter": importcss_selector_filter,
             "browser_spellcheck": True,
         }
         toolbar_additions = settings.custom_buttons or []
