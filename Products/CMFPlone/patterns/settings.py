@@ -83,6 +83,12 @@ class PatternSettingsAdapter:
             editor_srcsets[k] = srcset
         return editor_srcsets
 
+    @property
+    def image_captioning(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IImagingSchema, prefix="plone", check=False)
+        return settings.image_captioning
+
     def tinymce(self):
         """
         data-pat-tinymce : JSON.stringify({
@@ -135,6 +141,7 @@ class PatternSettingsAdapter:
             "base_url": self.context.absolute_url(),
             "imageTypes": image_types,
             "imageSrcsets": self.image_srcsets,
+            "imageCaptioningEnabled": self.image_captioning,
             "linkAttribute": "UID",
             # This is for loading the languages on tinymce
             "loadingBaseUrl": "{}/++plone++static/components/tinymce-builded/"
