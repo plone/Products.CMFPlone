@@ -137,6 +137,7 @@ class PatternSettingsAdapter:
             "relatedItems": related_items_config,
             "prependToScalePart": "/@@images/image/",
             "prependToUrl": "{}/resolveuid/".format(site_path.rstrip("/")),
+            "inline": settings.inline,
             "tiny": generator.get_tiny_config(),
             "upload": {
                 "baseUrl": portal_url,

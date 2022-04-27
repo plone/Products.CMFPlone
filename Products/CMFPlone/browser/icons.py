@@ -64,9 +64,13 @@ class IconsView(BrowserView):
 
     prefix = "plone.icon."
     defaulticon = "++plone++icons/plone.svg"
+    name = ""
 
     def publishTraverse(self, request, name):
-        self.name = name
+        if self.name:
+            # fix traversing to eg. "contenttype/document"
+            self.name += "/"
+        self.name += name
         return self
 
     def __call__(self):
