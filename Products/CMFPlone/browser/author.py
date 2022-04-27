@@ -1,33 +1,28 @@
+from .interfaces import IAuthorFeedbackForm
 from AccessControl import Unauthorized
-
-from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFPlone import PloneMessageFactory as _
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import ISecuritySchema
 from plone.base.interfaces.controlpanel import IMailSchema
-from Products.CMFPlone.utils import getToolByName
-from Products.CMFPlone.utils import pretty_title_or_id
+from plone.base.utils import pretty_title_or_id
+from plone.registry.interfaces import IRegistry
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 from Products.MailHost.interfaces import IMailHost
 from Products.statusmessages.interfaces import IStatusMessage
-
-from ZODB.POSException import ConflictError
-
-from .interfaces import IAuthorFeedbackForm
-
-from plone.registry.interfaces import IRegistry
 from urllib.parse import quote_plus
-
 from z3c.form import button
 from z3c.form import field
 from z3c.form import form
 from z3c.form.interfaces import HIDDEN_MODE
-
+from ZODB.POSException import ConflictError
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
 
 import logging
+
 
 logger = logging.getLogger("Plone")
 

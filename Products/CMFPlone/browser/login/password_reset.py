@@ -5,7 +5,7 @@ from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.base.interfaces import IPasswordResetToolView
 from plone.base.interfaces.controlpanel import IMailSchema
 from plone.base.utils import safe_text
-from plone.base.utils import safeToInt
+from plone.base.utils import safe_to_int
 from plone.memoize import view
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
@@ -17,8 +17,7 @@ from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PlonePAS.events import UserInitialLoginInEvent
 from Products.PlonePAS.events import UserLoggedInEvent
-from Products.PluggableAuthService.interfaces.plugins import \
-    ICredentialsUpdatePlugin
+from Products.PluggableAuthService.interfaces.plugins import ICredentialsUpdatePlugin
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -237,7 +236,7 @@ class ExplainPWResetToolView(BrowserView):
 
     def __call__(self):
         if self.request.method == 'POST':
-            timeout_days = safeToInt(self.request.get('timeout_days'), 7)
+            timeout_days = safe_to_int(self.request.get('timeout_days'), 7)
             self.context.setExpirationTimeout(timeout_days)
             self.context._user_check = bool(
                 self.request.get('user_check', False),

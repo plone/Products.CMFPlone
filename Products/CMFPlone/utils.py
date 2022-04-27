@@ -31,7 +31,6 @@ from plone.base.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.log import log  # noqa - for python scripts
 from Products.CMFPlone.log import log_exc  # noqa - for python scripts
 from Products.CMFPlone.log import log_deprecated  # noqa - for python scripts
-from ZODB.POSException import ConflictError
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import providedBy
@@ -39,8 +38,6 @@ from zope.component import queryUtility
 from zope.component.hooks import getSite
 from zope.deferredimport import deprecated as deprecated_import
 from zope.deprecation import deprecate
-from zope.deprecation import deprecated  # noqa
-from zope.i18n import translate
 from zope.interface import implementedBy
 from zope.publisher.interfaces.browser import IBrowserRequest
 
@@ -48,7 +45,7 @@ import OFS
 import pkg_resources
 import re
 import sys
-import transaction
+import transaction  # noqa - for python scripts
 import zope.interface
 
 
@@ -62,13 +59,21 @@ else:
 
 deprecated_import(
     "Import from plone.base.utils instead (will be removed in Plone 7)",
-    human_readable_size='plone.base.utils:human_readable_size',
-    safeToInt='plone.base.utils:safeToInt',
-    safe_bytes='plone.base.utils:safe_bytes',
-    safe_text='plone.base.utils:safe_text',
     get_installer='plone.base.utils:get_installer',
     get_top_request='plone.base.utils:get_top_request',
     get_top_site_from_url='plone.base.utils:get_top_site_from_url',
+    human_readable_size='plone.base.utils:human_readable_size',
+    safe_bytes='plone.base.utils:safe_bytes',
+    safe_text='plone.base.utils:safe_text',
+    safeToInt='plone.base.utils:safe_to_int',
+    base_hasattr='plone.base.utils:base_hasattr',
+    safe_hasattr='plone.base.utils:safe_hasattr',
+    safe_callable='plone.base.utils:safe_callable',
+    isExpired='plone.base.utils:is_expired',
+    pretty_title_or_id='plone.base.utils:pretty_title_or_id',
+    getEmptyTitle='plone.base.utils:get_empty_title',
+    transaction_note='plone.base.utils:transaction_note',
+
 )
 
 @deprecate("Use plone.base.utils.safe_bytes instead (will be removed in Plone 7)")
@@ -141,6 +146,7 @@ def createSiteMap(context, request, sitemap=False):
 
 
 
+<<<<<<< HEAD
 def isExpired(content):
     """ Find out if the object is expired (copied from skin script) """
 
@@ -212,6 +218,8 @@ def getEmptyTitle(context, translated=True):
     return empty
 
 
+=======
+>>>>>>> 432212be3 (move basic utils to plone.base)
 def typesToList(context):
     registry = getUtility(IRegistry)
     return registry.get('plone.displayed_types', ())
@@ -347,7 +355,7 @@ def versionTupleFromString(v_str):
     else:
         groups = list(match.groups())
         for i in (0, 1, 2, 4):
-            groups[i] = base_utils.safeToInt(groups[i])
+            groups[i] = base_utils.safe_to_int(groups[i])
         if groups[3] is None:
             groups[3] = 'final'
         elif groups[3] in rl_abbr.keys():
@@ -360,42 +368,6 @@ def getFSVersionTuple():
     """Returns Products.CMFPlone version tuple"""
     version = pkg_resources.get_distribution('Products.CMFPlone').version
     return versionTupleFromString(version)
-
-
-def transaction_note(note):
-    """Write human legible note"""
-    T = transaction.get()
-    if (len(T.description) + len(note)) >= 65533:
-        log('Transaction note too large omitting %s' % str(note))
-    else:
-        T.note(base_utils.safe_text(note))
-
-
-def base_hasattr(obj, name):
-    """Like safe_hasattr, but also disables acquisition."""
-    return safe_hasattr(aq_base(obj), name)
-
-
-def safe_hasattr(obj, name, _marker=object()):
-    """Make sure we don't mask exceptions like hasattr().
-
-    We don't want exceptions other than AttributeError to be masked,
-    since that too often masks other programming errors.
-    Three-argument getattr() doesn't mask those, so we use that to
-    implement our own hasattr() replacement.
-    """
-    return getattr(obj, name, _marker) is not _marker
-
-
-def safe_callable(obj):
-    """Make sure our callable checks are ConflictError safe."""
-    if safe_hasattr(obj, '__class__'):
-        if safe_hasattr(obj, '__call__'):
-            return True
-        return isinstance(obj, ClassType)
-    return callable(obj)
-
-
 
 
 def tuplize(value):
@@ -622,208 +594,3 @@ def _safe_format(inst, method):
     return SafeFormatter(inst).safe_format
 
 
-def check_id(
-        context, id=None, required=0, alternative_id=None, contained_by=None,
-        **kwargs):
-    """Test an id to make sure it is valid.
-
-    This used to be in Products/CMFPlone/skins/plone_scripts/check_id.py.
-
-    Returns an error message if the id is bad or None if the id is good.
-    Parameters are as follows:
-
-        id - the id to check
-
-        required - if False, id can be the empty string
-
-        alternative_id - an alternative value to use for the id
-        if the id is empty or autogenerated
-
-    Accept keyword arguments for compatibility with the fallback
-    in Products.validation.
-
-    Note: The reason the id is included is to handle id error messages for
-    such objects as files and images that supply an alternative id when an
-    id is auto-generated.
-    If you say "There is already an item with this name in this folder"
-    for an image that has the Name field populated with an autogenerated id,
-    it can cause some confusion; since the real problem is the name of
-    the image file name, not in the name of the autogenerated id.
-    """
-    def xlate(message):
-        ts = getToolByName(context, 'translation_service', None)
-        if ts is None:
-            return message
-        return ts.translate(message, context=context.REQUEST)
-
-    # if an alternative id has been supplied, see if we need to use it
-    if alternative_id and not id:
-        id = alternative_id
-
-    # make sure we have an id if one is required
-    if not id:
-        if required:
-            return xlate(_('Please enter a name.'))
-
-        # Id is not required and no alternative was specified, so assume the
-        # object's id will be context.getId(). We still should check to make
-        # sure context.getId() is OK to handle the case of pre-created objects
-        # constructed via portal_factory.  The main potential problem is an id
-        # collision, e.g. if portal_factory autogenerates an id that already
-        # exists.
-
-        id = context.getId()
-
-    #
-    # do basic id validation
-    #
-
-    # check for reserved names
-    if id in ('login', 'layout', 'plone', 'zip', 'properties', ):
-        return xlate(
-            _('${name} is reserved.',
-              mapping={'name': id}))
-
-    # check for bad characters
-    plone_utils = getToolByName(context, 'plone_utils', None)
-    if plone_utils is not None:
-        bad_chars = plone_utils.bad_chars(id)
-        if len(bad_chars) > 0:
-            bad_chars = ''.join(bad_chars).decode('utf-8')
-            decoded_id = id.decode('utf-8')
-            return xlate(
-                _('${name} is not a legal name. The following characters are '
-                  'invalid: ${characters}',
-                  mapping={'name': decoded_id, 'characters': bad_chars}))
-
-    # check for a catalog index
-    portal_catalog = getToolByName(context, 'portal_catalog', None)
-    if portal_catalog is not None:
-        if id in list(portal_catalog.indexes()) + list(portal_catalog.schema()):
-            return xlate(
-                _('${name} is reserved.',
-                  mapping={'name': id}))
-
-    # id is good; decide if we should check for id collisions
-    if contained_by is not None:
-        # Always check for collisions if a container was passed
-        # via the contained_by parameter.
-        checkForCollision = True
-    else:
-        # if we have an existing object, only check for collisions
-        # if we are changing the id
-        checkForCollision = (context.getId() != id)
-
-    # check for id collisions
-    if not checkForCollision:
-        # We are done.
-        return
-    # handles two use cases:
-    # 1. object has not yet been created and we don't know where it will be
-    # 2. object has been created and checking validity of id within
-    #    container
-    if contained_by is None:
-        try:
-            contained_by = context.getParentNode()
-        except Unauthorized:
-            return  # nothing we can do
-    try:
-        result = _check_for_collision(contained_by, id, **kwargs)
-    except Unauthorized:
-        # There is a permission problem. Safe to assume we can't use this id.
-        return xlate(
-            _('${name} is reserved.',
-              mapping={'name': id}))
-    if result is not None:
-        result = xlate(result, )
-    return result
-
-
-def _check_for_collision(contained_by, id, **kwargs):
-    """Check for collisions of an object id in a container.
-
-    Accept keyword arguments for compatibility with the fallback
-    in Products.validation.
-
-    When this was still a Python skin script, some security checks
-    would have been done automatically and caught by some
-    'except Unauthorized' lines.  Now, in unrestricted Python
-    code, we explicitly check.  But not all checks make sense.  If you don't
-    have the 'Access contents information' permission, theoretically
-    you should not be able to check for an existing conflicting id,
-    but it seems silly to then pretend that there is no conflict.
-
-    For safety, we let the check_id
-    function do a try/except Unauthorized when calling us.
-    """
-    secman = getSecurityManager()
-    # if not secman.checkPermission(
-    #         'Access contents information', contained_by):
-    #     # We cannot check.  Do not complain.
-    #     return
-
-    # Check for an existing object.
-    if id in contained_by:
-        existing_obj = getattr(contained_by, id, None)
-        if base_hasattr(existing_obj, 'portal_type'):
-            return _(
-                'There is already an item named ${name} in this folder.',
-                mapping={'name': id})
-
-    if base_hasattr(contained_by, 'checkIdAvailable'):
-        # This used to be called from the check_id skin script,
-        # which would check the permission automatically,
-        # and the code would catch the Unauthorized exception.
-        if secman.checkPermission(AddPortalContent, contained_by):
-            if not contained_by.checkIdAvailable(id):
-                return _('${name} is reserved.', mapping={'name': id})
-
-    # containers may implement this hook to further restrict ids
-    if base_hasattr(contained_by, 'checkValidId'):
-        try:
-            contained_by.checkValidId(id)
-        except ConflictError:
-            raise
-        except:  # noqa: E722
-            return _('${name} is reserved.', mapping={'name': id})
-
-    # make sure we don't collide with any parent method aliases
-    plone_utils = getToolByName(contained_by, 'plone_utils', None)
-    portal_types = getToolByName(contained_by, 'portal_types', None)
-    if plone_utils is not None and portal_types is not None:
-        parentFti = portal_types.getTypeInfo(contained_by)
-        if parentFti is not None:
-            aliases = plone_utils.getMethodAliases(parentFti)
-            if aliases is not None:
-                if id in aliases.keys():
-                    return _('${name} is reserved.', mapping={'name': id})
-
-    # Lastly, we want to disallow the id of any of the tools in the portal
-    # root, as well as any object that can be acquired via portal_skins.
-    # However, we do want to allow overriding of *content* in the object's
-    # parent path, including the portal root.
-
-    if id == 'index_html':
-        # always allow index_html
-        return
-    portal_url = getToolByName(contained_by, 'portal_url', None)
-    if portal_url is None:
-        # Probably a test.
-        # All other code needs the portal, so there is nothing left to check.
-        return
-    portal = portal_url.getPortalObject()
-    if id in portal.contentIds():
-        # Fine to use the same id as a *content* item from the root.
-        return
-    # It is allowed to give an object the same id as another
-    # container in it's acquisition path as long as the
-    # object is outside the portal.
-    outsideportal = getattr(aq_parent(portal), id, None)
-    insideportal = getattr(portal, id, None)
-    if (insideportal is not None
-            and outsideportal is not None
-            and aq_base(outsideportal) == aq_base(insideportal)):
-        return
-    # but not other things
-    if getattr(portal, id, None) is not None:
-        return _('${name} is reserved.', mapping={'name': id})

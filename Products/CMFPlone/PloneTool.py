@@ -11,7 +11,19 @@ from DateTime import DateTime
 from email.utils import getaddresses
 from OFS.ObjectManager import bad_id
 from OFS.SimpleItem import SimpleItem
+from plone.base.defaultpage import check_default_page_via_view
+from plone.base.defaultpage import get_default_page_via_view
+from plone.base.interfaces import INonStructuralFolder
+from plone.base.interfaces import IPloneTool
+from plone.base.interfaces import ISearchSchema
+from plone.base.interfaces import ISecuritySchema
+from plone.base.interfaces import ISiteSchema
+from plone.base.utils import base_hasattr
+from plone.base.utils import get_empty_title
+from plone.base.utils import get_user_friendly_types
+from plone.base.utils import safe_hasattr
 from plone.base.utils import safe_text
+from plone.base.utils import transaction_note
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import IDublinCore
 from Products.CMFCore.interfaces import IMutableDublinCore
@@ -25,21 +37,11 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone import utils
-from plone.base.defaultpage import check_default_page_via_view
-from plone.base.defaultpage import get_default_page_via_view
 from Products.CMFPlone.events import ReorderedEvent
-from plone.base.interfaces import INonStructuralFolder
-from plone.base.interfaces import IPloneTool
-from plone.base.interfaces import ISearchSchema
-from plone.base.interfaces import ISecuritySchema
-from plone.base.interfaces import ISiteSchema
 from Products.CMFPlone.log import log
 from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.log import log_exc
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.utils import base_hasattr
-from Products.CMFPlone.utils import safe_hasattr
-from Products.CMFPlone.utils import transaction_note
 from Products.statusmessages.interfaces import IStatusMessage
 from urllib import parse
 from ZODB.POSException import ConflictError
@@ -590,7 +592,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # a template or other object to be acquired and displayed on the object.
         # The path is determined as follows:
 
-        # 0. If we're c oming from WebDAV, make sure we don't return a contained
+        # 0. If we're coming from WebDAV, make sure we don't return a contained
         #     object "default page" ever
         # 1. If there is an index_html attribute (either a contained object or
         #     an explicit attribute) on the object, return that as the
@@ -901,7 +903,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return result
 
     @security.public
-    def getUserFriendlyTypes(self, typesList=None):
+    def getUserFriendlyTypes(self, typesList=[]):
         # Get a list of types which are considered "user friendly" for search
         # and selection purposes.
         #
@@ -911,21 +913,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         #
         # If typesList is given, this is used as the base list; else all types
         # from portal_types are used.
-        if typesList is None:
-            typesList = []
-        registry = getUtility(IRegistry)
-        search_settings = registry.forInterface(ISearchSchema, prefix="plone")
-        blacklistedTypes = search_settings.types_not_searched
-
-        ttool = getToolByName(self, 'portal_types')
-        tool_types = ttool.keys()
-        if typesList:
-            types = [t for t in typesList if t in tool_types]
-        else:
-            types = tool_types
-
-        friendlyTypes = set(types) - set(blacklistedTypes)
-        return list(friendlyTypes)
+        return get_user_friendly_types(types_list=typesList)
 
     @security.public
     def reindexOnReorder(self, parent):
@@ -937,7 +925,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def getEmptyTitle(self, translated=True):
         # Returns string to be used for objects with no title or id.
         # Note: no docstring please, to avoid reflected XSS.
-        return utils.getEmptyTitle(self, translated)
+        return get_empty_title(self, translated)
 
     @security.public
     def pretty_title_or_id(self, obj, empty_value=_marker):
@@ -955,8 +943,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if getMethodAliases is not None \
                 and utils.safe_callable(getMethodAliases):
             return getMethodAliases()
-        else:
-            return None
+        return
 
     # This is public because we don't know what permissions the user
     # has on the objects to be deleted.  The restrictedTraverse and
