@@ -442,6 +442,7 @@ def ajax_load_url(url):
     return url
 
 
+@deprecate("This function is unused. It will be removed in Plone 7")
 def bodyfinder(text):
     """ Return body or unchanged text if no body tags found.
 
