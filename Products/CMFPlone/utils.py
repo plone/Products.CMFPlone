@@ -69,6 +69,7 @@ deprecated_import(
     safe_text='plone.base.utils:safe_text',
     safeToInt='plone.base.utils:safe_int',
     transaction_note='plone.base.utils:transaction_note',
+    _createObjectByType="plone.base.utils:unrestricted_construct_instance",
 )
 deprecated_import(
     "Import from plone.namedfile.utils instead (will be removed in Plone 7)",
