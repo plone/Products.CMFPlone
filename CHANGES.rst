@@ -12,6 +12,21 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.8rc1 (2022-04-29)
+---------------------
+
+Bug fixes:
+
+
+- Update WCAG version to 2.1 in the accessebility-info default content.
+  [marwanatef2] (#3273)
+- Remove date range search fix, which was done in Products.ZCatalog.
+  [wesleybl] (#3432)
+- Fix detection of initial login time [MrTango] (#3447)
+- Update metadata version to 5216, Plone 5.2.8.
+  [maurits] (#5216)
+
+
 5.2.7 (2022-01-28)
 ------------------
 
