@@ -17,15 +17,16 @@ misc_ = {'plone_icon': ImageFile(
     os.path.join('skins', 'plone_images', 'logoIcon.png'),
     cmfplone_globals)}
 
-DISCUSSION_ANNOTATION_KEY = 'plone.app.discussion:conversation'
-
 zope.deferredimport.initialize()
 zope.deferredimport.deprecated(
     "Import from plone.base instead (to be removed in Plone 7)",
     PloneMessageFactory='plone.base:PloneMessageFactory',
     PloneLocalesMessageFactory='plone.base:PloneMessageFactory',
 )
-
+zope.deferredimport.deprecated(
+    "Import from plone.app.discussion.interfaces instead (to be removed in Plone 7)",
+    DISCUSSION_ANNOTATION_KEY='plone.app.discussion.interfaces:DISCUSSION_ANNOTATION_KEY',
+)
 
 def initialize(context):
 
@@ -70,6 +71,7 @@ def initialize(context):
     allow_class(ObjectMoved)
     allow_class(WorkflowException)
 
+    # bbb - remove in Plone 7
     from Products.CMFPlone.PloneBatch import Batch
     allow_class(Batch)
 
