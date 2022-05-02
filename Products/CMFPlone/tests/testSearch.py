@@ -257,6 +257,45 @@ class TestSection(SearchTestCase):
         res = view.results(batch=False)
         self.assertEqual([], [r for r in res])
 
+    def test_quoted_phrase(self):
+        portal = self.layer['portal']
+        # searching for ""
+        view = portal.restrictedTraverse('@@search')
+        # unqoted
+        self.assertEqual(view.results(
+            query=dict(SearchableText='spam ham')).sequence_length, 12)
+        # quoted -> same result
+        self.assertEqual(view.results(
+            query=dict(SearchableText='"spam ham"')).sequence_length, 12)
+        # unquoted reverse order -> all results
+        self.assertEqual(view.results(
+            query=dict(SearchableText='ham spam')).sequence_length, 12)
+        # quoted reverse order -> no results!
+        self.assertEqual(view.results(
+            query=dict(SearchableText='"ham spam"')).sequence_length,0)
+
+        # arbitrary words within index
+        self.assertEqual(view.results(
+            query=dict(SearchableText='spam eggs')).sequence_length, 12)
+        # arbitrary words within index quoted -> no results
+        self.assertEqual(view.results(
+            query=dict(SearchableText='"spam eggs"')).sequence_length, 0)
+
+        # unquoted subtring search
+        self.assertEqual(view.results(
+            query=dict(SearchableText='egg')).sequence_length, 12)
+        # quoted substring search -> exact match
+        self.assertEqual(view.results(
+            query=dict(SearchableText='"egg"')).sequence_length, 0)
+
+        # weird input
+        self.assertEqual(view.results(
+            query=dict(SearchableText='"eggs" ham spam')).sequence_length, 12)
+        self.assertEqual(view.results(
+            query=dict(SearchableText='"eggs ham spam')).sequence_length, 12)
+        self.assertEqual(view.results(
+            query=dict(SearchableText='eggs ham spam"')).sequence_length, 12)
+
 
 def test_suite():
     """This sets up a test suite that actually runs the tests in the class

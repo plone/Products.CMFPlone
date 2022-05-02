@@ -16,6 +16,7 @@ from zope.publisher.browser import BrowserView
 from ZTUtils import make_query
 
 import json
+import re
 
 _ = MessageFactory('plone')
 
@@ -52,9 +53,15 @@ class Search(BrowserView):
     def munge_search_term(self, q):
         for char in BAD_CHARS:
             q = q.replace(char, ' ')
-        r = map(quote, q.split())
+
+        # extract possibly quoted phrases first
+        r = re.findall(r'"[^"]*"', q)
+        for qp in r:
+            q = q.replace(qp, "")
+
+        r += map(quote, q.strip().split())
         r = " AND ".join(r)
-        r = quote_chars(r) + '*'
+        r = quote_chars(r) + ('*' if not r.endswith('"') else '')
         return r
 
     def results(self, query=None, batch=True, b_size=10, b_start=0,
