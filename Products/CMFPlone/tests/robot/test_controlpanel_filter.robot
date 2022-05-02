@@ -119,7 +119,7 @@ the 'h1' tag is stripped when a document is saved
   Click Button  Save
   Wait until page contains  Changes saved
   Page should contain  heading
-  XPath Should Match X Times  //div[@id='content-core']//h1  0  message=h1 should have been stripped out
+  Page Should Contain Element  //div[@id='content-core']//h1  limit=0  message=h1 should have been stripped out
 
 the '${tag}' tag is preserved when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
@@ -128,7 +128,7 @@ the '${tag}' tag is preserved when a document is saved
   Input RichText  <${tag}>lorem ipsum</${tag}>
   Click Button  Save
   Wait until page contains  Changes saved
-  XPath Should Match X Times  //div[@id='content-core']//${tag}  1  message=the ${tag} tag should have been preserved
+  Page Should Contain Element  //div[@id='content-core']//${tag}  limit=1  message=the ${tag} tag should have been preserved
 
 the '${attribute}' attribute is preserved when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
@@ -137,7 +137,7 @@ the '${attribute}' attribute is preserved when a document is saved
   Input RichText  <span ${attribute}="foo">lorem ipsum</span>
   Click Button  Save
   Wait until page contains  Changes saved
-  XPath Should Match X Times  //span[@${attribute}]  1  message=the ${attribute} tag should have been preserved
+  Page Should Contain Element  //span[@${attribute}]  limit=1  message=the ${attribute} tag should have been preserved
 
 success message should contain information regarding caching
   Element Should Contain  css=.alert-warning  HTML generation is heavily cached across Plone. You may have to edit existing content or restart your server to see the changes.

@@ -105,7 +105,7 @@ I add a new action
 
 I delete an action
   Click Button    css=section:nth-child(3) li:first-child button[name=delete]
-  Confirm Action
+  Handle alert
 
 I hide an action
   Click Button    css=section:nth-child(3) li:first-child button[name=hide]

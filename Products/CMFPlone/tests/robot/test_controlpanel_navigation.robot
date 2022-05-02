@@ -112,14 +112,14 @@ I choose to not show '${workflow_state}' items
 the document '${title}' shows up in the navigation
   Go to  ${PLONE_URL}
   Wait until page contains  Powered by Plone
-  XPath Should Match X Times  //ul[@id='portal-globalnav']/li/a[contains(text(), '${title}')]  1  message=The global navigation should have contained the item '${title}'
+  Page Should Contain Element  //ul[@id='portal-globalnav']/li/a[contains(text(), '${title}')]  limit=1  message=The global navigation should have contained the item '${title}'
 
 the document '${title}' does not show up in the navigation
   Go to  ${PLONE_URL}
   Wait until page contains  Powered by Plone
-  XPath Should Match X Times  //ul[@id='portal-globalnav']/li/a[contains(text(), '${title}')]  0  message=The global navigation should not have contained the item '${title}'
+  Page Should Contain Element  //ul[@id='portal-globalnav']/li/a[contains(text(), '${title}')]  limit=0  message=The global navigation should not have contained the item '${title}'
 
 the document '${title}' does not show up in the sitemap
   Go to  ${PLONE_URL}/sitemap
   Wait until page contains  Powered by Plone
-  XPath Should Match X Times  //ul[@id='portal-sitemap']/li/a/span[contains(text(), '${title}')]  0  message=The sitemap should not have contained the item '${title}'
+  Page Should Contain Element  //ul[@id='portal-sitemap']/li/a/span[contains(text(), '${title}')]  limit=0  message=The sitemap should not have contained the item '${title}'
