@@ -7,14 +7,11 @@
     directory="Products.CMFPlone:skins/plone_images"/>
  <object name="plone_scripts" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_scripts"/>
- <object name="plone_templates" meta_type="Filesystem Directory View"
-    directory="Products.CMFPlone:skins/plone_templates"/>
  <object name="plone_wysiwyg" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_wysiwyg"/>
  <skin-path name="Plone Default">
   <layer name="custom"/>
   <layer name="plone_wysiwyg"/>
-  <layer name="plone_templates"/>
   <layer name="plone_scripts"/>
   <layer name="plone_images"/>
  </skin-path>
