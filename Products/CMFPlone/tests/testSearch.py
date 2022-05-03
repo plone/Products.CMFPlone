@@ -316,9 +316,24 @@ class TestSection(SearchTestCase):
                 '"spam ham"',
             ),
             (
+                # cleanup quoted terms
+                '" spam ham   "',
+                '"spam ham"',
+            ),
+            (
                 # mixed cases
                 'Spam hAm',
                 'Spam AND hAm*',
+            ),
+            (
+                # mix quoting and unquoted
+                'let\'s eat some "ham and eggs " without spam ',
+                '"ham and eggs" AND let\'s AND eat AND some '
+                'AND without AND spam*',
+            ),
+            (
+                'test "Welcome" to "Plone" retest',
+                '"Welcome" AND "Plone" AND test AND to AND retest*',
             ),
             (
                 # parentheses
@@ -335,6 +350,11 @@ class TestSection(SearchTestCase):
                 " ".join(BAD_CHARS),
                 "",
             ),
+            (
+                # weird input
+                'test ""Welcome" to "Plone"" retest',
+                '"to" AND test AND WelcomePlone AND retest*',
+            )
         ]
 
         for _in, _out in search_term_tests:

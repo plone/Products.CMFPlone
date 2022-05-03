@@ -51,9 +51,17 @@ def munge_search_term(query):
         query = query.replace(char, ' ')
 
     # extract quoted phrases first
-    r = re.findall(r'"[^"]*"', query)
-    for qp in r:
-        query = query.replace(qp, "")
+    quoted_phrases = re.findall(r'"([^"]*)"', query)
+    r = []
+    for qp in quoted_phrases:
+        # remove from original query
+        query = query.replace(f'"{qp}"', "")
+        # replace with cleaned leading/trailing whitespaces
+        # and skip empty phrases
+        clean_qp = qp.strip()
+        if not clean_qp:
+            continue
+        r.append(f'"{clean_qp}"')
 
     r += map(quote, query.strip().split())
     r = " AND ".join(r)
