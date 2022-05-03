@@ -123,7 +123,7 @@ Navigation Control Panel
   True
 
   >>> navigation_settings.displayed_types
-  ('Image', 'File', 'Link', 'News Item', 'Folder', 'Document', 'Event')
+  ('Link', 'News Item', 'Folder', 'Document', 'Event', 'Collection')
 
   >>> navigation_settings.filter_on_workflow
   False
