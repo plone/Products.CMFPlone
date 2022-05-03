@@ -46,23 +46,24 @@ def quote(term):
     return term
 
 
+def munge_search_term(query):
+    for char in BAD_CHARS:
+        query = query.replace(char, ' ')
+
+    # extract quoted phrases first
+    r = re.findall(r'"[^"]*"', query)
+    for qp in r:
+        query = query.replace(qp, "")
+
+    r += map(quote, query.strip().split())
+    r = " AND ".join(r)
+    r = quote_chars(r) + ('*' if r and not r.endswith('"') else '')
+    return r
+
+
 class Search(BrowserView):
 
     valid_keys = ('sort_on', 'sort_order', 'sort_limit', 'fq', 'fl', 'facet')
-
-    def munge_search_term(self, q):
-        for char in BAD_CHARS:
-            q = q.replace(char, ' ')
-
-        # extract possibly quoted phrases first
-        r = re.findall(r'"[^"]*"', q)
-        for qp in r:
-            q = q.replace(qp, "")
-
-        r += map(quote, q.strip().split())
-        r = " AND ".join(r)
-        r = quote_chars(r) + ('*' if not r.endswith('"') else '')
-        return r
 
     def results(self, query=None, batch=True, b_size=10, b_start=0,
                 use_content_listing=True):
@@ -113,7 +114,7 @@ class Search(BrowserView):
             if v and ((k in valid_keys) or k.startswith('facet.')):
                 query[k] = v
         if text:
-            query['SearchableText'] = self.munge_search_term(text)
+            query['SearchableText'] = munge_search_term(text)
 
         # don't filter on created at all if we want all results
         created = query.get('created')
