@@ -55,7 +55,7 @@ Globaly enabled comments
 # --- WHEN -------------------------------------------------------------------
 
 I select '${content_type}' in types dropdown
-  Select from list  name=type_id  ${content_type}
+  Select from list by label  name=type_id  ${content_type}
   Wait until page contains  Globally addable
 
 Allow discussion
@@ -63,7 +63,7 @@ Allow discussion
   Click Button  Save
 
 I select '${workflow}' workflow
-  Select from list  name=new_workflow  ${workflow}
+  Select from list by label  name=new_workflow  ${workflow}
   Click Button  Save
 
 I add new Link '${id}'

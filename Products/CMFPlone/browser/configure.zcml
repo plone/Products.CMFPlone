@@ -293,4 +293,18 @@
       permission="zope.Public"
       />
 
+  <browser:page
+      for="*"
+      name="recently_modified"
+      template="templates/recently_modified.pt"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      for="*"
+      name="recently_published"
+      template="templates/recently_published.pt"
+      permission="zope2.View"
+      />
+
 </configure>

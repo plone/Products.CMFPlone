@@ -113,23 +113,6 @@ workflow link is clicked
     Click Link  xpath=//li[@id='plone-contentmenu-workflow']/a
     Click Link  xpath=(//li[@id='plone-contentmenu-workflow']/div/ul/li/a)[1]
     Page Should Contain  Item state changed.
-    # FIXME: The above 'Click Link' fails on Internet Explorer, but the
-    # following keywords 'workflow link is clicked softly' passes. Until we
-    # know why, we check if the above worked and if not, we try the other
-    # approach.
-    @{value} =  Run Keyword And Ignore Error
-    ...         Page Should Contain  Item state changed.
-    Run Keyword If  '@{value}[0]' == 'FAIL'
-    ...         workflow link is clicked softly
-
-workflow link is clicked softly
-    [Documentation]  This works on Internet Explorer, but not on Firefox...
-    Mouse Over  xpath=//*[@id='plone-contentmenu-workflow']/a
-    Click Link  xpath=//li[@id='plone-contentmenu-workflow']/a
-    Mouse Over  xpath=(//li[@id='plone-contentmenu-workflow']//a)[1]
-    Mouse Down  xpath=(//li[@id='plone-contentmenu-workflow']//a)[1]
-    Mouse Up  xpath=(//li[@id='plone-contentmenu-workflow']//a)[1]
-    Wait until page contains  Item state changed.
 
 Open Menu
     [Arguments]  ${elementId}

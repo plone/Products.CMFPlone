@@ -47,7 +47,7 @@ Show Content setup screen
 
     Click element  type_id
 
-    Select From List  name=type_id  Document
+    Select From List By Label  name=type_id  Document
 
     Capture and crop page screenshot
     ...  ${CURDIR}/_robot/content-document.png
