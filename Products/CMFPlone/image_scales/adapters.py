@@ -3,7 +3,6 @@ from plone.namedfile.interfaces import INamedImageField
 from Acquisition import aq_inner
 from plone.dexterity.interfaces import IDexterityContent
 from plone.dexterity.utils import iterSchemata
-from plone.restapi.serializer.converters import json_compatible
 from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
@@ -38,7 +37,7 @@ class ImageScales:
                 if serializer:
                     scales = serializer()
                     if scales:
-                        res[json_compatible(name)] = scales
+                        res[name] = scales
         return res
 
 
@@ -60,7 +59,7 @@ class ImageFieldScales:
         url = self.get_original_image_url(self.field.__name__, width, height)
 
         scales = self.get_scales(self.field, width, height)
-        result = {
+        return {
             "filename": image.filename,
             "content-type": image.contentType,
             "size": image.getSize(),
@@ -69,7 +68,6 @@ class ImageFieldScales:
             "height": height,
             "scales": scales,
         }
-        return json_compatible(result)
 
     def get_scales(self, field, width, height):
         """Get a dictionary of available scales for a particular image field,
