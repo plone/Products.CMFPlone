@@ -91,7 +91,7 @@ class ImageFieldScales:
                 # If we still can't get a scale, it's probably a corrupt image
                 continue
 
-            url = scale.url
+            url = self.get_scale_url(scale=scale)
             actual_width = scale.width
             actual_height = scale.height
 
@@ -110,7 +110,7 @@ class ImageFieldScales:
             fieldname, width=width, height=height, direction="thumbnail"
         )
         if scale:
-            return scale.url
+            return self.get_scale_url(scale=scale)
         # Corrupt images may not have a scale.
 
     def get_actual_scale(self, dimensions, bbox):
@@ -151,3 +151,8 @@ class ImageFieldScales:
             return name, width, height
 
         return [split_scale_info(size) for size in allowed_sizes]
+
+    def get_scale_url(self, scale):
+        return "{portal_url}{scale_url}".format(
+            portal_url=self.context.portal_url(), scale_url=scale.url
+        )
