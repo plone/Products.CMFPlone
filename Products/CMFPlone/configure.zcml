@@ -80,6 +80,9 @@
   <include file="profiles.zcml"/>
   <include file="catalog.zcml" />
 
+  <!-- images scales poc -->
+  <include package=".image_scales" />
+
   <cmf:registerDirectory
       name="skins"
       directory="skins"

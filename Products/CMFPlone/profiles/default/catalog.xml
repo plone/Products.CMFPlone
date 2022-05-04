@@ -127,6 +127,7 @@
  <column value="getObjSize"/>
  <column value="getRemoteUrl"/>
  <column value="id"/>
+ <column value="image_scales"/>
  <column value="is_folderish"/>
  <column value="listCreators"/>
  <column value="location"/>
