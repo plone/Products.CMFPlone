@@ -12,7 +12,7 @@ def image_scales(obj):
     """
     Indexer used to store in metadata the image scales of the object.
     """
-    adapter = queryMultiAdapter((aq_base(obj), getRequest()), IImageScalesAdapter)
+    adapter = queryMultiAdapter((obj, getRequest()), IImageScalesAdapter)
     if not adapter:
         return PersistentDict()
     scales = adapter()

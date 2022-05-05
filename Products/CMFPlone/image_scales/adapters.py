@@ -11,7 +11,6 @@ from zope.interface import Interface
 from zope.schema import getFields
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
-from zope.security.interfaces import IPermission
 from Products.CMFPlone.image_scales.interfaces import IImageScalesAdapter
 from Products.CMFPlone.image_scales.interfaces import IImageScalesFieldAdapter
 from Products.CMFPlone.interfaces import IImagingSchema
@@ -59,15 +58,17 @@ class ImageFieldScales:
         url = self.get_original_image_url(self.field.__name__, width, height)
 
         scales = self.get_scales(self.field, width, height)
-        return {
-            "filename": image.filename,
-            "content-type": image.contentType,
-            "size": image.getSize(),
-            "download": url,
-            "width": width,
-            "height": height,
-            "scales": scales,
-        }
+        return [
+            {
+                "filename": image.filename,
+                "content-type": image.contentType,
+                "size": image.getSize(),
+                "download": url,
+                "width": width,
+                "height": height,
+                "scales": scales,
+            }
+        ]
 
     def get_scales(self, field, width, height):
         """Get a dictionary of available scales for a particular image field,
@@ -153,6 +154,4 @@ class ImageFieldScales:
         return [split_scale_info(size) for size in allowed_sizes]
 
     def get_scale_url(self, scale):
-        return "{portal_url}{scale_url}".format(
-            portal_url=self.context.portal_url(), scale_url=scale.url
-        )
+        return scale.url
