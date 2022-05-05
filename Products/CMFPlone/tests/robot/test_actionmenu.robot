@@ -111,7 +111,7 @@ workflow link is clicked
     Set Suite Variable  ${OLD_STATE}  ${OLD_STATE}
     Given patterns are loaded
     Click Link  xpath=//li[@id='plone-contentmenu-workflow']/a
-    Click Link  xpath=(//li[@id='plone-contentmenu-workflow']/div/ul/li/a)[1]
+    Click Link  xpath=(//li[@id='plone-contentmenu-workflow']/ul/li/a)[1]
     Page Should Contain  Item state changed.
 
 Open Menu
@@ -123,7 +123,7 @@ Open Menu
 Open Action Menu
     Given patterns are loaded
     Click link  xpath=//li[@id='plone-contentmenu-actions']/a
-    Wait until keyword succeeds  5  1  Element Should Be Visible  css=#plone-contentmenu-actions .collapse
+    Wait until keyword succeeds  5  1  Element Should Be Visible  css=#plone-contentmenu-actions .dropdown-menu
 
 I copy the page
     Open Action Menu
