@@ -1,4 +1,3 @@
-from Acquisition import aq_base
 from persistent.dict import PersistentDict
 from plone.dexterity.interfaces import IDexterityContent
 from plone.indexer.decorator import indexer
