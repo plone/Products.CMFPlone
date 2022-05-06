@@ -64,11 +64,6 @@
   <include package="plonetheme.barceloneta" />
 
   <!-- conditional -->
-  <include zcml:condition="installed plone.rest" package="plone.rest" />
-  <include zcml:condition="installed plone.restapi" package="plone.restapi" />
-  <include zcml:condition="installed plone.app.caching" package="plone.app.caching" />
-  <include zcml:condition="installed plone.app.iterate" package="plone.app.iterate" />
-  <include zcml:condition="installed plone.volto" package="plone.volto" />
   <include zcml:condition="installed plone.app.upgrade" package="plone.app.upgrade" />
 
   <include package=".resources" />
