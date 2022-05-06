@@ -82,6 +82,7 @@ setup(
         'plone.portlets',
         'plone.protect >= 3.0.0',
         'plone.registry',
+        'plone.resource',
         'plone.schema',
         'plone.session',
         'plone.staticresources',

@@ -2,12 +2,10 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five">
 
+  <include file="permissions.zcml" />
   <include package="plone.app.registry" />
-
   <include package=".bbb" />
   <include package=".browser" />
-
   <include file="events.zcml" />
-  <include file="permissions.zcml" />
 
 </configure>
