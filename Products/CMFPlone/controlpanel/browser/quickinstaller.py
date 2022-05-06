@@ -490,7 +490,7 @@ class ManageProductsView(InstallerView):
 
     def get_sorted_addon_values(self, apply_filter=None, product_name=None):
         values = self.get_addons(apply_filter, product_name).values()
-        return sorted(values, key=lambda x: translate(x.get('title', ''), context=self.request))
+        return sorted(values, key=lambda x: translate(x.get('title', ''), context=self.request).upper())
 
     def get_upgrades(self):
         """
