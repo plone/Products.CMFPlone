@@ -12,6 +12,17 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.8 (2022-05-14)
+------------------
+
+Bug fixes:
+
+
+- Prepare release 5.2.8.
+
+  No changes compared to release candidate. (#528)
+
+
 5.2.8rc1 (2022-04-29)
 ---------------------
 
