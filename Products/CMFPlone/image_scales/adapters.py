@@ -79,17 +79,11 @@ class ImageFieldScales:
         images_view = getMultiAdapter((self.context, request), name="images")
 
         for name, actual_width, actual_height in self.get_scale_infos():
-            # Try first with scale name
-            scale = images_view.scale(field.__name__, scale=name)
+            scale = images_view.scale(
+                field.__name__, width=actual_width, height=actual_height
+            )
             if scale is None:
-                # Sometimes it fails, but we can create it
-                # using scale sizes
-                scale = images_view.scale(
-                    field.__name__, width=actual_width, height=actual_height
-                )
-
-            if scale is None:
-                # If we still can't get a scale, it's probably a corrupt image
+                # If we cannot get a scale, it is probably a corrupt image.
                 continue
 
             url = self.get_scale_url(scale=scale)
