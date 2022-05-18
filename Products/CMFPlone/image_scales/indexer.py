@@ -13,6 +13,8 @@ def image_scales(obj):
     """
     adapter = queryMultiAdapter((obj, getRequest()), IImageScalesAdapter)
     if not adapter:
-        return PersistentDict()
+        return
     scales = adapter()
+    if not scales:
+        return
     return PersistentDict(scales)
