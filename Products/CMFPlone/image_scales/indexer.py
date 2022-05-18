@@ -13,8 +13,10 @@ def image_scales(obj):
     """
     adapter = queryMultiAdapter((obj, getRequest()), IImageScalesAdapter)
     if not adapter:
-        return
+        # Raising an AttributeError does the right thing,
+        # making sure nothing is saved in the catalog.
+        raise AttributeError
     scales = adapter()
     if not scales:
-        return
+        raise AttributeError
     return PersistentDict(scales)
