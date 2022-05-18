@@ -124,27 +124,6 @@ class ImageFieldScales:
             return self.get_scale_url(scale=scale)
         # Corrupt images may not have a scale.
 
-    def get_actual_scale(self, dimensions, bbox):
-        """Given dimensions of an original image, and a bounding box of a scale,
-        calculates what actual dimensions that scaled image would have,
-        maintaining aspect ratio.
-
-        This is supposed to emulate / predict the behavior of Plone's
-        ImageScaling implementations.
-        """
-        width, height = dimensions
-        max_width, max_height = bbox
-        resize_ratio = min(max_width / width, max_height / height)
-
-        # Plone doesn't upscale images for the default named scales - limit
-        # to actual image dimensions
-        resize_ratio = min(resize_ratio, 1.0)
-
-        scaled_dimensions = int(width * resize_ratio), int(height * resize_ratio)
-
-        # Don't produce zero pixel lengths
-        scaled_dimensions = tuple(max(1, dim) for dim in scaled_dimensions)
-        return scaled_dimensions
 
     def get_scale_infos(self):
         """Returns a list of (name, width, height) 3-tuples of the
