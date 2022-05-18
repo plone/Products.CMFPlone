@@ -58,6 +58,9 @@ class ImageFieldScales:
         if not image:
             return
 
+        # Get the @@images view once and store it, so all methods can use it.
+        self.images_view = getMultiAdapter((self.context, self.request), name="images")
+
         width, height = image.getImageSize()
 
         url = self.get_original_image_url(self.field.__name__, width, height)
@@ -80,12 +83,17 @@ class ImageFieldScales:
         with the actual dimensions (aspect ratio of the original image).
         """
         scales = {}
-        images_view = getMultiAdapter((self.context, self.request), name="images")
 
         for name, actual_width, actual_height in self.get_scale_infos():
+            if actual_width > width:
+                # The width of the scale is larger than the original width.
+                # Scaling would simply return the original (or perhaps a copy
+                # with the same size).  We do not need this scale.
+                continue
+
             # Get the scale info without actually generating the scale,
             # nor any old-style HiDPI scales.
-            scale = images_view.scale(
+            scale = self.images_view.scale(
                 field.__name__,
                 width=actual_width,
                 height=actual_height,
@@ -109,8 +117,7 @@ class ImageFieldScales:
         return scales
 
     def get_original_image_url(self, fieldname, width, height):
-        images_view = getMultiAdapter((self.context, self.request), name="images")
-        scale = images_view.scale(
+        scale = self.images_view.scale(
             fieldname, width=width, height=height, direction="thumbnail"
         )
         if scale:
