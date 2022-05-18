@@ -1,4 +1,3 @@
-from zope.globalrequest import getRequest
 from plone.namedfile.interfaces import INamedImageField
 from Acquisition import aq_inner
 from plone.dexterity.interfaces import IDexterityContent
@@ -75,8 +74,7 @@ class ImageFieldScales:
         with the actual dimensions (aspect ratio of the original image).
         """
         scales = {}
-        request = getRequest()
-        images_view = getMultiAdapter((self.context, request), name="images")
+        images_view = getMultiAdapter((self.context, self.request), name="images")
 
         for name, actual_width, actual_height in self.get_scale_infos():
             # Get the scale info without actually generating the scale,
@@ -105,8 +103,7 @@ class ImageFieldScales:
         return scales
 
     def get_original_image_url(self, fieldname, width, height):
-        request = getRequest()
-        images_view = getMultiAdapter((self.context, request), name="images")
+        images_view = getMultiAdapter((self.context, self.request), name="images")
         scale = images_view.scale(
             fieldname, width=width, height=height, direction="thumbnail"
         )
