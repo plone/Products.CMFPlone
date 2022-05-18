@@ -79,8 +79,14 @@ class ImageFieldScales:
         images_view = getMultiAdapter((self.context, request), name="images")
 
         for name, actual_width, actual_height in self.get_scale_infos():
+            # Get the scale info without actually generating the scale,
+            # nor any old-style HiDPI scales.
             scale = images_view.scale(
-                field.__name__, width=actual_width, height=actual_height
+                field.__name__,
+                width=actual_width,
+                height=actual_height,
+                pre=True,
+                include_srcset=False,
             )
             if scale is None:
                 # If we cannot get a scale, it is probably a corrupt image.
