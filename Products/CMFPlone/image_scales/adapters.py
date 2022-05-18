@@ -39,6 +39,12 @@ class ImageScales:
         return res
 
 
+def _split_scale_info(allowed_size):
+    name, dims = allowed_size.split(" ")
+    width, height = list(map(int, dims.split(":")))
+    return name, width, height
+
+
 @implementer(IImageScalesFieldAdapter)
 @adapter(INamedImageField, IDexterityContent, Interface)
 class ImageFieldScales:
@@ -143,12 +149,7 @@ class ImageFieldScales:
         imaging_settings = registry.forInterface(IImagingSchema, prefix="plone")
         allowed_sizes = imaging_settings.allowed_sizes
 
-        def split_scale_info(allowed_size):
-            name, dims = allowed_size.split(" ")
-            width, height = list(map(int, dims.split(":")))
-            return name, width, height
-
-        return [split_scale_info(size) for size in allowed_sizes]
+        return [_split_scale_info(size) for size in allowed_sizes]
 
     def get_scale_url(self, scale):
         return scale.url
