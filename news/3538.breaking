@@ -1,0 +1,2 @@
+Rename *passwordreset* view into *password-reset* to be aligned with restapi and Volto names
+[cekk]
