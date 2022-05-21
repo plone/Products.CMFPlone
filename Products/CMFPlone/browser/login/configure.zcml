@@ -121,7 +121,7 @@
         />
 
     <browser:page
-        name="passwordreset"
+        name="password-reset"
         for="*"
         class=".password_reset.PasswordResetView"
         permission="zope.Public"

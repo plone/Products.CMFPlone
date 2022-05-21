@@ -38,7 +38,7 @@ LOGIN_TEMPLATE_IDS = [
     'mail_password_form',
     'member_search_results',
     'pwreset_finish',
-    'passwordreset',
+    'password-reset',
     'register',
     'registered',
     'require_login',

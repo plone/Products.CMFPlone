@@ -70,7 +70,7 @@ class TestLoginHelp(unittest.TestCase):
         self.assertEqual(len(self.portal.MailHost.messages), 1)
         message = self.portal.MailHost.messages[0]
         self.assertIn(b'To: foo@plone.org', message)
-        self.assertIn(b'http://nohost/plone/passwordreset/', message)
+        self.assertIn(b'http://nohost/plone/password-reset/', message)
 
 
 class TestLoginHelpFunctional(unittest.TestCase):

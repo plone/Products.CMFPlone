@@ -206,7 +206,7 @@ then we extract the address that lets us reset our password:
   >>> url_index = msg.index(please_visit_text) + len(please_visit_text)
   >>> address = msg[url_index:].strip().split()[0].decode()
   >>> address # doctest: +ELLIPSIS
-  u'http://nohost/plone/passwordreset/...'
+  u'http://nohost/plone/password-reset/...'
   >>> b"If you didn't expect to receive this email" in msg
   True
 
@@ -417,7 +417,7 @@ We need to be careful to keep this working in both Python 2 and 3 without invali
 It is best to convert msgtext to text first.
 
   >>> msgtext = msgtext.decode()
-  >>> address = re.search(r'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0]
+  >>> address = re.search(r'(http://nohost/plone/password-reset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0]
 
 Now that we have the address, we will reset our password:
 
@@ -499,7 +499,7 @@ then we extract the address that lets us reset our password:
   >>> b"Please activate it by visiting" in msgtext
   True
   >>> msgtext = msgtext.decode()
-  >>> address = re.search(r'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0]
+  >>> address = re.search(r'(http://nohost/plone/password-reset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0]
 
 Now that we have the address, we will reset our password:
 
@@ -517,7 +517,7 @@ Log out
 
   >>> browser.getLink('Log out').click()
 
-Test passwordreset BrowserView
+Test password-reset BrowserView
 
     Setup Plone email sender
 

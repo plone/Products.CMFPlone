@@ -71,7 +71,7 @@ class PasswordResetToolView(BrowserView):
         )
 
     def construct_url(self, randomstring):
-        return '{}/passwordreset/{}'.format(
+        return '{}/password-reset/{}'.format(
             self.portal_state().navigation_root_url(), randomstring)
 
     def expiration_timeout(self):
