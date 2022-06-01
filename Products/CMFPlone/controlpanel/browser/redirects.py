@@ -271,7 +271,7 @@ class RedirectsControlPanel(BrowserView):
                 created=self.request.form.get('datetime', ''),
                 manual=self.request.form.get('manual', ''),
             ),
-            15,
+            int(self.request.form.get('b_size', '15')),
             int(self.request.form.get('b_start', '0')),
             orphan=1,
         )

@@ -52,7 +52,7 @@ def get_resource(context, path):
         return
     try:
         resource = context.unrestrictedTraverse(path)
-    except (NotFound, AttributeError):
+    except (NotFound, AttributeError, KeyError):
         logger.warning(
             f"Could not find resource {path}. You may have to create it first."
         )  # noqa
