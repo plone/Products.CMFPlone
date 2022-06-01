@@ -76,9 +76,9 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
         scripts.update()
         results = scripts.render()
-        self.assertIn("++plone++static/bundle-jquery/jquery.min.js", results)
+        self.assertIn("++plone++static/bundle-plone/jquery-remote.min.js", results)
         self.assertIn(
-            "++plone++static/bundle-bootstrap/js/bootstrap.bundle.min.js", results
+            "++plone++static/bundle-plone/bootstrap-remote.min.js", results
         )
         self.assertIn("++plone++static/bundle-plone/bundle.min.js", results)
         self.assertIn("http://nohost/plone/++webresource++", results)
@@ -88,9 +88,9 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
         scripts.update()
         results = scripts.render()
-        self.assertIn("++plone++static/bundle-jquery/jquery.min.js", results)
+        self.assertIn("++plone++static/bundle-plone/jquery-remote.min.js", results)
         self.assertIn(
-            "++plone++static/bundle-bootstrap/js/bootstrap.bundle.min.js", results
+            "++plone++static/bundle-plone/bootstrap-remote.min.js", results
         )
         self.assertIn("++plone++static/bundle-plone/bundle.min.js", results)
         self.assertIn("http://nohost/plone/++webresource++", results)
