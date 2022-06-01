@@ -343,3 +343,16 @@ class Upgrade(BrowserView):
             )
 
         return self.index()
+
+    def can_migrate_to_volto(self):
+        if not HAS_VOLTO:
+            return False
+        pm = getattr(self.context, 'portal_migration')
+        if pm.getInstanceVersion() < "6005":
+            return False
+        try:
+            from plone.volto.browser import migrate_to_volto
+        except ImportError:
+            return False
+        installer = get_installer(self.context, self.request)
+        return not installer.is_product_installed("plone.volto")
