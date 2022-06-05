@@ -318,7 +318,7 @@ I expect to be in Simple mode
 
 open the select box titled ${NAME}
     Click Element  css=body
-    ${select_criteria_selector}  Set Variable  .querystring-criteria-${NAME} .select2-container a
+    ${select_criteria_selector}  Set Variable  .querystring-criteria-${NAME} .select2-container
     Wait Until Element Is Visible  css=${select_criteria_selector}
     Click Element  css=${select_criteria_selector}
 
@@ -326,7 +326,7 @@ select index type ${INDEX}
     ${input_selector}  Set Variable  .select2-drop-active[style*="display: block;"] input
     Wait Until Element Is Visible  jquery=${input_selector}
     Input Text  jquery=${input_selector}   text=${INDEX}
-    Press Key  jquery=:focus  \\13
+    Press Keys  jquery=:focus  RETURN
 
 we expect ${NUM} hits
     #This assumes we have the 2 "Test document" and "Test folder" items from the
