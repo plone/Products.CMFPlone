@@ -72,16 +72,16 @@ class PatternSettingsAdapter:
         return result
 
     @property
-    def image_srcsets(self):
+    def picture_variants(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IImagingSchema, prefix="plone", check=False)
-        editor_srcsets = {}
-        for k, srcset in settings.image_srcsets.items():
-            hide_in_editor = srcset.get("hideInEditor")
+        editor_picture_variants = {}
+        for k, picture_variant in settings.picture_variants.items():
+            hide_in_editor = picture_variant.get("hideInEditor")
             if hide_in_editor:
                 continue
-            editor_srcsets[k] = srcset
-        return editor_srcsets
+            editor_picture_variants[k] = picture_variant
+        return editor_picture_variants
 
     @property
     def image_captioning(self):
@@ -140,7 +140,7 @@ class PatternSettingsAdapter:
         configuration = {
             "base_url": self.context.absolute_url(),
             "imageTypes": image_types,
-            "imageSrcsets": self.image_srcsets,
+            "pictureVariants": self.picture_variants,
             "imageCaptioningEnabled": self.image_captioning,
             "linkAttribute": "UID",
             # This is for loading the languages on tinymce
