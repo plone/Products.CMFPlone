@@ -323,7 +323,11 @@ open the select box titled ${NAME}
     Click Element  css=${select_criteria_selector}
 
 select index type ${INDEX}
+    Set Focus To Element  css=.select2-drop-active[style*="display: block;"] input
+    Wait Until Element Is Visible  css=.select2-drop-active[style*="display: block;"] input
     ${input_selector}  Set Variable  .select2-drop-active[style*="display: block;"] input
+
+    Set Focus To Element  jquery=${input_selector}
     Wait Until Element Is Visible  jquery=${input_selector}
     Input Text  jquery=${input_selector}   text=${INDEX}
     Press Keys  jquery=:focus  RETURN
