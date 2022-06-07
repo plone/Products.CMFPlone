@@ -86,10 +86,14 @@ a link in rich text
   Wait until page contains  Foo
 
   Click Button  css=.modal-footer .btn-primary
+
+  Set Focus To Element  css=#form-buttons-save
+  Wait Until Element Is Visible  css=#form-buttons-save
   Click Button  css=#form-buttons-save
 
 
 should show warning when deleting page
+
   Go To  ${PLONE_URL}/foo
   Wait until element is visible  css=#plone-contentmenu-actions a
   Click Link  css=#plone-contentmenu-actions a
@@ -102,13 +106,19 @@ should show warning when deleting page from folder_contents
   Go To  ${PLONE_URL}/folder_contents
   Wait until keyword succeeds  30  1  Page should contain element  css=tr[data-id="foo"] input
   # Might still take a bit before it is clickable.
-  Sleep  1
+  Set Focus To Element  css=tr[data-id="foo"] input
+  Wait Until Element Is Visible  css=tr[data-id="foo"] input
   Click Element  css=tr[data-id="foo"] input
   Checkbox Should Be Selected  css=tr[data-id="foo"] input
   Wait until keyword succeeds  30  1  Page should not contain element  css=#btn-delete.disabled
+
+  Set Focus To Element  css=#btngroup-mainbuttons #btn-delete
+  Wait Until Element Is Visible  css=#btngroup-mainbuttons #btn-delete
   Click Element  css=#btngroup-mainbuttons #btn-delete
   Wait until page contains element  css=.popover-content .btn-danger
   Page should contain element  css=.breach-container .breach-item
+  Set Focus To Element  css=#popover-delete .closeBtn
+  Wait Until Element Is Visible  css=#popover-delete .closeBtn
   Click Element  css=#popover-delete .closeBtn
   Checkbox Should Be Selected  css=tr[data-id="foo"] input
 
@@ -148,4 +158,7 @@ remove link to page
   Execute Javascript    function selectElementContents(el) {var range = document.createRange(); range.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);} var el = document.getElementById("tinymce"); selectElementContents(el);
   UnSelect Frame
   Click Button  css=button[aria-label="Remove link"]
+
+  Set Focus To Element  css=#form-buttons-save
+  Wait Until Element Is Visible  css=#form-buttons-save
   Click Button  css=#form-buttons-save
