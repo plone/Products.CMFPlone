@@ -142,6 +142,7 @@ add a min/max constraint to the field
   Wait until page contains element  form.widgets.min_length
   Input Text  form.widgets.min_length  4
   Input Text  form.widgets.max_length  6
+  Wait Until Element Is visible  css=.pattern-modal-buttons button#form-buttons-save
   Click Button  css=.pattern-modal-buttons button#form-buttons-save
   Sleep  1
 
@@ -172,7 +173,11 @@ a logged-in user will see the field on top of the user profile
 a logged-in user will see a field with min/max constraints
   a logged-in user will see the field in the user profile
   Input Text  form.widgets.email  test@plone.org
+  Set Focus To Element  css=#form-widgets-test_field
+  Wait Until Element Is visible  css=#form-widgets-test_field
   Input Text  form.widgets.test_field  1
+  Set Focus To Element  css=.formControls button#form-buttons-save  
+  Wait Until Element Is visible  css=.formControls button#form-buttons-save
   Click Button  Save
   Wait until page contains  There were some errors.
   Page should contain  Value is too short
