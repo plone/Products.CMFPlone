@@ -103,9 +103,8 @@ I add a new text field to the member fields
 
 I Open the test_field Settings
   Go to  ${PLONE_URL}/@@member-fields
-  Wait until page contains element  css=div[data-field_id='test_field']
-  Set Focus To Element  css=div[data-field_id='test_field'] a.fieldSettings
-  Wait Until Keyword Succeeds  3  100ms  Click link  css=div[data-field_id='test_field'] a.fieldSettings
+  Wait For Element  css=div[data-field_id='test_field']
+  Wait For Then Click Element  css=div[data-field_id='test_field'] a.fieldSettings
 
 I add a new required text field to the member fields
   Go to  ${PLONE_URL}/@@member-fields
@@ -173,11 +172,8 @@ a logged-in user will see the field on top of the user profile
 a logged-in user will see a field with min/max constraints
   a logged-in user will see the field in the user profile
   Input Text  form.widgets.email  test@plone.org
-  Set Focus To Element  css=#form-widgets-test_field
-  Wait Until Element Is visible  css=#form-widgets-test_field
+  Wait For Element  css=#form-widgets-test_field
   Input Text  form.widgets.test_field  1
-  Set Focus To Element  css=.formControls button#form-buttons-save  
-  Wait Until Element Is visible  css=.formControls button#form-buttons-save
-  Click Button  Save
+  Wait For Then Click Element  css=.formControls button#form-buttons-save
   Wait until page contains  There were some errors.
   Page should contain  Value is too short

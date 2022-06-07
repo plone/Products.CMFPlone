@@ -28,9 +28,7 @@ Scenario: A page is opened to edit in TinyMCE
       and insert link
       and insert image
 
-    Set Focus To Element  css=#form-buttons-save
-    Wait Until Element Is Visible  css=#form-buttons-save
-    Click Button  Save
+    Wait For Then Click Element  css=#form-buttons-save
     Wait until page contains  Changes saved
 
 

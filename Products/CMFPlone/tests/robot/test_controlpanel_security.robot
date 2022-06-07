@@ -64,9 +64,9 @@ the security control panel
 
 a published test folder
   Go to  ${PLONE_URL}/test-folder
-  Wait until element is visible  css=#plone-contentmenu-workflow
+  Wait For Element  css=#plone-contentmenu-workflow
   Click link  xpath=//li[@id='plone-contentmenu-workflow']/a
-  Wait until element is visible  id=workflow-transition-publish
+  Wait For Element  id=workflow-transition-publish
   Click link  id=workflow-transition-publish
   Wait until page contains  Item state changed
 
@@ -142,9 +142,7 @@ A user folder should be created when a user registers and logs in to the site
   Input Text for sure  form.widgets.email  joe@test.com
   Input Text for sure  form.widgets.password  supersecret
   Input Text for sure  form.widgets.password_ctl  supersecret
-  Set Focus To Element  css=#form-buttons-register
-  Wait Until Element Is Visible  css=#form-buttons-register
-  Click Button  Register
+  Wait For Then Click Element  css=#form-buttons-register
 
   # I login to the site
   Go to  ${PLONE_URL}/login
@@ -176,9 +174,7 @@ UUID should be used for the user id
   Input Text for sure  form.widgets.email  joe@test.com
   Input Text for sure  form.widgets.password  supersecret
   Input Text for sure  form.widgets.password_ctl  supersecret
-  Set Focus To Element  css=#form-buttons-register
-  Wait Until Element Is Visible  css=#form-buttons-register
-  Click Button  Register
+  Wait For Then Click Element  css=#form-buttons-register
 
   # I login to the site
   Go to  ${PLONE_URL}/login
