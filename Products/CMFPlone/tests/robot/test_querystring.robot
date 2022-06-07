@@ -72,10 +72,7 @@ Scenario: Searchable text query
     When I open the criteria Searchable text
     and I search for a
     and Sleep  0.2
-    ${preview_selector}  Set Variable  div.querystring-preview
-    Set Focus To Element  css=${preview_selector}
-    and Wait Until Element Is Visible  css=${preview_selector}
-    and Click Element  css=${preview_selector}
+    and Wait For Then Click Element  css=div.querystring-preview
     Then we expect 2 hits
     When I open the criteria Searchable text
     and I search for d
@@ -89,25 +86,17 @@ Scenario: Tag query one
     When I activate the default operator in the criteria Tag
     and I open the Selection Widget
     ${base_option_selector}  Set Variable  li.select2-results-dept-0.select2-result.select2-result-selectable.select2-option
-    Set Focus To Element  css=${base_option_selector}-o
-    and Wait Until Element Is Visible  css=${base_option_selector}-o
-    and Click Element  css=${base_option_selector}-o
+    and Wait For Then Click Element  css=${base_option_selector}-o
     Then we expect 4 hits
     When I open the Selection Widget
-    Set Focus To Element  css=${base_option_selector}-n
-    and Wait Until Element Is Visible  css=${base_option_selector}-n
-    and Click Element  css=${base_option_selector}-n
+    and Wait For Then Click Element  css=${base_option_selector}-n
     Then we expect 4 hits
     When I delete my selection
     and I open the Selection Widget
-    Set Focus To Element  css=${base_option_selector}-p
-    and Wait Until Element Is Visible  css=${base_option_selector}-p
-    and Click Element  css=${base_option_selector}-p
+    and Wait For Then Click Element  css=${base_option_selector}-p
     Then we expect 1 hits
     When I open the Selection Widget
-    Set Focus To Element  css=${base_option_selector}-e
-    and Wait Until Element Is Visible  css=${base_option_selector}-e
-    and Click Element  css=${base_option_selector}-e
+    and Wait For Then Click Element  css=${base_option_selector}-e
     Then we expect 2 hits
 
 Scenario Tag query two
@@ -118,25 +107,17 @@ Scenario Tag query two
     When I expect an empty result after open the operator Matches all of in the criteria Tag
     and I open the Selection Widget
     ${base_option_selector}  Set Variable  li.select2-results-dept-0.select2-result.select2-result-selectable.select2-option
-    Set Focus To Element  css=${base_option_selector}-o
-    and Wait Until Element Is Visible  css=${base_option_selector}-o
-    and Click Element  css=${base_option_selector}-o
+    and Wait For Then Click Element  css=${base_option_selector}-o
     Then we expect 4 hits
     When and I open the Selection Widget
-    Set Focus To Element  css=${base_option_selector}-n
-    and Wait Until Element Is Visible  css=${base_option_selector}-n
-    and Click Element  css=${base_option_selector}-n
+    and Wait For Then Click Element  css=${base_option_selector}-n
     Then we expect 3 hits
     When I delete my selection
     and and I open the Selection Widget
-    Set Focus To Element  css=${base_option_selector}-p
-    and Wait Until Element Is Visible  css=${base_option_selector}-p
-    and Click Element  css=${base_option_selector}-p
+    and Wait For Then Click Element  css=${base_option_selector}-p
     Then we expect 1 hits
     When and I open the Selection Widget
-    Set Focus To Element  css=${base_option_selector}-e
-    and Wait Until Element Is Visible  css=${base_option_selector}-e
-    and Click Element  css=${base_option_selector}-e
+    and Wait For Then Click Element  css=${base_option_selector}-e
     Then we expect 1 hits
 
 
@@ -183,10 +164,7 @@ Scenario Review state query
     and the querystring pattern
     When I open the criteria Review State
     and I open the Selection Widget
-    ${query_selector}  Set Variable  li.select2-option-private
-    Set Focus To Element  css=${query_selector}
-    and Wait Until Element Is Visible  css=${query_selector}
-    and Click Element  css=${query_selector}
+    and Wait For Then Click Element  css=li.select2-option-private
     Then we expect 7 hits
 
 Scenario Type query
@@ -195,44 +173,26 @@ Scenario Type query
     and the querystring pattern
     When I open the criteria Type
     and I open the Selection Widget
-    ${query_selector}  Set Variable  li.select2-option-event
-    Set Focus To Element  css=${query_selector}
-    and Wait Until Element Is Visible  css=${query_selector}
-    and Click Element  css=${query_selector}
+    and Wait For Then Click Element  css=li.select2-option-event
     Then we expect 4 hits
     When I delete one selection
     and I open the Selection Widget
-    ${query_selector}  Set Variable  li.select2-option-file
-    Set Focus To Element  css=${query_selector}
-    and Wait Until Element Is Visible  css=${query_selector}
-    and Click Element  css=${query_selector}
+    and Wait For Then Click Element  css=li.select2-option-file
     Then we do not expect any hits
     When I delete one selection
     and I open the Selection Widget
-    ${query_selector}  Set Variable  li.select2-option-folder
-    Set Focus To Element  css=${query_selector}
-    and Wait Until Element Is Visible  css=${query_selector}
-    and Click Element  css=${query_selector}
+    and Wait For Then Click Element  css=li.select2-option-folder
     Then we expect 5 hits
     When I delete one selection
     and I open the Selection Widget
-    ${query_selector}  Set Variable  li.select2-option-link
-    Set Focus To Element  css=${query_selector}
-    and Wait Until Element Is Visible  css=${query_selector}
-    and Click Element  css=${query_selector}
+    and Wait For Then Click Element  css=li.select2-option-link
     Then we expect 1 hits
     When I delete one selection
     and I open the Selection Widget
-    ${query_selector}  Set Variable  li.select2-option-document
-    Set Focus To Element  css=${query_selector}
-    and Wait Until Element Is Visible  css=${query_selector}
-    and Click Element  css=${query_selector}
+    and Wait For Then Click Element  css=li.select2-option-document
     Then we expect 2 hits
     When I open the Selection Widget
-    ${query_selector}  Set Variable  li.select2-option-link
-    Set Focus To Element  css=${query_selector}
-    and Wait Until Element Is Visible  css=${query_selector}
-    and Click Element  css=${query_selector}
+    and Wait For Then Click Element  css=li.select2-option-link
     Then we expect 3 hits
 
 Scenario Creator query
@@ -251,9 +211,7 @@ save
 the querystring pattern
     #We go the /a to give more useful query results
     Go to  ${PLONE_URL}/a/++add++Collection
-    ${pattern_selector}  Set Variable  .pat-querystring
-    Set Focus To Element  css=${pattern_selector}
-    Wait until page contains element  css=${pattern_selector}
+    Wait until page contains element  css=.pat-querystring
     Given querystring pattern loaded
     # for some unknown reason unload protection pops up, but only in robot tests
     Execute Javascript  $(window).unbind('beforeunload')
@@ -292,7 +250,6 @@ I activate the operator ${OPERATOR} in the criteria ${CRITERIA}
 I expect an empty result after open the operator ${OPERATOR} in the criteria ${CRITERIA}
     open the select box titled index
     select index type ${CRITERIA}
-    sleep  0.75
     Wait for condition  return $("dl.searchResults").length == 0
     open the select box titled operator
     select index type ${OPERATOR}
@@ -303,38 +260,26 @@ I open the criteria ${CRITERIA}
 
 I search for ${KEYWORD}
     ${keyword_selector}  Set Variable  input.querystring-criteria-value-StringWidget
-    Set Focus To Element  css=${keyword_selector}
-    Wait Until Element Is Visible  css=${keyword_selector}
-    Click Element  css=${keyword_selector}
+    Wait For Then Click Element  css=${keyword_selector}
     Input Text  css=${keyword_selector}  ${KEYWORD}
     Click Element  css=div#content-core
 
 I open the Selection Widget
-    ${widget_selector}  Set Variable  div.select2-container-multi.querystring-criteria-value-MultipleSelectionWidget
-    Set Focus To Element  css=${widget_selector}
-    wait until element is visible  css=${widget_selector}
-    click element  css=${widget_selector}
+    Wait For Then Click Element  css=div.select2-container-multi.querystring-criteria-value-MultipleSelectionWidget
 
 I delete one selection
     #deletes one element
-    ${selection_selector}  Set Variable  a.select2-search-choice-close
-    Set Focus To Element  css=${selection_selector}
-    Click Element  css=${selection_selector}
+    Wait For Then Click Element  css=a.select2-search-choice-close
 
 I delete my selection
     #deletes two elements
-    ${selection_selector}  Set Variable  a.select2-search-choice-close
-    Set Focus To Element  css=${selection_selector}
-    Click Element  css=${selection_selector}
+    Wait For Then Click Element  css=a.select2-search-choice-close
     Sleep  0.1
-    Set Focus To Element  css=${selection_selector}
-    Click Element  css=${selection_selector}
+    Wait For Then Click Element  css=a.select2-search-choice-close
 
 I search in ${NAME} subfolder in the related items widget
     mark results
-    ${selector}  Set Variable  ul.select2-choices
-    Set Focus To Element  css=${selector}
-    Click Element  css=${selector}
+    Wait For Then Click Element  css=ul.select2-choices
     Wait Until Page Contains  ${NAME}
     Click Element  //a[contains(concat(' ', normalize-space(@class), ' '), ' pat-relateditems-result-select ')]//span[contains(text(),'${NAME}')]
 
@@ -346,8 +291,7 @@ I expect to be in Advanced mode
     Element Should Contain  jquery=${selector}   Relative Path
     Element Should Contain  jquery=${selector}   Simple Mode
     ${selector}  Set Variable  div#select2-drop-mask
-    Set Focus To Element  css=${selector}
-    Click Element  css=${selector}
+    Wait For Then Click Hidden Element  css=${selector}
     Wait Until Element Is Not Visible  css=${selector}
 
 I expect to be in Simple mode
@@ -358,21 +302,16 @@ I expect to be in Simple mode
     Element Should Contain  jquery=${selector}   Current (./)
     Element Should Contain  jquery=${selector}   Advanced Mode
     ${selector}  Set Variable  div#select2-drop-mask
-    Set Focus To Element  css=${selector}
-    Click Element  css=${selector}
+    Wait For Then Click Hidden Element  css=${selector}
     Wait Until Element Is Not Visible  css=${selector}
 
 open the select box titled ${NAME}
     Click Element  css=body
-    ${select_criteria_selector}  Set Variable  .querystring-criteria-${NAME} .select2-container
-    Set Focus To Element  css=${select_criteria_selector}
-    Wait Until Element Is Visible  css=${select_criteria_selector}
-    Click Element  css=${select_criteria_selector}
+    Wait For Then Click Element  css=.querystring-criteria-${NAME} .select2-container
 
 select index type ${INDEX}
     ${input_selector}  Set Variable  .select2-drop-active[style*="display: block;"] input
-    Set Focus To Element  css=${input_selector}
-    Wait Until Element Is Visible  css=${input_selector}
+    Wait For Element  css=${input_selector}
     Input Text  css=${input_selector}   text=${INDEX}
     Press Keys  jquery=:focus  RETURN
 
