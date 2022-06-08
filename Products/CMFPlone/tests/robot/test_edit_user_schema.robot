@@ -96,7 +96,7 @@ I add a new text field to the member fields
   Click Link  Add new field…
   Wait Until Element Is visible  css=#add-field-form #form-widgets-title
   Input Text  css=#add-field-form #form-widgets-title  Test Field
-  Press Key  css=#add-field-form #form-widgets-title  \\09
+  Press Keys  css=#add-field-form #form-widgets-title  TAB
   Select From List By Label  css=#form-widgets-factory  Text line (String)
   Click button  css=.pattern-modal-buttons button#form-buttons-add
   Wait until page contains  Field added successfully.
@@ -112,7 +112,7 @@ I add a new required text field to the member fields
   Click Link  Add new field…
   Wait Until Element Is visible  css=#add-field-form #form-widgets-title
   Input Text  css=#add-field-form #form-widgets-title  Test Field
-  Press Key  css=#add-field-form #form-widgets-title  \\09
+  Press Keys  css=#add-field-form #form-widgets-title  TAB
   Select From List By Label  css=#form-widgets-factory  Text line (String)
   Select Checkbox  form.widgets.required:list
   Click button  css=.pattern-modal-buttons button#form-buttons-add
