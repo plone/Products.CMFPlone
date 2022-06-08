@@ -70,6 +70,16 @@
               </dd>
             </dl>
 
+            <tal:volto tal:condition="python: versions['equal'] and view.can_migrate_to_volto()">
+              <p class="alert-success p-2" i18n:translate="">
+                You can prepare your site for Volto, the default frontend of Plone 6!
+              </p>
+              <a class="p-2" i18n:translate=""
+                 tal:attributes="href string:${context/absolute_url}/@@migrate_to_volto">
+                Click here if you want to learn more.
+              </a>
+            </tal:volto>
+
           </div>
           <form tal:condition="versions/instance_lt"
                 action="#"

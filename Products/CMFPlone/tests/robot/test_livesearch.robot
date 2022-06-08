@@ -55,13 +55,13 @@ a news item
 I search for
     [Arguments]  ${searchtext}
     Input text  css=input#searchGadget  ${searchtext}
-    Set Focus To Element  css=input#searchGadget
+    Wait For Element  css=input#searchGadget
 
 I search the currentfolder only for
     [Arguments]  ${searchtext}
     Select checkbox  id=searchbox_currentfolder_only
     Input text  css=input#searchGadget  ${searchtext}
-    Set Focus To Element  css=input#searchGadget
+    Wait For Element  css=input#searchGadget
 
 the livesearch results should contain
     [Arguments]  ${text}
