@@ -77,26 +77,24 @@ Input RichText
 I add '${tag}' to the nasty tags list and remove it from the valid tags list
   Input Text  name=form.widgets.nasty_tags  ${tag}
   Remove line from textarea  form.widgets.valid_tags  ${tag}
-  Click Button  Save
-  Wait until page contains  Changes saved
+  I save the form
 
 I remove '${tag}' from the valid tags list
   Remove line from textarea  form.widgets.valid_tags  ${tag}
-  Click Button  Save
-  Wait until page contains  Changes saved
+  I save the form
 
 I add '${tag}' to the valid tags list
   Input Text  name=form.widgets.valid_tags  ${tag}
-  Click Button  Save
-  Wait until page contains  Changes saved
+  I save the form
+  Page Should Contain  ${tag}
 
 I add '${tag}' to the custom attributes list
   Input Text  name=form.widgets.custom_attributes  ${tag}
-  Click Button  Save
-  Wait until page contains  Changes saved
+  I save the form
+  Page Should Contain  ${tag}
 
 I save the form
-  Click Button  Save
+  Wait For Then Click Element  form.buttons.save
   Wait until page contains  Changes saved
 
 
@@ -107,8 +105,7 @@ the 'h1' tag is filtered out when a document is saved
   Go To  ${PLONE_URL}/doc1/edit
   patterns are loaded
   Input RichText  <h1>h1 heading</h1><p>lorem ipsum</p>
-  Click Button  Save
-  Wait until page contains  Changes saved
+  I save the form
   Page should not contain  heading
 
 the 'h1' tag is stripped when a document is saved
@@ -116,8 +113,7 @@ the 'h1' tag is stripped when a document is saved
   Go To  ${PLONE_URL}/doc1/edit
   patterns are loaded
   Input RichText  <h1>h1 heading</h1><p>lorem ipsum</p>
-  Click Button  Save
-  Wait until page contains  Changes saved
+  I save the form
   Page should contain  heading
   Page Should Contain Element  //div[@id='content-core']//h1  limit=0  message=h1 should have been stripped out
 
@@ -126,8 +122,7 @@ the '${tag}' tag is preserved when a document is saved
   Go To  ${PLONE_URL}/doc1/edit
   patterns are loaded
   Input RichText  <${tag}>lorem ipsum</${tag}>
-  Click Button  Save
-  Wait until page contains  Changes saved
+  I save the form
   Page Should Contain Element  //div[@id='content-core']//${tag}  limit=1  message=the ${tag} tag should have been preserved
 
 the '${attribute}' attribute is preserved when a document is saved
@@ -135,8 +130,7 @@ the '${attribute}' attribute is preserved when a document is saved
   Go To  ${PLONE_URL}/doc1/edit
   patterns are loaded
   Input RichText  <span ${attribute}="foo">lorem ipsum</span>
-  Click Button  Save
-  Wait until page contains  Changes saved
+  I save the form
   Page Should Contain Element  //span[@${attribute}]  limit=1  message=the ${attribute} tag should have been preserved
 
 success message should contain information regarding caching

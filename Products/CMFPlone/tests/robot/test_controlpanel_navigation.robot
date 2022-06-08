@@ -68,37 +68,27 @@ a private document '${title}'
 
 I disable generate tabs
   Unselect Checkbox  form.widgets.generate_tabs:list
-  Set Focus To Element  form.buttons.save
-  Wait Until Element Is Visible  form.buttons.save
-  Click Button  Save
+  Wait For Then Click Element  form.buttons.save
   Wait until page contains  Changes saved
 
 I disable non-folderish tabs
   Unselect Checkbox  xpath=//input[@value='Document']
-  Set Focus To Element  form.buttons.save
-  Wait Until Element Is Visible  form.buttons.save
-  Click Button  Save
+  Wait For Then Click Element  form.buttons.save
   Wait until page contains  Changes saved
 
 I remove '${portal_type}' from the displayed types list
   Unselect Checkbox  xpath=//input[@value='Document']
-  Set Focus To Element  form.buttons.save
-  Wait Until Element Is Visible  form.buttons.save
-  Click Button  Save
+  Wait For Then Click Element  form.buttons.save
   Wait until page contains  Changes saved
 
 I enable filtering by workflow states
   Select Checkbox  name=form.widgets.filter_on_workflow:list
-  Set Focus To Element  form.buttons.save
-  Wait Until Element Is Visible  form.buttons.save
-  Click Button  Save
+  Wait For Then Click Element  form.buttons.save
   Wait until page contains  Changes saved
 
 I choose to show '${workflow_state}' items
   Select Checkbox  xpath=//input[@value='${workflow_state}']
-  Set Focus To Element  form.buttons.save
-  Wait Until Element Is Visible  form.buttons.save
-  Click Button  Save
+  Wait For Then Click Element  form.buttons.save
   Wait until page contains  Changes saved
 
 I choose to not show '${workflow_state}' items

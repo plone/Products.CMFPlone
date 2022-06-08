@@ -71,37 +71,26 @@ I modify an action title
   Click Link    css=section:nth-child(3) li:first-child a
   Wait until page contains  Action Settings
   Input Text for sure  form.widgets.title  A new site map
-  Set Focus To Element  css=.pattern-modal-buttons > button
-  Wait Until Element Is Visible  css=.pattern-modal-buttons > button
-  Click Element  css=.pattern-modal-buttons > button
+  Wait For Then Click Element  css=.pattern-modal-buttons > button
 
 I change the actions order
   Click Link    css=section:nth-child(3) li:first-child a
   Wait until page contains  Action Settings
   Input Text for sure  form.widgets.position  3
-  Set Focus To Element  css=.pattern-modal-buttons > button
-  Wait Until Element Is Visible  css=.pattern-modal-buttons > button
-  Click Element  css=.pattern-modal-buttons > button
+  Wait For Then Click Element  css=.pattern-modal-buttons > button
 
 I add a new action
   Click Link  Add new action
   Wait until page contains  New action
   Select From List By Label   form.widgets.category:list   User actions
   Input Text for sure  form.widgets.id  favorites
-  Set Focus To Element  css=.pattern-modal-buttons > button
-  Wait Until Element Is Visible  css=.pattern-modal-buttons > button
-  Click Element  css=.pattern-modal-buttons > button
+  Wait For Then Click Element  css=.pattern-modal-buttons > button
   Wait until page contains  favorites
-  Set Focus To Element  css=section.category:last-child li:last-child a
-  Wait Until Element Is Visible  css=section.category:last-child li:last-child a
-  Sleep  1
-  Click Link  css=section.category:last-child li:last-child a
+  Wait For Then Click Element  css=section.category:last-child li:last-child a
   Wait until page contains  Action Settings
   Input Text for sure  form.widgets.title  My favorites
   Input Text for sure  form.widgets.url_expr  string:\${globals_view/navigationRootUrl}/favorites
-  Set Focus To Element  css=.pattern-modal-buttons > button
-  Wait Until Element Is Visible  css=.pattern-modal-buttons > button
-  Click Element  css=.pattern-modal-buttons > button
+  Wait For Then Click Element  css=.pattern-modal-buttons > button
 
 I delete an action
   Click Button    css=section:nth-child(3) li:first-child button[name=delete]

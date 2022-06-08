@@ -33,23 +33,3 @@ patterns are loaded
 a folder with a document '${title}'
   ${folder_uid}=  Create content  type=Folder  title=folder
   Create content  type=Document  container=${folder_uid}  title=${title}
-
-Wait For Element
-  [Arguments]  ${element}
-  [Documentation]  Can contain css=, jquery=, or any other element selector.
-  Wait Until Page Contains Element  ${element}
-  Set Focus To Element  ${element}
-  Wait Until Element Is Visible  ${element}
-
-Wait For Then Click Element
-  [Arguments]  ${element}
-  [Documentation]  Can contain css=, jquery=, or any other element selector.
-  Wait For Element  ${element}
-  Click Element  ${element}
-
-Wait For Then Click Hidden Element
-  [Arguments]  ${element}
-  [Documentation]  Meant for invisible elements.  Can contain css=, jquery=, or any other element selector.
-  Wait Until Page Contains Element  ${element}
-  Set Focus To Element  ${element}
-  Click Element  ${element}
