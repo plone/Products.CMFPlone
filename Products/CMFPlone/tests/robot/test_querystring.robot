@@ -291,7 +291,7 @@ I expect to be in Advanced mode
     Element Should Contain  jquery=${selector}   Relative Path
     Element Should Contain  jquery=${selector}   Simple Mode
     ${selector}  Set Variable  div#select2-drop-mask
-    Wait For Then Click Hidden Element  css=${selector}
+    Wait For Then Click Invisible Element  css=${selector}
     Wait Until Element Is Not Visible  css=${selector}
 
 I expect to be in Simple mode
@@ -302,7 +302,7 @@ I expect to be in Simple mode
     Element Should Contain  jquery=${selector}   Current (./)
     Element Should Contain  jquery=${selector}   Advanced Mode
     ${selector}  Set Variable  div#select2-drop-mask
-    Wait For Then Click Hidden Element  css=${selector}
+    Wait For Then Click Invisible Element  css=${selector}
     Wait Until Element Is Not Visible  css=${selector}
 
 open the select box titled ${NAME}
