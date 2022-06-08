@@ -69,6 +69,12 @@ the filter control panel
 
 Input RichText
   [Arguments]  ${input}
+  # Sleep to avoid random failures where the text is not actually set.
+  # This warning from the robotframework docs might be the cause:
+  # "Starting from Robot Framework 2.5 errors caused by invalid syntax, timeouts,
+  # or fatal exceptions are not caught by this keyword."
+  # See https://robotframework.org/robotframework/2.6.1/libraries/BuiltIn.html#Wait%20Until%20Keyword%20Succeeds
+  Sleep  1
   Wait until keyword succeeds  5s  1s  Execute Javascript  tinyMCE.activeEditor.setContent('${input}');
 
 
@@ -104,16 +110,23 @@ the 'h1' tag is filtered out when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
   Go To  ${PLONE_URL}/doc1/edit
   patterns are loaded
-  Input RichText  <h1>h1 heading</h1><p>lorem ipsum</p>
+  Input RichText  <h1>h1 heading</h1><p>Spanish Inquisition</p>
   I save the form
+  # We check that some standard text is there, before checking the interesting part.
+  # If the standard text is invisible, then something completely different is wrong.
+  # I see tests randomly fail where the safe html transform is not even called.
+  # In fact, no text is saved.  Maybe some timing problem.
+  # I suspect the Input RichText keyword, which is why I added Sleep in there.
+  Page should contain  Spanish Inquisition
   Page should not contain  heading
 
 the 'h1' tag is stripped when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
   Go To  ${PLONE_URL}/doc1/edit
   patterns are loaded
-  Input RichText  <h1>h1 heading</h1><p>lorem ipsum</p>
+  Input RichText  <h1>h1 heading</h1><p>Spanish Inquisition</p>
   I save the form
+  Page should contain  Spanish Inquisition
   Page should contain  heading
   Page Should Contain Element  //div[@id='content-core']//h1  limit=0  message=h1 should have been stripped out
 
@@ -121,16 +134,18 @@ the '${tag}' tag is preserved when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
   Go To  ${PLONE_URL}/doc1/edit
   patterns are loaded
-  Input RichText  <${tag}>lorem ipsum</${tag}>
+  Input RichText  <${tag}>lorem ipsum</${tag}><p>Spanish Inquisition</p>
   I save the form
+  Page should contain  Spanish Inquisition
   Page Should Contain Element  //div[@id='content-core']//${tag}  limit=1  message=the ${tag} tag should have been preserved
 
 the '${attribute}' attribute is preserved when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
   Go To  ${PLONE_URL}/doc1/edit
   patterns are loaded
-  Input RichText  <span ${attribute}="foo">lorem ipsum</span>
+  Input RichText  <span ${attribute}="foo">lorem ipsum</span><p>Spanish Inquisition</p>
   I save the form
+  Page should contain  Spanish Inquisition
   Page Should Contain Element  //span[@${attribute}]  limit=1  message=the ${attribute} tag should have been preserved
 
 success message should contain information regarding caching
