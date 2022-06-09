@@ -51,5 +51,5 @@ class LogoTests(unittest.TestCase):
     def test_getSiteLogo_with_no_setting(self):
         from Products.CMFPlone.utils import getSiteLogo
         self.assertTrue(
-            'http://nohost/plone/logo.png'
+            'http://nohost/plone/++resource++plone-logo.svg'
             in getSiteLogo())
