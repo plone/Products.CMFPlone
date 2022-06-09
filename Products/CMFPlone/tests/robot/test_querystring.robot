@@ -213,6 +213,8 @@ the querystring pattern
     Go to  ${PLONE_URL}/a/++add++Collection
     Wait until page contains element  css=.pat-querystring
     Given querystring pattern loaded
+    # Set a title, otherwise you see 'Please fill out this field'
+    Execute Javascript  $('#form-widgets-IDublinCore-title').val('A Collection'); return 0;
     # for some unknown reason unload protection pops up, but only in robot tests
     Execute Javascript  $(window).unbind('beforeunload')
 
