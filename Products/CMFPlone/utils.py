@@ -609,7 +609,7 @@ def getSiteLogo(site=None):
         filename, data = b64decode_file(settings.site_logo)
         return '{}/@@site-logo/{}'.format(
             site_url, filename)
-    return '%s/logo.png' % site_url
+    return '%s/++resource++plone-logo.svg' % site_url
 
 
 
