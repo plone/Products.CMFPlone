@@ -72,6 +72,16 @@ class PatternSettingsAdapter:
         return result
 
     @property
+    def image_scales(self):
+        # Keep image_scales at least until https://github.com/plone/mockup/pull/1156
+        # is merged and plone.staticresources is updated.
+        factory = getUtility(IVocabularyFactory, "plone.app.vocabularies.ImagesScales")
+        vocabulary = factory(self.context)
+        ret = [{"title": translate(it.title), "value": it.value} for it in vocabulary]
+        ret = sorted(ret, key=lambda it: it["title"])
+        return json.dumps(ret)
+
+    @property
     def picture_variants(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IImagingSchema, prefix="plone", check=False)
@@ -140,6 +150,9 @@ class PatternSettingsAdapter:
         configuration = {
             "base_url": self.context.absolute_url(),
             "imageTypes": image_types,
+            # Keep imageScales at least until https://github.com/plone/mockup/pull/1156
+            # is merged and plone.staticresources is updated.
+            "imageScales": self.image_scales,
             "pictureVariants": self.picture_variants,
             "imageCaptioningEnabled": self.image_captioning,
             "linkAttribute": "UID",
