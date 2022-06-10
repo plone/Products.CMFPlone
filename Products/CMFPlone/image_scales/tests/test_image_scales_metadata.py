@@ -1,16 +1,15 @@
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
+from plone.dexterity.utils import iterSchemata
+from plone.namedfile.file import NamedImage
+from Products.CMFPlone.image_scales.interfaces import IImageScalesAdapter
+from Products.CMFPlone.image_scales.interfaces import IImageScalesFieldAdapter
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from Products.CMFPlone.tests import dummy
 from zope.component import queryMultiAdapter
-from plone.namedfile.file import NamedImage
-from plone.dexterity.utils import iterSchemata
-from Products.CMFPlone.image_scales.interfaces import IImageScalesAdapter
-from Products.CMFPlone.image_scales.interfaces import IImageScalesFieldAdapter
-from zope.interface.interfaces import ComponentLookupError
 
-import unittest
 import Missing
+import unittest
 
 
 class ImageScalesAdaptersRegisteredTest(unittest.TestCase):

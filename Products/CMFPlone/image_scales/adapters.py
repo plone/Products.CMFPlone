@@ -1,18 +1,18 @@
-from plone.namedfile.interfaces import INamedImageField
 from Acquisition import aq_inner
 from plone.dexterity.interfaces import IDexterityContent
 from plone.dexterity.utils import iterSchemata
+from plone.namedfile.interfaces import INamedImageField
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.image_scales.interfaces import IImageScalesAdapter
+from Products.CMFPlone.image_scales.interfaces import IImageScalesFieldAdapter
+from Products.CMFPlone.interfaces import IImagingSchema
 from zope.component import adapter
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.schema import getFields
-from plone.registry.interfaces import IRegistry
-from zope.component import getUtility
-from Products.CMFPlone.image_scales.interfaces import IImageScalesAdapter
-from Products.CMFPlone.image_scales.interfaces import IImageScalesFieldAdapter
-from Products.CMFPlone.interfaces import IImagingSchema
 
 
 @implementer(IImageScalesAdapter)
@@ -123,7 +123,6 @@ class ImageFieldScales:
         if scale:
             return self.get_scale_url(scale=scale)
         # Corrupt images may not have a scale.
-
 
     def get_scale_infos(self):
         """Returns a list of (name, width, height) 3-tuples of the
