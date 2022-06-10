@@ -45,6 +45,14 @@ def _split_scale_info(allowed_size):
     return name, width, height
 
 
+def _get_scale_infos():
+    """Returns list of (name, width, height) of the available image scales."""
+    registry = getUtility(IRegistry)
+    imaging_settings = registry.forInterface(IImagingSchema, prefix="plone")
+    allowed_sizes = imaging_settings.allowed_sizes
+    return [_split_scale_info(size) for size in allowed_sizes]
+
+
 @implementer(IImageScalesFieldAdapter)
 @adapter(INamedImageField, IDexterityContent, Interface)
 class ImageFieldScales:
@@ -84,7 +92,7 @@ class ImageFieldScales:
         """
         scales = {}
 
-        for name, actual_width, actual_height in self.get_scale_infos():
+        for name, actual_width, actual_height in _get_scale_infos():
             if actual_width > width:
                 # The width of the scale is larger than the original width.
                 # Scaling would simply return the original (or perhaps a copy
@@ -123,18 +131,6 @@ class ImageFieldScales:
         if scale:
             return self.get_scale_url(scale=scale)
         # Corrupt images may not have a scale.
-
-    def get_scale_infos(self):
-        """Returns a list of (name, width, height) 3-tuples of the
-        available image scales.
-        """
-
-        registry = getUtility(IRegistry)
-
-        imaging_settings = registry.forInterface(IImagingSchema, prefix="plone")
-        allowed_sizes = imaging_settings.allowed_sizes
-
-        return [_split_scale_info(size) for size in allowed_sizes]
 
     def get_scale_url(self, scale):
         return scale.url
