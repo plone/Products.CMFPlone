@@ -112,7 +112,7 @@ class ImageFieldScales:
                 # If we cannot get a scale, it is probably a corrupt image.
                 continue
 
-            url = self.get_scale_url(scale=scale)
+            url = scale.url
             actual_width = scale.width
             actual_height = scale.height
 
@@ -128,9 +128,5 @@ class ImageFieldScales:
         scale = self.images_view.scale(
             fieldname, width=width, height=height, direction="thumbnail"
         )
-        if scale:
-            return self.get_scale_url(scale=scale)
         # Corrupt images may not have a scale.
-
-    def get_scale_url(self, scale):
-        return scale.url
+        return scale.url if scale else None
