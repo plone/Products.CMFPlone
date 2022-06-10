@@ -126,7 +126,12 @@ class ImageFieldScales:
 
     def get_original_image_url(self, fieldname, width, height):
         scale = self.images_view.scale(
-            fieldname, width=width, height=height, direction="thumbnail"
+            fieldname,
+            width=width,
+            height=height,
+            direction="thumbnail",
+            pre=True,
+            include_srcset=False,
         )
         # Corrupt images may not have a scale.
         return scale.url if scale else None
