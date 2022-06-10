@@ -596,9 +596,11 @@ def getHighPixelDensityScales():
     return func()
 
 
-def getSiteLogo(site=None):
+def getSiteLogo(site=None, include_type=False):
     from plone.base.interfaces import ISiteSchema
     from plone.formwidget.namedfile.converter import b64decode_file
+    import mimetypes
+
     if site is None:
         site = getSite()
     registry = getUtility(IRegistry)
@@ -607,10 +609,17 @@ def getSiteLogo(site=None):
 
     if getattr(settings, 'site_logo', False):
         filename, data = b64decode_file(settings.site_logo)
-        return '{}/@@site-logo/{}'.format(
+        site_logo_url = '{}/@@site-logo/{}'.format(
             site_url, filename)
-    return '%s/logo.png' % site_url
+        site_logo_type = mimetypes.guess_type(filename)[0]
+    else:
+        site_logo_url = '%s/++resource++plone-logo.svg' % site_url
+        site_logo_type = "image/svg+xml"
 
+    if not include_type:
+        return site_logo_url
+
+    return (site_logo_url, site_logo_type)
 
 
 def _safe_format(inst, method):

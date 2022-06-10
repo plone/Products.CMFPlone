@@ -25,9 +25,9 @@
 
     <div class="container admin mt-5 mb-5 p-4">
         <header class="row">
-            <p><img src="/++resource++plone-logo.png"
+            <p><img src="/++resource++plone-logo.svg"
                     width="215" height="56"
-                    tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png"
+                    tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.svg"
                     alt="Plone logo"
                     i18n:attributes="alt" /></p>
             <h1>

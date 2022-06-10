@@ -21,8 +21,8 @@
       title="Allow sendto" />
 
   <browser:resource
-      file="static/plone-logo.png"
-      name="plone-logo.png"
+      file="static/plone-logo.svg"
+      name="plone-logo.svg"
       />
 
   <browser:page
