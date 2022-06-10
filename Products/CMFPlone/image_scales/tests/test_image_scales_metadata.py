@@ -10,6 +10,7 @@ from Products.CMFPlone.image_scales.interfaces import IImageScalesFieldAdapter
 from zope.interface.interfaces import ComponentLookupError
 
 import unittest
+import Missing
 
 
 class ImageScalesAdaptersRegisteredTest(unittest.TestCase):
@@ -84,7 +85,7 @@ class ImageScalesAdaptersRegisteredTest(unittest.TestCase):
         news_brain = catalog(UID=self.news.UID())[0]
         image_brain = catalog(UID=self.image.UID())[0]
 
-        self.assertEqual(news_brain.image_scales, {})
+        self.assertEqual(news_brain.image_scales, Missing.Value)
         self.assertEqual(list(image_brain.image_scales.keys()), ["image"])
         self.assertEqual(len(image_brain.image_scales["image"]), 1)
         self.assertEqual(
