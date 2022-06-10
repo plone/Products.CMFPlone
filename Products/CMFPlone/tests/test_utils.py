@@ -60,5 +60,5 @@ class LogoTests(unittest.TestCase):
             'http://nohost/plone/++resource++plone-logo.svg'
             in logo_url)
         self.assertEqual(
-            "image/svg", logo_type
+            "image/svg+xml", logo_type
         )

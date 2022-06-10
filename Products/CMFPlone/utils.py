@@ -614,7 +614,7 @@ def getSiteLogo(site=None, include_type=False):
         site_logo_type = mimetypes.guess_type(filename)[0]
     else:
         site_logo_url = '%s/++resource++plone-logo.svg' % site_url
-        site_logo_type = "image/svg"
+        site_logo_type = "image/svg+xml"
 
     if not include_type:
         return site_logo_url
