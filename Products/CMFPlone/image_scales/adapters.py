@@ -25,7 +25,8 @@ class ImageScales:
     def __call__(self):
         obj = aq_inner(self.context)
         res = {}
-
+        # if obj.getId() == "multi":
+        #     breakpoint()
         for schema in iterSchemata(self.context):
             for name, field in getFields(schema).items():
                 # serialize the field

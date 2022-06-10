@@ -1,15 +1,36 @@
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
+from plone.autoform.interfaces import IFormFieldProvider
+from plone.dexterity.fti import DexterityFTI
 from plone.dexterity.utils import iterSchemata
+from plone.namedfile.field import NamedBlobImage
 from plone.namedfile.file import NamedImage
+from plone.supermodel import model
 from Products.CMFPlone.image_scales.interfaces import IImageScalesAdapter
 from Products.CMFPlone.image_scales.interfaces import IImageScalesFieldAdapter
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from Products.CMFPlone.tests import dummy
 from zope.component import queryMultiAdapter
+from zope.interface import Interface
+from zope.interface import provider
 
 import Missing
 import unittest
+
+
+# XXX Neither model.Schema not Interface seem to work for me.
+@provider(IFormFieldProvider)
+class ITwoImages(model.Schema):
+    # class ITwoImages(Interface):
+    image1 = NamedBlobImage(
+        title="First image",
+        required=False,
+    )
+
+    image2 = NamedBlobImage(
+        title="Second image",
+        required=False,
+    )
 
 
 class ImageScalesAdaptersRegisteredTest(unittest.TestCase):
@@ -91,3 +112,24 @@ class ImageScalesAdaptersRegisteredTest(unittest.TestCase):
             image_brain.image_scales["image"][0]["content-type"], "image/gif"
         )
         self.assertIn("scales", image_brain.image_scales["image"][0])
+
+    def test_multiple_image_fields(self):
+        fti = DexterityFTI(
+            "multi",
+            # XXX Neither of these two work: no fields are found in the
+            # image scales adapter.
+            # schema="Products.CMFPlone.image_scales.tests.ITwoImages",
+            model_file="Products.CMFPlone.image_scales.tests:images.xml",
+        )
+        self.portal.portal_types._setObject("multi", fti)
+        content_id = self.portal.invokeFactory(
+            "multi",
+            id="multi",
+            title="Multi",
+            image1=NamedImage(dummy.Image()),
+            image2=NamedImage(dummy.Image()),
+        )
+        multi = self.portal[content_id]
+        catalog = self.portal.portal_catalog
+        brain = catalog(UID=multi.UID())[0]
+        self.assertEqual(sorted(list(brain.image_scales.keys())), ["image1", "image2"])
