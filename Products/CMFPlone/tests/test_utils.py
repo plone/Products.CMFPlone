@@ -43,13 +43,22 @@ class LogoTests(unittest.TestCase):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSchema, prefix='plone')
         settings.site_logo = SITE_LOGO_BASE64
+        logo_url, logo_type = getSiteLogo(include_type=True)
 
         self.assertTrue(
             'http://nohost/plone/@@site-logo/pixel.png'
-            in getSiteLogo())
+            in logo_url)
+
+        self.assertEqual(
+            "image/png", logo_type
+        )
 
     def test_getSiteLogo_with_no_setting(self):
         from Products.CMFPlone.utils import getSiteLogo
+        logo_url, logo_type = getSiteLogo(include_type=True)
         self.assertTrue(
             'http://nohost/plone/++resource++plone-logo.svg'
-            in getSiteLogo())
+            in logo_url)
+        self.assertEqual(
+            "image/svg", logo_type
+        )
