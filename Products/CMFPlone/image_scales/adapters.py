@@ -96,6 +96,8 @@ class ImageFieldScales:
                 # The width of the scale is larger than the original width.
                 # Scaling would simply return the original (or perhaps a copy
                 # with the same size).  We do not need this scale.
+                # If we *do* want this, we should call the scale method with
+                # mode="cover", so it scales up.
                 continue
 
             # Get the scale info without actually generating the scale,

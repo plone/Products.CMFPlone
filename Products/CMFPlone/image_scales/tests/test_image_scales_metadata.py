@@ -33,7 +33,7 @@ class ImageScalesAdaptersRegisteredTest(unittest.TestCase):
             "Image",
             id="image",
             title="image",
-            image=NamedImage(dummy.Image()),
+            image=NamedImage(dummy.Image(), filename="dummy.gif"),
         )
 
         self.image = self.portal[image_id]
@@ -61,11 +61,50 @@ class ImageScalesAdaptersRegisteredTest(unittest.TestCase):
         self.assertEqual(len(res), 1)
         scales = res[0]
         self.assertEqual(scales["content-type"], "image/gif")
+        self.assertEqual(scales["filename"], "dummy.gif")
         self.assertIn("scales", scales)
+        scales = scales["scales"]
+        self.assertIn("listing", scales)
+        listing_scale = scales["listing"]
+        self.assertIn("download", listing_scale)
 
     def test_field_adapter_do_not_return_scales_for_empty_fields_with_adapter(self):
         res = self.serialize(self.news, "image")
         self.assertEqual(res, None)
+
+    def test_field_adapter_does_not_return_larger_scales(self):
+        # Add an image of 900 by 900 pixels.
+        image_id = self.portal.invokeFactory(
+            "Image",
+            id="jpeg",
+            title="jpeg image",
+            image=NamedImage(dummy.JpegImage(), filename="900.jpeg"),
+        )
+        image = self.portal[image_id]
+        res = self.serialize(image, "image")
+        self.assertNotEqual(res, None)
+        self.assertEqual(len(res), 1)
+        scales = res[0]
+        self.assertEqual(scales["content-type"], "image/jpeg")
+        self.assertIn("scales", scales)
+        self.assertEqual(scales["filename"], "900.jpeg")
+        self.assertEqual(scales["width"], 900)
+        self.assertEqual(scales["height"], 900)
+        download = scales["download"]
+        images_url = image.absolute_url() + "/@@images"
+        self.assertTrue(download.startswith(f"{images_url}/image-900-"))
+        self.assertTrue(download.endswith(".jpeg"))
+        scales = scales["scales"]
+        # larger and huge should not be in here: these scales would return the same
+        # content as the original.
+        self.assertEqual(
+            ["icon", "large", "listing", "mini", "preview", "teaser", "thumb", "tile"],
+            sorted(scales.keys()),
+        )
+        preview = scales["preview"]
+        self.assertEqual(preview["width"], 400)
+        self.assertEqual(preview["height"], 400)
+        self.assertTrue(preview["download"].startswith(f"{images_url}/image-400-"))
 
     def test_content_adapter_return_proper_scales(self):
         res = queryMultiAdapter((self.image, self.request), IImageScalesAdapter)()
