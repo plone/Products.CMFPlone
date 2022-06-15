@@ -67,12 +67,16 @@ class ImageFieldScales:
 
         # Get the @@images view once and store it, so all methods can use it.
         self.images_view = getMultiAdapter((self.context, self.request), name="images")
-
         width, height = image.getImageSize()
-
         url = self.get_original_image_url(self.field.__name__, width, height)
-
         scales = self.get_scales(self.field, width, height)
+
+        # Return a list with one dictionary.  Why a list?
+        # Some people feel a need in custom code to support a different adapter for
+        # RelationList fields.  Such a field may point to three images.
+        # In that case the adapter could return information for all three images,
+        # so a list of three dictionaries.  The default case should use the same
+        # structure.
         return [
             {
                 "filename": image.filename,
