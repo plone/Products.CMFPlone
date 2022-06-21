@@ -1,7 +1,7 @@
 from persistent.dict import PersistentDict
+from plone.base.interfaces import IImageScalesAdapter
 from plone.dexterity.interfaces import IDexterityContent
 from plone.indexer.decorator import indexer
-from Products.CMFPlone.image_scales.interfaces import IImageScalesAdapter
 from zope.component import queryMultiAdapter
 from zope.globalrequest import getRequest
 

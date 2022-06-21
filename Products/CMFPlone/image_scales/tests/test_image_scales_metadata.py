@@ -3,8 +3,8 @@ from plone.app.testing import TEST_USER_ID
 from plone.dexterity.fti import DexterityFTI
 from plone.dexterity.utils import iterSchemata
 from plone.namedfile.file import NamedImage
-from Products.CMFPlone.image_scales.interfaces import IImageScalesAdapter
-from Products.CMFPlone.image_scales.interfaces import IImageScalesFieldAdapter
+from plone.base.interfaces import IImageScalesAdapter
+from plone.base.interfaces import IImageScalesFieldAdapter
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from Products.CMFPlone.tests import dummy
 from zope.component import queryMultiAdapter

@@ -7,9 +7,8 @@
       factory=".indexer.image_scales"
       name="image_scales"
       />
-  
+
   <!-- adapters -->
   <adapter factory=".adapters.ImageScales" />
-  <adapter factory=".adapters.ImageFieldScales" />
 
 </configure>
