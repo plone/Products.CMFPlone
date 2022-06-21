@@ -7,6 +7,7 @@ from plone.app.z3cform.utils import call_callables
 from plone.registry.interfaces import IRegistry
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.interfaces._content import IFolderish
+from plone.base.interfaces import IImagingSchema
 from plone.base.interfaces import ILinkSchema
 from plone.base.interfaces import IPatternsSettings
 from plone.base.interfaces import IPloneSiteRoot
@@ -72,11 +73,31 @@ class PatternSettingsAdapter:
 
     @property
     def image_scales(self):
+        # Keep image_scales at least until https://github.com/plone/mockup/pull/1156
+        # is merged and plone.staticresources is updated.
         factory = getUtility(IVocabularyFactory, "plone.app.vocabularies.ImagesScales")
         vocabulary = factory(self.context)
         ret = [{"title": translate(it.title), "value": it.value} for it in vocabulary]
         ret = sorted(ret, key=lambda it: it["title"])
         return json.dumps(ret)
+
+    @property
+    def picture_variants(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IImagingSchema, prefix="plone", check=False)
+        editor_picture_variants = {}
+        for k, picture_variant in settings.picture_variants.items():
+            hide_in_editor = picture_variant.get("hideInEditor")
+            if hide_in_editor:
+                continue
+            editor_picture_variants[k] = picture_variant
+        return editor_picture_variants
+
+    @property
+    def image_captioning(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IImagingSchema, prefix="plone", check=False)
+        return settings.image_captioning
 
     def tinymce(self):
         """
@@ -129,7 +150,11 @@ class PatternSettingsAdapter:
         configuration = {
             "base_url": self.context.absolute_url(),
             "imageTypes": image_types,
+            # Keep imageScales at least until https://github.com/plone/mockup/pull/1156
+            # is merged and plone.staticresources is updated.
             "imageScales": self.image_scales,
+            "pictureVariants": self.picture_variants,
+            "imageCaptioningEnabled": self.image_captioning,
             "linkAttribute": "UID",
             # This is for loading the languages on tinymce
             "loadingBaseUrl": "{}/++plone++static/components/tinymce-builded/"
