@@ -1,0 +1,12 @@
+<model xmlns="http://namespaces.plone.org/supermodel/schema"
+       xmlns:marshal="http://namespaces.plone.org/supermodel/marshal">
+  <schema>
+    <field name="image1" type="plone.namedfile.field.NamedBlobImage"
+        marshal:primary="true">
+      <title>Image 1</title>
+    </field>
+    <field name="image2" type="plone.namedfile.field.NamedBlobImage">
+      <title>Image 2</title>
+    </field>
+  </schema>
+</model>
