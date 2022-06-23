@@ -5,8 +5,8 @@ from Products.CMFPlone.events import SiteManagerCreatedEvent
 from plone.base.interfaces import INonInstallable
 from Products.CMFPlone.Portal import PloneSite
 from Products.GenericSetup.tool import SetupTool
-from zope.component.hooks import site as global_site
 from zope.component import queryUtility
+from zope.component.hooks import setSite
 from zope.event import notify
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectCreatedEvent
@@ -138,7 +138,9 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     setup_tool = site[_TOOL_ID]
 
     notify(SiteManagerCreatedEvent(site))
-    with global_site(site):
+    setSite(site)
+
+    try:
         setup_tool.setBaselineContext('profile-%s' % profile_id)
         setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
 
@@ -173,3 +175,6 @@ def addPloneSite(context, site_id, title='Plone site', description='',
             setup_tool.createSnapshot('initial_configuration')
 
         return site
+    except Exception:
+        setSite(None)
+        raise
