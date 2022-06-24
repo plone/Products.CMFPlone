@@ -1,4 +1,0 @@
-Explicitly include zcml of more packages.
-Reorder the zcml loading.
-Require ``plone.resource``.
-[maurits]
