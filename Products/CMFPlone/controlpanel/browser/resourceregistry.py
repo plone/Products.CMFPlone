@@ -67,13 +67,13 @@ class ResourceRegistryControlPanelView(BrowserView):
         bundles = self._bundles
         if name in bundles:
             IStatusMessage(self.request).addStatusMessage(
-                _(f"Record {name} already exists."), "error"
+                _("Record ${name} already exists.", name=name), "error"
             )
             return
         record = bundles.add(name)
         self._set_data_from_form(record)
         IStatusMessage(self.request).addStatusMessage(
-            _(f"Record {name} created."), "info"
+            _("Record ${name} created.", name=name), "info"
         )
 
     def _update(self):
@@ -93,7 +93,7 @@ class ResourceRegistryControlPanelView(BrowserView):
                 return
             if new_name in bundles:
                 IStatusMessage(self.request).addStatusMessage(
-                    _(f"Record name {new_name} already taken."), "error"
+                    _("Record name ${new_name} already taken.", new_name=new_name), "error"
                 )
                 return
             record = bundles[original_name]
@@ -120,7 +120,7 @@ class ResourceRegistryControlPanelView(BrowserView):
         bundles = self._bundles
         if name not in bundles:
             IStatusMessage(self.request).addStatusMessage(
-                _(f"Expected record {name} missing."), "error"
+                _("Expected record ${name} missing.", name=name), "error"
             )
             return
         del bundles[name]
