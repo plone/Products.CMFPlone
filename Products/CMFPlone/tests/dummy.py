@@ -20,6 +20,11 @@ GIF_FILE = os.path.join(
     os.path.dirname(__file__), os.pardir, 'tool.gif')
 with open(GIF_FILE, 'rb') as f:
     GIF = f.read()
+# jpeg file of 900x900 pixels
+JPEG_FILE = os.path.join(
+    os.path.dirname(__file__), '900.jpg')
+with open(JPEG_FILE, 'rb') as f:
+    JPEG = f.read()
 
 
 class Dummy:
@@ -103,6 +108,15 @@ class Image(File):
 
     filename = 'dummy.gif'
     data = GIF
+
+
+class JpegImage(File):
+    """Dummy jpeg image upload object
+
+    900 by 900 pixels.
+    """
+    filename = "900.jpeg"
+    data = JPEG
 
 
 class Folder(SimpleFolder):

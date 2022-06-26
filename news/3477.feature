@@ -1,1 +1,0 @@
-Add image srcset's configuration to TinyMCE pattern settings [MrTango]
