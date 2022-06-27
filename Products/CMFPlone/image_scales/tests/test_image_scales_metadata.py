@@ -91,8 +91,7 @@ class ImageScalesAdaptersRegisteredTest(unittest.TestCase):
         self.assertEqual(scales["width"], 900)
         self.assertEqual(scales["height"], 900)
         download = scales["download"]
-        images_url = image.absolute_url() + "/@@images"
-        self.assertTrue(download.startswith(f"{images_url}/image-900-"))
+        self.assertTrue(download.startswith("@@images/image-900-"))
         self.assertTrue(download.endswith(".jpeg"))
         scales = scales["scales"]
         # larger and huge should not be in here: these scales would return the same
@@ -104,7 +103,7 @@ class ImageScalesAdaptersRegisteredTest(unittest.TestCase):
         preview = scales["preview"]
         self.assertEqual(preview["width"], 400)
         self.assertEqual(preview["height"], 400)
-        self.assertTrue(preview["download"].startswith(f"{images_url}/image-400-"))
+        self.assertTrue(preview["download"].startswith("@@images/image-400-"))
 
     def test_content_adapter_return_proper_scales(self):
         res = queryMultiAdapter((self.image, self.request), IImageScalesAdapter)()
