@@ -128,6 +128,7 @@
                                 value="Set my password"
                                 i18n:attributes="value">
                                 <span i18n:translate="">Set my password</span>
+                            </button>
                         </div>
                     </div>
                     <input type="hidden" name="form.submitted" value="1" />

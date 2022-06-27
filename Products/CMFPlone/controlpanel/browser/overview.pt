@@ -114,7 +114,7 @@
                         src="" alt="" class="icon"
                         tal:attributes="src action/icon;
                                         alt action/title"
-                        i18n:attributes="alt action/title">
+                        i18n:attributes="alt">
                       <tal:icon tal:condition="not: icon_url"
                         tal:replace="structure python:icons.tag(action['icon'] or 'plone-controlpanel', tag_alt=action['title'], tag_class='overview-icon')" />
                     </div>
