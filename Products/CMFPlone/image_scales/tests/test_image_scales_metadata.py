@@ -91,8 +91,7 @@ class ImageScalesAdaptersRegisteredTest(unittest.TestCase):
         self.assertEqual(scales["width"], 900)
         self.assertEqual(scales["height"], 900)
         download = scales["download"]
-        images_url = image.absolute_url() + "/@@images"
-        self.assertTrue(download.startswith(f"{images_url}/image-900-"))
+        self.assertTrue(download.startswith("@@images/image-900-"))
         self.assertTrue(download.endswith(".jpeg"))
         scales = scales["scales"]
         # larger and huge should not be in here: these scales would return the same
