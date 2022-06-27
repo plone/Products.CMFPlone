@@ -103,7 +103,7 @@ class ImageScalesAdaptersRegisteredTest(unittest.TestCase):
         preview = scales["preview"]
         self.assertEqual(preview["width"], 400)
         self.assertEqual(preview["height"], 400)
-        self.assertTrue(preview["download"].startswith(f"{images_url}/image-400-"))
+        self.assertTrue(preview["download"].startswith("@@images/image-400-"))
 
     def test_content_adapter_return_proper_scales(self):
         res = queryMultiAdapter((self.image, self.request), IImageScalesAdapter)()
