@@ -182,7 +182,7 @@ class ResourceBase:
                     integrity=not external,
                 )
             if record.csscompilation:
-                depends = check_dependencies(name, record.depends, js_names)
+                depends = check_dependencies(name, record.depends, css_names)
                 if depends == "__broken__":
                     continue
                 external = record.csscompilation.startswith("http")
