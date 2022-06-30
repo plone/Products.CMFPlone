@@ -159,6 +159,31 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         result = scripts.render()
         self.assertNotIn("http://test.foo/test.css", result)
 
+    def test_bundle_depends(self):
+        bundle = self._make_test_bundle()
+        bundle.depends = "plone"
+        view = ScriptsView(self.app, self.app.REQUEST, None, None)
+        view.update()
+        results = view.render()
+        self.assertIn("http://foo.bar/foobar.js", results)
+
+    def test_bundle_depends_on_multiple(self):
+        bundle = self._make_test_bundle()
+        bundle.depends = "plone,eventedit"
+        view = ScriptsView(self.app, self.app.REQUEST, None, None)
+        view.update()
+        results = view.render()
+        self.assertIn("http://foo.bar/foobar.js", results)
+
+    def test_bundle_depends_on_missing(self):
+        bundle = self._make_test_bundle()
+        bundle.depends = "nonexistsinbundle"
+        view = ScriptsView(self.app, self.app.REQUEST, None, None)
+        view.update()
+        results = view.render()
+        # bundle should be skipped when rendering
+        self.assertNotIn("http://foo.bar/foobar.js", results)
+
 
 class TestStylesViewlet(PloneTestCase.PloneTestCase):
     def test_styles_viewlet(self):
