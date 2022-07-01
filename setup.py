@@ -108,7 +108,7 @@ setup(
         'setuptools>=36.2',
         'transaction',
         'plone.autoinclude',
-        'webresource',
+        'webresource>=1.1',
         'ZODB3',
         'Zope[wsgi] >= 4.0',
         'zope.app.locales >= 3.6.0',
