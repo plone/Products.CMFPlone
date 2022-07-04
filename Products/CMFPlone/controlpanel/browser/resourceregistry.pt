@@ -157,7 +157,7 @@
    </div>
    <script>
      /* collapse accordion via script here, so that it stays open when JS is disabled */
-     window.addEventListener('DOMContentLoaded', async (event) => {
+     window.addEventListener('DOMContentLoaded', (event) => {
       document.querySelector(".alert.js-errors").style.display = "none";
       document.querySelectorAll(".accordion-item:not(.active) .accordion-button").forEach(el => el.classList.add("collapsed"));
       document.querySelectorAll(".accordion-item:not(.active) .accordion-collapse").forEach(el => el.classList.remove("show"));
