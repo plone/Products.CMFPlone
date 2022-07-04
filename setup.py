@@ -42,7 +42,6 @@ setup(
         'five.customerize',
         'five.localsitemanager',
         'lxml',
-        'Pillow',
         'plone.api >= 1.4.4',
         'plone.app.content',
         'plone.app.contentlisting',
