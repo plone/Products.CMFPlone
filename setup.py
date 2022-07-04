@@ -78,7 +78,6 @@ setup(
         'plone.schema',
         'plone.session',
         'plone.staticresources',
-        'plone.subrequest',
         'plone.theme',
         'plonetheme.barceloneta',
         'Products.CMFEditions',
