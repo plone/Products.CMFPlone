@@ -1,8 +1,11 @@
 from plone.app.testing import logout
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.base.interfaces import IBundleRegistry
 from plone.registry import field as regfield
 from plone.registry import Record
 from plone.registry.interfaces import IRegistry
-from plone.base.interfaces import IBundleRegistry
+from plone.testing.zope import Browser
 from Products.CMFPlone.resources import add_bundle_on_request
 from Products.CMFPlone.resources import remove_bundle_on_request
 from Products.CMFPlone.resources.browser.resource import ScriptsView
@@ -372,3 +375,52 @@ class TestExpressions(PloneTestCase.PloneTestCase):
         # self.assertNotIn("http://test.foo/test.min.js", results)
         self.assertNotIn("http://test2.foo/member.min.js", results)
         self.assertIn("http://test3.foo/test.min.js", results)
+
+
+class TestRRControlPanel(PloneTestCase.PloneTestCase):
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.app = self.layer['app']
+        self.browser = Browser(self.app)
+        self.browser.handleErrors = False
+        self.browser.addHeader(
+            'Authorization',
+            f'Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}'
+        )
+        self.browser.open(self.portal.absolute_url() + "/@@resourceregistry-controlpanel")
+
+    def test_controlpanel(self):
+        self.assertIn("<h1 class=\"documentFirstHeading\">Resource Registry</h1>", self.browser.contents)
+        self.assertIn("++plone++static/bundle-plone/bundle.min.js", self.browser.contents)
+
+    def test_add_resource(self):
+        # the last form is the add form
+        add_form = self.browser.getForm(index=7)
+        add_form.getControl(name="name").value = "my-resource"
+        add_form.getControl(name="jscompilation").value = "++resource++my.resource.js"
+        add_form.getControl(name="enabled").value = "checked"
+        add_form.getControl("add").click()
+
+        self.assertIn(
+            "<h2 class=\"accordion-header\" id=\"heading-my-resource\">",
+            self.browser.contents,
+        )
+
+    def test_update_resource(self):
+        # try to set already existing name should fail
+        form = self.browser.getForm(index=6)
+        form.getControl(name="name").value = "plone"
+        form.getControl("update").click()
+
+        self.assertIn("Record name plone already taken.", self.browser.contents)
+
+        # set new name
+        form = self.browser.getForm(index=6)
+        form.getControl(name="name").value = "new-resource-name"
+        form.getControl("update").click()
+
+        self.assertIn(
+             "<h2 class=\"accordion-header\" id=\"heading-new-resource-name\">",
+            self.browser.contents,
+        )
