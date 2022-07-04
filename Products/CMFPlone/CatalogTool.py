@@ -1,33 +1,33 @@
 from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
 from AccessControl.PermissionRole import rolesForPermissionOn
 from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogEntries  # noqa
 from AccessControl.Permissions import search_zcatalog as SearchZCatalog
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 from BTrees.Length import Length
 from DateTime import DateTime
 from OFS.interfaces import IOrderedContainer
+from plone.app.discussion.interfaces import DISCUSSION_ANNOTATION_KEY
+from plone.base.interfaces import INonStructuralFolder
+from plone.base.interfaces import IPloneCatalogTool
+from plone.base.utils import base_hasattr
+from plone.base.utils import human_readable_size
+from plone.base.utils import safe_callable
+from plone.base.utils import safe_text
 from plone.i18n.normalizer.base import mapUnicode
 from plone.indexer import indexer
 from plone.indexer.interfaces import IIndexableObject
-from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
 from Products.CMFCore.CatalogTool import _mergedLocalRoles
+from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
 from Products.CMFCore.indexing import processQueue
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import _getAuthenticatedUser
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import DISCUSSION_ANNOTATION_KEY
-from plone.base.interfaces import INonStructuralFolder
-from plone.base.interfaces import IPloneCatalogTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.utils import base_hasattr
-from Products.CMFPlone.utils import human_readable_size
-from Products.CMFPlone.utils import safe_callable
-from plone.base.utils import safe_text
 from Products.ZCatalog.ZCatalog import ZCatalog
 from time import process_time
 from zExceptions import Unauthorized

@@ -347,7 +347,7 @@ def versionTupleFromString(v_str):
     else:
         groups = list(match.groups())
         for i in (0, 1, 2, 4):
-            groups[i] = base_utils.safeToInt(groups[i])
+            groups[i] = base_utils.safe_int(groups[i])
         if groups[3] is None:
             groups[3] = 'final'
         elif groups[3] in rl_abbr.keys():

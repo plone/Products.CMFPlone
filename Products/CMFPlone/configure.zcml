@@ -90,11 +90,11 @@
       />
 
   <class class="Products.PluggableAuthService.PluggableAuthService.PluggableAuthService">
-    <implements interface=".interfaces.IHideFromBreadcrumbs" />
+    <implements interface="plone.base.interfaces.IHideFromBreadcrumbs" />
   </class>
 
   <class class="Products.PluggableAuthService.plugins.BasePlugin.BasePlugin">
-    <implements interface=".interfaces.IHideFromBreadcrumbs" />
+    <implements interface="plone.base.interfaces.IHideFromBreadcrumbs" />
   </class>
 
   <utility factory=".factory.NonInstallable"
