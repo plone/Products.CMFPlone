@@ -104,7 +104,7 @@
                    i18n:attributes="summary summary_roles_for_groups;">
                 <thead tal:condition="search_results">
                     <tr>
-                        <th class="text-start" i18n:translate="listingheader_group_name">Group name</th>
+                        <th class="text-start" i18n:translate="listingheader_group_name">Group Name</th>
                         <th class="rotate" tal:repeat="portal_role portal_roles"><div tal:content="portal_role" i18n:translate="">Role</div></th>
                         <th class="rotate alert-danger"><div i18n:translate="listingheader_remove">Remove</div></th>
                     </tr>

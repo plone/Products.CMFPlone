@@ -1,7 +1,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = '6.0.0a6.dev0'
+version = '6.0.0b1.dev0'
 
 
 setup(
@@ -108,7 +108,7 @@ setup(
         'setuptools>=36.2',
         'transaction',
         'plone.autoinclude',
-        'webresource',
+        'webresource>=1.1',
         'ZODB3',
         'Zope[wsgi] >= 4.0',
         'zope.app.locales >= 3.6.0',

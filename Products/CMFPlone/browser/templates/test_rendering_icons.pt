@@ -8,7 +8,7 @@
 
     <style>
 
-    </style>    
+    </style>
 
     <ul class="nav nav-tabs mb-3">
       <li class="nav-item">
@@ -54,7 +54,7 @@
       <tal:icon tal:replace="structure python:icons.tag('archive', tag_class='custom-class', tag_alt='foobar')" />
     </p>
 
-    <h2>Registration<h2>
+    <h2>Registration</h2>
 
     <p>
       Todo: List custom Icons

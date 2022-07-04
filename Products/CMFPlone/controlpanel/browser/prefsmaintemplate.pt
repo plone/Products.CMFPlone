@@ -43,7 +43,7 @@
                                     src="" alt="" class="icon"
                                     tal:attributes="src configlet/icon;
                                                     alt configlet/title"
-                                    i18n:attributes="alt configlet/title">
+                                    i18n:attributes="alt">
                                 <tal:icon tal:condition="not: icon_url"
                                           tal:replace="structure python:icons.tag(configlet['icon'] or 'plone-controlpanel', tag_alt=configlet['title'])" />
                                 ${configlet/title}

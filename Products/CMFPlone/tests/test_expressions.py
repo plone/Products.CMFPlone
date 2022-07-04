@@ -86,18 +86,6 @@ class TestAttackVector(unittest.TestCase):
         with self.assertRaises(NotFound):
             template()
 
-    def test_template_name(self):
-        # Allow accessing __name__ in a skin template or TTW template.
-        template = self._makeOne("options_view_name.pt")
-        # Pass view in the options.
-        self.assertIn("dummy-view", template(view=DummyView()))
-
-    def test_template_authenticator(self):
-        # Allow accessing _authenticator in a skin template or TTW template.
-        template = self._makeOne("options_authenticator.pt")
-        # Pass view in the options.
-        self.assertIn("secret", template(view=DummyView()))
-
     def test_template_single_underscore(self):
         # Allow accessing '_' in a skin template or TTW template.
         # In the merge of the hotfix, Zope allows this, to avoid a test failure.
@@ -116,13 +104,6 @@ class TestAttackVector(unittest.TestCase):
         # Only AccessControl.getSecurityManager is allowed.
         template = self._makeOne("accesscontrol_sm.pt")
         self.assertIn("getSecurityManager is allowed", template())
-
-    def test_template_accesscontrol_sm2(self):
-        # Zope main.zpt uses modules/AccessControl/SecurityManagement/getSecurityManager
-        # which should have been modules/AccessControl/getSecurityManager.
-        # So we need a special case for it, otherwise the ZMI is totally inaccessible.
-        template = self._makeOne("accesscontrol_sm2.pt")
-        self.assertIn("getSecurityManager is still allowed", template())
 
     def test_template_accesscontrol_direct(self):
         # Via AccessControl you can access too much.
@@ -184,18 +165,6 @@ class TestDirectAttackVector(unittest.TestCase):
         result = trusted_traverse_function(view, ("Formatter_hack",), None)
         self.assertEqual(result, string.Formatter)
 
-    def test_traverse_function_name(self):
-        # We allow access to __name__ always as a special case.
-        view = DummyView()
-        self.assertEqual(traverse_function(view, ("__name__",), None), "dummy-view")
-        self.assertEqual(trusted_traverse_function(view, ("__name__",), None), "dummy-view")
-
-    def test_traverse_function_authenticator(self):
-        # We allow access to _authenticator always as a special case.
-        view = DummyView()
-        self.assertEqual(traverse_function(view, ("_authenticator",), None), "secret")
-        self.assertEqual(trusted_traverse_function(view, ("_authenticator",), None), "secret")
-
     def test_traverse_function_single_underscore(self):
         # We allow access to '_' always as a special case.
         view = DummyView()
@@ -218,13 +187,6 @@ class TestDirectAttackVector(unittest.TestCase):
         # Only getSecurityManager is allowed.
         self.assertEqual(traverse_function(AccessControl, ("getSecurityManager",), None), AccessControl.getSecurityManager)
         self.assertEqual(trusted_traverse_function(AccessControl, ("getSecurityManager",), None), AccessControl.getSecurityManager)
-
-    def test_traverse_function_accesscontrol_getSecurityManager2(self):
-        # Zope main.zpt uses modules/AccessControl/SecurityManagement/getSecurityManager
-        # which should have been modules/AccessControl/getSecurityManager.
-        # So we need a special case for it, otherwise the ZMI is totally inaccessible.
-        self.assertEqual(traverse_function(AccessControl, ("SecurityManagement", "getSecurityManager"), None), AccessControl.getSecurityManager)
-        self.assertEqual(trusted_traverse_function(AccessControl, ("SecurityManagement", "getSecurityManager",), None), AccessControl.getSecurityManager)
 
     def test_traverse_function_accesscontrol_direct(self):
         with self.assertRaises(NotFound):
@@ -271,12 +233,6 @@ class TestDirectAttackVector(unittest.TestCase):
         result = TrustedTraverseClass.traverse(string, None, ("Formatter", "get_field"))
         self.assertEqual(result, string.Formatter.get_field)
 
-    def test_traverse_class_name(self):
-        # We allow access to __name__ always as a special case.
-        view = DummyView()
-        self.assertEqual(TraverseClass.traverse(view, None, ("__name__",)), "dummy-view")
-        self.assertEqual(TrustedTraverseClass.traverse(view, None, ("__name__",)), "dummy-view")
-
     def test_traverse_class_content(self):
         content = DummyContent("dummy")
         self.assertEqual(TraverseClass.traverse(content, None, ("public",))(), "I am public")
@@ -293,10 +249,6 @@ class TestDirectAttackVector(unittest.TestCase):
         # AccessControl.getSecurityManager is the only item allowed.
         self.assertEqual(TraverseClass.traverse(AccessControl, None, ("getSecurityManager",)), AccessControl.getSecurityManager)
         self.assertEqual(TrustedTraverseClass.traverse(AccessControl, None, ("getSecurityManager",)), AccessControl.getSecurityManager)
-
-    def test_traverse_class_accesscontrol_getSecurityManager2(self):
-        self.assertEqual(TraverseClass.traverse(AccessControl, None, ("SecurityManagement", "getSecurityManager",)), AccessControl.getSecurityManager)
-        self.assertEqual(TrustedTraverseClass.traverse(AccessControl, None, ("SecurityManagement", "getSecurityManager",)), AccessControl.getSecurityManager)
 
     def test_traverse_class_accesscontrol_direct(self):
         with self.assertRaises(NotFound):

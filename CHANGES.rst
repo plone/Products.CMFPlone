@@ -12,6 +12,20 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.0a6 (2022-06-27)
+--------------------
+
+Bug fixes:
+
+
+- Remove the use of f-strings for translations
+  [erral] (#3564)
+- Fix several i18n bugs
+  [erral] (#3565)
+- Fix tests for `image_scale` download url update.
+  [petschki] (#3566)
+
+
 6.0.0a5 (2022-06-24)
 --------------------
 
