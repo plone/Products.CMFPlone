@@ -196,7 +196,7 @@ class PasswordResetView(BrowserView):
         if state:
             state['status'] = 'failure'
             state['portal_status_message'] = _(
-                'Please correct the indicated errors.',
+                'Please correct the indicated errors.'
             )
         return state
 
