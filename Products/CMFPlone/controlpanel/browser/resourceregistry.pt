@@ -108,7 +108,7 @@
                 </div>
                 <div class="mb-3">
                   <label for="expression" class="form-label" i18n:translate="label_bundle_condition">Condition</label>
-                  <input type="text" class="form-control" name="expression" value="${python:bundle['expression']}" placeholder="expression"/>
+                  <input type="text" class="form-control" name="expression" value="${python:bundle['expression']}" placeholder="expression" i18n:attributes="placeholder label_expression_placeholder"/>
                 </div>
                 <div class="mb-3">
                   <label for="depends" class="form-label" i18n:translate="">Depends on</label>
