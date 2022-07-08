@@ -79,10 +79,6 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
         scripts.update()
         results = scripts.render()
-        self.assertIn("++plone++static/bundle-plone/jquery-remote.min.js", results)
-        self.assertIn(
-            "++plone++static/bundle-plone/bootstrap-remote.min.js", results
-        )
         self.assertIn("++plone++static/bundle-plone/bundle.min.js", results)
         self.assertIn("http://nohost/plone/++webresource++", results)
 
@@ -91,10 +87,6 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
         scripts.update()
         results = scripts.render()
-        self.assertIn("++plone++static/bundle-plone/jquery-remote.min.js", results)
-        self.assertIn(
-            "++plone++static/bundle-plone/bootstrap-remote.min.js", results
-        )
         self.assertIn("++plone++static/bundle-plone/bundle.min.js", results)
         self.assertIn("http://nohost/plone/++webresource++", results)
 
@@ -396,7 +388,7 @@ class TestRRControlPanel(PloneTestCase.PloneTestCase):
 
     def test_add_resource(self):
         # the last form is the add form
-        add_form = self.browser.getForm(index=7)
+        add_form = self.browser.getForm(index=5)
         add_form.getControl(name="name").value = "my-resource"
         add_form.getControl(name="jscompilation").value = "++resource++my.resource.js"
         add_form.getControl(name="enabled").value = "checked"
@@ -409,14 +401,14 @@ class TestRRControlPanel(PloneTestCase.PloneTestCase):
 
     def test_update_resource(self):
         # try to set already existing name should fail
-        form = self.browser.getForm(index=6)
+        form = self.browser.getForm(index=4)
         form.getControl(name="name").value = "plone"
         form.getControl("update").click()
 
         self.assertIn("Record name plone already taken.", self.browser.contents)
 
         # set new name
-        form = self.browser.getForm(index=6)
+        form = self.browser.getForm(index=4)
         form.getControl(name="name").value = "new-resource-name"
         form.getControl("update").click()
 
