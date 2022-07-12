@@ -282,8 +282,7 @@ I delete my selection
 I search in ${NAME} subfolder in the related items widget
     mark results
     Wait For Then Click Element  css=ul.select2-choices
-    Wait Until Page Contains  ${NAME}
-    Click Element  //a[contains(concat(' ', normalize-space(@class), ' '), ' pat-relateditems-result-select ')]//span[contains(text(),'${NAME}')]
+    Wait For Then Click Element  //a[contains(concat(' ', normalize-space(@class), ' '), ' pat-relateditems-result-select ')]//span[contains(text(),'${NAME}')]
 
 I expect to be in Advanced mode
     open the select box titled operator
