@@ -12,6 +12,16 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.9rc1 (2022-07-18)
+---------------------
+
+Bug fixes:
+
+
+- Update metadata version to 5217, Plone 5.2.9.
+  [maurits] (#5217)
+
+
 5.2.8 (2022-05-14)
 ------------------
 
