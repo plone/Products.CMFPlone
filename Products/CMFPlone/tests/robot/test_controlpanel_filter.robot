@@ -69,13 +69,11 @@ the filter control panel
 
 Input RichText
   [Arguments]  ${input}
-  # Sleep to avoid random failures where the text is not actually set.
-  # This warning from the robotframework docs might be the cause:
-  # "Starting from Robot Framework 2.5 errors caused by invalid syntax, timeouts,
-  # or fatal exceptions are not caught by this keyword."
-  # See https://robotframework.org/robotframework/2.6.1/libraries/BuiltIn.html#Wait%20Until%20Keyword%20Succeeds
+  # Sleep before and after to avoid random failures
+  # where the text is not actually set.
   Sleep  1
-  Wait until keyword succeeds  5s  1s  Execute Javascript  tinyMCE.activeEditor.setContent('${input}');
+  Execute Javascript  tinyMCE.activeEditor.setContent('${input}');
+  Sleep  1
 
 
 # --- WHEN -------------------------------------------------------------------
