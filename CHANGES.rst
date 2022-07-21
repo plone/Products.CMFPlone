@@ -12,6 +12,17 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.9 (2022-07-21)
+------------------
+
+Bug fixes:
+
+
+- Prepare release 5.2.9.
+  No changes compared to release candidate.
+  [maurits] (#529)
+
+
 5.2.9rc1 (2022-07-18)
 ---------------------
 
