@@ -69,12 +69,8 @@ the filter control panel
 
 Input RichText
   [Arguments]  ${input}
-  # Sleep before and after to avoid random failures
-  # where the text is not actually set.
-  Sleep  1
-  Execute Javascript  tinyMCE.activeEditor.setContent('${input}');
-  Sleep  1
-
+  Wait until keyword succeeds  5  1s  Execute Javascript  tinymce.activeEditor.setContent('${input}');
+  Execute Javascript  tinymce.activeEditor.save();
 
 # --- WHEN -------------------------------------------------------------------
 
