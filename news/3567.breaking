@@ -1,5 +1,0 @@
-Removed our expressions patch.
-This was a patch to avoid some too strict checks by Zope / Products.PageTemplates.
-But in Plone 6 it should be fine to be stricter.
-The ``STRICT_TRAVERSE_CHECK`` environment variable is no longer read.
-[maurits]

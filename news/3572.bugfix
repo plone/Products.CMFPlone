@@ -1,2 +1,0 @@
-Reduce dependencies in setup.py here, when already fulfilled in the packages where in use.
-[jensens]

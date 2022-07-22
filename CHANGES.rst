@@ -12,6 +12,43 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.0b1 (2022-07-23)
+--------------------
+
+Breaking changes:
+
+
+- Removed our expressions patch.
+  This was a patch to avoid some too strict checks by Zope / Products.PageTemplates.
+  But in Plone 6 it should be fine to be stricter.
+  The ``STRICT_TRAVERSE_CHECK`` environment variable is no longer read.
+  [maurits] (#3567)
+
+
+New features:
+
+
+- Initially open accordions in resource registry. Hide via JS when no errors occur.
+  [petschki] (#3560)
+- Resource bundle dependency on multiple comma separated names.
+  [petschki] (#3570)
+
+
+Bug fixes:
+
+
+- Reduce dependencies in setup.py here, when already fulfilled in the packages where in use.
+  [jensens] (#3572)
+- Fix more plone.base related deprecation warnings.
+  [jensens] (#3573)
+- Fix adding/renaming resources TTW.
+  [petschki] (#3574)
+- More i18n fixes
+  [erral] (#3575)
+- Updated metadata version to 6006.
+  [maurits] (#6006)
+
+
 6.0.0a6 (2022-06-27)
 --------------------
 
