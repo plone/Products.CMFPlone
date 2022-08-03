@@ -3,6 +3,8 @@ from Products.CMFPlone.factory import addPloneSite
 from Products.CMFPlone.utils import get_installer
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zope.component import queryUtility
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
 
 import unittest
 
@@ -53,3 +55,10 @@ class TestFactoryPloneSite(unittest.TestCase):
         # Folder
         fti = queryUtility(IDexterityFTI, name='Folder')
         self.assertIsNotNone(fti)
+
+    def test_site_creation_title_is_set_in_registry(self):
+        """ Plone site title should be stored in registry """
+        ploneSite = addPloneSite(
+            self.app, 'ploneFoo', title='Foo', setup_content=False)
+        registry = getUtility(IRegistry, context=ploneSite)
+        self.assertEqual(registry['plone.site_title'], 'Foo')
