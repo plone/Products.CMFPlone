@@ -5,6 +5,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.interfaces import INonInstallable
 from Products.CMFPlone.Portal import PloneSite
+from Products.CMFPlone.utils import safe_unicode
 from Products.GenericSetup.tool import SetupTool
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import queryUtility
@@ -160,7 +161,7 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     reg['plone.available_timezones'] = [portal_timezone]
     reg['plone.default_language'] = default_language
     reg['plone.available_languages'] = [default_language]
-    reg['plone.site_title'] = title
+    reg['plone.site_title'] = safe_unicode(title)
 
     # Install default content types profile if user do not select "example content"
     # during site creation.
