@@ -149,6 +149,7 @@ def addPloneSite(context, site_id, title='Plone site', description='',
         reg['plone.available_timezones'] = [portal_timezone]
         reg['plone.default_language'] = default_language
         reg['plone.available_languages'] = [default_language]
+        reg['plone.site_title'] = title
 
         # Install default content types profile if user do not select "example content"
         # during site creation.
