@@ -243,7 +243,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         mail_settings.email_from_address = 'bar@baz.com'
 
         # Set the portal email encoding
-        mail_settings.email_charset = 'us-ascii'
+        self.assertEqual(mail_settings.email_charset, "utf-8")
 
         from zope.publisher.browser import TestRequest
         self.registration.mailPassword(member_id, TestRequest())
@@ -251,7 +251,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         msg = message_from_bytes(mails.messages[0])
 
         # Ensure charset (and thus Content-Type) were set via template
-        self.assertEqual(msg['Content-Type'], 'text/plain; charset="us-ascii"')
+        self.assertEqual(msg['Content-Type'], 'text/plain; charset="utf-8"')
 
 
 class TestPasswordGeneration(PloneTestCase.PloneTestCase):
