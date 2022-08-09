@@ -93,7 +93,7 @@ a link in rich text
 should show warning when deleting page
 
   Go To  ${PLONE_URL}/foo
-  Wait For Then Click Element  css=#plone-contentmenu-actions a
+  Wait For Then Click Element  css=#plone-contentmenu-actions > a
   Wait For Then Click Element  css=#plone-contentmenu-actions-delete
   Wait until page contains element  css=.breach-container .breach-item
 
@@ -113,7 +113,6 @@ should show warning when deleting page from folder_contents
 
 should not show warning when deleting page from folder_contents
   Go To  ${PLONE_URL}/folder_contents
-  Wait until page contains element  css=tr[data-id="foo"] input
   Wait For Then Click Element  css=tr[data-id="foo"] input
   Checkbox Should Be Selected  css=tr[data-id="foo"] input
   Wait until keyword succeeds  30  1  Page should not contain element  css=#btn-delete.disabled
@@ -127,7 +126,7 @@ should not show warning when deleting page from folder_contents
 
 should not show warning when deleting page
   Go To  ${PLONE_URL}/foo
-  Wait For Then Click Element  css=#plone-contentmenu-actions a
+  Wait For Then Click Element  css=#plone-contentmenu-actions > a
   Wait For Then Click Element  css=#plone-contentmenu-actions-delete
   Page should not contain element  css=.breach-container .breach-item
 
