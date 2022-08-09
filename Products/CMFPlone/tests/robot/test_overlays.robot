@@ -260,13 +260,13 @@ I '${action}' the form
 I enter wrong credentials
     Input text  __ac_name  wrong
     Input text  __ac_password  user
-    Click Button  css=div.modal-footer button
+    Wait For Then Click Element  css=div.modal-footer button
 
 I enter valid credentials
     Wait until page contains element  name=__ac_name
     Input text for sure  __ac_name  ${SITE_OWNER_NAME}
     Input text for sure  __ac_password  ${SITE_OWNER_PASSWORD}
-    Click Button  css=div.modal-footer button
+    Wait For Then Click Element  css=div.modal-footer button
 
 I enter valid user data
     Wait until page contains element  name=form.widgets.password_ctl
