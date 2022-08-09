@@ -76,6 +76,7 @@ Input RichText
   # See https://robotframework.org/robotframework/2.6.1/libraries/BuiltIn.html#Wait%20Until%20Keyword%20Succeeds
   Sleep  1
   Wait until keyword succeeds  5s  1s  Execute Javascript  tinyMCE.activeEditor.setContent('${input}');
+  Sleep  1
 
 
 # --- WHEN -------------------------------------------------------------------
