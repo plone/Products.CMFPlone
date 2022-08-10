@@ -53,7 +53,6 @@ a folder with four pages
 
 the folder contents view
     Go to  ${PLONE_URL}/my-folder/folder_contents
-    Page should contain element  css=.pat-structure
     Given folder contents pattern loaded
 
 I click the '${link_name}' link
@@ -107,6 +106,3 @@ Should be above
     ${locator1-position} =  Get vertical position  ${locator1}
     ${locator2-position} =  Get vertical position  ${locator2}
     Should be true  ${locator1-position} < ${locator2-position}
-
-folder contents pattern loaded
-    Wait For Condition  return !!document.querySelector('.pat-structure div.navbar')
