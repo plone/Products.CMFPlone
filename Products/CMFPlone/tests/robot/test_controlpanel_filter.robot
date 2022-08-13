@@ -75,7 +75,15 @@ Input RichText
   # or fatal exceptions are not caught by this keyword."
   # See https://robotframework.org/robotframework/2.6.1/libraries/BuiltIn.html#Wait%20Until%20Keyword%20Succeeds
   Sleep  1
-  Wait until keyword succeeds  5s  1s  Execute Javascript  tinyMCE.activeEditor.setContent('${input}');
+  Wait until keyword succeeds  5s  1s  Set and Check TinyMCE Content  ${input}
+
+Set and Check TinyMCE Content
+  [Arguments]  ${input}
+  # Simply check if tinyMCE.getContent() isn't empty when we set an input
+  Execute Javascript   tinyMCE.activeEditor.setContent('${input}');
+  Sleep  0.5
+  ${check}=  Execute Javascript  return tinyMCE.activeEditor.getContent();
+  Should not be empty  ${check}
 
 
 # --- WHEN -------------------------------------------------------------------
