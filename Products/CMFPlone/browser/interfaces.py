@@ -1,4 +1,5 @@
 from zope import schema
+from zope.interface import Attribute
 from zope.interface import Interface
 
 from plone.schema import Email
@@ -188,6 +189,9 @@ class ISitemapView(Interface):
 
 class IMainTemplate(Interface):
     """Interface to the view that generated the main_template"""
+
+    macros = Attribute("Macros")
+    template_name = Attribute("Template name")
 
 
 class IGlobalStatusMessage(Interface):

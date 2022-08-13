@@ -271,18 +271,20 @@ I open the Selection Widget
 
 I delete one selection
     #deletes one element
-    Wait For Then Click Element  css=a.select2-search-choice-close
+    Wait For Then Click Element  jquery=a.select2-search-choice-close:visible
 
 I delete my selection
     #deletes two elements
-    Wait For Then Click Element  css=a.select2-search-choice-close
+    Wait For Then Click Element  jquery=a.select2-search-choice-close:visible:first
     Sleep  0.1
-    Wait For Then Click Element  css=a.select2-search-choice-close
+    Wait For Then Click Element  jquery=a.select2-search-choice-close:visible
 
 I search in ${NAME} subfolder in the related items widget
     mark results
-    Wait For Then Click Element  css=ul.select2-choices
+    Wait For Then Click Element  jquery=.pat-relateditems-container ul.select2-choices:visible
     Wait Until Page Contains  ${NAME}
+    # I have seen this fail sometimes, where the screen shot showed the NAME just fine.
+    Sleep  0.1
     Click Element  //a[contains(concat(' ', normalize-space(@class), ' '), ' pat-relateditems-result-select ')]//span[contains(text(),'${NAME}')]
 
 I expect to be in Advanced mode
@@ -309,7 +311,7 @@ I expect to be in Simple mode
 
 open the select box titled ${NAME}
     Click Element  css=body
-    Wait For Then Click Element  css=.querystring-criteria-${NAME} .select2-container
+    Wait For Then Click Element  jquery=.querystring-criteria-${NAME} .select2-container:first
 
 select index type ${INDEX}
     ${input_selector}  Set Variable  .select2-drop-active[style*="display: block;"] input

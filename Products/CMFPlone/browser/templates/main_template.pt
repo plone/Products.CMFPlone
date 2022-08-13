@@ -39,7 +39,7 @@
     <metal:javascriptslot define-slot="javascript_head_slot" />
 
     <link tal:replace="structure provider:plone.htmlhead.links" />
-    <meta name="generator" content="Plone - http://plone.com" />
+    <meta name="generator" content="Plone - https://plone.org/" />
 
   </head>
 
