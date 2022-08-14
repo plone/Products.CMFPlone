@@ -16,7 +16,7 @@
 
 
       <p><tal:i18n i18n:translate="description_accessibility_info">
-            This site uses the open source Content Management System <a href="https://plone.com" i18n:name="plone">Plone</a>.
+            This site uses the open source Content Management System <a href="https://plone.org" i18n:name="plone">Plone</a>.
             It meets the Web Content Accessibility Guidelines
 	    (<a href="https://www.w3.org/TR/WCAG20/"><acronym i18n:name="wcag"
                   title="Web Content Accessibility Guidelines"

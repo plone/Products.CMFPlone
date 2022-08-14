@@ -12,7 +12,7 @@
 
   <div class="hero">
     <h1>Welcome!</h1>
-    <p><a class="btn btn-primary" href="https://plone.com" target="_blank">Learn more about Plone</a></p>
+    <p><a class="btn btn-primary" href="https://plone.org" target="_blank">Learn more about Plone</a></p>
   </div>
 
   <p class="discreet">
@@ -39,7 +39,7 @@ Before you start exploring your newly created Plone site, please do the followin
 <p>After that, we suggest you do one or more of the following:</p>
 
 <ul>
-    <li>Find out <a class="link-plain" href="https://plone.com/features/" target="_blank">What's new in Plone</a>.</li>
+    <li>Find out <a class="link-plain" href="https://plone.org/what-is-plone/plone" target="_blank">What's new in Plone</a>.</li>
     <li>Read the <a class="link-plain" href="https://docs.plone.org" target="_blank">documentation</a>.</li>
     <li>Follow a <a class="link-plain" href="https://training.plone.org" target="_blank">training</a>.</li>
     <li>Explore the <a class="link-plain" href="https://plone.org/download/add-ons" target="_blank">available add-ons</a> for Plone.</li>
