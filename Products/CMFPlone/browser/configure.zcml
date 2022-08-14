@@ -99,6 +99,7 @@
       for="*"
       name="main_template"
       class=".main_template.MainTemplate"
+      allowed_interface=".interfaces.IMainTemplate"
       permission="zope.Public"
       />
 
