@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 SVG_MODIFER = {}
 
 def _add_aria_title(svgtree, cfg):
-    if not "title" in cfg:
+    if not cfg.get("title"):
         return
     root = svgtree.getroot()
     ns = root.nsmap.get(None, "")
