@@ -1,8 +1,9 @@
 from App.ImageFile import ImageFile
 
 import os
-import sys
 import pkg_resources
+import sys
+import warnings
 import zope.deferredimport
 
 __version__ = pkg_resources.require("Products.CMFPlone")[0].version
@@ -72,7 +73,9 @@ def initialize(context):
     allow_class(WorkflowException)
 
     # bbb - remove in Plone 7
-    from Products.CMFPlone.PloneBatch import Batch
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore",category=DeprecationWarning)
+        from Products.CMFPlone.PloneBatch import Batch
     allow_class(Batch)
 
     # Make Batch available at module level
