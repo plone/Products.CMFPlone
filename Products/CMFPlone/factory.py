@@ -2,22 +2,28 @@ from logging import getLogger
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.events import SiteManagerCreatedEvent
-from Products.CMFPlone.interfaces import INonInstallable
+from plone.base.interfaces import INonInstallable
 from Products.CMFPlone.Portal import PloneSite
 from Products.GenericSetup.tool import SetupTool
-from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import queryUtility
 from zope.component.hooks import setSite
 from zope.event import notify
 from zope.interface import implementer
+from zope.lifecycleevent import ObjectCreatedEvent
 
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
 _TYPES_PROFILE = 'plone.app.contenttypes:default'
 _CONTENT_PROFILE = 'plone.app.contenttypes:plone-content'
 
-# A little hint for PloneTestCase
+# A little hint for PloneTestCase (pre-Plone 6.0)
 _IMREALLYPLONE5 = True
+
+# Marker hints for code that needs to know the major Plone version
+# Works the same way than zcml condition hints so it contains the current and the
+# last ones
+PLONE52MARKER = True
+PLONE60MARKER = True
 
 logger = getLogger('Plone')
 
@@ -35,7 +41,6 @@ class NonInstallable:
             'PasswordResetTool', 'Products.PasswordResetTool',
             'PlonePAS', 'Products.PlonePAS',
             'PloneLanguageTool', 'Products.PloneLanguageTool',
-            'CMFFormController', 'Products.CMFFormController',
             'MimetypesRegistry', 'Products.MimetypesRegistry',
             'PortalTransforms', 'Products.PortalTransforms',
             'CMFDiffTool', 'Products.CMFDiffTool',
@@ -71,7 +76,6 @@ class NonInstallable:
                 _CONTENT_PROFILE,
                 'Products.CMFDiffTool:CMFDiffTool',
                 'Products.CMFEditions:CMFEditions',
-                'Products.CMFFormController:CMFFormController',
                 'Products.CMFPlone:dependencies',
                 'Products.CMFPlone:testfixture',
                 'Products.NuPlone:uninstall',
@@ -116,8 +120,12 @@ def addPloneSite(context, site_id, title='Plone site', description='',
                  extension_ids=(), setup_content=True,
                  default_language='en', portal_timezone='UTC'):
     """Add a PloneSite to the context."""
-    context._setObject(site_id, PloneSite(site_id))
-    site = context._getOb(site_id)
+
+    site = PloneSite(site_id)
+    notify(ObjectCreatedEvent(site))
+    context[site_id] = site
+
+    site = context[site_id]
     site.setLanguage(default_language)
     # Set the accepted language for the rest of the request.  This makes sure
     # the front-page text gets the correct translation also when your browser
@@ -132,49 +140,42 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     notify(SiteManagerCreatedEvent(site))
     setSite(site)
 
-    setup_tool.setBaselineContext('profile-%s' % profile_id)
-    setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
+    try:
+        setup_tool.setBaselineContext('profile-%s' % profile_id)
+        setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
 
-    reg = queryUtility(IRegistry, context=site)
-    reg['plone.portal_timezone'] = portal_timezone
-    reg['plone.available_timezones'] = [portal_timezone]
-    reg['plone.default_language'] = default_language
-    reg['plone.available_languages'] = [default_language]
+        reg = queryUtility(IRegistry, context=site)
+        reg['plone.portal_timezone'] = portal_timezone
+        reg['plone.available_timezones'] = [portal_timezone]
+        reg['plone.default_language'] = default_language
+        reg['plone.available_languages'] = [default_language]
+        reg['plone.site_title'] = title
 
-    # Install default content types profile if user do not select "example content"
-    # during site creation.
-    content_types_profile = content_profile_id if setup_content else _TYPES_PROFILE
+        # Install default content types profile if user do not select "example content"
+        # during site creation.
+        content_types_profile = content_profile_id if setup_content else _TYPES_PROFILE
 
-    setup_tool.runAllImportStepsFromProfile(f'profile-{content_types_profile}')
+        setup_tool.runAllImportStepsFromProfile(f'profile-{content_types_profile}')
 
-    props = dict(
-        title=title,
-        description=description,
-    )
-    # Do this before applying extension profiles, so the settings from a
-    # properties.xml file are applied and not overwritten by this
-    site.manage_changeProperties(**props)
+        props = dict(
+            title=title,
+            description=description,
+        )
+        # Do this before applying extension profiles, so the settings from a
+        # properties.xml file are applied and not overwritten by this
+        site.manage_changeProperties(**props)
 
-    for extension_id in extension_ids:
-        try:
-            setup_tool.runAllImportStepsFromProfile(
-                'profile-%s' % extension_id)
-        except Exception as msg:
-            IStatusMessage(request).add(_(
-                'Could not install ${profile_id}: ${error_msg}! '
-                'Please try to install it manually using the "Addons" '
-                'controlpanel and report any issues to the '
-                'addon maintainers.',
-                mapping={
-                    'profile_id': extension_id,
-                    'error_msg': msg.args,
-                }),
-                type='error')
-            logger.exception(
-                'Error while installing addon {}. '
-                'See traceback below for details.'.format(extension_id))
+        for extension_id in extension_ids:
+            try:
+                setup_tool.runAllImportStepsFromProfile(f"profile-{extension_id}")
+            except Exception:
+                logger.error(f"Error while installing profile {extension_id}:")
+                raise
 
-    if snapshot is True:
-        setup_tool.createSnapshot('initial_configuration')
+        if snapshot is True:
+            setup_tool.createSnapshot('initial_configuration')
 
-    return site
+        return site
+    except Exception:
+        setSite(None)
+        raise

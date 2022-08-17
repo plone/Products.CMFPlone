@@ -1,23 +1,23 @@
 from AccessControl import getSecurityManager
 from AccessControl.Permissions import view as View
-from OFS.interfaces import IApplication
-from Products.CMFCore.permissions import ManagePortal
-from Products.CMFPlone.factory import _DEFAULT_PROFILE
-from Products.CMFPlone.factory import addPloneSite
-from Products.CMFPlone.interfaces import INonInstallable
-from Products.CMFPlone.interfaces import IPloneSiteRoot
-from Products.CMFPlone.utils import get_installer
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.GenericSetup import BASE, EXTENSION
-from Products.GenericSetup import profile_registry
-from Products.GenericSetup.upgrade import normalize_version
-from ZPublisher.BaseRequest import DefaultPublishTraverse
 from collections import OrderedDict
+from OFS.interfaces import IApplication
+from plone.base.interfaces import INonInstallable
+from plone.base.interfaces import IPloneSiteRoot
+from plone.base.utils import get_installer
 from plone.i18n.locales.interfaces import IContentLanguageAvailability
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.authenticator import check as checkCSRF
 from plone.protect.interfaces import IDisableCSRFProtection
+from Products.CMFCore.permissions import ManagePortal
+from Products.CMFPlone.factory import _DEFAULT_PROFILE
+from Products.CMFPlone.factory import addPloneSite
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.GenericSetup import BASE, EXTENSION
+from Products.GenericSetup import profile_registry
+from Products.GenericSetup.upgrade import normalize_version
 from urllib import parse
+from ZODB.broken import Broken
 from zope.component import adapts
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.component import getUtility
@@ -25,13 +25,22 @@ from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.i18n.locales import locales, LoadLocaleError
-from zope.interface import Interface
 from zope.interface import alsoProvides
+from zope.interface import Interface
 from zope.publisher.browser import BrowserView
 from zope.publisher.interfaces import IRequest
 from zope.schema.interfaces import IVocabularyFactory
+from ZPublisher.BaseRequest import DefaultPublishTraverse
 
 import logging
+import pkg_resources
+
+
+try:
+    pkg_resources.get_distribution("plone.volto")
+    HAS_VOLTO = True
+except pkg_resources.DistributionNotFound:
+    HAS_VOLTO = False
 LOGGER = logging.getLogger('Products.CMFPlone')
 
 
@@ -48,6 +57,7 @@ class AppTraverser(DefaultPublishTraverse):
 
 
 class Overview(BrowserView):
+    has_volto = HAS_VOLTO
 
     def sites(self, root=None):
         if root is None:
@@ -55,7 +65,10 @@ class Overview(BrowserView):
 
         result = []
         secman = getSecurityManager()
-        for obj in root.values():
+        candidates = (
+            obj for obj in root.values() if not isinstance(obj, Broken)
+        )
+        for obj in candidates:
             if obj.meta_type == 'Folder':
                 result = result + self.sites(obj)
             elif IPloneSiteRoot.providedBy(obj):
@@ -66,7 +79,12 @@ class Overview(BrowserView):
         return result
 
     def outdated(self, obj):
-        mig = obj.get('portal_migration', None)
+        # Try to pick the portal_migration as an attribute
+        # (Plone 5 unmigrated site root) or as an item
+        mig = (
+            getattr(obj, "portal_migration", None)
+            or obj.get('portal_migration', None)
+        )
         if mig is not None:
             return mig.needUpgrading()
         return False
@@ -137,10 +155,22 @@ class AddPloneSite(BrowserView):
         'plone.app.caching:default',
         'plonetheme.barceloneta:default',
     )
+    # Let's have a separate list for Volto.
+    volto_default_extension_profiles = (
+        'plone.app.caching:default',
+        # We could choose to not install Barceloneta:
+        'plonetheme.barceloneta:default',
+        'plone.volto:default',
+        'plone.volto:default-homepage'
+    )
 
     def profiles(self):
         base_profiles = []
         extension_profiles = []
+        if HAS_VOLTO and not self.request.get('classic'):
+            selected_extension_profiles = self.volto_default_extension_profiles
+        else:
+            selected_extension_profiles = self.default_extension_profiles
 
         # profiles available for install/uninstall, but hidden at the time
         # the Plone site is created
@@ -156,7 +186,7 @@ class AddPloneSite(BrowserView):
                info.get('for') in (IPloneSiteRoot, None):
                 profile_id = info.get('id')
                 if profile_id not in not_installable:
-                    if profile_id in self.default_extension_profiles:
+                    if profile_id in selected_extension_profiles:
                         info['selected'] = 'selected'
                     extension_profiles.append(info)
 
@@ -308,15 +338,21 @@ class Upgrade(BrowserView):
                 REQUEST=self.request,
                 dry_run=form.get('dry_run', False),
             )
-            qi = get_installer(self.context, self.request)
-            pac_installed = qi.is_product_installed('plone.app.contenttypes')
-            pac_installable = qi.is_product_installable(
-                'plone.app.contenttypes')
-            advertise_dx_migration = pac_installable and not pac_installed
-
             return self.index(
                 report=report,
-                advertise_dx_migration=advertise_dx_migration
             )
 
         return self.index()
+
+    def can_migrate_to_volto(self):
+        if not HAS_VOLTO:
+            return False
+        pm = getattr(self.context, 'portal_migration')
+        if pm.getInstanceVersion() < "6005":
+            return False
+        try:
+            from plone.volto.browser import migrate_to_volto
+        except ImportError:
+            return False
+        installer = get_installer(self.context, self.request)
+        return not installer.is_product_installed("plone.volto")

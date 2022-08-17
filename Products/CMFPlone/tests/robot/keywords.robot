@@ -33,3 +33,7 @@ patterns are loaded
 a folder with a document '${title}'
   ${folder_uid}=  Create content  type=Folder  title=folder
   Create content  type=Document  container=${folder_uid}  title=${title}
+
+folder contents pattern loaded
+    Page should contain element  css=.pat-structure
+    Wait For Condition  return !!document.querySelector('.pat-structure div.navbar')

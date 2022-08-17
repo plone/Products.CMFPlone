@@ -1,0 +1,134 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+  <metal:main metal:fill-slot="prefs_configlet_main" i18n:domain="plone"
+      tal:define="inspect_backrelation python: view.inspect_backrelation;
+                  relation python: view.relation;">
+
+      <a id="setup-link" class="link-parent"
+         tal:attributes="href string:$portal_url/@@overview-controlpanel"
+         i18n:translate="">
+          Site Setup
+      </a>
+
+    <header>
+      <h1 class="documentFirstHeading"
+          tal:condition="python: not inspect_backrelation">
+        <span i18n:translate="">Inspect relations</span>
+        <strong tal:content="python: relation">relation</strong>
+      </h1>
+
+      <h1 class="documentFirstHeading"
+          tal:condition="python: inspect_backrelation">
+        <span i18n:translate="">Inspect backrelations</span>
+        <strong tal:content="python: relation">backrelation</strong>
+      </h1>
+
+    </header>
+
+    <div id="content-core"
+         tal:define="relations_stats python: view.relations_stats">
+
+      <div tal:condition="python: view.broken"
+           class="portalMessage warning alert alert-warning" role="alert"
+           i18n:translate="">
+             <strong>Warning!</strong> You have broken relations!
+             You can <a href="${portal_url}/@@rebuild-relations">inspect and rebuild all relations</a>.
+      </div>
+
+      <form id="relationinfo" method="post" action="${portal_url}/@@inspect-relations" enctype="multipart/form-data">
+
+        <div class="mb-3 field">
+          <select class="form-select" i18n:attributes="aria-label label_default_select_example" aria-label="Default select example" name="relation" id="relation">
+            <option value="" i18n:translate="">Select a relation</option>
+            <tal:rels tal:repeat="from_attribute python: sorted(relations_stats)">
+              <option tal:attributes="value python: from_attribute;
+                                      selected python: relation == from_attribute"
+                      tal:content="python:'{} ({})'.format(from_attribute, relations_stats[from_attribute])">
+                  relationname (amount)
+              </option>
+            </tal:rels>
+          </select>
+        </div>
+
+        <div class="mb-3 field">
+          <div class="form-check" id="inspect_backrelation">
+            <input id="inspect-backrelation"
+                   name="inspect_backrelation"
+                   class="form-check-input single-checkbox-bool-widget bool-field"
+                   value="selected"
+                   type="checkbox"
+                   checked="checked"
+                   tal:attributes="checked python: 'checked' if inspect_backrelation else ''">
+            <label for="inspect-backrelation"
+                   class="form-check-label"
+                   i18n:translate="">
+              Show backrelations
+            </label>
+            <div class="form-text" i18n:translate="">Display relations grouped by their target.</div>
+          </div>
+        </div>
+
+        <button class="context btn btn-primary" type="submit" name="submit" value="submit" i18n:translate="">Inspect</button>
+      </form>
+
+      <table class="listing table table-striped"
+             tal:condition="python:view.relations">
+        <thead>
+          <tr tal:condition="python: not inspect_backrelation">
+            <th i18n:translate="">Source</th>
+            <th>&rarr;</th>
+            <th i18n:translate="">Target(s)</th>
+          </tr>
+
+          <tr tal:condition="python: inspect_backrelation">
+            <th i18n:translate="">Target</th>
+            <th>&larr;</th>
+            <th i18n:translate="">Source(s)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr tal:repeat="item python:view.relations">
+            <td>
+              <a tal:attributes="href python:item['column_1']['url'];
+                                 title python:item['column_1']['portal_type'];"
+                 tal:content="python:item['column_1']['title']">
+                Object
+              </a>
+            </td>
+
+            <td tal:condition="python: not inspect_backrelation">&rarr;</td>
+            <td tal:condition="python: inspect_backrelation">&larr;</td>
+            <td>
+              <ul>
+                <li tal:repeat="target python:item['column_2']">
+                  <a href=""
+                     tal:attributes="href python:target['url'];
+                                     title python:target['portal_type']; "
+                     tal:content="python:target['title']">
+                    Target
+                  </a>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><a href="${portal_url}/@@rebuild-relations" i18n:translate="">Inspect and rebuild all relations</a>.</p>
+
+    </div>
+
+  </metal:main>
+
+</body>
+
+</html>

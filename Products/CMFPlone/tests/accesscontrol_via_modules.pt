@@ -1,0 +1,1 @@
+<span tal:define="acc nocall:modules/AccessControl" tal:condition="nocall:acc/users">hacked</span>

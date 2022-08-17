@@ -3,7 +3,7 @@ from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.interfaces import IAction, IActionCategory
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import IActionSchema, INewActionSchema
+from plone.base.interfaces import IActionSchema, INewActionSchema
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import form

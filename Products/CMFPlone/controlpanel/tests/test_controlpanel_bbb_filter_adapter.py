@@ -1,4 +1,4 @@
-from Products.CMFPlone.interfaces import IFilterSchema
+from plone.base.interfaces import IFilterSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles

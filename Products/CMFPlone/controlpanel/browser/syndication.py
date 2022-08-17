@@ -1,6 +1,6 @@
 from Products.CMFCore.utils import getToolByName
 from zope.i18nmessageid import MessageFactory
-from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
+from plone.base.interfaces.syndication import ISiteSyndicationSettings
 from plone.app.registry.browser import controlpanel
 from z3c.form import button
 from Products.statusmessages.interfaces import IStatusMessage

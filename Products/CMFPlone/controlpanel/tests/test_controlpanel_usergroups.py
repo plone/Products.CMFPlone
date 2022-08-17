@@ -1,6 +1,6 @@
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
+from plone.base.interfaces import IUserGroupsSettingsSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -31,13 +31,14 @@ class TypesRegistryIntegrationTest(unittest.TestCase):
 
     def test_usergroups_in_controlpanel(self):
         self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
-        self.assertTrue(
-            'UsersGroups'
-            in [
-                a.getAction(self)['id']
-                for a in self.controlpanel.listActions()
-            ]
-        )
+        actions = [
+            a.getAction(self)['id']
+            for a in self.controlpanel.listActions()
+        ]
+        self.assertTrue('UsersGroups' in actions)
+        self.assertTrue('UsersGroups2' in actions)
+        self.assertTrue('UsersGroupsSettings' in actions)
+        self.assertTrue('MemberFields' in actions)
 
     def test_many_groups_setting(self):
         self.assertTrue(hasattr(self.settings, 'many_groups'))

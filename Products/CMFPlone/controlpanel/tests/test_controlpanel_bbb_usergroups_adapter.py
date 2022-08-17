@@ -1,5 +1,5 @@
 from plone.app.testing import setRoles
-from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
+from plone.base.interfaces import IUserGroupsSettingsSchema
 from zope.component import getAdapter
 from plone.app.testing import TEST_USER_ID
 from plone.registry.interfaces import IRegistry

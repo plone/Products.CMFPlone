@@ -1,10 +1,10 @@
 from zope.component import adapts
 from zope.interface import implementer
-from Products.CMFPlone.interfaces.syndication import IFeedSettings
-from Products.CMFPlone.interfaces.syndication import ISyndicatable
+from plone.base.interfaces.syndication import IFeedSettings
+from plone.base.interfaces.syndication import ISyndicatable
 from zope.annotation.interfaces import IAnnotations
 from persistent.dict import PersistentDict
-from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
+from plone.base.interfaces.syndication import ISiteSyndicationSettings
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 

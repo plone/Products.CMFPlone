@@ -15,7 +15,7 @@ assumptions that are not true for Plone forms.
   >>> from zope.component import getUtility
   >>> registry = getUtility(IRegistry, context=layer['portal'])
 
-  >>> from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+  >>> from plone.base.interfaces.controlpanel import IMailSchema
   >>> mail_settings = registry.forInterface(IMailSchema, prefix="plone")
   >>> mail_settings.smtp_host = u'localhost'
   >>> mail_settings.email_from_address = 'smith@example.com'
@@ -255,14 +255,9 @@ First, we want to login as the portal owner:
   >>> "You are now logged in" in browser.contents
   True
 
-We navigate to the Users Overview page and register a new user:
+We navigate to the Users Add page and register a new user:
 
-  >>> browser.getLink('Site Setup').click()
-  >>> browser.getLink('Users and Groups').click()
-  >>> browser.getLink('Add New User').click()
-  >>> browser.url
-  'http://nohost/plone/@@new-user'
-
+  >>> browser.open('http://nohost/plone/@@new-user')
   >>> browser.getControl('User Name').value = 'wsmith'
   >>> browser.getControl('Email').value = 'wsmith@example.com'
   >>> browser.getControl('Password').value = 'supersecret'
@@ -296,8 +291,7 @@ Again, we want to login as the portal owner:
 
 We navigate to the Users Overview page and reset a password user:
 
-  >>> browser.getLink('Site Setup').click()
-  >>> browser.getLink('Users and Groups').click()
+  >>> browser.open('http://nohost/plone/@@usergroup-userprefs')
   >>> resets = browser.getControl(name='users.resetpassword:records')
   >>> reset = resets.getControl(value='wsmith')
   >>> reset.selected = True
@@ -472,14 +466,9 @@ First, we want to login as the portal owner:
   >>> "You are now logged in" in browser.contents
   True
 
-We navigate to the Users Overview page and register a new user:
+We navigate to the Users Adding page and register a new user:
 
-  >>> browser.getLink('Site Setup').click()
-  >>> browser.getLink('Users and Groups').click()
-  >>> browser.getLink('Add New User').click()
-  >>> browser.url
-  'http://nohost/plone/@@new-user'
-
+  >>> browser.open('http://nohost/plone/@@new-user')
   >>> browser.getControl('User Name').value = 'wwwsmith'
   >>> browser.getControl('Email').value = 'wwwsmith@example.com'
   >>> browser.getControl('Password').value = 'secret'
@@ -534,7 +523,7 @@ Test passwordreset BrowserView
 
     >>> portal = layer['portal']
     >>> mail_settings.email_from_name = u'Old\u0159ich a Bo\u017eena'
-    >>> from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
+    >>> from plone.base.interfaces.controlpanel import ISiteSchema
     >>> site_settings = registry.forInterface(ISiteSchema, prefix='plone')
     >>> site_settings.site_title = u'Koko\u0159\xedn Portal'
 

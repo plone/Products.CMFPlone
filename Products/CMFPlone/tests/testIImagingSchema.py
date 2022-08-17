@@ -1,6 +1,6 @@
 from plone.app.testing import PLONE_INTEGRATION_TESTING
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
+from plone.base.interfaces.controlpanel import IImagingSchema
 from zope.component import getUtility
 
 import unittest

@@ -1,6 +1,6 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+from plone.base.interfaces.controlpanel import IMailSchema
 from Products.MailHost.MailHost import MailHostError
 from Products.statusmessages.interfaces import IStatusMessage
 from logging import getLogger
@@ -37,9 +37,11 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
             self.status = self.formErrorsMessage
             return False
         # keep password field
-        if (data.get('smtp_userid') is not None and
-                data.get('smtp_pass') is None):
+        smtp_user_id = (data.get('smtp_userid') or '').strip()
+        smtp_pass = (data.get('smtp_pass') or '').strip()
+        if smtp_user_id and not smtp_pass:
             del data['smtp_pass']
+
         self.applyChanges(data)
         return True
 

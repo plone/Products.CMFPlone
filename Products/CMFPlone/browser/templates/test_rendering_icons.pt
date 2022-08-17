@@ -1,0 +1,91 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal" xmlns:i18n="http://xml.zope.org/namespaces/i18n" lang="en"
+  metal:use-macro="context/@@main_template/macros/master" i18n:domain="plone">
+
+<body>
+
+  <metal:main fill-slot="main">
+
+    <style>
+
+    </style>
+
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item">
+        <a class="nav-link" href="${portal_url}/@@test-rendering">Test Rendering</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="${portal_url}/@@test-rendering-cheatsheet">Bootstrap Cheatsheet</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="${portal_url}/@@test-rendering-icons">Icons</a>
+      </li>
+    </ul>
+
+    <h1>Plone Icons test page</h1>
+
+    <p class="lead">
+      This page shows the Icon story of Plone 6. We use <a href="https://icons.getbootstrap.com/" target="_blank">Bootstrap Icons</a> by default.
+    </p>
+
+    <h1>Icons</h1>
+
+    <p>
+      Description to explain icon resolver
+    </p>
+
+    <h2>Get Icon URL</h2>
+
+    <p>
+      <code>&lt;img src="" tal:attributes="src python:icons.url('alarm')" class="custom-class" alt="foo" /&gt;</code>
+    </p>
+
+    <p>
+      <img src="${python:icons.url('alarm')}" class="custom-class" alt="foo" />
+    </p>
+
+    <h2>Get Icon Tag</h2>
+
+    <p>
+      <code>&lt;tal:icon tal:replace="structure python:icons.tag('archive', tag_class='custom-class', tag_alt='foobar')" /&gt;</code>
+    </p>
+
+    <p>
+      <tal:icon tal:replace="structure python:icons.tag('archive', tag_class='custom-class', tag_alt='foobar')" />
+    </p>
+
+    <h2>Registration</h2>
+
+    <p>
+      Todo: List custom Icons
+    </p>
+
+    <ul>
+      <li>
+        <a href="https://github.com/plone/plone.staticresources/blob/master/src/plone/staticresources/profiles/default/registry/icons_bootstrap.xml" target="_blank">Bootstrap</a>
+      </li>
+      <li>
+        <a href="https://github.com/plone/plone.staticresources/blob/master/src/plone/staticresources/profiles/default/registry/icons_contenttype.xml" target="_blank">Content Types</a>
+      </li>
+      <li>
+        <a href="https://github.com/plone/plone.staticresources/blob/master/src/plone/staticresources/profiles/default/registry/icons_country_flags.xml" target="_blank">Country Flags</a>
+      </li>
+      <li>
+        <a href="https://github.com/plone/plone.staticresources/blob/master/src/plone/staticresources/profiles/default/registry/icons_language_flags.xml" target="_blank">Language Flags</a>
+      </li>
+      <li>
+        <a href="https://github.com/plone/plone.staticresources/blob/master/src/plone/staticresources/profiles/default/registry/icons_mimetype.xml" target="_blank">MIME Types</a>
+      </li>
+      <li>
+        <a href="https://github.com/plone/plone.staticresources/blob/master/src/plone/staticresources/profiles/default/registry/icons_plone.xml" target="_blank">Plone</a>
+      </li>
+      <li>
+        <a href="https://github.com/plone/plone.staticresources/blob/master/src/plone/staticresources/profiles/default/registry/icons_toolbar.xml" target="_blank">Toolbar</a>
+      </li>
+    </ul>
+
+  </metal:main>
+
+</body>
+
+</html>

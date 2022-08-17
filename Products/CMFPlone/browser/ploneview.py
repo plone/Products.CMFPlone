@@ -111,7 +111,7 @@ class Plone(BrowserView):
             return text
         converted = False
         if not isinstance(text, str):
-            text = utils.safe_unicode(text)
+            text = utils.safe_text(text)
             converted = True
         if len(text) > length:
             text = text[:length]
@@ -211,3 +211,7 @@ class Plone(BrowserView):
         return getMultiAdapter(
             (context, self.request),
             name='plone_patterns_settings')()
+
+    @property
+    def human_readable_size(self):
+        return utils.human_readable_size

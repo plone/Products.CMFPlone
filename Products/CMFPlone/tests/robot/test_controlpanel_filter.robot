@@ -69,7 +69,21 @@ the filter control panel
 
 Input RichText
   [Arguments]  ${input}
-  Wait until keyword succeeds  5s  1s  Execute Javascript  tinyMCE.activeEditor.setContent('${input}');
+  # Sleep to avoid random failures where the text is not actually set.
+  # This warning from the robotframework docs might be the cause:
+  # "Starting from Robot Framework 2.5 errors caused by invalid syntax, timeouts,
+  # or fatal exceptions are not caught by this keyword."
+  # See https://robotframework.org/robotframework/2.6.1/libraries/BuiltIn.html#Wait%20Until%20Keyword%20Succeeds
+  Sleep  1
+  Wait until keyword succeeds  5s  1s  Set and Check TinyMCE Content  ${input}
+
+Set and Check TinyMCE Content
+  [Arguments]  ${input}
+  # Simply check if tinyMCE.getContent() isn't empty when we set an input
+  Execute Javascript   tinyMCE.activeEditor.setContent('${input}');
+  Sleep  0.5
+  ${check}=  Execute Javascript  return tinyMCE.activeEditor.getContent();
+  Should not be empty  ${check}
 
 
 # --- WHEN -------------------------------------------------------------------
@@ -77,26 +91,24 @@ Input RichText
 I add '${tag}' to the nasty tags list and remove it from the valid tags list
   Input Text  name=form.widgets.nasty_tags  ${tag}
   Remove line from textarea  form.widgets.valid_tags  ${tag}
-  Click Button  Save
-  Wait until page contains  Changes saved
+  I save the form
 
 I remove '${tag}' from the valid tags list
   Remove line from textarea  form.widgets.valid_tags  ${tag}
-  Click Button  Save
-  Wait until page contains  Changes saved
+  I save the form
 
 I add '${tag}' to the valid tags list
   Input Text  name=form.widgets.valid_tags  ${tag}
-  Click Button  Save
-  Wait until page contains  Changes saved
+  I save the form
+  Page Should Contain  ${tag}
 
 I add '${tag}' to the custom attributes list
   Input Text  name=form.widgets.custom_attributes  ${tag}
-  Click Button  Save
-  Wait until page contains  Changes saved
+  I save the form
+  Page Should Contain  ${tag}
 
 I save the form
-  Click Button  Save
+  Wait For Then Click Element  form.buttons.save
   Wait until page contains  Changes saved
 
 
@@ -106,38 +118,43 @@ the 'h1' tag is filtered out when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
   Go To  ${PLONE_URL}/doc1/edit
   patterns are loaded
-  Input RichText  <h1>h1 heading</h1><p>lorem ipsum</p>
-  Click Button  Save
-  Wait until page contains  Changes saved
+  Input RichText  <h1>h1 heading</h1><p>Spanish Inquisition</p>
+  I save the form
+  # We check that some standard text is there, before checking the interesting part.
+  # If the standard text is invisible, then something completely different is wrong.
+  # I see tests randomly fail where the safe html transform is not even called.
+  # In fact, no text is saved.  Maybe some timing problem.
+  # I suspect the Input RichText keyword, which is why I added Sleep in there.
+  Page should contain  Spanish Inquisition
   Page should not contain  heading
 
 the 'h1' tag is stripped when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
   Go To  ${PLONE_URL}/doc1/edit
   patterns are loaded
-  Input RichText  <h1>h1 heading</h1><p>lorem ipsum</p>
-  Click Button  Save
-  Wait until page contains  Changes saved
+  Input RichText  <h1>h1 heading</h1><p>Spanish Inquisition</p>
+  I save the form
+  Page should contain  Spanish Inquisition
   Page should contain  heading
-  XPath Should Match X Times  //div[@id='content-core']//h1  0  message=h1 should have been stripped out
+  Page Should Contain Element  //div[@id='content-core']//h1  limit=0  message=h1 should have been stripped out
 
 the '${tag}' tag is preserved when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
   Go To  ${PLONE_URL}/doc1/edit
   patterns are loaded
-  Input RichText  <${tag}>lorem ipsum</${tag}>
-  Click Button  Save
-  Wait until page contains  Changes saved
-  XPath Should Match X Times  //div[@id='content-core']//${tag}  1  message=the ${tag} tag should have been preserved
+  Input RichText  <${tag}>lorem ipsum</${tag}><p>Spanish Inquisition</p>
+  I save the form
+  Page should contain  Spanish Inquisition
+  Page Should Contain Element  //div[@id='content-core']//${tag}  limit=1  message=the ${tag} tag should have been preserved
 
 the '${attribute}' attribute is preserved when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
   Go To  ${PLONE_URL}/doc1/edit
   patterns are loaded
-  Input RichText  <span ${attribute}="foo">lorem ipsum</span>
-  Click Button  Save
-  Wait until page contains  Changes saved
-  XPath Should Match X Times  //span[@${attribute}]  1  message=the ${attribute} tag should have been preserved
+  Input RichText  <span ${attribute}="foo">lorem ipsum</span><p>Spanish Inquisition</p>
+  I save the form
+  Page should contain  Spanish Inquisition
+  Page Should Contain Element  //span[@${attribute}]  limit=1  message=the ${attribute} tag should have been preserved
 
 success message should contain information regarding caching
-  Element Should Contain  css=.portalMessage.warning  HTML generation is heavily cached across Plone. You may have to edit existing content or restart your server to see the changes.
+  Element Should Contain  css=.alert-warning  HTML generation is heavily cached across Plone. You may have to edit existing content or restart your server to see the changes.

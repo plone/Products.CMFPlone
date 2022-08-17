@@ -27,7 +27,7 @@ add rule
     Click element  css=#form-widgets-description
     Input text  css=#form-widgets-description  this rule is meant for folders where new staff is having a go
     Click element  css=#formfield-form-widgets-event
-    Select From List  id=form-widgets-event  Object modified
+    Select From List By Label  id=form-widgets-event  Object modified
 
 
     Capture and crop page screenshot

@@ -3,12 +3,12 @@ from plone.app.users.browser.passwordpanel import PasswordPanel
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import IForcePasswordChange
-from Products.CMFPlone.interfaces import IInitialLogin
-from Products.CMFPlone.interfaces import ILoginForm
-from Products.CMFPlone.interfaces import ILoginFormSchema
-from Products.CMFPlone.interfaces import IRedirectAfterLogin
-from Products.CMFPlone.interfaces import ISecuritySchema
+from plone.base.interfaces import IForcePasswordChange
+from plone.base.interfaces import IInitialLogin
+from plone.base.interfaces import ILoginForm
+from plone.base.interfaces import ILoginFormSchema
+from plone.base.interfaces import IRedirectAfterLogin
+from plone.base.interfaces import ISecuritySchema
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from urllib import parse
@@ -90,22 +90,24 @@ class LoginForm(form.EditForm):
                 pass
 
     def updateWidgets(self):
+        super().updateWidgets(prefix='')
+
         auth = self._get_auth()
 
         if auth:
-            fieldname_name = auth.get('name_cookie', '__ac_name')
-            fieldname_password = auth.get('pw_cookie', '__ac_password')
+            widgetname_login = auth.get('name_cookie', '__ac_name')
+            widgetname_password = auth.get('pw_cookie', '__ac_password')
         else:
-            fieldname_name = '__ac_name'
-            fieldname_password = '__ac_password'
+            widgetname_login = '__ac_name'
+            widgetname_password = '__ac_password'
 
-        self.fields['ac_name'].__name__ = fieldname_name
-        self.fields['ac_password'].__name__ = fieldname_password
-
-        super().updateWidgets(prefix='')
+        self.widgets['ac_name'].name = widgetname_login
+        self.widgets['ac_name'].id = widgetname_login
+        self.widgets['ac_password'].name = widgetname_password
+        self.widgets['ac_password'].id = widgetname_password
 
         if self.use_email_as_login():
-            self.widgets[fieldname_name].label = _('label_email',
+            self.widgets['ac_name'].label = _('label_email',
                                                    default='Email')
         self.widgets['came_from'].mode = HIDDEN_MODE
         self.widgets['came_from'].value = self.get_came_from()
@@ -127,7 +129,7 @@ class LoginForm(form.EditForm):
 
     def updateActions(self):
         super().updateActions()
-        self.actions['login'].addClass('context')
+        self.actions['login'].addClass('btn-primary')
 
     def _post_login(self):
         membership_tool = getToolByName(self.context, 'portal_membership')

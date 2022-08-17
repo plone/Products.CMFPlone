@@ -21,14 +21,21 @@
       title="Allow sendto" />
 
   <browser:resource
-      file="static/plone-logo.png"
-      name="plone-logo.png"
+      file="static/plone-logo.svg"
+      name="plone-logo.svg"
       />
 
   <browser:page
       for="*"
       name="site-logo"
       class=".sitelogo.SiteLogo"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      name="favicon.ico"
+      class=".favicon.SiteFavicon"
       permission="zope.Public"
       />
 
@@ -92,6 +99,7 @@
       for="*"
       name="main_template"
       class=".main_template.MainTemplate"
+      allowed_interface=".interfaces.IMainTemplate"
       permission="zope.Public"
       />
 
@@ -131,7 +139,7 @@
       />
 
   <browser:page
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       name="author"
       class=".author.AuthorView"
       permission="zope.Public"
@@ -139,7 +147,7 @@
       />
 
   <browser:page
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.base.interfaces.IPloneSiteRoot"
       name="author-feedback-template"
       permission="zope.Public"
       template="templates/author_feedback_template.pt"
@@ -210,11 +218,6 @@
       for="plone.app.layout.navigation.interfaces.INavigationRoot"
       />
 
-  <browser:resource
-      name="search.js"
-      file="static/search.js"
-      />
-
   <!-- AtD Support -->
   <browser:page
       for="*"
@@ -230,7 +233,7 @@
       name="default_page"
       class=".defaultpage.DefaultPage"
       permission="zope.Public"
-      allowed_interface="Products.CMFPlone.interfaces.defaultpage.IDefaultPage"
+      allowed_interface="plone.base.interfaces.defaultpage.IDefaultPage"
       />
 
   <browser:page
@@ -254,6 +257,55 @@
       template="templates/error_message.pt"
       permission="zope.Public"
       layer="zope.interface.Interface"
+      />
+
+  <browser:page
+      name="test_rendering"
+      for="*"
+      class=".test_rendering.TestRenderingView"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      name="test-rendering"
+      for="*"
+      class=".test_rendering.TestRenderingView"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      name="test-rendering-cheatsheet"
+      for="*"
+      class=".test_rendering.TestRenderingCheatsheetView"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      name="test-rendering-icons"
+      for="*"
+      class=".test_rendering.TestRenderingIconsView"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      for="*"
+      name="iconresolver"
+      class=".icons.IconsView"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      for="*"
+      name="recently_modified"
+      template="templates/recently_modified.pt"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      for="*"
+      name="recently_published"
+      template="templates/recently_published.pt"
+      permission="zope2.View"
       />
 
 </configure>

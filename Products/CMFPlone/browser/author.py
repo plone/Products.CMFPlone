@@ -2,8 +2,8 @@ from AccessControl import Unauthorized
 
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import ISecuritySchema
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+from plone.base.interfaces import ISecuritySchema
+from plone.base.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.utils import getToolByName
 from Products.CMFPlone.utils import pretty_title_or_id
 from Products.Five.browser import BrowserView

@@ -26,29 +26,26 @@ Test Teardown  Run keywords  Plone Test Teardown
 
 Scenario: Show all users in users control panel
   Given a logged-in site administrator
-    and the usergroups control panel
+    and the users control panel
    When I click show all users
    Then all users should be shown
 
 Scenario: Show all groups in groups control panel
   Given a logged-in site administrator
-    and the usergroups control panel
-   When I go to Groups control panel
-    and I click show all groups
+    and the groups control panel
+   When I click show all groups
    Then all groups should be shown
 
 Scenario: Create new group
   Given a logged-in site administrator
-    and the usergroups control panel
-   When I go to Groups control panel
-    and I create new group
+    and the groups control panel
+   When I create new group
    Then new group should show under all groups
 
 Scenario: Enable many groups and many users settings in usergroups control panel
   Given a logged-in site administrator
-    and the usergroups control panel
-   When I go to Settings control panel
-    and enable many groups and many users settings
+    and the user group settings control panel
+   When I enable many groups and many users settings
    Then showing all users is disabled
     and showing all groups is disabled
 
@@ -60,9 +57,17 @@ Scenario: Enable many groups and many users settings in usergroups control panel
 a logged-in site administrator
   Enable autologin as  Site Administrator
 
-the usergroups control panel
+the users control panel
   Go to  ${PLONE_URL}/@@usergroup-userprefs
-  Wait until page contains  Users and Groups
+  Wait until page contains  User Search
+
+the groups control panel
+  Go to  ${PLONE_URL}/@@usergroup-groupprefs
+  Wait until page contains  Group Search
+
+the user group settings control panel
+  Go to  ${PLONE_URL}/@@usergroup-controlpanel
+  Wait until page contains  User and Groups Settings
 
 
 # --- WHEN -------------------------------------------------------------------
@@ -71,16 +76,12 @@ I click show all users
   Click button  Show all
   Wait until page contains  User Search
 
-I go to Groups control panel
-  Click link  Groups
-  Wait until page contains  Group Search
-
 I click show all groups
   Click button  Show all
   Wait until page contains  Group Search
 
 I create new group
-  Click button  Add New Group
+  Click link  Add New Group
   Wait until page contains element  name=addname
   patterns are loaded
   Input Text  name=addname  my-new-group
@@ -92,11 +93,7 @@ I create new group
   I click show all groups
   Page should contain  my-new-group
 
-I go to Settings control panel
-  Click link  Settings
-  Wait until page contains  User and groups settings
-
-enable many groups and many users settings
+I enable many groups and many users settings
   Select Checkbox  name=form.widgets.many_groups:list
   Select Checkbox  name=form.widgets.many_users:list
   Click button  Save
@@ -115,13 +112,11 @@ all groups should be shown
   Page should contain  Site Administrators
 
 showing all users is disabled
-  Click link  Users
-  Wait until page contains  User Search
+  the users control panel
   Page should not contain  Show all
 
 showing all groups is disabled
-  Click link  Groups
-  Wait until page contains  Group Search
+  the users control panel
   Page should not contain  Show all
 
 new group should show under all groups

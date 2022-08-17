@@ -71,36 +71,36 @@ I modify an action title
   Click Link    css=section:nth-child(3) li:first-child a
   Wait until page contains  Action Settings
   Input Text for sure  form.widgets.title  A new site map
-  Click Element  css=.pattern-modal-buttons > input
+  Wait For Then Click Element  css=.pattern-modal-buttons > button
 
 I change the actions order
   Click Link    css=section:nth-child(3) li:first-child a
   Wait until page contains  Action Settings
   Input Text for sure  form.widgets.position  3
-  Click Element  css=.pattern-modal-buttons > input
+  Wait For Then Click Element  css=.pattern-modal-buttons > button
 
 I add a new action
   Click Link  Add new action
   Wait until page contains  New action
   Select From List By Label   form.widgets.category:list   User actions
   Input Text for sure  form.widgets.id  favorites
-  Click Element  css=.pattern-modal-buttons > input
+  Wait For Then Click Element  css=.pattern-modal-buttons > button
   Wait until page contains  favorites
-  Click Link    css=section:nth-child(7) li:last-child a
+  Wait For Then Click Element  css=section.category:last-child li:last-child a
   Wait until page contains  Action Settings
   Input Text for sure  form.widgets.title  My favorites
   Input Text for sure  form.widgets.url_expr  string:\${globals_view/navigationRootUrl}/favorites
-  Click Element  css=.pattern-modal-buttons > input
+  Wait For Then Click Element  css=.pattern-modal-buttons > button
 
 I delete an action
-  Click Button    css=section:nth-child(3) li:first-child input[name=delete]
-  Confirm Action
+  Click Button    css=section:nth-child(3) li:first-child button[name=delete]
+  Handle alert
 
 I hide an action
-  Click Button    css=section:nth-child(3) li:first-child input[name=hide]
+  Click Button    css=section:nth-child(3) li:first-child button[name=hide]
 
 I unhide the action
-  Click Button    css=section:nth-child(3) li:first-child input[name=show]
+  Click Button    css=section:nth-child(3) li:first-child button[name=show]
 
 # --- THEN -------------------------------------------------------------------
 

@@ -2,9 +2,9 @@ from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.controlpanel.events import ConfigurationChangedEvent
-from Products.CMFPlone.interfaces import ISearchSchema
-from Products.CMFPlone.interfaces import ITypesSchema
-from Products.CMFPlone.utils import safe_unicode
+from plone.base.interfaces import ISearchSchema
+from plone.base.interfaces import ITypesSchema
+from plone.base.utils import safe_text
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 from operator import itemgetter
@@ -54,7 +54,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
     form_name = _("Types settings")
     control_panel_view = "content-controlpanel"
     template = ViewPageTemplateFile('types.pt')
-    behavior_name = 'plone.app.versioningbehavior.behaviors.IVersionable'
+    behavior_name = 'plone.versioning'
 
     @button.buttonAndHandler(_('Save'), name='save')
     def handleSave(self, action):
@@ -94,7 +94,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         if self.behavior_name not in behaviors:
             behaviors.append(self.behavior_name)
         # locking must be turned on for versioning support on the type
-        locking = 'plone.app.lockingbehavior.behaviors.ILocking'
+        locking = 'plone.locking'
         if locking not in behaviors:
             behaviors.append(locking)
 
@@ -156,7 +156,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                     else:
                         # check if we should add
                         if type_id not in versionable_types:
-                            versionable_types.append(safe_unicode(type_id))
+                            versionable_types.append(safe_text(type_id))
                         self.add_versioning_behavior(fti)
 
                     for policy in portal_repository.listPolicies():
@@ -193,9 +193,9 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                 types_settings = registry.forInterface(
                     ITypesSchema, prefix="plone")
                 default_page_types = [
-                    safe_unicode(i) for i in types_settings.default_page_types]
+                    safe_text(i) for i in types_settings.default_page_types]
                 if default_page_type and type_id not in default_page_types:
-                    default_page_types.append(safe_unicode(type_id))
+                    default_page_types.append(safe_text(type_id))
                 elif not default_page_type and type_id in default_page_types:
                     default_page_types.remove(type_id)
                 types_settings.default_page_types = default_page_types
@@ -365,7 +365,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                 wf_id = chain[0]
                 wf = getattr(portal_workflow, wf_id)
                 title = translate(
-                    safe_unicode(wf.title),
+                    safe_text(wf.title),
                     domain='plone',
                     context=self.request
                 )
@@ -373,7 +373,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                     id=wf.id,
                     title=title,
                     description=format_description(
-                        safe_unicode(wf.description),
+                        safe_text(wf.description),
                         self.request
                     )
                 )
@@ -384,7 +384,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
             return empty_workflow_dict
 
         default_title = translate(
-            safe_unicode(default_workflow.title),
+            safe_text(default_workflow.title),
             domain='plone',
             context=self.request
         )
@@ -420,7 +420,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
             # Only offer a default workflow option on a real type
             default_workflow = self.default_workflow(False)
             default_title = translate(
-                safe_unicode(default_workflow.title),
+                safe_text(default_workflow.title),
                 domain='plone',
                 context=self.request
             )

@@ -48,6 +48,12 @@ Now let's login and visit the collection in the test browser:
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone/folder/collection')
 
+When checking if the collection text is in the output, we are not interested in differences in whitespace.
+So we use a normalize function:
+
+    >>> def normalize(value):
+    ...     return value.translate(str.maketrans({" ": None, "\n": None, "\t": None, "\r": None}))
+
 Lets check the listing_view (Standard view):
 
     >>> browser.getLink('Standard view').click()
@@ -55,7 +61,7 @@ Lets check the listing_view (Standard view):
     True
     >>> collection_description in browser.contents
     True
-    >>> collection_text in browser.contents
+    >>> normalize(collection_text) in normalize(browser.contents)
     True
 
 Lets check the summary_view (Summary view):
@@ -65,7 +71,7 @@ Lets check the summary_view (Summary view):
     True
     >>> collection_description in browser.contents
     True
-    >>> collection_text in browser.contents
+    >>> normalize(collection_text) in normalize(browser.contents)
     True
 
 Lets check the full_view (All content):
@@ -75,7 +81,7 @@ Lets check the full_view (All content):
     True
     >>> collection_description in browser.contents
     True
-    >>> collection_text in browser.contents
+    >>> normalize(collection_text) in normalize(browser.contents)
     True
 
 Lets check the tabular_view (Tabular view):
@@ -86,7 +92,7 @@ Lets check the tabular_view (Tabular view):
     True
     >>> collection_description in browser.contents
     True
-    >>> collection_text in browser.contents
+    >>> normalize(collection_text) in normalize(browser.contents)
     True
 
 Lets ensure that the text field is not requested on a folder. We
@@ -110,5 +116,5 @@ Lets ensure text is shown when Collection is default view of a folder
     True
     >>> collection_description in browser.contents
     True
-    >>> collection_text in browser.contents
+    >>> normalize(collection_text) in normalize(browser.contents)
     True

@@ -1,10 +1,10 @@
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import ITinyMCELayoutSchema
-from Products.CMFPlone.interfaces import ITinyMCESpellCheckerSchema
-from Products.CMFPlone.interfaces import ITinyMCEResourceTypesSchema
-from Products.CMFPlone.interfaces import ITinyMCEAdvancedSchema
-from Products.CMFPlone.interfaces import ITinyMCESchema
-from Products.CMFPlone.interfaces import ITinyMCEPluginSchema
+from plone.base.interfaces import ITinyMCELayoutSchema
+from plone.base.interfaces import ITinyMCESpellCheckerSchema
+from plone.base.interfaces import ITinyMCEResourceTypesSchema
+from plone.base.interfaces import ITinyMCEAdvancedSchema
+from plone.base.interfaces import ITinyMCESchema
+from plone.base.interfaces import ITinyMCEPluginSchema
 from plone.app.registry.browser import controlpanel
 from z3c.form import field
 from z3c.form import group

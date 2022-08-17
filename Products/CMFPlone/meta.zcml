@@ -23,17 +23,21 @@
     <include package="Products.CMFCore" file="meta.zcml" />
     <include package="Products.GenericSetup" file="meta.zcml" />
 
+    <include package="plone.dexterity" file="meta.zcml" />
+    <include package="plone.resource" file="meta.zcml" />
+    <include package="plone.app.dexterity" file="meta.zcml" />
     <include package="plone.app.portlets" file="meta.zcml" />
+    <include package="plone.contentrules" file="meta.zcml" />
+    <include package="plone.session" file="meta.zcml" />
 
-    <!-- z3c.autoinclude's `includePlugins` directive finds
+    <!-- plone.autoinclude's `autoIncludePlugins` directive finds
          and executes ZCML files from any installed packages
          that provide an entry point to declare themselves a
          plone plugin -->
-    <include package="z3c.autoinclude" file="meta.zcml" />
-
-    <includePlugins
+    <include package="plone.autoinclude" file="meta.zcml" />
+    <autoIncludePlugins
         zcml:condition="not-have disable-autoinclude"
-        package="plone"
+        target="plone"
         file="meta.zcml"
         />
 

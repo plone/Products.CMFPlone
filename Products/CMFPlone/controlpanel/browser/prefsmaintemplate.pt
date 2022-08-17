@@ -1,0 +1,71 @@
+<metal:page define-macro="master" i18n:domain="plone">
+  <tal:block metal:use-macro="context/@@main_template/macros/master">
+
+    <metal:block fill-slot="top_slot">
+        <metal:override define-slot="top_slot">
+            <tal:defines tal:define="dummy python:request.set('disable_border',1);
+                                     controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
+                                     disable_column_one python:request.set('disable_plone.leftcolumn', 1);
+                                     disable_column_two python:request.set('disable_plone.rightcolumn',1);"/>
+        </metal:override>
+    </metal:block>
+
+    <metal:override fill-slot="content">
+        <metal:slot define-slot="prefs_configlet_wrapper">
+          <metal:slot define-slot="prefs_configlet_content">
+
+            <metal:block metal:use-macro="context/@@main_template/macros/content">
+              <metal:override metal:fill-slot="main">
+
+                <div class="mb-3"
+                     tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
+                                 groups python:controlPanel.getGroups('site');
+                                 site_url controlPanel/site_url;
+                                 current_url request/URL">
+                  <ul class="nav nav-tabs">
+                    <li class="nav-item"
+                        tal:define="overview_url string:$portal_url/@@overview-controlpanel">
+                      <a class="nav-link ${python:'active' if overview_url in current_url else ''}" aria-current="page" href="${overview_url}" i18n:translate="">Site Setup</a>
+                    </li>
+                    <tal:group tal:repeat="group groups">
+                      <li tal:define="configlets python:controlPanel.enumConfiglets(group=group['id']);
+                                      active python:'active' if bool([c for c in configlets if current_url.startswith(c['url'])]) else 'inactive'"
+                          tal:condition="python:configlets and controlPanel.maySeeSomeConfiglets"
+                          class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle ${active}" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">${group/title}</a>
+                          <ul class="dropdown-menu">
+                          <tal:loop tal:repeat="configlet configlets">
+                            <li tal:condition="configlet/visible">
+                              <a tal:define="icon_url python:'http' in configlet['icon']"
+                                 class="dropdown-item"
+                                 href="${configlet/url}">
+                                <img tal:condition="icon_url"
+                                    src="" alt="" class="icon"
+                                    tal:attributes="src configlet/icon;
+                                                    alt configlet/title"
+                                    i18n:attributes="alt">
+                                <tal:icon tal:condition="not: icon_url"
+                                          tal:replace="structure python:icons.tag(configlet['icon'] or 'plone-controlpanel', tag_alt=configlet['title'])" />
+                                ${configlet/title}
+                              </a>
+                            </li>
+                          </tal:loop>
+                        </ul>
+                      </li>
+                    </tal:group>
+                  </ul>
+                </div>
+
+                <metal:slot metal:define-slot="prefs_configlet_main" tal:content="nothing">
+                  Page body text
+                </metal:slot>
+
+              </metal:override>
+            </metal:block>
+
+          </metal:slot>
+        </metal:slot>
+    </metal:override>
+
+  </tal:block>
+</metal:page>

@@ -106,12 +106,12 @@ I save the page
    Click Button  Save
 
 I select a date using the dropdowns
-    Select From List  xpath=//select[@id='edit_form_effectiveDate_0_year']  2001
-    Select From List  xpath=//select[@id='edit_form_effectiveDate_0_month']  January
-    Select From List  xpath=//select[@id='edit_form_effectiveDate_0_day']  01
-    Select From List  xpath=//select[@id='edit_form_effectiveDate_0_hour']  01
-    Select From List  xpath=//select[@id='edit_form_effectiveDate_0_minute']  00
-    Select From List  xpath=//select[@id='edit_form_effectiveDate_0_ampm']  AM
+    Select From List By Label  xpath=//select[@id='edit_form_effectiveDate_0_year']  2001
+    Select From List By Label  xpath=//select[@id='edit_form_effectiveDate_0_month']  January
+    Select From List By Label  xpath=//select[@id='edit_form_effectiveDate_0_day']  01
+    Select From List By Label  xpath=//select[@id='edit_form_effectiveDate_0_hour']  01
+    Select From List By Label  xpath=//select[@id='edit_form_effectiveDate_0_minute']  00
+    Select From List By Label  xpath=//select[@id='edit_form_effectiveDate_0_ampm']  AM
 
 I click the calendar icon
 

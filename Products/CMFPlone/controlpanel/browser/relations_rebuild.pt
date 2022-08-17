@@ -1,0 +1,124 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+  <metal:main metal:fill-slot="prefs_configlet_main">
+
+      <a id="setup-link" class="link-parent"
+         tal:attributes="href string:$portal_url/@@overview-controlpanel"
+         i18n:translate="">
+          Site Setup
+      </a>
+
+    <header>
+      <h1 class="documentFirstHeading" i18n:translate="">Rebuild relations</h1>
+    </header>
+
+    <div id="content-core">
+
+      <span tal:condition="python:view.done" i18n:translate="">Success!</span>
+      <h3 i18n:translate="">
+         Current relations in the relation catalog
+      </h3>
+
+      <table class="listing table table-striped"
+            tal:define="relations_stats python: getattr(view, 'relations_stats', None)"
+            tal:condition="python: relations_stats">
+        <thead>
+          <tr>
+            <th i18n:translate="">Relation</th>
+            <th i18n:translate="">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr tal:repeat="item python: sorted(relations_stats)">
+            <td>
+              <a href=""
+                 target="_blank"
+                 tal:attributes="href python:'@@inspect-relations?relation={}'.format(item)"
+                 tal:content="python:item"
+                 title="Inspect relations">
+               Type
+              </a>
+            </td>
+            <td tal:content="python:relations_stats[item]">Amount</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="listing table table-striped"
+            tal:define="broken python: getattr(view, 'broken', None)"
+            tal:condition="python: broken">
+        <thead>
+          <tr>
+            <th i18n:translate="">Broken Relation</th>
+            <th i18n:translate="">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr tal:repeat="item python: sorted(broken)">
+            <td tal:content="python:item">
+               Type
+            </td>
+            <td tal:content="python:broken[item]">Amount</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 i18n:translate="">Common relations:</h3>
+      <dl>
+        <dt>relatedItems</dt>
+        <dd i18n:translate="">Relations between content using the default "Related items" field</dd>
+
+        <dt>isReferencing</dt>
+        <dd i18n:translate="">Linkintegrity relations (source has a html-link to target)</dd>
+
+        <dt>iterate-working-copy</dt>
+        <dd i18n:translate="">Relation from content to a working copy (using plone.app.iterate)</dd>
+
+        <dt>staging-working-copy</dt>
+        <dd i18n:translate="">Outdated relation from content to a working copy (using plone.app.stagingbehavior)</dd>
+
+        <dt>(broken)</dt>
+        <dd i18n:translate="">Either source or target no longer exist</dd>
+
+        <dt><i>all other</i></dt>
+        <dd i18n:translate="">Custom attribute/fieldname used to describe the relation</dd>
+      </dl>
+
+      <form id="rebuild_relations" method="post" action="@@rebuild-relations" enctype="multipart/form-data">
+        <h3 i18n:translate="">Purge and rebuild relation-catalog</h3>
+        <p i18n:translate="">Clicking here will do the following:</p>
+        <ul>
+          <li i18n:translate="">Get all relations from zc.relation catalog and store them in a annotation on the portal.</li>
+          <li i18n:translate="">Remove all entries form zc.relation catalog.</li>
+          <li i18n:translate="">Clean up or flush and rebuild intids - this depends on your selection below</li>
+          <li i18n:translate="">Restore relations from the annotation on the portal.</li>
+        </ul>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="flush_and_rebuild_intids" id="flush_intids">
+          <label class="form-check-label" for="flush_intids" i18n:translate="">Flush and rebuild intids</label>
+          <p i18n:translate="">
+             This will delete all intids and create new one.<br/>
+             Warning: If you have a lot of relations this can take some time. Check the log for details!<br/>
+             If you have relations on tiles, flushing and rebuilding intids will destroy them b/c intids changed.
+          </p>
+        </div>
+        <button class="context btn btn-danger" type="submit" name="rebuild" value="rebuild" i18n:translate="">Rebuild</button>
+
+      </form>
+    </div>
+
+  </metal:main>
+
+</body>
+
+</html>

@@ -1,10 +1,11 @@
 from DateTime import DateTime
 from plone.app.contentlisting.interfaces import IContentListing
+from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.base.batch import Batch
+from plone.base.interfaces import ISearchSchema
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.navtree import getNavigationRoot
-from Products.CMFPlone.interfaces import ISearchSchema
-from Products.CMFPlone.PloneBatch import Batch
 from Products.ZCTextIndex.ParseTree import ParseError
 from zope.cachedescriptors.property import Lazy as lazy_property
 from zope.component import getMultiAdapter
@@ -12,10 +13,10 @@ from zope.component import getUtility
 from zope.component import queryUtility
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
-from ZPublisher.HTTPRequest import record
 from ZTUtils import make_query
 
 import json
+import re
 
 _ = MessageFactory('plone')
 
@@ -45,17 +46,32 @@ def quote(term):
     return term
 
 
+def munge_search_term(query):
+    for char in BAD_CHARS:
+        query = query.replace(char, ' ')
+
+    # extract quoted phrases first
+    quoted_phrases = re.findall(r'"([^"]*)"', query)
+    r = []
+    for qp in quoted_phrases:
+        # remove from original query
+        query = query.replace(f'"{qp}"', "")
+        # replace with cleaned leading/trailing whitespaces
+        # and skip empty phrases
+        clean_qp = qp.strip()
+        if not clean_qp:
+            continue
+        r.append(f'"{clean_qp}"')
+
+    r += map(quote, query.strip().split())
+    r = " AND ".join(r)
+    r = quote_chars(r) + ('*' if r and not r.endswith('"') else '')
+    return r
+
+
 class Search(BrowserView):
 
     valid_keys = ('sort_on', 'sort_order', 'sort_limit', 'fq', 'fl', 'facet')
-
-    def munge_search_term(self, q):
-        for char in BAD_CHARS:
-            q = q.replace(char, ' ')
-        r = map(quote, q.split())
-        r = " AND ".join(r)
-        r = quote_chars(r) + '*'
-        return r
 
     def results(self, query=None, batch=True, b_size=10, b_start=0,
                 use_content_listing=True):
@@ -106,22 +122,17 @@ class Search(BrowserView):
             if v and ((k in valid_keys) or k.startswith('facet.')):
                 query[k] = v
         if text:
-            query['SearchableText'] = self.munge_search_term(text)
+            query['SearchableText'] = munge_search_term(text)
 
         # don't filter on created at all if we want all results
         created = query.get('created')
         if created:
             try:
-                if created.get('query') and created['query'][0] <= EVER:
+                if created.get('query', EVER) <= EVER:
                     del query['created']
             except AttributeError:
                 # created not a mapping
                 del query['created']
-
-        # https://github.com/plone/Products.CMFPlone/issues/3007
-        # If 'created' exists and is of type 'record', then cast it as dict
-        if 'created' in query and isinstance(query['created'], record):
-            query['created'] = dict(query['created'])
 
         # respect `types_not_searched` setting
         types = query.get('portal_type', [])
@@ -230,6 +241,16 @@ class Search(BrowserView):
             self._navroot_url = state.navigation_root_url()
         return self._navroot_url
 
+    @property
+    def show_images(self):
+        registry = queryUtility(IRegistry)
+        return registry.get('plone.search_show_images')
+
+    @property
+    def search_image_scale(self):
+        registry = queryUtility(IRegistry)
+        return registry.get('plone.search_image_scale')
+
 
 class AjaxSearch(Search):
 
@@ -249,27 +270,37 @@ class AjaxSearch(Search):
 
         registry = queryUtility(IRegistry)
         length = registry.get('plone.search_results_description_length')
+        show_images = registry.get('plone.search_show_images')
+        if show_images:
+            image_scale = registry.get('plone.search_image_scale')
+            # image_scaling = getMultiAdapter((self.context, self.request), name='image_scale')
+            self.image_scaling = getMultiAdapter((INavigationRoot(self.context), self.request), name='image_scale')
         plone_view = getMultiAdapter(
             (self.context, self.request), name='plone')
-        registry = getUtility(IRegistry)
         view_action_types = registry.get(
             'plone.types_use_view_action_in_listings', [])
         for item in batch:
             url = item.getURL()
             if item.portal_type in view_action_types:
                 url = '%s/view' % url
+            img_tag = None
+            if show_images:
+                img_tag = self.get_image_tag(item, image_scale)
             items.append({
                 'id': item.UID,
                 'title': item.Title,
                 'description': plone_view.cropText(item.Description, length),
                 'url': url,
                 'state': item.review_state if item.review_state else None,
+                'img_tag': img_tag,
             })
         return json.dumps({
             'total': len(results),
             'items': items
         })
 
+    def get_image_tag(self, item, image_scale):
+        return self.image_scaling.tag(item, "image", scale=image_scale)
 
 class SortOption:
 

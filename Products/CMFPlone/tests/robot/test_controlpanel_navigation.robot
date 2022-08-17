@@ -68,27 +68,27 @@ a private document '${title}'
 
 I disable generate tabs
   Unselect Checkbox  form.widgets.generate_tabs:list
-  Click Button  Save
+  Wait For Then Click Element  form.buttons.save
   Wait until page contains  Changes saved
 
 I disable non-folderish tabs
   Unselect Checkbox  xpath=//input[@value='Document']
-  Click Button  Save
+  Wait For Then Click Element  form.buttons.save
   Wait until page contains  Changes saved
 
 I remove '${portal_type}' from the displayed types list
   Unselect Checkbox  xpath=//input[@value='Document']
-  Click Button  Save
+  Wait For Then Click Element  form.buttons.save
   Wait until page contains  Changes saved
 
 I enable filtering by workflow states
   Select Checkbox  name=form.widgets.filter_on_workflow:list
-  Click Button  Save
+  Wait For Then Click Element  form.buttons.save
   Wait until page contains  Changes saved
 
 I choose to show '${workflow_state}' items
   Select Checkbox  xpath=//input[@value='${workflow_state}']
-  Click Button  Save
+  Wait For Then Click Element  form.buttons.save
   Wait until page contains  Changes saved
 
 I choose to not show '${workflow_state}' items
@@ -102,14 +102,14 @@ I choose to not show '${workflow_state}' items
 the document '${title}' shows up in the navigation
   Go to  ${PLONE_URL}
   Wait until page contains  Powered by Plone
-  XPath Should Match X Times  //ul[@id='portal-globalnav']/li/a[contains(text(), '${title}')]  1  message=The global navigation should have contained the item '${title}'
+  Page Should Contain Element  //ul[@id='portal-globalnav']/li/a[contains(text(), '${title}')]  limit=1  message=The global navigation should have contained the item '${title}'
 
 the document '${title}' does not show up in the navigation
   Go to  ${PLONE_URL}
   Wait until page contains  Powered by Plone
-  XPath Should Match X Times  //ul[@id='portal-globalnav']/li/a[contains(text(), '${title}')]  0  message=The global navigation should not have contained the item '${title}'
+  Page Should Contain Element  //ul[@id='portal-globalnav']/li/a[contains(text(), '${title}')]  limit=0  message=The global navigation should not have contained the item '${title}'
 
 the document '${title}' does not show up in the sitemap
   Go to  ${PLONE_URL}/sitemap
   Wait until page contains  Powered by Plone
-  XPath Should Match X Times  //ul[@id='portal-sitemap']/li/a/span[contains(text(), '${title}')]  0  message=The sitemap should not have contained the item '${title}'
+  Page Should Contain Element  //ul[@id='portal-sitemap']/li/a/span[contains(text(), '${title}')]  limit=0  message=The sitemap should not have contained the item '${title}'

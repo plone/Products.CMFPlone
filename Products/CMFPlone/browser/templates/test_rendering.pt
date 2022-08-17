@@ -1,0 +1,82 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal" xmlns:i18n="http://xml.zope.org/namespaces/i18n" lang="en"
+  metal:use-macro="context/@@main_template/macros/master" i18n:domain="plone">
+
+<body>
+
+  <metal:main fill-slot="main">
+
+    <style>
+
+    </style>
+
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item">
+        <a class="nav-link active" href="${portal_url}/@@test-rendering">Test Rendering</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="${portal_url}/@@test-rendering-cheatsheet">Bootstrap Cheatsheet</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="${portal_url}/@@test-rendering-icons">Icons</a>
+      </li>
+    </ul>
+
+    <h1>Plone User Interface elements test page</h1>
+
+    <p class="lead">
+      This page lists the common user interface elements that exist in Plone, and
+      shows you how they are rendered. It also tests a couple of common Internet
+      Explorer rendering bugs, so you can see if your changes have triggered any
+      bad behaviour on this front.
+    </p>
+
+    <h2 class="mt-5">Alerts</h2>
+    <p><a href="https://getbootstrap.com/docs/5.1/components/alerts/">https://getbootstrap.com/docs/5.1/components/alerts/</a></p>
+
+    <div class="alert alert-primary" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+    <div class="alert alert-secondary" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+    <div class="alert alert-success" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+    <div class="alert alert-info" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+    <div class="alert alert-warning" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+    <div class="alert alert-danger" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+    <div class="alert alert-light" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+    <div class="alert alert-dark" role="alert">
+      <span>Mollit minim ullamco aliqua do culpa amet ullamco eu tempor. <a href="http://localhost:8080/Plone27/docs/edit">nulla proident velit</a></span>
+    </div>
+
+  </metal:main>
+
+  <aside id="portal-column-one" metal:fill-slot="column_one_slot">
+
+    <div class="card portlet portlet-foobar" i18n:domain="plone">
+
+      <div class="card-header">
+        Portlet Header
+      </div>
+
+      <div class="card-body">
+        <p>Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </div>
+
+      <div class="card-footer">Portlet Footer</div>
+    </div>
+  </aside>
+
+</body>
+
+</html>

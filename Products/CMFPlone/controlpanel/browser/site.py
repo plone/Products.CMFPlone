@@ -1,5 +1,5 @@
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import ISiteSchema
+from plone.base.interfaces import ISiteSchema
 from plone.app.registry.browser import controlpanel
 from plone.formwidget.namedfile.widget import NamedImageFieldWidget
 from z3c.form import interfaces
@@ -16,6 +16,7 @@ class SiteControlPanelForm(controlpanel.RegistryEditForm):
     def updateFields(self):
         super().updateFields()
         self.fields['site_logo'].widgetFactory = NamedImageFieldWidget
+        self.fields['site_favicon'].widgetFactory = NamedImageFieldWidget
 
     def updateWidgets(self):
         super().updateWidgets()

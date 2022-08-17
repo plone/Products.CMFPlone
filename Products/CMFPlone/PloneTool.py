@@ -1,16 +1,17 @@
 from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
 from AccessControl import Unauthorized
+from AccessControl.class_init import InitializeClass
 from AccessControl.requestmethod import postonly
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from AccessControl.class_init import InitializeClass
 from ComputedAttribute import ComputedAttribute
 from DateTime import DateTime
 from email.utils import getaddresses
 from OFS.ObjectManager import bad_id
 from OFS.SimpleItem import SimpleItem
+from plone.base.utils import safe_text
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import IDublinCore
 from Products.CMFCore.interfaces import IMutableDublinCore
@@ -24,22 +25,20 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone import utils
-from Products.CMFPlone.defaultpage import check_default_page_via_view
-from Products.CMFPlone.defaultpage import get_default_page_via_view
+from plone.base.defaultpage import check_default_page_via_view
+from plone.base.defaultpage import get_default_page_via_view
 from Products.CMFPlone.events import ReorderedEvent
-from Products.CMFPlone.interfaces import INonStructuralFolder
-from Products.CMFPlone.interfaces import IPloneTool
-from Products.CMFPlone.interfaces import ISearchSchema
-from Products.CMFPlone.interfaces import ISecuritySchema
-from Products.CMFPlone.interfaces import ISiteSchema
+from plone.base.interfaces import INonStructuralFolder
+from plone.base.interfaces import IPloneTool
+from plone.base.interfaces import ISearchSchema
+from plone.base.interfaces import ISecuritySchema
+from plone.base.interfaces import ISiteSchema
+from Products.CMFPlone.log import log
 from Products.CMFPlone.log import log_deprecated
+from Products.CMFPlone.log import log_exc
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone.utils import base_hasattr
-from Products.CMFPlone.utils import log
-from Products.CMFPlone.utils import log_exc
 from Products.CMFPlone.utils import safe_hasattr
-from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import transaction_note
 from Products.statusmessages.interfaces import IStatusMessage
 from urllib import parse
@@ -262,7 +261,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             msg = relative_path + '/' + obj.title_or_id() \
                 + ' has been modified.'
         if not transaction.get().description:
-            transaction_note(safe_unicode(msg))
+            transaction_note(safe_text(msg))
 
     @security.public
     def contentEdit(self, obj, **kwargs):
@@ -324,11 +323,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     @security.protected(View)
     def getReviewStateTitleFor(self, obj):
-        """Utility method that gets the workflow state title for the
-        object's review_state.
-
-        Returns None if no review_state found.
-        """
+        # Utility method that gets the workflow state title for the
+        # object's review_state.
+        # Returns None if no review_state found.
         wf_tool = getToolByName(self, 'portal_workflow')
         wfs = ()
         objstate = None
@@ -395,18 +392,17 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     @security.public
     def urlparse(self, url):
-        """Returns the pieces of url in a six-part tuple.
-
-        Since Python 2.6: urlparse now returns a ParseResult object.
-        We just need the tuple form which is tuple(result).
-        """
+        # Returns the pieces of url in a six-part tuple.
+        # Since Python 2.6: urlparse now returns a ParseResult object.
+        # We just need the tuple form which is tuple(result).
+        # Note: no docstring please, to avoid reflected XSS.
         return tuple(parse.urlparse(url))
 
     @security.public
     def urlunparse(self, url_tuple):
-        """Puts a url back together again, in the manner that
-        urlparse breaks it.
-        """
+        # Puts a url back together again, in the manner that
+        # urlparse breaks it.
+        # Note: no docstring please, to avoid reflected XSS.
         return parse.urlunparse(url_tuple)
 
     # Enable scripts to get the string value of an exception even if the
@@ -528,7 +524,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     @security.public
     def getDefaultPage(self, obj, request=None):
         # Given a folderish item, find out if it has a default-page using
-        # the lookup rules of Plone (see Products.CMFPlone/defaultpage.py).
+        # the lookup rules of Plone (see plone.base.defaultpage).
         # Lookup happens over a view, for which in theory a different
         # implementation may be used.
         if request is None:
@@ -539,30 +535,32 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     @security.public
     def addPortalMessage(self, message, type='info', request=None):
-        """\
-        Call this once or more to add messages to be displayed at the
-        top of the web page.
+        # Call this once or more to add messages to be displayed at the
+        # top of the web page.
 
-        The arguments are:
-            message:   a string, with the text message you want to show,
-                       or a HTML fragment (see type='structure' below)
-            type:      optional, defaults to 'info'. The type determines how
-                       the message will be rendered, as it is used to select
-                       the CSS class for the message. Predefined types are:
-                       'info' - for informational messages
-                       'warning' - for warning messages
-                       'error' - for messages about restricted access or
-                                 errors.
+        # Note: no docstring please, to avoid reflected XSS.
+        # This might not be possible, but type="structure" below sounds dangerous,
+        # although I find no support for it in code.
 
-        Portal messages are by default rendered by the global_statusmessage.pt
-        page template.
+        # The arguments are:
+        #     message:   a string, with the text message you want to show,
+        #                or a HTML fragment (see type='structure' below)
+        #     type:      optional, defaults to 'info'. The type determines how
+        #                the message will be rendered, as it is used to select
+        #                the CSS class for the message. Predefined types are:
+        #                'info' - for informational messages
+        #                'warning' - for warning messages
+        #                'error' - for messages about restricted access or
+        #                          errors.
 
-        It is also possible to add messages from page templates, as
-        long as they are processed before the portal_message macro is
-        called by the main template. Example:
+        # Portal messages are by default rendered by the global_statusmessage.pt
+        # page template.
 
-          <tal:block tal:define="temp python:context.plone_utils.addPortalMessage('A random info message')" />  # noqa
-        """
+        # It is also possible to add messages from page templates, as
+        # long as they are processed before the portal_message macro is
+        # called by the main template. Example:
+
+        #   <tal:block tal:define="temp python:context.plone_utils.addPortalMessage('A random info message')" />  # noqa
         if request is None:
             request = self.REQUEST
         IStatusMessage(request).add(message, type=type)
@@ -580,44 +578,45 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     @security.public
     def browserDefault(self, obj):
-        """Sets default so we can return whatever we want instead of index_html.
+        # Sets default so we can return whatever we want instead of index_html.
 
-        This method is complex, and interacts with mechanisms such as
-        IBrowserDefault (implemented in CMFDynamicViewFTI), LinguaPlone and
-        various mechanisms for setting the default page.
+        # Note: no docstring please, to avoid reflected XSS.
 
-        The method returns a tuple (obj, [path]) where path is a path to
-        a template or other object to be acquired and displayed on the object.
-        The path is determined as follows:
+        # This method is complex, and interacts with mechanisms such as
+        # IBrowserDefault (implemented in CMFDynamicViewFTI), LinguaPlone and
+        # various mechanisms for setting the default page.
 
-        0. If we're c oming from WebDAV, make sure we don't return a contained
-            object "default page" ever
-        1. If there is an index_html attribute (either a contained object or
-            an explicit attribute) on the object, return that as the
-            "default page". Note that this may be used by things like
-            File and Image to return the contents of the file, for example,
-            not just content-space objects created by the user.
-        2. If the object implements IBrowserDefault, query this for the
-            default page.
-        3. If the object has a property default_page set and this gives a list
-            of, or single, object id, and that object is is found in the
-            folder or is the name of a skin template, return that id
-        4. If the property default_page is set in site_properties and that
-            property contains a list of ids of which one id is found in the
-            folder, return that id
-        5. If the object implements IBrowserDefault, try to get the selected
-            layout.
-        6. If the type has a 'folderlisting' action and no default page is
-            set, use this action. This permits folders to have the default
-            'view' action be 'string:${object_url}/' and hence default to
-            a default page when clicking the 'view' tab, whilst allowing the
-            fallback action to be specified TTW in portal_types (this action
-            is typically hidden)
-        7. If nothing else is found, fall back on the object's 'view' action.
-        8. If this is not found, raise an AttributeError
-        """
+        # The method returns a tuple (obj, [path]) where path is a path to
+        # a template or other object to be acquired and displayed on the object.
+        # The path is determined as follows:
 
-        # WebDAV in Zope is odd it takes the incoming verb eg: PROPFIND
+        # 0. If we're c oming from WebDAV, make sure we don't return a contained
+        #     object "default page" ever
+        # 1. If there is an index_html attribute (either a contained object or
+        #     an explicit attribute) on the object, return that as the
+        #     "default page". Note that this may be used by things like
+        #     File and Image to return the contents of the file, for example,
+        #     not just content-space objects created by the user.
+        # 2. If the object implements IBrowserDefault, query this for the
+        #     default page.
+        # 3. If the object has a property default_page set and this gives a list
+        #     of, or single, object id, and that object is is found in the
+        #     folder or is the name of a skin template, return that id
+        # 4. If the property default_page is set in site_properties and that
+        #     property contains a list of ids of which one id is found in the
+        #     folder, return that id
+        # 5. If the object implements IBrowserDefault, try to get the selected
+        #     layout.
+        # 6. If the type has a 'folderlisting' action and no default page is
+        #     set, use this action. This permits folders to have the default
+        #     'view' action be 'string:${object_url}/' and hence default to
+        #     a default page when clicking the 'view' tab, whilst allowing the
+        #     fallback action to be specified TTW in portal_types (this action
+        #     is typically hidden)
+        # 7. If nothing else is found, fall back on the object's 'view' action.
+        # 8. If this is not found, raise an AttributeError
+
+        # 0. WebDAV in Zope is odd it takes the incoming verb eg: PROPFIND
         # and then requests that object, for example for: /, with verb PROPFIND
         # means acquire PROPFIND from the folder and call it
         # its all very odd and WebDAV'y
@@ -630,20 +629,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         #
         # 1. Get an attribute or contained object index_html
         #
-
-        # Note: The base PloneFolder, as well as ATCT's ATCTOrderedFolder
-        # defines a method index_html() which returns a ReplaceableWrapper.
-        # This is needed for WebDAV to work properly, and to avoid implicit
-        # acquisition of index_html's, which are generally on-object only.
-        # For the purposes of determining a default page, we don't want to
-        # use this index_html(), nor the ComputedAttribute which defines it.
-
-        if not isinstance(getattr(obj, 'index_html', None),
-                          ReplaceableWrapper):
-            index_obj = getattr(aq_base(obj), 'index_html', None)
-            if index_obj is not None \
-                    and not isinstance(index_obj, ComputedAttribute):
-                return obj, ['index_html']
+        index_obj = getattr(aq_base(obj), 'index_html', None)
+        if index_obj is not None and not isinstance(index_obj, ComputedAttribute):
+            return obj, ['index_html']
 
         #
         # 2. Look for a default_page managed by an IBrowserDefault-implementing
@@ -777,7 +765,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     @security.public
     def getOwnerName(self, obj):
-        """ Returns the userid of the owner of an object."""
+        # Returns the userid of the owner of an object.
+        # Note: no docstring please, to avoid reflected XSS.
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(View, obj):
             raise Unauthorized
@@ -785,14 +774,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     @security.public
     def normalizeString(self, text):
-        """Normalizes a title to an id.
+        # Normalizes a title to an id.
+        # Note: no docstring please, to avoid reflected XSS.
 
-        The relaxed mode was removed in Plone 4.0. You should use either the
-        url or file name normalizer from the plone.i18n package instead.
+        # The relaxed mode was removed in Plone 4.0. You should use either the
+        # url or file name normalizer from the plone.i18n package instead.
 
-        normalizeString() converts a whole string to a normalized form that
-        should be safe to use as in a url, as a css id, etc.
-        """
+        # normalizeString() converts a whole string to a normalized form that
+        # should be safe to use as in a url, as a css id, etc.
         return utils.normalizeString(text, context=self)
 
     @security.public
@@ -945,13 +934,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         notify(ReorderedEvent(parent))
 
     @security.public
-    def isIDAutoGenerated(self, id):
-        # Determine if an id is autogenerated.
-        return utils.isIDAutoGenerated(self, id)
-
-    @security.public
     def getEmptyTitle(self, translated=True):
-        """Returns string to be used for objects with no title or id."""
+        # Returns string to be used for objects with no title or id.
+        # Note: no docstring please, to avoid reflected XSS.
         return utils.getEmptyTitle(self, translated)
 
     @security.public

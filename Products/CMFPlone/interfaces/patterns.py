@@ -1,12 +1,3 @@
-from zope.interface import Interface
+from zope.deprecation import moved
 
-
-class IPatternsSettings(Interface):
-    """ Interface to register global pattern settings adapters
-    """
-
-    def __call__(self):
-        """
-            Return a dict of pattern options
-        """
-        pass
+moved('plone.base.interfaces.patterns', 'Version 7.0')

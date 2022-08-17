@@ -8,29 +8,33 @@
       i18n:domain="plone">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-  <title i18n:translate="">Logout</title>
-
-  <link rel="stylesheet" type="text/css"
-        href="/++resource++plone-admin-ui.css"
-        tal:attributes="href string:${context/absolute_url}/++resource++plone-admin-ui.css" />
-
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title i18n:translate="">Logged out</title>
+  <link rel="stylesheet"
+        type="text/css"
+        href="${string:${context/absolute_url}/++theme++barceloneta/css/barceloneta.min.css}" />
+  <link rel="stylesheet"
+        type="text/css"
+        href="${string:${context/absolute_url}/++resource++plone-admin-ui.css}" />
 </head>
+
 <body>
-  <img src="/++resource++plone-logo.png" width="215" height="56"
-    tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png"/>
 
-  <h1 i18n:translate="">
-      You are now logged out.
-  </h1>
-
-  <p>
-      <a tal:attributes="href context/absolute_url"
-         i18n:translate="">
-          Go back to your site.
+  <div class="container admin mt-5 mb-5 p-4">
+    <div class="row">
+      <p><img src="/++resource++plone-logo.svg"
+              width="215" height="56"
+              tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.svg"
+              alt="Plone logo"
+              i18n:attributes="alt" /></p>
+      <h1 i18n:translate="">You are now logged out.</h1>
+      <a href="${context/absolute_url}"
+          class="btn btn-primary"
+          i18n:translate="">
+        Go back to your site.
       </a>
-  </p>
-
+    </div>
+  </div>
 </body>
 </html>

@@ -9,8 +9,7 @@ from plone.testing.zope import Browser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from Products.CMFPlone.utils import _createObjectByType
-from Products.CMFPlone.utils import safe_nativestring
-from Products.CMFPlone.PloneFolder import ReplaceableWrapper
+from plone.base.utils import safe_text
 from zope.component import getUtility
 
 import difflib
@@ -80,8 +79,8 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         transaction.commit()
 
         self.browser.open(obj.absolute_url() + path)
-        body = safe_nativestring(self.browser.contents)
-        resolved = safe_nativestring(resolved)
+        body = safe_text(self.browser.contents)
+        resolved = safe_text(resolved)
 
         # request/ACTUAL_URL is fubar in tests, remove lines that depend on it
         resolved = RE_REMOVE_DOCCONT.sub('', resolved)
@@ -166,7 +165,7 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         data = self.portal.file.file.data
         self.assertEqual(self.browser.contents.encode('utf8'), data)
 
-    # Ensure index_html acquisition and replaceablewrapper
+    # Ensure index_html acquisition
 
     def testIndexHtmlNotAcquired(self):
         self.portal.folder.invokeFactory('Document', 'index_html')
@@ -176,12 +175,6 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
             self.putils.browserDefault(self.portal.folder.subfolder),
             (self.portal.folder.subfolder, [layout])
         )
-
-    def testIndexHtmlReplaceableWrapper(self):
-        self.portal.document.index_html = ReplaceableWrapper(None)
-        layout = self.portal.document.getLayout()
-        self.assertEqual(self.putils.browserDefault(self.portal.document),
-                         (self.portal.document, [layout]))
 
     # Test behaviour of __call__
 
@@ -278,10 +271,10 @@ class TestPortalBrowserDefault(unittest.TestCase):
         self.assertFalseDiff(resolved, target)
 
     def testDefaultViews(self):
-        self.assertEqual(self.portal.getLayout(), 'listing_view')
+        self.assertEqual(self.portal.getLayout(), 'document_view')
         self.assertEqual(self.portal.getDefaultPage(), 'front-page')
         self.assertEqual(self.portal.defaultView(), 'front-page')
-        self.assertEqual(self.portal.getDefaultLayout(), 'listing_view')
+        self.assertEqual(self.portal.getDefaultLayout(), 'document_view')
         layoutKeys = [v[0] for v in self.portal.getAvailableLayouts()]
         self.assertTrue('listing_view' in layoutKeys)
         self.assertEqual(self.portal.__browser_default__(None),
@@ -297,7 +290,7 @@ class TestPortalBrowserDefault(unittest.TestCase):
         self.assertEqual(self.portal.getLayout(), 'summary_view')
         self.assertEqual(self.portal.getDefaultPage(), None)
         self.assertEqual(self.portal.defaultView(), 'summary_view')
-        self.assertEqual(self.portal.getDefaultLayout(), 'listing_view')
+        self.assertEqual(self.portal.getDefaultLayout(), 'document_view')
         layoutKeys = [v[0] for v in self.portal.getAvailableLayouts()]
         self.assertTrue('summary_view' in layoutKeys)
 
@@ -327,8 +320,8 @@ class TestPortalBrowserDefault(unittest.TestCase):
                          (self.portal, ['ad', ]))
 
         # still have layout settings
-        self.assertEqual(self.portal.getLayout(), 'listing_view')
-        self.assertEqual(self.portal.getDefaultLayout(), 'listing_view')
+        self.assertEqual(self.portal.getLayout(), 'document_view')
+        self.assertEqual(self.portal.getDefaultLayout(), 'document_view')
         layoutKeys = [v[0] for v in self.portal.getAvailableLayouts()]
         self.assertTrue('listing_view' in layoutKeys)
 
@@ -373,13 +366,13 @@ class TestPortalBrowserDefault(unittest.TestCase):
 
     def testMissingTemplatesIgnored(self):
         self.portal.getTypeInfo() \
-            .manage_changeProperties(view_methods=['listing_view', 'foo'])
+            .manage_changeProperties(view_methods=['document_view', 'foo'])
         views = [v[0] for v in self.portal.getAvailableLayouts()]
-        self.assertTrue(views == ['listing_view'])
+        self.assertTrue(views == ['document_view'])
 
     def testMissingPageIgnored(self):
         self.portal.setDefaultPage('inexistent')
         self.assertEqual(self.portal.getDefaultPage(), None)
-        self.assertEqual(self.portal.defaultView(), 'listing_view')
+        self.assertEqual(self.portal.defaultView(), 'document_view')
         self.assertEqual(self.portal.__browser_default__(None),
-                         (self.portal, ['listing_view', ]))
+                         (self.portal, ['document_view', ]))

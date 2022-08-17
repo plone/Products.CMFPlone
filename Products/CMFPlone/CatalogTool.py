@@ -1,33 +1,33 @@
 from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
 from AccessControl.PermissionRole import rolesForPermissionOn
 from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogEntries  # noqa
 from AccessControl.Permissions import search_zcatalog as SearchZCatalog
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 from BTrees.Length import Length
 from DateTime import DateTime
 from OFS.interfaces import IOrderedContainer
+from plone.app.discussion.interfaces import DISCUSSION_ANNOTATION_KEY
+from plone.base.interfaces import INonStructuralFolder
+from plone.base.interfaces import IPloneCatalogTool
+from plone.base.utils import base_hasattr
+from plone.base.utils import human_readable_size
+from plone.base.utils import safe_callable
+from plone.base.utils import safe_text
 from plone.i18n.normalizer.base import mapUnicode
 from plone.indexer import indexer
 from plone.indexer.interfaces import IIndexableObject
-from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
 from Products.CMFCore.CatalogTool import _mergedLocalRoles
+from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
 from Products.CMFCore.indexing import processQueue
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import _getAuthenticatedUser
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import DISCUSSION_ANNOTATION_KEY
-from Products.CMFPlone.interfaces import INonStructuralFolder
-from Products.CMFPlone.interfaces import IPloneCatalogTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.utils import base_hasattr
-from Products.CMFPlone.utils import human_readable_size
-from Products.CMFPlone.utils import safe_callable
-from Products.CMFPlone.utils import safe_unicode
 from Products.ZCatalog.ZCatalog import ZCatalog
 from time import process_time
 from zExceptions import Unauthorized
@@ -51,7 +51,7 @@ logger = logging.getLogger('Plone')
 _marker = object()
 
 MAX_SORTABLE_TITLE = 40
-BLACKLISTED_INTERFACES = frozenset((
+DENIED_INTERFACES = frozenset((
     'AccessControl.interfaces.IOwned',
     'AccessControl.interfaces.IPermissionMappingSupport',
     'AccessControl.interfaces.IRoleManager',
@@ -74,7 +74,6 @@ BLACKLISTED_INTERFACES = frozenset((
     'OFS.interfaces.IZopeObject',
     'persistent.interfaces.IPersistent',
     'plone.app.iterate.interfaces.IIterateAware',
-    'plone.app.kss.interfaces.IPortalObject',
     'plone.contentrules.engine.interfaces.IRuleAssignable',
     'plone.folder.interfaces.IFolder',
     'plone.folder.interfaces.IOrderableFolder',
@@ -93,8 +92,8 @@ BLACKLISTED_INTERFACES = frozenset((
     'Products.CMFCore.interfaces._content.IWorkflowAware',
     'Products.CMFDynamicViewFTI.interfaces.IBrowserDefault',
     'Products.CMFDynamicViewFTI.interfaces.ISelectableBrowserDefault',
-    'Products.CMFPlone.interfaces.constrains.IConstrainTypes',
-    'Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes',
+    'plone.base.interfaces.constrains.IConstrainTypes',
+    'plone.base.interfaces.constrains.ISelectableConstrainTypes',
     'Products.GenericSetup.interfaces.IDAVAware',
     'webdav.EtagSupport.EtagBaseInterface',
     'webdav.interfaces.IDAVCollection',
@@ -113,13 +112,8 @@ BLACKLISTED_INTERFACES = frozenset((
     'zope.interface.Interface',
 ))
 
-
-@deprecate('Use catalog.getAllBrains() instead. ' +
-           'catalog_get_all will be removed in Plone 6')
-def catalog_get_all(catalog, unique_idx='UID'):
-    """Get all brains from the catalog.
-    """
-    return catalog.getAllBrains()
+# bbb, remove in Plone 7
+BLACKLISTED_INTERFACES = DENIED_INTERFACES
 
 
 @indexer(Interface)
@@ -158,7 +152,7 @@ def allowedRolesAndUsers(obj):
 def object_provides(obj):
     return tuple(
         [i.__identifier__ for i in providedBy(obj).flattened()
-         if i.__identifier__ not in BLACKLISTED_INTERFACES]
+         if i.__identifier__ not in DENIED_INTERFACES]
     )
 
 
@@ -179,7 +173,7 @@ def sortable_title(obj):
 
         if isinstance(title, str):
             # Ignore case, normalize accents, strip spaces
-            sortabletitle = mapUnicode(safe_unicode(title)).lower().strip()
+            sortabletitle = mapUnicode(safe_text(title)).lower().strip()
             # Replace numbers with zero filled numbers
             sortabletitle = num_sort_regex.sub(zero_fill, sortabletitle)
             # Truncate to prevent bloat, take bits from start and end
@@ -254,11 +248,6 @@ def getIcon(obj):
 @indexer(Interface)
 def mime_type(obj):
     return aq_base(obj).getPrimaryField().getContentType(obj)
-
-
-@indexer(Interface)
-def location(obj):
-    return obj.getField('location').get(obj)
 
 
 @implementer(IPloneCatalogTool)
@@ -466,8 +455,11 @@ class CatalogTool(PloneBaseTool, BaseTool):
         idxs = list(self.indexes())
 
         def indexObject(obj, path):
-            if (base_hasattr(obj, 'reindexObject') and
-                    safe_callable(obj.reindexObject)):
+            if (
+                obj != self
+                and base_hasattr(obj, 'reindexObject')
+                and safe_callable(obj.reindexObject)
+            ):
                 try:
                     self.reindexObject(obj, idxs=idxs)
                     # index conversions from plone.app.discussion
@@ -486,6 +478,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
                     pass
         self.manage_catalogClear()
         portal = aq_parent(aq_inner(self))
+        indexObject(portal, '')
         portal.ZopeFindAndApply(
             portal,
             search_sub=True,

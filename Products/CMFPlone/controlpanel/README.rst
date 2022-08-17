@@ -14,7 +14,7 @@ As an example, let's look for search related settings (defined by ISearchSchema)
 We use the schema 'ISearchSchema' to lookup a RecordProxy object with
 all fields::
 
-  >>> from Products.CMFPlone.interfaces import ISearchSchema
+  >>> from plone.base.interfaces import ISearchSchema
   >>> search_settings = registry.forInterface(ISearchSchema, prefix='plone')
 
 Now we can get and set all fields of the schema above. For example the value for
@@ -38,7 +38,7 @@ For more information about how to access and manipulate Plone registry entries, 
 Editing Control Panel
 ---------------------
 
-  >>> from Products.CMFPlone.interfaces import IEditingSchema
+  >>> from plone.base.interfaces import IEditingSchema
   >>> editing_settings = registry.forInterface(IEditingSchema, prefix='plone')
 
   >>> editing_settings.default_editor == u'TinyMCE'
@@ -103,7 +103,7 @@ Language Control Panel
 Maintenance Control Panel
 -------------------------
 
-  >>> from Products.CMFPlone.interfaces import IMaintenanceSchema
+  >>> from plone.base.interfaces import IMaintenanceSchema
   >>> maintenance_settings = registry.forInterface(IMaintenanceSchema, prefix='plone')
 
   >>> maintenance_settings.days
@@ -113,7 +113,7 @@ Maintenance Control Panel
 Navigation Control Panel
 ------------------------
 
-  >>> from Products.CMFPlone.interfaces import INavigationSchema
+  >>> from plone.base.interfaces import INavigationSchema
   >>> navigation_settings = registry.forInterface(INavigationSchema, prefix='plone')
 
   >>> navigation_settings.generate_tabs
@@ -123,7 +123,7 @@ Navigation Control Panel
   True
 
   >>> navigation_settings.displayed_types
-  ('Image', 'File', 'Link', 'News Item', 'Folder', 'Document', 'Event')
+  ('Link', 'News Item', 'Folder', 'Document', 'Event', 'Collection')
 
   >>> navigation_settings.filter_on_workflow
   False
@@ -132,13 +132,13 @@ Navigation Control Panel
   ()
 
   >>> navigation_settings.show_excluded_items
-  True
+  False
 
 
 Search Control Panel
 --------------------
 
-  >>> from Products.CMFPlone.interfaces import ISearchSchema
+  >>> from plone.base.interfaces import ISearchSchema
   >>> search_settings = registry.forInterface(ISearchSchema, prefix='plone')
 
   >>> search_settings.enable_livesearch
@@ -151,7 +151,7 @@ Search Control Panel
 Site Control Panel
 ------------------
 
-  >>> from Products.CMFPlone.interfaces import ISiteSchema
+  >>> from plone.base.interfaces import ISiteSchema
   >>> site_settings = registry.forInterface(ISiteSchema, prefix='plone')
 
   >>> site_settings.site_title == u'Plone site'
@@ -170,7 +170,7 @@ Site Control Panel
 Overview Control Panel
 ----------------------
 
-  >>> from Products.CMFPlone.interfaces.controlpanel import IDateAndTimeSchema
+  >>> from plone.base.interfaces.controlpanel import IDateAndTimeSchema
   >>> tz_settings = registry.forInterface(IDateAndTimeSchema, prefix='plone')
 
   >>> tz_settings.portal_timezone = 'UTC'
@@ -179,7 +179,7 @@ Overview Control Panel
 Markup Control Panel
 --------------------
 
-  >>> from Products.CMFPlone.interfaces import IMarkupSchema
+  >>> from plone.base.interfaces import IMarkupSchema
   >>> markup_settings = registry.forInterface(IMarkupSchema, prefix='plone')
 
   >>> markup_settings.default_type == u'text/html'
@@ -193,7 +193,7 @@ Markup Control Panel
 User and Groups Control Panel
 ------------------------------
 
-  >>> from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
+  >>> from plone.base.interfaces import IUserGroupsSettingsSchema
   >>> usergroups_settings = registry.forInterface(IUserGroupsSettingsSchema, prefix='plone')
 
   >>> usergroups_settings.many_groups

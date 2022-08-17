@@ -3,8 +3,8 @@ from plone.app.robotframework.utils import disableCSRFProtection
 
 from zope.component import queryUtility
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import IMailSchema
-from Products.CMFPlone.interfaces import ISecuritySchema
+from plone.base.interfaces import IMailSchema
+from plone.base.interfaces import ISecuritySchema
 
 
 class CMFPloneRemoteKeywords(RemoteLibrary):

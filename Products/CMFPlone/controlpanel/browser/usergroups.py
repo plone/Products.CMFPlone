@@ -4,7 +4,7 @@ from itertools import chain
 from Acquisition import aq_inner
 from Products.CMFPlone.utils import normalizeString
 from zope.component import getAdapter
-from Products.CMFPlone.interfaces import ISecuritySchema
+from plone.base.interfaces import ISecuritySchema
 from zope.component import getMultiAdapter
 from AccessControl import getSecurityManager
 from Products.Five.browser import BrowserView
@@ -15,7 +15,7 @@ from plone.autoform.form import AutoExtensibleForm
 from Products.CMFPlone import PloneMessageFactory as _
 from z3c.form import form
 
-from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
+from plone.base.interfaces import IUserGroupsSettingsSchema
 from z3c.form import button
 
 
@@ -23,7 +23,6 @@ class UserGroupsSettingsControlPanel(AutoExtensibleForm, form.EditForm):
     schema = IUserGroupsSettingsSchema
     id = "usergroupsettings-control-panel"
     label = _("Users and Groups")
-    description = _("User and groups settings for this site.")
     form_name = _("User/Groups settings")
     control_panel_view = "usergroups-controlpanel"
 
@@ -34,7 +33,7 @@ class UserGroupsSettingsControlPanel(AutoExtensibleForm, form.EditForm):
     def updateActions(self):
         super().updateActions()
         if self.actions and 'save' in self.actions:
-            self.actions['save'].addClass('context')
+            self.actions['save'].addClass('btn-primary')
 
 
 class ControlPanelFormWrapper(layout.FormWrapper):

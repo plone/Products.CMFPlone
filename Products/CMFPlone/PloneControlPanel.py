@@ -12,7 +12,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import IControlPanel
+from plone.base.interfaces import IControlPanel
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from zope.component.hooks import getSite
 from zope.i18n import translate

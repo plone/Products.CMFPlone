@@ -40,4 +40,10 @@
   <permission id="plone.app.controlpanel.UsersAndGroups"
               title="Plone Site Setup: Users and Groups"/>
 
+  <permission id="Products.CMFPlone.InspectRelations"
+              title="Inspect Relations">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
 </configure>

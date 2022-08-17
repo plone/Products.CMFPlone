@@ -49,14 +49,15 @@ the search control panel
 
 I enable livesearch
   Select Checkbox  form.widgets.enable_livesearch:list
-  Click Button  Save
+  Wait For Then Click Element  css=#form-buttons-save
   Wait until page contains  Changes saved
 
 I exclude the '${portal_type}' type from search
   # Make sure we see the checkbox, in expanded in jenkins it gets a bit under the toolbar
-  Click Link  css=a.plone-toolbar-logo
-  Unselect Checkbox  xpath=//input[@name='form.widgets.types_not_searched:list' and @value='${portal_type}']
-  Click Button  Save
+  ${element}  Set Variable  xpath=//input[@name='form.widgets.types_not_searched:list' and @value='${portal_type}']
+  Wait For Element  ${element}
+  Unselect Checkbox  ${element}
+  Wait For Then Click Element  css=#form-buttons-save
   Wait until page contains  Changes saved
 
 
@@ -75,6 +76,6 @@ searching for '${search_term}' will not return any results
   Input Text  xpath=//form[@id='searchform']//input[@name='SearchableText']  ${search_term}
   Submit Form  name=searchform
   Wait until page contains  items matching your search terms
-  XPath Should Match X Times  //strong[@id='search-results-number' and contains(.,'0')]  1
+  Page Should Contain Element  //span[@id='search-results-number' and contains(.,'0')]  1
 
 

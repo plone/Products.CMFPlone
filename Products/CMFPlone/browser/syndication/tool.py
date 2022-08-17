@@ -11,9 +11,9 @@ from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.permissions import ManagePortal
 
-from Products.CMFPlone.interfaces.syndication import IFeed
-from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
-from Products.CMFPlone.interfaces.syndication import IFeedSettings
+from plone.base.interfaces.syndication import IFeed
+from plone.base.interfaces.syndication import ISiteSyndicationSettings
+from plone.base.interfaces.syndication import IFeedSettings
 
 from plone.registry.interfaces import IRegistry
 

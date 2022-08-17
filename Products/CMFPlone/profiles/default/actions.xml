@@ -10,7 +10,7 @@
    <property name="title" i18n:translate="">RSS feed</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">object/@@syndication-util/rss_url</property>
-   <property name="icon_expr">string:$portal_url/rss.png</property>
+   <property name="icon_expr">string:plone-rss</property>
    <property
       name="available_expr">object/@@syndication-util/context_enabled</property>
    <property name="permissions">
@@ -22,7 +22,7 @@
    <property name="title" i18n:translate="">Print this</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:javascript:this.print();</property>
-   <property name="icon_expr">string:$portal_url/print_icon.png</property>
+   <property name="icon_expr">string:plone-print</property>
    <property name="available_expr"></property>
    <property name="permissions">
     <element value="View"/>
@@ -48,7 +48,7 @@
    <property name="title" i18n:translate="">Site Map</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${globals_view/navigationRootUrl}/sitemap</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:plone-sitemap</property>
    <property name="available_expr"></property>
    <property name="permissions">
     <element value="View"/>
@@ -60,7 +60,7 @@
    <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${globals_view/navigationRootUrl}/accessibility-info</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:plone-accessibility</property>
    <property name="available_expr"></property>
    <property name="permissions">
     <element value="View"/>
@@ -71,7 +71,7 @@
    <property name="title" i18n:translate="">Contact</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${globals_view/navigationRootUrl}/contact-info</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:plone-contact-info</property>
    <property name="available_expr"></property>
    <property name="permissions">
     <element value="View"/>
@@ -87,7 +87,7 @@
    <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${globals_view/getCurrentFolderUrl}/folder_contents</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:toolbar-action/folderContents</property>
    <property name="permissions">
     <element value="List folder contents"/>
    </property>
@@ -98,10 +98,10 @@
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${object_url}/@@historyview</property>
    <property name="link_target"></property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:toolbar-action/history</property>
    <property name="available_expr"></property>
    <property name="permissions">
-    <element value="View"/>
+    <element value="Modify portal content"/>
    </property>
    <property name="visible">True</property>
   </object>
@@ -109,7 +109,7 @@
    <property name="title" i18n:translate="">Sharing</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${object_url}/@@sharing</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:toolbar-action/sharing</property>
    <property name="available_expr"></property>
    <property name="permissions">
     <element value="Sharing page: Delegate roles"/>
@@ -121,7 +121,7 @@
    <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${plone_context_state/canonical_object_url}/@@manage-content-rules</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:plone-rules</property>
    <property
       name="available_expr">python:plone_context_state.canonical_object().restrictedTraverse('@@plone_contentrules_info').show_rules_tab()</property>
    <property name="permissions">
@@ -133,7 +133,7 @@
    <property name="title" i18n:translate="">Syndication</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${object_url}/synPropertiesForm</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:plone-rss</property>
    <property
       name="available_expr">object/@@syndication-util/context_allowed</property>
    <property name="permissions">
@@ -149,6 +149,7 @@
    <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:$object_url/object_cut</property>
+   <property name="icon_expr">string:plone-cut</property>
    <property
       name="available_expr">python:checkPermission("Delete objects", globals_view.getParentObject()) and checkPermission("Copy or Move", object) and not globals_view.isPortalOrPortalDefaultPage()</property>
    <property name="permissions">
@@ -161,6 +162,7 @@
    <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:$object_url/object_copy</property>
+   <property name="icon_expr">string:plone-copy</property>
    <property
       name="available_expr">python:checkPermission("Copy or Move", object) and not globals_view.isPortalOrPortalDefaultPage()</property>
    <property name="permissions">
@@ -172,6 +174,7 @@
    <property name="title" i18n:translate="">Paste</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${globals_view/getCurrentFolderUrl}/object_paste</property>
+   <property name="icon_expr">string:plone-paste</property>
    <property name="available_expr">folder/cb_dataValid|nothing</property>
    <property name="permissions">
     <element value="View"/>
@@ -183,6 +186,7 @@
    <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:$object_url/delete_confirmation</property>
+   <property name="icon_expr">string:plone-delete</property>
    <property
       name="available_expr">python:checkPermission("Delete objects", globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()</property>
    <property name="permissions">
@@ -196,7 +200,7 @@
    <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:$object_url/object_rename</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:plone-rename</property>
    <property
       name="available_expr">python:checkPermission("Delete objects", globals_view.getParentObject()) and checkPermission("Copy or Move", object) and checkPermission("Add portal content", object) and not globals_view.isPortalOrPortalDefaultPage()</property>
    <property name="permissions">
@@ -210,7 +214,7 @@
    <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string: ${object_url}/@@manage-aliases</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:plone-redirection</property>
    <property name="available_expr">python:not globals_view.isPortalOrPortalDefaultPage()</property>
    <property name="permissions">
     <element value="Manage Context Aliases"/>
@@ -225,7 +229,7 @@
    <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${globals_view/navigationRootUrl}</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:plone-home</property>
    <property name="available_expr"></property>
    <property name="permissions">
     <element value="View"/>
@@ -240,7 +244,7 @@
    <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${globals_view/navigationRootUrl}/@@personal-preferences</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:plone-user</property>
    <property name="available_expr">python:member is not None</property>
    <property name="permissions">
     <element value="View"/>
@@ -252,7 +256,7 @@
    <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${portal_url}/dashboard</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:plone-dashboard</property>
    <property name="available_expr">python:member is not None</property>
    <property name="permissions">
     <element value="Portlets: Manage own portlets"/>
@@ -263,31 +267,31 @@
    <property name="title" i18n:translate="">Log in</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${globals_view/navigationRootUrl}/login</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:plone-login</property>
    <property name="available_expr">python:member is None</property>
    <property name="permissions">
     <element value="View"/>
    </property>
    <property name="visible">True</property>
-   <property name="modal" type="text">{"prependContent": ".portalMessage", "title": "Log in", "width": "26em", "actionOptions": {"redirectOnResponse": true}}</property>
+   <property name="modal" type="text">{}</property>
   </object>
   <object name="join" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Register</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${globals_view/navigationRootUrl}/@@register</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:plone-register</property>
    <property name="available_expr">python:member is None</property>
    <property name="permissions">
     <element value="Add portal member"/>
    </property>
    <property name="visible">True</property>
-   <property name="modal" type="text">{"prependContent": ".portalMessage"}</property>
+   <property name="modal" type="text">{}</property>
   </object>
   <object name="undo" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Undo</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${globals_view/navigationRootUrl}/undo_form</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:plone-undo</property>
    <property name="available_expr">python:member is not None</property>
    <property name="permissions">
     <element value="List undoable changes"/>
@@ -299,7 +303,7 @@
    <property name="description" i18n:translate=""></property>
    <property
       name="url_expr">string:${portal_url}/@@overview-controlpanel</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:plone-controlpanel</property>
    <property name="available_expr"></property>
    <property name="permissions">
     <element value="Plone Site Setup: Overview"/>
@@ -310,7 +314,7 @@
    <property name="title" i18n:translate="">Log out</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${globals_view/navigationRootUrl}/logout</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:plone-logout</property>
    <property name="available_expr">python:member is not None</property>
    <property name="permissions">
     <element value="View"/>

@@ -2,7 +2,7 @@ from zope.component import adapts
 from zope.interface import implementer
 from zope.component import getUtility
 from plone.i18n.interfaces import ILanguageSchema
-from Products.CMFPlone.interfaces import IPloneSiteRoot
+from plone.base.interfaces import IPloneSiteRoot
 
 from plone.registry.interfaces import IRegistry
 

@@ -1,7 +1,9 @@
 from App.ImageFile import ImageFile
+
 import os
 import sys
 import pkg_resources
+import zope.deferredimport
 
 __version__ = pkg_resources.require("Products.CMFPlone")[0].version
 
@@ -15,8 +17,16 @@ misc_ = {'plone_icon': ImageFile(
     os.path.join('skins', 'plone_images', 'logoIcon.png'),
     cmfplone_globals)}
 
-DISCUSSION_ANNOTATION_KEY = 'plone.app.discussion:conversation'
-
+zope.deferredimport.initialize()
+zope.deferredimport.deprecated(
+    "Import from plone.base instead (to be removed in Plone 7)",
+    PloneMessageFactory='plone.base:PloneMessageFactory',
+    PloneLocalesMessageFactory='plone.base:PloneMessageFactory',
+)
+zope.deferredimport.deprecated(
+    "Import from plone.app.discussion.interfaces instead (to be removed in Plone 7)",
+    DISCUSSION_ANNOTATION_KEY='plone.app.discussion.interfaces:DISCUSSION_ANNOTATION_KEY',
+)
 
 def initialize(context):
 
@@ -61,6 +71,7 @@ def initialize(context):
     allow_class(ObjectMoved)
     allow_class(WorkflowException)
 
+    # bbb - remove in Plone 7
     from Products.CMFPlone.PloneBatch import Batch
     allow_class(Batch)
 
@@ -112,20 +123,15 @@ def initialize(context):
     # Make cgi.escape available TTW
     ModuleSecurityInfo('cgi').declarePublic('escape')
 
+    # Make warnings available TTW
+    ModuleSecurityInfo('warnings').declarePublic('warn')
+
     # Apply monkey patches
     from Products.CMFPlone import patches  # noqa
 
     # Register unicode splitter w/ ZCTextIndex
     # pipeline registry
     from Products.CMFPlone import UnicodeSplitter  # noqa
-
-    # Plone content
-
-    # Usage of PloneFolder is discouraged.
-    from Products.CMFPlone import PloneFolder
-
-    contentClasses = (PloneFolder.PloneFolder, )
-    contentConstructors = (PloneFolder.addPloneFolder, )
 
     # CMFCore tools
     from Products.CMFCore import CachingPolicyManager
@@ -170,12 +176,6 @@ def initialize(context):
         icon='tool.gif',
     ).initialize(context)
 
-    ContentInit(
-        'Plone Content',
-        content_types=contentClasses,
-        permission=ADD_CONTENT_PERMISSION,
-        extra_constructors=contentConstructors,
-    ).initialize(context)
 
     from AccessControl.Permissions import view_management_screens
     from Products.CMFPlone.Portal import PloneSite
@@ -196,16 +196,7 @@ def initialize(context):
         visibility=None
     )
 
-
-# Import PloneMessageFactory to create messages in the plone domain
-from zope.i18nmessageid import MessageFactory
-PloneMessageFactory = MessageFactory('plone')
-
-# Import PloneLocalesMessageFactory to create messages in the
-# plonelocales domain
-from zope.i18nmessageid import MessageFactory
-PloneLocalesMessageFactory = MessageFactory('plonelocales')
-
 # Apply early monkey patches.  For these patches, it is too late if we do this
 # in the initialize method.
 from Products.CMFPlone import earlypatches  # noqa
+

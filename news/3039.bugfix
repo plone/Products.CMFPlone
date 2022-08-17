@@ -1,2 +1,0 @@
-A default WSGI configuration requires Paste which is only installed with the Zope[wsgi] extra..
-[tschorr]

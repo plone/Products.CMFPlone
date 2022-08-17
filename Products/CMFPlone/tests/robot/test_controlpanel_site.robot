@@ -63,32 +63,33 @@ the site control panel
 
 I enable the sitemap
   Given patterns are loaded
+  Wait For Element  css=#formfield-form-widgets-enable_sitemap
   Select Checkbox  form.widgets.enable_sitemap:list
-  Click Button  Save
+  Wait For Then Click Element  css=#form-buttons-save
   Wait until page contains  Changes saved
 
 I set the site title to '${site_title}'
   Given patterns are loaded
   Input Text  name=form.widgets.site_title  ${site_title}
-  Click Button  Save
+  Wait For Then Click Element  css=#form-buttons-save
   Wait until page contains  Changes saved
 
 I set a custom logo
   Given patterns are loaded
   Choose File  name=form.widgets.site_logo  ${PATH_TO_TEST_FILES}/pixel.png
-  Click Button  Save
+  Wait For Then Click Element  css=#form-buttons-save
   Wait until page contains  Changes saved
 
 I enable dublin core metadata
   Given patterns are loaded
   Select Checkbox  form.widgets.exposeDCMetaTags:list
-  Click Button  Save
+  Wait For Then Click Element  css=#form-buttons-save
   Wait until page contains  Changes saved
 
 I add a Javascript snippet to the webstats javascript
   Given patterns are loaded
   Input Text  name=form.widgets.webstats_js  <script id="webstats_snippet"></script>
-  Click Button  Save
+  Wait For Then Click Element  css=#form-buttons-save
   Wait until page contains  Changes saved
 
 

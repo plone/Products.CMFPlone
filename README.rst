@@ -3,7 +3,7 @@ About Plone
 
 Plone is a mature, secure and user-friendly Content Management System (CMS).
 
-Plone - and the Open Source community behind it - aggregates more than 15 years experience in content management.
+Plone - and the Open Source community behind it - aggregates more than 20 years of experience in content management.
 It offers all major features expected by a modern CMS out-of-the-box.
 
 Lots of customizations can be made trough-the-web, such as creating content types, themes, workflows and much more.
@@ -39,10 +39,10 @@ What is Plone?
 Plone is a ready-to-run content management system, offering a complete set of features needed by a wide variety of organizations.
 
 Security is built into Plone's architecture from the ground up.
-Plone offers fine grained permission control over content and actions.
+Plone offers fine-grained permission control over content and actions.
 
 Plone is easy to set up, extremely flexible,
-and provides you with a system for managing web content that is ideal for project groups, communities, web sites, extranets and intranets.
+and provides you with a system for managing web content that is ideal for project groups, communities, websites, extranets and intranets.
 
 - *Plone is easy to install.*
   Several installation options are available for either your local machine or on servers in the cloud.
@@ -82,15 +82,14 @@ It builds upon Zope, an Open Source web application server and development syste
 Python is the easy-to-learn, widely-used and supported Open Source programming language.
 Python can be used to add new features to Plone, and used to understand or make changes to the way that Plone works.
 
-Plone stores its contents in Zope's built-in transactional hierachical object database, the ZODB.
+Plone stores its contents in Zope's built-in transactional hierarchical object database, the ZODB.
 The ZODB can be connected to simple file-storages, scalable ZEO-Servers or Postgres, MySQL and Oracle.
-There are addon and techniques, however, to share information with other sources, such as relational databases, LDAP, filesystem
+There are addons and techniques, however, to share information with other sources, such as relational databases, LDAP, filesystem
 files, etc.
 
 
 Official Resources
 ------------------
-* `plone.com <https://plone.com/>`_ - Official website for decision makers and evaluators.
 * `plone.org <https://plone.org/>`_ - Official website for developers and community.
 * `Plone support <https://plone.org/support>`_ - Where to find help.
 * `community.plone.org <https://community.plone.org/>`_ - Official community forum, the best place to get help.
@@ -98,5 +97,5 @@ Official Resources
 * `training.plone.org <https://training.plone.org/>`_ - Training classes for developers/integrators/users/designers.
 * `plone.api <https://docs.plone.org/develop/plone.api/docs/index.html>`_ - Documentation for plone.api.
 * `plone.restapi <https://plonerestapi.readthedocs.io/en/latest/>`_ - Documentation for plone.restapi.
-* `official Gitter chat <https://gitter.im/plone/public>`_ - monitored.
+* `official Discord chat <https://discord.gg/w8e5WCAKGs>`_ - Join link.
 

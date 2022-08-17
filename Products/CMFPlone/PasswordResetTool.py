@@ -13,8 +13,8 @@ from plone.uuid.interfaces import IUUIDGenerator
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import UniqueObject
-from Products.CMFPlone.interfaces import IPWResetTool
-from Products.CMFPlone.interfaces import ISecuritySchema
+from plone.base.interfaces import IPWResetTool
+from plone.base.interfaces import ISecuritySchema
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name
 from zope.component import getUtility
 from zope.interface import implementer
@@ -176,7 +176,7 @@ class PasswordResetTool (UniqueObject, SimpleItem):
         Parameter controls how many days past expired it must be to disappear.
         """
         now = datetime.datetime.utcnow()
-        for key, record in self._requests.items():
+        for key, record in list(self._requests.items()):
             stored_user, expiry = record
             if self.expired(expiry, now - datetime.timedelta(days=days)):
                 del self._requests[key]

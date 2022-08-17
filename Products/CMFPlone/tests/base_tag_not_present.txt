@@ -9,7 +9,7 @@ that in fact is not being injected in some other way.
   >>> from plone.app.testing import SITE_OWNER_PASSWORD
   >>> app = layer['app']
   >>> browser = Browser(app)
-  
+
   >>> browser.open('http://nohost/plone/login_form')
   >>> browser.getControl('Login Name').value = SITE_OWNER_NAME
   >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
@@ -20,13 +20,13 @@ Create object
   >>> browser.getLink('Page').click()
   >>> browser.getControl('Title').value = 'Front Page'
   >>> browser.getControl('Save').click()
-  
+
 Check object view
 
   >>> browser.open('http://nohost/plone/front-page')
   >>> '<base' in browser.contents
   False
-  
+
 Check edit view
 
   >>> browser.open('http://nohost/plone/front-page/edit')

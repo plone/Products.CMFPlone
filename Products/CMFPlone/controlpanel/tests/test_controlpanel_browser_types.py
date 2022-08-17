@@ -114,7 +114,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         portal_types = self.portal.portal_types
         doc_type = portal_types.Document
         self.assertTrue(
-            'plone.app.versioningbehavior.behaviors.IVersionable'
+            'plone.versioning'
             not in doc_type.behaviors)  # noqa
 
     def test_enable_versioning_behavior_on_document(self):
@@ -127,14 +127,14 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         portal_types = self.portal.portal_types
         doc_type = portal_types.Document
         self.assertTrue(
-            'plone.app.versioningbehavior.behaviors.IVersionable'
+            'plone.versioning'
             not in doc_type.behaviors)  # noqa
 
         self.browser.getControl(name='versionpolicy').value = ['manual']
         self.browser.getControl(name="form.button.Save").click()
 
         self.assertTrue(
-            'plone.app.versioningbehavior.behaviors.IVersionable'
+            'plone.versioning'
             in doc_type.behaviors)
 
     def test_enable_versioning_behavior_on_file(self):
@@ -149,20 +149,20 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
 
         # File has no Versioning and no Locking on default, but needs it
         self.assertTrue(
-            'plone.app.versioningbehavior.behaviors.IVersionable'
+            'plone.versioning'
             not in file_type.behaviors)  # noqa
         self.assertTrue(
-            'plone.app.lockingbehavior.behaviors.ILocking'
+            'plone.locking'
             not in file_type.behaviors)  # noqa
 
         self.browser.getControl(name='versionpolicy').value = ['manual']
         self.browser.getControl('Save').click()
 
         self.assertTrue(
-            'plone.app.versioningbehavior.behaviors.IVersionable'
+            'plone.versioning'
             in file_type.behaviors)
         self.assertTrue(
-            'plone.app.lockingbehavior.behaviors.ILocking'
+            'plone.locking'
             in file_type.behaviors)
 
     def test_dont_update_settings_when_switch_types(self):

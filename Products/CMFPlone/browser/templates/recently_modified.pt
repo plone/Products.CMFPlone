@@ -1,0 +1,88 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/@@main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border', 1)" />
+
+<body>
+
+<metal:main fill-slot="main"
+     tal:define="path context/@@plone_portal_state/navigation_root_path;
+                 results python:container.portal_catalog(sort_on='modified',sort_order='reverse',path=path);
+                 Batch python:modules['Products.CMFPlone'].Batch;
+                 b_start python:request.get('b_start',0);
+                 normalizeString nocall:context/@@plone/normalizeString;
+                 toLocalizedTime nocall:context/@@plone/toLocalizedTime;">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_recently_modified">
+        Modified items
+    </h1>
+
+    <div i18n:translate="description_recently_modified" class="documentDescription">
+        All recently modified items, latest first.
+    </div>
+
+    <div id="content-core"
+         tal:define="isAnon context/@@plone_portal_state/anonymous;
+                     portal context/@@plone_portal_state/portal;
+                     show_about python:not isAnon or context.portal_registry['plone.allow_anon_views_about'];">
+        <form name="searchresults" action="" method="post" tal:condition="results"
+                          tal:define="batch python:Batch(results, 20, int(b_start), orphan=1);
+                                      image_scale portal/@@image_scale">
+            <ul>
+            <tal:results tal:repeat="result batch">
+
+                <li tal:define="description result/Description">
+                    <header tal:define="item_wf_state result/review_state;
+                                        item_wf_state_class python:'state-' + normalizeString(item_wf_state);
+                                        item_type_class python:'contenttype-' + normalizeString(result.portal_type)">
+                          <a tal:attributes="href result/getURL">
+                            <img tal:condition="python:result.getIcon"
+                                 tal:replace="structure python: image_scale.tag(result, 'image', scale='tile', css_class='thumb-tile')">
+                        	<span tal:content="result/pretty_title_or_id"
+                                  tal:attributes="class string:$item_type_class $item_wf_state_class"  >
+                                  Title</span>
+                          </a>
+
+                        <span class="discreet" i18n:translate="text_creator_date" tal:condition="show_about">
+                            by
+                            <span tal:define="creator result/Creator;
+                                              author python:context.portal_membership.getMemberInfo(creator)"
+                                  tal:content="python:author and author['fullname'] or creator"
+                                  tal:omit-tag=""
+                                  i18n:name="creator">creator</span>,
+                            last updated:
+                            <span tal:content="python:toLocalizedTime(result.ModificationDate, long_format=1)"
+                                  tal:omit-tag=""
+                                  i18n:name="date">date</span>
+                        </span>
+                    </header>
+
+                    <p tal:condition="description"
+                        tal:content="description">
+                        Description
+                    </p>
+
+                </li>
+
+            </tal:results>
+            </ul>
+            <div metal:use-macro="context/batch_macros/macros/navigation" />
+
+        </form>
+
+        <p tal:condition="not: results" i18n:translate="text_no_new_modified_items">
+            No items have been modified.
+        </p>
+    </div>
+
+</metal:main>
+</body>
+
+</html>

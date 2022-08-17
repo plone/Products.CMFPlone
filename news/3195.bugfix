@@ -1,3 +1,0 @@
-Robot tests: Do not use jQuery.size() but use ``.length`` instead.
-``.size()`` is deprecated since 1.8.
-[thet]

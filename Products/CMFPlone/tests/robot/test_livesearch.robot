@@ -6,6 +6,8 @@ Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
+Variables  Products/CMFPlone/tests/robot/variables.py
+
 Resource  keywords.robot
 
 Test Setup  Run keywords  Plone Test Setup
@@ -14,58 +16,69 @@ Test Teardown  Run keywords  Plone Test Teardown
 
 *** Test cases ***************************************************************
 
+
 Scenario: Simple Livesearch
-    Pass Execution  Disabled until livesearch pattern is integrated
     Given a logged-in site administrator
       and a document  Welcome to Plone
      When I search for  Welcome
      Then the livesearch results should contain  Welcome to Plone
-      and there should be '2' livesearch results
+      and expected livesearch results  1
 
-Scenario: Livesearch for documents
-    Pass Execution  Disabled until livesearch pattern is integrated
+Scenario: Livesearch with image results
     Given a logged-in site administrator
-      and a document  My document
-     When I search for  My document
-     Then the livesearch results should contain  My document
-      and there should be '2' livesearch results
+      and a news item  My News with Image
+     When I search for  My News
+     Then the livesearch results should contain  My News with Image
+      and expected livesearch results  1
+      and Page should contain image  css=.livesearch-results li.search-result .col.img img
 
-Scenario: Livesearch for folder
-    Pass Execution  Disabled until livesearch pattern is integrated
-    Given a logged-in site administrator
-      and a folder  My folder
-     When I search for  My folder
-     Then the livesearch results should contain  My folder
-      and there should be '2' livesearch results
-
-Scenario: Livesearch in current folder only
-    Pass Execution  Disabled until livesearch pattern is integrated
-    Given a logged-in site administrator
-      and a folder with a document 'Inside Document'
-      and a document  Outside Document
-     When I search the currentfolder only for  Inside Document
-     Then the livesearch results should contain  Inside Document
-      and the livesearch results should not contain  Outside Document
-      and there should be '2' livesearch results
+     When I disable images in results in search controlpanel
+      and I search for  My News
+     Then Page should not contain image  css=.livesearch-results li.search-result .col.img img
 
 
 *** Keywords *****************************************************************
 
+a document
+    [Arguments]  ${title}
+    Create content  type=Document  id=doc  title=${title}
+
+a news item
+    [Arguments]  ${title}
+    Go to  ${PLONE_URL}/++add++News Item
+    Wait until page contains  Add News Item
+    Input text  name=form.widgets.IDublinCore.title  ${title}
+    Choose File  name=form.widgets.ILeadImageBehavior.image  ${PATH_TO_TEST_FILES}/plone-logo.png
+    Click Button  Save
+    Wait until page contains  Item created  error=Image could not be created.
+
 I search for
     [Arguments]  ${searchtext}
     Input text  css=input#searchGadget  ${searchtext}
-    Focus  css=input#searchGadget
+    Wait For Element  css=input#searchGadget
 
 I search the currentfolder only for
     [Arguments]  ${searchtext}
     Select checkbox  id=searchbox_currentfolder_only
     Input text  css=input#searchGadget  ${searchtext}
-    Focus  css=input#searchGadget
+    Wait For Element  css=input#searchGadget
 
 the livesearch results should contain
     [Arguments]  ${text}
-    Wait until keyword succeeds  5s  1s  Element should contain  css=#LSResult .LSRow a  ${text}
+    Wait until keyword succeeds  5s  1s  Element should contain  css=.livesearch-results li a .heading  ${text}
 
 the livesearch results should not contain
     [Arguments]  ${text}
-    Wait until keyword succeeds  5s  1s  Page should not contain  css=#LSResult .LSRow a  ${text}
+    Wait until keyword succeeds  5s  1s  Page should not contain  css=.livesearch-results li a .heading  ${text}
+
+expected livesearch results
+    [Arguments]  ${num}
+    ${count} =  Get Element Count  css=.livesearch-results li.search-result
+    Should Be Equal as Numbers  ${count}  ${num}
+
+I disable images in results in search controlpanel
+    Go to  ${PLONE_URL}/@@search-controlpanel
+    Wait until page contains  Search Settings
+    Unselect Checkbox  form.widgets.search_show_images:list
+    Click Button  Save
+    Wait until page contains  Changes saved

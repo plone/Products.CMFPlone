@@ -1,26 +1,21 @@
-from Products.CMFPlone.tests import PloneTestCase
-
-from Products.CMFCore.utils import getToolByName
-
 from plone.app.layout.navigation.interfaces import INavigationRoot
-
-from plone.app.layout.navigation.navtree import NavtreeStrategyBase
 from plone.app.layout.navigation.navtree import buildFolderTree
+from plone.app.layout.navigation.navtree import NavtreeStrategyBase
 from plone.app.layout.navigation.root import getNavigationRoot
-
+from plone.base.interfaces import INonStructuralFolder
+from Products.CMFCore.CMFCatalogAware import CatalogAware
+from Products.CMFCore.PortalFolder import PortalFolderBase
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.tests import PloneTestCase
 from zope.interface import directlyProvides
 from zope.interface import implementer
 
 
-from Products.CMFPlone.PloneFolder import PloneFolder
-from Products.CMFPlone.interfaces import INonStructuralFolder
-
 default_user = PloneTestCase.default_user
 
 
-
 @implementer(INonStructuralFolder)
-class DummyNonStructuralFolder(PloneFolder):
+class DummyNonStructuralFolder(CatalogAware, PortalFolderBase):
     pass
 
 

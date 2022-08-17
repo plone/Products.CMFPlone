@@ -8,7 +8,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
-from Products.CMFPlone.interfaces import IMigrationTool
+from plone.base.interfaces import IMigrationTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from io import StringIO
 from ZODB.POSException import ConflictError
@@ -79,25 +79,47 @@ class AddonList(list):
         setup = getToolByName(context, 'portal_setup')
         for addon in self:
             if addon.safe():
-                setup.upgradeProfile(addon.profile_id)
+                setup.upgradeProfile(addon.profile_id, quiet=True)
 
 
 # List of upgradeable packages.  Obvious items to add here, are all
 # core packages that actually have upgrade steps.
 # Good start is portal_setup.listProfilesWithUpgrades()
+# Please use 'check_module' for packages that are not direct dependencies
+# of Products.CMFPlone, but of the Plone package.
 ADDON_LIST = AddonList([
     Addon(profile_id='Products.CMFEditions:CMFEditions'),
-    Addon(profile_id='Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow'),
+    Addon(
+        profile_id='Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow',
+        check_module='Products.CMFPlacefulWorkflow'
+    ),
+    Addon(profile_id='Products.PlonePAS:PlonePAS'),
+    Addon(
+        profile_id='plone.app.caching:default',
+        check_module='plone.app.caching'
+    ),
     Addon(profile_id='plone.app.contenttypes:default'),
     Addon(profile_id='plone.app.dexterity:default'),
     Addon(profile_id='plone.app.discussion:default'),
     Addon(profile_id='plone.app.event:default'),
-    Addon(profile_id='plone.app.iterate:plone.app.iterate'),
+    Addon(
+        profile_id='plone.app.iterate:default',
+        check_module='plone.app.iterate'
+    ),
     Addon(profile_id='plone.app.multilingual:default'),
     Addon(profile_id='plone.app.querystring:default'),
     Addon(profile_id='plone.app.theming:default'),
     Addon(profile_id='plone.app.users:default'),
+    Addon(
+        profile_id='plone.restapi:default',
+        check_module='plone.restapi'
+    ),
+    Addon(profile_id='plone.session:default'),
     Addon(profile_id='plone.staticresources:default'),
+    Addon(
+        profile_id='plone.volto:default',
+        check_module='plone.volto'
+    ),
 ])
 
 
@@ -238,22 +260,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         # using a newer plone.app.upgrade version should not give problems.
         setup = getToolByName(self, 'portal_setup')
         fs_version = self.getFileSystemVersion()
-        steps = setup.listUpgrades(_DEFAULT_PROFILE)
-        upgrades = []
-        for upgrade_step in steps:
-            if isinstance(upgrade_step, list):
-                # This is a nested list of upgrade steps,
-                # which must have the same destination.
-                # So take the first one.
-                if not upgrade_step:
-                    # Empty list, not sure if this can happen in practice.
-                    continue
-                dest = upgrade_step[0].get('sdest')
-            else:
-                dest = upgrade_step.get('sdest')
-            if dest > fs_version and dest != 'all':
-                break
-            upgrades.append(upgrade_step)
+        upgrades = setup.listUpgrades(_DEFAULT_PROFILE, dest=fs_version)
         return upgrades
 
     security.declareProtected(ManagePortal, 'upgrade')

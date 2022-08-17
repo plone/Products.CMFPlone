@@ -3,11 +3,11 @@ from email.header import Header
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import ILoginHelpForm
-from Products.CMFPlone.interfaces import ILoginHelpFormSchema
-from Products.CMFPlone.interfaces import ISecuritySchema
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema
-from Products.CMFPlone.utils import safe_unicode
+from plone.base.interfaces import ILoginHelpForm
+from plone.base.interfaces import ILoginHelpFormSchema
+from plone.base.interfaces import ISecuritySchema
+from plone.base.interfaces.controlpanel import IMailSchema
+from plone.base.utils import safe_text
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 from smtplib import SMTPException
@@ -52,6 +52,10 @@ class RequestResetPassword(form.Form):
     ignoreContext = True
 
     render = ViewPageTemplateFile('templates/subform_render.pt')
+
+    def updateActions(self):
+        super(RequestResetPassword, self).updateActions()
+        self.actions['reset'].addClass('btn-primary')
 
     def updateWidgets(self):
         super().updateWidgets()
@@ -101,6 +105,10 @@ class RequestUsername(form.Form):
     ignoreContext = True
 
     render = ViewPageTemplateFile('templates/subform_render.pt')
+
+    def updateActions(self):
+        super(RequestUsername, self).updateActions()
+        self.actions['get_username'].addClass('btn-primary')
 
     @button.buttonAndHandler(
         _('button_pwreset_get_username', default='Get your username'),
@@ -172,7 +180,7 @@ class RequestUsername(form.Form):
 
     def encode_mail_header(self, text):
         """ Encodes text into correctly encoded email header """
-        return Header(safe_unicode(text), 'utf-8')
+        return Header(safe_text(text), 'utf-8')
 
     def encoded_mail_sender(self):
         """ returns encoded version of Portal name <portal_email> """
