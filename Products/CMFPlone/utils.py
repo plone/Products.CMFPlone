@@ -19,6 +19,8 @@ from os.path import join
 from os.path import split
 from plone.base import PloneMessageFactory as _
 from plone.base import utils as base_utils
+from plone.base.interfaces.controlpanel import IImagingSchema
+from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.permissions import AddPortalContent
@@ -26,11 +28,9 @@ from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFPlone import bbb
-from plone.base.interfaces.controlpanel import IImagingSchema
-from plone.base.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.log import log  # noqa - for python scripts
-from Products.CMFPlone.log import log_exc  # noqa - for python scripts
 from Products.CMFPlone.log import log_deprecated  # noqa - for python scripts
+from Products.CMFPlone.log import log_exc  # noqa - for python scripts
 from ZODB.POSException import ConflictError
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -62,13 +62,24 @@ else:
 
 deprecated_import(
     "Import from plone.base.utils instead (will be removed in Plone 7)",
+    base_hasattr='plone.base.utils:base_hasattr',
+    getEmptyTitle='plone.base.utils:get_empty_title',
     human_readable_size='plone.base.utils:human_readable_size',
-    safeToInt='plone.base.utils:safeToInt',
+    safeToInt='plone.base.utils:safe_int',
     safe_bytes='plone.base.utils:safe_bytes',
+    safe_callable='plone.base.utils:safe_callable',
+    safe_hasattr='plone.base.utils:safe_hasattr',
     safe_text='plone.base.utils:safe_text',
     get_installer='plone.base.utils:get_installer',
     get_top_request='plone.base.utils:get_top_request',
     get_top_site_from_url='plone.base.utils:get_top_site_from_url',
+    pretty_title_or_id='plone.base.utils:pretty_title_or_id',
+    _createObjectByType='plone.base.utils:unrestricted_construct_instance',
+)
+
+deprecated_import(
+    "Import from plone.namedfile.utils instead (will be removed in Plone 7)",
+    getHighPixelDensityScales="plone.namedfile.utils.getHighPixelDensityScales",
 )
 
 @deprecate("Use plone.base.utils.safe_bytes instead (will be removed in Plone 7)")
@@ -162,7 +173,7 @@ def isExpired(content):
         expiry = content.expires
 
     # See if we have a callable
-    if safe_callable(expiry):
+    if base_utils.safe_callable(expiry):
         expiry = expiry()
 
     # Convert to DateTime if necessary, ExpirationDate may return 'None'
@@ -172,44 +183,6 @@ def isExpired(content):
     if isinstance(expiry, DateTime) and expiry.isPast():
         return 1
     return 0
-
-
-def pretty_title_or_id(context, obj, empty_value=_marker):
-    """Return the best possible title or id of an item, regardless
-       of whether obj is a catalog brain or an object, but returning an
-       empty title marker if the id is not set (i.e. it's auto-generated).
-    """
-    # if safe_hasattr(obj, 'aq_explicit'):
-    #    obj = obj.aq_explicit
-    # title = getattr(obj, 'Title', None)
-    title = None
-    if base_hasattr(obj, 'Title'):
-        title = getattr(obj, 'Title', None)
-    if safe_callable(title):
-        title = title()
-    if title:
-        return title
-    item_id = getattr(obj, 'getId', None)
-    if safe_callable(item_id):
-        item_id = item_id()
-    if item_id:
-        return item_id
-    if empty_value is _marker:
-        empty_value = getEmptyTitle(context)
-    return empty_value
-
-
-def getEmptyTitle(context, translated=True):
-    """Returns string to be used for objects with no title or id"""
-    # The default is an extra fancy unicode elipsis
-    empty = b'\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d'.decode('utf8')
-    if translated:
-        if context is not None:
-            if not IBrowserRequest.providedBy(context):
-                context = aq_get(context, 'REQUEST', None)
-        empty = translate('title_unset', domain='plone',
-                          context=context, default=empty)
-    return empty
 
 
 def typesToList(context):
@@ -297,26 +270,6 @@ class ToolInit(CMFCoreToolInit):
                     getattr(misc, pid)[name] = icon
 
 
-def _createObjectByType(type_name, container, id, *args, **kw):
-    """Create an object without performing security checks
-
-    invokeFactory and fti.constructInstance perform some security checks
-    before creating the object. Use this function instead if you need to
-    skip these checks.
-
-    This method uses
-    CMFCore.TypesTool.FactoryTypeInformation._constructInstance
-    to create the object without security checks.
-    """
-    id = str(id)
-    typesTool = getToolByName(container, 'portal_types')
-    fti = typesTool.getTypeInfo(type_name)
-    if not fti:
-        raise ValueError('Invalid type %s' % type_name)
-
-    return fti._constructInstance(container, id, *args, **kw)
-
-
 release_levels = ('alpha', 'beta', 'candidate', 'final')
 rl_abbr = {'a': 'alpha', 'b': 'beta', 'rc': 'candidate'}
 
@@ -369,33 +322,6 @@ def transaction_note(note):
         log('Transaction note too large omitting %s' % str(note))
     else:
         T.note(base_utils.safe_text(note))
-
-
-def base_hasattr(obj, name):
-    """Like safe_hasattr, but also disables acquisition."""
-    return safe_hasattr(aq_base(obj), name)
-
-
-def safe_hasattr(obj, name, _marker=object()):
-    """Make sure we don't mask exceptions like hasattr().
-
-    We don't want exceptions other than AttributeError to be masked,
-    since that too often masks other programming errors.
-    Three-argument getattr() doesn't mask those, so we use that to
-    implement our own hasattr() replacement.
-    """
-    return getattr(obj, name, _marker) is not _marker
-
-
-def safe_callable(obj):
-    """Make sure our callable checks are ConflictError safe."""
-    if safe_hasattr(obj, '__class__'):
-        if safe_hasattr(obj, '__call__'):
-            return True
-        return isinstance(obj, ClassType)
-    return callable(obj)
-
-
 
 
 def tuplize(value):
@@ -591,14 +517,10 @@ def getQuality():
     return QUALITY_DEFAULT
 
 
-def getHighPixelDensityScales():
-    from plone.namedfile.utils import getHighPixelDensityScales as func
-    return func()
-
-
 def getSiteLogo(site=None, include_type=False):
     from plone.base.interfaces import ISiteSchema
     from plone.formwidget.namedfile.converter import b64decode_file
+
     import mimetypes
 
     if site is None:
