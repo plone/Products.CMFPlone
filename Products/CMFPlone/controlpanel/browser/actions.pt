@@ -34,7 +34,7 @@
               class="list-group-item bg-transparent d-flex align-items-center justify-content-between">
             <span><span tal:replace="repeat/action/number" />. <span tal:replace="action/title" i18n:translate="" /></span>
             <form action="@@actions-controlpanel"
-                  class="plone-action-${action/id}"
+                  class="plone-action-${action/id} flex-shrink-0"
                   method="POST">
               <input type="hidden" name="actionid"
                 tal:attributes="value action/id" />
