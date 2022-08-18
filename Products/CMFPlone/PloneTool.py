@@ -11,7 +11,20 @@ from DateTime import DateTime
 from email.utils import getaddresses
 from OFS.ObjectManager import bad_id
 from OFS.SimpleItem import SimpleItem
+from plone.base.defaultpage import check_default_page_via_view
+from plone.base.defaultpage import get_default_page_via_view
+from plone.base.interfaces import INonStructuralFolder
+from plone.base.interfaces import IPloneTool
+from plone.base.interfaces import ISearchSchema
+from plone.base.interfaces import ISecuritySchema
+from plone.base.interfaces import ISiteSchema
+from plone.base.utils import _marker
+from plone.base.utils import base_hasattr
+from plone.base.utils import get_empty_title
+from plone.base.utils import pretty_title_or_id
+from plone.base.utils import safe_hasattr
 from plone.base.utils import safe_text
+from plone.base.utils import transaction_note
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import IDublinCore
 from Products.CMFCore.interfaces import IMutableDublinCore
@@ -25,21 +38,11 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone import utils
-from plone.base.defaultpage import check_default_page_via_view
-from plone.base.defaultpage import get_default_page_via_view
 from Products.CMFPlone.events import ReorderedEvent
-from plone.base.interfaces import INonStructuralFolder
-from plone.base.interfaces import IPloneTool
-from plone.base.interfaces import ISearchSchema
-from plone.base.interfaces import ISecuritySchema
-from plone.base.interfaces import ISiteSchema
 from Products.CMFPlone.log import log
 from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.log import log_exc
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.utils import base_hasattr
-from Products.CMFPlone.utils import safe_hasattr
-from Products.CMFPlone.utils import transaction_note
 from Products.statusmessages.interfaces import IStatusMessage
 from urllib import parse
 from ZODB.POSException import ConflictError
@@ -55,7 +58,6 @@ import sys
 import transaction
 
 
-_marker = utils._marker
 _icons = {}
 
 CEILING_DATE = DateTime(2500, 0)  # never expires
@@ -937,14 +939,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def getEmptyTitle(self, translated=True):
         # Returns string to be used for objects with no title or id.
         # Note: no docstring please, to avoid reflected XSS.
-        return utils.getEmptyTitle(self, translated)
+        return get_empty_title(self, translated)
 
     @security.public
     def pretty_title_or_id(self, obj, empty_value=_marker):
         # Return the best possible title or id of an item, regardless
         # of whether obj is a catalog brain or an object, but returning an
         # empty title marker if the id is not set (i.e. it's auto-generated).
-        return utils.pretty_title_or_id(self, obj, empty_value=empty_value)
+        return pretty_title_or_id(self, obj, empty_value=empty_value)
 
     @security.public
     def getMethodAliases(self, typeInfo):
@@ -952,11 +954,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # FTI. If there are no method aliases (i.e. this FTI doesn't support
         # it), return None.
         getMethodAliases = getattr(typeInfo, 'getMethodAliases', None)
-        if getMethodAliases is not None \
-                and utils.safe_callable(getMethodAliases):
+        if getMethodAliases is not None and safe_callable(getMethodAliases):
             return getMethodAliases()
-        else:
-            return None
+        return None
 
     # This is public because we don't know what permissions the user
     # has on the objects to be deleted.  The restrictedTraverse and
