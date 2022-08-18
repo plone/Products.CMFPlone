@@ -1,21 +1,22 @@
 from Acquisition import aq_base
+from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from plone.app.testing import setRoles
+from plone.base.utils import safe_text
+from plone.base.utils import unrestricted_construct_instance
 from plone.namedfile.file import NamedBlobFile
 from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-from Products.CMFPlone.utils import _createObjectByType
-from plone.base.utils import safe_text
 from zope.component import getUtility
 
 import difflib
 import re
 import transaction
 import unittest
+
 
 RE_REMOVE_DOCCONT = re.compile(r'\s*href="http://.*?#content"')
 RE_REMOVE_SKIPNAV = re.compile(r'\s*href="http://.*?#portal-globalnav-wrapper"')
@@ -42,9 +43,9 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         from plone.protect import auto
         auto.CSRF_DISABLED = True
 
-        _createObjectByType('Folder', self.portal, 'folder')
-        _createObjectByType('Document', self.portal, 'document')
-        _createObjectByType('File', self.portal, 'file')
+        unrestricted_construct_instance('Folder', self.portal, 'folder')
+        unrestricted_construct_instance('Document', self.portal, 'document')
+        unrestricted_construct_instance('File', self.portal, 'file')
         self.portal.file.file = NamedBlobFile('foo', 'text/plain', 'foo.txt')
         transaction.commit()
 
