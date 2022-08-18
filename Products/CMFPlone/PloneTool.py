@@ -23,6 +23,7 @@ from plone.base.utils import base_hasattr
 from plone.base.utils import get_empty_title
 from plone.base.utils import pretty_title_or_id
 from plone.base.utils import safe_hasattr
+from plone.base.utils import safe_callable
 from plone.base.utils import safe_text
 from plone.base.utils import transaction_note
 from plone.registry.interfaces import IRegistry
@@ -40,7 +41,6 @@ from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone import utils
 from Products.CMFPlone.events import ReorderedEvent
 from Products.CMFPlone.log import log
-from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.log import log_exc
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.statusmessages.interfaces import IStatusMessage
@@ -962,9 +962,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     # has on the objects to be deleted.  The restrictedTraverse and
     # manage_delObjects calls should handle permission checks for us.
     @security.public
+    @deprecate(
+        "Use plone.api.content.delete instead of deleteObjectsByPaths. "
+        "This method no longer does link integrity checks. Will be removed in Plone 7"
+    )
     def deleteObjectsByPaths(self, paths, handle_errors=True, REQUEST=None):
-        log_deprecated("deleteObjectsByPaths is deprecated, you should use. "
-                       "plone.api.content.delete. This method no longer does link integrity checks")  # noqa
         failure = {}
         success = []
         # use the portal for traversal in case we have relative paths

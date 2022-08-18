@@ -2,11 +2,11 @@ from DateTime import DateTime
 from plone.app.redirector.interfaces import IRedirectionStorage
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.base.batch import Batch
 from plone.testing.zope import Browser
 from Products.CMFPlone.controlpanel.browser.redirects import RedirectionSet
-from Products.CMFPlone.PloneBatch import Batch
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-from Products.CMFPlone.utils import safe_bytes
+from plone.base.utils import safe_bytes
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 

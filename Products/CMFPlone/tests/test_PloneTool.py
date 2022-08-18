@@ -7,6 +7,7 @@ from Products.MailHost.interfaces import IMailHost
 from Products.statusmessages.interfaces import IStatusMessage
 
 import unittest
+import warnings
 
 
 class TestPloneTool(unittest.TestCase):
@@ -20,10 +21,12 @@ class TestPloneTool(unittest.TestCase):
         self.tool = getToolByName(self.portal, 'plone_utils', None)
 
     def test_getSiteEncoding(self):
-        self.assertEqual(
-            self.tool.getSiteEncoding(),
-            'utf-8'
-        )
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=DeprecationWarning)
+            self.assertEqual(
+                self.tool.getSiteEncoding(),
+                'utf-8'
+            )
 
     def test_getMailHost(self):
         self.assertTrue(

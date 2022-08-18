@@ -130,13 +130,16 @@ class Plone(BrowserView):
             text = text.encode("utf-8")
         return text
 
+    @property
+    def human_readable_size(self):
+        return human_readable_size
+
+    @deprecate("Site encoding is fixed to utf8. Will be removed in Plone 7")
     def site_encoding(self):
         return "utf-8"
 
-    # Deprecated in favour of @@plone_context_state and @@plone_portal_state
-
     @deprecate(
-        "Use method from @@plone_context_state instead. Will be removed in Plone 7"
+        "Use method current_page_url from @@plone_context_state instead. Will be removed in Plone 7"
     )
     def getCurrentUrl(self):
         context_state = getMultiAdapter(
@@ -145,7 +148,7 @@ class Plone(BrowserView):
         return context_state.current_page_url()
 
     @deprecate(
-        "Use method from @@plone_context_state instead. Will be removed in Plone 7"
+        "Use method is_default_page from @@plone_context_state instead. Will be removed in Plone 7"
     )
     def isDefaultPageInFolder(self):
         context_state = getMultiAdapter(
@@ -154,7 +157,7 @@ class Plone(BrowserView):
         return context_state.is_default_page()
 
     @deprecate(
-        "Use method from @@plone_context_state instead. Will be removed in Plone 7"
+        "Use method is_structural_folder from @@plone_context_state instead. Will be removed in Plone 7"
     )
     def isStructuralFolder(self):
         context_state = getMultiAdapter(
@@ -163,7 +166,7 @@ class Plone(BrowserView):
         return context_state.is_structural_folder()
 
     @deprecate(
-        "Use method from @@plone_portal_state instead. Will be removed in Plone 7"
+        "Use method navigation_root_path from @@plone_portal_state instead. Will be removed in Plone 7"
     )
     def navigationRootPath(self):
         portal_state = getMultiAdapter(
@@ -172,7 +175,7 @@ class Plone(BrowserView):
         return portal_state.navigation_root_path()
 
     @deprecate(
-        "Use method from @@plone_portal_state instead. Will be removed in Plone 7"
+        "Use method navigation_root_url from @@plone_portal_state instead. Will be removed in Plone 7"
     )
     def navigationRootUrl(self):
         portal_state = getMultiAdapter(
@@ -181,7 +184,7 @@ class Plone(BrowserView):
         return portal_state.navigation_root_url()
 
     @deprecate(
-        "Use method from @@plone_context_state instead. Will be removed in Plone 7"
+        "Use method parent from @@plone_context_state instead. Will be removed in Plone 7"
     )
     def getParentObject(self):
         context_state = getMultiAdapter(
@@ -190,7 +193,7 @@ class Plone(BrowserView):
         return context_state.parent()
 
     @deprecate(
-        "Use method from @@plone_context_state instead. Will be removed in Plone 7"
+        "Use method folder from @@plone_context_state instead. Will be removed in Plone 7"
     )
     def getCurrentFolder(self):
         context_state = getMultiAdapter(
@@ -199,7 +202,7 @@ class Plone(BrowserView):
         return context_state.folder()
 
     @deprecate(
-        "Use method from @@plone_context_state instead. Will be removed in Plone 7"
+        "Use method folder().absolute_url() from @@plone_context_state instead. Will be removed in Plone 7"
     )
     def getCurrentFolderUrl(self):
         context_state = getMultiAdapter(
@@ -208,7 +211,7 @@ class Plone(BrowserView):
         return context_state.folder().absolute_url()
 
     @deprecate(
-        "Use method from @@plone_context_state instead. Will be removed in Plone 7"
+        "Use method canonical_object_url from @@plone_context_state instead. Will be removed in Plone 7"
     )
     @memoize
     def getCurrentObjectUrl(self):
@@ -218,7 +221,7 @@ class Plone(BrowserView):
         return context_state.canonical_object_url()
 
     @deprecate(
-        "Use method from @@plone_context_state instead. Will be removed in Plone 7"
+        "Use method is_structural_folder from @@plone_context_state instead. Will be removed in Plone 7"
     )
     @memoize
     def isFolderOrFolderDefaultPage(self):
@@ -228,7 +231,7 @@ class Plone(BrowserView):
         return state.is_structural_folder() or state.is_default_page()
 
     @deprecate(
-        "Use method from @@plone_context_state instead. Will be removed in Plone 7"
+        "Use method is_portal_root from @@plone_context_state instead. Will be removed in Plone 7"
     )
     @memoize
     def isPortalOrPortalDefaultPage(self):
@@ -238,7 +241,7 @@ class Plone(BrowserView):
         return context_state.is_portal_root()
 
     @deprecate(
-        "Use method from @@plone_context_state instead. Will be removed in Plone 7"
+        "Use method view_template_id from @@plone_context_state instead. Will be removed in Plone 7"
     )
     @memoize
     def getViewTemplateId(self):
@@ -247,14 +250,10 @@ class Plone(BrowserView):
         )
         return context_state.view_template_id()
 
-    @deprecate("Use method from @@plone_patterns_settings instead")
+    @deprecate("Use method __call__ from @@plone_patterns_settings instead")
     @memoize
     def patterns_settings(self):
         context = aq_inner(self.context)
         return getMultiAdapter(
             (context, self.request), name="plone_patterns_settings"
         )()
-
-    @property
-    def human_readable_size(self):
-        return human_readable_size
