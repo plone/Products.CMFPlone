@@ -80,6 +80,8 @@ deprecated_import(
 deprecated_import(
     "Import from plone.namedfile.utils instead (will be removed in Plone 7)",
     getHighPixelDensityScales="plone.namedfile.utils.getHighPixelDensityScales",
+    getAllowedSizes="plone.namedfile.utils.getAllowedSizes",
+    getQuality="plone.namedfile.utils.getQuality",
 )
 
 @deprecate("Use plone.base.utils.safe_bytes instead (will be removed in Plone 7)")
@@ -488,33 +490,6 @@ def bodyfinder(text):
     if bodyend == -1:
         return text
     return text[bodystart:bodyend]
-
-
-def getAllowedSizes():
-    registry = queryUtility(IRegistry)
-    if not registry:
-        return None
-    settings = registry.forInterface(
-        IImagingSchema, prefix="plone", check=False)
-    if not settings.allowed_sizes:
-        return None
-    sizes = {}
-    for line in settings.allowed_sizes:
-        line = line.strip()
-        if line:
-            name, width, height = pattern.match(line).groups()
-            name = name.strip().replace(' ', '_')
-            sizes[name] = int(width), int(height)
-    return sizes
-
-
-def getQuality():
-    registry = queryUtility(IRegistry)
-    if registry:
-        settings = registry.forInterface(
-            IImagingSchema, prefix="plone", check=False)
-        return settings.quality or QUALITY_DEFAULT
-    return QUALITY_DEFAULT
 
 
 def getSiteLogo(site=None, include_type=False):
