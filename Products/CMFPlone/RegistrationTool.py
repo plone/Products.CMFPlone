@@ -12,6 +12,8 @@ from hashlib import md5
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import ISecuritySchema
 from plone.base.permissions import ManagePortal
+from plone.protect import CheckAuthenticator
+from plone.protect import protect
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.permissions import AddPortalMember
@@ -453,6 +455,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     security.declareProtected(ManagePortal, 'editMember')
 
     @postonly
+    @protect(CheckAuthenticator)
     def editMember(self, member_id, properties=None, password=None,
                    roles=None, domains=None, REQUEST=None):
         """ Edit a user's properties and security settings

@@ -22,10 +22,12 @@ from plone.base.utils import _marker
 from plone.base.utils import base_hasattr
 from plone.base.utils import get_empty_title
 from plone.base.utils import pretty_title_or_id
-from plone.base.utils import safe_hasattr
 from plone.base.utils import safe_callable
+from plone.base.utils import safe_hasattr
 from plone.base.utils import safe_text
 from plone.base.utils import transaction_note
+from plone.protect import CheckAuthenticator
+from plone.protect import protect
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import IDublinCore
 from Products.CMFCore.interfaces import IMutableDublinCore
@@ -56,6 +58,7 @@ from zope.lifecycleevent import ObjectModifiedEvent
 import re
 import sys
 import transaction
+import warnings
 
 
 _icons = {}
@@ -102,6 +105,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     field_prefix = 'field_'
 
     @security.protected(ManageUsers)
+    @protect(CheckAuthenticator)
     def setMemberProperties(self, member, REQUEST=None, **properties):
         pas = getToolByName(self, 'acl_users')
         if safe_hasattr(member, 'getId'):
@@ -343,6 +347,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return None
 
     @security.protected(ManagePortal)
+    @protect(CheckAuthenticator)
     def changeOwnershipOf(self, object, userid, recursive=0, REQUEST=None):
         """Changes the ownership of an object."""
         membership = getToolByName(self, 'portal_membership')
@@ -736,6 +741,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         )
 
     @security.public
+    @protect(CheckAuthenticator)
     def acquireLocalRoles(self, obj, status=1, REQUEST=None):
         # If status is 1, allow acquisition of local roles (regular
         # behaviour).
@@ -962,11 +968,16 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     # has on the objects to be deleted.  The restrictedTraverse and
     # manage_delObjects calls should handle permission checks for us.
     @security.public
-    @deprecate(
-        "Use plone.api.content.delete instead of deleteObjectsByPaths. "
-        "This method no longer does link integrity checks. Will be removed in Plone 7"
-    )
+    @protect(CheckAuthenticator)
+    @postonly
     def deleteObjectsByPaths(self, paths, handle_errors=True, REQUEST=None):
+        # we need to use Python warnings direct instead of @deprecate,
+        # otherwise plone.protect fails.
+        warnings.warn(
+            "Use plone.api.content.delete instead of deleteObjectsByPaths. "
+            "This method no longer does link integrity checks. Will be removed in Plone 7",
+            DeprecationWarning
+        )
         failure = {}
         success = []
         # use the portal for traversal in case we have relative paths
@@ -992,9 +1003,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     raise
         transaction_note('Deleted %s' % (', '.join(success)))
         return success, failure
-    deleteObjectsByPaths = postonly(deleteObjectsByPaths)
 
     @security.public
+    @protect(CheckAuthenticator)
     def renameObjectsByPaths(self, paths, new_ids, new_titles,
                              handle_errors=True, REQUEST=None):
         failure = {}
