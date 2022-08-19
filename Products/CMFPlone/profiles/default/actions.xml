@@ -86,7 +86,7 @@
    <property name="title" i18n:translate="">Contents</property>
    <property name="description" i18n:translate=""></property>
    <property
-      name="url_expr">string:${globals_view/getCurrentFolderUrl}/folder_contents</property>
+      name="url_expr">python:f"{plone_context_state.folder().absolute_url()}/folder_contents"</property>
    <property name="icon_expr">string:toolbar-action/folderContents</property>
    <property name="permissions">
     <element value="List folder contents"/>
@@ -151,7 +151,7 @@
       name="url_expr">string:$object_url/object_cut</property>
    <property name="icon_expr">string:plone-cut</property>
    <property
-      name="available_expr">python:checkPermission("Delete objects", globals_view.getParentObject()) and checkPermission("Copy or Move", object) and not globals_view.isPortalOrPortalDefaultPage()</property>
+      name="available_expr">python:checkPermission("Delete objects", plone_context_state.parent()) and checkPermission("Copy or Move", object) and not plone_context_state.is_portal_root()</property>
    <property name="permissions">
     <element value="Delete objects"/>
    </property>
@@ -164,7 +164,7 @@
       name="url_expr">string:$object_url/object_copy</property>
    <property name="icon_expr">string:plone-copy</property>
    <property
-      name="available_expr">python:checkPermission("Copy or Move", object) and not globals_view.isPortalOrPortalDefaultPage()</property>
+      name="available_expr">python:checkPermission("Copy or Move", object) and not plone_context_state.is_portal_root()</property>
    <property name="permissions">
     <element value="View"/>
    </property>
@@ -173,7 +173,7 @@
   <object name="paste" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Paste</property>
    <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${globals_view/getCurrentFolderUrl}/object_paste</property>
+   <property name="url_expr">python:f"{plone_context_state.folder().absolute_url()}/object_paste"</property>
    <property name="icon_expr">string:plone-paste</property>
    <property name="available_expr">folder/cb_dataValid|nothing</property>
    <property name="permissions">
@@ -188,7 +188,7 @@
       name="url_expr">string:$object_url/delete_confirmation</property>
    <property name="icon_expr">string:plone-delete</property>
    <property
-      name="available_expr">python:checkPermission("Delete objects", globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()</property>
+      name="available_expr">python:checkPermission("Delete objects", plone_context_state.parent()) and not plone_context_state.is_portal_root()</property>
    <property name="permissions">
     <element value="Delete objects"/>
    </property>
@@ -202,7 +202,7 @@
       name="url_expr">string:$object_url/object_rename</property>
    <property name="icon_expr">string:plone-rename</property>
    <property
-      name="available_expr">python:checkPermission("Delete objects", globals_view.getParentObject()) and checkPermission("Copy or Move", object) and checkPermission("Add portal content", object) and not globals_view.isPortalOrPortalDefaultPage()</property>
+      name="available_expr">python:checkPermission("Delete objects", plone_context_state.parent()) and checkPermission("Copy or Move", object) and checkPermission("Add portal content", object) and not plone_context_state.is_portal_root()</property>
    <property name="permissions">
     <element value="Add portal content"/>
    </property>
@@ -215,7 +215,7 @@
    <property
       name="url_expr">string: ${object_url}/@@manage-aliases</property>
    <property name="icon_expr">string:plone-redirection</property>
-   <property name="available_expr">python:not globals_view.isPortalOrPortalDefaultPage()</property>
+   <property name="available_expr">python:not plone_context_state.is_portal_root()</property>
    <property name="permissions">
     <element value="Manage Context Aliases"/>
    </property>
@@ -227,7 +227,7 @@
   <object name="index_html" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Home</property>
    <property name="description" i18n:translate=""></property>
-   <property name="url_expr">python:f"{plone_portal_state.navigation_root_url()}"</property>
+   <property name="url_expr">python:plone_portal_state.navigation_root_url()</property>
    <property name="icon_expr">string:plone-home</property>
    <property name="available_expr"></property>
    <property name="permissions">
