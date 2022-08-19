@@ -47,7 +47,7 @@
   <object name="sitemap" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Site Map</property>
    <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${globals_view/navigationRootUrl}/sitemap</property>
+   <property name="url_expr">python:f"{plone_portal_state.navigation_root_url()}/sitemap"</property>
    <property name="icon_expr">string:plone-sitemap</property>
    <property name="available_expr"></property>
    <property name="permissions">
@@ -59,7 +59,7 @@
    <property name="title" i18n:translate="">Accessibility</property>
    <property name="description" i18n:translate=""></property>
    <property
-      name="url_expr">string:${globals_view/navigationRootUrl}/accessibility-info</property>
+      name="url_expr">python:f"{plone_portal_state.navigation_root_url()}/accessibility-info"</property>
    <property name="icon_expr">string:plone-accessibility</property>
    <property name="available_expr"></property>
    <property name="permissions">
@@ -70,7 +70,7 @@
   <object name="contact" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Contact</property>
    <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${globals_view/navigationRootUrl}/contact-info</property>
+   <property name="url_expr">python:f"{plone_portal_state.navigation_root_url()}/contact-info"</property>
    <property name="icon_expr">string:plone-contact-info</property>
    <property name="available_expr"></property>
    <property name="permissions">
@@ -227,8 +227,7 @@
   <object name="index_html" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Home</property>
    <property name="description" i18n:translate=""></property>
-   <property
-      name="url_expr">string:${globals_view/navigationRootUrl}</property>
+   <property name="url_expr">python:f"{plone_portal_state.navigation_root_url()}"</property>
    <property name="icon_expr">string:plone-home</property>
    <property name="available_expr"></property>
    <property name="permissions">
@@ -243,7 +242,7 @@
    <property name="title" i18n:translate="">Preferences</property>
    <property name="description" i18n:translate=""></property>
    <property
-      name="url_expr">string:${globals_view/navigationRootUrl}/@@personal-preferences</property>
+      name="url_expr">python:f"{plone_portal_state.navigation_root_url()}/@@personal-preferences"</property>
    <property name="icon_expr">string:plone-user</property>
    <property name="available_expr">python:member is not None</property>
    <property name="permissions">
@@ -266,7 +265,7 @@
   <object name="login" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Log in</property>
    <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${globals_view/navigationRootUrl}/login</property>
+   <property name="url_expr">python:f"{plone_portal_state.navigation_root_url()}/login"</property>
    <property name="icon_expr">string:plone-login</property>
    <property name="available_expr">python:member is None</property>
    <property name="permissions">
@@ -278,7 +277,7 @@
   <object name="join" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Register</property>
    <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${globals_view/navigationRootUrl}/@@register</property>
+   <property name="url_expr">python:f"{plone_portal_state.navigation_root_url()}/@@register"</property>
    <property name="icon_expr">string:plone-register</property>
    <property name="available_expr">python:member is None</property>
    <property name="permissions">
@@ -290,7 +289,7 @@
   <object name="undo" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Undo</property>
    <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${globals_view/navigationRootUrl}/undo_form</property>
+   <property name="url_expr">python:f"{plone_portal_state.navigation_root_url()}/undo_form"</property>
    <property name="icon_expr">string:plone-undo</property>
    <property name="available_expr">python:member is not None</property>
    <property name="permissions">
@@ -313,7 +312,7 @@
   <object name="logout" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Log out</property>
    <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${globals_view/navigationRootUrl}/logout</property>
+   <property name="url_expr">python:f"{plone_portal_state.navigation_root_url()}/logout"</property>
    <property name="icon_expr">string:plone-logout</property>
    <property name="available_expr">python:member is not None</property>
    <property name="permissions">
