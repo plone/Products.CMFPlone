@@ -127,18 +127,6 @@
   <subscriber for="ZPublisher.interfaces.IPubAfterTraversal"
               handler=".events.removeBase"/>
 
-  <!-- configure sizes lookup for `plone.namedfile` -->
-  <utility
-      component=".utils.getAllowedSizes"
-      provides="plone.namedfile.interfaces.IAvailableSizes"
-      />
-
-  <!-- quality lookup for IScaledImageQuality -->
-  <utility
-      component=".utils.getQuality"
-      provides="plone.scale.interfaces.IScaledImageQuality"
-      />
-
   <adapter
       for="zope.pagetemplate.engine.ZopeBaseEngine"
       factory=".traversal.get_zope_page_template_engine"
