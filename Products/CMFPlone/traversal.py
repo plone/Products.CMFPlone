@@ -1,40 +1,33 @@
-from plone.resource.traversal import ResourceTraverser
-from zope.component import queryUtility
+from plone.base.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
 from plone.resource.interfaces import IResourceDirectory
 from plone.resource.interfaces import IUniqueResourceRequest
-from plone.base.interfaces.resources import (
-    OVERRIDE_RESOURCE_DIRECTORY_NAME)
+from plone.resource.traversal import ResourceTraverser
 from Products.PageTemplates.Expressions import getEngine
 from Products.PageTemplates.Expressions import getTrustedEngine
+from Products.PageTemplates.interfaces import IZopeAwareEngine
+from zope.component import queryUtility
 from zope.globalrequest import getRequest
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.pagetemplate import engine as zpt_engine
 
 
-try:
-    # This was introduced in Zope 4.5.
-    # We try not to make this a hard dependency yet.
-    from Products.PageTemplates.interfaces import IZopeAwareEngine
-except ImportError:
-    # Zope 4.4-
-    class IZopeAwareEngine(Interface):
-        pass
-
-
 class PloneBundlesTraverser(ResourceTraverser):
+    # the name is missleading - it is used not only for bundles.
+    # in fact in Plone 6 bundles are no longer used, despite that the traverser
+    # might be in use for other use cases.
 
-    name = 'plone'
+    name = "plone"
 
     def traverse(self, name, remaining):
         # in case its not a request get the default one
         req = getRequest()
-        if not req or 'PATH_INFO' not in req.environ:
+        if not req or "PATH_INFO" not in req.environ:
             return super().traverse(name, remaining)
 
-        resource_path = req.environ['PATH_INFO'].split('++plone++')[-1]
+        resource_path = req.environ["PATH_INFO"].split("++plone++")[-1]
         try:
-            resource_name, resource_filepath = resource_path.split('/', 1)
+            resource_name, resource_filepath = resource_path.split("/", 1)
         except ValueError:
             # Not the path info / url that we expected.
             # So the request is not for a resource,
@@ -44,15 +37,15 @@ class PloneBundlesTraverser(ResourceTraverser):
 
         # If we have additional traversers in the path we should not use them
         # in the file lookup
-        more_traversal = (resource_filepath.startswith('++') or
-                          resource_filepath.startswith('@@'))
-        if more_traversal:
-            resource_filepath = resource_filepath.split('/')[-1]
+        if resource_filepath.startswith("++") or resource_filepath.startswith("@@"):
+            resource_filepath = resource_filepath.split("/")[-1]
 
         persistentDirectory = queryUtility(IResourceDirectory, name="persistent")
         directory = None
-        if (persistentDirectory is not None and
-                OVERRIDE_RESOURCE_DIRECTORY_NAME in persistentDirectory):
+        if (
+            persistentDirectory is not None
+            and OVERRIDE_RESOURCE_DIRECTORY_NAME in persistentDirectory
+        ):
             container = persistentDirectory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
             if resource_name in container:
                 directory = container[resource_name]
