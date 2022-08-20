@@ -131,7 +131,7 @@ class ResourceBase:
                     # ignore dependency on bundle outside "bundles"
                     continue
 
-                msg = f"Bundle '{bundle_name}' has a non existing dependeny on '{name}'. "
+                msg = f"Bundle '{bundle_name}' has a non existing dependency on '{name}'. "
 
                 if name in GRACEFUL_DEPENDENCY_REWRITE:
                     # gracefully rewrite old bundle names

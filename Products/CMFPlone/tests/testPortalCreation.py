@@ -681,7 +681,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         homeAction = [x for x in actions if x.id == 'index_html'][0]
         self.assertEqual(
             homeAction.getInfoData()[0]['url'].text,
-            'string:${globals_view/navigationRootUrl}',
+            'python:plone_portal_state.navigation_root_url()',
         )
 
     def testPloneLexicon(self):

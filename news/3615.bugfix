@@ -1,0 +1,3 @@
+Move utils.getQuality and utils.getAllowedSizes to plone.namedfile.utils.
+This helps untangling circular dependencies.
+[jensens]
