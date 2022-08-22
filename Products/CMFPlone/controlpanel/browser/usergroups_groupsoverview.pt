@@ -30,7 +30,7 @@
             Portal status message
         </div>
 
-        <div class="text-muted mt-2">
+        <div class="lead">
             <span tal:omit-tag=""
                     i18n:translate="description_groups_management">
                 Groups are logical collections of users, such as
