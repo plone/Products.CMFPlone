@@ -1,5 +1,4 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal"
   xmlns:metal="http://xml.zope.org/namespaces/metal" xmlns:i18n="http://xml.zope.org/namespaces/i18n" lang="en"
   i18n:domain="plone">
@@ -14,9 +13,9 @@
   <link rel="stylesheet"
         type="text/css"
         href="${string:${context/absolute_url}/++resource++plone-admin-ui.css}" />
-  <script type="text/javascript" tal:attributes="src string:${context/absolute_url}/++resource++jstz-1.0.4.min.js">
+  <script tal:attributes="src string:${context/absolute_url}/++resource++jstz-1.0.4.min.js">
   </script>
-  <script type="text/javascript" tal:attributes="src string:${context/absolute_url}/++resource++plone-admin-ui.js">
+  <script tal:attributes="src string:${context/absolute_url}/++resource++plone-admin-ui.js">
   </script>
 </head>
 
