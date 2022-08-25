@@ -13,12 +13,6 @@
       tal:define="inspect_backrelation python: view.inspect_backrelation;
                   relation python: view.relation;">
 
-      <a id="setup-link" class="link-parent"
-         tal:attributes="href string:$portal_url/@@overview-controlpanel"
-         i18n:translate="">
-          Site Setup
-      </a>
-
     <header>
       <h1 class="documentFirstHeading"
           tal:condition="python: not inspect_backrelation">
