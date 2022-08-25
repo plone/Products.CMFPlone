@@ -227,7 +227,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                   description='',
                   REQUEST=None,
                   ):
-        # Add an action to our list.
+        """Add an action to our list."""
         if not name:
             raise ValueError('A name is required.')
 
