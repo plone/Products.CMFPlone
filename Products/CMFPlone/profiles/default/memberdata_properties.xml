@@ -14,4 +14,5 @@
  <property name="ext_editor" type="boolean">False</property>
  <property name="wysiwyg_editor" type="string"></property>
  <property name="visible_ids" type="boolean">False</property>
+ <property name="timezone" type="string"></property>
 </object>
