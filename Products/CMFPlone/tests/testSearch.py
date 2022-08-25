@@ -27,7 +27,6 @@ from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import IntegrationTesting
-from plone.testing import z2
 
 
 def test_request():
@@ -256,6 +255,110 @@ class TestSection(SearchTestCase):
         view = getMultiAdapter((portal, req), name='search')
         res = view.results(batch=False)
         self.assertEqual([], [r for r in res])
+
+    def test_quoted_phrase(self):
+        portal = self.layer['portal']
+        # searching for ""
+        view = portal.restrictedTraverse('@@search')
+        # unqoted
+        self.assertEqual(view.results(
+            query=dict(SearchableText='spam ham')).sequence_length, 12)
+        # quoted -> same result
+        self.assertEqual(view.results(
+            query=dict(SearchableText='"spam ham"')).sequence_length, 12)
+        # unquoted reverse order -> all results
+        self.assertEqual(view.results(
+            query=dict(SearchableText='ham spam')).sequence_length, 12)
+        # quoted reverse order -> no results!
+        self.assertEqual(view.results(
+            query=dict(SearchableText='"ham spam"')).sequence_length, 0)
+
+        # arbitrary words within index
+        self.assertEqual(view.results(
+            query=dict(SearchableText='spam eggs')).sequence_length, 12)
+        # arbitrary words within index quoted -> no results
+        self.assertEqual(view.results(
+            query=dict(SearchableText='"spam eggs"')).sequence_length, 0)
+
+        # unquoted subtring search
+        self.assertEqual(view.results(
+            query=dict(SearchableText='egg')).sequence_length, 12)
+        # quoted substring search -> exact match
+        self.assertEqual(view.results(
+            query=dict(SearchableText='"egg"')).sequence_length, 0)
+
+        # unquoted multi substring search
+        # XXX: this is munged to "egg AND spa*" and doesn't find any results
+        self.assertEqual(view.results(
+            query=dict(SearchableText='egg spa')).sequence_length, 0)
+
+        # weird input
+        self.assertEqual(view.results(
+            query=dict(SearchableText='"eggs" ham spam')).sequence_length, 12)
+        self.assertEqual(view.results(
+            query=dict(SearchableText='"eggs ham spam')).sequence_length, 12)
+        self.assertEqual(view.results(
+            query=dict(SearchableText='eggs ham spam"')).sequence_length, 12)
+
+    def test_munge_search_term(self):
+        from Products.CMFPlone.browser.search import BAD_CHARS
+        from Products.CMFPlone.browser.search import munge_search_term
+
+        search_term_tests = [
+            (
+                # search term
+                'spam ham',
+                'spam AND ham*',
+            ),
+            (
+                # quoted term
+                '"spam ham"',
+                '"spam ham"',
+            ),
+            (
+                # cleanup quoted terms
+                '" spam ham   "',
+                '"spam ham"',
+            ),
+            (
+                # mixed cases
+                'Spam hAm',
+                'Spam AND hAm*',
+            ),
+            (
+                # mix quoting and unquoted
+                'let\'s eat some "ham and eggs " without spam ',
+                '"ham and eggs" AND let\'s AND eat AND some '
+                'AND without AND spam*',
+            ),
+            (
+                'test "Welcome" to "Plone" retest',
+                '"Welcome" AND "Plone" AND test AND to AND retest*',
+            ),
+            (
+                # parentheses
+                'spam (ham)',
+                'spam AND "("ham")"*',
+            ),
+            (
+                # special keywords
+                'spam or not ham and eggs',
+                'spam AND "or" AND "not" AND ham AND "and" AND eggs*',
+            ),
+            (
+                # bad characters
+                " ".join(BAD_CHARS),
+                "",
+            ),
+            (
+                # weird input
+                'test ""Welcome" to "Plone"" retest',
+                '"to" AND test AND WelcomePlone AND retest*',
+            )
+        ]
+
+        for _in, _out in search_term_tests:
+            self.assertEqual(munge_search_term(_in), _out)
 
 
 def test_suite():

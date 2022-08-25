@@ -1,7 +1,7 @@
 from collections import defaultdict
 from operator import itemgetter
+from plone.base import PloneMessageFactory as _
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.relationhelper import get_relations_stats
 from Products.CMFPlone.relationhelper import rebuild_relations
 from Products.Five.browser import BrowserView

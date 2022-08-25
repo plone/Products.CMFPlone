@@ -21,8 +21,8 @@
       title="Allow sendto" />
 
   <browser:resource
-      file="static/plone-logo.png"
-      name="plone-logo.png"
+      file="static/plone-logo.svg"
+      name="plone-logo.svg"
       />
 
   <browser:page
@@ -99,6 +99,7 @@
       for="*"
       name="main_template"
       class=".main_template.MainTemplate"
+      allowed_interface=".interfaces.IMainTemplate"
       permission="zope.Public"
       />
 
@@ -291,6 +292,20 @@
       name="iconresolver"
       class=".icons.IconsView"
       permission="zope.Public"
+      />
+
+  <browser:page
+      for="*"
+      name="recently_modified"
+      template="templates/recently_modified.pt"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      for="*"
+      name="recently_published"
+      template="templates/recently_published.pt"
+      permission="zope2.View"
       />
 
 </configure>

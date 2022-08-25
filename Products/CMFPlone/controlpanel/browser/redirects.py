@@ -3,11 +3,11 @@ from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
 from io import StringIO
 from plone.app.redirector.interfaces import IRedirectionStorage
+from plone.base.batch import Batch
 from plone.base.utils import safe_text
 from plone.batching.browser import PloneBatchView
 from plone.memoize.view import memoize
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.PloneBatch import Batch
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from urllib.parse import urlparse
@@ -272,7 +272,7 @@ class RedirectsControlPanel(BrowserView):
                 created=self.request.form.get('datetime', ''),
                 manual=self.request.form.get('manual', ''),
             ),
-            15,
+            int(self.request.form.get('b_size', '15')),
             int(self.request.form.get('b_start', '0')),
             orphan=1,
         )

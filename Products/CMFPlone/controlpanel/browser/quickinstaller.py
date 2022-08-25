@@ -7,6 +7,7 @@ from Products.GenericSetup import EXTENSION
 from Products.GenericSetup.tool import UNKNOWN
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getAllUtilitiesRegisteredFor
+from zope.i18n import translate
 
 import logging
 import pkg_resources
@@ -488,20 +489,24 @@ class ManageProductsView(InstallerView):
 
         return filtered
 
+    def get_sorted_addon_values(self, apply_filter=None, product_name=None):
+        values = self.get_addons(apply_filter, product_name).values()
+        return sorted(values, key=lambda x: translate(x.get('title', ''), context=self.request).upper())
+
     def get_upgrades(self):
         """
         Return a list of products that have upgrades on tap
         """
-        return self.get_addons(apply_filter='upgrades').values()
+        return self.get_sorted_addon_values(apply_filter='upgrades')
 
     def get_installed(self):
-        return self.get_addons(apply_filter='installed').values()
+        return self.get_sorted_addon_values(apply_filter='installed')
 
     def get_available(self):
-        return self.get_addons(apply_filter='available').values()
+        return self.get_sorted_addon_values(apply_filter='available')
 
     def get_broken(self):
-        return self.get_addons(apply_filter='broken').values()
+        return self.get_sorted_addon_values(apply_filter='broken')
 
 
 class UpgradeProductsView(InstallerView):

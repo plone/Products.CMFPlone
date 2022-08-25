@@ -53,6 +53,25 @@
         </tbody>
       </table>
 
+      <table class="listing table table-striped"
+            tal:define="broken python: getattr(view, 'broken', None)"
+            tal:condition="python: broken">
+        <thead>
+          <tr>
+            <th i18n:translate="">Broken Relation</th>
+            <th i18n:translate="">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr tal:repeat="item python: sorted(broken)">
+            <td tal:content="python:item">
+               Type
+            </td>
+            <td tal:content="python:broken[item]">Amount</td>
+          </tr>
+        </tbody>
+      </table>
+
       <h3 i18n:translate="">Common relations:</h3>
       <dl>
         <dt>relatedItems</dt>

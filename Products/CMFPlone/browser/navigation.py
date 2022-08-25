@@ -3,16 +3,18 @@ from Acquisition import aq_inner
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.root import getNavigationRoot
+from plone.base.defaultpage import check_default_page_via_view
+from plone.base.interfaces import IHideFromBreadcrumbs
+from plone.base.interfaces import INavigationSchema
+from plone.base.utils import pretty_title_or_id
+from plone.base.utils import safe_callable
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
 from Products.CMFPlone.browser.interfaces import INavigationTabs
 from Products.CMFPlone.browser.interfaces import ISiteMap
 from Products.CMFPlone.browser.navtree import SitemapQueryBuilder
-from plone.base.defaultpage import check_default_page_via_view
-from plone.base.interfaces import IHideFromBreadcrumbs
-from plone.base.interfaces import INavigationSchema
+from Products.CMFPlone.utils import parent
 from Products.Five import BrowserView
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -32,7 +34,7 @@ def get_id(item):
     if not item:
         return None
     getId = getattr(item, "getId")
-    if not utils.safe_callable(getId):
+    if not safe_callable(getId):
         # Looks like a brain
         return getId
     return getId()
@@ -72,7 +74,7 @@ class CatalogNavigationTabs(BrowserView):
             INavigationSchema, prefix="plone", check=False
         )
         customQuery = getattr(self.context, "getCustomNavQuery", False)
-        if customQuery is not None and utils.safe_callable(customQuery):
+        if customQuery is not None and safe_callable(customQuery):
             query = customQuery()
         else:
             query = {}
@@ -150,7 +152,7 @@ class CatalogNavigationTabs(BrowserView):
                 continue
             cid, item_url = _get_url(item)
             data = {
-                "name": utils.pretty_title_or_id(context, item),
+                "name": pretty_title_or_id(context, item),
                 "id": item.getId,
                 "url": item_url,
                 "description": item.Description,
@@ -176,7 +178,7 @@ class CatalogNavigationBreadcrumbs(BrowserView):
         # Check to see if the current page is a folder default view, if so
         # get breadcrumbs from the parent folder
         if check_default_page_via_view(context, self.request):
-            currentPath = "/".join(utils.parent(context).getPhysicalPath())
+            currentPath = "/".join(parent(context).getPhysicalPath())
         else:
             currentPath = "/".join(context.getPhysicalPath())
         query["path"] = {"query": currentPath, "navtree": 1, "depth": 0}
@@ -201,7 +203,7 @@ class CatalogNavigationBreadcrumbs(BrowserView):
 
             cid, item_url = get_view_url(item)
             data = {
-                "Title": utils.pretty_title_or_id(context, item),
+                "Title": pretty_title_or_id(context, item),
                 "absolute_url": item_url,
             }
             result.append(data)
@@ -213,7 +215,7 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
     def breadcrumbs(self):
         context = aq_inner(self.context)
         request = self.request
-        container = utils.parent(context)
+        container = parent(context)
 
         name, item_url = get_view_url(context)
 
@@ -221,7 +223,7 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
             return (
                 {
                     "absolute_url": item_url,
-                    "Title": utils.pretty_title_or_id(context, context),
+                    "Title": pretty_title_or_id(context, context),
                 },
             )
 
@@ -242,7 +244,7 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         ) and not rootPath.startswith(itemPath):
             entry = {
                 "absolute_url": item_url,
-                "Title": utils.pretty_title_or_id(context, context),
+                "Title": pretty_title_or_id(context, context),
             }
             self.customize_entry(entry, context)
             base += (entry,)

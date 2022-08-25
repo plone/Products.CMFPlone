@@ -1,13 +1,10 @@
 from logging import getLogger
 from plone.registry.interfaces import IRegistry
-from plone.uuid.handlers import addAttributeUUID
-from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.events import SiteManagerCreatedEvent
 from plone.base.interfaces import INonInstallable
 from Products.CMFPlone.Portal import PloneSite
 from Products.GenericSetup.tool import SetupTool
-from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import queryUtility
 from zope.component.hooks import setSite
 from zope.event import notify
@@ -143,49 +140,42 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     notify(SiteManagerCreatedEvent(site))
     setSite(site)
 
-    setup_tool.setBaselineContext('profile-%s' % profile_id)
-    setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
+    try:
+        setup_tool.setBaselineContext('profile-%s' % profile_id)
+        setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
 
-    reg = queryUtility(IRegistry, context=site)
-    reg['plone.portal_timezone'] = portal_timezone
-    reg['plone.available_timezones'] = [portal_timezone]
-    reg['plone.default_language'] = default_language
-    reg['plone.available_languages'] = [default_language]
+        reg = queryUtility(IRegistry, context=site)
+        reg['plone.portal_timezone'] = portal_timezone
+        reg['plone.available_timezones'] = [portal_timezone]
+        reg['plone.default_language'] = default_language
+        reg['plone.available_languages'] = [default_language]
+        reg['plone.site_title'] = title
 
-    # Install default content types profile if user do not select "example content"
-    # during site creation.
-    content_types_profile = content_profile_id if setup_content else _TYPES_PROFILE
+        # Install default content types profile if user do not select "example content"
+        # during site creation.
+        content_types_profile = content_profile_id if setup_content else _TYPES_PROFILE
 
-    setup_tool.runAllImportStepsFromProfile(f'profile-{content_types_profile}')
+        setup_tool.runAllImportStepsFromProfile(f'profile-{content_types_profile}')
 
-    props = dict(
-        title=title,
-        description=description,
-    )
-    # Do this before applying extension profiles, so the settings from a
-    # properties.xml file are applied and not overwritten by this
-    site.manage_changeProperties(**props)
+        props = dict(
+            title=title,
+            description=description,
+        )
+        # Do this before applying extension profiles, so the settings from a
+        # properties.xml file are applied and not overwritten by this
+        site.manage_changeProperties(**props)
 
-    for extension_id in extension_ids:
-        try:
-            setup_tool.runAllImportStepsFromProfile(
-                'profile-%s' % extension_id)
-        except Exception as msg:
-            IStatusMessage(request).add(_(
-                'Could not install ${profile_id}: ${error_msg}! '
-                'Please try to install it manually using the "Addons" '
-                'controlpanel and report any issues to the '
-                'addon maintainers.',
-                mapping={
-                    'profile_id': extension_id,
-                    'error_msg': msg.args,
-                }),
-                type='error')
-            logger.exception(
-                'Error while installing addon {}. '
-                'See traceback below for details.'.format(extension_id))
+        for extension_id in extension_ids:
+            try:
+                setup_tool.runAllImportStepsFromProfile(f"profile-{extension_id}")
+            except Exception:
+                logger.error(f"Error while installing profile {extension_id}:")
+                raise
 
-    if snapshot is True:
-        setup_tool.createSnapshot('initial_configuration')
+        if snapshot is True:
+            setup_tool.createSnapshot('initial_configuration')
 
-    return site
+        return site
+    except Exception:
+        setSite(None)
+        raise

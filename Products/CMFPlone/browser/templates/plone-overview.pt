@@ -24,19 +24,14 @@
                   many python:len(sites) > 1;">
   <div class="container admin mt-5 mb-5 p-4">
     <header class="row">
-        <p><img src="/++resource++plone-logo.png"
-                 width="215" height="56"
-                 tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png"
-                 alt="Plone logo"
-                 i18n:attributes="alt" /></p>
+        <p><img src="/++resource++plone-logo.svg"
+                width="215" height="56"
+                tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.svg"
+                alt="Plone logo"
+                i18n:attributes="alt" /></p>
         <h1 i18n:translate="">Plone is up and running.</h1>
         <p class="lead">
-            <span i18n:translate="label_plone_com_description"> For an introduction to Plone, success stories, demos, providers, visit</span>
-            <a href="http://plone.com"
-              title="Plone.com"
-              target="_blank"
-              i18n:attributes="title label_plone_com_title;">plone.com</a>.
-            <span i18n:translate="label_plone_org_description"> For documentation, add-ons, support, community, visit</span>
+            <span i18n:translate="label_plone_org_description"> For an introduction to Plone, documentation, demos, add-ons, support, and community, visit</span>
             <a href="http://plone.org"
               title="Plone Community Home"
               i18n:attributes="title label_plone_org_title;">plone.org</a>.

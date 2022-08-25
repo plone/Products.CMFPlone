@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
+
+  <!-- indexer -->
+  <adapter
+      factory=".indexer.image_scales"
+      name="image_scales"
+      />
+
+  <!-- adapters -->
+  <adapter factory=".adapters.ImageScales" />
+
+</configure>

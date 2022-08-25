@@ -1,12 +1,13 @@
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import IConfigurationChangedEvent
 from plone.base.interfaces import ISecuritySchema
+from plone.base.utils import safe_hasattr
 from plone.registry.interfaces import IRecordModifiedEvent
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.controlpanel.utils import migrate_from_email_login
 from Products.CMFPlone.controlpanel.utils import migrate_to_email_login
-from Products.CMFPlone.utils import safe_hasattr
 from zope.component import adapter
 from zope.component import queryUtility
 from zope.component.hooks import getSite

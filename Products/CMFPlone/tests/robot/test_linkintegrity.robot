@@ -77,6 +77,8 @@ a link in rich text
   Click Button  css=button[aria-label="Insert/edit link"]
 
   Given patterns are loaded
+  # Somehow this does not work:
+  # Wait For Then Click Element  css=.pat-relateditems .select2-input.select2-default
   Wait until element is visible  css=.pat-relateditems .select2-input.select2-default
   Click Element  css=.pat-relateditems .select2-input.select2-default
   Wait until element is visible  css=.pat-relateditems-result.one-level-up a.pat-relateditems-result-browse
@@ -84,68 +86,60 @@ a link in rich text
   Wait until element is visible  xpath=(//span[contains(., 'Foo')])
   Click Element  xpath=(//span[contains(., 'Foo')])
   Wait until page contains  Foo
-
-  Click Button  css=.modal-footer .btn-primary
-  Click Button  css=#form-buttons-save
+  Wait For Then Click Element  css=.modal-footer .btn-primary
+  Wait For Then Click Element  css=#form-buttons-save
 
 
 should show warning when deleting page
+
   Go To  ${PLONE_URL}/foo
-  Wait until element is visible  css=#plone-contentmenu-actions a
-  Click Link  css=#plone-contentmenu-actions a
-  Wait until element is visible  css=#plone-contentmenu-actions-delete
-  Click Link  css=#plone-contentmenu-actions-delete
+  Wait For Then Click Element  css=#plone-contentmenu-actions > a
+  Wait For Then Click Element  css=#plone-contentmenu-actions-delete
   Wait until page contains element  css=.breach-container .breach-item
 
 
 should show warning when deleting page from folder_contents
   Go To  ${PLONE_URL}/folder_contents
-  Wait until keyword succeeds  30  1  Page should contain element  css=tr[data-id="foo"] input
-  # Might still take a bit before it is clickable.
-  Sleep  1
-  Click Element  css=tr[data-id="foo"] input
+  Given folder contents pattern loaded
+  Wait For Then Click Element  css=tr[data-id="foo"] input
   Checkbox Should Be Selected  css=tr[data-id="foo"] input
   Wait until keyword succeeds  30  1  Page should not contain element  css=#btn-delete.disabled
-  Click Element  css=#btngroup-mainbuttons #btn-delete
+
+  Wait For Then Click Element  css=#btngroup-mainbuttons #btn-delete
   Wait until page contains element  css=.popover-content .btn-danger
   Page should contain element  css=.breach-container .breach-item
-  Click Element  css=#popover-delete .closeBtn
+  Wait For Then Click Element  css=#popover-delete .closeBtn
   Checkbox Should Be Selected  css=tr[data-id="foo"] input
 
 
 should not show warning when deleting page from folder_contents
   Go To  ${PLONE_URL}/folder_contents
-  Wait until page contains element  css=tr[data-id="foo"] input
-  # Might still take a bit before it is clickable.
-  Sleep  1
-  Click Element  css=tr[data-id="foo"] input
+  Given folder contents pattern loaded
+  Wait For Then Click Element  css=tr[data-id="foo"] input
   Checkbox Should Be Selected  css=tr[data-id="foo"] input
   Wait until keyword succeeds  30  1  Page should not contain element  css=#btn-delete.disabled
-  Click Element  css=#btngroup-mainbuttons #btn-delete
+  Wait For Then Click Element  css=#btngroup-mainbuttons #btn-delete
   Wait until page contains element  css=.popover-content .btn-danger
   Page should not contain element  css=.breach-container .breach-item
-  Click Element  css=#popover-delete .applyBtn
+  Wait For Then Click Element  css=#popover-delete .applyBtn
   Wait until page contains  Successfully delete items
   Wait until keyword succeeds  30  1  Page should not contain Element  css=tr[data-id="foo"] input
 
 
 should not show warning when deleting page
   Go To  ${PLONE_URL}/foo
-  Wait until element is visible  css=#plone-contentmenu-actions a
-  Click Link  css=#plone-contentmenu-actions a
-  Wait until element is visible  css=#plone-contentmenu-actions-delete
-  Click Link  css=#plone-contentmenu-actions-delete
+  Wait For Then Click Element  css=#plone-contentmenu-actions > a
+  Wait For Then Click Element  css=#plone-contentmenu-actions-delete
   Page should not contain element  css=.breach-container .breach-item
 
 
 remove link to page
   Go To  ${PLONE_URL}/bar
-  Wait until element is visible  css=#contentview-edit a
-  Click Link  css=#contentview-edit a
-  Wait until element is visible  css=.tox-edit-area iframe
+  Wait For Then Click Element  css=#contentview-edit a
+  Wait For Element  css=.tox-edit-area iframe
   Select Frame  css=.tox-edit-area iframe
   Input text  css=.mce-content-body  foo
   Execute Javascript    function selectElementContents(el) {var range = document.createRange(); range.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);} var el = document.getElementById("tinymce"); selectElementContents(el);
   UnSelect Frame
   Click Button  css=button[aria-label="Remove link"]
-  Click Button  css=#form-buttons-save
+  Wait For Then Click Element  css=#form-buttons-save

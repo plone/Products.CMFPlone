@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
@@ -27,13 +28,6 @@
          </metal:block>
 
          <header>
-            <a href=""
-                id="setup-link"
-                tal:attributes="href string:$portal_url/@@overview-controlpanel"
-                i18n:translate="">
-                Site Setup
-            </a>
-
             <h1 class="documentFirstHeading"
                 i18n:translate=""
                 tal:condition="view/label"
@@ -106,7 +100,7 @@
 
             </form>
 
-            <script type="text/javascript"
+            <script
                 tal:define="extra_script view/extra_script | nothing"
                 tal:condition="extra_script"
                 tal:content="structure extra_script">

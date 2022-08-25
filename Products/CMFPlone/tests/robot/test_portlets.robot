@@ -28,10 +28,10 @@ a manage portlets view
     Wait until page contains  Manage portlets
 
 I add a '${portletname}' portlet to the left column
-    Select from list  xpath=//div[@id="portletmanager-plone-leftcolumn"]//select  ${portletname}
+    Select from list by label  xpath=//div[@id="portletmanager-plone-leftcolumn"]//select  ${portletname}
 
 I add a '${portletname}' portlet to the right column
-    Select from list  xpath=//div[@id="portletmanager-plone-rightcolumn"]//select  ${portletname}
+    Select from list by label  xpath=//div[@id="portletmanager-plone-rightcolumn"]//select  ${portletname}
 
 I delete a '${portlet}'' portlet from the left column
     Click Link  xpath=//div[@id="portal-column-one"]//div[@class="portletHeader" and contains(.,"${portlet}")]//a[@class="delete"]  don't wait

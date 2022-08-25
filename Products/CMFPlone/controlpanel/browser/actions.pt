@@ -34,7 +34,7 @@
               class="list-group-item bg-transparent d-flex align-items-center justify-content-between">
             <span><span tal:replace="repeat/action/number" />. <span tal:replace="action/title" i18n:translate="" /></span>
             <form action="@@actions-controlpanel"
-                  class="plone-action-${action/id}"
+                  class="plone-action-${action/id} flex-shrink-0"
                   method="POST">
               <input type="hidden" name="actionid"
                 tal:attributes="value action/id" />
@@ -52,13 +52,13 @@
               </button>
               <a class="pat-plone-modal btn btn-sm btn-primary standalone"
                 tal:attributes="href string:${action/url}/@@action-form"
-                ><tal:icon tal:replace="structure python:icons.tag('plone-edit', tag_alt='Edit')" /><span i18n:translate="" class="ms-2" i18n:translate="">Edit</span></a>
+                ><tal:icon tal:replace="structure python:icons.tag('plone-edit', tag_alt='Edit')" /><span class="ms-2" i18n:translate="">Edit</span></a>
               <button type="submit" class="btn btn-sm btn-danger destructive" name="delete"
                 value="Delete"
                 confirm-message="Delete the action?"
                 i18n:attributes="value; confirm-message"
                 onclick="return confirm(this.getAttribute('confirm-message'));" >
-                <tal:icon tal:replace="structure python:icons.tag('plone-delete', tag_alt='Delete')" /><span i18n:translate="" class="ms-2" i18n:translate="">Delete</span>
+                <tal:icon tal:replace="structure python:icons.tag('plone-delete', tag_alt='Delete')" /><span class="ms-2" i18n:translate="">Delete</span>
               </button>
             </form>
           </li>

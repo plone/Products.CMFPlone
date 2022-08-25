@@ -109,13 +109,48 @@ class ResourceBase:
         request_enabled_bundles, request_disabled_bundles = self._request_bundles()
 
         # collect names
-        js_names = {name for name, rec in records.items() if rec.jscompilation}
-        css_names = {name for name, rec in records.items() if rec.csscompilation}
-        all_names = {
+        js_names = [name for name, rec in records.items() if rec.jscompilation]
+        css_names = [name for name, rec in records.items() if rec.csscompilation]
+        all_names = [
             name
             for name, rec in records.items()
             if rec.jscompilation or rec.csscompilation
-        }
+        ]
+
+        def check_dependencies(bundle_name, depends, bundles):
+            # "depends" can be a comma separated string of dependent
+            # bundle names
+            depend_names = depends.split(",") if depends else []
+            valid_dependencies = []
+
+            for name in depend_names:
+                if name in bundles:
+                    valid_dependencies.append(name)
+                    continue
+                if name in all_names:
+                    # ignore dependency on bundle outside "bundles"
+                    continue
+
+                msg = f"Bundle '{bundle_name}' has a non existing dependency on '{name}'. "
+
+                if name in GRACEFUL_DEPENDENCY_REWRITE:
+                    # gracefully rewrite old bundle names
+                    graceful_depends = GRACEFUL_DEPENDENCY_REWRITE[name]
+                    logger.error(
+                            msg
+                            + f"Bundle dependency graceful rewritten to '{graceful_depends}' "
+                            + "Fallback will be removed in Plone 7."
+                        )
+                    valid_dependencies.append(graceful_depends)
+                    continue
+
+                # if the dependency does not exist, skip the bundle
+                logger.error(
+                    msg + "Bundle ignored - This may break your site!"
+                )
+                return "__broken__"
+
+            return valid_dependencies
 
         # register
         for name, record in records.items():
@@ -126,24 +161,9 @@ class ResourceBase:
             include = include and name not in request_disabled_bundles
 
             if record.jscompilation:
-                depends = record.depends or ""
-                if depends and depends not in js_names:
-                    if depends in all_names:
-                        depends = None
-                    else:
-                        msg = f"Bundle '{name}' has a non existing dependeny on '{record.depends}'. "
-                        if depends not in GRACEFUL_DEPENDENCY_REWRITE:
-                            logger.error(
-                                msg + "Bundle ignored (JS) - This may break your site!"
-                            )
-                            continue
-                        graceful_depends = GRACEFUL_DEPENDENCY_REWRITE[depends]
-                        logger.error(
-                            msg
-                            + f"Bundle dependency (JS) graceful rewritten to '{graceful_depends}' "
-                            + "Fallback will be removed in Plone 7."
-                        )
-                        depends = graceful_depends
+                depends = check_dependencies(name, record.depends, js_names)
+                if depends == "__broken__":
+                    continue
                 external = record.jscompilation.startswith("http")
                 PloneScriptResource(
                     context=self.context,
@@ -162,24 +182,9 @@ class ResourceBase:
                     integrity=not external,
                 )
             if record.csscompilation:
-                depends = record.depends or ""
-                if depends and depends not in css_names:
-                    if depends in all_names:
-                        depends = None
-                    else:
-                        msg = f"Bundle '{name}' has a non existing dependeny on '{record.depends}'. "
-                        if depends not in GRACEFUL_DEPENDENCY_REWRITE:
-                            logger.error(
-                                msg + "Bundle ignored (CSS) - This may break your site!"
-                            )
-                            continue
-                        graceful_depends = GRACEFUL_DEPENDENCY_REWRITE[depends]
-                        logger.error(
-                            msg
-                            + f"Bundle dependency (CSS) graceful rewritten to '{graceful_depends}' "
-                            + "Fallback will be removed in Plone 7."
-                        )
-                        depends = graceful_depends
+                depends = check_dependencies(name, record.depends, css_names)
+                if depends == "__broken__":
+                    continue
                 external = record.csscompilation.startswith("http")
                 PloneStyleResource(
                     context=self.context,

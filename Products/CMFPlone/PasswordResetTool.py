@@ -176,7 +176,7 @@ class PasswordResetTool (UniqueObject, SimpleItem):
         Parameter controls how many days past expired it must be to disappear.
         """
         now = datetime.datetime.utcnow()
-        for key, record in self._requests.items():
+        for key, record in list(self._requests.items()):
             stored_user, expiry = record
             if self.expired(expiry, now - datetime.timedelta(days=days)):
                 del self._requests[key]

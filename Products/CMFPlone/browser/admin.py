@@ -1,22 +1,21 @@
 from AccessControl import getSecurityManager
 from AccessControl.Permissions import view as View
+from collections import OrderedDict
 from OFS.interfaces import IApplication
-from Products.CMFCore.permissions import ManagePortal
-from Products.CMFPlone.factory import _DEFAULT_PROFILE
-from Products.CMFPlone.factory import addPloneSite
 from plone.base.interfaces import INonInstallable
 from plone.base.interfaces import IPloneSiteRoot
-from Products.CMFPlone.utils import get_installer
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.GenericSetup import BASE, EXTENSION
-from Products.GenericSetup import profile_registry
-from Products.GenericSetup.upgrade import normalize_version
-from ZPublisher.BaseRequest import DefaultPublishTraverse
-from collections import OrderedDict
+from plone.base.utils import get_installer
 from plone.i18n.locales.interfaces import IContentLanguageAvailability
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.authenticator import check as checkCSRF
 from plone.protect.interfaces import IDisableCSRFProtection
+from Products.CMFCore.permissions import ManagePortal
+from Products.CMFPlone.factory import _DEFAULT_PROFILE
+from Products.CMFPlone.factory import addPloneSite
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.GenericSetup import BASE, EXTENSION
+from Products.GenericSetup import profile_registry
+from Products.GenericSetup.upgrade import normalize_version
 from urllib import parse
 from ZODB.broken import Broken
 from zope.component import adapts
@@ -26,11 +25,12 @@ from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.i18n.locales import locales, LoadLocaleError
-from zope.interface import Interface
 from zope.interface import alsoProvides
+from zope.interface import Interface
 from zope.publisher.browser import BrowserView
 from zope.publisher.interfaces import IRequest
 from zope.schema.interfaces import IVocabularyFactory
+from ZPublisher.BaseRequest import DefaultPublishTraverse
 
 import logging
 import pkg_resources
@@ -343,3 +343,16 @@ class Upgrade(BrowserView):
             )
 
         return self.index()
+
+    def can_migrate_to_volto(self):
+        if not HAS_VOLTO:
+            return False
+        pm = getattr(self.context, 'portal_migration')
+        if pm.getInstanceVersion() < "6005":
+            return False
+        try:
+            from plone.volto.browser import migrate_to_volto
+        except ImportError:
+            return False
+        installer = get_installer(self.context, self.request)
+        return not installer.is_product_installed("plone.volto")

@@ -1,22 +1,17 @@
-from Products.CMFPlone import PloneMessageFactory as _
+from .interfaces import ISendToForm
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.controlpanel import IMailSchema
-from Products.CMFPlone.utils import pretty_title_or_id
+from plone.base.utils import pretty_title_or_id
+from plone.registry.interfaces import IRegistry
+from plone.z3cform import layout
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.MailHost.interfaces import IMailHost
 from Products.statusmessages.interfaces import IStatusMessage
-
-from ZODB.POSException import ConflictError
-
-from plone.registry.interfaces import IRegistry
-from plone.z3cform import layout
-
-from zope.component import getUtility
-
-from z3c.form import form
-from z3c.form import field
 from z3c.form import button
-
-from .interfaces import ISendToForm
+from z3c.form import field
+from z3c.form import form
+from ZODB.POSException import ConflictError
+from zope.component import getUtility
 
 import logging
 

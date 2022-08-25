@@ -1,2 +1,0 @@
-fix `@@iconresolver` to resolve names with "/" correctly (eg. "contenttype/document")
-[petschki]
