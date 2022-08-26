@@ -359,6 +359,22 @@ class TestCatalogIndexing(PloneTestCase):
         brains = self.catalog(foo='FOO')
         self.assertEqual(len(brains), 1)
 
+    def test_indexing_location_to_dexterity(self):
+        # BBB: 'Products.CMFPlone.CatalogTool.location' only works for Archetypes.
+        # It should be removed in Plone 6. When it is removed, this test can be removed
+        # as well.
+        doc = self.folder.doc
+        from plone.dexterity.interfaces import IDexterityContent
+        if not IDexterityContent.providedBy(doc):
+            return
+        self.catalog.addIndex("location", "FieldIndex")
+        doc.location = "home"
+        doc.reindexObject()
+        results = self.catalog(location="home")
+        self.assertTrue(results)
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].id, doc.id)
+
 
 class TestCatalogSearching(PloneTestCase):
 

@@ -12,6 +12,132 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.9 (2022-07-21)
+------------------
+
+Bug fixes:
+
+
+- Prepare release 5.2.9.
+  No changes compared to release candidate.
+  [maurits] (#529)
+
+
+5.2.9rc1 (2022-07-18)
+---------------------
+
+Bug fixes:
+
+
+- Update metadata version to 5217, Plone 5.2.9.
+  [maurits] (#5217)
+
+
+5.2.8 (2022-05-14)
+------------------
+
+Bug fixes:
+
+
+- Prepare release 5.2.8.
+
+  No changes compared to release candidate. (#528)
+
+
+5.2.8rc1 (2022-04-29)
+---------------------
+
+Bug fixes:
+
+
+- Update WCAG version to 2.1 in the accessebility-info default content.
+  [marwanatef2] (#3273)
+- Remove date range search fix, which was done in Products.ZCatalog.
+  [wesleybl] (#3432)
+- Fix detection of initial login time [MrTango] (#3447)
+- Update metadata version to 5216, Plone 5.2.8.
+  [maurits] (#5216)
+
+
+5.2.7 (2022-01-28)
+------------------
+
+Bug fixes:
+
+
+- Release Plone 5.2.7 final.
+  No changes compared to last release candidate.
+  [maurits] (#3413)
+
+
+5.2.7rc1 (2022-01-25)
+---------------------
+
+Bug fixes:
+
+
+- Add plone.synchronize as dependency, because plone.dexterity 2.10.5 has removed this dependency.
+  Core Plone does not need the package anymore, but in case someone uses it, it is not nice to lose it in a bugfix release of Plone.
+  [maurits] (#157)
+- The portal catalog will not try to index itself anymore [ale-rt] (#3312)
+- Load adapter for index location, only if Archetypes is installed. [wesleybl] (#3347)
+- Add missing lxml dependency [MrTango] (#3356)
+- Update metadata version to 5215, Plone 5.2.7.
+  [maurits] (#5215)
+
+
+5.2.6 (2021-10-22)
+------------------
+
+Bug fixes:
+
+
+- Release Plone 5.2.6 final.
+  No changes compared to last release candidate. (#3336)
+
+
+5.2.6rc1 (2021-10-16)
+---------------------
+
+Bug fixes:
+
+
+- Update metadata version to 5214, Plone 5.2.6.
+  [maurits] (#5214)
+
+
+5.2.5 (2021-08-06)
+------------------
+
+Bug fixes:
+
+
+- Release Plone 5.2.5 final.
+  No changes compared to last release candidate.
+  [maurits] (#3292)
+
+
+5.2.5rc1 (2021-07-31)
+---------------------
+
+New features:
+
+
+- Add PLONE52MARKER Python marker
+  [sneridagh] (#3257)
+
+
+Bug fixes:
+
+
+- Removed the docstring from various methods to avoid making them available via a url.
+  From the `Products.PloneHotfix20210518 reflected XSS fix <https://plone.org/security/hotfix/20210518/reflected-xss-in-various-spots>`_.
+  [maurits] (#3274)
+- Add the remote code execution fix from the `Products.PloneHotfix20210518 expressions patch <https://plone.org/security/hotfix/20210518/remote-code-execution-via-traversal-in-expressions>`_.
+  We need this because Zope 4.6.2 is too strict for us.
+  [maurits] (#3274)
+
+
 5.2.4 (2021-03-03)
 ------------------
 

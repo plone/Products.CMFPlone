@@ -276,9 +276,14 @@ def mime_type(obj):
     return aq_base(obj).getPrimaryField().getContentType(obj)
 
 
-@indexer(Interface)
-def location(obj):
-    return obj.getField('location').get(obj)
+# BBB: This adapter is for compatibility and should be removed in Plone 6.
+try:
+    from Products.Archetypes.interfaces import IBaseObject
+    @indexer(IBaseObject)
+    def location(obj):
+        return obj.getField('location').get(obj)
+except ImportError:
+    pass
 
 
 @implementer(IPloneCatalogTool)
@@ -488,8 +493,11 @@ class CatalogTool(PloneBaseTool, BaseTool):
         idxs = list(self.indexes())
 
         def indexObject(obj, path):
-            if (base_hasattr(obj, 'reindexObject') and
-                    safe_callable(obj.reindexObject)):
+            if (
+                obj != self
+                and base_hasattr(obj, 'reindexObject')
+                and safe_callable(obj.reindexObject)
+            ):
                 try:
                     self.reindexObject(obj, idxs=idxs)
                     # index conversions from plone.app.discussion

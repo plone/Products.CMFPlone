@@ -1,0 +1,13 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="plone">
+
+    <browser:page
+        name="hotfix-testing-view-name"
+        for="*"
+        template="view_name.pt"
+        permission="zope2.View"
+        />
+
+</configure>

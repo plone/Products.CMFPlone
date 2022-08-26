@@ -2,7 +2,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = '5.2.5.dev0'
+version = '5.2.10.dev0'
 
 
 setup(
@@ -46,6 +46,7 @@ setup(
         'ExtensionClass',
         'five.customerize',
         'five.localsitemanager',
+        'lxml',
         'mockup',
         'Pillow',
         'plone.api >= 1.4.4',
@@ -90,6 +91,7 @@ setup(
         'plone.session',
         'plone.staticresources',
         'plone.subrequest',
+        'plone.synchronize',
         'plone.theme',
         'plonetheme.barceloneta',
         'Products.CMFCore',
