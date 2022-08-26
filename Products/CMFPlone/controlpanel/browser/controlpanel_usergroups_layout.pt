@@ -8,15 +8,15 @@
 
 <body>
 
+<div metal:use-macro="context/global_statusmessage/macros/portal_message">
+      Portal status message
+    </div>
+
 <div metal:fill-slot="prefs_configlet_main">
 
   <header>
     <h1 class="documentFirstHeading"
         i18n:translate="">User and Groups Settings</h1>
-
-    <div metal:use-macro="context/global_statusmessage/macros/portal_message">
-      Portal status message
-    </div>
 
     <p class="text-muted mt-2"
        i18n:translate="">
