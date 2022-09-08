@@ -97,14 +97,17 @@ class TinyMCESettingsGenerator:
         importcss_file_filter = "tinymce-formats.css"
 
         theme = self.get_theme()
+        extra_content_css = ""
         if theme and getattr(theme, "tinymce_styles_css", None):
-            importcss_file_filter += ",{}/{}".format(
+            extra = ",{}/{}".format(
                 self.nav_root_url, theme.tinymce_styles_css.lstrip("/")
             )
+            extra_content_css += extra
+            importcss_file_filter += extra
 
         tiny_config = {
             "resize": "both" if settings.resizing else False,
-            "content_css": self.get_content_css(),
+            "content_css": self.get_content_css() + extra_content_css,
             "plugins": ["plonelink", "ploneimage", "importcss"] + settings.plugins,
             "external_plugins": {},
             "toolbar": settings.toolbar,
