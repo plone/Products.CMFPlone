@@ -1,2 +1,0 @@
-In traversal.py remove a Zope 4 BBB code, add a comment about bundle traverser and apply black.isort on the file.
-[jensens]

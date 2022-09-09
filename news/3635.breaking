@@ -1,4 +1,0 @@
-Officially drop Python 3.7 support and add 3.10 support.
-Currently everything still work in 3.7, all tests pass, but beta 2 is the last release where this is the case.
-See discussion in `this issue <https://github.com/plone/Products.CMFPlone/issues/3635>`_ and especially `this community poll <https://community.plone.org/t/plone-6-0-drop-support-for-python-3-7-and-3-8/15549>`_.
-[maurits]

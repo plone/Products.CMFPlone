@@ -12,6 +12,69 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.0b2 (2022-09-10)
+--------------------
+
+Breaking changes:
+
+
+- Officially drop Python 3.7 support and add 3.10 support.
+  Currently everything still work in 3.7, all tests pass, but beta 2 is the last release where this is the case.
+  See discussion in `this issue <https://github.com/plone/Products.CMFPlone/issues/3635>`_ and especially `this community poll <https://community.plone.org/t/plone-6-0-drop-support-for-python-3-7-and-3-8/15549>`_.
+  [maurits] (#3635)
+
+
+Bug fixes:
+
+
+- Moved CSFR patches addressing CMFPlone itself to decorators.
+  [jensens] (3614-2)
+- Fixed an issue that prevented the user to select the preferred timezone (#1290)
+- Fixed adding control panel action via ZMI.
+  [maurits] (#1959)
+- Changed 'Powered by' text
+  [rohnsha0] (#3382)
+- Fix active tab in ``@@test-rendering-icons``.
+  [petschki] (#3475)
+- Do not create title tag for svg icons when tag_alt is not given.
+  [agitator] (#3536)
+- Fixed all known instances of plone.com in plone/Products.CMFPlone
+  [rohnsha0] (#3568)
+- Allow access to the macros of the main_template, also from skin templates.
+  [maurits] (#3581)
+- Robot tests: be more specific when clicking some elements.
+  [maurits] (#3582)
+- Set portal title in registry when creating a new Plone site
+  [erral] (#3584)
+- Change test to make sure e-mail is sent in utf-8
+  [erral] (#3587)
+- Fixed 'Site Setup' link appearing on various parts of Control Panel
+  [rohnsha0] (#3599)
+- Fixed Inconsistent font issues in Control Panel
+  [rohnsha0] (#3600)
+- Fix visual issue with long action name in @@actions-controlpanel.
+  [petschki] (#3601)
+- Fixed an error where Main Template (line: 42) referenced plone.com istead of plone.org
+  [rohnsha0] (#3605)
+- In traversal.py remove a Zope 4 BBB code, add a comment about bundle traverser and apply black.isort on the file.
+  [jensens] (#3609)
+- Supress warning of intentional deprecated import for BBB.
+  [jensens] (#3610)
+- Use plone.base and reduce deprecation warnings.
+  In utils remove functions already moved to plone.base and add deferred import with message.
+  Deprecate correct, where prior only comments or old logging.
+  Some black/isort where touched.
+  [jensens] (#3614)
+- Move utils.getQuality and utils.getAllowedSizes to plone.namedfile.utils.
+  This helps untangling circular dependencies.
+  [jensens] (#3615)
+- Do not use deprecated calls in actions expressions.
+  ActionsTool and PloneBasetool got an code style overhaul.
+  [jensens] (#3616)
+- Updated metadata version to 6007.
+  [maurits] (#6007)
+
+
 6.0.0b1 (2022-07-23)
 --------------------
 
