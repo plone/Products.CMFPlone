@@ -400,7 +400,7 @@ def _unrestricted_rename(container, id, new_id):
             action='manage_main'))
     ob = container._getOb(id)
     if not ob.cb_isMoveable():
-        raise CopyError('Not Supported {}'.format(escape(id)))
+        raise CopyError(f'Not Supported {escape(id)}')
     try:
         ob._notifyOfCopyTo(container, op=1)
     except:

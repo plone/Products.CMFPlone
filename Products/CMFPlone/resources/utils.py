@@ -30,7 +30,7 @@ def get_production_resource_directory():
     timestamp = production_folder.readFile("timestamp.txt")
     if isinstance(timestamp, bytes):
         timestamp = timestamp.decode()
-    return "{}/++unique++{}".format(PRODUCTION_RESOURCE_DIRECTORY, timestamp)
+    return f"{PRODUCTION_RESOURCE_DIRECTORY}/++unique++{timestamp}"
 
 
 def get_resource(context, path):

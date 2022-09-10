@@ -297,5 +297,5 @@ import unittest
 def test_suite():
     suite = unittest.TestSuite()
     for test in tests:
-        suite.addTest(unittest.makeSuite(test))
+        suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(test))
     return suite

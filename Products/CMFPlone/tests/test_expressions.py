@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl.class_init import InitializeClass
 from AccessControl.Permissions import view_management_screens
 from AccessControl.SecurityInfo import ClassSecurityInfo
@@ -29,7 +28,7 @@ import unittest
 path = os.path.dirname(__file__)
 
 
-class DummyView(object):
+class DummyView:
 
     __name__ = "dummy-view"
     _authenticator = "secret"

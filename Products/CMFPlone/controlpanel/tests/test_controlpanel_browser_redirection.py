@@ -139,8 +139,8 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         now = DateTime('2022-02-03')
         for i in range(1000):
             storage.add(
-                '{:s}/foo/{:s}'.format(portal_path, str(i)),
-                '{:s}/bar/{:s}'.format(portal_path, str(i)),
+                f'{portal_path:s}/foo/{str(i):s}',
+                f'{portal_path:s}/bar/{str(i):s}',
                 now=now,
             )
         redirects = RedirectionSet()
@@ -182,8 +182,8 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         portal_path = self.layer['portal'].absolute_url_path()
         for i in range(1000):
             storage.add(
-                '{:s}/foo/{:s}'.format(portal_path, str(i)),
-                '{:s}/bar/{:s}'.format(portal_path, str(i)),
+                f'{portal_path:s}/foo/{str(i):s}',
+                f'{portal_path:s}/bar/{str(i):s}',
             )
         view = getMultiAdapter(
             (self.layer['portal'], self.layer['request']),
@@ -225,13 +225,13 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         portal_path = self.layer['portal'].absolute_url_path()
         for i in range(1000):
             storage.add(
-                '{:s}/foo1/{:s}'.format(portal_path, str(i)),
-                '{:s}/bar/{:s}'.format(portal_path, str(i)),
+                f'{portal_path:s}/foo1/{str(i):s}',
+                f'{portal_path:s}/bar/{str(i):s}',
             )
         for i in range(1000):
             storage.add(
-                '{:s}/foo2/{:s}'.format(portal_path, str(i)),
-                '{:s}/bar/{:s}'.format(portal_path, str(i)),
+                f'{portal_path:s}/foo2/{str(i):s}',
+                f'{portal_path:s}/bar/{str(i):s}',
             )
 
         redirects = RedirectionSet()
@@ -282,14 +282,14 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         portal_path = self.layer['portal'].absolute_url_path()
         for i in range(100):
             storage.add(
-                '{:s}/foo/{:s}'.format(portal_path, str(i)),
-                '{:s}/bar/{:s}'.format(portal_path, str(i)),
+                f'{portal_path:s}/foo/{str(i):s}',
+                f'{portal_path:s}/bar/{str(i):s}',
                 manual=False,
             )
         for i in range(100, 300):
             storage.add(
-                '{:s}/foo/{:s}'.format(portal_path, str(i)),
-                '{:s}/bar/{:s}'.format(portal_path, str(i)),
+                f'{portal_path:s}/foo/{str(i):s}',
+                f'{portal_path:s}/bar/{str(i):s}',
                 manual=True,
             )
 
@@ -333,8 +333,8 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         time0 = DateTime('2001-01-01')
         for i in range(400):
             storage.add(
-                '{:s}/foo/{:s}'.format(portal_path, str(i)),
-                '{:s}/bar/{:s}'.format(portal_path, str(i)),
+                f'{portal_path:s}/foo/{str(i):s}',
+                f'{portal_path:s}/bar/{str(i):s}',
                 now=time0 + i,
             )
 
@@ -802,8 +802,8 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         now = DateTime('2019/01/27 10:00:00 GMT-3')
         for i in range(2000):
             storage.add(
-                '{:s}/foo/{:s}'.format(portal_path, str(i)),
-                '{:s}/bar/{:s}'.format(portal_path, str(i)),
+                f'{portal_path:s}/foo/{str(i):s}',
+                f'{portal_path:s}/bar/{str(i):s}',
                 now=now,
                 manual=True,
             )
@@ -839,7 +839,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         now = DateTime('2019/01/27 10:00:00 GMT-3')
         for i in range(10):
             storage.add(
-                '{:s}/foo/{:s}'.format(portal_path, str(i)),
+                f'{portal_path:s}/foo/{str(i):s}',
                 f'{portal_path:s}/test-folder',
                 now=now,
                 manual=True,

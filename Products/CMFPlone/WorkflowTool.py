@@ -258,7 +258,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                                 objects_by_path[absurl] = (o.modified(), o)
 
         results = objects_by_path.values()
-        return tuple([obj[1] for obj in sorted(results)])
+        return tuple(obj[1] for obj in sorted(results))
 
     security.declareProtected(ManagePortal, 'getChainForPortalType')
 

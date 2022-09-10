@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from lxml import etree
 from OFS.Image import File
 from plone.registry.interfaces import IRegistry
