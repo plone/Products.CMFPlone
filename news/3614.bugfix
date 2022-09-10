@@ -1,7 +1,0 @@
-Use plone.base and reduce deprecation warnings.
-In utils remove functions already moved to plone.base and add deferred import with message.
-Deprecate correct, where prior only comments or old logging.
-Some black/isort where touched.
-[jensens]
-
-
