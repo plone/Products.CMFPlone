@@ -54,7 +54,7 @@ class RequestResetPassword(form.Form):
     render = ViewPageTemplateFile('templates/subform_render.pt')
 
     def updateActions(self):
-        super(RequestResetPassword, self).updateActions()
+        super().updateActions()
         self.actions['reset'].addClass('btn-primary')
 
     def updateWidgets(self):
@@ -107,7 +107,7 @@ class RequestUsername(form.Form):
     render = ViewPageTemplateFile('templates/subform_render.pt')
 
     def updateActions(self):
-        super(RequestUsername, self).updateActions()
+        super().updateActions()
         self.actions['get_username'].addClass('btn-primary')
 
     @button.buttonAndHandler(
@@ -188,7 +188,7 @@ class RequestUsername(form.Form):
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
         from_ = mail_settings.email_from_name
         mail = mail_settings.email_from_address
-        return '"{}" <{}>'.format(self.encode_mail_header(from_), mail)
+        return f'"{self.encode_mail_header(from_)}" <{mail}>'
 
 
 @implementer(ILoginHelpForm)

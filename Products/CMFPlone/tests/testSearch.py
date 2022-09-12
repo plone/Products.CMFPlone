@@ -366,5 +366,5 @@ def test_suite():
     above
     """
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestSection))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestSection))
     return suite

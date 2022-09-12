@@ -251,7 +251,7 @@ class RequireLoginView(BrowserView):
             url = f'{portal.absolute_url():s}/login'
             came_from = self.request.get('came_from', None)
             if came_from:
-                url += '?came_from={:s}'.format(parse.quote(came_from))
+                url += f'?came_from={parse.quote(came_from):s}'
         else:
             url = f'{portal.absolute_url():s}/insufficient-privileges'
 

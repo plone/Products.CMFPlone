@@ -62,7 +62,7 @@ def get_relations_stats():
             rel = relation_catalog.resolveRelationToken(token)
         except ObjectMissingError:
             broken['Object is missing'] += 1
-            logger.info('Token {} has no object.'.format(token))
+            logger.info(f'Token {token} has no object.')
             continue
 
         if rel.isBroken():
@@ -84,7 +84,7 @@ def get_all_relations():
         try:
             rel = relation_catalog.resolveRelationToken(token)
         except ObjectMissingError:
-            logger.info('Token {} has no object.'.format(token))
+            logger.info(f'Token {token} has no object.')
             continue
 
         if rel.from_object and rel.to_object:
