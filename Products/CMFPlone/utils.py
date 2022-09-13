@@ -79,9 +79,9 @@ deprecated_import(
 
 deprecated_import(
     "Import from plone.namedfile.utils instead (will be removed in Plone 7)",
-    getHighPixelDensityScales="plone.namedfile.utils.getHighPixelDensityScales",
-    getAllowedSizes="plone.namedfile.utils.getAllowedSizes",
-    getQuality="plone.namedfile.utils.getQuality",
+    getHighPixelDensityScales="plone.namedfile.utils:getHighPixelDensityScales",
+    getAllowedSizes="plone.namedfile.utils:getAllowedSizes",
+    getQuality="plone.namedfile.utils:getQuality",
 )
 
 @deprecate("Use plone.base.utils.safe_bytes instead (will be removed in Plone 7)")
