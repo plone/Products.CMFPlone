@@ -33,7 +33,7 @@
             <h1>
               <span i18n:translate="">Upgrade this site</span>
             </h1>
-            <h2>${context/Title} <small>(${context/getId})</small></h2>
+            <h2>${context/Title} <small>(id=${context/getId})</small></h2>
             <p class="lead" i18n:translate="">
                 More information about the upgrade procedure can be found in the documentation section of plone.org in the
                 <a href="http://docs.plone.org/manage/upgrading"
@@ -45,7 +45,7 @@
         <article class="row mb-4">
           <div class="col-md-12 mb-3">
             <p class="alert-success p-2" tal:condition="versions/equal">
-              <span i18n:translate="" tal:omit-tag="">Your site is up to date.</span>
+              <span i18n:translate="" tal:omit-tag="">Your <a href="${context/absolute_url}">site</a> is up to date.</span>
             </p>
 
             <p class="alert-danger p-2" tal:condition="versions/instance_gt">
