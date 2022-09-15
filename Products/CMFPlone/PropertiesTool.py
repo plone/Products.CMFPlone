@@ -19,6 +19,7 @@ from Products.MailHost.interfaces import IMailHost
 from zope.component import getUtility
 from zope.component import queryUtility
 from Products.CMFCore.interfaces import ISiteRoot
+from zope.deprecation import deprecate
 
 
 @implementer(IPropertiesTool)
@@ -106,6 +107,15 @@ class PropertiesTool(PloneBaseTool, Folder, UniqueObject):
     def smtp_server(self):
         return getUtility(IMailHost).smtp_host
 
+
+    @deprecate(
+        "The portal portal_properties tool will be removed. "
+        "Use the portal_registry instead."
+    )
+    def hasProperty(self, id):
+        return super().hasProperty(id)
+
+
 InitializeClass(PropertiesTool)
 
 
@@ -124,5 +134,13 @@ class SimpleItemWithProperties (PropertyManager, SimpleItem):
 
     manage_options = (PropertyManager.manage_options
                       + SimpleItem.manage_options)
+
+    @deprecate(
+        "The portal portal_properties tool will be removed. "
+        "Use the portal_registry instead."
+    )
+    def hasProperty(self, id):
+        return super().hasProperty(id)
+
 
 InitializeClass(SimpleItemWithProperties)
