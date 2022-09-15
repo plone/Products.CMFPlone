@@ -1,22 +1,21 @@
-from Products.CMFCore.permissions import ManagePortal
-from ZTUtils import make_query
-from itertools import chain
-from Acquisition import aq_inner
-from Products.CMFPlone.utils import normalizeString
-from zope.component import getAdapter
-from plone.base.interfaces import ISecuritySchema
-from zope.component import getMultiAdapter
 from AccessControl import getSecurityManager
-from Products.Five.browser import BrowserView
-from Products.CMFCore.utils import getToolByName
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from plone.z3cform import layout
+from Acquisition import aq_inner
+from itertools import chain
 from plone.autoform.form import AutoExtensibleForm
-from Products.CMFPlone import PloneMessageFactory as _
-from z3c.form import form
-
+from plone.base.interfaces import ISecuritySchema
 from plone.base.interfaces import IUserGroupsSettingsSchema
+from plone.z3cform import layout
+from Products.CMFCore.permissions import ManagePortal
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import normalizeString
+from Products.Five.browser import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import button
+from z3c.form import form
+from zope.component import getAdapter
+from zope.component import getMultiAdapter
+from ZTUtils import make_query
 
 
 class UserGroupsSettingsControlPanel(AutoExtensibleForm, form.EditForm):

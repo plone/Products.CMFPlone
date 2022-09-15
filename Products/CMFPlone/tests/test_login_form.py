@@ -7,8 +7,8 @@ from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
 
 import re
-import unittest
 import time
+import unittest
 
 
 FORM_ID = 'login'

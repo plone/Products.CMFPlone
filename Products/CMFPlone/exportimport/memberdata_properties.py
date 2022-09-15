@@ -3,9 +3,10 @@
 $Id:$
 """
 
-from zope.component import queryMultiAdapter
 from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.interfaces import IBody
+from zope.component import queryMultiAdapter
+
 
 _FILENAME = 'memberdata_properties.xml'
 

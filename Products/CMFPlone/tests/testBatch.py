@@ -2,6 +2,7 @@ from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
 import unittest
 
+
 class TestBatchIntegration(unittest.TestCase):
 
     layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING

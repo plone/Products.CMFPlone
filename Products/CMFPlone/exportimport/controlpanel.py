@@ -14,16 +14,13 @@
 
 $Id$
 """
-from zope.i18nmessageid import Message
-
+from plone.base.interfaces import IControlPanel
+from Products.CMFCore.interfaces import IActionProvider
+from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.utils import exportObjects
 from Products.GenericSetup.utils import importObjects
 from Products.GenericSetup.utils import XMLAdapterBase
-
-from Products.CMFCore.interfaces import IActionProvider
-from Products.CMFCore.utils import getToolByName
-
-from plone.base.interfaces import IControlPanel
+from zope.i18nmessageid import Message
 
 
 class ControlPanelXMLAdapter(XMLAdapterBase):

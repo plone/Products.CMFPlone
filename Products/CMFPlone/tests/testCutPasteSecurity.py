@@ -1,15 +1,14 @@
 from AccessControl import Unauthorized
 from Acquisition import aq_base
 from OFS.CopySupport import CopyError
-from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Products.CMFCore.interfaces import IContentish
-from zope.component import provideHandler, getGlobalSiteManager
-from zope.lifecycleevent.interfaces import IObjectMovedEvent
+from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from urllib.error import HTTPError
+from zope.component import getGlobalSiteManager
+from zope.component import provideHandler
+from zope.lifecycleevent.interfaces import IObjectMovedEvent
 
 import transaction
-
-
 
 
 class TestCutPasteSecurity(PloneTestCase):

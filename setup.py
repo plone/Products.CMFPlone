@@ -1,5 +1,6 @@
-from setuptools import setup
 from setuptools import find_packages
+from setuptools import setup
+
 
 version = '6.0.0b3.dev0'
 

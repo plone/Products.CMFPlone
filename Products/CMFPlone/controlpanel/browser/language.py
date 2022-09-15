@@ -1,7 +1,6 @@
-from Products.CMFPlone import PloneMessageFactory as _
 from plone.app.registry.browser import controlpanel
-
 from plone.i18n.interfaces import ILanguageSchema
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.statusmessages.interfaces import IStatusMessage
 from z3c.form import button
 

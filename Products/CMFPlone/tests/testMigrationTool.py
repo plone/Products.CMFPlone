@@ -1,7 +1,6 @@
-from Products.CMFPlone.tests import PloneTestCase
-
-from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.factory import _DEFAULT_PROFILE
+from Products.CMFPlone.tests import PloneTestCase
 
 
 # Python 3 is only supported on 5.2+.
@@ -170,6 +169,7 @@ class TestAddonList(PloneTestCase.PloneTestCase):
     def test_upgrade_all(self):
         from Products.CMFPlone.MigrationTool import Addon
         from Products.CMFPlone.MigrationTool import AddonList
+
         # real ones:
         cmfeditions = Addon(profile_id='Products.CMFEditions:CMFEditions')
         discussion = Addon(profile_id='plone.app.discussion:default')
@@ -226,6 +226,7 @@ class TestAddonList(PloneTestCase.PloneTestCase):
     def test_plone_addonlist_upgrade_all(self):
         # Test the actual filled addon list.
         from Products.CMFPlone.MigrationTool import ADDON_LIST
+
         # Several addons did not get fully upgraded in the past, which
         # is why this list was created.
         cmfeditions_id = 'Products.CMFEditions:CMFEditions'

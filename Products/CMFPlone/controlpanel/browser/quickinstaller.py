@@ -1,13 +1,14 @@
+from plone.base.interfaces import INonInstallable
+from plone.memoize import view
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from plone.base.interfaces import INonInstallable
 from Products.Five.browser import BrowserView
 from Products.GenericSetup import EXTENSION
 from Products.GenericSetup.tool import UNKNOWN
 from Products.statusmessages.interfaces import IStatusMessage
-from plone.memoize import view
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.i18n import translate
+
 import logging
 import pkg_resources
 import transaction

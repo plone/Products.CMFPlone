@@ -1,7 +1,7 @@
 from plone.app.registry.browser import controlpanel
+from plone.base.interfaces import IFilterSchema
 from plone.z3cform import layout
 from Products.CMFPlone import PloneMessageFactory as _  # NOQA
-from plone.base.interfaces import IFilterSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 from z3c.form import button

@@ -1,4 +1,6 @@
-from Acquisition import aq_parent, aq_base, aq_inner
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from Acquisition import IAcquirer
 from Products.CMFCore import utils
 from zope.globalrequest import getRequest

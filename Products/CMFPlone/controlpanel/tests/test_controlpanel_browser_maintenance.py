@@ -1,11 +1,13 @@
-from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
+from App.ApplicationManager import ApplicationManager
+from pkg_resources import get_distribution
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.testing.zope import Browser
 from plone.testing.zope import login
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
+
 import unittest
-from App.ApplicationManager import ApplicationManager
-from pkg_resources import get_distribution
+
 
 has_zope4 = get_distribution('Zope2').version.startswith('4')
 

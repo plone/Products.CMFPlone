@@ -2,8 +2,9 @@ from datetime import datetime
 from plone.app.textfield import RichTextValue
 from plone.namedfile.file import NamedFile
 from plone.namedfile.file import NamedImage
-from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
+from Products.CMFPlone.tests import PloneTestCase
+
 
 AddPortalTopics = "Add portal topics"
 

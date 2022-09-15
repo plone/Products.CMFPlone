@@ -1,32 +1,28 @@
-import sys
-import time
-import unittest
-
 from DateTime import DateTime
-
-from plone.app.testing import TEST_USER_NAME, TEST_USER_ID
+from plone.app.contentlisting.interfaces import IContentListing
+from plone.app.testing import applyProfile
+from plone.app.testing import IntegrationTesting
 from plone.app.testing import login
+from plone.app.testing import PLONE_FIXTURE
+from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
+from plone.app.textfield import RichTextValue
+from plone.base.interfaces import ISearchSchema
+from plone.registry.interfaces import IRegistry
+from z3c.form.interfaces import IFormLayer
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
-
-from plone.base.interfaces import ISearchSchema
-
-from plone.app.contentlisting.interfaces import IContentListing
-from plone.app.textfield import RichTextValue
-
 from zope.configuration import xmlconfig
 from zope.interface import alsoProvides
 from zope.publisher.browser import setDefaultSkin
-from z3c.form.interfaces import IFormLayer
-from ZPublisher.HTTPResponse import HTTPResponse
 from ZPublisher.HTTPRequest import HTTPRequest
+from ZPublisher.HTTPResponse import HTTPResponse
 
-from plone.app.testing import PloneSandboxLayer
-from plone.app.testing import applyProfile
-from plone.app.testing import PLONE_FIXTURE
-from plone.app.testing import IntegrationTesting
+import sys
+import time
+import unittest
 
 
 def test_request():

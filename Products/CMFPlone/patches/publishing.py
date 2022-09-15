@@ -2,9 +2,9 @@
 # Plus extras for properties.
 # Plus Products.PloneHotfix20210518.
 from OFS.PropertyManager import PropertyManager
-from Products.CMFPlone.Portal import PloneSite
-from plone.dexterity.content import Item
 from plone.dexterity.content import Container
+from plone.dexterity.content import Item
+from Products.CMFPlone.Portal import PloneSite
 
 
 def delete_method_docstring(klass, method_name):

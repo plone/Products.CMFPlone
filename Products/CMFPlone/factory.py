@@ -1,8 +1,8 @@
 from logging import getLogger
+from plone.base.interfaces import INonInstallable
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.events import SiteManagerCreatedEvent
-from plone.base.interfaces import INonInstallable
 from Products.CMFPlone.Portal import PloneSite
 from Products.GenericSetup.tool import SetupTool
 from zope.component import queryUtility
@@ -10,6 +10,7 @@ from zope.component.hooks import setSite
 from zope.event import notify
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectCreatedEvent
+
 
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'

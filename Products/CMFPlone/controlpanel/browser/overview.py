@@ -1,18 +1,19 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from App.config import getConfiguration
+from plone.app.registry.browser import controlpanel
 from plone.base.interfaces.controlpanel import IMailSchema
+from plone.memoize.instance import memoize
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from plone.app.registry.browser import controlpanel
-from plone.memoize.instance import memoize
-from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 from ZPublisher.HTTPRequest import WSGIRequest
 
 import pkg_resources
 import warnings
+
 
 try:
     import plone.app.event

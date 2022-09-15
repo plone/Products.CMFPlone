@@ -45,7 +45,6 @@ import time
 import urllib
 
 
-
 logger = logging.getLogger('Plone')
 
 _marker = object()

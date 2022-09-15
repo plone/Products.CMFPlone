@@ -1,5 +1,6 @@
 from zope.deferredimport import deprecated
 
+
 deprecated(
     "Import from Products.CMFPlone.patterns.tinymce instead",
     TinyMCESettingsGenerator="Products.CMFPlone.patterns.tinymce.TinyMCESettingsGenerator",  # noqa: E501

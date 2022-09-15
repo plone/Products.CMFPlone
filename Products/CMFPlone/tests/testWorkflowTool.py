@@ -1,8 +1,12 @@
-from zope.interface import directlyProvides, Interface
-from zope.component import provideAdapter, getGlobalSiteManager
-from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.tests.dummy import Dummy, DummyWorkflowChainAdapter
 from Products.CMFCore.interfaces import IWorkflowTool
+from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests.dummy import Dummy
+from Products.CMFPlone.tests.dummy import DummyWorkflowChainAdapter
+from zope.component import getGlobalSiteManager
+from zope.component import provideAdapter
+from zope.interface import directlyProvides
+from zope.interface import Interface
+
 
 default_user = PloneTestCase.default_user
 

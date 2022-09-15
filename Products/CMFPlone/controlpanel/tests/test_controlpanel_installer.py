@@ -32,8 +32,7 @@ class AddonsIntegrationTest(unittest.TestCase):
         ])
 
     def test_installer_view(self):
-        from Products.CMFPlone.controlpanel.browser.quickinstaller import \
-            InstallerView
+        from Products.CMFPlone.controlpanel.browser.quickinstaller import InstallerView
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="installer")
         self.assertTrue(isinstance(view, InstallerView))

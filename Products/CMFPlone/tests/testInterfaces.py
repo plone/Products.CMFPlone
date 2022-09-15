@@ -14,8 +14,10 @@ from Products.CMFPlone.TypesTool import TypesTool
 from Products.CMFPlone.URLTool import URLTool
 from Products.CMFPlone.WorkflowTool import WorkflowTool
 from unittest import TestCase
-from zope.interface import implementedBy, providedBy
+from zope.interface import implementedBy
+from zope.interface import providedBy
 from zope.interface.interface import InterfaceClass
+
 
 # for Python 2
 try:
@@ -64,10 +66,10 @@ class InterfaceTest(TestCase):
 
     def interfaceImplementedByInstanceOf(self, klass, interface):
         """ tests if the klass implements the interface in the right way """
-        from zope.interface.verify import verifyClass
-        from zope.interface.exceptions \
-            import BrokenImplementation, DoesNotImplement
+        from zope.interface.exceptions import BrokenImplementation
         from zope.interface.exceptions import BrokenMethodImplementation
+        from zope.interface.exceptions import DoesNotImplement
+        from zope.interface.verify import verifyClass
 
         # is the class really implemented by the given interface?
         self.assertTrue(interface.implementedBy(klass),
@@ -83,10 +85,10 @@ class InterfaceTest(TestCase):
 
     def interfaceImplementedBy(self, instance, interface):
         """ tests if the instance implements the interface in the right way """
-        from zope.interface.verify import verifyObject
-        from zope.interface.exceptions \
-            import BrokenImplementation, DoesNotImplement
+        from zope.interface.exceptions import BrokenImplementation
         from zope.interface.exceptions import BrokenMethodImplementation
+        from zope.interface.exceptions import DoesNotImplement
+        from zope.interface.verify import verifyObject
 
         # is the class really implemented by the given interface?
         self.assertTrue(interface.providedBy(instance),
@@ -170,10 +172,10 @@ class zope_interface_test(TestCase):
     def interfaceImplementedBy(self, klass, interface):
         """ tests if the klass implements the interface in the right way """
 
-        from zope.interface.verify import verifyClass
-        from zope.interface.exceptions \
-            import BrokenImplementation, DoesNotImplement
+        from zope.interface.exceptions import BrokenImplementation
         from zope.interface.exceptions import BrokenMethodImplementation
+        from zope.interface.exceptions import DoesNotImplement
+        from zope.interface.verify import verifyClass
 
         # is the class really implemented by the given interface?
         self.assertTrue(interface.implementedBy(klass),
@@ -189,10 +191,10 @@ class zope_interface_test(TestCase):
 
     def interfaceProvidedBy(self, instance, interface):
         """ tests if the instance implements the interface in the right way """
-        from zope.interface.verify import verifyObject
-        from zope.interface.exceptions \
-            import BrokenImplementation, DoesNotImplement
+        from zope.interface.exceptions import BrokenImplementation
         from zope.interface.exceptions import BrokenMethodImplementation
+        from zope.interface.exceptions import DoesNotImplement
+        from zope.interface.verify import verifyObject
 
         # is the class really implemented by the given interface?
         self.assertTrue(interface.providedBy(instance),

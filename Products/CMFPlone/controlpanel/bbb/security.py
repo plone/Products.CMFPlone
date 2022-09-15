@@ -1,11 +1,11 @@
-from Products.CMFCore.utils import getToolByName
-from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.base.interfaces import ISecuritySchema
+from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
 from zope.component import adapts
 from zope.component import getUtility
-from zope.interface import implementer
 from zope.component.hooks import getSite
+from zope.interface import implementer
 
 
 @implementer(ISecuritySchema)
