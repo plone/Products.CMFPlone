@@ -1,4 +1,5 @@
-from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.testing.zope import Browser
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 
@@ -11,12 +12,13 @@ class RelationsControlPanelFunctionalTest(unittest.TestCase):
     layer = PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 
     def _add_broken_relation(self):
-        import transaction
         from persistent.list import PersistentList
         from z3c.relationfield import RelationValue
         from zope.component import getUtility
         from zope.intid.interfaces import IIntIds
         from zope.lifecycleevent import modified
+
+        import transaction
 
         self.portal.invokeFactory("Document", id="doc1", title="doc1")
         doc1 = self.portal["doc1"]
@@ -42,7 +44,6 @@ class RelationsControlPanelFunctionalTest(unittest.TestCase):
 
     def test_inspect_realtions_form_action(self):
         from io import StringIO
-
         from lxml import etree
 
         self.browser.open(f"{self.portal_url}/@@inspect-relations")
@@ -55,7 +56,6 @@ class RelationsControlPanelFunctionalTest(unittest.TestCase):
 
     def test_rebuild_relations_links(self):
         from io import StringIO
-
         from lxml import etree
 
         # first we need a broken relation

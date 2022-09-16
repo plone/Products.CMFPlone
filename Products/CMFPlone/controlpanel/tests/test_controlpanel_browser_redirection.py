@@ -3,10 +3,10 @@ from plone.app.redirector.interfaces import IRedirectionStorage
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.base.batch import Batch
+from plone.base.utils import safe_bytes
 from plone.testing.zope import Browser
 from Products.CMFPlone.controlpanel.browser.redirects import RedirectionSet
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-from plone.base.utils import safe_bytes
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
@@ -471,8 +471,8 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertEqual(storage.get('/plone/alias3'), '/plone/test-folder')
 
     def test_manage_aliases_navigation_root(self):
-        from zope.interface import alsoProvides
         from plone.app.layout.navigation.interfaces import INavigationRoot
+        from zope.interface import alsoProvides
 
         storage = getUtility(IRedirectionStorage)
         folder = self.portal['test-folder']

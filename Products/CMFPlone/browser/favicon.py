@@ -1,9 +1,9 @@
-from Products.CMFPlone.interfaces import ISiteSchema
 from plone.formwidget.namedfile.converter import b64decode_file
 from plone.memoize import ram
 from plone.namedfile.browser import DisplayFile
 from plone.namedfile.file import NamedImage
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import ISiteSchema
 from zope.component import getUtility
 
 import os.path

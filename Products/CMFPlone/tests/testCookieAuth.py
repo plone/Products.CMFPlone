@@ -6,6 +6,7 @@ from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 
 import unittest
 
+
 try:
     from base64 import encodebytes
 except ImportError:

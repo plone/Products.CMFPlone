@@ -1,13 +1,13 @@
 from email import message_from_string
 from email.header import Header
-from plone.registry.interfaces import IRegistry
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from plone.base.interfaces import ILoginHelpForm
 from plone.base.interfaces import ILoginHelpFormSchema
 from plone.base.interfaces import ISecuritySchema
 from plone.base.interfaces.controlpanel import IMailSchema
 from plone.base.utils import safe_text
+from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 from smtplib import SMTPException

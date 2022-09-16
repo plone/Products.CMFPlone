@@ -1,7 +1,8 @@
-from Products.CMFPlone import PloneMessageFactory as _
-from plone.base.interfaces.controlpanel import IImagingSchema
 from logging import getLogger
 from plone.app.registry.browser import controlpanel
+from plone.base.interfaces.controlpanel import IImagingSchema
+from Products.CMFPlone import PloneMessageFactory as _
+
 
 log = getLogger('Plone')
 

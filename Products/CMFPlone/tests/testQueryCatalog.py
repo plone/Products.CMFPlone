@@ -1,9 +1,9 @@
 # Test queryCatalog and plone search forms
 from plone.app.textfield.value import RichTextValue
-from plone.registry.interfaces import IRegistry
 from plone.base.interfaces import INavigationSchema
 from plone.base.interfaces import ISearchSchema
 from plone.base.interfaces.syndication import ISiteSyndicationSettings
+from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.tests import PloneTestCase
 from Products.ZCTextIndex.ParseTree import ParseError
 from zExceptions import NotFound

@@ -13,7 +13,8 @@ from Products.CMFCore.permissions import ManagePortal
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.factory import addPloneSite
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.GenericSetup import BASE, EXTENSION
+from Products.GenericSetup import BASE
+from Products.GenericSetup import EXTENSION
 from Products.GenericSetup import profile_registry
 from Products.GenericSetup.upgrade import normalize_version
 from urllib import parse
@@ -24,7 +25,8 @@ from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.i18n.interfaces import IUserPreferredLanguages
-from zope.i18n.locales import locales, LoadLocaleError
+from zope.i18n.locales import LoadLocaleError
+from zope.i18n.locales import locales
 from zope.interface import alsoProvides
 from zope.interface import Interface
 from zope.publisher.browser import BrowserView

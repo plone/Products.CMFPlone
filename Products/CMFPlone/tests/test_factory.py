@@ -1,10 +1,10 @@
 from plone.dexterity.interfaces import IDexterityFTI
-from Products.CMFPlone.factory import addPloneSite
-from Products.CMFPlone.utils import get_installer
-from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
-from zope.component import queryUtility
-from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.factory import addPloneSite
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+from Products.CMFPlone.utils import get_installer
+from zope.component import getUtility
+from zope.component import queryUtility
 
 import unittest
 

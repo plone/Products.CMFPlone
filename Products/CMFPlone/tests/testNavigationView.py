@@ -1,11 +1,11 @@
+from plone.base.interfaces import IHideFromBreadcrumbs
+from plone.base.interfaces import INavigationSchema
+from plone.base.interfaces import ITypesSchema
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.browser.navigation import CatalogNavigationBreadcrumbs
 from Products.CMFPlone.browser.navigation import CatalogNavigationTabs
 from Products.CMFPlone.browser.navigation import CatalogSiteMap
 from Products.CMFPlone.browser.navigation import PhysicalNavigationBreadcrumbs
-from plone.base.interfaces import IHideFromBreadcrumbs
-from plone.base.interfaces import INavigationSchema
-from plone.base.interfaces import ITypesSchema
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests.utils import folder_position
@@ -15,6 +15,7 @@ from zope.interface import directlyProvides
 
 import random
 import string
+
 
 portal_name = PloneTestCase.portal_name
 
@@ -788,7 +789,8 @@ class TestPhysicalBreadCrumbs(TestBaseBreadCrumbs):
 
 
 def test_suite():
-    from unittest import TestSuite, makeSuite
+    from unittest import makeSuite
+    from unittest import TestSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestCatalogPortalTabs))
     suite.addTest(makeSuite(TestSiteMap))

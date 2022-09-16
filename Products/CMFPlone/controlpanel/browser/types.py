@@ -1,24 +1,24 @@
 from Acquisition import aq_inner
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.controlpanel.events import ConfigurationChangedEvent
-from plone.base.interfaces import ISearchSchema
-from plone.base.interfaces import ITypesSchema
-from plone.base.utils import safe_text
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.statusmessages.interfaces import IStatusMessage
 from operator import itemgetter
 from plone.app.workflow.remap import remap_workflow
 from plone.autoform.form import AutoExtensibleForm
+from plone.base.interfaces import ISearchSchema
+from plone.base.interfaces import ITypesSchema
+from plone.base.utils import safe_text
+from plone.dexterity.interfaces import IDexterityFTI
 from plone.memoize.instance import memoize
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.controlpanel.events import ConfigurationChangedEvent
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.statusmessages.interfaces import IStatusMessage
 from z3c.form import button
 from z3c.form import form
 from zope.component import getUtility
 from zope.event import notify
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
-from plone.dexterity.interfaces import IDexterityFTI
 
 
 def format_description(text, request=None):

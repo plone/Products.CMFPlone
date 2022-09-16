@@ -254,6 +254,7 @@ class TestSafeFormatter(PloneTestCase):
 
     def test_cook_zope3_page_templates_normal(self):
         from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+
         # Note: on Plone 3.3 this is actually a ZopeTwoPageTemplateFile.
         pt = ViewPageTemplateFile('normal_zope3_page_template.pt')
         hack_pt(pt)
@@ -266,6 +267,7 @@ class TestSafeFormatter(PloneTestCase):
 
     def test_cook_zope3_page_templates_using_format(self):
         from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+
         # Note: on Plone 3.3 this is actually a ZopeTwoPageTemplateFile.
         pt = ViewPageTemplateFile('using_format_zope3_page_template.pt')
         hack_pt(pt)
@@ -292,6 +294,7 @@ class TestFunctionalSafeFormatter(PloneTestCase):
 
     def test_safe_format_properly_applied(self):
         from AccessControl.SimpleObjectPolicies import ContainerAssertions
+
         import types
         ca = ContainerAssertions
         self.assertTrue(str in ca)
@@ -375,9 +378,9 @@ class TestFunctionalSafeFormatter(PloneTestCase):
         self.assertRaises(Unauthorized, pt.pt_render)
 
     def assert_is_checked_via_security_manager(self, pt_content):
-        from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
-        from AccessControl.SecurityManager import setSecurityPolicy
         from AccessControl.SecurityManagement import noSecurityManager
+        from AccessControl.SecurityManager import setSecurityPolicy
+        from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
 
         pt = ZopePageTemplate('mytemplate', pt_content)
         noSecurityManager()

@@ -1,17 +1,14 @@
-from zExceptions import NotFound
-from Products.Five import BrowserView
-
-from zope.schema.interfaces import IVocabularyFactory
-from zope.interface import implementer
-from zope.component import getUtility
-
-from plone.base.interfaces.syndication import ISyndicationUtil
 from plone.base.interfaces.syndication import IFeedSettings
 from plone.base.interfaces.syndication import ISiteSyndicationSettings
 from plone.base.interfaces.syndication import ISyndicatable
-
-from plone.registry.interfaces import IRegistry
+from plone.base.interfaces.syndication import ISyndicationUtil
 from plone.memoize.view import memoize
+from plone.registry.interfaces import IRegistry
+from Products.Five import BrowserView
+from zExceptions import NotFound
+from zope.component import getUtility
+from zope.interface import implementer
+from zope.schema.interfaces import IVocabularyFactory
 
 
 @implementer(ISyndicationUtil)

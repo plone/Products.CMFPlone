@@ -1,4 +1,6 @@
-from plone.protect import protect, CheckAuthenticator
+from plone.protect import CheckAuthenticator
+from plone.protect import protect
+
 
 # apply csrf-protection decorator to the given callable
 patch = protect(CheckAuthenticator)
@@ -36,8 +38,9 @@ def applyPatches():
     GroupsTool.removePrincipalFromGroup = patch(
         GroupsTool.removePrincipalFromGroup)
 
-    from Products.PluggableAuthService.PluggableAuthService import \
-        PluggableAuthService as PAS
+    from Products.PluggableAuthService.PluggableAuthService import (
+        PluggableAuthService as PAS,
+    )
     PAS.userFolderAddUser = patch(PAS.userFolderAddUser)
     PAS.userFolderEditUser = patch(PAS.userFolderEditUser)
     PAS.userFolderDelUsers = patch(PAS.userFolderDelUsers)

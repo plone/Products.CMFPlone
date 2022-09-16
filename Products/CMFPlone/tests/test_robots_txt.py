@@ -1,7 +1,8 @@
 from plone.base.interfaces import ISiteSchema
-from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zope.component import getUtility
+
 import unittest
 
 

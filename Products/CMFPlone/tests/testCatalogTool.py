@@ -1324,8 +1324,8 @@ class TestIndexers(PloneTestCase):
         self.assertFalse(is_folderish(f)())
 
     def test_provided(self):
-        from Products.CMFCore.interfaces import IContentish
         from plone.indexer.interfaces import IIndexableObjectWrapper
+        from Products.CMFCore.interfaces import IContentish
         from Products.CMFCore.tests.base.dummy import DummyContent
 
         obj = DummyContent()

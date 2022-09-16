@@ -1,5 +1,6 @@
 from OFS.ObjectManager import ObjectManager
 
+
 # FIXME: This no longer works with the new ZMI
 
 ADD_PLONE_SITE_HTML = '''

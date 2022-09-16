@@ -1,20 +1,20 @@
 from Acquisition import aq_inner
-from zExceptions import Forbidden
 from itertools import chain
-
-from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
-from zope.component import getUtility
 from plone.protect import CheckAuthenticator
-from zope.component import getMultiAdapter
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
-
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.controlpanel.browser.usergroups import (
+    UsersGroupsControlPanelView,
+)
 from Products.CMFPlone.utils import normalizeString
-from Products.CMFPlone.controlpanel.browser.usergroups import \
-    UsersGroupsControlPanelView
+from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
+from zExceptions import Forbidden
+from zope.component import getMultiAdapter
+from zope.component import getUtility
 
 import logging
+
 
 logger = logging.getLogger('Products.CMFPlone')
 

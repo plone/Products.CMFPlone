@@ -1,5 +1,7 @@
-import unittest
 from Products.CMFPlone.tests import PloneTestCase
+
+import unittest
+
 
 try:
     import Products.ExternalEditor

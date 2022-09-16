@@ -1,10 +1,10 @@
+from io import BytesIO
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing.bbb import PloneTestCase
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.authenticator import AuthenticatorView
-from io import BytesIO
 from zope.component import queryUtility
 
 

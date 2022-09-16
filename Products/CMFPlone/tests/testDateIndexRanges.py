@@ -1,6 +1,5 @@
-from Products.CMFPlone.tests import PloneTestCase
-
 from DateTime import DateTime
+from Products.CMFPlone.tests import PloneTestCase
 
 
 class TestDateIndexRanges(PloneTestCase.PloneTestCase):

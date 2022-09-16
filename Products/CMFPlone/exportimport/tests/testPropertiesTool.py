@@ -3,6 +3,7 @@ from Products.CMFPlone.PropertiesTool import PropertiesTool
 from Products.CMFPlone.PropertiesTool import SimpleItemWithProperties
 from zope.component import provideAdapter
 
+
 _PROPERTYSHEET_XML = b"""\
 <?xml version="1.0" encoding="utf-8"?>
 <object name="site_properties" meta_type="Plone Property Sheet">
@@ -27,8 +28,9 @@ _PROPERTIESTOOL_XML = b"""\
 class PropertySheetXMLAdapterTests(BodyAdapterTestCase):
 
     def _getTargetClass(self):
-        from Products.CMFPlone.exportimport.propertiestool \
-            import SimpleItemWithPropertiesXMLAdapter
+        from Products.CMFPlone.exportimport.propertiestool import (
+            SimpleItemWithPropertiesXMLAdapter,
+        )
         return SimpleItemWithPropertiesXMLAdapter
 
     def _populate(self, obj):
@@ -38,8 +40,8 @@ class PropertySheetXMLAdapterTests(BodyAdapterTestCase):
 
     def setUp(self):
         from plone.base.interfaces import ISimpleItemWithProperties
-        from Products.GenericSetup.interfaces import ISetupEnviron
         from Products.GenericSetup.interfaces import IBody
+        from Products.GenericSetup.interfaces import ISetupEnviron
         provideAdapter(
             self._getTargetClass(),
             (ISimpleItemWithProperties, ISetupEnviron), IBody)
@@ -51,8 +53,9 @@ class PropertySheetXMLAdapterTests(BodyAdapterTestCase):
 class PropertiesToolXMLAdapterTests(BodyAdapterTestCase):
 
     def _getTargetClass(self):
-        from Products.CMFPlone.exportimport.propertiestool \
-            import PlonePropertiesToolXMLAdapter
+        from Products.CMFPlone.exportimport.propertiestool import (
+            PlonePropertiesToolXMLAdapter,
+        )
         return PlonePropertiesToolXMLAdapter
 
     def _populate(self, obj):
@@ -64,12 +67,13 @@ class PropertiesToolXMLAdapterTests(BodyAdapterTestCase):
             'displayPublicationDateInByline', True, 'boolean')
 
     def setUp(self):
-        from Products.CMFPlone.exportimport.propertiestool \
-            import SimpleItemWithPropertiesXMLAdapter
         from plone.base.interfaces import IPropertiesTool
         from plone.base.interfaces import ISimpleItemWithProperties
-        from Products.GenericSetup.interfaces import ISetupEnviron
+        from Products.CMFPlone.exportimport.propertiestool import (
+            SimpleItemWithPropertiesXMLAdapter,
+        )
         from Products.GenericSetup.interfaces import IBody
+        from Products.GenericSetup.interfaces import ISetupEnviron
         provideAdapter(
             self._getTargetClass(), (IPropertiesTool, ISetupEnviron), IBody)
         provideAdapter(
@@ -81,7 +85,8 @@ class PropertiesToolXMLAdapterTests(BodyAdapterTestCase):
 
 
 def test_suite():
-    from unittest import TestSuite, makeSuite
+    from unittest import makeSuite
+    from unittest import TestSuite
     suite = TestSuite()
     suite.addTest(makeSuite(PropertySheetXMLAdapterTests))
     suite.addTest(makeSuite(PropertiesToolXMLAdapterTests))

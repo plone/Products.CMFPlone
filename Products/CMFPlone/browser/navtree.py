@@ -8,14 +8,16 @@ from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.navtree import NavtreeStrategyBase
 from plone.app.layout.navigation.root import getNavigationRoot
+from plone.base.interfaces import INavigationSchema
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
-from plone.base.interfaces import INavigationSchema
-from zope.component import getMultiAdapter, queryUtility
+from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.component import queryUtility
 from zope.interface import implementer
+
 
 # Strategy objects for the navtree creation code. You can subclass these
 # to expand the default navtree behaviour, and pass instances of your

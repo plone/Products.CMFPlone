@@ -1,14 +1,17 @@
-import unittest
-
 from AccessControl import Unauthorized
+from plone.base.interfaces.controlpanel import IMailSchema
+from plone.base.interfaces.controlpanel import ISiteSchema
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.permissions import AddPortalMember
 from Products.CMFPlone.RegistrationTool import _checkEmail
-from plone.base.interfaces.controlpanel import IMailSchema, ISiteSchema
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
-from plone.registry.interfaces import IRegistry
-from zope.component import getSiteManager, getUtility
+from zope.component import getSiteManager
+from zope.component import getUtility
+
+import unittest
+
 
 member_id = 'new_member'
 
