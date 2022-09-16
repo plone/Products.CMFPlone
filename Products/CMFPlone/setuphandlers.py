@@ -1,14 +1,15 @@
 from Acquisition import aq_base
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.factory import _DEFAULT_PROFILE
+from borg.localrole.utils import replace_local_role_manager
 from plone.base.interfaces import IMigrationTool
 from plone.base.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
-from Products.StandardCacheManagers.AcceleratedHTTPCacheManager \
-    import AcceleratedHTTPCacheManager
-from Products.StandardCacheManagers.RAMCacheManager import RAMCacheManager
-from borg.localrole.utils import replace_local_role_manager
 from plone.registry.interfaces import IRegistry
 from plone.resource.interfaces import IResourceDirectory
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.factory import _DEFAULT_PROFILE
+from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import (
+    AcceleratedHTTPCacheManager,
+)
+from Products.StandardCacheManagers.RAMCacheManager import RAMCacheManager
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.component.hooks import getSite

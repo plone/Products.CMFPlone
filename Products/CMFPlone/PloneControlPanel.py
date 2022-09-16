@@ -3,16 +3,18 @@ from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 from OFS.Folder import Folder
 from OFS.PropertyManager import PropertyManager
+from plone.base.interfaces import IControlPanel
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
-from Products.CMFCore.Expression import Expression, createExprContext
-from Products.CMFCore.permissions import ManagePortal, View
+from Products.CMFCore.Expression import createExprContext
+from Products.CMFCore.Expression import Expression
+from Products.CMFCore.permissions import ManagePortal
+from Products.CMFCore.permissions import View
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone import PloneMessageFactory as _
-from plone.base.interfaces import IControlPanel
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from zope.component.hooks import getSite
 from zope.i18n import translate

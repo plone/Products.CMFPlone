@@ -1,14 +1,12 @@
 from plone.app.testing import setRoles
-from plone.base.interfaces import IUserGroupsSettingsSchema
-from zope.component import getAdapter
 from plone.app.testing import TEST_USER_ID
+from plone.base.interfaces import IUserGroupsSettingsSchema
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+from zope.component import getAdapter
 from zope.component import getUtility
 
 import unittest
-
-from Products.CMFPlone.testing import \
-    PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
 
 class UserGroupsControlPanelAdapterTest(unittest.TestCase):

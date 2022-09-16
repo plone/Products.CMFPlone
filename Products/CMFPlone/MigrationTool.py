@@ -1,16 +1,16 @@
 from AccessControl import ClassSecurityInfo
-from AccessControl.requestmethod import postonly
 from AccessControl.class_init import InitializeClass
+from AccessControl.requestmethod import postonly
 from App.config import getConfiguration
+from io import StringIO
 from OFS.SimpleItem import SimpleItem
+from plone.base.interfaces import IMigrationTool
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
-from plone.base.interfaces import IMigrationTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from io import StringIO
 from ZODB.POSException import ConflictError
 from zope.interface import implementer
 
@@ -18,6 +18,7 @@ import logging
 import pkg_resources
 import sys
 import transaction
+
 
 logger = logging.getLogger('plone.app.upgrade')
 _upgradePaths = {}

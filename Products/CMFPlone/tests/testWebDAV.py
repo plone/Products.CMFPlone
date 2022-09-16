@@ -448,7 +448,8 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
 
 def test_suite():
-    from unittest import TestSuite, makeSuite
+    from unittest import makeSuite
+    from unittest import TestSuite
     suite = TestSuite()
     if bbb.HAS_ZSERVER:
         suite.addTest(makeSuite(TestDAVProperties))

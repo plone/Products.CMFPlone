@@ -2,6 +2,7 @@ from unittest import TestSuite
 
 import doctest
 
+
 def test_suite():
     suites = (
         doctest.DocTestSuite('Products.CMFPlone.TranslationServiceTool'),

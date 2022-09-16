@@ -1,5 +1,5 @@
-from Products.CMFPlone.tests import PloneTestCase
 from plone.app.layout.nextprevious.interfaces import INextPreviousProvider
+from Products.CMFPlone.tests import PloneTestCase
 
 
 class TestNextPrevious(PloneTestCase.PloneTestCase):

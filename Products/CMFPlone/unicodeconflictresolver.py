@@ -1,7 +1,6 @@
-from zope.interface import implementer
-from Products.PageTemplates.interfaces import IUnicodeEncodingConflictResolver
-
 from Products.CMFPlone.patches.unicodehacks import _unicode_replace
+from Products.PageTemplates.interfaces import IUnicodeEncodingConflictResolver
+from zope.interface import implementer
 
 
 @implementer(IUnicodeEncodingConflictResolver)

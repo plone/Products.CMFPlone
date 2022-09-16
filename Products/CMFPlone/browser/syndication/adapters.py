@@ -1,32 +1,26 @@
-from zope.component.hooks import getSite
-from zope.component import adapts
-from zope.interface import implementer
-from zope.interface import Interface
-from zope.component import getMultiAdapter
-from zope.component import queryMultiAdapter
-from zope.component import getUtility
-
 from DateTime import DateTime
 from OFS.interfaces import IItem
-
-from Products.CMFCore.utils import getToolByName
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
+from plone.app.contenttypes.behaviors.leadimage import ILeadImage
 from plone.base.interfaces.syndication import IFeed
 from plone.base.interfaces.syndication import IFeedItem
-from plone.base.interfaces.syndication import ISearchFeed
 from plone.base.interfaces.syndication import IFeedSettings
-from Products.CMFPlone.utils import getSiteLogo
-
-from plone.registry.interfaces import IRegistry
-from plone.uuid.interfaces import IUUID
-from zope.cachedescriptors.property import Lazy as lazy_property
-
+from plone.base.interfaces.syndication import ISearchFeed
 from plone.dexterity.interfaces import IDexterityContent
-from plone.rfc822.interfaces import IPrimaryFieldInfo
 from plone.namedfile.interfaces import INamedField
-
-from plone.app.contenttypes.behaviors.leadimage import ILeadImage
+from plone.registry.interfaces import IRegistry
+from plone.rfc822.interfaces import IPrimaryFieldInfo
+from plone.uuid.interfaces import IUUID
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import getSiteLogo
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.cachedescriptors.property import Lazy as lazy_property
+from zope.component import adapts
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+from zope.component import queryMultiAdapter
+from zope.component.hooks import getSite
+from zope.interface import implementer
+from zope.interface import Interface
 
 
 class BaseFeedData:

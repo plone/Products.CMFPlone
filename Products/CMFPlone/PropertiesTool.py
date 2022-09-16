@@ -1,24 +1,23 @@
-from Acquisition import aq_parent, aq_inner
-from Products.CMFCore.permissions import ManagePortal
-from Products.CMFCore.utils import UniqueObject
-
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from OFS.Folder import Folder
+from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from App.special_dtml import DTMLFile
-from zope.interface import implementer
-
+from OFS.Folder import Folder
 from OFS.PropertyManager import PropertyManager
 from OFS.SimpleItem import SimpleItem
-from AccessControl import ClassSecurityInfo
+from plone.base.interfaces import IPropertiesTool
+from plone.base.interfaces import ISimpleItemWithProperties
+from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.permissions import ManagePortal
+from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from plone.base.interfaces \
-    import IPropertiesTool, ISimpleItemWithProperties
 from Products.CMFPlone.utils import WWW_DIR
 from Products.MailHost.interfaces import IMailHost
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from zope.component import getUtility
 from zope.component import queryUtility
-from Products.CMFCore.interfaces import ISiteRoot
+from zope.interface import implementer
 
 
 @implementer(IPropertiesTool)

@@ -1,6 +1,7 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zope.component import getMultiAdapter
+
 import unittest
 
 

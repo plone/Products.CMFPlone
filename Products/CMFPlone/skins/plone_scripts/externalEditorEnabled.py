@@ -10,6 +10,7 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import webdav_enabled
 
+
 portal = getToolByName(context, 'portal_url').getPortalObject()
 mtool = getToolByName(portal, 'portal_membership')
 

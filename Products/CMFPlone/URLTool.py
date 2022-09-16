@@ -1,11 +1,11 @@
 from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from AccessControl.class_init import InitializeClass
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.URLTool import URLTool as BaseTool
-from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.patches.gtbn import rewrap_in_request_container
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from zope.component import getUtility
 
 

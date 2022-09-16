@@ -1,4 +1,6 @@
-from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING  # noqa
+from plone.app.contenttypes.testing import (  # noqa
+    PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING,
+)
 from plone.app.testing import PLONE_FUNCTIONAL_TESTING
 from plone.testing import layered
 

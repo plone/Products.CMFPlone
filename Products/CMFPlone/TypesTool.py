@@ -1,10 +1,8 @@
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
-
 from Products.CMFCore.ActionInformation import ActionInfo
 from Products.CMFCore.interfaces import IAction
 from Products.CMFCore.TypesTool import TypesTool as BaseTool
-
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 

@@ -4,15 +4,16 @@
 from AccessControl import Unauthorized
 from plone.app.testing import login
 from plone.app.testing import logout
+from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from plone.app.testing import setRoles
 from plone.app.testing.bbb import _createMemberarea
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from ZPublisher.utils import basic_auth_encode
 
 import unittest
+
 
 user_role = 'Member'
 

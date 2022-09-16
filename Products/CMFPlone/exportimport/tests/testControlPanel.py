@@ -1,9 +1,10 @@
 from OFS.Folder import Folder
-from Products.CMFPlone.exportimport.tests.base import BodyAdapterTestCase
 from plone.base.interfaces import IControlPanel
+from Products.CMFPlone.exportimport.tests.base import BodyAdapterTestCase
 from Products.CMFPlone.PloneControlPanel import PloneControlPanel
-from zope.component import provideUtility
 from zope.component import provideAdapter
+from zope.component import provideUtility
+
 
 _CONTROLPANEL_XML = b"""\
 <?xml version="1.0" encoding="utf-8"?>
@@ -22,8 +23,7 @@ _CONTROLPANEL_XML = b"""\
 class ControlPanelXMLAdapterTests(BodyAdapterTestCase):
 
     def _getTargetClass(self):
-        from Products.CMFPlone.exportimport.controlpanel \
-            import ControlPanelXMLAdapter
+        from Products.CMFPlone.exportimport.controlpanel import ControlPanelXMLAdapter
         return ControlPanelXMLAdapter
 
     def _populate(self, obj):
@@ -39,8 +39,8 @@ class ControlPanelXMLAdapterTests(BodyAdapterTestCase):
         )
 
     def setUp(self):
-        from Products.GenericSetup.interfaces import ISetupEnviron
         from Products.GenericSetup.interfaces import IBody
+        from Products.GenericSetup.interfaces import ISetupEnviron
         self.site = Folder('site')
         self.site.portal_control_panel = PloneControlPanel()
         provideUtility(self.site.portal_control_panel, IControlPanel)
@@ -51,7 +51,8 @@ class ControlPanelXMLAdapterTests(BodyAdapterTestCase):
 
 
 def test_suite():
-    from unittest import TestSuite, makeSuite
+    from unittest import makeSuite
+    from unittest import TestSuite
     suite = TestSuite()
     suite.addTest(makeSuite(ControlPanelXMLAdapterTests))
     return suite

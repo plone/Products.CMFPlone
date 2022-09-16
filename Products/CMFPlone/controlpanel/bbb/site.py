@@ -1,10 +1,10 @@
-from zope.schema.fieldproperty import FieldProperty
 from plone.base.interfaces import IPloneSiteRoot
 from plone.base.interfaces import ISiteSchema
 from plone.registry.interfaces import IRegistry
 from zope.component import adapts
 from zope.component import getUtility
 from zope.interface import implementer
+from zope.schema.fieldproperty import FieldProperty
 
 
 @implementer(ISiteSchema)

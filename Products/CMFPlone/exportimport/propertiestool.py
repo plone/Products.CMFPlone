@@ -3,17 +3,17 @@
 $Id:$
 """
 
-from zope.component import queryMultiAdapter
+from plone.base.interfaces import IPropertiesTool as IPlonePropertiesTool
+from plone.base.interfaces import ISimpleItemWithProperties
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.PropertiesTool import SimpleItemWithProperties
 from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.interfaces import INode
-from Products.GenericSetup.utils import XMLAdapterBase
 from Products.GenericSetup.utils import ObjectManagerHelpers
 from Products.GenericSetup.utils import PropertyManagerHelpers
-from Products.CMFPlone.PropertiesTool import SimpleItemWithProperties
-from plone.base.interfaces \
-    import IPropertiesTool as IPlonePropertiesTool
-from plone.base.interfaces import ISimpleItemWithProperties
+from Products.GenericSetup.utils import XMLAdapterBase
+from zope.component import queryMultiAdapter
+
 
 _FILENAME = 'propertiestool.xml'
 

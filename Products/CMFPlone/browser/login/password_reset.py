@@ -17,8 +17,7 @@ from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PlonePAS.events import UserInitialLoginInEvent
 from Products.PlonePAS.events import UserLoggedInEvent
-from Products.PluggableAuthService.interfaces.plugins import \
-    ICredentialsUpdatePlugin
+from Products.PluggableAuthService.interfaces.plugins import ICredentialsUpdatePlugin
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getMultiAdapter
 from zope.component import getUtility

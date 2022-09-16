@@ -1,11 +1,9 @@
-from zope.component import getMultiAdapter
-from zope.component import getUtility
 from plone.i18n.interfaces import ILanguageSchema
 from plone.registry.interfaces import IRegistry
-
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.testing import \
-    PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+from zope.component import getMultiAdapter
+from zope.component import getUtility
 
 import unittest
 

@@ -1,11 +1,11 @@
 from AccessControl import Unauthorized
 from plone.app.testing import SITE_OWNER_NAME
+from plone.base.interfaces import ISecuritySchema
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from plone.base.interfaces import ISecuritySchema
+from Products.CMFPlone.RegistrationTool import get_member_by_login_name
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.utils import set_own_login_name
-from Products.CMFPlone.RegistrationTool import get_member_by_login_name
 from zope.component import getUtility
 
 

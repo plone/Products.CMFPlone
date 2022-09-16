@@ -4,13 +4,13 @@ from borg.localrole.interfaces import IFactoryTempFolder
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.widgets.utils import get_relateditems_options
 from plone.app.z3cform.utils import call_callables
-from plone.registry.interfaces import IRegistry
-from plone.uuid.interfaces import IUUID
-from Products.CMFCore.interfaces._content import IFolderish
 from plone.base.interfaces import IImagingSchema
 from plone.base.interfaces import ILinkSchema
 from plone.base.interfaces import IPatternsSettings
 from plone.base.interfaces import IPloneSiteRoot
+from plone.registry.interfaces import IRegistry
+from plone.uuid.interfaces import IUUID
+from Products.CMFCore.interfaces._content import IFolderish
 from Products.CMFPlone.patterns.tinymce import TinyMCESettingsGenerator
 from Products.CMFPlone.utils import get_portal
 from zope.component import getUtility

@@ -1,10 +1,10 @@
+from plone.base.interfaces import IPloneSiteRoot
+from plone.base.interfaces import IUserGroupsSettingsSchema
+from plone.registry.interfaces import IRegistry
 from zope.component import adapts
 from zope.component import getUtility
-from zope.interface import implementer
 from zope.component.hooks import getSite
-from plone.registry.interfaces import IRegistry
-from plone.base.interfaces import IUserGroupsSettingsSchema
-from plone.base.interfaces import IPloneSiteRoot
+from zope.interface import implementer
 
 
 @implementer(IUserGroupsSettingsSchema)

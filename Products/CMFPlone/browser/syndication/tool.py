@@ -1,21 +1,17 @@
-from Acquisition import aq_parent
 from AccessControl import Unauthorized
-
-from zope.component import getAdapter
-from zope.interface import implementer
-from zope.component import getUtility
-
-from Products.CMFCore.interfaces import ISyndicationTool
-from Products.CMFCore.utils import registerToolInterface
-from Products.CMFCore.utils import _checkPermission
-from Products.CMFCore.permissions import ModifyPortalContent
-from Products.CMFCore.permissions import ManagePortal
-
+from Acquisition import aq_parent
 from plone.base.interfaces.syndication import IFeed
-from plone.base.interfaces.syndication import ISiteSyndicationSettings
 from plone.base.interfaces.syndication import IFeedSettings
-
+from plone.base.interfaces.syndication import ISiteSyndicationSettings
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.interfaces import ISyndicationTool
+from Products.CMFCore.permissions import ManagePortal
+from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFCore.utils import _checkPermission
+from Products.CMFCore.utils import registerToolInterface
+from zope.component import getAdapter
+from zope.component import getUtility
+from zope.interface import implementer
 
 
 @implementer(ISyndicationTool)

@@ -8,8 +8,8 @@
 # for more information about this.  please also note that these tests
 # may produce false positives when run in the GMT time zone!
 
-from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from DateTime import DateTime
+from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 

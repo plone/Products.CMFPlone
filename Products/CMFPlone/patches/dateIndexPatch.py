@@ -1,8 +1,9 @@
 # Avoid OverflowErrors in Date*Indexes
 
+from DateTime import DateTime
 from Products.PluginIndexes.DateIndex.DateIndex import DateIndex
 from Products.PluginIndexes.DateRangeIndex.DateRangeIndex import DateRangeIndex
-from DateTime import DateTime
+
 
 maxDate = DateTime(4008, 0)
 

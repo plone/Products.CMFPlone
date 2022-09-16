@@ -1,9 +1,7 @@
-from zope.interface import implementer
-
+from Products.CMFPlone.browser.interfaces import IGlobalStatusMessage
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from Products.CMFPlone.browser.interfaces import IGlobalStatusMessage
+from zope.interface import implementer
 
 
 @implementer(IGlobalStatusMessage)

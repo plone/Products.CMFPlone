@@ -1,5 +1,6 @@
 from persistent.list import PersistentList
-from plone.app.testing import TEST_USER_ID, setRoles
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
 from Products.CMFPlone.controlpanel.browser.relations import get_relations_stats
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from z3c.relationfield import RelationValue
