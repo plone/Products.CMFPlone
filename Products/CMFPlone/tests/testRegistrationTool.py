@@ -1,4 +1,6 @@
+from re import T
 from AccessControl import Unauthorized
+from plone.app.testing import TEST_USER_PASSWORD
 from plone.base.interfaces.controlpanel import IMailSchema
 from plone.base.interfaces.controlpanel import ISiteSchema
 from plone.registry.interfaces import IRegistry
@@ -32,7 +34,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.portal.acl_users._doAddGroup("groupid", ())
 
     def testJoinCreatesUser(self):
-        self.registration.addMember(member_id, 'secret',
+        self.registration.addMember(member_id, TEST_USER_PASSWORD,
                                     properties={'username': member_id,
                                                 'email': 'foo@bar.com'})
         user = self.portal.acl_users.getUserById(member_id)
@@ -42,12 +44,12 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         root_user = self.portal.aq_parent.acl_users.users.listUserIds()[0]
         self.assertRaises(ValueError,
                           self.registration.addMember,
-                          root_user, 'secret',
+                          root_user, TEST_USER_PASSWORD,
                           properties={'username': root_user,
                                       'email': 'foo@bar.com'})
 
     def testJoinWithUppercaseEmailCreatesUser(self):
-        self.registration.addMember(member_id, 'secret',
+        self.registration.addMember(member_id, TEST_USER_PASSWORD,
                                     properties={'username': member_id,
                                                 'email': 'FOO@BAR.COM'})
         user = self.portal.acl_users.getUserById(member_id)
@@ -56,13 +58,13 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
     def testJoinWithoutEmailRaisesValueError(self):
         self.assertRaises(ValueError,
                           self.registration.addMember,
-                          member_id, 'secret',
+                          member_id, TEST_USER_PASSWORD,
                           properties={'username': member_id, 'email': ''})
 
     def testJoinWithBadEmailRaisesValueError(self):
         self.assertRaises(ValueError,
                           self.registration.addMember,
-                          member_id, 'secret',
+                          member_id, TEST_USER_PASSWORD,
                           properties={
                               'username': member_id,
                               'email': 'foo@bar.com, fred@bedrock.com'})
@@ -70,23 +72,23 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
     def testJoinAsExistingMemberRaisesValueError(self):
         self.assertRaises(ValueError,
                           self.registration.addMember,
-                          PloneTestCase.default_user, 'secret',
+                          PloneTestCase.default_user, TEST_USER_PASSWORD,
                           properties={'username': 'Dr FooBar',
                                       'email': 'foo@bar.com'})
 
     def testJoinAsExistingNonMemberUserRaisesValueError(self):
         # http://dev.plone.org/plone/ticket/3221
-        self.portal.acl_users._doAddUser(member_id, 'secret', [], [])
+        self.portal.acl_users._doAddUser(member_id, TEST_USER_PASSWORD, [], [])
         self.assertRaises(ValueError,
                           self.registration.addMember,
-                          member_id, 'secret',
+                          member_id, TEST_USER_PASSWORD,
                           properties={'username': member_id,
                                       'email': 'foo@bar.com'})
 
     def testJoinWithPortalIdAsUsernameRaisesValueError(self):
         self.assertRaises(ValueError,
                           self.registration.addMember,
-                          self.portal.getId(), 'secret',
+                          self.portal.getId(), TEST_USER_PASSWORD,
                           properties={'username': 'Dr FooBar',
                                       'email': 'foo@bar.com'})
 
@@ -104,23 +106,23 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
             'validpassword', confirm='anotherpassword') is None)
 
     def testTestPasswordValidityPolicy(self):
-        self.assertIsNone(self.registration.testPasswordValidity("abcde", confirm=None))
+        self.assertIsNone(self.registration.testPasswordValidity(TEST_USER_PASSWORD, confirm=None))
         self.assertEqual(
             self.registration.testPasswordValidity("abcd", confirm=None),
-            "Your password must contain at least 5 characters.",
+            "Your password must contain at least ${min_chars} characters.",
         )
         # Password validity is checked with an empty password
         # to get a nice help message to show for the input field.
         self.assertEqual(
             self.registration.testPasswordValidity("", confirm=None),
-            "Minimum 5 characters.",
+            "Minimum ${min_chars} characters.",
         )
 
     def testPasValidation(self):
-        self.assertIsNone(self.registration.pasValidation("password", "abcde"))
+        self.assertIsNone(self.registration.pasValidation("password", TEST_USER_PASSWORD))
         self.assertEqual(
             self.registration.pasValidation("password", "abcd"),
-            "Your password must contain at least 5 characters.",
+            "Your password must contain at least ${min_chars} characters.",
         )
 
     def testNewIdAllowed(self):
@@ -144,7 +146,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         sm.unregisterUtility(provided=IMailHost)
         sm.registerUtility(mails, IMailHost)
         # Register a user
-        self.registration.addMember(member_id, 'secret',
+        self.registration.addMember(member_id, TEST_USER_PASSWORD,
                                     properties={'username': member_id,
                                                 'email': 'foo@bar.com'})
 
@@ -174,7 +176,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         sm.unregisterUtility(provided=IMailHost)
         sm.registerUtility(mails, IMailHost)
         # Register a user
-        self.registration.addMember(member_id, 'secret',
+        self.registration.addMember(member_id, TEST_USER_PASSWORD,
                                     properties={'username': member_id,
                                                 'email': 'foo@bar.com'})
         registry = getUtility(IRegistry)
@@ -203,7 +205,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         sm.unregisterUtility(provided=IMailHost)
         sm.registerUtility(mails, IMailHost)
         # Register a user
-        self.registration.addMember(member_id, 'secret',
+        self.registration.addMember(member_id, TEST_USER_PASSWORD,
                                     properties={'username': member_id,
                                                 'email': 'foo@bar.com'})
 
@@ -234,7 +236,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         sm.unregisterUtility(provided=IMailHost)
         sm.registerUtility(mails, IMailHost)
         # Register a user
-        self.registration.addMember(member_id, 'secret',
+        self.registration.addMember(member_id, TEST_USER_PASSWORD,
                                     properties={'username': member_id,
                                                 'email': 'foo@bar.com'})
         registry = getUtility(IRegistry)

@@ -28,14 +28,14 @@ class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
         self.browser.handleErrors = False
         # we have to create a user on the zope root. this just does not work
         # with plone.app.testing and TEST_USER or SITE_OWNER
-        self.app.acl_users.userFolderAddUser('app', 'secret', ['Manager'], [])
+        self.app.acl_users.userFolderAddUser('app', TEST_USER_PASSWORD, ['Manager'], [])
         login(self.app['acl_users'], 'app')
 
         import transaction
         transaction.commit()
         self.browser.addHeader(
             'Authorization',
-            'Basic {}:{}'.format('app', 'secret')
+            'Basic {}:{}'.format('app', TEST_USER_PASSWORD)
         )
 
         self.site_administrator_browser = Browser(self.app)

@@ -127,8 +127,8 @@ Now register a new user:
 
   >>> browser.getControl('User Name').value = 'jsmith'
   >>> browser.getControl('Email').value = 'jsmith@example.com'
-  >>> browser.getControl('Password').value = 'secret'
-  >>> browser.getControl('Confirm password').value = 'secret'
+  >>> browser.getControl('Password').value = TEST_USER_PASSWORD
+  >>> browser.getControl('Confirm password').value = TEST_USER_PASSWORD
   >>> browser.getControl('Register').click()
 
 XXX Make sure we don't have a way to receive our credentials via
@@ -143,7 +143,7 @@ We are not logged in yet at this point.  Let's try to log in:
   >>> browser.url.startswith('http://nohost/plone/login')
   True
   >>> browser.getControl(name='__ac_name').value = 'jsmith'
-  >>> browser.getControl(name='__ac_password').value = 'secret'
+  >>> browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
   >>> browser.getControl(name='buttons.login').click()
   >>> "You are now logged in" in browser.contents
   True
@@ -168,7 +168,7 @@ We check if the old password still works.
 
   >>> browser.open('http://nohost/plone/login')
   >>> browser.getControl(name='__ac_name').value = 'jsmith'
-  >>> browser.getControl(name='__ac_password').value = 'secret'
+  >>> browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
   >>> browser.getControl(name='buttons.login').click()
 
 We should be logged in now:
@@ -377,7 +377,7 @@ Log out again and then join:
 
 We shouldn't be able to fill in our password:
 
-  >>> browser.getControl('Password').value = 'secret' # doctest: +ELLIPSIS
+  >>> browser.getControl('Password').value = TEST_USER_PASSWORD # doctest: +ELLIPSIS
   Traceback (most recent call last):
   ...
   LookupError: label 'Password'
@@ -425,8 +425,8 @@ Now that we have the address, we will reset our password:
   >>> "Please fill out the form below to set your password" in browser.contents
   True
   >>> browser.getControl(name='userid').value = 'bsmith'
-  >>> browser.getControl(name='password').value = 'secret'
-  >>> browser.getControl(name='password2').value = 'secret'
+  >>> browser.getControl(name='password').value = TEST_USER_PASSWORD
+  >>> browser.getControl(name='password2').value = TEST_USER_PASSWORD
   >>> browser.getControl("Set my password").click()
   >>> "Password reset successful, you are logged in now!" in browser.contents
   True
@@ -471,8 +471,8 @@ We navigate to the Users Adding page and register a new user:
   >>> browser.open('http://nohost/plone/@@new-user')
   >>> browser.getControl('User Name').value = 'wwwsmith'
   >>> browser.getControl('Email').value = 'wwwsmith@example.com'
-  >>> browser.getControl('Password').value = 'secret'
-  >>> browser.getControl('Confirm password').value = 'secret'
+  >>> browser.getControl('Password').value = TEST_USER_PASSWORD
+  >>> browser.getControl('Confirm password').value = TEST_USER_PASSWORD
   >>> browser.getControl('Send a confirmation mail with a link to set the password').selected = True
 
 Now register and logout:

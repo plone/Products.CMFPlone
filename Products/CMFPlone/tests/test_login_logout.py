@@ -63,14 +63,14 @@ class TestLoginLogout(unittest.TestCase):
         """
         self.layer['app'].acl_users.userFolderAddUser(
             'rootuser',
-            'secret',
+            TEST_USER_PASSWORD,
             [],
             []
         )
         transaction.commit()
         self.browser.open('http://nohost/plone/login')
         self.browser.getControl('Login Name').value = 'rootuser'
-        self.browser.getControl('Password').value = 'secret'
+        self.browser.getControl('Password').value = TEST_USER_PASSWORD
         self.browser.getControl('Log in').click()
         self.assertIn('You are now logged in', self.browser.contents)
 
