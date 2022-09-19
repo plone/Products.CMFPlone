@@ -108,8 +108,10 @@ class PropertiesTool(PloneBaseTool, Folder, UniqueObject):
 
 
     @deprecate(
-        "The portal portal_properties tool will be removed. "
-        "Use the portal_registry instead."
+        "The portal portal_properties tool will be removed in Plone 6.1. "
+        "Use the portal_registry instead. "
+        "Check https://github.com/plone/Products.CMFPlone/issues/125 "
+        "for more details."
     )
     def hasProperty(self, id):
         return super().hasProperty(id)
@@ -135,8 +137,10 @@ class SimpleItemWithProperties (PropertyManager, SimpleItem):
                       + SimpleItem.manage_options)
 
     @deprecate(
-        "The portal portal_properties tool will be removed. "
-        "Use the portal_registry instead."
+        "The portal portal_properties tool will be removed in Plone 6.1. "
+        "Use the portal_registry instead. "
+        "Check https://github.com/plone/Products.CMFPlone/issues/125 "
+        "for more details."
     )
     def hasProperty(self, id):
         return super().hasProperty(id)
