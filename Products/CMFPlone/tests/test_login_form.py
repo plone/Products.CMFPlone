@@ -1,5 +1,6 @@
 from DateTime import DateTime
 from plone.app.z3cform.interfaces import IPloneFormLayer
+from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFCore.permissions import SetOwnProperties
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
@@ -43,7 +44,7 @@ class TestLoginForm(unittest.TestCase):
     def test_form_update(self):
         self._setup_authenticator_request()
         self.request['__ac_name'] = 'test'
-        self.request['__ac_password'] = 'secret'
+        self.request['__ac_password'] = TEST_USER_PASSWORD
         self.request['form.widgets.came_from'] = ['']
         form = self.portal.restrictedTraverse(FORM_ID)
         form.update()
@@ -61,7 +62,7 @@ class TestLoginForm(unittest.TestCase):
     def test_failsafe_login_form_update(self):
         self._setup_authenticator_request()
         self.request['__ac_name'] = 'test'
-        self.request['__ac_password'] = 'secret'
+        self.request['__ac_password'] = TEST_USER_PASSWORD
         self.request['form.widgets.came_from'] = ['']
         form = self.portal.restrictedTraverse('failsafe_login')
         form.update()

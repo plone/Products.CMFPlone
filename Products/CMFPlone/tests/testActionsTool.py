@@ -1,6 +1,7 @@
 from Acquisition import Explicit
 from OFS.SimpleItem import Item
 from plone.app.testing import login
+from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInfo
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
@@ -23,7 +24,7 @@ class TestActionsTool(unittest.TestCase):
     def setUp(self):
         self.portal = self.layer['portal']
         self.actions = self.portal.portal_actions
-        self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
+        self.portal.acl_users._doAddUser('user1', TEST_USER_PASSWORD, ['Member'], [])
         self.portal.invokeFactory('Folder', 'f1')
         self.folder = self.portal['f1']
 

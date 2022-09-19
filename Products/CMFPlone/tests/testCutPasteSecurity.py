@@ -1,6 +1,7 @@
 from AccessControl import Unauthorized
 from Acquisition import aq_base
 from OFS.CopySupport import CopyError
+from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFCore.interfaces import IContentish
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from urllib.error import HTTPError
@@ -14,8 +15,8 @@ import transaction
 class TestCutPasteSecurity(PloneTestCase):
 
     def afterSetUp(self):
-        self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
-        self.portal.acl_users._doAddUser('user2', 'secret', ['Member'], [])
+        self.portal.acl_users._doAddUser('user1', TEST_USER_PASSWORD, ['Member'], [])
+        self.portal.acl_users._doAddUser('user2', TEST_USER_PASSWORD, ['Member'], [])
         self.membership = self.portal.portal_membership
         self.createMemberarea('user1')
         self.createMemberarea('user2')

@@ -1,5 +1,6 @@
 from Acquisition import Implicit
 from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
 from plone.base.interfaces import IReorderedEvent
 from plone.base.interfaces import ISearchSchema
 from plone.registry.interfaces import IRegistry
@@ -171,7 +172,7 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.utils = self.portal.plone_utils
         self.membership = self.portal.portal_membership
-        self.membership.addMember("new_owner", "secret", ["Member"], [])
+        self.membership.addMember("new_owner", TEST_USER_PASSWORD, ["Member"], [])
         self.folder.invokeFactory("Folder", "folder1")
         self.folder1 = self.folder.folder1
         self.folder1.invokeFactory("Folder", "folder2")

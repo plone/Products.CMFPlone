@@ -98,8 +98,8 @@ be able to add new users himself if he wishes so:
   >>> browser.getControl('Full Name').value = 'John Doe'
   >>> browser.getControl('User Name').value = 'john'
   >>> browser.getControl('Email').value = 'john@foo-security.com'
-  >>> browser.getControl('Password').value = 'y0d4Wg'
-  >>> browser.getControl('Confirm password').value = 'y0d4Wg'
+  >>> browser.getControl('Password').value = 'correct horse battery staple'
+  >>> browser.getControl('Confirm password').value = 'correct horse battery staple'
   >>> browser.getControl('Register').click()
   >>> 'User added.' in browser.contents
   True
@@ -145,17 +145,17 @@ know the current passwort to exploit this, but we'll check nevertheless:
 
   >>> browser.open('http://nohost/plone/@@change-password')
   >>> browser.getControl('Current password').value = TEST_USER_PASSWORD
-  >>> browser.getControl('New password').value = 'y0d4Wg'
-  >>> browser.getControl('Confirm password').value = 'y0d4Wg'
+  >>> browser.getControl('New password').value = 'new password'
+  >>> browser.getControl('Confirm password').value = 'new password'
   >>> browser.getControl('Change Password').click()
   >>> browser.contents
   '...Info...Password changed...'
 
   >>> browser.goBack()
   >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
-  >>> browser.getControl('Current password').value = 'y0d4Wg'
-  >>> browser.getControl('New password').value = 'y0d4Wg!'
-  >>> browser.getControl('Confirm password').value = 'y0d4Wg!'
+  >>> browser.getControl('Current password').value = 'new password'
+  >>> browser.getControl('New password').value = 'newer password'
+  >>> browser.getControl('Confirm password').value = 'newer password'
   >>> browser.getControl('Change Password').click()
   Traceback (most recent call last):
   ...
@@ -201,8 +201,8 @@ anymore (which at the same time tests the security control panel):
   >>> browser.getLink('Add New User').click()
   >>> browser.getControl('User Name').value = 'johnny'
   >>> browser.getControl('Email').value = 'john@foo-security.com'
-  >>> browser.getControl('Password').value = 'y0d4Wg!'
-  >>> browser.getControl('Confirm password').value = 'y0d4Wg!'
+  >>> browser.getControl('Password').value = TEST_USER_PASSWORD
+  >>> browser.getControl('Confirm password').value = TEST_USER_PASSWORD
   >>> browser.getControl('Register').click()
   >>> browser.contents
   '...Info...User added...'
@@ -423,12 +423,12 @@ limitations, which is why we need to log in as the portal owner first:
 
   >>> app_browser = Browser(app)
   >>> app_browser.handleErrors = False
-  >>> app.acl_users.userFolderAddUser('app', 'secret', ['Manager'], [])
+  >>> app.acl_users.userFolderAddUser('app', TEST_USER_PASSWORD, ['Manager'], [])
   >>> from plone.testing import zope
   >>> zope.logout()
   >>> zope.login(app['acl_users'], 'app')
   >>> import transaction; transaction.commit()
-  >>> app_browser.addHeader('Authorization', 'Basic app:secret')
+  >>> app_browser.addHeader('Authorization', f'Basic app:{TEST_USER_PASSWORD}')
   >>> app_browser.open('http://nohost/plone/@@overview-controlpanel')
   >>> app_browser.getLink('Maintenance').click()
   >>> app_browser.getControl(name='_authenticator', index=0).value = 'invalid!'

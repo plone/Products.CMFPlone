@@ -1,5 +1,6 @@
 from AccessControl import Unauthorized
 from Acquisition import aq_base
+from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zExceptions.unauthorized import Unauthorized as zUnauthorized
 from zope.component import getMultiAdapter
@@ -9,10 +10,10 @@ class TestContentSecurity(PloneTestCase):
 
     def afterSetUp(self):
         self.request = self.layer["request"]
-        self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
-        self.portal.acl_users._doAddUser('user2', 'secret', ['Member'], [])
+        self.portal.acl_users._doAddUser('user1', TEST_USER_PASSWORD, ['Member'], [])
+        self.portal.acl_users._doAddUser('user2', TEST_USER_PASSWORD, ['Member'], [])
         #_ender_'s member who's not a Member usecase
-        self.portal.acl_users._doAddUser('user3', 'secret', [], [])
+        self.portal.acl_users._doAddUser('user3', TEST_USER_PASSWORD, [], [])
         self.membership = self.portal.portal_membership
         self.workflow = self.portal.portal_workflow
         self.createMemberarea('user1')

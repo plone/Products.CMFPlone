@@ -1,5 +1,6 @@
 from AccessControl import Unauthorized
 from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
 from plone.base.interfaces import ISecuritySchema
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
@@ -30,7 +31,7 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
 
     def testSetLoginNameOfOther(self):
         memship = self.portal.portal_membership
-        memship.addMember('maurits', 'secret', [], [])
+        memship.addMember('maurits', TEST_USER_PASSWORD, [], [])
         member = memship.getMemberById('maurits')
         self.assertRaises(Unauthorized, set_own_login_name, member, 'vanrees')
         # The admin *should* be able to change the login name of
