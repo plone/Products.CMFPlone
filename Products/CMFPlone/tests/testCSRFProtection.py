@@ -50,13 +50,13 @@ class AuthenticatorTestCase(PloneTestCase):
     def test_RegistrationTool_editMember(self):
         self.checkAuthenticator(
             '/portal_registration/editMember',
-            'member_id=%s&password=y0d4Wg&properties.foo:record=' % (
+            'member_id=%s&password=correct+horse+battery+staple&properties.foo:record=' % (
                 TEST_USER_ID))
 
     def test_MembershipTool_setPassword(self):
         self.checkAuthenticator(
             '/portal_membership/setPassword',
-            'password=y0d4Wg',
+            'password=correct+horse+battery+staple',
             status=204)
 
     def test_MembershipTool_deleteMemberArea(self):

@@ -272,8 +272,8 @@ I enter valid user data
     Wait until page contains element  name=form.widgets.password_ctl
     Input text for sure  form.widgets.username       myuser
     Input text for sure  form.widgets.email          my@email.eu
-    Input text for sure  form.widgets.password       123123
-    Input text for sure  form.widgets.password_ctl   123123
+    Input text for sure  form.widgets.password       newpassword
+    Input text for sure  form.widgets.password_ctl   newpassword
 
 I enter valid register user data
     Wait until page contains element  name=form.widgets.username

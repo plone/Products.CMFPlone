@@ -3,6 +3,7 @@ We want to test the search form and the resulting page.
 Let's create a user to test upon
 see: testControlPanelScripts.txt:
     >>> from DateTime import DateTime
+    >>> from plone.app.testing import TEST_USER_PASSWORD
     >>> app = layer['app']
     >>> portal = layer['portal']
     >>> fullname = 'Test User Full Name'
@@ -10,7 +11,7 @@ see: testControlPanelScripts.txt:
     >>> email = 'test@plone.org'
     >>> last_login_time = DateTime()
     >>> membership = portal.portal_membership
-    >>> membership.addMember(username, 'secret', [], [])
+    >>> membership.addMember(username, TEST_USER_PASSWORD, [], [])
     >>> member = membership.getMemberById(username)
     >>> member.setMemberProperties({'fullname': fullname, 'email': email,
     ...                             'last_login_time': last_login_time,})
