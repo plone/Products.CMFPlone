@@ -2,11 +2,11 @@
 # Helper objects for the Plone test suite
 #
 from ComputedAttribute import ComputedAttribute
+from io import BytesIO
 from OFS.Folder import Folder as SimpleFolder
 from OFS.SimpleItem import SimpleItem
 from plone.base.interfaces import INonStructuralFolder
 from plone.base.interfaces import IWorkflowChain
-from io import BytesIO
 from zope.interface import implementer
 from zope.interface import Interface
 from ZPublisher.HTTPRequest import FileUpload

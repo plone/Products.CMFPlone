@@ -8,11 +8,10 @@
 # root. Rolling back the abovementioned checkin restores functionality.
 #
 
-from Products.CMFPlone.tests import PloneTestCase
-
-from AccessControl.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
 from OFS.SimpleItem import SimpleItem
+from Products.CMFPlone.tests import PloneTestCase
 
 
 class AllowedItem(SimpleItem):

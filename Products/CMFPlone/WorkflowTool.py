@@ -1,18 +1,18 @@
-from zope.component import getMultiAdapter
-
+from AccessControl import ClassSecurityInfo
+from AccessControl import getSecurityManager
+from AccessControl.class_init import InitializeClass
+from Acquisition import aq_base
+from plone.base.interfaces import IWorkflowChain
+from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.WorkflowTool import WorkflowTool as BaseTool
-from plone.base.interfaces import IWorkflowChain
-from ZODB.POSException import ConflictError
-from Acquisition import aq_base
-
-from AccessControl.class_init import InitializeClass
-from AccessControl import getSecurityManager, ClassSecurityInfo
-from Products.CMFCore.permissions import ManagePortal
-from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION
+from ZODB.POSException import ConflictError
+from zope.component import getMultiAdapter
 
 import pkg_resources
+
 
 try:
     pkg_resources.get_distribution('plone.app.multilingual')
@@ -258,7 +258,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                                 objects_by_path[absurl] = (o.modified(), o)
 
         results = objects_by_path.values()
-        return tuple([obj[1] for obj in sorted(results)])
+        return tuple(obj[1] for obj in sorted(results))
 
     security.declareProtected(ManagePortal, 'getChainForPortalType')
 

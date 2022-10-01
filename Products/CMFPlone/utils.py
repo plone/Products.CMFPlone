@@ -79,9 +79,9 @@ deprecated_import(
 
 deprecated_import(
     "Import from plone.namedfile.utils instead (will be removed in Plone 7)",
-    getHighPixelDensityScales="plone.namedfile.utils.getHighPixelDensityScales",
-    getAllowedSizes="plone.namedfile.utils.getAllowedSizes",
-    getQuality="plone.namedfile.utils.getQuality",
+    getHighPixelDensityScales="plone.namedfile.utils:getHighPixelDensityScales",
+    getAllowedSizes="plone.namedfile.utils:getAllowedSizes",
+    getQuality="plone.namedfile.utils:getQuality",
 )
 
 @deprecate("Use plone.base.utils.safe_bytes instead (will be removed in Plone 7)")
@@ -400,7 +400,7 @@ def _unrestricted_rename(container, id, new_id):
             action='manage_main'))
     ob = container._getOb(id)
     if not ob.cb_isMoveable():
-        raise CopyError('Not Supported {}'.format(escape(id)))
+        raise CopyError(f'Not Supported {escape(id)}')
     try:
         ob._notifyOfCopyTo(container, op=1)
     except:

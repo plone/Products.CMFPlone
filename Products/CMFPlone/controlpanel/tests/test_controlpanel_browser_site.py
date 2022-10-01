@@ -1,13 +1,15 @@
-from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
+from io import BytesIO
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.base.interfaces import ISiteSchema
 from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
-from plone.base.interfaces import ISiteSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-from io import BytesIO
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
 import unittest
+
 
 # Red pixel with filename pixel.png
 SITE_LOGO_BASE64 = b'filenameb64:cGl4ZWwucG5n;datab64:iVBORw0KGgoAAAANSUhEUgA'\

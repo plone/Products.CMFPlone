@@ -17,8 +17,7 @@ from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PlonePAS.events import UserInitialLoginInEvent
 from Products.PlonePAS.events import UserLoggedInEvent
-from Products.PluggableAuthService.interfaces.plugins import \
-    ICredentialsUpdatePlugin
+from Products.PluggableAuthService.interfaces.plugins import ICredentialsUpdatePlugin
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -48,7 +47,7 @@ class PasswordResetToolView(BrowserView):
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
         from_ = mail_settings.email_from_name
         mail = mail_settings.email_from_address
-        return '"{}" <{}>'.format(self.encode_mail_header(from_).encode(), mail)
+        return f'"{self.encode_mail_header(from_).encode()}" <{mail}>'
 
     def registered_notify_subject(self):
         portal_name = self.portal_state().portal_title()

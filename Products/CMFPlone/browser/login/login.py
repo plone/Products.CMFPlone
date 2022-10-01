@@ -1,14 +1,14 @@
 from DateTime import DateTime
 from plone.app.users.browser.passwordpanel import PasswordPanel
-from plone.registry.interfaces import IRegistry
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from plone.base.interfaces import IForcePasswordChange
 from plone.base.interfaces import IInitialLogin
 from plone.base.interfaces import ILoginForm
 from plone.base.interfaces import ILoginFormSchema
 from plone.base.interfaces import IRedirectAfterLogin
 from plone.base.interfaces import ISecuritySchema
+from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from urllib import parse
@@ -251,7 +251,7 @@ class RequireLoginView(BrowserView):
             url = f'{portal.absolute_url():s}/login'
             came_from = self.request.get('came_from', None)
             if came_from:
-                url += '?came_from={:s}'.format(parse.quote(came_from))
+                url += f'?came_from={parse.quote(came_from):s}'
         else:
             url = f'{portal.absolute_url():s}/insufficient-privileges'
 

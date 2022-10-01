@@ -1,13 +1,14 @@
-from itertools import chain
 from Acquisition import aq_inner
-from Products.CMFPlone.controlpanel.browser.usergroups import \
-    UsersGroupsControlPanelView
-from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
+from itertools import chain
 from plone.protect import CheckAuthenticator
-from zope.component import getMultiAdapter
-from zExceptions import Forbidden
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.controlpanel.browser.usergroups import (
+    UsersGroupsControlPanelView,
+)
+from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
+from zExceptions import Forbidden
+from zope.component import getMultiAdapter
 
 
 class GroupsOverviewControlPanel(UsersGroupsControlPanelView):

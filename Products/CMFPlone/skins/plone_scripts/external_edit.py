@@ -9,6 +9,7 @@
 
 from Products.PythonScripts.standard import url_quote
 
+
 request = context.REQUEST
 
 if 'Mac OS X' in request.get('HTTP_USER_AGENT', ''):

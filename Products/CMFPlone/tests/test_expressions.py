@@ -1,17 +1,23 @@
-# -*- coding: utf-8 -*-
 from AccessControl.class_init import InitializeClass
 from AccessControl.Permissions import view_management_screens
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
 from plone.testing.zope import Browser
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
+
 # Expressions.boboAwareZopeTraverse is a function
 # expression(s).BoboAwareZopeTraverse is a class
 # Import them with names that are easier to tell apart.
 from Products.PageTemplates.expression import BoboAwareZopeTraverse as TraverseClass
-from Products.PageTemplates.expression import TrustedBoboAwareZopeTraverse as TrustedTraverseClass
-from Products.PageTemplates.Expressions import boboAwareZopeTraverse as traverse_function
-from Products.PageTemplates.Expressions import trustedBoboAwareZopeTraverse as trusted_traverse_function
+from Products.PageTemplates.expression import (
+    TrustedBoboAwareZopeTraverse as TrustedTraverseClass,
+)
+from Products.PageTemplates.Expressions import (
+    boboAwareZopeTraverse as traverse_function,
+)
+from Products.PageTemplates.Expressions import (
+    trustedBoboAwareZopeTraverse as trusted_traverse_function,
+)
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from zExceptions import NotFound
 from zExceptions import Unauthorized
@@ -29,7 +35,7 @@ import unittest
 path = os.path.dirname(__file__)
 
 
-class DummyView(object):
+class DummyView:
 
     __name__ = "dummy-view"
     _authenticator = "secret"

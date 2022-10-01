@@ -1,8 +1,13 @@
-from zope.interface import directlyProvides, Interface
-from zope.component import provideAdapter, getGlobalSiteManager
-from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.tests.dummy import Dummy, DummyWorkflowChainAdapter
+from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFCore.interfaces import IWorkflowTool
+from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests.dummy import Dummy
+from Products.CMFPlone.tests.dummy import DummyWorkflowChainAdapter
+from zope.component import getGlobalSiteManager
+from zope.component import provideAdapter
+from zope.interface import directlyProvides
+from zope.interface import Interface
+
 
 default_user = PloneTestCase.default_user
 
@@ -17,10 +22,10 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.workflow = self.portal.portal_workflow
 
-        self.portal.acl_users._doAddUser('member', 'secret', ['Member'], [])
-        self.portal.acl_users._doAddUser('reviewer', 'secret',
+        self.portal.acl_users._doAddUser('member', TEST_USER_PASSWORD, ['Member'], [])
+        self.portal.acl_users._doAddUser('reviewer', TEST_USER_PASSWORD,
                                          ['Reviewer'], [])
-        self.portal.acl_users._doAddUser('manager', 'secret', ['Manager'], [])
+        self.portal.acl_users._doAddUser('manager', TEST_USER_PASSWORD, ['Manager'], [])
 
         self.folder.invokeFactory('Document', id='doc')
         self.doc = self.folder.doc

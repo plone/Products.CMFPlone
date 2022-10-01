@@ -1,12 +1,10 @@
+from plone.schema import Email
+from Products.CMFPlone import PloneMessageFactory as _
 from zope import schema
 from zope.interface import Attribute
 from zope.interface import Interface
 
-from plone.schema import Email
-
 import zope.deferredimport
-
-from Products.CMFPlone import PloneMessageFactory as _
 
 
 # This is used as a persistent marker interface, we need to provide an upgrade

@@ -1,8 +1,9 @@
-import plone.api as api
 from DateTime import DateTime
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import safe_nativestring
 from Products.Five import BrowserView
+
+import plone.api as api
 
 
 class ErrorLogUpdate(BrowserView):

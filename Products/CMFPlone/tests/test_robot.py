@@ -1,9 +1,10 @@
-from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_ROBOT_TESTING
 from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_ROBOT_TESTING
+
 import os
-import unittest
 import robotsuite
+import unittest
 
 
 def test_suite():

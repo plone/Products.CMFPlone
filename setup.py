@@ -1,5 +1,6 @@
-from setuptools import setup
 from setuptools import find_packages
+from setuptools import setup
+
 
 version = '6.0.0b3.dev0'
 
@@ -24,6 +25,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
     ],
+    python_requires='>=3.8',
     keywords='Plone CMF Python Zope CMS Webapplication',
     author='Plone Foundation',
     author_email='releasemanager@plone.org',

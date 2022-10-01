@@ -1,9 +1,10 @@
-from Products.CMFPlone import PloneMessageFactory as _
-from zExceptions import Forbidden
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.controlpanel.browser.usergroups import \
-    UsersGroupsControlPanelView
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.controlpanel.browser.usergroups import (
+    UsersGroupsControlPanelView,
+)
 from Products.CMFPlone.utils import normalizeString
+from zExceptions import Forbidden
 
 
 class GroupMembershipControlPanel(UsersGroupsControlPanelView):

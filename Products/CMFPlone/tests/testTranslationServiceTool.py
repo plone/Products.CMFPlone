@@ -1,7 +1,7 @@
 # Test toLocalizedTime script and TranslationServiceTool.
 
-from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.tests import PloneTestCase
 
 
 class TestUTranslate(PloneTestCase.PloneTestCase):

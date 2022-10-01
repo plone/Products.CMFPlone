@@ -5,6 +5,7 @@ from plone.app.textfield import RichTextValue
 from Products.CMFCore.tests.base.dummy import DummyContent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
 # adding UnicodeSplitterPatcth
 from Products.CMFPlone.UnicodeSplitter import CaseNormalizer
 from Products.CMFPlone.UnicodeSplitter import process_str

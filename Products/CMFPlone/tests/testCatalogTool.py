@@ -5,6 +5,7 @@ from OFS.ObjectManager import REPLACEABLE
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.textfield import RichTextValue
 from plone.dexterity.content import CEILING_DATE
 from plone.indexer.wrapper import IndexableObjectWrapper
@@ -365,7 +366,7 @@ class TestCatalogSearching(PloneTestCase):
         self.workflow = self.portal.portal_workflow
         self.groups = self.portal.portal_groups
 
-        self.portal.acl_users._doAddUser(user2, 'secret', [], [])
+        self.portal.acl_users._doAddUser(user2, TEST_USER_PASSWORD, [], [])
 
         self.folder.invokeFactory('Document', id='doc', text='foo')
         self.folder.invokeFactory('Folder', id='folder2')
@@ -1016,7 +1017,7 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.folder.invokeFactory('Document', id='doc')
 
         # Create unprivileged user
-        self.portal.acl_users._doAddUser(user2, 'secret', ['Member'], [])
+        self.portal.acl_users._doAddUser(user2, TEST_USER_PASSWORD, ['Member'], [])
 
     def nofx(self):
         # Removes effective and expires to make sure we only test
@@ -1324,8 +1325,8 @@ class TestIndexers(PloneTestCase):
         self.assertFalse(is_folderish(f)())
 
     def test_provided(self):
-        from Products.CMFCore.interfaces import IContentish
         from plone.indexer.interfaces import IIndexableObjectWrapper
+        from Products.CMFCore.interfaces import IContentish
         from Products.CMFCore.tests.base.dummy import DummyContent
 
         obj = DummyContent()

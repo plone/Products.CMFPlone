@@ -115,11 +115,11 @@ A user defined in the root user folder should be able to log in into
 the site:
 
     >>> browser.getLink('Home').click()
-    >>> app.acl_users.userFolderAddUser('rootuser', 'secret', [], [])
+    >>> app.acl_users.userFolderAddUser('rootuser', TEST_USER_PASSWORD, [], [])
     >>> transaction.commit()
     >>> browser.open('http://nohost/plone/login_form')
     >>> browser.getControl('Login Name').value = 'rootuser'
-    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> 'You are now logged in' in browser.contents
     True

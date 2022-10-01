@@ -45,7 +45,6 @@ import time
 import urllib
 
 
-
 logger = logging.getLogger('Plone')
 
 _marker = object()
@@ -151,8 +150,8 @@ def allowedRolesAndUsers(obj):
 @indexer(Interface)
 def object_provides(obj):
     return tuple(
-        [i.__identifier__ for i in providedBy(obj).flattened()
-         if i.__identifier__ not in DENIED_INTERFACES]
+        i.__identifier__ for i in providedBy(obj).flattened()
+         if i.__identifier__ not in DENIED_INTERFACES
     )
 
 

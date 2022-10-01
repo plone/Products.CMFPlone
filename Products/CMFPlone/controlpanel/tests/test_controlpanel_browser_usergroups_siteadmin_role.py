@@ -21,9 +21,9 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
 
     def _generateUsers(self):
         rtool = getToolByName(self.portal, 'portal_registration')
-        rtool.addMember('DIispfuF', 'secret', ['Member'], [])
-        rtool.addMember('siteadmin', 'secret', ['Site Administrator'], [])
-        rtool.addMember('root', 'secret', ['Manager'], [])
+        rtool.addMember('DIispfuF', TEST_USER_PASSWORD, ['Member'], [])
+        rtool.addMember('siteadmin', TEST_USER_PASSWORD, ['Site Administrator'], [])
+        rtool.addMember('root', TEST_USER_PASSWORD, ['Manager'], [])
 
     def setUp(self):
         self.app = self.layer['app']
@@ -108,7 +108,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
     def testNonManagersCannotDelegateManagerRoleForUsers(self):
         # a user without the Manager role cannot delegate the Manager role
         self.browser.addHeader(
-            'Authorization', 'Basic siteadmin:secret')
+            'Authorization', f'Basic siteadmin:{TEST_USER_PASSWORD}')
         self.browser.open(self.usergroups_url)
         form = {
             '_authenticator': self._get_authenticator(),
@@ -127,7 +127,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
         roles = self.portal.acl_users.getUserById('root').getRoles()
         self.assertEqual(['Manager', 'Authenticated'], roles)
         self.browser.addHeader(
-            'Authorization', 'Basic siteadmin:secret')
+            'Authorization', f'Basic siteadmin:{TEST_USER_PASSWORD}')
         self.browser.open(self.usergroups_url)
         form = {
             '_authenticator': self._get_authenticator(),
@@ -143,7 +143,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
 
     def testGroupManagerRoleCheckboxIsDisabledForNonManagers(self):
         self.browser.addHeader(
-            'Authorization', 'Basic siteadmin:secret')
+            'Authorization', f'Basic siteadmin:{TEST_USER_PASSWORD}')
         self.browser.open(self.groups_url)
         contents = self._simplify_white_space(self.browser.contents)
         self.assertTrue('<input type="checkbox" class="noborder" '
@@ -173,7 +173,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
     def testNonManagersCannotDelegateManagerRoleForGroups(self):
         # a user without the Manager role cannot delegate the Manager role
         self.browser.addHeader(
-            'Authorization', 'Basic siteadmin:secret')
+            'Authorization', f'Basic siteadmin:{TEST_USER_PASSWORD}')
 
         self.browser.open(self.groups_url)
         form = {
@@ -191,7 +191,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
 
     def testNonManagersCanEditOtherRolesOfGroupsWithManagerRole(self):
         self.browser.addHeader(
-            'Authorization', 'Basic siteadmin:secret')
+            'Authorization', f'Basic siteadmin:{TEST_USER_PASSWORD}')
 
         roles = self.portal.acl_users.getUserById('root').getRoles()
         self.assertEqual(['Manager', 'Authenticated'], roles)
@@ -210,7 +210,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
 
     def test_usergroup_usermembership_blocks_escalation(self):
         self.browser.addHeader(
-            'Authorization', 'Basic siteadmin:secret')
+            'Authorization', f'Basic siteadmin:{TEST_USER_PASSWORD}')
 
         # groups granting the Manager role shouldn't show as a valid option to
         # add
@@ -241,7 +241,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
         # should not show section to add users for groups granting the Manager
         # role
         self.browser.addHeader(
-            'Authorization', 'Basic siteadmin:secret')
+            'Authorization', f'Basic siteadmin:{TEST_USER_PASSWORD}')
 
         self.browser.open(
             self.portal_url + '/@@usergroup-groupmembership?groupname=Administrators'
@@ -268,7 +268,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
         # groups granting the Manager role should not be available for
         # selection
         self.browser.addHeader(
-            'Authorization', 'Basic siteadmin:secret')
+            'Authorization', f'Basic siteadmin:{TEST_USER_PASSWORD}')
         self.browser.open(self.portal_url + '/@@new-user')
         contents = self._simplify_white_space(self.browser.contents)
         self.assertFalse(
@@ -281,8 +281,8 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
             '_authenticator': self._get_authenticator(),
             'form.widgets.username': 'newuser',
             'form.widgets.email': 'newuser@example.com',
-            'form.widgets.password': 'secret',
-            'form.widgets.password_ctl': 'secret',
+            'form.widgets.password': TEST_USER_PASSWORD,
+            'form.widgets.password_ctl': TEST_USER_PASSWORD,
             'form.widgets.groups:list': 'Administrators',
             'form.widgets.groups-empty-marker': '1',
             'form.buttons.register': 'Register',
@@ -297,7 +297,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
         # a user without the Manager role cannot delete a user with the
         # Manager role
         self.browser.addHeader(
-            'Authorization', 'Basic siteadmin:secret')
+            'Authorization', f'Basic siteadmin:{TEST_USER_PASSWORD}')
 
         self.browser.open(self.usergroups_url)
         contents = self._simplify_white_space(self.browser.contents)
@@ -324,7 +324,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
         # a user without the Manager role cannot delete a group with the
         # Manager role
         self.browser.addHeader(
-            'Authorization', 'Basic siteadmin:secret')
+            'Authorization', f'Basic siteadmin:{TEST_USER_PASSWORD}')
 
         self.browser.open(self.groups_url)
         contents = self._simplify_white_space(self.browser.contents)

@@ -26,6 +26,7 @@ from zope.intid.interfaces import ObjectMissingError
 import logging
 import pkg_resources
 
+
 try:
     # "iterate" is not a dependency of CMFPlone, but a consumer of it
     pkg_resources.get_distribution("plone.app.iterate")
@@ -62,7 +63,7 @@ def get_relations_stats():
             rel = relation_catalog.resolveRelationToken(token)
         except ObjectMissingError:
             broken['Object is missing'] += 1
-            logger.info('Token {} has no object.'.format(token))
+            logger.info(f'Token {token} has no object.')
             continue
 
         if rel.isBroken():
@@ -84,7 +85,7 @@ def get_all_relations():
         try:
             rel = relation_catalog.resolveRelationToken(token)
         except ObjectMissingError:
-            logger.info('Token {} has no object.'.format(token))
+            logger.info(f'Token {token} has no object.')
             continue
 
         if rel.from_object and rel.to_object:

@@ -1,5 +1,8 @@
-import unittest
+from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFPlone.tests import PloneTestCase
+
+import unittest
+
 
 try:
     import Products.ExternalEditor
@@ -19,7 +22,7 @@ class TestExternalEditorEnabled(PloneTestCase.PloneTestCase):
         self.doc = self.folder.doc
         self.folder.invokeFactory('Folder', 'folder2')
         self.folder = self.folder.folder2
-        self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
+        self.portal.acl_users._doAddUser('user1', TEST_USER_PASSWORD, ['Member'], [])
         self.mtool = self.portal.portal_membership
         member = self.mtool.getAuthenticatedMember()
         member.setMemberProperties({'ext_editor': 1})
