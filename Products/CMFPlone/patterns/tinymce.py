@@ -115,6 +115,13 @@ class TinyMCESettingsGenerator:
             "importcss_append": True,
             "importcss_file_filter": importcss_file_filter,
             "browser_spellcheck": True,
+            "table_default_styles": {},
+            "table_default_attributes": {"class": "listing"},
+            "table_advtab": False,
+            "table_row_advtab": False,
+            "table_cell_advtab": False,
+            "table_style_by_css": False,
+            "table_appearance_options": False,
         }
         toolbar_additions = settings.custom_buttons or []
 
