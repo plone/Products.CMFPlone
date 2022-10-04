@@ -92,7 +92,7 @@
                   When we have Volto, the button above will create a Volto site,
                   and we need an extra button below to create a Classic Plone site.
                 </tal:comment>
-                <a class="btn btn-secondary"
+                <a class="btn btn-info"
                     i18n:translate=""
                     tal:condition="view/has_volto"
                     href="${action}?site_id=Plone${site_number}&amp;classic=1"
