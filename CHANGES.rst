@@ -12,6 +12,24 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.0b3 (2022-10-04)
+--------------------
+
+Bug fixes:
+
+
+- Deprecate the portal_properties tool (#125)
+- Require Python 3.8 or higher.  [maurits] (#3635)
+- Actually load theme-specified styles CSS in TinyMCE. [Rudd-O] (#3638)
+- Minor visual fixes in admin UI [jensens] (#3640)
+- Fix aliased helpers
+  [ale-rt] (#3641)
+- Fix tests to work with longer minimum password length. [davisagli] (#3646)
+- Improve tinymce table settings [MrTango] (#3650)
+- Make add classic Plone site button better visible [MrTango] (#3651)
+- Updated metadata version to 6008.  [maurits] (#6008)
+
+
 6.0.0b2 (2022-09-10)
 --------------------
 
