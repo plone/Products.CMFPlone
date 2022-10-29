@@ -160,10 +160,8 @@ class AddPloneSite(BrowserView):
     # Let's have a separate list for Volto.
     volto_default_extension_profiles = (
         'plone.app.caching:default',
-        # We could choose to not install Barceloneta:
         'plonetheme.barceloneta:default',
         'plone.volto:default',
-        'plone.volto:default-homepage'
     )
 
     def profiles(self):
@@ -294,6 +292,7 @@ class AddPloneSite(BrowserView):
             else:
                 # we have a keymanager, check csrf protection manually now
                 checkCSRF(self.request)
+
             site = addPloneSite(
                 context, site_id,
                 title=form.get('title', ''),
