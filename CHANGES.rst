@@ -12,6 +12,23 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.10 (2022-10-31)
+-------------------
+
+Bug fixes:
+
+
+- Fixed an issue that prevented the user to select the preferred timezone (#1290)
+- Fixed adding control panel action via ZMI.
+  [maurits] (#1959)
+- Set portal title in registry when creating a new Plone site
+  [erral] (#3584)
+- Change test to make sure email is sent in utf-8
+  [erral] (#3588)
+- Update metadata version to 5218, Plone 5.2.10.
+  [maurits] (#5218)
+
+
 5.2.9 (2022-07-21)
 ------------------
 
