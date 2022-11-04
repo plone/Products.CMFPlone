@@ -1,0 +1,3 @@
+Bootstrap fix for numbering `.list-group-numbered`.
+See suggestions here https://github.com/twbs/bootstrap/issues/37345
+[petschki]
