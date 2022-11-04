@@ -198,8 +198,9 @@
                                          use_view_action python:context.portal_registry.get('plone.types_use_view_action_in_listings', []);
                                          allowAnonymousViewAbout python:context.portal_registry['plone.allow_anon_views_about'];
                                          show_about python:not isAnon or allowAnonymousViewAbout;
-                                         image_scale portal/@@image_scale">
-                <ol class="searchResults list-group list-group-numbered" start="${python:request.get('b_start', 0) + 1}">
+                                         image_scale portal/@@image_scale;
+                                         count_offset python:request.get('b_start', 0)">
+                <ol class="searchResults list-group list-group-numbered" start="${python:count_offset + 1}" style="--list-start: ${count_offset}; counter-reset: section var(--list-start, 0)">
                   <tal:results repeat="item batch">
                     <li tal:define="hasIcon item/getIcon" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start  fs-4">
                       <div class="ms-2 me-auto">
