@@ -133,10 +133,14 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
 
     def testNavigationRootDoesNotOverrideExplicitPath(self):
         request = {'SearchableText': 'a*', 'path': '/yyy/zzz'}
-        ntp = self.portal.portal_properties.navtree_properties
         self.setRoles(('Manager',))
         self.portal.invokeFactory('Folder', 'foo')
-        ntp.root = '/foo'
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(
+            INavigationSchema,
+            prefix='plone'
+        )
+        navigation_settings.root = '/'
         qry = self.folder.queryCatalog(request, use_navigation_root=True)
         self.assertEqual('/yyy/zzz', qry['path'])
 
