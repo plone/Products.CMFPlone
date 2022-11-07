@@ -18,7 +18,7 @@ Changelog
 Bug fixes:
 
 
-- Deprecate the portal_properties tool (#125)
+- Deprecate the portal_properties tool, remove obsolete code (#125)
 - Require Python 3.8 or higher.  [maurits] (#3635)
 - Actually load theme-specified styles CSS in TinyMCE. [Rudd-O] (#3638)
 - Minor visual fixes in admin UI [jensens] (#3640)
