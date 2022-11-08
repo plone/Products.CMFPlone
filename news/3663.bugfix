@@ -1,0 +1,2 @@
+Fix 'KeyError: file' in browser tests on Python 3.11.
+[maurits]
