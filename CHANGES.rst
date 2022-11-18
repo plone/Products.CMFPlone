@@ -12,6 +12,22 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.0rc1 (2022-11-18)
+---------------------
+
+Bug fixes:
+
+
+- Don't create news, events, and users folders for Volto sites. [davisagli] (#3628)
+- Fix password used in a test. [davisagli] (#3653)
+- Bootstrap fix for numbering `.list-group-numbered`.
+  See suggestions here https://github.com/twbs/bootstrap/issues/37345
+  [petschki] (#3661)
+- Fix 'KeyError: file' in browser tests on Python 3.11.
+  [maurits] (#3663)
+- Updated metadata version to 6009.  [maurits] (#6009)
+
+
 6.0.0b3 (2022-10-04)
 --------------------
 
