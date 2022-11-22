@@ -10,7 +10,7 @@
   <metal:main fill-slot="main">
     <metal:main-macro define-macro="main">
 
-      <article id="content" class="login-wrapper">
+      <div class="login-wrapper">
 
         <div class="card">
           <div class="card-body">
@@ -48,7 +48,7 @@
           </div>
         </div>
 
-      </article>
+      </div>
 
     </metal:main-macro>
   </metal:main>
