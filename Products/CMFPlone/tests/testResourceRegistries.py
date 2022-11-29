@@ -368,6 +368,19 @@ class TestExpressions(PloneTestCase.PloneTestCase):
         self.assertNotIn("http://test2.foo/member.min.js", results)
         self.assertIn("http://test3.foo/test.min.js", results)
 
+    def test_scripts_switching_roles(self):
+        scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        scripts.update()
+        results = scripts.render()
+        self.assertIn("http://test2.foo/member.min.js", results)
+
+        logout()
+
+        scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        scripts.update()
+        results = scripts.render()
+        self.assertNotIn("http://test2.foo/member.min.js", results)
+
 
 class TestRRControlPanel(PloneTestCase.PloneTestCase):
 
