@@ -60,7 +60,6 @@ class NonInstallable:
             'plone.app.relationfield',
             'plone.app.theming',
             'plone.app.users',
-            'plone.app.widgets',
             'plone.app.z3cform',
             'plone.formwidget.recurrence',
             'plone.keyring',

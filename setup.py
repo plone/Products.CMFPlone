@@ -63,6 +63,7 @@ setup(
         'plone.app.viewletmanager',
         'plone.app.vocabularies',
         'plone.app.workflow',
+        'plone.app.z3cform',
         'plone.base',
         'plone.browserlayer >= 2.1.5',
         'plone.contentrules',
