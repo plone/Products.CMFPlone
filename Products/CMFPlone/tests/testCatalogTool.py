@@ -547,12 +547,21 @@ class TestCatalogSorting(PloneTestCase):
         self.folder.doc5.setTitle('Document 2')
         self.folder.invokeFactory('Document', id='doc6', text=RichTextValue('bar', 'text/html', 'text/x-html-safe'))
         self.folder.doc6.setTitle('DOCUMENT 4')
+
+        self.folder.invokeFactory('Document', id="doc7")
+        self.folder.doc7.setTitle('This is a long title that will ignore this text BBBB 2nd position cut zzzzz')
+
+        self.folder.invokeFactory('Document', id="doc8")
+        self.folder.doc8.setTitle('This is a long title that will ignore this text AAAA 1st position cut zzzzz')
+
         self.folder.doc.reindexObject()
         self.folder.doc2.reindexObject()
         self.folder.doc3.reindexObject()
         self.folder.doc4.reindexObject()
         self.folder.doc5.reindexObject()
         self.folder.doc6.reindexObject()
+        self.folder.doc7.reindexObject()
+        self.folder.doc8.reindexObject()
 
     def testSortMultipleColumns(self):
         path = '/'.join(self.folder.getPhysicalPath())
@@ -567,6 +576,8 @@ class TestCatalogSorting(PloneTestCase):
                 '/plone/Members/test_user_1_/doc5',
                 '/plone/Members/test_user_1_/doc6',
                 '/plone/Members/test_user_1_/doc4',
+                '/plone/Members/test_user_1_/doc8',
+                '/plone/Members/test_user_1_/doc7',
                 '/plone/Members/test_user_1_'
             ],
         )
@@ -580,6 +591,8 @@ class TestCatalogSorting(PloneTestCase):
                 '/plone/Members/test_user_1_/doc4',
                 '/plone/Members/test_user_1_/doc5',
                 '/plone/Members/test_user_1_/doc6',
+                '/plone/Members/test_user_1_/doc7',
+                '/plone/Members/test_user_1_/doc8',
                 '/plone/Members/test_user_1_',
             ]
         )
@@ -613,6 +626,13 @@ class TestCatalogSorting(PloneTestCase):
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
 
         self.assertEqual(wrapped.sortable_title, '0012 document 0025')
+
+    def testSortableTitleInLongTitles(self):
+        doc = self.folder.doc7
+        wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
+
+        self.assertEqual(wrapped.sortable_title, 'this is a long title that will ignore this text bbbb 0002nd position cut zzzzz')
+
 
     def testSortableNonASCIITitles(self):
         # test a utf-8 encoded string gets properly unicode converted
@@ -651,7 +671,7 @@ class TestCatalogSorting(PloneTestCase):
         doc.setTitle(title)
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
         self.assertEqual(wrapped.sortable_title,
-                         'some documents have too lon... 0001.jpeg')
+                         'some documents have too long a name and only differ at the very end - like 0001.jpeg')
 
 
 class TestFolderCataloging(PloneTestCase):
