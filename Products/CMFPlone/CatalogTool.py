@@ -55,6 +55,7 @@ logger = logging.getLogger('Plone')
 
 _marker = object()
 
+MAX_SORTABLE_TITLE = 40
 BLACKLISTED_INTERFACES = frozenset((
     'AccessControl.interfaces.IOwned',
     'AccessControl.interfaces.IPermissionMappingSupport',
