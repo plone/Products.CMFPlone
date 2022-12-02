@@ -147,7 +147,7 @@ class TestCatalogSetup(PloneTestCase):
         self.assertFalse('ExpiresDate' in self.catalog.schema())
 
     def testIs_Default_PageIsBooleanIndex(self):
-        # sortable_title should be a BooleanIndex
+        # is_default_page should be a BooleanIndex
         self.assertEqual(
             self.catalog.Indexes['is_default_page'].__class__.__name__,
             'BooleanIndex')
