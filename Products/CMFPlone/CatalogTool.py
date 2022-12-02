@@ -55,7 +55,6 @@ logger = logging.getLogger('Plone')
 
 _marker = object()
 
-MAX_SORTABLE_TITLE = 40
 BLACKLISTED_INTERFACES = frozenset((
     'AccessControl.interfaces.IOwned',
     'AccessControl.interfaces.IPermissionMappingSupport',
@@ -200,13 +199,6 @@ def sortable_title(obj):
             sortabletitle = mapUnicode(safe_unicode(title)).lower().strip()
             # Replace numbers with zero filled numbers
             sortabletitle = num_sort_regex.sub(zero_fill, sortabletitle)
-            # Truncate to prevent bloat, take bits from start and end
-            if len(sortabletitle) > MAX_SORTABLE_TITLE:
-                start = sortabletitle[:(MAX_SORTABLE_TITLE - 13)]
-                end = sortabletitle[-10:]
-                sortabletitle = start + '...' + end
-            if six.PY2:
-                return sortabletitle.encode('utf-8')
             return sortabletitle
     return ''
 
