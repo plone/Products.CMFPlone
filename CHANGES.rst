@@ -12,6 +12,21 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.0rc2 (2022-12-05)
+---------------------
+
+Bug fixes:
+
+
+- Fix duplicated ``<article id="content">`` in login form.
+  [petschki] (#3680)
+- Fix caching of rendered resources.
+  [petschki] (#3683)
+- Update package metadata in pypi.
+  [ericof] (#3687)
+- Updated metadata version to 6010.  [maurits] (#6010)
+
+
 6.0.0rc1 (2022-11-18)
 ---------------------
 
