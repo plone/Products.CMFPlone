@@ -71,5 +71,5 @@ class SearchControlPanelFunctionalTest(unittest.TestCase):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISearchSchema, prefix="plone")
-        self.assertFalse('Discussion Item' in settings.types_not_searched)
-        self.assertFalse('News Item Item' in settings.types_not_searched)
+        self.assertTrue('Discussion Item' in settings.types_not_searched)
+        self.assertTrue('News Item' in settings.types_not_searched)
