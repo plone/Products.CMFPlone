@@ -30,8 +30,8 @@ Before you start exploring your newly created Plone site, please do the followin
 <ol>
     <li>Make sure you are logged in as an admin/manager user.
         <span class="discreet">You should have a Site Setup entry in the user menu.</span></li>
-    <li><a href="/@@mail-controlpanel" target="_blank">Set up your mail server</a>. <span class="discreet">Plone needs a valid SMTP server to verify users and send out password reminders.</span></li>
-    <li><a href="/@@security-controlpanel" target="_blank">Decide what security level you want on your site</a>. <span class="discreet">Allow self registration, password policies, and more.</span></li>
+    <li><a href="@@mail-controlpanel" target="_blank">Set up your mail server</a>. <span class="discreet">Plone needs a valid SMTP server to verify users and send out password reminders.</span></li>
+    <li><a href="@@security-controlpanel" target="_blank">Decide what security level you want on your site</a>. <span class="discreet">Allow self registration, password policies, and more.</span></li>
 </ol>
 
 <h2>Get comfortable</h2>
@@ -53,7 +53,7 @@ Before you start exploring your newly created Plone site, please do the followin
 <ul>
     <li>
     Try out a different theme, either pick from
-    <a href="/@@theming-controlpanel" target="_blank">the included ones</a>, or one of the
+    <a href="@@theming-controlpanel" target="_blank">the included ones</a>, or one of the
     <a class="link-plain"
        href="https://plone.org/download/add-ons" target="_blank">available themes
        from plone.org</a>. <span class="discreet">Make sure the theme is
@@ -61,7 +61,7 @@ Before you start exploring your newly created Plone site, please do the followin
     </li>
 
     <li>
-    <a href="/@@content-controlpanel" target="_blank">
+    <a href="@@content-controlpanel" target="_blank">
     Decide what kind of workflow you want in your site.</a>
     <span class="discreet">The default is typical for a
     public web site; if you want to use Plone as a closed intranet or extranet,
@@ -72,11 +72,11 @@ Before you start exploring your newly created Plone site, please do the followin
     By default, Plone uses a visual editor for content.
     <span class="discreet">If you prefer text-based syntax and/or wiki
         syntax, you can change this in the
-    <a href="/@@markup-controlpanel" target="_blank">markup control panel</a></span>
+    <a href="@@markup-controlpanel" target="_blank">markup control panel</a></span>
     </li>
 
     <li>…and many more settings are available in the
-        <a href="/@@overview-controlpanel" target="_blank">Site Setup</a>.
+        <a href="@@overview-controlpanel" target="_blank">Site Setup</a>.
     </li>
 
 </ul>
