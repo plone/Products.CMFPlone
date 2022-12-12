@@ -11,6 +11,7 @@ setup(
     description="The Plone Content Management System (core)",
     long_description=open("README.md").read() + "\n" +
     open("CHANGES.md").read(),
+    long_description_content_type="text/markdown",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
