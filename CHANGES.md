@@ -12,7 +12,19 @@
    For helpful instructions, please see:
    https://github.com/plone/plone.releaser/blob/master/ADD-A-NEWS-ITEM.rst
 -->
+
 <!-- towncrier release notes start -->
+
+## 6.0.0 (2022-12-12)
+
+
+### Bug fixes:
+
+- Add help label to create Plone site page for difference between Volto and ClassicUI with link to docs. [fredvd] #3072
+- Change the search control panel to select types not searched instead of searchable types. This fixes an inconsistency with Volto. [danalvrz] #3694
+- Update default home page for installers for Plone 6 final release. [stevepiercy] #3700
+- Updated metadata version to 6011.  [maurits] #6011
+
 
 ## 6.0.0rc2 (2022-12-05)
 
