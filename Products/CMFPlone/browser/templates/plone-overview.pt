@@ -92,26 +92,30 @@
                     i18n:translate=""
                     tal:condition="view/has_volto"
                     href="${action}?site_id=Plone${site_number}&amp;classic=1"
-                    >Create ClassicUI Plone site</a>
+                    >Create Classic Plone site</a>
                 <a class="btn btn-secondary"
                     i18n:translate=""
                     href="${action}?site_id=Plone${site_number}&amp;advanced=1"
                     >Advanced</a>
             </form>
             <br/>
-            <p i18n:translate="">Staring with Plone 6, 'Create a Plone site' applies a
+            <p i18n:translate="help_create_plone_site_buttons_1">
+                Starting with Plone 6, 'Create a new Plone site' applies a
                 profile and creates default content for the new React based
-                default frontend Volto. You are however required to set up and run 
+                default frontend Volto. You are however required to set up and run
                 an additional frontend service to use this setup.
-            </p><p>
-                The 'Create ClassicUI Plone Site' button creates a Plone site configured
+            </p>
+            <p i18n:translate="help_create_plone_site_buttons_2">
+                The 'Create Classic Plone site' button creates a Plone site configured
                 for HTML based output, as was already supported by previous Plone versions.
+                Please consult our
                 <a href="https://6.docs.plone.org/" title="Plone 6 developer documentation"
                    i18n:translate=""
-                   i18n:attributes="title">Please consult our developer documentation</a>
-                   overview for more information about differences and requirements for
-                   these frontends and possible upgrade paths from older Plone versions
-                   to Plone 6.
+                   i18n:name="docs_link"
+                   i18n:attributes="title">developer documentation overview </a>
+                for more information about differences and requirements for
+                these frontends and possible upgrade paths from older Plone versions
+                to Plone 6.
             </p>
         </div>
     </article>
