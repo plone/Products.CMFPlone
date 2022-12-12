@@ -36,7 +36,6 @@ setup(
     project_urls={
         "Homepage": "https://plone.org",
         "Documentation": "https://6.docs.plone.org",
-        "PyPI": "https://pypi.python.org/pypi/Products.CMFPlone",
         "Source": "https://github.com/plone/Products.CMFPlone",
         "Issues": "https://github.com/plone/plone.org/Products.CMFPlone",
         "Forum": "https://community.plone.org/",
