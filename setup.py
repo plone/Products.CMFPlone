@@ -9,8 +9,8 @@ setup(
     name='Products.CMFPlone',
     version=version,
     description="The Plone Content Management System (core)",
-    long_description=open("README.rst").read() + "\n" +
-    open("CHANGES.rst").read(),
+    long_description=open("README.md").read() + "\n" +
+    open("CHANGES.md").read(),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
@@ -34,7 +34,7 @@ setup(
     license='GPL version 2',
     project_urls={
         "Homepage": "https://plone.org",
-        "Documentation": "https://docs.plone.org",
+        "Documentation": "https://6.docs.plone.org",
         "PyPI": "https://pypi.python.org/pypi/Products.CMFPlone",
         "Source": "https://github.com/plone/Products.CMFPlone",
         "Issues": "https://github.com/plone/plone.org/Products.CMFPlone",
