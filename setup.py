@@ -107,7 +107,7 @@ setup(
         'Products.statusmessages',
         'setuptools>=36.2',
         'plone.autoinclude',
-        'webresource>=1.1',
+        'webresource>=1.2',
         'Zope[wsgi] >= 5.0',
         'zope.app.locales >= 3.6.0',
         'zope.cachedescriptors',
