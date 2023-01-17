@@ -8,6 +8,7 @@ Note that our usage of testbrowser is unusual and inconsistent, mostly
 because Plone forms have inconsistencies and because testbrowser makes
 assumptions that are not true for Plone forms.
 
+  >>> from DateTime import DateTime
   >>> from plone.testing.zope import Browser
   >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
   >>> browser = Browser(layer['app'])
@@ -148,6 +149,19 @@ We are not logged in yet at this point.  Let's try to log in:
   >>> "You are now logged in" in browser.contents
   True
 
+Two login time properties should have been set on the user:
+
+  >>> portal_membership = layer['portal'].portal_membership
+  >>> member = portal_membership.getMemberById('jsmith')
+  >>> login_time = member.getProperty('login_time')
+  >>> isinstance(login_time, DateTime)
+  True
+  >>> last_login_time = member.getProperty('last_login_time')
+  >>> isinstance(last_login_time, DateTime)
+  True
+  >>> last_login_time <= login_time
+  True
+
 Log out again:
 
   >>> browser.getLink('Log out').click()
@@ -222,9 +236,22 @@ Now that we have the address, we will reset our password:
   >>> form.getControl(name='password2').value = 'secretion'
   >>> form.submit()
 
-We can now logged in:
+By default 'autologin_after_password_reset' is turned on, so we are now logged in:
 
   >>> "Password reset successful, you are logged in now!" in browser.contents
+  True
+
+The two login time properties should have been updated on the user:
+
+  >>> member = portal_membership.getMemberById('jsmith')
+  >>> login_time < member.getProperty('login_time')
+  True
+  >>> last_login_time < member.getProperty('last_login_time')
+  True
+
+The last login time is now set to the previous value of login time:
+
+  >>> login_time == member.getProperty('last_login_time')
   True
 
 Log out again:
