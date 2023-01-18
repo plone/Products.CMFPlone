@@ -138,6 +138,23 @@ e-mail.
   >>> "You have been registered" in browser.contents
   True
 
+The login times are set to the default in 2000:
+
+  >>> portal_membership = layer['portal'].portal_membership
+  >>> member = portal_membership.getMemberById('jsmith')
+  >>> login_time = member.getProperty('login_time')
+  >>> isinstance(login_time, DateTime)
+  True
+  >>> login_time.Date()
+  '2000/01/01'
+  >>> last_login_time = member.getProperty('last_login_time')
+  >>> isinstance(last_login_time, DateTime)
+  True
+  >>> last_login_time <= login_time
+  True
+  >>> last_login_time.Date()
+  '2000/01/01'
+
 We are not logged in yet at this point.  Let's try to log in:
 
   >>> browser.getLink('Log in').click()
@@ -151,7 +168,6 @@ We are not logged in yet at this point.  Let's try to log in:
 
 Two login time properties should have been set on the user:
 
-  >>> portal_membership = layer['portal'].portal_membership
   >>> member = portal_membership.getMemberById('jsmith')
   >>> login_time = member.getProperty('login_time')
   >>> isinstance(login_time, DateTime)
@@ -160,6 +176,13 @@ Two login time properties should have been set on the user:
   >>> isinstance(last_login_time, DateTime)
   True
   >>> last_login_time <= login_time
+  True
+
+The default login time is January 1 2000.  Check that it is much newer now:
+
+  >>> login_time > DateTime(2020, 2, 2)
+  True
+  >>> last_login_time > DateTime(2020, 2, 2)
   True
 
 Log out again:

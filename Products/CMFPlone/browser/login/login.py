@@ -145,13 +145,12 @@ class LoginForm(form.EditForm):
                 login_time = DateTime(login_time)
             except DateTimeSyntaxError:
                 # https://github.com/plone/Products.CMFPlone/issues/3656
-                logger.warning(
-                    '%r is not a valid login_time. Setting %r instead.',
-                    login_time,
-                    default,
-                )
+                logger.warning('%r is not a valid login_time.', login_time)
                 login_time = DateTime(default)
-        is_initial_login = login_time == DateTime('2000/01/01')
+        # We used to compare login_time with DateTime('2000/01/01'),
+        # but it may have a timezone: I have seen both UTC and GTM+1.
+        # So compare only the date part.
+        is_initial_login = login_time.Date() == '2000/01/01'
 
         membership_tool.loginUser(self.request)
         if is_initial_login:
