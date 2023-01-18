@@ -1,5 +1,4 @@
-from DateTime import DateTime
-from DateTime.interfaces import SyntaxError as DateTimeSyntaxError
+from .utils import has_logged_in
 from plone.app.users.browser.passwordpanel import PasswordPanel
 from plone.base.interfaces import IForcePasswordChange
 from plone.base.interfaces import IInitialLogin
@@ -139,19 +138,8 @@ class LoginForm(form.EditForm):
         membership_tool = getToolByName(self.context, 'portal_membership')
         member = membership_tool.getAuthenticatedMember()
         must_change_password = member.getProperty('must_change_password', 0)
-        default = '2000/01/01'
-        login_time = member.getProperty('login_time', default)
-        if not isinstance(login_time, DateTime):
-            try:
-                login_time = DateTime(login_time)
-            except DateTimeSyntaxError:
-                # https://github.com/plone/Products.CMFPlone/issues/3656
-                logger.warning('%r is not a valid login_time.', login_time)
-                login_time = DateTime(default)
-        # We used to compare login_time with DateTime('2000/01/01'),
-        # but it may have a timezone: I have seen both UTC and GTM+1.
-        # So compare only the date part.
-        is_initial_login = login_time.Date() == '2000/01/01'
+        login_time = member.getProperty('login_time', None)
+        is_initial_login = not has_logged_in(login_time)
 
         membership_tool.loginUser(self.request)
         if is_initial_login:
