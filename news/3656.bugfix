@@ -1,0 +1,3 @@
+During login, when login_time is invalid, warn and reset it to 2000/01/01.
+Fixes `issue 3656 <https://github.com/plone/Products.CMFPlone/issues/3656>`_.
+[maurits]
