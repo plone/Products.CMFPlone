@@ -247,6 +247,12 @@ then we extract the address that lets us reset our password:
   >>> b"If you didn't expect to receive this email" in msg
   True
 
+Save the current login times again so we can compare them after password reset.
+
+  >>> member = portal_membership.getMemberById('jsmith')
+  >>> login_time = member.getProperty('login_time')
+  >>> last_login_time = member.getProperty('last_login_time')
+
 Now that we have the address, we will reset our password:
 
   >>> browser.open(address)
