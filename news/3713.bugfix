@@ -1,0 +1,5 @@
+When autologin after password reset is enabled, use the same adapters as during normal login.
+Specifically: the ``IInitialLogin`` and ``IRedirectAfterLogin`` adapters.
+Autologin is enabled by default.
+Fixes `issue 3713 <https://github.com/plone/Products.CMFPlone/issues/3713>`_.
+[maurits]

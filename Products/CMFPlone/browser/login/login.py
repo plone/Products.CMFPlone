@@ -1,4 +1,4 @@
-from DateTime import DateTime
+from .utils import has_logged_in
 from plone.app.users.browser.passwordpanel import PasswordPanel
 from plone.base.interfaces import IForcePasswordChange
 from plone.base.interfaces import IInitialLogin
@@ -21,7 +21,10 @@ from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.interface import implementer
 
+import logging
 
+
+logger = logging.getLogger(__name__)
 # TODO: Scale down this list now that we've removed a lot of
 # templates.
 LOGIN_TEMPLATE_IDS = [
@@ -135,10 +138,8 @@ class LoginForm(form.EditForm):
         membership_tool = getToolByName(self.context, 'portal_membership')
         member = membership_tool.getAuthenticatedMember()
         must_change_password = member.getProperty('must_change_password', 0)
-        login_time = member.getProperty('login_time', '2000/01/01')
-        if not isinstance(login_time, DateTime):
-            login_time = DateTime(login_time)
-        is_initial_login = login_time == DateTime('2000/01/01')
+        login_time = member.getProperty('login_time', None)
+        is_initial_login = not has_logged_in(login_time)
 
         membership_tool.loginUser(self.request)
         if is_initial_login:
