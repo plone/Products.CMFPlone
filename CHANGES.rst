@@ -12,6 +12,24 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.11rc1 (2023-01-26)
+----------------------
+
+Bug fixes:
+
+
+- During login, when login_time is invalid, warn and reset it to 2000/01/01.
+  Fixes `issue 3656 <https://github.com/plone/Products.CMFPlone/issues/3656>`_.
+  [maurits] (#3656)
+- When autologin after password reset is enabled, use the same adapters as during normal login.
+  Specifically: the ``IInitialLogin`` and ``IRedirectAfterLogin`` adapters.
+  Autologin is enabled by default.
+  Fixes `issue 3713 <https://github.com/plone/Products.CMFPlone/issues/3713>`_.
+  [maurits] (#3713)
+- Update metadata version to 5219, Plone 5.2.11.
+  [maurits] (#5219)
+
+
 5.2.10 (2022-10-31)
 -------------------
 
