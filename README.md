@@ -49,7 +49,7 @@ Plone may be run as a container in the cloud with Docker and other Open Containe
   Documentation
 </h2>
 
-Consult [the official Plone documentation](https://docs.plone.org) with information for different audiences.
+Consult [the official Plone documentation](https://6.docs.plone.org) with information for different audiences.
 
 For trainings [comprehensive Plone training material](https://training.plone.org) is available.
 
@@ -119,9 +119,9 @@ Official Resources
 * [plone.org](https://plone.org/) - Official website for developers, community, decision makers, and evaluators.
 * [Plone support](https://plone.org/support) - Where to find help.
 * [community.plone.org](https://community.plone.org/) - Official community forum, the best place to get help.
-* [docs.plone.org](https://docs.plone.org/) - Official documentation for developers, integrators, and content editors.
+* [Plone 6 Documentation](https://6.docs.plone.org/) - Official documentation for developers, integrators, and content editors.
 * [training.plone.org](https://training.plone.org/) - Trainings for developers, integrators, content editors, and designers.
-* [`plone.api`](https://docs.plone.org/develop/plone.api/docs/index.html) - Documentation for `plone.api`.
+* [`plone.api`](https://6.docs.plone.org/develop/plone.api/docs/index.html) - Documentation for `plone.api`.
 * [`plone.restapi`](https://plonerestapi.readthedocs.io/en/latest/) - Documentation for `plone.restapi`.
 * [Discord](https://discord.gg/zFY3EBbjaj) - Official Plone chat, voice, and video service.
 
