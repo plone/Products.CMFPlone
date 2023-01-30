@@ -12,6 +12,17 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.11 (2023-01-30)
+-------------------
+
+Bug fixes:
+
+
+- Prepare release 5.2.11.
+  No changes compared to release candidate.
+  [maurits] (#5211)
+
+
 5.2.11rc1 (2023-01-26)
 ----------------------
 
