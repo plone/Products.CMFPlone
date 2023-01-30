@@ -15,6 +15,27 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.1rc1 (2023-01-30)
+
+
+### New features:
+
+- Add data-bundle attributes on javascript and styles resources.  [aormazabal] #3707
+
+
+### Bug fixes:
+
+- During login, when login_time is invalid, warn and reset it to 2000/01/01.
+  Fixes `issue 3656 <https://github.com/plone/Products.CMFPlone/issues/3656>`_.
+  [maurits] #3656
+- When autologin after password reset is enabled, use the same adapters as during normal login.
+  Specifically: the ``IInitialLogin`` and ``IRedirectAfterLogin`` adapters.
+  Autologin is enabled by default.
+  Fixes `issue 3713 <https://github.com/plone/Products.CMFPlone/issues/3713>`_.
+  [maurits] #3713
+- Updated metadata version to 6012.  [maurits] #6012
+
+
 ## 6.0.0 (2022-12-12)
 
 
