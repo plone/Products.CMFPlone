@@ -26,12 +26,12 @@
 ### Bug fixes:
 
 - During login, when login_time is invalid, warn and reset it to 2000/01/01.
-  Fixes `issue 3656 <https://github.com/plone/Products.CMFPlone/issues/3656>`_.
+  Fixes [issue 3656](https://github.com/plone/Products.CMFPlone/issues/3656>).
   [maurits] #3656
 - When autologin after password reset is enabled, use the same adapters as during normal login.
   Specifically: the ``IInitialLogin`` and ``IRedirectAfterLogin`` adapters.
   Autologin is enabled by default.
-  Fixes `issue 3713 <https://github.com/plone/Products.CMFPlone/issues/3713>`_.
+  Fixes [issue 3713](https://github.com/plone/Products.CMFPlone/issues/3713).
   [maurits] #3713
 - Updated metadata version to 6012.  [maurits] #6012
 
