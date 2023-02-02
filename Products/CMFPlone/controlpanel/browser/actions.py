@@ -14,6 +14,8 @@ from zope.event import notify
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectCreatedEvent
 
+import json
+
 
 class ActionListControlPanel(BrowserView):
     """Control panel for the portal actions."""
@@ -162,6 +164,14 @@ class ActionControlPanelAdapter:
         self.current_category._objects = tuple(all_actions)
 
     position = property(get_position, set_position)
+
+    def get_modal(self):
+        return json.loads(self.context.modal)
+
+    def set_modal(self, value):
+        self.context.modal = json.dumps(value)
+
+    modal = property(get_modal, set_modal)
 
 
 class ActionControlPanel(AutoExtensibleForm, form.EditForm):
