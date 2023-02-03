@@ -166,10 +166,10 @@ class ActionControlPanelAdapter:
     position = property(get_position, set_position)
 
     def get_modal(self):
-        return json.loads(self.context.modal)
+        return self.context.modal
 
     def set_modal(self, value):
-        self.context.modal = json.dumps(value)
+        self.context.modal = value
 
     modal = property(get_modal, set_modal)
 
