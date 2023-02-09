@@ -1,0 +1,4 @@
+Removed dependencies on development versions.
+For example we were depending on ``plone.app.contentmenu >= 1.1.6dev-r22380`` and the 1.1.6 version was released in 2008.
+With setuptools 67 this development version is illegal and cannot be parsed, even though in ``versions.cfg`` or ``constraints.txt`` we explicitly request version 2.3.4.
+[maurits]
