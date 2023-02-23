@@ -15,6 +15,16 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.2rc1 (2023-02-23)
+
+
+### Bug fixes:
+
+- Fix editing `modal` property of an action in `@@actions-controlpanel`.
+  [petschki] #3709
+- Updated metadata version to 6013.  [maurits] #6013
+
+
 ## 6.0.1 (2023-01-31)
 
 
