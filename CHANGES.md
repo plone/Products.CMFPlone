@@ -15,6 +15,15 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.2 (2023-02-27)
+
+
+### Bug fixes:
+
+- Apply Barceloneta upgrades when upgrading Plone.
+  [maurits] #3726
+
+
 ## 6.0.2rc1 (2023-02-23)
 
 
