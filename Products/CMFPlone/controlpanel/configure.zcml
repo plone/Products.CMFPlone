@@ -4,7 +4,6 @@
 
   <include file="permissions.zcml" />
   <include package="plone.app.registry" />
-  <include package=".bbb" />
   <include package=".browser" />
   <include file="events.zcml" />
 
