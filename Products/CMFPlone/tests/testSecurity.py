@@ -1,5 +1,3 @@
-from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
-from Testing.makerequest import makerequest
 from plone.app.testing import login
 from plone.app.testing import logout
 from plone.app.testing import SITE_OWNER_NAME
@@ -87,7 +85,9 @@ class TestAttackVectorsFunctional(PloneTestCase):
     def test_registerConfiglet_1(self):
         VECTOR = "/plone/portal_controlpanel/registerConfiglet?id=cake&name=Cakey&action=woo&permission=View&icon_expr="
         res = self.publish(VECTOR)
-        self.assertEqual(404, res.status)
+        self.assertEqual(302, res.status)
+        self.assertTrue(res.headers['location'].startswith(
+            'http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
 
     def test_registerConfiglet_2(self):
         VECTOR = "/plone/portal_controlpanel/registerConfiglet?id=cake&name=Cakey&action=woo&permission=View&icon_expr="
@@ -154,7 +154,7 @@ class TestFunctional(unittest.TestCase):
         browser.handleErrors = False
         browser.addHeader(
             "Authorization",
-            "Basic {0}:{1}".format(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+            f"Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}",
         )
         return browser
 

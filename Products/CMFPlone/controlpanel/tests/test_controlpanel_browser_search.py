@@ -1,10 +1,12 @@
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.base.interfaces import ISearchSchema
-from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from zope.component import getMultiAdapter
 from zope.component import getUtility
+
 import unittest
 
 
@@ -69,5 +71,5 @@ class SearchControlPanelFunctionalTest(unittest.TestCase):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISearchSchema, prefix="plone")
-        self.assertFalse('Discussion Item' in settings.types_not_searched)
-        self.assertFalse('News Item Item' in settings.types_not_searched)
+        self.assertTrue('Discussion Item' in settings.types_not_searched)
+        self.assertTrue('News Item' in settings.types_not_searched)

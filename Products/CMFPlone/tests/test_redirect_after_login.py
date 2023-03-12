@@ -1,15 +1,18 @@
+from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from plone.testing.zope import Browser
-from Products.CMFPlone.browser.login.login import LoginForm
 from plone.base.interfaces import IInitialLogin
 from plone.base.interfaces import IRedirectAfterLogin
+from plone.testing.zope import Browser
+from Products.CMFPlone.browser.login.login import LoginForm
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.publisher.interfaces import IRequest
 
+import quopri
+import transaction
 import unittest
 
 
@@ -182,6 +185,82 @@ class TestRedirectAfterLogin(unittest.TestCase):
 
         self.assertIn('You are now logged in.', self.browser.contents)
         self.assertEqual(self.browser.url, 'http://nohost/plone/contact-info')
+        self.assertEqual(self.portal.foo, 'foo')
+
+        # Now log out.
+        self.browser.getLink('Log out').click()
+
+        self.assertIn('You are now logged out.',
+                      self.browser.contents,
+                      'Logout status message not displayed.')
+
+    def test_password_reset_uses_all_adapters(self):
+        # By default, when you reset your password, you are directly logged in.
+        # An initial login adapter should be active.
+        # And the redirect after login adapter too.
+        from plone.registry.interfaces import IRegistry
+        from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+        from zope.component import getGlobalSiteManager
+        from zope.component import getUtility
+
+        # We need to configure the mailhost first.
+        registry = getUtility(IRegistry, context=self.portal)
+        mail_settings = registry.forInterface(IMailSchema, prefix="plone")
+        mail_settings.smtp_host = u'localhost'
+        mail_settings.email_from_address = 'smith@example.com'
+        # and an email address for the test user:
+        member = self.portal.portal_membership.getMemberById(TEST_USER_ID)
+        member.setProperties(email="dummy@example.org")
+        transaction.commit()
+
+        # Fill in the password reset form.
+        self.browser.open('http://nohost/plone/@@login-help')
+        form = self.browser.getForm(index=1)
+        form.getControl(name='form.widgets.reset_password').value = TEST_USER_NAME
+        form.submit(name='form.buttons.reset')
+
+        # Get the password reset mail from the dummy mailhost.
+        mailhost = self.portal.MailHost
+        self.assertEqual(len(mailhost.messages), 1)
+        msg = mailhost.messages[0]
+
+        # Extract the address that lets us reset our password.
+        msg = quopri.decodestring(msg)
+        please_visit_text = b"reset your password for Plone site site:"
+        self.assertIn(please_visit_text, msg)
+        url_index = msg.index(please_visit_text) + len(please_visit_text)
+        address = msg[url_index:].strip().split()[0].decode()
+        self.assertTrue(address.startswith(u'http://nohost/plone/passwordreset/'))
+
+        # Now that we have the address, we will reset our password:
+
+        self.browser.open(address)
+        self.assertIn("Set your password", self.browser.contents)
+        form = self.browser.getForm(name='pwreset_action')
+        form.getControl(name='userid').value = TEST_USER_NAME
+        form.getControl(name='password').value = 'secretion'
+        form.getControl(name='password2').value = 'secretion'
+
+        # Register our adapters, submit the form, and unregister them.
+        gsm = getGlobalSiteManager()
+        gsm.registerAdapter(AfterLoginAdapter, (Interface, IRequest))
+        gsm.registerAdapter(InitialLoginAdapter, (Interface, IRequest))
+        try:
+            form.submit()
+        finally:
+            gsm.unregisterAdapter(InitialLoginAdapter, (Interface, IRequest))
+            gsm.unregisterAdapter(AfterLoginAdapter, (Interface, IRequest))
+
+        # By default 'autologin_after_password_reset' is turned on,
+        # so we are now logged in:
+        self.assertIn(
+            "Password reset successful, you are logged in now!",
+            self.browser.contents,
+        )
+        self.assertEqual(self.browser.url,
+                         'http://nohost/plone/sitemap',
+                         'Successful login did not use the adapter for '
+                         'redirect.')
         self.assertEqual(self.portal.foo, 'foo')
 
         # Now log out.

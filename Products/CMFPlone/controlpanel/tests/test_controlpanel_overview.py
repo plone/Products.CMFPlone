@@ -1,9 +1,10 @@
 from plone.app.testing import PLONE_INTEGRATION_TESTING
-from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
 from plone.registry.interfaces import IRegistry
-from zope.component import getUtility
 from unittest import mock
+from zope.component import getUtility
+
 import os
 import unittest
 

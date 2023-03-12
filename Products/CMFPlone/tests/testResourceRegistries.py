@@ -82,6 +82,13 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         self.assertIn("++plone++static/bundle-plone/bundle.min.js", results)
         self.assertIn("http://nohost/plone/++webresource++", results)
 
+    def test_scripts_data_bundle_attr(self):
+        scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        self._make_test_bundle()
+        scripts.update()
+        result = scripts.render()
+        self.assertIn('data-bundle="foobar"', result)
+
     def test_scripts_viewlet_anonymous(self):
         logout()
         scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
@@ -187,6 +194,25 @@ class TestStylesViewlet(PloneTestCase.PloneTestCase):
         results = styles.render()
         self.assertIn("++theme++barceloneta/css/barceloneta.min.css", results)
         self.assertIn("http://nohost/plone/++webresource++", results)
+
+    def test_styles_data_bundle_attr(self):
+        styles = StylesView(self.layer["portal"], self.layer["request"], None)
+
+        # add some bundle to test with
+        registry = getUtility(IRegistry)
+
+        bundles = registry.collectionOfInterface(
+            IBundleRegistry, prefix="plone.bundles"
+        )
+        bundle = bundles.add("foobar")
+        bundle.name = "foobar"
+        bundle.jscompilation = "http://foo.bar/foobar.js"
+        bundle.csscompilation = "http://foo.bar/foobar.css"
+        bundle.resources = ["foobar"]
+
+        styles.update()
+        results = styles.render()
+        self.assertIn('data-bundle="foobar"', results)
 
     def test_styles_viewlet_anonymous(self):
         logout()
@@ -367,6 +393,19 @@ class TestExpressions(PloneTestCase.PloneTestCase):
         # self.assertNotIn("http://test.foo/test.min.js", results)
         self.assertNotIn("http://test2.foo/member.min.js", results)
         self.assertIn("http://test3.foo/test.min.js", results)
+
+    def test_scripts_switching_roles(self):
+        scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        scripts.update()
+        results = scripts.render()
+        self.assertIn("http://test2.foo/member.min.js", results)
+
+        logout()
+
+        scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        scripts.update()
+        results = scripts.render()
+        self.assertNotIn("http://test2.foo/member.min.js", results)
 
 
 class TestRRControlPanel(PloneTestCase.PloneTestCase):

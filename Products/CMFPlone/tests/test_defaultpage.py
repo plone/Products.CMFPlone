@@ -1,8 +1,8 @@
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
+from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+from zope.component import getUtility
 
 import unittest
 
@@ -41,7 +41,9 @@ class DefaultPageTestCase(unittest.TestCase):
 
         # 2) a folder also provides an fti that implements
         #    IDynamicViewTypeInformation
-        from Products.CMFDynamicViewFTI.interfaces import IDynamicViewTypeInformation  # noqa
+        from Products.CMFDynamicViewFTI.interfaces import (  # noqa
+            IDynamicViewTypeInformation,
+        )
         fti = self.folder.getTypeInfo()
         self.assertTrue(IDynamicViewTypeInformation.providedBy(fti))
 

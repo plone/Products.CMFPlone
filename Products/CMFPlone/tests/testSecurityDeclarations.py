@@ -1,15 +1,14 @@
 # Tests the security declarations Plone makes on resources
 # for access by restricted code (aka PythonScripts)
 
-from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.tests import dummy
-
-from zExceptions import Unauthorized
-from ZODB.POSException import ConflictError
-from Products.ZCTextIndex.ParseTree import ParseError
 from OFS.CopySupport import CopyError
 from plone.testing import zope
+from Products.CMFPlone.tests import dummy
+from Products.CMFPlone.tests import PloneTestCase
+from Products.ZCTextIndex.ParseTree import ParseError
 from unittest import TestCase
+from zExceptions import Unauthorized
+from ZODB.POSException import ConflictError
 
 
 class RestrictedPythonTest(TestCase):

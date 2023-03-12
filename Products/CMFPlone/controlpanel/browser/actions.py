@@ -1,9 +1,12 @@
 from plone.autoform.form import AutoExtensibleForm
+from plone.base.interfaces import IActionSchema
+from plone.base.interfaces import INewActionSchema
+from plone.base.utils import base_hasattr
 from Products.CMFCore.ActionInformation import Action
-from Products.CMFCore.interfaces import IAction, IActionCategory
+from Products.CMFCore.interfaces import IAction
+from Products.CMFCore.interfaces import IActionCategory
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from plone.base.interfaces import IActionSchema, INewActionSchema
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import form
@@ -11,6 +14,8 @@ from zope.component import adapts
 from zope.event import notify
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectCreatedEvent
+
+import json
 
 
 class ActionListControlPanel(BrowserView):
@@ -160,6 +165,22 @@ class ActionControlPanelAdapter:
         self.current_category._objects = tuple(all_actions)
 
     position = property(get_position, set_position)
+
+    def get_modal(self):
+        return self.context.modal
+
+    def set_modal(self, value):
+        # This property may not exist yet on the context.
+        if not self.context.hasProperty("modal"):
+            if base_hasattr(self.context, "modal"):
+                # We cannot define a property when an attribute with the same
+                # name already exists.
+                delattr(self.context, "modal")
+            self.context._setProperty('modal', value, 'string')
+        else:
+            self.context._setPropValue('modal', value)
+
+    modal = property(get_modal, set_modal)
 
 
 class ActionControlPanel(AutoExtensibleForm, form.EditForm):

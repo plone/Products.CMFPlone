@@ -531,19 +531,17 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
 class TestNavigationRoot(PloneTestCase.PloneTestCase):
 
     def testGetNavigationRootPropertyNotSet(self):
-        self.portal.portal_registry['plone.root'] = '/'
+        del self.portal.portal_registry.records["plone.root"]
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, '/'.join(self.portal.getPhysicalPath()))
 
     def testGetNavigationRootPropertyEmptyNoVirtualHost(self):
-        self.portal.portal_properties.navtree_properties \
-            .manage_changeProperties(root='')
+        self.portal.portal_registry['plone.root'] = ''
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, '/'.join(self.portal.getPhysicalPath()))
 
     def testGetNavigationRootPropertyIsRoot(self):
-        self.portal.portal_properties.navtree_properties \
-            .manage_changeProperties(root='/')
+        self.portal.portal_registry['plone.root'] = '/'
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, '/'.join(self.portal.getPhysicalPath()))
 
@@ -551,7 +549,7 @@ class TestNavigationRoot(PloneTestCase.PloneTestCase):
         folderPath = '/'.join(self.folder.getPhysicalPath())
         portalPath = '/'.join(self.portal.getPhysicalPath())
         relativePath = folderPath[len(portalPath):]
-        self.portal.portal_registry['plone.root'] = str(relativePath)
+        self.portal.portal_registry['plone.root'] = relativePath
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, folderPath)
 

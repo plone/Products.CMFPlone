@@ -1,9 +1,9 @@
 # Test queryCatalog and plone search forms
 from plone.app.textfield.value import RichTextValue
-from plone.registry.interfaces import IRegistry
 from plone.base.interfaces import INavigationSchema
 from plone.base.interfaces import ISearchSchema
 from plone.base.interfaces.syndication import ISiteSyndicationSettings
+from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.tests import PloneTestCase
 from Products.ZCTextIndex.ParseTree import ParseError
 from zExceptions import NotFound
@@ -133,10 +133,14 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
 
     def testNavigationRootDoesNotOverrideExplicitPath(self):
         request = {'SearchableText': 'a*', 'path': '/yyy/zzz'}
-        ntp = self.portal.portal_properties.navtree_properties
         self.setRoles(('Manager',))
         self.portal.invokeFactory('Folder', 'foo')
-        ntp.root = '/foo'
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(
+            INavigationSchema,
+            prefix='plone'
+        )
+        navigation_settings.root = '/'
         qry = self.folder.queryCatalog(request, use_navigation_root=True)
         self.assertEqual('/yyy/zzz', qry['path'])
 

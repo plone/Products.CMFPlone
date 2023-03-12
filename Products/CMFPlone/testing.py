@@ -8,6 +8,7 @@ from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing.layers import FunctionalTesting
 from plone.app.testing.layers import IntegrationTesting
 from plone.testing import zope
@@ -40,7 +41,7 @@ class ProductsCMFPloneLayer(PloneSandboxLayer):
     def setUpPloneSite(self, portal):
         portal.acl_users.userFolderAddUser(
             'admin',
-            'secret',
+            TEST_USER_PASSWORD,
             ['Manager'],
             []
         )

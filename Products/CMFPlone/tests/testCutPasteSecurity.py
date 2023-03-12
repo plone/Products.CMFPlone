@@ -1,22 +1,22 @@
 from AccessControl import Unauthorized
 from Acquisition import aq_base
 from OFS.CopySupport import CopyError
-from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
+from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFCore.interfaces import IContentish
-from zope.component import provideHandler, getGlobalSiteManager
-from zope.lifecycleevent.interfaces import IObjectMovedEvent
+from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from urllib.error import HTTPError
+from zope.component import getGlobalSiteManager
+from zope.component import provideHandler
+from zope.lifecycleevent.interfaces import IObjectMovedEvent
 
 import transaction
-
-
 
 
 class TestCutPasteSecurity(PloneTestCase):
 
     def afterSetUp(self):
-        self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
-        self.portal.acl_users._doAddUser('user2', 'secret', ['Member'], [])
+        self.portal.acl_users._doAddUser('user1', TEST_USER_PASSWORD, ['Member'], [])
+        self.portal.acl_users._doAddUser('user2', TEST_USER_PASSWORD, ['Member'], [])
         self.membership = self.portal.portal_membership
         self.createMemberarea('user1')
         self.createMemberarea('user2')

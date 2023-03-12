@@ -33,7 +33,8 @@
             <h1>
               <span i18n:translate="">Upgrade this site</span>
             </h1>
-            <h2>${context/Title} <small>(${context/getId})</small></h2>
+            <h2>${context/Title}</h2>
+            <p><span i18n:translate="">at path</span> <a href="${context/absolute_url}">${python:'/'.join(context.getPhysicalPath())}</a></p>
             <p class="lead" i18n:translate="">
                 More information about the upgrade procedure can be found in the documentation section of plone.org in the
                 <a href="http://docs.plone.org/manage/upgrading"

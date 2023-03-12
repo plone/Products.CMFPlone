@@ -1,4 +1,7 @@
 from Acquisition import aq_base
+from plone.base.interfaces import IFilterSchema
+from plone.base.interfaces import INavigationSchema
+from plone.base.interfaces import ISearchSchema
 from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
@@ -10,9 +13,6 @@ from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import setuphandlers
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
-from plone.base.interfaces import IFilterSchema
-from plone.base.interfaces import INavigationSchema
-from plone.base.interfaces import ISearchSchema
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.UnicodeSplitter import I18NNormalizer
@@ -20,7 +20,7 @@ from Products.CMFPlone.UnicodeSplitter import Splitter
 from Products.GenericSetup.browser.manage import ExportStepsView
 from Products.GenericSetup.browser.manage import ImportStepsView
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import (
-    AcceleratedHTTPCacheManager
+    AcceleratedHTTPCacheManager,
 )
 from Products.StandardCacheManagers.RAMCacheManager import RAMCacheManager
 from zope.component import getGlobalSiteManager

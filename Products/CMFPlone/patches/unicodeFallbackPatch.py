@@ -10,15 +10,16 @@
 # Therefor these patches will probably stay here for quite a while.
 
 # import hacks
-from .unicodehacks import new__call__
 from .unicodehacks import _nulljoin
 from .unicodehacks import _unicode_replace
 from .unicodehacks import FasterStringIO
+from .unicodehacks import new__call__
+from zope.pagetemplate import pagetemplate
 
 # import the poor victims of our monkey patches
 from zope.tal import talinterpreter
 from zope.tales import expressions
-from zope.pagetemplate import pagetemplate
+
 
 # Enable use of utf-8 text in tales inserts, until all code is changed to use
 # pure Unicode only. This will only work for sites with a portal encoding of

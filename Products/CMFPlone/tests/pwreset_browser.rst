@@ -8,6 +8,7 @@ Note that our usage of testbrowser is unusual and inconsistent, mostly
 because Plone forms have inconsistencies and because testbrowser makes
 assumptions that are not true for Plone forms.
 
+  >>> from DateTime import DateTime
   >>> from plone.testing.zope import Browser
   >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
   >>> browser = Browser(layer['app'])
@@ -127,8 +128,8 @@ Now register a new user:
 
   >>> browser.getControl('User Name').value = 'jsmith'
   >>> browser.getControl('Email').value = 'jsmith@example.com'
-  >>> browser.getControl('Password').value = 'secret'
-  >>> browser.getControl('Confirm password').value = 'secret'
+  >>> browser.getControl('Password').value = TEST_USER_PASSWORD
+  >>> browser.getControl('Confirm password').value = TEST_USER_PASSWORD
   >>> browser.getControl('Register').click()
 
 XXX Make sure we don't have a way to receive our credentials via
@@ -137,15 +138,51 @@ e-mail.
   >>> "You have been registered" in browser.contents
   True
 
+The login times are set to the default in 2000:
+
+  >>> portal_membership = layer['portal'].portal_membership
+  >>> member = portal_membership.getMemberById('jsmith')
+  >>> login_time = member.getProperty('login_time')
+  >>> isinstance(login_time, DateTime)
+  True
+  >>> login_time.Date()
+  '2000/01/01'
+  >>> last_login_time = member.getProperty('last_login_time')
+  >>> isinstance(last_login_time, DateTime)
+  True
+  >>> last_login_time <= login_time
+  True
+  >>> last_login_time.Date()
+  '2000/01/01'
+
 We are not logged in yet at this point.  Let's try to log in:
 
   >>> browser.getLink('Log in').click()
   >>> browser.url.startswith('http://nohost/plone/login')
   True
   >>> browser.getControl(name='__ac_name').value = 'jsmith'
-  >>> browser.getControl(name='__ac_password').value = 'secret'
+  >>> browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
   >>> browser.getControl(name='buttons.login').click()
   >>> "You are now logged in" in browser.contents
+  True
+
+Two login time properties should have been set on the user:
+
+  >>> member = portal_membership.getMemberById('jsmith')
+  >>> login_time = member.getProperty('login_time')
+  >>> isinstance(login_time, DateTime)
+  True
+  >>> last_login_time = member.getProperty('last_login_time')
+  >>> isinstance(last_login_time, DateTime)
+  True
+  >>> last_login_time <= login_time
+  True
+
+The default login time is January 1 2000.  Check that it is much newer now:
+
+  >>> login_time > DateTime(2020, 2, 2)
+  True
+  >>> last_login_time > DateTime(2020, 2, 2)
   True
 
 Log out again:
@@ -168,7 +205,7 @@ We check if the old password still works.
 
   >>> browser.open('http://nohost/plone/login')
   >>> browser.getControl(name='__ac_name').value = 'jsmith'
-  >>> browser.getControl(name='__ac_password').value = 'secret'
+  >>> browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
   >>> browser.getControl(name='buttons.login').click()
 
 We should be logged in now:
@@ -210,6 +247,12 @@ then we extract the address that lets us reset our password:
   >>> b"If you didn't expect to receive this email" in msg
   True
 
+Save the current login times again so we can compare them after password reset.
+
+  >>> member = portal_membership.getMemberById('jsmith')
+  >>> login_time = member.getProperty('login_time')
+  >>> last_login_time = member.getProperty('last_login_time')
+
 Now that we have the address, we will reset our password:
 
   >>> browser.open(address)
@@ -222,9 +265,22 @@ Now that we have the address, we will reset our password:
   >>> form.getControl(name='password2').value = 'secretion'
   >>> form.submit()
 
-We can now logged in:
+By default 'autologin_after_password_reset' is turned on, so we are now logged in:
 
   >>> "Password reset successful, you are logged in now!" in browser.contents
+  True
+
+The two login time properties should have been updated on the user:
+
+  >>> member = portal_membership.getMemberById('jsmith')
+  >>> login_time < member.getProperty('login_time')
+  True
+  >>> last_login_time < member.getProperty('last_login_time')
+  True
+
+The last login time is now set to the previous value of login time:
+
+  >>> login_time == member.getProperty('last_login_time')
   True
 
 Log out again:
@@ -377,7 +433,7 @@ Log out again and then join:
 
 We shouldn't be able to fill in our password:
 
-  >>> browser.getControl('Password').value = 'secret' # doctest: +ELLIPSIS
+  >>> browser.getControl('Password').value = TEST_USER_PASSWORD # doctest: +ELLIPSIS
   Traceback (most recent call last):
   ...
   LookupError: label 'Password'
@@ -425,8 +481,8 @@ Now that we have the address, we will reset our password:
   >>> "Please fill out the form below to set your password" in browser.contents
   True
   >>> browser.getControl(name='userid').value = 'bsmith'
-  >>> browser.getControl(name='password').value = 'secret'
-  >>> browser.getControl(name='password2').value = 'secret'
+  >>> browser.getControl(name='password').value = TEST_USER_PASSWORD
+  >>> browser.getControl(name='password2').value = TEST_USER_PASSWORD
   >>> browser.getControl("Set my password").click()
   >>> "Password reset successful, you are logged in now!" in browser.contents
   True
@@ -471,8 +527,8 @@ We navigate to the Users Adding page and register a new user:
   >>> browser.open('http://nohost/plone/@@new-user')
   >>> browser.getControl('User Name').value = 'wwwsmith'
   >>> browser.getControl('Email').value = 'wwwsmith@example.com'
-  >>> browser.getControl('Password').value = 'secret'
-  >>> browser.getControl('Confirm password').value = 'secret'
+  >>> browser.getControl('Password').value = TEST_USER_PASSWORD
+  >>> browser.getControl('Confirm password').value = TEST_USER_PASSWORD
   >>> browser.getControl('Send a confirmation mail with a link to set the password').selected = True
 
 Now register and logout:

@@ -116,7 +116,7 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
 
     # From PortalObjectBase
     def __init__(self, id, title=''):
-        super(PloneSite, self).__init__(id, title=title)
+        super().__init__(id, title=title)
         components = PersistentComponents('++etc++site')
         components.__parent__ = self
         self.setSiteManager(components)
@@ -135,7 +135,7 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
             pass
         self.setupCurrentSkin(REQUEST)
 
-        super(PloneSite, self).__before_publishing_traverse__(arg1, arg2)
+        super().__before_publishing_traverse__(arg1, arg2)
 
     # Concept from OFS.OrderSupport
     @security.protected(permissions.AccessContentsInformation)

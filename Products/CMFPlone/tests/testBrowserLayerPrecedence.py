@@ -3,12 +3,12 @@
 # add-on products (a la plone.browserlayer).
 
 from plone.app.testing.bbb import PloneTestCase
-
+from plone.browserlayer.utils import register_layer
+from plone.browserlayer.utils import unregister_layer
 from zope.event import notify
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.traversing.interfaces import BeforeTraverseEvent
-from plone.browserlayer.utils import register_layer, unregister_layer
 
 
 class IAdditiveLayer(Interface):

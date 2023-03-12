@@ -1,11 +1,9 @@
 from Acquisition import aq_inner
-from zope.component import getMultiAdapter
-from zope.interface import implementer
-
+from Products.CMFPlone.browser.interfaces import ISitemapView
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from Products.CMFPlone.browser.interfaces import ISitemapView
+from zope.component import getMultiAdapter
+from zope.interface import implementer
 
 
 @implementer(ISitemapView)

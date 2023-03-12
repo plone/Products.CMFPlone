@@ -1,10 +1,9 @@
-from zope.component import adapts
-from zope.interface import implementer
-from zope.component import getUtility
-from plone.i18n.interfaces import ILanguageSchema
 from plone.base.interfaces import IPloneSiteRoot
-
+from plone.i18n.interfaces import ILanguageSchema
 from plone.registry.interfaces import IRegistry
+from zope.component import adapts
+from zope.component import getUtility
+from zope.interface import implementer
 
 
 @implementer(ILanguageSchema)

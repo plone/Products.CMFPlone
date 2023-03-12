@@ -1,13 +1,14 @@
-from plone.testing.zope import Browser
-from plone.app.testing.bbb import PloneTestCase
 from plone.app.testing import PLONE_SITE_ID as portal_name
 from plone.app.testing import TEST_USER_ID as default_user
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD as default_password
-
+from plone.app.testing.bbb import PloneTestCase
 from plone.protect.authenticator import AuthenticatorView
+from plone.testing.zope import Browser
 from re import match
+
 import transaction
+
 
 # We do not use these, but someone might import them.
 portal_name, default_user  # pyflakes

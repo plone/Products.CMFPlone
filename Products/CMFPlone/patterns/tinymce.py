@@ -1,12 +1,12 @@
 from lxml import html
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.theming.utils import theming_policy
-from plone.registry.interfaces import IRegistry
-from Products.CMFCore.utils import getToolByName
 from plone.base.interfaces import IFilterSchema
 from plone.base.interfaces import ITinyMCESchema
-from Products.CMFPlone.utils import get_portal
 from plone.base.utils import safe_text
+from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import get_portal
 from zope.component import getUtility
 
 import json
@@ -97,14 +97,17 @@ class TinyMCESettingsGenerator:
         importcss_file_filter = "tinymce-formats.css"
 
         theme = self.get_theme()
+        extra_content_css = ""
         if theme and getattr(theme, "tinymce_styles_css", None):
-            importcss_file_filter += ",{}/{}".format(
+            extra = ",{}/{}".format(
                 self.nav_root_url, theme.tinymce_styles_css.lstrip("/")
             )
+            extra_content_css += extra
+            importcss_file_filter += extra
 
         tiny_config = {
             "resize": "both" if settings.resizing else False,
-            "content_css": self.get_content_css(),
+            "content_css": self.get_content_css() + extra_content_css,
             "plugins": ["plonelink", "ploneimage", "importcss"] + settings.plugins,
             "external_plugins": {},
             "toolbar": settings.toolbar,
@@ -112,6 +115,13 @@ class TinyMCESettingsGenerator:
             "importcss_append": True,
             "importcss_file_filter": importcss_file_filter,
             "browser_spellcheck": True,
+            "table_default_styles": {},
+            "table_default_attributes": {"class": "listing"},
+            "table_advtab": False,
+            "table_row_advtab": False,
+            "table_cell_advtab": False,
+            "table_style_by_css": False,
+            "table_appearance_options": False,
         }
         toolbar_additions = settings.custom_buttons or []
 

@@ -1,16 +1,13 @@
-import unittest
-import transaction
-import lxml
-
-from plone.app.contenttypes.testing import (
-    PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING
-)
-
+from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING
+from plone.app.testing import setRoles
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
-from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.testing.zope import Browser
+
+import lxml
+import transaction
+import unittest
 
 
 class ProductsCMFPloneSetupTest(unittest.TestCase):

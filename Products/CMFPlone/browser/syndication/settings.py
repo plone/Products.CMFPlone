@@ -1,12 +1,13 @@
-from zope.component import adapts
-from zope.interface import implementer
-from plone.base.interfaces.syndication import IFeedSettings
-from plone.base.interfaces.syndication import ISyndicatable
-from zope.annotation.interfaces import IAnnotations
 from persistent.dict import PersistentDict
+from plone.base.interfaces.syndication import IFeedSettings
 from plone.base.interfaces.syndication import ISiteSyndicationSettings
-from zope.component import getUtility
+from plone.base.interfaces.syndication import ISyndicatable
 from plone.registry.interfaces import IRegistry
+from zope.annotation.interfaces import IAnnotations
+from zope.component import adapts
+from zope.component import getUtility
+from zope.interface import implementer
+
 
 FEED_SETTINGS_KEY = 'syndication_settings'
 

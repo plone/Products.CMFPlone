@@ -1,8 +1,8 @@
 from logging import getLogger
+from plone.base.interfaces import INonInstallable
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.events import SiteManagerCreatedEvent
-from plone.base.interfaces import INonInstallable
 from Products.CMFPlone.Portal import PloneSite
 from Products.GenericSetup.tool import SetupTool
 from zope.component import queryUtility
@@ -10,6 +10,7 @@ from zope.component.hooks import setSite
 from zope.event import notify
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectCreatedEvent
+
 
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
@@ -116,7 +117,7 @@ def zmi_constructor(context):
 
 def addPloneSite(context, site_id, title='Plone site', description='',
                  profile_id=_DEFAULT_PROFILE,
-                 content_profile_id=_CONTENT_PROFILE, snapshot=False,
+                 content_profile_id=None, snapshot=False,
                  extension_ids=(), setup_content=True,
                  default_language='en', portal_timezone='UTC'):
     """Add a PloneSite to the context."""
@@ -153,9 +154,21 @@ def addPloneSite(context, site_id, title='Plone site', description='',
 
         # Install default content types profile if user do not select "example content"
         # during site creation.
-        content_types_profile = content_profile_id if setup_content else _TYPES_PROFILE
+        if setup_content:
+            if content_profile_id:
+                content_profiles = [content_profile_id]
+            elif "plone.volto:default" in extension_ids:
+                content_profiles = [
+                    _TYPES_PROFILE,
+                    "plone.volto:default-homepage",
+                ]
+            else:
+                content_profiles = [_CONTENT_PROFILE]
+        else:
+            content_profiles = [_TYPES_PROFILE]
 
-        setup_tool.runAllImportStepsFromProfile(f'profile-{content_types_profile}')
+        for profile_id in content_profiles:
+            setup_tool.runAllImportStepsFromProfile(f'profile-{profile_id}')
 
         props = dict(
             title=title,

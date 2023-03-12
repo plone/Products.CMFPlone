@@ -17,6 +17,7 @@ First we login as admin::
 
     >>> from plone.app.testing import SITE_OWNER_NAME
     >>> from plone.app.testing import SITE_OWNER_PASSWORD
+    >>> from plone.app.testing import TEST_USER_PASSWORD
     >>> browser.open('http://nohost/plone/login')
     >>> browser.getControl(name='__ac_name').value = SITE_OWNER_NAME
     >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
@@ -46,8 +47,8 @@ there::
     >>> browser.open('http://nohost/plone/@@register')
     >>> browser.getControl('User Name').value='username'
     >>> browser.getControl('Email').value='username@example.org'
-    >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
-    >>> browser.getControl('Confirm password').value = SITE_OWNER_PASSWORD
+    >>> browser.getControl('Password').value = TEST_USER_PASSWORD
+    >>> browser.getControl('Confirm password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Register').click()
     >>> 'You have been registered.' in browser.contents
     True
@@ -80,8 +81,8 @@ there::
 We fill in the rest of the form::
 
     >>> browser.getControl('Email').value='email@example.org'
-    >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
-    >>> browser.getControl('Confirm password').value = SITE_OWNER_PASSWORD
+    >>> browser.getControl('Password').value = TEST_USER_PASSWORD
+    >>> browser.getControl('Confirm password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Register').click()
     >>> 'You have been registered.' in browser.contents
     True
@@ -94,7 +95,7 @@ We can now login with this email address::
 
     >>> browser.open('http://nohost/plone/login')
     >>> browser.getControl(name='__ac_name').value = 'email@example.org'
-    >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
+    >>> browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> 'You are now logged in' in browser.contents
     True
@@ -127,7 +128,7 @@ Now we try logging out and in again with the given email address::
     >>> browser.open('http://nohost/plone/logout')
     >>> browser.open('http://nohost/plone/login')
     >>> browser.getControl(name='__ac_name').value = 'username@example.org'
-    >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
+    >>> browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
     >>> 'Log in' in browser.contents
@@ -146,7 +147,7 @@ switched on::
 
     >>> browser.open('http://nohost/plone/login')
     >>> browser.getControl(name='__ac_name').value = 'email@example.org'
-    >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
+    >>> browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
     >>> 'Log in' in browser.contents
@@ -169,7 +170,7 @@ want. (See PLIP9214 notes.)::
     >>> browser.open('http://nohost/plone/logout')
     >>> browser.open('http://nohost/plone/login')
     >>> browser.getControl(name='__ac_name').value = 'email1@example.org'
-    >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
+    >>> browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> 'Login failed' in browser.contents
     True
@@ -179,7 +180,7 @@ The current email address of course works fine for logging in::
     >>> browser.open('http://nohost/plone/logout')
     >>> browser.open('http://nohost/plone/login')
     >>> browser.getControl(name='__ac_name').value = 'email2@example.org'
-    >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
+    >>> browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
     >>> 'Log in' in browser.contents

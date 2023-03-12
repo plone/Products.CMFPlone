@@ -1,15 +1,17 @@
-from setuptools import setup
 from setuptools import find_packages
+from setuptools import setup
 
-version = '6.0.0b2.dev0'
+
+version = '6.0.3.dev0'
 
 
 setup(
     name='Products.CMFPlone',
     version=version,
     description="The Plone Content Management System (core)",
-    long_description=open("README.rst").read() + "\n" +
-    open("CHANGES.rst").read(),
+    long_description=open("README.md").read() + "\n" +
+    open("CHANGES.md").read(),
+    long_description_content_type="text/markdown",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
@@ -20,15 +22,29 @@ setup(
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
     ],
+    python_requires='>=3.8',
     keywords='Plone CMF Python Zope CMS Webapplication',
     author='Plone Foundation',
     author_email='releasemanager@plone.org',
     url='https://plone.org',
     license='GPL version 2',
+    project_urls={
+        "Homepage": "https://plone.org",
+        "Documentation": "https://6.docs.plone.org",
+        "Source": "https://github.com/plone/Products.CMFPlone",
+        "Issues": "https://github.com/plone/plone.org/Products.CMFPlone",
+        "Forum": "https://community.plone.org/",
+        "Chat": "https://discord.gg/zFY3EBbjaj",
+        "Mastodon": "https://plone.social/@plone",
+        "Twitter": "https://twitter.com/plone",
+        "Videos": "https://youtube.com/@plonecms",
+        "Sponsor": "https://github.com/sponsors/plone",
+    },
     packages=find_packages(),
     namespace_packages=['Products'],
     include_package_data=True,
@@ -91,7 +107,7 @@ setup(
         'Products.statusmessages',
         'setuptools>=36.2',
         'plone.autoinclude',
-        'webresource>=1.1',
+        'webresource>=1.2',
         'Zope[wsgi] >= 5.0',
         'zope.app.locales >= 3.6.0',
         'zope.cachedescriptors',

@@ -1,21 +1,191 @@
-.. This file should contain the changes for the last release only, which
+<!--
+   This file should contain the changes for the last release only, which
    will be included on the package's page on pypi. All older entries are
    kept in docs/HISTORY.rst
+-->
 
-Changelog
-=========
+# Changelog
 
-.. You should *NOT* be adding new change log entries to this file.
+<!--
+   You should *NOT* be adding new change log entries to this file.
    You should create a file in the news directory instead.
    For helpful instructions, please see:
    https://github.com/plone/plone.releaser/blob/master/ADD-A-NEWS-ITEM.rst
+-->
 
-.. towncrier release notes start
+<!-- towncrier release notes start -->
 
-6.0.0b1 (2022-07-23)
---------------------
+## 6.0.2 (2023-02-27)
 
-Breaking changes:
+
+### Bug fixes:
+
+- Apply Barceloneta upgrades when upgrading Plone.
+  [maurits] #3726
+
+
+## 6.0.2rc1 (2023-02-23)
+
+
+### Bug fixes:
+
+- Fix editing `modal` property of an action in `@@actions-controlpanel`.
+  [petschki] #3709
+- Updated metadata version to 6013.  [maurits] #6013
+
+
+## 6.0.1 (2023-01-31)
+
+
+### Bug fixes:
+
+- Prepare 6.0.1 final. No changes compared to the release candidate.
+  [maurits] #601
+
+
+## 6.0.1rc1 (2023-01-30)
+
+
+### New features:
+
+- Add data-bundle attributes on javascript and styles resources.  [aormazabal] #3707
+
+
+### Bug fixes:
+
+- During login, when login_time is invalid, warn and reset it to 2000/01/01.
+  Fixes [issue 3656](https://github.com/plone/Products.CMFPlone/issues/3656>).
+  [maurits] #3656
+- When autologin after password reset is enabled, use the same adapters as during normal login.
+  Specifically: the ``IInitialLogin`` and ``IRedirectAfterLogin`` adapters.
+  Autologin is enabled by default.
+  Fixes [issue 3713](https://github.com/plone/Products.CMFPlone/issues/3713).
+  [maurits] #3713
+- Updated metadata version to 6012.  [maurits] #6012
+
+
+## 6.0.0 (2022-12-12)
+
+
+### Bug fixes:
+
+- Add help label to create Plone site page for difference between Volto and ClassicUI with link to docs. [fredvd] #3072
+- Change the search control panel to select types not searched instead of searchable types. This fixes an inconsistency with Volto. [danalvrz] #3694
+- Update default home page for installers for Plone 6 final release. [stevepiercy] #3700
+- Updated metadata version to 6011.  [maurits] #6011
+
+
+## 6.0.0rc2 (2022-12-05)
+
+### Bug fixes:
+
+
+- Fix duplicated ``<article id="content">`` in login form.
+  [petschki] (#3680)
+- Fix caching of rendered resources.
+  [petschki] (#3683)
+- Update package metadata in pypi.
+  [ericof] (#3687)
+- Updated metadata version to 6010.  [maurits] (#6010)
+
+
+## 6.0.0rc1 (2022-11-18)
+
+### Bug fixes:
+
+
+- Don't create news, events, and users folders for Volto sites. [davisagli] (#3628)
+- Fix password used in a test. [davisagli] (#3653)
+- Bootstrap fix for numbering `.list-group-numbered`.
+  See suggestions here https://github.com/twbs/bootstrap/issues/37345
+  [petschki] (#3661)
+- Fix 'KeyError: file' in browser tests on Python 3.11.
+  [maurits] (#3663)
+- Updated metadata version to 6009.  [maurits] (#6009)
+
+
+## 6.0.0b3 (2022-10-04)
+
+### Bug fixes:
+
+
+- Deprecate the portal_properties tool, remove obsolete code (#125)
+- Require Python 3.8 or higher.  [maurits] (#3635)
+- Actually load theme-specified styles CSS in TinyMCE. [Rudd-O] (#3638)
+- Minor visual fixes in admin UI [jensens] (#3640)
+- Fix aliased helpers
+  [ale-rt] (#3641)
+- Fix tests to work with longer minimum password length. [davisagli] (#3646)
+- Improve tinymce table settings [MrTango] (#3650)
+- Make add classic Plone site button better visible [MrTango] (#3651)
+- Updated metadata version to 6008.  [maurits] (#6008)
+
+
+## 6.0.0b2 (2022-09-10)
+
+### Breaking changes:
+
+
+- Officially drop Python 3.7 support and add 3.10 support.
+  Currently everything still work in 3.7, all tests pass, but beta 2 is the last release where this is the case.
+  See discussion in `this issue <https://github.com/plone/Products.CMFPlone/issues/3635>`_ and especially `this community poll <https://community.plone.org/t/plone-6-0-drop-support-for-python-3-7-and-3-8/15549>`_.
+  [maurits] (#3635)
+
+
+### Bug Fixes:
+
+
+- Moved CSFR patches addressing CMFPlone itself to decorators.
+  [jensens] (3614-2)
+- Fixed an issue that prevented the user to select the preferred timezone (#1290)
+- Fixed adding control panel action via ZMI.
+  [maurits] (#1959)
+- Changed 'Powered by' text
+  [rohnsha0] (#3382)
+- Fix active tab in ``@@test-rendering-icons``.
+  [petschki] (#3475)
+- Do not create title tag for svg icons when tag_alt is not given.
+  [agitator] (#3536)
+- Fixed all known instances of plone.com in plone/Products.CMFPlone
+  [rohnsha0] (#3568)
+- Allow access to the macros of the main_template, also from skin templates.
+  [maurits] (#3581)
+- Robot tests: be more specific when clicking some elements.
+  [maurits] (#3582)
+- Set portal title in registry when creating a new Plone site
+  [erral] (#3584)
+- Change test to make sure e-mail is sent in utf-8
+  [erral] (#3587)
+- Fixed 'Site Setup' link appearing on various parts of Control Panel
+  [rohnsha0] (#3599)
+- Fixed Inconsistent font issues in Control Panel
+  [rohnsha0] (#3600)
+- Fix visual issue with long action name in @@actions-controlpanel.
+  [petschki] (#3601)
+- Fixed an error where Main Template (line: 42) referenced plone.com istead of plone.org
+  [rohnsha0] (#3605)
+- In traversal.py remove a Zope 4 BBB code, add a comment about bundle traverser and apply black.isort on the file.
+  [jensens] (#3609)
+- Supress warning of intentional deprecated import for BBB.
+  [jensens] (#3610)
+- Use plone.base and reduce deprecation warnings.
+  In utils remove functions already moved to plone.base and add deferred import with message.
+  Deprecate correct, where prior only comments or old logging.
+  Some black/isort where touched.
+  [jensens] (#3614)
+- Move utils.getQuality and utils.getAllowedSizes to plone.namedfile.utils.
+  This helps untangling circular dependencies.
+  [jensens] (#3615)
+- Do not use deprecated calls in actions expressions.
+  ActionsTool and PloneBasetool got an code style overhaul.
+  [jensens] (#3616)
+- Updated metadata version to 6007.
+  [maurits] (#6007)
+
+
+## 6.0.0b1 (2022-07-23)
+
+### Breaking changes:
 
 
 - Removed our expressions patch.
@@ -25,7 +195,7 @@ Breaking changes:
   [maurits] (#3567)
 
 
-New features:
+### New features:
 
 
 - Initially open accordions in resource registry. Hide via JS when no errors occur.
@@ -34,7 +204,7 @@ New features:
   [petschki] (#3570)
 
 
-Bug fixes:
+### Bug Fixes:
 
 
 - Reduce dependencies in setup.py here, when already fulfilled in the packages where in use.
@@ -49,10 +219,9 @@ Bug fixes:
   [maurits] (#6006)
 
 
-6.0.0a6 (2022-06-27)
---------------------
+## 6.0.0a6 (2022-06-27)
 
-Bug fixes:
+### Bug Fixes:
 
 
 - Remove the use of f-strings for translations
@@ -63,10 +232,9 @@ Bug fixes:
   [petschki] (#3566)
 
 
-6.0.0a5 (2022-06-24)
---------------------
+## 6.0.0a5 (2022-06-24)
 
-Breaking changes:
+### Breaking changes:
 
 
 - Remove Archtypes specific ``isIDAutoGenerated`` helper.
@@ -82,7 +250,7 @@ Breaking changes:
   [jensens] (#3520)
 
 
-New features:
+### New features:
 
 
 - Added customisable batch_size for redirects controlpanel
@@ -106,7 +274,7 @@ New features:
   [petschki] (#3558)
 
 
-Bug fixes:
+### Bug Fixes:
 
 
 - Make compatible with robotframework 3-5.
@@ -139,10 +307,9 @@ Bug fixes:
   [maurits] (#6005)
 
 
-6.0.0a4 (2022-04-08)
---------------------
+## 6.0.0a4 (2022-04-08)
 
-Breaking changes:
+### Breaking changes:
 
 
 - PLIP 3211:
@@ -175,7 +342,7 @@ Breaking changes:
   [jensens, pbauer] (#3485)
 
 
-New features:
+### New features:
 
 
 - PLIP #3279: Implement modern images scales. Add huge (1600px), great (1200px), larger (1000px), teaser (600px). Amend preview and mini (remove height constraint).
@@ -193,7 +360,7 @@ New features:
   [agitator] (#3489)
 
 
-Bug fixes:
+### Bug Fixes:
 
 
 - Fixed evaluating expressions on resources, and especially loading ``plone.session`` resources.
@@ -248,10 +415,9 @@ Bug fixes:
   [maurits] (#6004)
 
 
-6.0.0a3 (2022-01-28)
---------------------
+## 6.0.0a3 (2022-01-28)
 
-New features:
+### New features:
 
 
 - add a new entry in site-controlpanel to change the favicon and its MIME-type
@@ -265,7 +431,7 @@ New features:
   [jensens] (#3377)
 
 
-Bug fixes:
+### Bug Fixes:
 
 
 - Cleanup Error Log Form after Review
@@ -281,10 +447,9 @@ Bug fixes:
 - Updated metadata version to 6003.  [maurits] (#6003)
 
 
-6.0.0a2 (2021-12-03)
---------------------
+## 6.0.0a2 (2021-12-03)
 
-Breaking changes:
+### Breaking changes:
 
 
 - PLIP 3339: Replace ``z3c.autoinclude`` with ``plone.autoinclude``.
@@ -292,14 +457,14 @@ Breaking changes:
   [maurits, tschorr] (#3339)
 
 
-New features:
+### New features:
 
 
 - On Zope root, create Volto site by default.
   [maurits] (#3344)
 
 
-Bug fixes:
+### Bug Fixes:
 
 
 - Move prefs_error_log* from skins to browser views
@@ -322,10 +487,9 @@ Bug fixes:
 - Updated metadata version to 6002.  [maurits] (#6002)
 
 
-6.0.0a1 (2021-10-22)
---------------------
+## 6.0.0a1 (2021-10-22)
 
-Bug fixes:
+### Bug Fixes:
 
 
 - Release Plone 6.0.0a1.
@@ -333,10 +497,9 @@ Bug fixes:
   [maurits] (#3341)
 
 
-6.0.0a1.dev1 (2021-10-16)
--------------------------
+## 6.0.0a1.dev1 (2021-10-16)
 
-Bug fixes:
+### Bug Fixes:
 
 
 - Use HTML5 meta charset.
@@ -367,10 +530,9 @@ Bug fixes:
   [maurits] (#6001)
 
 
-6.0.0a1.dev0 (2021-09-15)
--------------------------
+## 6.0.0a1.dev0 (2021-09-15)
 
-Breaking changes:
+### Breaking changes:
 
 
 - Removed our CMFQuickInstallerTool code completely.
@@ -411,7 +573,7 @@ Breaking changes:
   tschorr] (#3249)
 
 
-New features:
+### New features:
 
 
 - Custom date format strings from registry can be in the ``${}`` format as in the locales files.
@@ -428,7 +590,7 @@ New features:
   [pbauer] (#3297)
 
 
-Bug fixes:
+### Bug Fixes:
 
 
 - Add ``plone.app.caching`` to the list of add-ons that is upgraded when upgrading Plone.

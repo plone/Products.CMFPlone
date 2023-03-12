@@ -8,16 +8,17 @@ from AccessControl import ModuleSecurityInfo
 from AccessControl.class_init import InitializeClass
 from BTrees.OOBTree import OOBTree
 from OFS.SimpleItem import SimpleItem
+from plone.base.interfaces import IPWResetTool
+from plone.base.interfaces import ISecuritySchema
 from plone.registry.interfaces import IRegistry
 from plone.uuid.interfaces import IUUIDGenerator
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import UniqueObject
-from plone.base.interfaces import IPWResetTool
-from plone.base.interfaces import ISecuritySchema
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name
 from zope.component import getUtility
 from zope.interface import implementer
+
 import datetime
 
 

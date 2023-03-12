@@ -6,6 +6,7 @@ from plone.app.theming.interfaces import IThemeSettings
 from plone.app.theming.utils import theming_policy
 from plone.base.interfaces import IBundleRegistry
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component.hooks import getSite
@@ -45,6 +46,11 @@ class ResourceBase:
             request_disabled_bundles.update(getattr(request, "disabled_bundles", []))
         return request_enabled_bundles, request_disabled_bundles
 
+    def _user_local_roles(self, site):
+        portal_membership = getToolByName(site, "portal_membership")
+        user = portal_membership.getAuthenticatedMember()
+        return "|".join(user.getRolesInContext(self.context))
+
     def _cache_attr_name(self, site):
         hashtool = hashlib.sha256()
         hashtool.update(self.__class__.__name__.encode('utf8'))
@@ -52,6 +58,7 @@ class ResourceBase:
         e_bundles, d_bundles = self._request_bundles()
         for bundle in e_bundles | d_bundles:
             hashtool.update(bundle.encode('utf8'))
+        hashtool.update(self._user_local_roles(site).encode("utf8"))
         return f"_v_renderend_cache_{hashtool.hexdigest()}"
 
     @property
@@ -180,6 +187,7 @@ class ResourceBase:
                     async_=record.load_async or None,
                     defer=record.load_defer or None,
                     integrity=not external,
+                    **{'data-bundle': name},
                 )
             if record.csscompilation:
                 depends = check_dependencies(name, record.depends, css_names)
@@ -199,6 +207,7 @@ class ResourceBase:
                     url=record.csscompilation if external else None,
                     media="all",
                     rel="stylesheet",
+                    **{'data-bundle': name},
                 )
 
         # Collect theme data

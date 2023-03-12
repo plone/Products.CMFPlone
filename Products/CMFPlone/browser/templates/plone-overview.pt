@@ -46,7 +46,7 @@
                 <div tal:define="outdated python: view.outdated(site);"
                      class="mb-3 ${python: 'p-3 alert-warning' if outdated else ''}">
                     <p tal:condition="outdated" i18n:translate="">This site configuration is outdated and needs to be upgraded:</p>
-                    <a href="#" class="btn btn-primary ${python:'btn-lg' if not many and not outdated  else ''}"
+                    <a href="#" id="go-to-site-link" class="btn btn-primary ${python:'btn-lg' if not many and not outdated  else ''}"
                         tal:attributes="href site/absolute_url"
                         title="Go to your instance"
                         i18n:attributes="title;">
@@ -88,11 +88,7 @@
                 <button type="submit"
                         class="btn btn-${python:'success' if sites else 'primary'}"
                         i18n:translate="">Create a new Plone site</button>
-                <tal:comment condition="nothing">
-                  When we have Volto, the button above will create a Volto site,
-                  and we need an extra button below to create a Classic Plone site.
-                </tal:comment>
-                <a class="btn btn-secondary"
+                <a class="btn btn-info"
                     i18n:translate=""
                     tal:condition="view/has_volto"
                     href="${action}?site_id=Plone${site_number}&amp;classic=1"
@@ -102,6 +98,25 @@
                     href="${action}?site_id=Plone${site_number}&amp;advanced=1"
                     >Advanced</a>
             </form>
+            <br/>
+            <p i18n:translate="help_create_plone_site_buttons_1">
+                Starting with Plone 6, 'Create a new Plone site' applies a
+                profile and creates default content for the new React based
+                default frontend Volto. You are however required to set up and run
+                an additional frontend service to use this setup.
+            </p>
+            <p i18n:translate="help_create_plone_site_buttons_2">
+                The 'Create Classic Plone site' button creates a Plone site configured
+                for HTML based output, as was already supported by previous Plone versions.
+                Please consult our
+                <a href="https://6.docs.plone.org/" title="Plone 6 developer documentation"
+                   i18n:translate=""
+                   i18n:name="docs_link"
+                   i18n:attributes="title">developer documentation overview </a>
+                for more information about differences and requirements for
+                these frontends and possible upgrade paths from older Plone versions
+                to Plone 6.
+            </p>
         </div>
     </article>
 

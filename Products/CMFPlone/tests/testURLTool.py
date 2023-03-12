@@ -1,13 +1,12 @@
-import unittest
-
-from Products.CMFCore.tests.base.dummy import DummySite
-from Products.CMFCore.tests.base.dummy import DummyFolder
-from Products.CMFCore.tests.base.dummy import DummyContent
-
 from Acquisition import aq_parent
-from plone.registry.interfaces import IRegistry
 from plone.base.interfaces import ILoginSchema
+from plone.registry.interfaces import IRegistry
+from Products.CMFCore.tests.base.dummy import DummyContent
+from Products.CMFCore.tests.base.dummy import DummyFolder
+from Products.CMFCore.tests.base.dummy import DummySite
 from zope.component import getSiteManager
+
+import unittest
 
 
 class DummyFolder(DummyFolder):

@@ -2,9 +2,9 @@ from plone.app.testing import FunctionalTesting
 from plone.app.testing import MOCK_MAILHOST_FIXTURE
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
+from plone.base.interfaces.controlpanel import IMailSchema
 from plone.registry.interfaces import IRegistry
 from plone.testing import layered
-from plone.base.interfaces.controlpanel import IMailSchema
 from zope.component import getUtility
 
 import doctest
