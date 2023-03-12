@@ -86,55 +86,55 @@
       <role name="Owner"/>
       <role name="Editor"/>
     </permission>
-    <permission name="Plone Site Setup: Overview" acquire="True">
+    <permission name="Plone Site Setup: Overview" acquire="True" acquire="True">
       <role name="Manager"/>
       <role name="Site Administrator"/>
     </permission>
-    <permission name="Plone Site Setup: Editing">
+    <permission name="Plone Site Setup: Editing" acquire="True">
       <role name="Manager"/>
       <role name="Site Administrator"/>
     </permission>
-    <permission name="Plone Site Setup: Filtering">
+    <permission name="Plone Site Setup: Filtering" acquire="True">
       <role name="Manager"/>
       <role name="Site Administrator"/>
     </permission>
-    <permission name="Plone Site Setup: Language">
+    <permission name="Plone Site Setup: Language" acquire="True">
       <role name="Manager"/>
       <role name="Site Administrator"/>
     </permission>
-    <permission name="Plone Site Setup: Mail">
+    <permission name="Plone Site Setup: Mail" acquire="True">
       <role name="Manager"/>
       <role name="Site Administrator"/>
     </permission>
-    <permission name="Plone Site Setup: Markup">
+    <permission name="Plone Site Setup: Markup" acquire="True">
       <role name="Manager"/>
       <role name="Site Administrator"/>
     </permission>
-    <permission name="Plone Site Setup: Navigation">
+    <permission name="Plone Site Setup: Navigation" acquire="True">
       <role name="Manager"/>
       <role name="Site Administrator"/>
     </permission>
-    <permission name="Plone Site Setup: Search">
+    <permission name="Plone Site Setup: Search" acquire="True">
       <role name="Manager"/>
       <role name="Site Administrator"/>
     </permission>
-    <permission name="Plone Site Setup: Security">
+    <permission name="Plone Site Setup: Security" acquire="True">
       <role name="Manager"/>
       <role name="Site Administrator"/>
     </permission>
-    <permission name="Plone Site Setup: Site">
+    <permission name="Plone Site Setup: Site" acquire="True">
       <role name="Manager"/>
       <role name="Site Administrator"/>
     </permission>
-    <permission name="Plone Site Setup: Themes">
+    <permission name="Plone Site Setup: Themes" acquire="True">
       <role name="Manager"/>
       <role name="Site Administrator"/>
     </permission>
-    <permission name="Plone Site Setup: Types">
+    <permission name="Plone Site Setup: Types" acquire="True">
       <role name="Manager"/>
       <role name="Site Administrator"/>
     </permission>
-    <permission name="Plone Site Setup: Users and Groups">
+    <permission name="Plone Site Setup: Users and Groups" acquire="True">
       <role name="Manager"/>
       <role name="Site Administrator"/>
     </permission>
