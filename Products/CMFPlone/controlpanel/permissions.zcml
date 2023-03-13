@@ -70,7 +70,6 @@
       title="Inspect Relations"
       >
     <role name="Manager" />
-    <role name="Site Administrator" />
   </permission>
 
 </configure>

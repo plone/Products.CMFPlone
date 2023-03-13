@@ -180,6 +180,12 @@
       <role name="Site Administrator" />
     </permission>
     <permission acquire="True"
+                name="Plone Site Setup: TinyMCE"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
                 name="Plone Site Setup: Types"
     >
       <role name="Manager" />
@@ -355,6 +361,12 @@
     </permission>
     <permission acquire="True"
                 name="Manage Portal Aliases"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Inspect Relations"
     >
       <role name="Manager" />
       <role name="Site Administrator" />
