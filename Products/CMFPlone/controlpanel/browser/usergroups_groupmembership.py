@@ -57,14 +57,21 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
             search = form.get('form.button.Search', None) is not None
             edit = form.get('form.button.Edit', None) is not None and toDelete
             add = form.get('form.button.Add', None) is not None and toAdd
-            findAll = form.get('form.button.FindAll', None) is not None and \
-                not self.many_users
+            isBatched = form.get("b_start", None) is not None
+            findAll = (
+                form.get('form.button.FindAll', None) is not None
+                and not self.many_users
+            )
+            unbatchedAll = (
+                form.get("showAll", "") == "y"
+                and not self.many_users
+            )
             # The search string should be cleared when one of the
             # non-search buttons has been clicked.
-            if findAll or edit or add:
+            if findAll or unbatchedAll or edit or add:
                 form['searchstring'] = ''
             self.searchString = form.get('searchstring', '')
-            if findAll or bool(self.searchString):
+            if findAll or isBatched or unbatchedAll or bool(self.searchString):
                 self.searchResults = self.getPotentialMembers(
                     self.searchString)
 

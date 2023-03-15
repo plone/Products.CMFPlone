@@ -44,9 +44,8 @@
                     Batch python:modules['Products.CMFPlone'].Batch;
                     resultcount python:len(view.searchResults);
                     b_size python:resultcount if showAll else 20;
-                    b_start python:0 if showAll or view.newSearch else view.atoi(request.get('b_start',0));
-                    b_start python:b_start if b_start &lt;= resultcount else resultcount - resultcount % b_size;
-                    b_start python:b_start if b_start &lt; resultcount else max(b_start - b_size, 0);
+                    b_start request/b_start|python:0;
+                    b_start python:0 if showAll or view.newSearch else b_start;
                     portal_url context/portal_url;
                     groupquery python:view.makeQuery(groupname=view.groupname);
                     groupkeyquery python:view.makeQuery(key=view.groupname);">
@@ -93,16 +92,12 @@
                 <thead>
                   <tr>
                       <th>
-                          <input class="noborder"
+                          <span class="form-check"><input class="form-check-input toggle-all"
                                   type="checkbox"
-                                  src="select_all_icon.png"
                                   name="selectButton"
                                   title="Select all items"
-                                  onClick="toggleSelect(this, 'delete:list');"
-                                  tal:attributes="src string:$portal_url/select_all_icon.png"
                                   alt="Select all items"
-                                  i18n:attributes="title label_select_all_items; alt label_select_all_items;"/>
-                                  <!--Remove user from this group-->
+                                  i18n:attributes="title label_select_all_items; alt label_select_all_items;"/></span>
                       </th>
                       <th i18n:translate="listingheader_user_name">User name</th>
                       <th i18n:translate="listingheader_email_address">E-mail Address</th>
@@ -113,13 +108,13 @@
                     <tr tal:condition="python:this_user is not None"
                         tal:define="oddrow repeat/this_user/odd"
                         tal:attributes="class python:oddrow and 'odd' or 'even'">
-                        <td class="listingCheckbox">
-                            <input
+                        <td>
+                            <span class="form-check"><input
                                     type="checkbox"
-                                    class="noborder notify"
+                                    class="noborder notify form-check-input"
                                     name="delete:list"
                                     tal:attributes="value this_user/getId;
-                                                    disabled python:this_user.canRemoveFromGroup(view.groupname) and default or 'disabled'" />
+                                                    disabled python:this_user.canRemoveFromGroup(view.groupname) and default or 'disabled'" /></span>
                         </td>
 
                         <tal:block tal:condition="python: view.isGroup(this_user)">
@@ -211,16 +206,12 @@
                     </thead>
                     <tbody>
                       <tr tal:condition="batch">
-                        <th>
-                            <input class="noborder"
+                        <th><span class="form-check"><input class="noborder form-check-input toggle-all"
                                     type="checkbox"
-                                    src="select_all_icon.png"
                                     name="selectButton"
                                     title="Select all items"
-                                    onClick="toggleSelect(this, 'add:list');"
-                                    tal:attributes="src string:$portal_url/select_all_icon.png"
                                     alt="Select all items"
-                                    i18n:attributes="title label_select_all_items; alt label_select_all_items;"/>
+                                    i18n:attributes="title label_select_all_items; alt label_select_all_items;"/></span>
                         </th>
 
                         <th i18n:translate="listingheader_group_user_name">Group/User name</th>
@@ -232,13 +223,13 @@
                             tal:condition="python:this_user is not None"
                             tal:attributes="class python:oddrow and 'odd' or 'even'">
 
-                          <td class="listingCheckbox">
-                            <input type="checkbox"
-                                    class="noborder"
+                          <td>
+                            <span class="form-check"><input type="checkbox"
+                                    class="noborder form-check-input"
                                     name="add:list"
                                     value="value"
                                     tal:attributes="value this_user/getId;
-                                                    disabled python:this_user.canAddToGroup(view.groupname) and default or 'disabled'" />
+                                                    disabled python:this_user.canAddToGroup(view.groupname) and default or 'disabled'" /></span>
                           </td>
 
                           <td>
