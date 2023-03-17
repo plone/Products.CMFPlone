@@ -2,6 +2,7 @@ from Acquisition import aq_inner
 from operator import itemgetter
 from plone.app.workflow.remap import remap_workflow
 from plone.autoform.form import AutoExtensibleForm
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import ISearchSchema
 from plone.base.interfaces import ITypesSchema
 from plone.base.utils import safe_text
@@ -9,7 +10,6 @@ from plone.dexterity.interfaces import IDexterityFTI
 from plone.memoize.instance import memoize
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.controlpanel.events import ConfigurationChangedEvent
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage

@@ -3,11 +3,11 @@ from AccessControl.Permissions import view_management_screens
 from Acquisition import aq_inner
 from App.config import getConfiguration
 from plone.autoform.form import AutoExtensibleForm
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import IMaintenanceSchema
 from plone.memoize.view import memoize
 from plone.protect import CheckAuthenticator
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import button
 from z3c.form import form

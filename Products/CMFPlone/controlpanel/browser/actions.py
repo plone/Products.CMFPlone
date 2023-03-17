@@ -1,4 +1,5 @@
 from plone.autoform.form import AutoExtensibleForm
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import IActionSchema
 from plone.base.interfaces import INewActionSchema
 from plone.base.utils import base_hasattr
@@ -6,7 +7,6 @@ from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.interfaces import IAction
 from Products.CMFCore.interfaces import IActionCategory
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import form

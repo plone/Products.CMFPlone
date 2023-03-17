@@ -1,6 +1,6 @@
+from plone.base import PloneMessageFactory as _
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import transaction_note
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage

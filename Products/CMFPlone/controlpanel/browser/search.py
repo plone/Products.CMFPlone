@@ -1,6 +1,6 @@
 from plone.app.registry.browser import controlpanel
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import ISearchSchema
-from Products.CMFPlone import PloneMessageFactory as _
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope.component import queryUtility
 from zope.schema.interfaces import IVocabularyFactory

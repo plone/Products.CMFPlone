@@ -1,5 +1,5 @@
+from plone.base import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.controlpanel.browser.usergroups import (
     UsersGroupsControlPanelView,
 )
