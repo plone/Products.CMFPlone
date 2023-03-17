@@ -1,11 +1,11 @@
 from plone.app.registry.browser import controlpanel
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import ITinyMCEAdvancedSchema
 from plone.base.interfaces import ITinyMCELayoutSchema
 from plone.base.interfaces import ITinyMCEPluginSchema
 from plone.base.interfaces import ITinyMCEResourceTypesSchema
 from plone.base.interfaces import ITinyMCESchema
 from plone.base.interfaces import ITinyMCESpellCheckerSchema
-from Products.CMFPlone import PloneMessageFactory as _
 from z3c.form import field
 from z3c.form import group
 from z3c.form.browser.checkbox import CheckBoxFieldWidget

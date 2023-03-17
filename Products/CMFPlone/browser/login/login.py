@@ -1,5 +1,6 @@
 from .utils import has_logged_in
 from plone.app.users.browser.passwordpanel import PasswordPanel
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import IForcePasswordChange
 from plone.base.interfaces import IInitialLogin
 from plone.base.interfaces import ILoginForm
@@ -8,7 +9,6 @@ from plone.base.interfaces import IRedirectAfterLogin
 from plone.base.interfaces import ISecuritySchema
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from urllib import parse

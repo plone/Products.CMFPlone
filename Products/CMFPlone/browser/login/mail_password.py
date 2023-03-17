@@ -1,5 +1,5 @@
 from AccessControl import Unauthorized
-from Products.CMFPlone import PloneMessageFactory as _
+from plone.base import PloneMessageFactory as _
 from Products.Five import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 

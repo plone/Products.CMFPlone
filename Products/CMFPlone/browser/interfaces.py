@@ -1,5 +1,5 @@
+from plone.base import PloneMessageFactory as _
 from plone.schema import Email
-from Products.CMFPlone import PloneMessageFactory as _
 from zope import schema
 from zope.interface import Attribute
 from zope.interface import Interface
