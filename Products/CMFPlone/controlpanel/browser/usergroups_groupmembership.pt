@@ -87,7 +87,7 @@
                               batchformkeys python:['searchstring','_authenticator','groupname','form.submitted'];
                               many_users view/many_users">
               <h2 i18n:translate="heading_groupmembers_current">Current group members</h2>
-              <table class="table table-responsive table-bordered table-striped" summary="Group Members Listing"
+              <table class="table table-responsive table-bordered table-striped pat-checklist" summary="Group Members Listing"
                   tal:condition="view/groupMembers">
                 <thead>
                   <tr>
@@ -204,7 +204,7 @@
                         </th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="pat-checklist">
                       <tr tal:condition="batch">
                         <th><span class="form-check"><input class="noborder form-check-input toggle-all"
                                     type="checkbox"
