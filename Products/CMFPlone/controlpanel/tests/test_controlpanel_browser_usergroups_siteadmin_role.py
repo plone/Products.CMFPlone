@@ -218,7 +218,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
             self.portal_url + '/@@usergroup-usermembership?userid=%s' % self.normal_user)
         contents = self._simplify_white_space(self.browser.contents)
         self.assertTrue(
-            '<input type="checkbox" class="noborder" name="add:list" '
+            '<input type="checkbox" class="form-check-input" name="add:list" '
             'value="Administrators" disabled="disabled" />' in contents
         )
 
