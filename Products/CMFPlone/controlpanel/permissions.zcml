@@ -51,11 +51,6 @@
       />
 
   <permission
-      id="plone.app.controlpanel.Themes"
-      title="Plone Site Setup: Themes"
-      />
-
-  <permission
       id="plone.app.controlpanel.Types"
       title="Plone Site Setup: Types"
       />
