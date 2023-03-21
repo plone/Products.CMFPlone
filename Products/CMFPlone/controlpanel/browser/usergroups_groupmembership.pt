@@ -91,7 +91,7 @@
                   tal:condition="view/groupMembers">
                 <thead>
                   <tr>
-                      <th>
+                      <th style="width:1rem;">
                           <span class="form-check"><input class="form-check-input toggle-all"
                                   type="checkbox"
                                   name="selectButton"
@@ -206,7 +206,7 @@
                     </thead>
                     <tbody class="pat-checklist">
                       <tr tal:condition="batch">
-                        <th><span class="form-check"><input class="noborder form-check-input toggle-all"
+                        <th style="width:1rem;"><span class="form-check"><input class="noborder form-check-input toggle-all"
                                     type="checkbox"
                                     name="selectButton"
                                     title="Select all items"
