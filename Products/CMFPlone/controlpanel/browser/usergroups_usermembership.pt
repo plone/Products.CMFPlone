@@ -52,16 +52,24 @@
 
     <div id="content-core">
 
+      <p class="lead mt-4" i18n:translate="">Group membership</p>
+
       <div class="autotabs">
-        <nav class="autotoc-nav">
-          <a href="${portal_url}/@@user-information?${userquery}"
-             i18n:translate="title_personal_information_form">Personal Information</a>
-          <a href="${portal_url}/@@user-preferences?${userquery}"
-             i18n:translate="">Personal Preferences</a>
-          <a class="active"
-             href="${portal_url}/@@usergroup-usermembership?${userquery}"
-             i18n:translate="label_group_memberships">Group Memberships</a>
-        </nav>
+        <ul class="autotoc-nav nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link" href="${portal_url}/@@user-information?${userquery}"
+            i18n:translate="title_personal_information_form">Personal Information</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="${portal_url}/@@user-preferences?${userquery}"
+            i18n:translate="">Personal Preferences</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" class="active"
+               href="${portal_url}/@@usergroup-usermembership?${userquery}"
+               i18n:translate="label_group_memberships">Group Memberships</a>
+          </li>
+        </ul>
 
         <form method="post"
               tal:attributes="action string:$portal_url/$template_id?userid=${userid}">
@@ -86,11 +94,11 @@
 
 
                     <td class="listingCheckbox">
-                        <input type="checkbox"
-                               class="noborder notify"
+                        <span class="form-check"><input type="checkbox"
+                               class="noborder notify form-check-input"
                                name="delete:list"
                                tal:attributes="value groupId;
-                                               disabled python:member.canRemoveFromGroup(groupId) and default or 'disabled'" />
+                                               disabled python:member.canRemoveFromGroup(groupId) and default or 'disabled'" /></span>
                     </td>
                 </tr>
             </tal:block>
@@ -106,11 +114,11 @@
           <h2 tal:condition="many_groups" i18n:translate="heading_search_groups">Search for groups</h2>
           <h2 tal:condition="not:many_groups" i18n:translate="heading_assign_to_groups">Assign to groups</h2>
 
-          <table class="table overflow-auto table-bordered table-striped text-center" summary="Groups">
+          <table class="table overflow-auto table-bordered table-striped pat-checklist" summary="Groups">
             <tr>
               <th colspan="2" tal:condition="many_groups">
                 <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
-                      <input class="quickSearch"
+                      <input class="quickSearch form-control"
                              type="text"
                              name="searchstring"
                              value=""
@@ -127,16 +135,13 @@
             </tr>
             <tal:block condition="python:results">
                 <tr>
-                  <th>
-                      <input class="noborder"
+                  <th style="width:1.5rem;">
+                      <span class="form-check"><input class="form-check-input toggle-all"
                              type="checkbox"
-                             src="select_all_icon.png"
                              name="selectButton"
                              title="Select all items"
-                             onClick="toggleSelect(this, 'add:list');"
-                             tal:attributes="src string:${context/portal_url}/select_all_icon.png"
                              alt="Select all items"
-                             i18n:attributes="title label_select_all_items; alt label_select_all_items;"/>
+                             i18n:attributes="title label_select_all_items; alt label_select_all_items;"/></span>
                   </th>
                   <th i18n:translate="listingheader_group_name">Group Name</th>
                 </tr>
@@ -145,14 +150,14 @@
                       tal:attributes="class python:'odd' if oddrow else 'even'">
 
                     <td class="listingCheckbox">
-                      <input type="checkbox"
-                             class="noborder"
+                      <span class="form-check"><input type="checkbox"
+                             class="form-check-input"
                              name="add:list"
                              value="value"
-                                 tal:define="calcId obj/getGroupId | obj/getId;
-                                             canAddToGroup python:member.canAddToGroup(calcId) and ('Manager' not in obj.getRoles() or view.is_zope_manager)"
-                                 tal:attributes="value calcId;
-                                                 disabled python:canAddToGroup and default or 'disabled'" />
+                             tal:define="calcId obj/getGroupId | obj/getId;
+                                         canAddToGroup python:member.canAddToGroup(calcId) and ('Manager' not in obj.getRoles() or view.is_zope_manager)"
+                             tal:attributes="value calcId;
+                                             disabled python:canAddToGroup and default or 'disabled'" /></span>
                     </td>
 
                     <td>
