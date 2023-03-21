@@ -1,0 +1,4 @@
+fix circular depndency in `plone.app.theming` on ZCML level.
+Move permission over there.
+[jensens]
+
