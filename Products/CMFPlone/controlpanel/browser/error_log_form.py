@@ -1,5 +1,5 @@
 from DateTime import DateTime
-from Products.CMFPlone import PloneMessageFactory as _
+from plone.base import PloneMessageFactory as _
 from Products.CMFPlone.utils import safe_nativestring
 from Products.Five import BrowserView
 

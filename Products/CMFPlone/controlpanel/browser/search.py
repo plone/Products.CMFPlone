@@ -1,7 +1,7 @@
 from plone.app.registry.browser import controlpanel
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import ISearchSchema
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.controlpanel.widgets import ReverseCheckBoxFieldWidget
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope.component import queryUtility
 from zope.schema.interfaces import IVocabularyFactory
 
@@ -16,7 +16,7 @@ class SearchControlPanelForm(controlpanel.RegistryEditForm):
     def updateFields(self):
         super().updateFields()
         self.fields['types_not_searched'].widgetFactory = \
-            ReverseCheckBoxFieldWidget
+            CheckBoxFieldWidget
 
     def updateWidgets(self):
         super().updateWidgets()

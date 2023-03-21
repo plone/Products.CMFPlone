@@ -1,6 +1,6 @@
 from DateTime import DateTime
-from plone.app.z3cform.interfaces import IPloneFormLayer
 from plone.app.testing import TEST_USER_PASSWORD
+from plone.app.z3cform.interfaces import IPloneFormLayer
 from Products.CMFCore.permissions import SetOwnProperties
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING

@@ -1,27 +1,28 @@
+from .utils import has_logged_in
 from AccessControl.SecurityManagement import getSecurityManager
-from DateTime import DateTime
+from AccessControl.SecurityManagement import newSecurityManager
+from AccessControl.SecurityManagement import setSecurityManager
 from email.header import Header
-from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.base import PloneMessageFactory as _
+from plone.base.interfaces import IInitialLogin
 from plone.base.interfaces import IPasswordResetToolView
+from plone.base.interfaces import IRedirectAfterLogin
 from plone.base.interfaces.controlpanel import IMailSchema
 from plone.base.utils import safe_text
 from plone.base.utils import safeToInt
 from plone.memoize import view
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.PasswordResetTool import ExpiredRequestError
 from Products.CMFPlone.PasswordResetTool import InvalidRequestError
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.PlonePAS.events import UserInitialLoginInEvent
-from Products.PlonePAS.events import UserLoggedInEvent
 from Products.PluggableAuthService.interfaces.plugins import ICredentialsUpdatePlugin
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-from zope.event import notify
+from zope.component import queryMultiAdapter
 from zope.i18n import translate
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
@@ -100,33 +101,70 @@ class PasswordResetView(BrowserView):
                 password
             )
 
+        is_initial_login = False
+
+        # Find member by login name or user id.
+        # If this fails, then this is strange.
         member = get_member_by_login_name(context, userid, False)
+        if not member:
+            self.request.response.redirect(self.context.absolute_url())
+            IStatusMessage(self.request).addStatusMessage(
+                _(
+                    'password_reset_failed',
+                    default='Password reset failed.',
+                ),
+                'info',
+            )
+            return
 
-        if member:
-            user = member.getUser()
-        else:
-            # Fallback in case we cannot find a user
-            # with the given userid
-            user = getSecurityManager().getUser()
+        user = member.getUser()
+        orig_sm = getSecurityManager()
+        try:
+            newSecurityManager(self.request, user)
+            is_initial_login = self._post_login()
+            IStatusMessage(self.request).addStatusMessage(
+                _(
+                    'password_reset_successful',
+                    default='Password reset successful, '
+                            'you are logged in now!',
+                ),
+                'info',
+            )
+            self.redirect_after_login(is_initial_login=is_initial_login)
+        finally:
+            setSecurityManager(orig_sm)
 
-        default = DateTime('2000/01/01')
-        login_time = user.getProperty('login_time', default)
-        if login_time == default:
-            notify(UserInitialLoginInEvent(user))
-        else:
-            notify(UserLoggedInEvent(user))
-
-        IStatusMessage(self.request).addStatusMessage(
-            _(
-                'password_reset_successful',
-                default='Password reset successful, '
-                        'you are logged in now!',
-            ),
-            'info',
-        )
-        url = INavigationRoot(self.context).absolute_url()
-        self.request.response.redirect(url)
         return
+
+    def _post_login(self):
+        membership_tool = getToolByName(self.context, 'portal_membership')
+        member = membership_tool.getAuthenticatedMember()
+        login_time = member.getProperty('login_time', None)
+        is_initial_login = not has_logged_in(login_time)
+        membership_tool.loginUser(self.request)
+        if is_initial_login:
+            self.handle_initial_login()
+        return is_initial_login
+
+    def handle_initial_login(self):
+        handler = queryMultiAdapter((self.context, self.request), IInitialLogin)
+        if handler:
+            handler()
+
+    def redirect_after_login(self, came_from=None, is_initial_login=False):
+        # Note: for password reset a came_from parameter seems illogical.
+        # But let's allow it, to be the same as in login.py.
+        # The default implementation does not pass it in though.
+        adapter = queryMultiAdapter(
+            (self.context, self.request),
+            IRedirectAfterLogin
+        )
+        if adapter:
+            came_from = adapter(came_from, is_initial_login)
+        if not came_from:
+            came_from = self.context.absolute_url()
+
+        self.request.response.redirect(came_from)
 
     def _reset_password(self, pw_tool, randomstring):
         state = self.getErrors()

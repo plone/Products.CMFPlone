@@ -1,9 +1,9 @@
 from email.mime.text import MIMEText
 from plone.autoform.form import AutoExtensibleForm
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.controlpanel import IMailSchema
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.browser.interfaces import IContactForm
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage

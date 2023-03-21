@@ -1,7 +1,7 @@
 from App.config import getConfiguration
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import IBundleRegistry
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getUtility

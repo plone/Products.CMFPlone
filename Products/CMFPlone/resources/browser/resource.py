@@ -187,6 +187,7 @@ class ResourceBase:
                     async_=record.load_async or None,
                     defer=record.load_defer or None,
                     integrity=not external,
+                    **{'data-bundle': name},
                 )
             if record.csscompilation:
                 depends = check_dependencies(name, record.depends, css_names)
@@ -206,6 +207,7 @@ class ResourceBase:
                     url=record.csscompilation if external else None,
                     media="all",
                     rel="stylesheet",
+                    **{'data-bundle': name},
                 )
 
         # Collect theme data

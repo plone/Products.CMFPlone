@@ -5,10 +5,10 @@ from plone.app.linkintegrity.handlers import modifiedContent
 from plone.app.linkintegrity.utils import referencedRelationship
 from plone.app.relationfield.event import update_behavior_relations
 from plone.app.uuid.utils import uuidToObject
+from plone.base import PloneMessageFactory as _
 from plone.dexterity.interfaces import IDexterityContent
 from plone.dexterity.utils import iterSchemataForType
 from Products.CMFCore.interfaces import IContentish
-from Products.CMFPlone import PloneMessageFactory as _
 from z3c.relationfield import event
 from z3c.relationfield import RelationValue
 from z3c.relationfield.event import updateRelations

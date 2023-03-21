@@ -1,9 +1,9 @@
 from Acquisition import aq_inner
 from itertools import chain
+from plone.base import PloneMessageFactory as _
 from plone.protect import CheckAuthenticator
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.controlpanel.browser.usergroups import (
     UsersGroupsControlPanelView,
 )

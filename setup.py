@@ -2,15 +2,16 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = '6.0.0rc2.dev0'
+version = '6.0.3.dev0'
 
 
 setup(
     name='Products.CMFPlone',
     version=version,
     description="The Plone Content Management System (core)",
-    long_description=open("README.rst").read() + "\n" +
-    open("CHANGES.rst").read(),
+    long_description=open("README.md").read() + "\n" +
+    open("CHANGES.md").read(),
+    long_description_content_type="text/markdown",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
@@ -34,8 +35,7 @@ setup(
     license='GPL version 2',
     project_urls={
         "Homepage": "https://plone.org",
-        "Documentation": "https://docs.plone.org",
-        "PyPI": "https://pypi.python.org/pypi/Products.CMFPlone",
+        "Documentation": "https://6.docs.plone.org",
         "Source": "https://github.com/plone/Products.CMFPlone",
         "Issues": "https://github.com/plone/plone.org/Products.CMFPlone",
         "Forum": "https://community.plone.org/",
@@ -107,7 +107,7 @@ setup(
         'Products.statusmessages',
         'setuptools>=36.2',
         'plone.autoinclude',
-        'webresource>=1.1',
+        'webresource>=1.2',
         'Zope[wsgi] >= 5.0',
         'zope.app.locales >= 3.6.0',
         'zope.cachedescriptors',

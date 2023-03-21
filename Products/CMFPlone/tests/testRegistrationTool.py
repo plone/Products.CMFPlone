@@ -1,4 +1,3 @@
-from re import T
 from AccessControl import Unauthorized
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.base.interfaces.controlpanel import IMailSchema
@@ -9,6 +8,7 @@ from Products.CMFPlone.RegistrationTool import _checkEmail
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
+from re import T
 from zope.component import getSiteManager
 from zope.component import getUtility
 
