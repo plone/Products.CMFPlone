@@ -87,11 +87,11 @@
                               batchformkeys python:['searchstring','_authenticator','groupname','form.submitted'];
                               many_users view/many_users">
               <h2 i18n:translate="heading_groupmembers_current">Current group members</h2>
-              <table class="table table-responsive table-bordered table-striped" summary="Group Members Listing"
+              <table class="table table-responsive table-bordered table-striped pat-checklist" summary="Group Members Listing"
                   tal:condition="view/groupMembers">
                 <thead>
                   <tr>
-                      <th>
+                      <th style="width:1rem;">
                           <span class="form-check"><input class="form-check-input toggle-all"
                                   type="checkbox"
                                   name="selectButton"
@@ -119,7 +119,7 @@
 
                         <tal:block tal:condition="python: view.isGroup(this_user)">
                           <td>
-                            <img src="group.png" alt="" />
+                            <img tal:replace="structure python:icons.tag('people')">
                             <a href="" tal:attributes="href python:'@@usergroup-groupdetails?' + view.makeQuery(groupname=this_user.getGroupName())" >
                               <span tal:replace="this_user/getGroupTitleOrName | default" />
                               (<span tal:replace="this_user/id" />)
@@ -129,7 +129,7 @@
 
                         <tal:block tal:condition="python: not view.isGroup(this_user)">
                           <td>
-                            <img src="user.png" alt="" />
+                            <img tal:replace="structure python:icons.tag('person')">
                             <a href="" tal:attributes="href python:'@@user-information?' + view.makeQuery(userid=this_user.getId());
                                                         title this_user/getId">
                                 <span tal:replace="python:this_user.getProperty('fullname')">Full Name</span>
@@ -204,9 +204,9 @@
                         </th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="pat-checklist">
                       <tr tal:condition="batch">
-                        <th><span class="form-check"><input class="noborder form-check-input toggle-all"
+                        <th style="width:1rem;"><span class="form-check"><input class="noborder form-check-input toggle-all"
                                     type="checkbox"
                                     name="selectButton"
                                     title="Select all items"
@@ -234,7 +234,7 @@
 
                           <td>
                               <tal:block tal:condition="python:not view.isGroup(this_user)">
-                                  <img src="user.png" alt="" />
+                                  <img tal:replace="structure python:icons.tag('person')">
                                   <a href="" tal:attributes="href python:'@@user-information?' + view.makeQuery(userid=this_user.getId());
                                                               title this_user/getId">
                                     <span tal:replace="python:this_user.getProperty('fullname')">Full Name</span>
@@ -244,7 +244,7 @@
                                   </a>
                               </tal:block>
                               <tal:block tal:condition="python: view.isGroup(this_user)">
-                                  <img src="group.png" alt="" />
+                                  <img tal:replace="structure python:icons.tag('people')">
                                   <a href="" tal:attributes="href python:'@@usergroup-groupdetails?' + view.makeQuery(groupname=this_user.getGroupName())">
                                       <span tal:replace="this_user/getGroupTitleOrName | default" />
                                       (<span tal:replace="this_user/id | default" />)
