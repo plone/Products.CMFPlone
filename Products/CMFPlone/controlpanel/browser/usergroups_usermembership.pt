@@ -71,7 +71,7 @@
           </li>
         </ul>
 
-        <form method="post"
+        <form method="post" class="mt-3"
               tal:attributes="action string:$portal_url/$template_id?userid=${userid}">
 
           <h2 i18n:translate="heading_memberships_current">Current group memberships</h2>
@@ -104,12 +104,11 @@
             </tal:block>
           </table>
           <p tal:condition="not:groups" i18n:translate="text_user_not_in_any_group">This user does not belong to any group.</p>
-          <button class="btn btn-alert"
+          <button class="btn btn-danger mb-4"
                  type="submit"
                  name="form.button.Delete"
-                 value="Remove from selected groups"
-                 i18n:attributes="value label_remove_selected_groups;"
-                 tal:condition="groups" />
+                 i18n:translate="label_remove_selected_groups"
+                 tal:condition="groups">Remove from selected groups</button>
 
           <h2 tal:condition="many_groups" i18n:translate="heading_search_groups">Search for groups</h2>
           <h2 tal:condition="not:many_groups" i18n:translate="heading_assign_to_groups">Assign to groups</h2>
@@ -199,10 +198,8 @@
           <button class="btn btn-primary"
                  type="submit"
                  name="form.button.Add"
-                 value="Add user to selected groups"
                  tal:condition="batch"
-                 i18n:translate=""
-                 i18n:attributes="value label_add_user_to_group;">Add user to selected groups</button>
+                 i18n:translate="label_add_user_to_group">Add user to selected groups</button>
           <input tal:replace="structure context/@@authenticator/authenticator" />
 
         </form>
