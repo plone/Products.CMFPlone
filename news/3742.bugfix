@@ -1,2 +1,0 @@
-Import PloneMessageFactory from plone.base. Removes deprecation warnings.
-[jensens]

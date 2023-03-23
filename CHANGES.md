@@ -15,6 +15,30 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.3rc1 (2023-03-23)
+
+
+### Bug fixes:
+
+- Remove unused template send_feedback_confirm.pt. 
+  [jensens] #3122
+- Moved the assignment of Plone Site Setup permissions from zcml to GenericSetup
+  rolemap.xml. This assigns the permissions on site creation instead of Zope root
+  where the `Site Administrator` role does not actually exist
+  [ewohnlich] #3223
+- Fix deprecated imports. [jensens] #3733
+- Fix userlisting batch/showAll in group membership template.
+  [petschki] #3738
+- Implement `pat-checklist` for groupuser management.
+  [petschki] #3740
+- Import PloneMessageFactory from plone.base. Removes deprecation warnings.
+  [jensens] #3742
+- Fix circular dependency in `plone.app.theming` on ZCML level.
+  Move permission over there.
+  [jensens] #3747
+- Updated metadata version to 6014.  [maurits] #6014
+
+
 ## 6.0.2 (2023-02-27)
 
 

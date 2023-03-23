@@ -1,4 +1,0 @@
-Moved the assignment of Plone Site Setup permissions from zcml to GenericSetup
-rolemap.xml. This assigns the permissions on site creation instead of Zope root
-where the `Site Administrator` role does not actually exist
-[ewohnlich]
