@@ -2,6 +2,7 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from App.config import getConfiguration
+from datetime import date
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
@@ -13,6 +14,7 @@ from zope.component import getUtility
 from ZPublisher.HTTPRequest import WSGIRequest
 
 import pkg_resources
+import sys
 
 try:
     import plone.app.event
@@ -20,6 +22,21 @@ try:
     HAS_PAE = True
 except ImportError:
     HAS_PAE = False
+
+
+# When is a Python 3 minor version out of support?
+# See https://devguide.python.org/versions/#versions
+_PYTHON_MINOR_OUT_OF_SUPPORT = {
+    6: date(2021, 12, 23),
+    7: date(2023, 6, 27),
+    # Currently, for 3.8 this only shows October 2024, without specific date,
+    # so take the last day of the month.
+    8: date(2024, 10, 31),
+}
+# These dates are specific to the current Plone minor version.
+# See https://plone.org/download/release-schedule
+_PLONE_OUT_OF_MAINTENANCE_SUPPORT = date(2023, 10, 31)
+_PLONE_OUT_OF_SECURITY_SUPPORT = date(2024, 10, 31)
 
 
 class OverviewControlPanel(controlpanel.RegistryEditForm):
@@ -129,6 +146,36 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
         if portal_timezone:
             return False
         return True  # No portal_timezone found.
+
+    def python2_warning(self):
+        return sys.version_info.major == 2
+
+    def python_warning(self):
+        # Only for Python 3: for Python 2 we have python2_warning.
+        if sys.version_info.major == 2:
+            return False
+        minor_version = sys.version_info.minor
+        deadline = _PYTHON_MINOR_OUT_OF_SUPPORT.get(minor_version)
+        if not deadline:
+            # not supported at all
+            return True
+        # Warn when today is after the deadline for this minor version.
+        return date.today() > deadline
+
+    def plone_maintenance_warning(self):
+        return date.today() > _PLONE_OUT_OF_MAINTENANCE_SUPPORT
+
+    def plone_security_warning(self):
+        return date.today() > _PLONE_OUT_OF_SECURITY_SUPPORT
+
+    def version_warning(self):
+        # Is there *any* version warning?
+        return (
+            self.python2_warning()
+            or self.python_warning()
+            or self.plone_maintenance_warning()
+            or self.plone_security_warning()
+        )
 
     def categories(self):
         return self.cptool().getGroups()
