@@ -2,11 +2,11 @@ from DateTime import DateTime
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.base.batch import Batch
+from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.base.interfaces import ISearchSchema
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.navtree import getNavigationRoot
-from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.ZCTextIndex.ParseTree import ParseError
 from zope.cachedescriptors.property import Lazy as lazy_property
 from zope.component import getMultiAdapter
