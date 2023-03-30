@@ -6,7 +6,6 @@ from Products.CMFPlone.browser.interfaces import IContactForm
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
-from email.mime.text import MIMEText
 from plone.autoform.form import AutoExtensibleForm
 from plone.registry.interfaces import IRegistry
 from smtplib import SMTPException
@@ -15,6 +14,16 @@ from zope.component import getUtility
 from zope.component.hooks import getSite
 
 import logging
+import six
+
+try:
+    # Products.MailHost has a patch to fix quoted-printable soft line breaks.
+    # See https://github.com/zopefoundation/Products.MailHost/issues/35
+    from Products.MailHost.MailHost import message_from_string
+except ImportError:
+    # If the patch is ever removed, we fall back to the standard library.
+    from email import message_from_string
+
 
 log = logging.getLogger(__name__)
 
@@ -68,7 +77,9 @@ class ContactForm(AutoExtensibleForm, form.Form):
 
         data['url'] = portal.absolute_url()
         message = self.generate_mail(data, encoding)
-        message = MIMEText(message, 'plain', encoding)
+        if six.PY3:
+            message = message.decode(encoding)
+        message = message_from_string(message)
         message['Reply-To'] = data['sender_from_address']
 
         try:
