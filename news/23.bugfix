@@ -1,0 +1,4 @@
+Show warning in Site Setup when using an unsupported Plone or Python version.
+This is based on dates in the `Plone release schedule <https://plone.org/download/release-schedule>`_
+and the `Status of Python versions <https://devguide.python.org/versions/>`_.
+[maurits]
