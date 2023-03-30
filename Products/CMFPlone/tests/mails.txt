@@ -4,8 +4,10 @@ Mail related functional tests
 Some initial setup:
 
   >>> from plone.testing.zope import Browser
+  >>> import six
   >>> app = layer['app']
   >>> browser = Browser(app)
+  >>> browser.handleErrors = False
 
 
 Contact form
@@ -58,12 +60,19 @@ We expect the headers to be properly header encoded (7-bit):
   >>> b'Subject: =?utf-8?q?Some_t=C3=A4st_subject=2E?=' in msg
   True
 
-The output should be encoded in a reasonable manner (in this case
-quoted-printable).  There may be some small differences in where
-exactly the lines are cut off, depending on whether you use five.pt
-(in Zope 2.13) or not, so we turn the message into one line first:
+The output should be encoded in a reasonable manner, in this case quoted-printable.
+On Python 3 there may be problems with quoted printable messages on some mail servers.
+See https://github.com/zopefoundation/Products.MailHost/issues/35
+When '\r\n' is used as line ending, all is well.
+On Python 2 the line endings are plain '\n', but there it is no problem.
 
-  >>> msg.replace(b'=\n', b'').replace(b'\n', b' ')
+  >>> True if six.PY2 else msg.count(b'\r\n') > 0
+  True
+
+There may be some small differences in where exactly the lines are cut off,
+so we turn the message into one line first:
+
+  >>> msg.replace(b'\r\n', b'\n').replace(b'=\n', b'').replace(b'\n', b' ')
   b'...Another t=C3=A4st message...You are receiving this mail because T=C3=A4st user test@plone.test...is sending feedback about the site you administer at...'
 
 We can also decode the string, though we should still be careful about

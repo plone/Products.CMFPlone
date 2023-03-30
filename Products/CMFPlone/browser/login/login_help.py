@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from email import message_from_string
 from email.header import Header
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
@@ -23,6 +22,14 @@ from zope.interface import implementer
 
 import logging
 import six
+
+try:
+    # Products.MailHost has a patch to fix quoted-printable soft line breaks.
+    # See https://github.com/zopefoundation/Products.MailHost/issues/35
+    from Products.MailHost.MailHost import message_from_string
+except ImportError:
+    # If the patch is ever removed, we fall back to the standard library.
+    from email import message_from_string
 
 
 SEND_USERNAME_TEMPLATE = _(u"mailtemplate_username_info", default=u"""From: {encoded_mail_sender}
