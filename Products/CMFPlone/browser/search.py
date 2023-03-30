@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from DateTime import DateTime
 from plone.app.contentlisting.interfaces import IContentListing
-from plone.base.interfaces.siteroot import IPloneSiteRoot
+from Products.CMFPlone.interfaces import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.navtree import getNavigationRoot
