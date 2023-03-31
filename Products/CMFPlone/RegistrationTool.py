@@ -7,7 +7,6 @@ from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_chain
-from email import message_from_string
 from hashlib import md5
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import ISecuritySchema
@@ -34,6 +33,13 @@ from zope.schema import ValidationError
 import random
 import re
 
+try:
+    # Products.MailHost has a patch to fix quoted-printable soft line breaks.
+    # See https://github.com/zopefoundation/Products.MailHost/issues/35
+    from Products.MailHost.MailHost import message_from_string
+except ImportError:
+    # If the patch is ever removed, we fall back to the standard library.
+    from email import message_from_string
 
 # - remove '1', 'l', and 'I' to avoid confusion
 # - remove '0', 'O', and 'Q' to avoid confusion
