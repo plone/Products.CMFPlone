@@ -51,11 +51,3 @@ class LanguageControlPanelForm(controlpanel.RegistryEditForm):
 
 class LanguageControlPanel(controlpanel.ControlPanelFormWrapper):
     form = LanguageControlPanelForm
-
-
-# class LanguageControlPanel(ControlPanelForm):
-#    form_fields = FormFields(ILanguageSchema)
-#    form_fields['default_language'].custom_widget = \
-#       LanguageDropdownChoiceWidget
-#
-#    form_name = _(u"heading_language_settings", default="Language Settings")
