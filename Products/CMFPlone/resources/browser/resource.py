@@ -19,7 +19,7 @@ import webresource
 logger = logging.getLogger(__name__)
 
 REQUEST_CACHE_KEY = "_WEBRESOURCE_CACHE_"
-
+SITE_ROOT_CACHE_KEY_PREFIX = "_v_rendered_cache_"
 GRACEFUL_DEPENDENCY_REWRITE = {
     "plone-base": "plone",
     "plone-legacy": "plone",
@@ -59,7 +59,7 @@ class ResourceBase:
         for bundle in e_bundles | d_bundles:
             hashtool.update(bundle.encode('utf8'))
         hashtool.update(self._user_local_roles(site).encode("utf8"))
-        return f"_v_renderend_cache_{hashtool.hexdigest()}"
+        return f"{SITE_ROOT_CACHE_KEY_PREFIX}{hashtool.hexdigest()}"
 
     @property
     def _rendered_cache(self):
@@ -313,3 +313,26 @@ class StylesView(ResourceView):
             rendered = self.renderer["css"].render()
             self._rendered_cache = rendered
         return rendered
+
+
+def clear_resource_viewlet_caches():
+    """Remove volatile cache of resource viewlets.
+
+    See discussion in https://github.com/plone/Products.CMFPlone/issues/3505
+    """
+    site = getSite()
+
+    # I don't trust removing keys from a dict when iterating over this dict,
+    # so gather them in a list first.
+    to_remove = [
+        name for name in site.__dict__
+        if name.startswith(SITE_ROOT_CACHE_KEY_PREFIX)
+    ]
+    for name in to_remove:
+        # The attribute is volatile, meaning it may disappear at any time,
+        # so we catch errors.
+        try:
+            delattr(site, name)
+        except AttributeError:
+            pass
+    logger.info("Cleared resource viewlet caches.")

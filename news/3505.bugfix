@@ -1,0 +1,4 @@
+Clear the resource viewlet cache when changing the resource registry or activating an add-on.
+This avoids needing a restart before seeing changes when you run in production mode.
+Fixes [issue 3505](https://github.com/plone/Products.CMFPlone/issues/3505).
+[maurits]
