@@ -96,12 +96,13 @@ def get_all_relations():
         rel_uid_info = {
             "from_attribute": rel.from_attribute,
         }
-        rel_uid_info["from_uuid"] = rel.from_object and rel.from_object.UID() or None
+        rel_uid_info["from_uuid"] = rel.from_object.UID() if rel.from_object else None
         try:
-            rel_uid_info["to_uuid"] = rel.to_object and rel.to_object.UID() or None
+            rel_uid_info["to_uuid"] = rel.to_object.UID() if rel.to_object else None
         except AttributeError as e:
             rel_uid_info["to_uuid"] = None
-            logger.error(f"Broken relation: {rel} '{str(e)}'")
+            logger.error(f"Broken relation: {rel_uid_info} '{str(e)}'")
+        info[rel.from_attribute] += 1
         results.append(rel_uid_info)
 
     msg = ""
