@@ -183,26 +183,21 @@ def restore_relations(context=None, all_relations=None):
         finally:
             if not target_obj:
                 logger.info(f'No target object found for UID {item["to_uuid"]}.')
-                # Do not continue. The source_obj needs to be updated.
-                # continue
+                # The source_obj will be updated to remove the broken relation below.
 
         # source_obj and target_obj are dexterity content types.
         if not IDexterityContent.providedBy(source_obj):
             logger.info(f"{source_obj} is no dexterity content")
             continue
-
         if not IDexterityContent.providedBy(target_obj):
             logger.info(f"{target_obj} is no dexterity content")
-            # Do not continue. The source_obj needs to be updated.
-            # continue
 
-        # intid for target_obj exists.
+        # Confirm intid for target_obj exists.
         try:
             to_id = intids.getId(target_obj)
         except KeyError as e:
             logger.warning(f"No intid for {target_obj}")
             to_id = None
-            # continue
 
         # Postpone linkintegrity check
         from_attribute = item["from_attribute"]
@@ -228,7 +223,7 @@ def restore_relations(context=None, all_relations=None):
             continue
 
         field, schema = field_and_schema
-        relationvalue = to_id and RelationValue(to_id) or None
+        relationvalue = RelationValue(to_id) if to_id else None
 
         # schema field relations: RelationList, RelationChoice, Relation
         #
