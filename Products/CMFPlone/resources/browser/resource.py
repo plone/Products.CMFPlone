@@ -7,6 +7,7 @@ from plone.app.theming.utils import theming_policy
 from plone.base.interfaces import IBundleRegistry
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
+from time import time
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component.hooks import getSite
@@ -19,7 +20,7 @@ import webresource
 logger = logging.getLogger(__name__)
 
 REQUEST_CACHE_KEY = "_WEBRESOURCE_CACHE_"
-SITE_ROOT_CACHE_KEY_PREFIX = "_v_rendered_cache_"
+_RESOURCE_REGISTRY_MTIME = "__RESOURCE_REGISTRY_MTIME"
 GRACEFUL_DEPENDENCY_REWRITE = {
     "plone-base": "plone",
     "plone-legacy": "plone",
@@ -59,7 +60,12 @@ class ResourceBase:
         for bundle in e_bundles | d_bundles:
             hashtool.update(bundle.encode('utf8'))
         hashtool.update(self._user_local_roles(site).encode("utf8"))
-        return f"{SITE_ROOT_CACHE_KEY_PREFIX}{hashtool.hexdigest()}"
+        if not getattr(self, "registry", None):
+            self.registry = getUtility(IRegistry)
+            mtime = getattr(self.registry, _RESOURCE_REGISTRY_MTIME, None)
+            if mtime is not None:
+                hashtool.update(str(mtime).encode('utf8'))
+        return f"_v_rendered_cache_{hashtool.hexdigest()}"
 
     @property
     def _rendered_cache(self):
@@ -315,24 +321,14 @@ class StylesView(ResourceView):
         return rendered
 
 
-def clear_resource_viewlet_caches():
-    """Remove volatile cache of resource viewlets.
+def update_resource_registry_mtime():
+    """Update the last modification time of the resource registry.
 
+    Call this when you change anything that may influence the resource registry
+    and any of its rendered cache.
     See discussion in https://github.com/plone/Products.CMFPlone/issues/3505
+    and https://github.com/plone/Products.CMFPlone/pull/3771
     """
-    site = getSite()
-
-    # I don't trust removing keys from a dict when iterating over this dict,
-    # so gather them in a list first.
-    to_remove = [
-        name for name in site.__dict__
-        if name.startswith(SITE_ROOT_CACHE_KEY_PREFIX)
-    ]
-    for name in to_remove:
-        # The attribute is volatile, meaning it may disappear at any time,
-        # so we catch errors.
-        try:
-            delattr(site, name)
-        except AttributeError:
-            pass
-    logger.info("Cleared resource viewlet caches.")
+    registry = getUtility(IRegistry)
+    setattr(registry, _RESOURCE_REGISTRY_MTIME, time())
+    logger.info("Updated resource registry mtime.")

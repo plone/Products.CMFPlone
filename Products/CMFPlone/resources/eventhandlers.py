@@ -1,4 +1,4 @@
-from Products.CMFPlone.resources.browser.resource import clear_resource_viewlet_caches
+from Products.CMFPlone.resources.browser.resource import update_resource_registry_mtime
 from Products.GenericSetup.interfaces import IProfileImportedEvent
 from zope.component import adapter
 
@@ -13,4 +13,4 @@ def check_registry_update(event):
     """
     if not (event.full_import or "plone.app.registry" in event.steps):
         return
-    clear_resource_viewlet_caches()
+    update_resource_registry_mtime()
