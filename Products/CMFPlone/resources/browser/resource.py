@@ -10,6 +10,7 @@ from Products.CMFCore.utils import getToolByName
 from time import time
 from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.component import queryUtility
 from zope.component.hooks import getSite
 
 import hashlib
@@ -329,6 +330,9 @@ def update_resource_registry_mtime():
     See discussion in https://github.com/plone/Products.CMFPlone/issues/3505
     and https://github.com/plone/Products.CMFPlone/pull/3771
     """
-    registry = getUtility(IRegistry)
+    registry = queryUtility(IRegistry)
+    if registry is None:
+        # This can happen for example during site creation.
+        return
     setattr(registry, _RESOURCE_REGISTRY_MTIME, time())
     logger.info("Updated resource registry mtime.")
