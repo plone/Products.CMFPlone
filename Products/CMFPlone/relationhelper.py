@@ -163,7 +163,7 @@ def restore_relations(context=None, all_relations=None):
     if len(unique_relations) < len(all_relations):
         logger.info(f"Dropping {len(all_relations) - len(unique_relations)} duplicates")
 
-    # Update unique relations.
+    # Update relations.
     intids = getUtility(IIntIds)
     new_index = 0
     for index, item in enumerate(unique_relations, start=1):
@@ -190,14 +190,14 @@ def restore_relations(context=None, all_relations=None):
         if not IDexterityContent.providedBy(target_obj):
             logger.warning(f"Target {target_obj} is no dexterity content.")
 
-        # Confirm that intId for target_obj exists.
+        # Get intId for target_obj.
         try:
             to_id = intids.getId(target_obj)
         except KeyError as e:
             logger.warning(f"No intId for {target_obj}")
             to_id = None
 
-        # Postpone linkintegrity check
+        # Postpone linkintegrity check.
         from_attribute = item["from_attribute"]
         if from_attribute == referencedRelationship:
             update_linkintegrity.add(item["from_uuid"])
@@ -206,8 +206,9 @@ def restore_relations(context=None, all_relations=None):
         # Working copy relations
         if HAS_ITERATE and from_attribute == ITERATE_RELATION_NAME:
             # Iterate relations are not set as values of fields
-            relation = StagingRelationValue(to_id)
-            event._setRelation(source_obj, ITERATE_RELATION_NAME, relation)
+            if to_id:
+                relation = StagingRelationValue(to_id)
+                event._setRelation(source_obj, ITERATE_RELATION_NAME, relation)
             continue
 
         # Relations not based on schema field
