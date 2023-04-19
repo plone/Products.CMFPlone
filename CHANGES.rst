@@ -12,6 +12,29 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.12rc1 (2023-04-19)
+----------------------
+
+Bug fixes:
+
+
+- Show warning in Site Setup when using an unsupported Plone or Python version.
+  This is based on dates in the `Plone release schedule <https://plone.org/download/release-schedule>`_
+  and the `Status of Python versions <https://devguide.python.org/versions/>`_.
+  [maurits] (#23)
+- Removed dependencies on development versions.
+  For example we were depending on ``plone.app.contentmenu >= 1.1.6dev-r22380`` and the 1.1.6 version was released in 2008.
+  With setuptools 67 this development version is illegal and cannot be parsed, even though in ``versions.cfg`` or ``constraints.txt`` we explicitly request version 2.3.4.
+  [maurits] (#67)
+- Removed path query from search view when context is site root.
+  [malthe] (#3753)
+- Fixed encoding issue on Python 3 for some mail servers.
+  This could result in missing characters in an email body.
+  [maurits] (#3754)
+- Update metadata version to 5220, Plone 5.2.12.
+  [maurits] (#5220)
+
+
 5.2.11 (2023-01-30)
 -------------------
 

@@ -1,3 +1,0 @@
-Fixed encoding issue on Python 3 for some mail servers.
-This could result in missing characters in an email body.
-[maurits]
