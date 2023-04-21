@@ -1,5 +1,0 @@
-Add a last modification time of the resource registry.
-We update this when changing anything related: when changing the resource registry in its control panel or activating an add-on.
-This avoids needing a restart before seeing changes when you run in production mode.
-Fixes [issue 3505](https://github.com/plone/Products.CMFPlone/issues/3505).
-[maurits]

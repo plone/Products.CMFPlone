@@ -1,8 +1,0 @@
-Mockup TinyMCE settings: Fix URLs in TinyMCE external_plugins settings.
-
-Add the portal URL to external_plugins values for relative and absolute
-URLs.
-
-Before this fix external plugins could not be found if they were not added with
-the full path or a full URL. The path is different for virtual hosted sites and
-sites directly served from Zope.
