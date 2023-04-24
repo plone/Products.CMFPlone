@@ -44,6 +44,47 @@ class TestTinyMCESettings(unittest.TestCase):
         conf = self.get_conf()
         self.assertEqual(conf['tiny']['foo'], 'bar')
 
+    def test_external_plugins(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ITinyMCESchema, prefix="plone")
+        settings.custom_plugins = [
+            "plugin1|https://example.com/plugin1.js",
+            "plugin2|//example.com/plugin2.js",
+            "plugin3|/plugin3.js",
+            "plugin4|plugin4.js",
+            "plugin5|  plugin5.js  ",
+            "plugin6|../plugin6.js",
+            "plugin7|",
+            "plugin8",
+        ]
+        conf = self.get_conf()
+        self.assertEqual(
+            conf["tiny"]["external_plugins"]["plugin1"],
+            "https://example.com/plugin1.js",
+        )
+        self.assertEqual(
+            conf["tiny"]["external_plugins"]["plugin2"],
+            "//example.com/plugin2.js",
+        )
+        self.assertEqual(
+            conf["tiny"]["external_plugins"]["plugin3"],
+            "http://nohost/plone//plugin3.js",
+        )
+        self.assertEqual(
+            conf["tiny"]["external_plugins"]["plugin4"],
+            "http://nohost/plone/plugin4.js",
+        )
+        self.assertEqual(
+            conf["tiny"]["external_plugins"]["plugin5"],
+            "http://nohost/plone/plugin5.js",
+        )
+        self.assertEqual(
+            conf["tiny"]["external_plugins"]["plugin6"],
+            "http://nohost/plone/../plugin6.js",
+        )
+        self.assertNotIn("plugin7", conf["tiny"]["external_plugins"])
+        self.assertNotIn("plugin8", conf["tiny"]["external_plugins"])
+
 
 class TestPatternSettingsView(unittest.TestCase):
     """Ensure that the basic redirector setup is successful.

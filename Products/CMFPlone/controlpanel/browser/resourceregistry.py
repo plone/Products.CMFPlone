@@ -2,6 +2,7 @@ from App.config import getConfiguration
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import IBundleRegistry
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.resources.browser.resource import update_resource_registry_mtime
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getUtility
@@ -149,4 +150,5 @@ class ResourceRegistryControlPanelView(BrowserView):
             self._switch_cache(False)
         else:
             raise ValueError("Invalid form data")
+        update_resource_registry_mtime()
         self.request.response.redirect(self.request["ACTUAL_URL"])

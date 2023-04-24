@@ -15,6 +15,77 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.4 (2023-04-24)
+
+
+### Bug fixes:
+
+- Prepare 6.0.4 final. No changes compared to the release candidate.
+  [maurits] #604
+
+
+## 6.0.4rc1 (2023-04-21)
+
+
+### Bug fixes:
+
+- Prepare 6.0.3 final. No changes compared to the release candidate.
+  [maurits] #603
+- Add a last modification time of the resource registry.
+  We update this when changing anything related: when changing the resource registry in its control panel or activating an add-on.
+  This avoids needing a restart before seeing changes when you run in production mode.
+  Fixes [issue 3505](https://github.com/plone/Products.CMFPlone/issues/3505).
+  [maurits] #3505
+- Removed path query from search view when context is site root.
+  [malthe] #3753
+- Fixed encoding issue on Python 3 for some mail servers.
+  This could result in missing characters in an email body.
+  [maurits] #3754
+- Mockup TinyMCE settings: Fix URLs in TinyMCE external_plugins settings.
+
+  Add the portal URL to external_plugins values for relative and absolute
+  URLs.
+
+  Before this fix external plugins could not be found if they were not added with
+  the full path or a full URL. The path is different for virtual hosted sites and
+  sites directly served from Zope. #3767
+- Updated metadata version to 6015.
+  [maurits] #6015
+
+
+## 6.0.3 (2023-03-27)
+
+
+### Bug fixes:
+
+- Prepare 6.0.3 final. No changes compared to the release candidate.
+  [maurits] #603
+
+
+## 6.0.3rc1 (2023-03-23)
+
+
+### Bug fixes:
+
+- Remove unused template send_feedback_confirm.pt. 
+  [jensens] #3122
+- Moved the assignment of Plone Site Setup permissions from zcml to GenericSetup
+  rolemap.xml. This assigns the permissions on site creation instead of Zope root
+  where the `Site Administrator` role does not actually exist
+  [ewohnlich] #3223
+- Fix deprecated imports. [jensens] #3733
+- Fix userlisting batch/showAll in group membership template.
+  [petschki] #3738
+- Implement `pat-checklist` for groupuser management.
+  [petschki] #3740
+- Import PloneMessageFactory from plone.base. Removes deprecation warnings.
+  [jensens] #3742
+- Fix circular dependency in `plone.app.theming` on ZCML level.
+  Move permission over there.
+  [jensens] #3747
+- Updated metadata version to 6014.  [maurits] #6014
+
+
 ## 6.0.2 (2023-02-27)
 
 
