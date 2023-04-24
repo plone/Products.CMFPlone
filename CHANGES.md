@@ -15,6 +15,15 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.4 (2023-04-24)
+
+
+### Bug fixes:
+
+- Prepare 6.0.4 final. No changes compared to the release candidate.
+  [maurits] #604
+
+
 ## 6.0.4rc1 (2023-04-21)
 
 
