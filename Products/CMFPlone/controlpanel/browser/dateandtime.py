@@ -1,7 +1,7 @@
 from plone.app.registry.browser.controlpanel import ControlPanelFormWrapper
 from plone.app.registry.browser.controlpanel import RegistryEditForm
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import IDateAndTimeSchema
-from Products.CMFPlone import PloneMessageFactory as _
 
 
 class DateAndTimeControlPanelForm(RegistryEditForm):

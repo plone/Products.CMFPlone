@@ -68,7 +68,6 @@
         <span class="content"
               i18n:translate="">
             Resources are fast and hashes are cached in Plone.
-            Changes in resource settings are not applied directly.
         </span>
       </div>
     </form>

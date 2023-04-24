@@ -2,6 +2,7 @@ from DateTime import DateTime
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.base.batch import Batch
+from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.base.interfaces import ISearchSchema
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
@@ -142,8 +143,8 @@ class Search(BrowserView):
         query['portal_type'] = self.filter_types(types)
         # respect effective/expiration date
         query['show_inactive'] = False
-        # respect navigation root
-        if 'path' not in query:
+        # respect navigation root if we're not at the site root.
+        if 'path' not in query and not IPloneSiteRoot.providedBy(self.context):
             query['path'] = getNavigationRoot(self.context)
 
         if 'sort_order' in query and not query['sort_order']:

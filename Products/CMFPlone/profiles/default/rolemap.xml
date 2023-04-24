@@ -1,217 +1,375 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <rolemap>
   <roles>
-    <role name="Anonymous"/>
-    <role name="Authenticated"/>
-    <role name="Manager"/>
-    <role name="Site Administrator"/>
-    <role name="Member"/>
-    <role name="Owner"/>
-    <role name="Reviewer"/>
+    <role name="Anonymous" />
+    <role name="Authenticated" />
+    <role name="Manager" />
+    <role name="Site Administrator" />
+    <role name="Member" />
+    <role name="Owner" />
+    <role name="Reviewer" />
     <role name="Reader" />
     <role name="Editor" />
     <role name="Contributor" />
   </roles>
   <permissions>
-    <permission name="Access inactive portal content"
-                acquire="True">
-      <role name="Owner"/>
-      <role name="Site Administrator"/>
+    <permission acquire="True"
+                name="Access inactive portal content"
+    >
+      <role name="Owner" />
+      <role name="Site Administrator" />
     </permission>
-    <permission name="Add portal content" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Owner"/>
-      <role name="Contributor"/>
+    <permission acquire="True"
+                name="Add portal content"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
+      <role name="Contributor" />
     </permission>
-    <permission name="Add portal folders" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Owner"/>
-      <role name="Contributor"/>
+    <permission acquire="True"
+                name="Add portal folders"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
+      <role name="Contributor" />
     </permission>
-    <permission name="Allow sendto" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Member"/>
+    <permission acquire="True"
+                name="Allow sendto"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Member" />
     </permission>
-    <permission name="Change local roles" acquire="True">
-      <role name="Site Administrator"/>
+    <permission acquire="True"
+                name="Change local roles"
+    >
+      <role name="Site Administrator" />
     </permission>
-    <permission name="Copy or Move" acquire="True">
-      <role name="Site Administrator"/>
+    <permission acquire="True"
+                name="Copy or Move"
+    >
+      <role name="Site Administrator" />
     </permission>
-    <permission name="Delete objects" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Owner"/>
-      <role name="Editor"/>
+    <permission acquire="True"
+                name="Delete objects"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
+      <role name="Editor" />
     </permission>
-    <permission name="FTP access" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Owner"/>
+    <permission acquire="True"
+                name="FTP access"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
     </permission>
-    <permission name="List folder contents" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Owner"/>
+    <permission acquire="True"
+                name="List folder contents"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
       <role name="Reviewer" />
       <role name="Editor" />
       <role name="Contributor" />
     </permission>
-    <permission name="List portal members" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Member"/>
-    </permission>
-    <permission name="List undoable changes" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Member"/>
-    </permission>
-    <permission name="Mail forgotten password" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="Manage properties" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Owner"/>
-      <role name="Editor"/>
-    </permission>
-    <permission name="Modify view template" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Owner"/>
-      <role name="Editor"/>
-    </permission>
-    <permission name="Request review" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Owner"/>
-      <role name="Editor"/>
-    </permission>
-    <permission name="Reply to item" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Member"/>
-    </permission>
-    <permission name="Review portal content" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Reviewer"/>
-    </permission>
-    <permission name="Search ZCatalog" acquire="True">
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="Set own password" acquire="False">
-      <role name="Authenticated"/>
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="Set own properties" acquire="False">
-      <role name="Authenticated"/>
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="Undo changes" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Owner"/>
-    </permission>
-    <permission name="Use mailhost services" acquire="True">
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="Use version control" acquire="True">
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="View Groups" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Member"/>
-      <role name="Owner"/>
-    </permission>
-    <permission name="View management screens"
-                acquire="True">
-      <role name="Manager"/>
-      <role name="Owner"/>
-    </permission>
-    <permission name="WebDAV access" acquire="True">
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="WebDAV Lock items" acquire="True">
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="WebDAV Unlock items" acquire="True">
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="Portlets: Manage portlets"
-                acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="Portlets: Manage own portlets"
-                acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Member"/>
-    </permission>
-    <permission name="Portlets: View dashboard"
-                acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Member"/>
-    </permission>
-    <permission name="Content rules: Manage rules"
-                acquire="False">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="View"
-                acquire="True">
-        <role name="Site Administrator"/>
-        <role name="Reader" />
-        <role name="Editor" />
-        <role name="Contributor" />
-    </permission>
-    <permission name="Access contents information"
-                acquire="True">
-        <role name="Site Administrator"/>
-        <role name="Reader" />
-        <role name="Editor" />
-        <role name="Contributor" />
-    </permission>
-    <permission name="Modify portal content"
-                acquire="True">
-        <role name="Site Administrator"/>
-        <role name="Editor" />
-        <role name="Owner" />
-    </permission>
-    <permission name="Add portal member"
-                acquire="False">
-        <role name="Manager" />
-        <role name="Site Administrator"/>
-        <role name="Owner" />
-    </permission>
-    <permission name="plone.resourceeditor: Manage Sources"
-                acquire="False">
+    <permission acquire="True"
+                name="List portal members"
+    >
       <role name="Manager" />
-      <role name="Site Administrator"/>
+      <role name="Site Administrator" />
+      <role name="Member" />
     </permission>
-    <permission name="Show Toolbar"
-                acquire="False">
-      <role name="Authenticated"/>
+    <permission acquire="True"
+                name="List undoable changes"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Member" />
     </permission>
-    <permission name="Manage Context Aliases" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Owner"/>
-      <role name="Editor"/>
+    <permission acquire="True"
+                name="Mail forgotten password"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
     </permission>
-    <permission name="Manage Portal Aliases" acquire="True">
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
+    <permission acquire="True"
+                name="Manage properties"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
+      <role name="Editor" />
+    </permission>
+    <permission acquire="True"
+                name="Modify view template"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
+      <role name="Editor" />
+    </permission>
+    <permission acquire="True"
+                name="Plone Site Setup: Overview"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Plone Site Setup: Editing"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Plone Site Setup: Filtering"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Plone Site Setup: Language"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Plone Site Setup: Mail"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Plone Site Setup: Markup"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Plone Site Setup: Navigation"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Plone Site Setup: Search"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Plone Site Setup: Security"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Plone Site Setup: Site"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Plone Site Setup: Themes"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Plone Site Setup: TinyMCE"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Plone Site Setup: Types"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Plone Site Setup: Users and Groups"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Request review"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
+      <role name="Editor" />
+    </permission>
+    <permission acquire="True"
+                name="Reply to item"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Member" />
+    </permission>
+    <permission acquire="True"
+                name="Review portal content"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Reviewer" />
+    </permission>
+    <permission acquire="True"
+                name="Search ZCatalog"
+    >
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="False"
+                name="Set own password"
+    >
+      <role name="Authenticated" />
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="False"
+                name="Set own properties"
+    >
+      <role name="Authenticated" />
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Undo changes"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
+    </permission>
+    <permission acquire="True"
+                name="Use mailhost services"
+    >
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Use version control"
+    >
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="View Groups"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Member" />
+      <role name="Owner" />
+    </permission>
+    <permission acquire="True"
+                name="View management screens"
+    >
+      <role name="Manager" />
+      <role name="Owner" />
+    </permission>
+    <permission acquire="True"
+                name="WebDAV access"
+    >
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="WebDAV Lock items"
+    >
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="WebDAV Unlock items"
+    >
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Portlets: Manage portlets"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Portlets: Manage own portlets"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Member" />
+    </permission>
+    <permission acquire="True"
+                name="Portlets: View dashboard"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Member" />
+    </permission>
+    <permission acquire="False"
+                name="Content rules: Manage rules"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="View"
+    >
+      <role name="Site Administrator" />
+      <role name="Reader" />
+      <role name="Editor" />
+      <role name="Contributor" />
+    </permission>
+    <permission acquire="True"
+                name="Access contents information"
+    >
+      <role name="Site Administrator" />
+      <role name="Reader" />
+      <role name="Editor" />
+      <role name="Contributor" />
+    </permission>
+    <permission acquire="True"
+                name="Modify portal content"
+    >
+      <role name="Site Administrator" />
+      <role name="Editor" />
+      <role name="Owner" />
+    </permission>
+    <permission acquire="False"
+                name="Add portal member"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
+    </permission>
+    <permission acquire="False"
+                name="plone.resourceeditor: Manage Sources"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="False"
+                name="Show Toolbar"
+    >
+      <role name="Authenticated" />
+    </permission>
+    <permission acquire="True"
+                name="Manage Context Aliases"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
+      <role name="Editor" />
+    </permission>
+    <permission acquire="True"
+                name="Manage Portal Aliases"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission acquire="True"
+                name="Inspect Relations"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
     </permission>
   </permissions>
 </rolemap>

@@ -121,6 +121,7 @@ ADDON_LIST = AddonList([
         profile_id='plone.volto:default',
         check_module='plone.volto'
     ),
+    Addon(profile_id='plonetheme.barceloneta:default'),
 ])
 
 

@@ -1,9 +1,8 @@
-from email.mime.text import MIMEText
 from plone.autoform.form import AutoExtensibleForm
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.controlpanel import IMailSchema
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.browser.interfaces import IContactForm
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
@@ -14,6 +13,15 @@ from zope.component import getUtility
 from zope.component.hooks import getSite
 
 import logging
+import warnings
+
+try:
+    # Products.MailHost has a patch to fix quoted-printable soft line breaks.
+    # See https://github.com/zopefoundation/Products.MailHost/issues/35
+    from Products.MailHost.MailHost import message_from_string
+except ImportError:
+    # If the patch is ever removed, we fall back to the standard library.
+    from email import message_from_string
 
 
 log = logging.getLogger(__name__)
@@ -50,9 +58,19 @@ class ContactForm(AutoExtensibleForm, form.Form):
         self.send_feedback()
         self.success = True
 
-    def generate_mail(self, variables, encoding='utf-8'):
+    def generate_mail(self, variables, encoding=None):
         template = self.context.restrictedTraverse(self.template_mailview)
-        return template(self.context, **variables).encode(encoding)
+        result = template(self.context, **variables)
+        if encoding is not None:
+            # Maybe someone has customized 'send_message'
+            # and still expects to get an encoded answer back.
+            warnings.warn(
+                "Calling generate_mail with an encoding argument is deprecated. "
+                "You can leave it out, and get text (string) as result.",
+                DeprecationWarning,
+            )
+            result = result.encode(encoding)
+        return result
 
     def send_message(self, data):
         subject = data.get('subject')
@@ -67,8 +85,12 @@ class ContactForm(AutoExtensibleForm, form.Form):
         host = getToolByName(self.context, 'MailHost')
 
         data['url'] = portal.absolute_url()
-        message = self.generate_mail(data, encoding)
-        message = MIMEText(message, 'plain', encoding)
+        message = self.generate_mail(data)
+        if isinstance(message, bytes):
+            # Maybe someone has customized 'generate_mail'
+            # and still handles the encoding keyword argument.
+            message = message.decode(encoding)
+        message = message_from_string(message)
         message['Reply-To'] = data['sender_from_address']
 
         try:

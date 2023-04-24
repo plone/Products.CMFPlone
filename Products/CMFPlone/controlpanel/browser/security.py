@@ -1,9 +1,9 @@
 from Acquisition import aq_inner
 from collections import defaultdict
 from plone.app.registry.browser import controlpanel
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import ISecuritySchema
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.controlpanel.utils import migrate_from_email_login
 from Products.CMFPlone.controlpanel.utils import migrate_to_email_login
 from Products.Five.browser import BrowserView

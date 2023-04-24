@@ -1,6 +1,6 @@
 from plone.app.registry.browser import controlpanel
+from plone.base import PloneMessageFactory as _
 from plone.i18n.interfaces import ILanguageSchema
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.statusmessages.interfaces import IStatusMessage
 from z3c.form import button
 
@@ -51,11 +51,3 @@ class LanguageControlPanelForm(controlpanel.RegistryEditForm):
 
 class LanguageControlPanel(controlpanel.ControlPanelFormWrapper):
     form = LanguageControlPanelForm
-
-
-# class LanguageControlPanel(ControlPanelForm):
-#    form_fields = FormFields(ILanguageSchema)
-#    form_fields['default_language'].custom_widget = \
-#       LanguageDropdownChoiceWidget
-#
-#    form_name = _(u"heading_language_settings", default="Language Settings")

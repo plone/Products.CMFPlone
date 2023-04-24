@@ -1,9 +1,9 @@
 from logging import getLogger
 from plone.app.registry.browser import controlpanel
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.controlpanel import IMailSchema
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.MailHost.MailHost import MailHostError
 from Products.statusmessages.interfaces import IStatusMessage
 from z3c.form import button

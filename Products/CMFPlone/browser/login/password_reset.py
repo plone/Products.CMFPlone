@@ -3,16 +3,16 @@ from AccessControl.SecurityManagement import getSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
 from email.header import Header
+from plone.base import PloneMessageFactory as _
+from plone.base.interfaces import IInitialLogin
 from plone.base.interfaces import IPasswordResetToolView
+from plone.base.interfaces import IRedirectAfterLogin
 from plone.base.interfaces.controlpanel import IMailSchema
 from plone.base.utils import safe_text
 from plone.base.utils import safeToInt
 from plone.memoize import view
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
-from plone.base.interfaces import IInitialLogin
-from plone.base.interfaces import IRedirectAfterLogin
 from Products.CMFPlone.PasswordResetTool import ExpiredRequestError
 from Products.CMFPlone.PasswordResetTool import InvalidRequestError
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name

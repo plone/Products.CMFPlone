@@ -1,5 +1,5 @@
-from email import message_from_string
 from email.header import Header
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import ILoginHelpForm
 from plone.base.interfaces import ILoginHelpFormSchema
 from plone.base.interfaces import ISecuritySchema
@@ -7,7 +7,6 @@ from plone.base.interfaces.controlpanel import IMailSchema
 from plone.base.utils import safe_text
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 from smtplib import SMTPException
@@ -21,6 +20,14 @@ from zope.i18n import translate
 from zope.interface import implementer
 
 import logging
+
+try:
+    # Products.MailHost has a patch to fix quoted-printable soft line breaks.
+    # See https://github.com/zopefoundation/Products.MailHost/issues/35
+    from Products.MailHost.MailHost import message_from_string
+except ImportError:
+    # If the patch is ever removed, we fall back to the standard library.
+    from email import message_from_string
 
 
 SEND_USERNAME_TEMPLATE = _("mailtemplate_username_info", default="""From: {encoded_mail_sender}
