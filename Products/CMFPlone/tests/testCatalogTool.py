@@ -549,10 +549,10 @@ class TestCatalogSorting(PloneTestCase):
         self.folder.doc6.setTitle('DOCUMENT 4')
 
         self.folder.invokeFactory('Document', id="doc7")
-        self.folder.doc7.setTitle('This is a long title that will ignore this text BBBB 2nd position cut zzzzz')
+        self.folder.doc7.setTitle('Long titles used to be truncated, but we changed this, see issue 3690. 0002')
 
         self.folder.invokeFactory('Document', id="doc8")
-        self.folder.doc8.setTitle('This is a long title that will ignore this text AAAA 1st position cut zzzzz')
+        self.folder.doc8.setTitle('Long titles used to be truncated, but we changed this, see issue 3690. 0001')
 
         self.folder.doc.reindexObject()
         self.folder.doc2.reindexObject()
@@ -631,7 +631,7 @@ class TestCatalogSorting(PloneTestCase):
         doc = self.folder.doc7
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
 
-        self.assertEqual(wrapped.sortable_title, 'this is a long title that will ignore this text bbbb 0002nd position cut zzzzz')
+        self.assertEqual(wrapped.sortable_title, 'long titles used to be truncated, but we changed this, see issue 3690. 0002')
 
 
     def testSortableNonASCIITitles(self):
