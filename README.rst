@@ -14,7 +14,6 @@ Plone works as a
 - full-featured classical server-side rendered CMS,
 - headless CMS offering all features as a REST API.
 
-
 Installing Plone
 -----------------
 
