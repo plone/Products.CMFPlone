@@ -4,7 +4,7 @@
 # See: http://mail.zope.org/pipermail/zope-checkins/2004-August/028152.html
 #
 # If an object with setDefaultAccess('deny') is used as the context for
-# a PythonScript, the script can no longer aquire tools from the portal
+# a PythonScript, the script can no longer acquire tools from the portal
 # root. Rolling back the abovementioned checkin restores functionality.
 #
 

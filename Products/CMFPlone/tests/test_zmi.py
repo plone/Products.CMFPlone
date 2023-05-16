@@ -202,7 +202,7 @@ class ZMITests(unittest.TestCase):
         self.assertTrue(view(), msg=f"{url} is broken")
 
     def test_manage_access(self):
-        """manage_access cannot be travesed to directly"""
+        """manage_access cannot be traversed to directly"""
         view = getattr(self.portal, "_normal_manage_access")
         self.assertTrue(view(), msg="manage_access is broken")
 

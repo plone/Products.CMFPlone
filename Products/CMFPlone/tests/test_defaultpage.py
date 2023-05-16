@@ -56,7 +56,7 @@ class DefaultPageTestCase(unittest.TestCase):
         # 3) fti should return it
         self.assertEqual("d1", fti.getDefaultPage(self.folder, check_exists=True))
 
-        # now test since we're sure everythings set up correctly
+        # now test since we're sure everything set up correctly
         from plone.base.defaultpage import get_default_page
 
         self.assertEqual("d1", get_default_page(self.folder))

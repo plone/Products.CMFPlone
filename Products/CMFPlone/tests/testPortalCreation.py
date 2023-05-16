@@ -342,7 +342,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertTrue("Reviewers" in self.groups.listGroupIds())
 
     def testGenerateTabsSiteProperty(self):
-        # The generate_tabs site property should be emtpy
+        # The generate_tabs site property should be empty
         registry = getUtility(IRegistry)
         navigation_settings = registry.forInterface(INavigationSchema, prefix="plone")
         self.assertTrue("plone.generate_tabs" in registry)
@@ -719,7 +719,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             getutil = getUtility(dummy.IDummyUtility)
             self.assertEqual(getutil, global_util)
 
-            # Clean up again and unregister the utilites
+            # Clean up again and unregister the utilities
             gsm.unregisterUtility(provided=dummy.IDummyUtility)
             sm.unregisterUtility(provided=dummy.IDummyUtility)
 

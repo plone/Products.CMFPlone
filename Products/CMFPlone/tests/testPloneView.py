@@ -83,7 +83,7 @@ class TestPloneView(PloneTestCase.PloneTestCase):
     def testIsFolderOrFolderDefaultPage(self):
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore", category=DeprecationWarning)
-            # an actual folder whould return true
+            # an actual folder would return true
             view = Plone(self.folder, self.app.REQUEST)
             self.assertTrue(view.isFolderOrFolderDefaultPage())
             # But not a document
@@ -105,7 +105,7 @@ class TestPloneView(PloneTestCase.PloneTestCase):
     def testIsPortalOrPortalDefaultPage(self):
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore", category=DeprecationWarning)
-            # an actual folder whould return true
+            # an actual folder would return true
             view = Plone(self.portal, self.app.REQUEST)
             self.assertTrue(view.isPortalOrPortalDefaultPage())
             # But not a document

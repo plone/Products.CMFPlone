@@ -473,7 +473,7 @@ def set_own_login_name(member, loginname):
 
 def ajax_load_url(url):
     if url and "ajax_load" not in url:
-        sep = "?" in url and "&" or "?"  # url parameter seperator
+        sep = "?" in url and "&" or "?"  # url parameter separator
         url = f"{url}{sep}ajax_load=1"
     return url
 

@@ -106,7 +106,7 @@ class TestCutPasteSecurity(PloneTestCase):
         self.folder.invokeFactory("Folder", "subfolder")
         subfolder = self.folder.subfolder
 
-        # now disallow adding Document globaly
+        # now disallow adding Document globally
         types = self.portal.portal_types
         types.Document.manage_changeProperties(global_allow=0)
 
@@ -125,7 +125,7 @@ class TestCutPasteSecurity(PloneTestCase):
         # add the document to be copy and pasted later
         self.folder.invokeFactory("Document", "doc")
 
-        # now disallow adding Document globaly
+        # now disallow adding Document globally
         types = self.portal.portal_types
         types.Document.manage_changeProperties(global_allow=0)
 
@@ -154,7 +154,7 @@ class CutPasteFailureTests(PloneTestCase):
         self.folder["source-folder"].invokeFactory("Document", id="doc")
 
     def testObject_pasteUncommitOnException(self):
-        """Ensure that pasted objects aren't commited if an IObjectMovedEvent raises an exception.
+        """Ensure that pasted objects aren't committed if an IObjectMovedEvent raises an exception.
         See https://dev.plone.org/ticket/9365
         """
         # register event handler

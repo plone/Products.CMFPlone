@@ -226,7 +226,7 @@ class LoginHelpForm(form.EditForm):
         return self.index()
 
     def can_reset_password(self):
-        # TODO: Actually check that the site allows reseting password
+        # TODO: Actually check that the site allows resetting password
         return True
 
     def can_retrieve_username(self):

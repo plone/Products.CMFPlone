@@ -226,8 +226,8 @@ class RegistrationTool(PloneBaseTool, BaseTool):
                     err = error
                 else:
                     msgid = _(
-                        "${sentances}. ${sentance}",
-                        mapping={"sentances": err, "sentance": error},
+                        "${sentences}. ${sentence}",
+                        mapping={"sentences": err, "sentence": error},
                     )
                     err = self.translate(msgid)
         if not err:

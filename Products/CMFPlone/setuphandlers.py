@@ -67,7 +67,7 @@ def assignTitles(portal):
         "portal_calendar": "Controls how events are shown",
         "portal_catalog": "Indexes all content in the site",
         "portal_controlpanel": "Registry of control panel screen",
-        "portal_diff": "Settings for content version comparisions",
+        "portal_diff": "Settings for content version comparisons",
         "portal_groupdata": "Handles properties on groups",
         "portal_groups": "Handles group related functionality",
         "portal_languages": "Language specific settings",

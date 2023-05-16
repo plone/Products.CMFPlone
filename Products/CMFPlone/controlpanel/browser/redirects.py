@@ -354,7 +354,7 @@ class RedirectsControlPanel(BrowserView):
     def upload(self, file, portal, storage, status):
         """Add the redirections from the CSV file `file`. If anything goes wrong, do nothing."""
 
-        # No file picked. Theres gotta be a better way to handle this.
+        # No file picked. There's gotta be a better way to handle this.
         if not file.filename:
             err = _("Please pick a file to upload.")
             status.addStatusMessage(err, type="error")

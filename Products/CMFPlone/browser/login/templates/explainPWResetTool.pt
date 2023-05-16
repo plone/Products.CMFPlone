@@ -44,7 +44,7 @@
            that you leave
     this
           <strong>ON</strong>
-           if the portal is publicly accesible.
+           if the portal is publicly accessible.
         </p>
         <p>
           <input checked="${view/user_check}"

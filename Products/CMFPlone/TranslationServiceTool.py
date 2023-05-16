@@ -49,7 +49,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         target_language=None,
         default=None,
     ):
-        # Translate method for resticted code like skins.
+        # Translate method for restricted code like skins.
         if context is not None:
             if not IBrowserRequest.providedBy(context):
                 context = aq_get(context, "REQUEST", None)

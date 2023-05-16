@@ -40,7 +40,7 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
         enabled = self.folder.case.nextPreviousEnabled
         self.assertFalse(enabled)
 
-        # secoundly we test if the adapter provides the isNextPreviousEnabled()
+        # secondly we test if the adapter provides the isNextPreviousEnabled()
         adapter = INextPreviousProvider(self.folder.case)
         self.assertFalse(adapter.enabled)
 

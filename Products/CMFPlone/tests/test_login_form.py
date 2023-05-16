@@ -185,7 +185,7 @@ class TestLoginForm(unittest.TestCase):
         self.assertIsInstance(member.getProperty("login_time"), str)
         self.assertEqual(member.getProperty("login_time"), today)
 
-        # Loggin in set login_time with DateTime
+        # Logging in set login_time with DateTime
         form = self.portal.restrictedTraverse("@@login")
         form._post_login()
         member = membership.getAuthenticatedMember()
