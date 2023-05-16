@@ -206,7 +206,7 @@ class TestRedirectAfterLogin(unittest.TestCase):
         # We need to configure the mailhost first.
         registry = getUtility(IRegistry, context=self.portal)
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
-        mail_settings.smtp_host = u'localhost'
+        mail_settings.smtp_host = 'localhost'
         mail_settings.email_from_address = 'smith@example.com'
         # and an email address for the test user:
         member = self.portal.portal_membership.getMemberById(TEST_USER_ID)
@@ -230,7 +230,7 @@ class TestRedirectAfterLogin(unittest.TestCase):
         self.assertIn(please_visit_text, msg)
         url_index = msg.index(please_visit_text) + len(please_visit_text)
         address = msg[url_index:].strip().split()[0].decode()
-        self.assertTrue(address.startswith(u'http://nohost/plone/passwordreset/'))
+        self.assertTrue(address.startswith('http://nohost/plone/passwordreset/'))
 
         # Now that we have the address, we will reset our password:
 
