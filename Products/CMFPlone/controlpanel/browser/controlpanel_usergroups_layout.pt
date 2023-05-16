@@ -1,37 +1,43 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
       metal:use-macro="here/prefs_main_template/macros/master"
-      i18n:domain="plone">
+      xml:lang="en"
+      i18n:domain="plone"
+>
 
-<body>
+  <body>
 
-<div metal:fill-slot="prefs_configlet_main">
+    <div metal:fill-slot="prefs_configlet_main">
 
-  <header>
-    <h1 class="documentFirstHeading"
-        i18n:translate="">User and Groups Settings</h1>
+      <header>
+        <h1 class="documentFirstHeading"
+            i18n:translate=""
+        >User and Groups Settings</h1>
 
-    <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+        <div metal:use-macro="context/global_statusmessage/macros/portal_message">
       Portal status message
+        </div>
+
+        <p class="text-muted mt-2"
+           i18n:translate=""
+        >
+      User and groups settings for this site.
+        </p>
+
+      </header>
+      <div class="mt-3"
+           id="content"
+      >
+
+        <div class="mt-2">
+          <span tal:replace="structure view/contents"></span>
+        </div>
+      </div>
+
     </div>
 
-    <p class="text-muted mt-2"
-       i18n:translate="">
-      User and groups settings for this site.
-    </p>
-
-  </header>
-  <div id="content" class="mt-3">
-
-  <div class="mt-2">
-    <span tal:replace="structure view/contents" />
-  </div>
-</div>
-
-</div>
-
-</body>
+  </body>
 </html>

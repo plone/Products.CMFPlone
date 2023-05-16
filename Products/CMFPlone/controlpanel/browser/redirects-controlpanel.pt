@@ -1,10 +1,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      xml:lang="en" lang="en"
+      lang="en"
       metal:use-macro="context/prefs_main_template/macros/master"
-      i18n:domain="plone">
+      xml:lang="en"
+      i18n:domain="plone"
+>
 
   <body>
     <tal:main metal:fill-slot="prefs_configlet_main">
@@ -14,20 +16,26 @@
           URL Management
         </h1>
 
-        <div class="alert alert-danger mt-3 mb-4" role="alert"
-             tal:condition="view/csv_errors|nothing">
-          <div i18n:translate="" class="font-weight-bold">Error</div>
+        <div class="alert alert-danger mt-3 mb-4"
+             role="alert"
+             tal:condition="view/csv_errors|nothing"
+        >
+          <div class="font-weight-bold"
+               i18n:translate=""
+          >Error</div>
           <span i18n:translate="error_bulk_upload">
             No alternative urls were added. Please correct these errors in your CSV file and try again:
           </span>
-          <hr>
+          <hr />
           <table class="text-break"
-              style="text-align: left; vertical-align: top"
-              border="0"
-              cellpadding="2"
-              cellspacing="0">
-            <tr tal:repeat="error view/csv_errors"
-                style="vertical-align: top">
+                 border="0"
+                 cellpadding="2"
+                 cellspacing="0"
+                 style="text-align: left; vertical-align: top"
+          >
+            <tr style="vertical-align: top"
+                tal:repeat="error view/csv_errors"
+            >
               <td nowrap="nowrap">
                 <tal:block i18n:translate="label_bulk_upload_line">
                   Line
@@ -50,45 +58,61 @@
 
       </header>
       <form class="mb-4"
-          action="${view/view_url}"
-          method="post">
+            action="${view/view_url}"
+            method="post"
+      >
         <fieldset class="mb-3">
           <legend i18n:translate="add_alias">
             Add a new alternative url
           </legend>
-          <p class="text-muted" i18n:translate="description_change_primary_url">
-            To change the primary url of content, use Actions > Rename.
+          <p class="text-muted"
+             i18n:translate="description_change_primary_url"
+          >
+            To change the primary url of content, use Actions &gt; Rename.
           </p>
 
           <div class="field mb-3"
-               tal:define="error view/form_errors/redirection|nothing"
-               tal:attributes="class python:error and 'field mb-3 error' or 'field mb-3'">
+               tal:define="
+                 error view/form_errors/redirection|nothing;
+               "
+               tal:attributes="
+                 class python:error and 'field mb-3 error' or 'field mb-3';
+               "
+          >
 
-            <label class="form-label" for="redirection">
+            <label class="form-label"
+                   for="redirection"
+            >
               <span i18n:translate="label_alias">Alternative url path</span>
-              <span
-                class="required fieldRequired"
-                title="Required"
-                i18n:attributes="title label_required">
+              <span class="required fieldRequired"
+                    title="Required"
+                    i18n:attributes="title label_required"
+              >
               </span>
             </label>
 
             <input class="form-control"
-                type="text"
-                name="redirection"
-                value=""
-                size="40"
-                required
-                tal:attributes="value request/redirection | nothing;
-                                class python:error and 'form-control is-invalid' or 'form-control'"/>
+                   name="redirection"
+                   required
+                   size="40"
+                   type="text"
+                   value=""
+                   tal:attributes="
+                     value request/redirection | nothing;
+                     class python:error and 'form-control is-invalid' or 'form-control';
+                   "
+            />
 
             <div class="invalid-feedback"
-              tal:content="error"
-              tal:condition="error">
+                 tal:condition="error"
+                 tal:content="error"
+            >
               Validation error output
             </div>
 
-            <small class="formHelp form-text text-muted" i18n:translate="help_alias">
+            <small class="formHelp form-text text-muted"
+                   i18n:translate="help_alias"
+            >
               Enter the absolute path where the alternative url should exist. The path must start with '/'.
               Only urls that result in a 404 not found page will result in a redirect occurring.
             </small>
@@ -96,34 +120,48 @@
           </div>
 
           <div class="field mb-3"
-               tal:define="error view/form_errors/target_path|nothing"
-               tal:attributes="class python:error and 'field mb-3 error' or 'field mb-3'">
+               tal:define="
+                 error view/form_errors/target_path|nothing;
+               "
+               tal:attributes="
+                 class python:error and 'field mb-3 error' or 'field mb-3';
+               "
+          >
 
-            <label class="form-label" for="target_path">
+            <label class="form-label"
+                   for="target_path"
+            >
               <span i18n:translate="label_target_path">Target Path</span>
-              <span
-                  class="required fieldRequired"
-                  title="Required"
-                  i18n:attributes="title label_required">
+              <span class="required fieldRequired"
+                    title="Required"
+                    i18n:attributes="title label_required"
+              >
               </span>
             </label>
 
             <input class="form-control"
-                type="text"
-                name="target_path"
-                value=""
-                size="40"
-                required
-                tal:attributes="value request/target_path | nothing;
-                                class python:error and 'form-control is-invalid' or 'form-control'""/>
+                   "=""
+                   name="target_path"
+                   required
+                   size="40"
+                   type="text"
+                   value=""
+                   tal:attributes="
+                     value request/target_path | nothing;
+                     class python:error and 'form-control is-invalid' or 'form-control';
+                   "
+            />
 
             <div class="invalid-feedback"
-              tal:content="error"
-              tal:condition="error">
+                 tal:condition="error"
+                 tal:content="error"
+            >
               Validation error output
             </div>
 
-            <small class="formHelp form-text text-muted" i18n:translate="help_target_path">
+            <small class="formHelp form-text text-muted"
+                   i18n:translate="help_target_path"
+            >
               Enter the absolute path of the target. The path must start with '/'.
               Target must exist or be an existing alternative url path to the target.
             </small>
@@ -132,10 +170,12 @@
 
           <div class="formControls">
             <button class="btn btn-success"
-              type="submit"
-              value="Add"
-              name="form.button.Add">
-              <tal:icon tal:replace="structure python:icons.tag('plus', tag_alt='Add')" /> <span i18n:translate="">Add</span>
+                    name="form.button.Add"
+                    type="submit"
+                    value="Add"
+            >
+              <tal:icon tal:replace="structure python:icons.tag('plus', tag_alt='Add')" />
+              <span i18n:translate="">Add</span>
             </button>
           </div>
 
@@ -144,15 +184,18 @@
 
 
       <form class="mb-4"
-          action="${view/view_url}"
-          method="post"
-          enctype="multipart/form-data">
+            action="${view/view_url}"
+            enctype="multipart/form-data"
+            method="post"
+      >
         <fieldset class="mb-3">
           <legend i18n:translate="legend_bulk_upload">
             Bulk-upload alternative urls
           </legend>
 
-          <p class="text-muted" i18n:translate="description_bulk_upload">
+          <p class="text-muted"
+             i18n:translate="description_bulk_upload"
+          >
             Add many alternative urls at once by uploading a CSV file. The first column should be the path to
             redirect from; the second, the path to redirect to. Both paths must be Plone-site-relative,
             starting with a slash (/). An optional third colum can contain a date and time.
@@ -167,39 +210,51 @@
           </p>
 
           <div class="field mb-3"
-               tal:define="error view/form_errors/file|nothing"
-               tal:attributes="class python:error and 'field mb-3 error' or 'field mb-3'">
+               tal:define="
+                 error view/form_errors/file|nothing;
+               "
+               tal:attributes="
+                 class python:error and 'field mb-3 error' or 'field mb-3';
+               "
+          >
 
-            <label class="form-label" for="file" class="form-label">
+            <label class="form-label"
+                   for="file"
+            >
               <span i18n:translate="label_csv_file">CSV file</span>
-              <span
-                class="required fieldRequired"
-                title="Required"
-                i18n:attributes="title label_required">
+              <span class="required fieldRequired"
+                    title="Required"
+                    i18n:attributes="title label_required"
+              >
               </span>
             </label>
 
             <input class="form-control"
-              type="file"
-              name="file"
-              required
-              tal:attributes="class python:error and 'form-control is-invalid' or 'form-control'" />
+                   name="file"
+                   required
+                   type="file"
+                   tal:attributes="
+                     class python:error and 'form-control is-invalid' or 'form-control';
+                   "
+            />
 
             <div class="invalid-feedback"
-              tal:content="error"
-              tal:condition="error">
+                 tal:condition="error"
+                 tal:content="error"
+            >
                 Validation error output
             </div>
 
           </div>
 
           <div class="formControls">
-            <button
-              class="btn btn-success"
-              type="submit"
-              value="Upload"
-              name="form.button.Upload">
-              <tal:icon tal:replace="structure python:icons.tag('upload', tag_alt='Upload')" /> <span i18n:translate="">Upload</span>
+            <button class="btn btn-success"
+                    name="form.button.Upload"
+                    type="submit"
+                    value="Upload"
+            >
+              <tal:icon tal:replace="structure python:icons.tag('upload', tag_alt='Upload')" />
+              <span i18n:translate="">Upload</span>
             </button>
           </div>
 
@@ -207,105 +262,177 @@
       </form>
 
       <form class="mb-4"
-          action="${view/view_url}#manage-existing-aliases"
-          method="post"
-          id="manage-existing-aliases">
+            id="manage-existing-aliases"
+            action="${view/view_url}#manage-existing-aliases"
+            method="post"
+      >
         <fieldset class="mb-3"
-          tal:define="batch view/redirects">
+                  tal:define="
+                    batch view/redirects;
+                  "
+        >
           <legend i18n:translate="legend_all_existing_aliases">
             All existing alternative urls for this site
           </legend>
 
           <div class="mb-4">
-            <button
-                class="btn btn-primary context"
-                type="submit"
-                value="Download all as CSV"
-                name="form.button.Download">
-                <tal:icon tal:replace="structure python:icons.tag('download', tag_alt='Download')" /> <span i18n:translate="">Download all as CSV</span>
+            <button class="btn btn-primary context"
+                    name="form.button.Download"
+                    type="submit"
+                    value="Download all as CSV"
+            >
+              <tal:icon tal:replace="structure python:icons.tag('download', tag_alt='Download')" />
+              <span i18n:translate="">Download all as CSV</span>
             </button>
           </div>
 
           <div class="mb-3">
-            <label class="form-label" for="filter-existing-aliases-q" i18n:translate="">Filter by prefix</label>
+            <label class="form-label"
+                   for="filter-existing-aliases-q"
+                   i18n:translate=""
+            >Filter by prefix</label>
             <input class="form-control"
-                type="text"
-                name="q"
-                value=""
-                id="filter-existing-aliases-q"
-                tal:attributes="value python:request.form.get('q', '/')"/>
+                   id="filter-existing-aliases-q"
+                   name="q"
+                   type="text"
+                   value=""
+                   tal:attributes="
+                     value python:request.form.get('q', '/');
+                   "
+            />
           </div>
 
           <div class="mb-3">
-            <label class="form-label" for="filter-existing-aliases-manual" i18n:translate="">Manually or automatically added?</label>
+            <label class="form-label"
+                   for="filter-existing-aliases-manual"
+                   i18n:translate=""
+            >Manually or automatically added?</label>
             <div class="form-check"
-            id="filter-existing-aliases-manual"
-            tal:define="chosen python:request.form.get('manual', '')">
-            <input type="radio" name="manual" id="manual-both" class="form-check-input" value="" tal:attributes="checked python:chosen==''">
-            <label for="manual-both" class="form-check-label" i18n:translate="">Both</label><br />
-            <input type="radio" name="manual" id="manual-no" class="form-check-input" value="no" tal:attributes="checked python:chosen=='no'">
-            <label for="manual-no" class="form-check-label" i18n:translate="">Automatically</label><br />
-            <input type="radio" name="manual" id="manual-yes" class="form-check-input" value="yes" tal:attributes="checked python:chosen=='yes'">
-            <label for="manual-yes" class="form-check-label" i18n:translate="">Manually</label>
+                 id="filter-existing-aliases-manual"
+                 tal:define="
+                   chosen python:request.form.get('manual', '');
+                 "
+            >
+              <input class="form-check-input"
+                     id="manual-both"
+                     name="manual"
+                     type="radio"
+                     value=""
+                     tal:attributes="
+                       checked python:chosen=='';
+                     "
+              />
+              <label class="form-check-label"
+                     for="manual-both"
+                     i18n:translate=""
+              >Both</label><br />
+              <input class="form-check-input"
+                     id="manual-no"
+                     name="manual"
+                     type="radio"
+                     value="no"
+                     tal:attributes="
+                       checked python:chosen=='no';
+                     "
+              />
+              <label class="form-check-label"
+                     for="manual-no"
+                     i18n:translate=""
+              >Automatically</label><br />
+              <input class="form-check-input"
+                     id="manual-yes"
+                     name="manual"
+                     type="radio"
+                     value="yes"
+                     tal:attributes="
+                       checked python:chosen=='yes';
+                     "
+              />
+              <label class="form-check-label"
+                     for="manual-yes"
+                     i18n:translate=""
+              >Manually</label>
+            </div>
           </div>
-        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="filter-existing-aliases-date" i18n:translate="">Created before</label>
-          <input type="date" id="filter-existing-aliases-date" class="form-control" name="datetime"
-          tal:attributes="value python:request.form.get('datetime', '')"/>
-        </div>
+          <div class="mb-3">
+            <label class="form-label"
+                   for="filter-existing-aliases-date"
+                   i18n:translate=""
+            >Created before</label>
+            <input class="form-control"
+                   id="filter-existing-aliases-date"
+                   name="datetime"
+                   type="date"
+                   tal:attributes="
+                     value python:request.form.get('datetime', '');
+                   "
+            />
+          </div>
 
           <div class="formControls mb-4">
-            <button
-              class="btn btn-primary"
-              type="submit"
-              value="Filter"
-              name="form.button.filter">
-              <tal:icon tal:replace="structure python:icons.tag('filter', tag_alt='Filter')" /> <span i18n:translate="">Filter</span>
+            <button class="btn btn-primary"
+                    name="form.button.filter"
+                    type="submit"
+                    value="Filter"
+            >
+              <tal:icon tal:replace="structure python:icons.tag('filter', tag_alt='Filter')" />
+              <span i18n:translate="">Filter</span>
             </button>
           </div>
 
           <div class="field mb-3"
-               tal:define="error view/form_errors/remove_redirects|nothing"
-               tal:attributes="class python:error and 'field mb-3 error' or 'field mb-3'"
+               tal:define="
+                 error view/form_errors/remove_redirects|nothing;
+               "
+               tal:condition="error"
                tal:content="error"
-               tal:condition="error" />
+               tal:attributes="
+                 class python:error and 'field mb-3 error' or 'field mb-3';
+               "
+          ></div>
 
-        <div class="mb-4">
-          <p><small i18n:translate="">Alternative url path &rarr; target url path <span class="text-muted">(date and time of creation, manually created yes/no)</span></small></p>
-          <tal:redirects repeat="redirect batch">
-            <div class="form-check">
-              <label class="form-check-label">
-              <input
-                  type="checkbox"
-                  class="form-check-input noborder"
-                  name="redirects:tuple"
-                  value="${redirect/redirect}" />
-              ${redirect/path} &rarr; ${redirect/redirect-to} <span class="text-muted">(${redirect/datetime}, ${redirect/manual})</span>
-              </label>
-            </div>
-          </tal:redirects>
-        </div>
-
-        <div class="justify-content-center mb-4">
-          <div tal:condition="python:batch.numpages > 1"
-               tal:replace="structure view/batching">
+          <div class="mb-4">
+            <p><small i18n:translate="">Alternative url path &rarr; target url path
+                <span class="text-muted">(date and time of creation, manually created yes/no)</span></small></p>
+            <tal:redirects repeat="redirect batch">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input noborder"
+                         name="redirects:tuple"
+                         type="checkbox"
+                         value="${redirect/redirect}"
+                  />
+              ${redirect/path} &rarr; ${redirect/redirect-to}
+                  <span class="text-muted">(${redirect/datetime}, ${redirect/manual})</span>
+                </label>
+              </div>
+            </tal:redirects>
           </div>
-        </div>
+
+          <div class="justify-content-center mb-4">
+            <div tal:condition="python:batch.numpages &gt; 1"
+                 tal:replace="structure view/batching"
+            >
+            </div>
+          </div>
 
           <div class="formControls">
             <button class="btn btn-danger"
-              type="submit"
-              value="Remove selected"
-              name="form.button.Remove">
-                <tal:icon tal:replace="structure python:icons.tag('trash', tag_alt='Trash')" /> <span i18n:translate="">Remove selected</span>
+                    name="form.button.Remove"
+                    type="submit"
+                    value="Remove selected"
+            >
+              <tal:icon tal:replace="structure python:icons.tag('trash', tag_alt='Trash')" />
+              <span i18n:translate="">Remove selected</span>
             </button>
             <button class="btn btn-danger"
-              type="submit"
-              value="Remove all that match filter"
-              name="form.button.MatchRemove">
-                <tal:icon tal:replace="structure python:icons.tag('trash', tag_alt='Trash')" /> <span i18n:translate="">Remove all that match filter</span>
+                    name="form.button.MatchRemove"
+                    type="submit"
+                    value="Remove all that match filter"
+            >
+              <tal:icon tal:replace="structure python:icons.tag('trash', tag_alt='Trash')" />
+              <span i18n:translate="">Remove all that match filter</span>
             </button>
           </div>
 

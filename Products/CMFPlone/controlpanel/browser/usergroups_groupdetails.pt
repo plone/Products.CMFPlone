@@ -1,74 +1,111 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
       metal:use-macro="context/prefs_main_template/macros/master"
-      i18n:domain="plone">
+      xml:lang="en"
+      i18n:domain="plone"
+>
 
 
-<body>
+  <body>
 
-<metal:main fill-slot="prefs_configlet_main"
-     tal:define="template_id string:@@usergroup-groupdetails;
-                 portal_roles view/portal_roles;
-                 groupquery python:view.makeQuery(groupname=view.groupname);
-                 groupkeyquery python:view.makeQuery(key=view.groupname)">
+    <metal:main fill-slot="prefs_configlet_main"
+                tal:define="
+                  template_id string:@@usergroup-groupdetails;
+                  portal_roles view/portal_roles;
+                  groupquery python:view.makeQuery(groupname=view.groupname);
+                  groupkeyquery python:view.makeQuery(key=view.groupname);
+                "
+    >
 
 
-  <!-- When no group is specified, this gets used as the add group page page -->
-  <article id="content" tal:condition="not:view/group">
-      <metal:block metal:use-macro="template/macros/props">
+      <!-- When no group is specified, this gets used as the add group page page -->
+      <article id="content"
+               tal:condition="not:view/group"
+      >
+        <metal:block metal:use-macro="template/macros/props">
           <metal:title metal:fill-slot="content-title">
-              <h1 class="documentFirstHeading"
-                  i18n:translate="heading_create_group">Create a Group</h1>
+            <h1 class="documentFirstHeading"
+                i18n:translate="heading_create_group"
+            >Create a Group</h1>
           </metal:title>
 
           <metal:name metal:fill-slot="name">
-              <div class="mb-3">
-                  <label class="form-label" for="addname">
-                    <span i18n:translate="label_name">Name</span>
-                    <span class="required" i18n:attributes="title title_required;" title="Required"></span>
-                  </label>
-                  <input type="text" name="addname" value="groupname"
-                         id="addname" class="form-control"
-                         tal:attributes="value view/groupname | string:"/>
-                  <small class="form-text text-muted" i18n:translate="help_groupname">
+            <div class="mb-3">
+              <label class="form-label"
+                     for="addname"
+              >
+                <span i18n:translate="label_name">Name</span>
+                <span class="required"
+                      title="Required"
+                      i18n:attributes="title title_required;"
+                ></span>
+              </label>
+              <input class="form-control"
+                     id="addname"
+                     name="addname"
+                     type="text"
+                     value="groupname"
+                     tal:attributes="
+                       value view/groupname | string:;
+                     "
+              />
+              <small class="form-text text-muted"
+                     i18n:translate="help_groupname"
+              >
                   A unique identifier for the group. Can not be changed after creation.
-                  </small>
-              </div>
+              </small>
+            </div>
           </metal:name>
-      </metal:block>
-  </article>
+        </metal:block>
+      </article>
 
-  <article id="content" tal:condition="view/group | nothing">
-    <metal:block define-macro="props">
+      <article id="content"
+               tal:condition="view/group | nothing"
+      >
+        <metal:block define-macro="props">
 
-      <a href="${portal_url}/@@usergroup-groupprefs"
-         class="link-parent" tal:condition="view/group"
-         i18n:translate="label_up_to_groups_overview">
+          <a class="link-parent"
+             href="${portal_url}/@@usergroup-groupprefs"
+             tal:condition="view/group"
+             i18n:translate="label_up_to_groups_overview"
+          >
          Up to Groups Overview
-      </a>
+          </a>
 
-      <h1 class="documentFirstHeading"
-          i18n:translate="heading_edit_groupproperties"
-          metal:define-slot="content-title">Group: <span i18n:name="groupname" tal:replace="view/grouptitle|nothing"/></h1>
+          <h1 class="documentFirstHeading"
+              metal:define-slot="content-title"
+              i18n:translate="heading_edit_groupproperties"
+          >Group:
+            <span tal:replace="view/grouptitle|nothing"
+                  i18n:name="groupname"
+            ></span></h1>
 
-      <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+          <div metal:use-macro="context/global_statusmessage/macros/portal_message">
         Portal status message
-      </div>
+          </div>
 
-      <div id="content-core"
-           tal:define="token context/@@authenticator/token">
-        <div class="autotabs">
+          <div id="content-core"
+               tal:define="
+                 token context/@@authenticator/token;
+               "
+          >
+            <div class="autotabs">
 
-          <div tal:condition="view/group" class="nav nav-pills">
-            <a href="${portal_url}/@@usergroup-groupmembership?${groupquery}" class="nav-link"
-               i18n:translate="label_group_members">Group Members</a>
-            <a class="nav-link active"
-               href="${portal_url}/@@usergroup-groupdetails?${groupquery}"
-               i18n:translate="label_group_properties">Group Properties</a>
-            <a href="${portal_url}/@@manage-group-portlets?${groupkeyquery}&_authenticator=${token}" class="nav-link"
+              <div class="nav nav-pills"
+                   tal:condition="view/group"
+              >
+                <a class="nav-link"
+                   href="${portal_url}/@@usergroup-groupmembership?${groupquery}"
+                   i18n:translate="label_group_members"
+                >Group Members</a>
+                <a class="nav-link active"
+                   href="${portal_url}/@@usergroup-groupdetails?${groupquery}"
+                   i18n:translate="label_group_properties"
+                >Group Properties</a>
+                <a href="${portal_url}/@@manage-group-portlets?${groupkeyquery}&_authenticator=${token}" class="nav-link"
                i18n:translate="label_group_portlets">Group Portlets</a>
             <a href="${portal_url}/@@manage-group-dashboard?${groupkeyquery}&_authenticator=${token}" class="nav-link"
                i18n:translate="label_group_dashboard">Group Dashboard</a>
@@ -82,138 +119,222 @@
                 tal:attributes="action string:$portal_url/$template_id"
                 tal:define="targetobject context/portal_groupdata;">
 
-              <fieldset>
-                  <div class="mb-3" metal:define-slot="name">
-                     <label class="form-label" for="groupname" i18n:translate="label_name">Name</label>
-                     <p>
-                      <strong class="" tal:content="view/groupname | string:"/>
-                     </p>
-                     <input type="hidden" name="groupname" value="groupname"
-                            id="groupname" class="form-control"
-                            tal:attributes="value view/groupname | string:"/>
-                  </div>
+                  <fieldset>
+                    <div class="mb-3"
+                         metal:define-slot="name"
+                    >
+                      <label class="form-label"
+                             for="groupname"
+                             i18n:translate="label_name"
+                      >Name</label>
+                      <p>
+                        <strong class=""
+                                tal:content="view/groupname | string:"
+                        ></strong>
+                      </p>
+                      <input class="form-control"
+                             id="groupname"
+                             name="groupname"
+                             type="hidden"
+                             value="groupname"
+                             tal:attributes="
+                               value view/groupname | string:;
+                             "
+                      />
+                    </div>
 
-                  <tal:properties repeat="property targetobject/propertyMap">
+                    <tal:properties repeat="property targetobject/propertyMap">
                       <div class="field mb-3"
-                           tal:define="id property/id;
-                                       type property/type;
-                                       propertyvalue python:view.get_group_property(id);">
+                           tal:define="
+                             id property/id;
+                             type property/type;
+                             propertyvalue python:view.get_group_property(id);
+                           "
+                      >
 
-                      <label class="form-label" for="value"
-                              tal:attributes="for id"
-                              i18n:translate=""
-                              tal:content="python:targetobject.propertyLabel(id).capitalize()">Property Value</label>
+                        <label class="form-label"
+                               for="value"
+                               tal:content="python:targetobject.propertyLabel(id).capitalize()"
+                               tal:attributes="
+                                 for id;
+                               "
+                               i18n:translate=""
+                        >Property Value</label>
 
-                      <div tal:define="propertyitem python:targetobject.getProperty(id);
-                                       disabled python:None if (not view.group or view.group.canWriteProperty(id)) else 'disabled';"
-                      tal:condition="python:'w' in property.get('mode', 'awd')">
+                        <div tal:define="
+                               propertyitem python:targetobject.getProperty(id);
+                               disabled python:None if (not view.group or view.group.canWriteProperty(id)) else 'disabled';
+                             "
+                             tal:condition="python:'w' in property.get('mode', 'awd')"
+                        >
 
-                      <input type="text" name="id" size="35" class="form-control"
-                              tal:condition="python:type in ('int', 'long')"
-                              tal:attributes="name string:$id:$type;
-                                              id id;
-                                              value python:propertyvalue if propertyvalue else '';
-                                              disabled disabled;" />
+                          <input class="form-control"
+                                 name="id"
+                                 size="35"
+                                 type="text"
+                                 tal:condition="python:type in ('int', 'long')"
+                                 tal:attributes="
+                                   name string:$id:$type;
+                                   id id;
+                                   value python:propertyvalue if propertyvalue else '';
+                                   disabled disabled;
+                                 "
+                          />
 
-                      <input type="text" name="id" size="35" class="form-control"
-                              tal:condition="python:type in ('float','date')"
-                              tal:attributes="name string:$id:$type;
-                                              id id;
-                                              value python:propertyvalue if propertyvalue else '';
-                                              disabled disabled;" />
-                      <tal:comment condition="nothing">
+                          <input class="form-control"
+                                 name="id"
+                                 size="35"
+                                 type="text"
+                                 tal:condition="python:type in ('float','date')"
+                                 tal:attributes="
+                                   name string:$id:$type;
+                                   id id;
+                                   value python:propertyvalue if propertyvalue else '';
+                                   disabled disabled;
+                                 "
+                          />
+                          <tal:comment condition="nothing">
                         Unicode property types, like ustring, are deprecated and should not be used in Plone 6 (Zope 5).
                         Core Plone should not need them, but there could be custom groups that use them,
                         so we keep the compatibility checks in here.
-                      </tal:comment>
-                      <input type="text" name="string and ustring" size="35" class="form-control"
-                              tal:condition="python:type in ('string','ustring')"
-                              tal:attributes="name string:$id:$type;
-                                              id id;
-                                              value python:propertyvalue if propertyvalue else '';
-                                              disabled disabled;" />
+                          </tal:comment>
+                          <input class="form-control"
+                                 name="string and ustring"
+                                 size="35"
+                                 type="text"
+                                 tal:condition="python:type in ('string','ustring')"
+                                 tal:attributes="
+                                   name string:$id:$type;
+                                   id id;
+                                   value python:propertyvalue if propertyvalue else '';
+                                   disabled disabled;
+                                 "
+                          />
 
-                      <input type="checkbox"
-                              class="noborder form-control"
-                              name="id"
-                              id="cb-checkbox"
-                              tal:condition="python: type in ('boolean',)"
-                              tal:attributes="name string:$id:$type;
-                                              id id;
-                                              checked python:'checked' if propertyvalue else '';
-                                              disabled disabled;" />
+                          <input class="noborder form-control"
+                                 id="cb-checkbox"
+                                 name="id"
+                                 type="checkbox"
+                                 tal:condition="python: type in ('boolean',)"
+                                 tal:attributes="
+                                   name string:$id:$type;
+                                   id id;
+                                   checked python:'checked' if propertyvalue else '';
+                                   disabled disabled;
+                                 "
+                          />
 
-                      <input name="tokens and utokens" value="" type="text" size="35" class="form-control"
-                              tal:condition="python:type in ('tokens', 'utokens')"
-                              tal:attributes="name string:$id:$type;
-                                              value python:propertyvalue if propertyvalue else '';
-                                              disabled disabled;" />
+                          <input class="form-control"
+                                 name="tokens and utokens"
+                                 size="35"
+                                 type="text"
+                                 value=""
+                                 tal:condition="python:type in ('tokens', 'utokens')"
+                                 tal:attributes="
+                                   name string:$id:$type;
+                                   value python:propertyvalue if propertyvalue else '';
+                                   disabled disabled;
+                                 "
+                          />
 
-                      <textarea name="text and utext" class="form-control"
-                              rows="6"
-                              cols="35"
-                              tal:condition="python: type in ('text', 'utext')"
-                              tal:attributes="name string:$id:$type;
-                                              disabled disabled;"
-                              tal:content="propertyvalue">some data</textarea>
+                          <textarea class="form-control"
+                                    cols="35"
+                                    name="text and utext"
+                                    rows="6"
+                                    tal:condition="python: type in ('text', 'utext')"
+                                    tal:content="propertyvalue"
+                                    tal:attributes="
+                                      name string:$id:$type;
+                                      disabled disabled;
+                                    "
+                          >some data</textarea>
 
-                      <textarea name="lines and ulines" class="form-control"
-                              rows="6"
-                              cols="35"
-                              tal:condition="python: type in ('lines', 'ulines')"
-                              tal:attributes="name string:$id:$type;
-                                              disabled disabled;"
-                              tal:content="python: propertyvalue and '\n'.join(propertyvalue) or ''">
-                      </textarea>
+                          <textarea class="form-control"
+                                    cols="35"
+                                    name="lines and ulines"
+                                    rows="6"
+                                    tal:condition="python: type in ('lines', 'ulines')"
+                                    tal:content="python: propertyvalue and '\n'.join(propertyvalue) or ''"
+                                    tal:attributes="
+                                      name string:$id:$type;
+                                      disabled disabled;
+                                    "
+                          >
+                          </textarea>
 
 
-                      <tal:selections tal:condition="python:type in ('selection', 'multiple selection')"
-                                      tal:define="select_variable python:property.get('select_variable','');
-                                      select_value python:select_variable and path('context/%s' %select_variable) or [];">
+                          <tal:selections tal:define="
+                                            select_variable python:property.get('select_variable','');
+                                            select_value python:select_variable and path('context/%s' %select_variable) or [];
+                                          "
+                                          tal:condition="python:type in ('selection', 'multiple selection')"
+                          >
 
-                      <select name="selection" tal:condition="python:type in ('selection',)"
-                          tal:attributes="name string:$id:text;
-                                          disabled disabled;">
-                          <tal:values repeat="option select_value">
-                              <option tal:attributes="SELECTED python:'SELECTED' if propertyvalue==option else ''"
-                                  tal:content="option">value</option>
-                          </tal:values>
-                      </select>
+                            <select name="selection"
+                                    tal:condition="python:type in ('selection',)"
+                                    tal:attributes="
+                                      name string:$id:text;
+                                      disabled disabled;
+                                    "
+                            >
+                              <tal:values repeat="option select_value">
+                                <option tal:content="option"
+                                        tal:attributes="
+                                          SELECTED python:'SELECTED' if propertyvalue==option else '';
+                                        "
+                                >value</option>
+                              </tal:values>
+                            </select>
 
-                      <select name="multiple selection" multiple="multiple" tal:condition="python:type in ('multiple selection',)"
-                              tal:attributes="name string:$id:list:string;
-                                              size python:min(7, len(select_value));
-                                              disabled disabled;">
-                          <tal:values repeat="option select_value">
-                              <option tal:attributes="SELECTED python:'selected' if (propertyvalue and option in propertyvalue) else ''"
-                                      tal:content="option">value</option>
-                          </tal:values>
-                      </select>
+                            <select multiple="multiple"
+                                    name="multiple selection"
+                                    tal:condition="python:type in ('multiple selection',)"
+                                    tal:attributes="
+                                      name string:$id:list:string;
+                                      size python:min(7, len(select_value));
+                                      disabled disabled;
+                                    "
+                            >
+                              <tal:values repeat="option select_value">
+                                <option tal:content="option"
+                                        tal:attributes="
+                                          SELECTED python:'selected' if (propertyvalue and option in propertyvalue) else '';
+                                        "
+                                >value</option>
+                              </tal:values>
+                            </select>
 
-                      </tal:selections>
+                          </tal:selections>
+
+                        </div>
 
                       </div>
+                    </tal:properties>
 
-                      </div>
-                  </tal:properties>
+                    <input class="form-control"
+                           name="form.submitted"
+                           type="hidden"
+                           value="1"
+                    />
+                    <button class="btn btn-primary"
+                            name="form.button.Save"
+                            type="submit"
+                            value="Save"
+                            i18n:attributes="value label_save;"
+                            i18n:translate=""
+                    >Save</button>
+                  </fieldset>
 
-                  <input type="hidden" name="form.submitted" value="1" class="form-control"/>
-                  <button class="btn btn-primary"
-                          type="submit"
-                          name="form.button.Save"
-                          value="Save"
-                          i18n:translate=""
-                          i18n:attributes="value label_save;">Save</button>
-              </fieldset>
+                  <input class="form-control"
+                         tal:replace="structure context/@@authenticator/authenticator"
+                  />
 
-              <input class="form-control" tal:replace="structure context/@@authenticator/authenticator" />
-          </form>
-        </div>
-      </div>
-    </metal:block>
-  </article>
+                </a></div>
+            </div>
+          </div></metal:block>
+      </article>
 
-</metal:main>
+    </metal:main>
 
-</body>
+  </body>
 </html>
