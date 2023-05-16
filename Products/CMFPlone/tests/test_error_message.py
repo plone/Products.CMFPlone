@@ -9,7 +9,6 @@ import unittest
 
 
 class TestErrorMessage(unittest.TestCase):
-
     layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
     def setUp(self):

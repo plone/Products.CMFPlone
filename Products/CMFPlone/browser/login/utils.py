@@ -20,9 +20,9 @@ def has_logged_in(login_time):
             login_time = DateTime(login_time)
         except DateTimeSyntaxError:
             # https://github.com/plone/Products.CMFPlone/issues/3656
-            logger.warning('%r is not a valid login_time.', login_time)
+            logger.warning("%r is not a valid login_time.", login_time)
             return False
     # We used to compare login_time with DateTime('2000/01/01'),
     # but it may have a timezone: I have seen both UTC and GTM+1.
     # So compare only the date part.
-    return login_time.Date() != '2000/01/01'
+    return login_time.Date() != "2000/01/01"

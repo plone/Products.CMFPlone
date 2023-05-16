@@ -20,7 +20,7 @@ import unicodedata
 
 
 def bigram(u, limit=1):
-    """ Split into bi-gram.
+    """Split into bi-gram.
     limit arg describes ending process.
     If limit = 0 then
         日本人-> [日本,本人, 人]
@@ -29,10 +29,10 @@ def bigram(u, limit=1):
         日本人-> [日本,本人]
         金 -> []
     """
-    return [u[i:i + 2] for i in range(len(u) - limit)]
+    return [u[i : i + 2] for i in range(len(u) - limit)]
 
 
-def process_str_post(s, enc='utf-8'):
+def process_str_post(s, enc="utf-8"):
     """Receive str, remove ? and *, then return str.
     If decode gets successful, process str as str.
     If decode gets failed, process str as ASCII.
@@ -50,7 +50,7 @@ def process_str_post(s, enc='utf-8'):
         return s.replace("?", "").replace("*", "")
 
 
-def process_str(s, enc='utf-8'):
+def process_str(s, enc="utf-8"):
     """Receive str and encoding, then return the list
     of str as bi-grammed result.
     Decode str into str and pass it to process_unicode.
@@ -68,7 +68,7 @@ def process_str(s, enc='utf-8'):
     return [x.encode(enc, "strict") for x in bigrams]
 
 
-def process_str_glob(s, enc='utf-8'):
+def process_str_glob(s, enc="utf-8"):
     """Receive str and encoding, then return the list
     of str considering glob processing.
     Decode str into str and pass it to process_unicode_glob.
@@ -90,7 +90,7 @@ def process_unicode(uni):
     """Receive unicode string, then return a list of unicode
     as bi-grammed result.
     """
-    normalized = unicodedata.normalize('NFKC', uni)
+    normalized = unicodedata.normalize("NFKC", uni)
     for word in rx_U.findall(normalized):
         swords = [g.group() for g in pattern.finditer(word)]
         for sword in swords:
@@ -104,10 +104,9 @@ def process_unicode_glob(uni):
     """Receive unicode string, then return a list of unicode
     as bi-grammed result.  Considering globbing.
     """
-    normalized = unicodedata.normalize('NFKC', uni)
+    normalized = unicodedata.normalize("NFKC", uni)
     for word in rxGlob_U.findall(normalized):
-        swords = [g.group() for g in pattern_g.finditer(word)
-                  if g.group() not in "*?"]
+        swords = [g.group() for g in pattern_g.finditer(word) if g.group() not in "*?"]
         for i, sword in enumerate(swords):
             if not rx_all.match(sword[0]):
                 yield sword
@@ -125,23 +124,22 @@ def process_unicode_glob(uni):
 
 @implementer(ISplitter)
 class Splitter:
-
     def process(self, lst):
-        """ Will be called when indexing.
+        """Will be called when indexing.
         Receive list of str, make it bi-grammed, then return
         the list of str.
         """
         return [x for s in lst for x in process_str(s)]
 
     def processGlob(self, lst):
-        """ Will be called once when searching.
+        """Will be called once when searching.
         Receive list of str, make it bi-grammed considering
         globbing, then return the list of str.
         """
         return [x for s in lst for x in process_str_glob(s)]
 
     def process_post_glob(self, lst):
-        """ Will be called twice when searching.
+        """Will be called twice when searching.
         Receive list of str, Remove ? and *, then return
         the list of str.
         """
@@ -150,8 +148,8 @@ class Splitter:
 
 try:
     element_factory.registerFactory(
-        'Word Splitter',
-        'Unicode Whitespace splitter',
+        "Word Splitter",
+        "Unicode Whitespace splitter",
         Splitter,
     )
 except ValueError:
@@ -160,9 +158,8 @@ except ValueError:
 
 
 class CaseNormalizer:
-
     def process(self, lst):
-        enc = 'utf-8'
+        enc = "utf-8"
         result = []
         for s in lst:
             # This is a hack to get the normalizer working with
@@ -180,8 +177,8 @@ class CaseNormalizer:
 
 try:
     element_factory.registerFactory(
-        'Case Normalizer',
-        'Unicode Case Normalizer',
+        "Case Normalizer",
+        "Unicode Case Normalizer",
         CaseNormalizer,
     )
 except ValueError:
@@ -190,9 +187,8 @@ except ValueError:
 
 
 class I18NNormalizer:
-
     def process(self, lst):
-        enc = 'utf-8'
+        enc = "utf-8"
         result = []
         for s in lst:
             try:
@@ -214,8 +210,8 @@ class I18NNormalizer:
 
 try:
     element_factory.registerFactory(
-        'Case Normalizer',
-        'Unicode Ignoring Accents Case Normalizer',
+        "Case Normalizer",
+        "Unicode Ignoring Accents Case Normalizer",
         I18NNormalizer,
     )
 except ValueError:

@@ -18,11 +18,12 @@ from zope.i18n.locales import locales
 
 
 def addCacheHandlers(portal):
-    """ Add RAM and AcceleratedHTTP cache handlers """
-    mgrs = [(AcceleratedHTTPCacheManager, 'HTTPCache'),
-            (RAMCacheManager, 'RAMCache'),
-            (RAMCacheManager, 'ResourceRegistryCache'),
-            ]
+    """Add RAM and AcceleratedHTTP cache handlers"""
+    mgrs = [
+        (AcceleratedHTTPCacheManager, "HTTPCache"),
+        (RAMCacheManager, "RAMCache"),
+        (RAMCacheManager, "ResourceRegistryCache"),
+    ]
     for mgr_class, mgr_id in mgrs:
         existing = portal.get(mgr_id, None)
         if existing is None:
@@ -38,7 +39,7 @@ def purgeProfileVersions(portal):
     """
     Purge profile dependency versions.
     """
-    setup = getToolByName(portal, 'portal_setup')
+    setup = getToolByName(portal, "portal_setup")
     setup._profile_upgrade_versions = {}
 
 
@@ -48,48 +49,48 @@ def setProfileVersion(portal):
     """
     mt = queryUtility(IMigrationTool)
     mt.setInstanceVersion(mt.getFileSystemVersion())
-    setup = getToolByName(portal, 'portal_setup')
+    setup = getToolByName(portal, "portal_setup")
     version = setup.getVersionForProfile(_DEFAULT_PROFILE)
     setup.setLastVersionForProfile(_DEFAULT_PROFILE, version)
 
 
 def assignTitles(portal):
     titles = {
-        'acl_users': 'User / Group storage and authentication settings',
-        'caching_policy_manager': 'Settings related to proxy caching',
-        'content_type_registry': 'MIME type settings',
-        'error_log': 'Error and exceptions log viewer',
-        'MailHost': 'Mail server settings for outgoing mail',
-        'mimetypes_registry': 'MIME types recognized by Plone',
-        'plone_utils': 'Various utility methods',
-        'portal_actions': 'Contains custom tabs and buttons',
-        'portal_calendar': 'Controls how events are shown',
-        'portal_catalog': 'Indexes all content in the site',
-        'portal_controlpanel': 'Registry of control panel screen',
-        'portal_diff': 'Settings for content version comparisions',
-        'portal_groupdata': 'Handles properties on groups',
-        'portal_groups': 'Handles group related functionality',
-        'portal_languages': 'Language specific settings',
-        'portal_membership': 'Handles membership policies',
-        'portal_memberdata': 'Handles the available properties on members',
-        'portal_migration': 'Upgrades to newer Plone versions',
-        'portal_password_reset': 'Handles password retention policy',
-        'portal_properties': 'General settings registry',
-        'portal_registration': 'Handles registration of new users',
-        'portal_setup': 'Add-on and configuration management',
-        'portal_skins': 'Controls skin behaviour (search order etc)',
-        'portal_transforms': 'Handles data conversion between MIME types',
-        'portal_types': 'Controls the available content types in your portal',
-        'portal_url': 'Methods to anchor you to the root of your Plone site',
-        'portal_view_customizations': 'Template customizations',
-        'portal_workflow': 'Contains workflow definitions for your portal',
-        'reference_catalog': 'Catalog of content references',
-        'translation_service': 'Provides access to the translation machinery',
+        "acl_users": "User / Group storage and authentication settings",
+        "caching_policy_manager": "Settings related to proxy caching",
+        "content_type_registry": "MIME type settings",
+        "error_log": "Error and exceptions log viewer",
+        "MailHost": "Mail server settings for outgoing mail",
+        "mimetypes_registry": "MIME types recognized by Plone",
+        "plone_utils": "Various utility methods",
+        "portal_actions": "Contains custom tabs and buttons",
+        "portal_calendar": "Controls how events are shown",
+        "portal_catalog": "Indexes all content in the site",
+        "portal_controlpanel": "Registry of control panel screen",
+        "portal_diff": "Settings for content version comparisions",
+        "portal_groupdata": "Handles properties on groups",
+        "portal_groups": "Handles group related functionality",
+        "portal_languages": "Language specific settings",
+        "portal_membership": "Handles membership policies",
+        "portal_memberdata": "Handles the available properties on members",
+        "portal_migration": "Upgrades to newer Plone versions",
+        "portal_password_reset": "Handles password retention policy",
+        "portal_properties": "General settings registry",
+        "portal_registration": "Handles registration of new users",
+        "portal_setup": "Add-on and configuration management",
+        "portal_skins": "Controls skin behaviour (search order etc)",
+        "portal_transforms": "Handles data conversion between MIME types",
+        "portal_types": "Controls the available content types in your portal",
+        "portal_url": "Methods to anchor you to the root of your Plone site",
+        "portal_view_customizations": "Template customizations",
+        "portal_workflow": "Contains workflow definitions for your portal",
+        "reference_catalog": "Catalog of content references",
+        "translation_service": "Provides access to the translation machinery",
     }
     for oid, obj in portal.items():
         title = titles.get(oid, None)
         if title:
-            setattr(aq_base(obj), 'title', title)
+            setattr(aq_base(obj), "title", title)
 
 
 def dummy_import_step(context):
@@ -135,8 +136,7 @@ def importFinalSteps(context):
 
     # Install our dependencies
     st = getToolByName(site, "portal_setup")
-    st.runAllImportStepsFromProfile(
-        "profile-Products.CMFPlone:dependencies")
+    st.runAllImportStepsFromProfile("profile-Products.CMFPlone:dependencies")
 
     assignTitles(site)
     replace_local_role_manager(site)
@@ -166,10 +166,7 @@ def set_zsqlmethods_permissions(site):
         import Products.ZSQLMethods  # noqa
     except ImportError:
         return
-    site.manage_permission(
-        'Use Database Methods',
-        ['Site Administrator'],
-        False)
+    site.manage_permission("Use Database Methods", ["Site Administrator"], False)
 
 
 def updateWorkflowRoleMappings(context):
@@ -179,18 +176,17 @@ def updateWorkflowRoleMappings(context):
     properly.
     """
     # Only run step if a flag file is present
-    if context.readDataFile('plone-update-workflow-rolemap.txt') is None:
+    if context.readDataFile("plone-update-workflow-rolemap.txt") is None:
         return
     site = context.getSite()
-    portal_workflow = getToolByName(site, 'portal_workflow')
+    portal_workflow = getToolByName(site, "portal_workflow")
     portal_workflow.updateRoleMappings()
 
 
 def first_weekday_setup(context):
-    """Set the first day of the week based on the portal's locale.
-    """
+    """Set the first day of the week based on the portal's locale."""
     reg = getUtility(IRegistry)
-    if reg.get('plone.first_weekday') is not None:
+    if reg.get("plone.first_weekday") is not None:
         # don't overwrite if it's already set
         return
 
@@ -199,30 +195,29 @@ def first_weekday_setup(context):
         site = getSite()
         # find the locale implied by the portal's language
         language = site.Language()
-        parts = (language.split('-') + [None, None])[:3]
+        parts = (language.split("-") + [None, None])[:3]
         locale = locales.getLocale(*parts)
         # look up first day of week
-        gregorian_calendar = locale.dates.calendars.get('gregorian', None)
+        gregorian_calendar = locale.dates.calendars.get("gregorian", None)
         if gregorian_calendar is not None:
-            day = gregorian_calendar.week.get('firstDay', 7)
+            day = gregorian_calendar.week.get("firstDay", 7)
             first = 6 if day == 0 else day - 1
     except LoadLocaleError:
         # If we cannot get the locale, just Sunday as first weekday
         pass
 
     # save setting
-    reg['plone.first_weekday'] = first
+    reg["plone.first_weekday"] = first
 
 
 def timezone_setup(context):
-    """Set the timezone from server locale
-    """
-    timezone = 'UTC'
+    """Set the timezone from server locale"""
+    timezone = "UTC"
     # TODO: get a /sane/ locale from the server to use.
     # this is not high priority
     # see plone.event.utils
     reg = getUtility(IRegistry)
     if not reg["plone.portal_timezone"]:
-        reg['plone.portal_timezone'] = timezone
-    if not reg['plone.available_timezones']:
-        reg['plone.available_timezones'] = [timezone]
+        reg["plone.portal_timezone"] = timezone
+    if not reg["plone.available_timezones"]:
+        reg["plone.available_timezones"] = [timezone]

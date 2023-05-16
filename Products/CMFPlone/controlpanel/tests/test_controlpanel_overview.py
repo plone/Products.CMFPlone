@@ -26,7 +26,6 @@ def mock_getUtility4(iface):
 
 
 class TestControlPanel(unittest.TestCase):
-
     layer = PLONE_INTEGRATION_TESTING
 
     def setUp(self):

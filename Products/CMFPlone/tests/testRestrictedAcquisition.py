@@ -15,40 +15,41 @@ from Products.CMFPlone.tests import PloneTestCase
 
 
 class AllowedItem(SimpleItem):
-    id = 'allowed'
+    id = "allowed"
     security = ClassSecurityInfo()
-    security.setDefaultAccess('allow')
+    security.setDefaultAccess("allow")
+
 
 InitializeClass(AllowedItem)
 
 
 class DeniedItem(SimpleItem):
-    id = 'denied'
+    id = "denied"
     security = ClassSecurityInfo()
-    security.setDefaultAccess('deny')
+    security.setDefaultAccess("deny")
+
 
 InitializeClass(DeniedItem)
 
 
 class BrokenAcquisitionTest(PloneTestCase.PloneTestCase):
-
     def afterSetUp(self):
         self.folder = self.portal
-        self.folder._setObject('allowed', AllowedItem())
-        self.folder._setObject('denied', DeniedItem())
+        self.folder._setObject("allowed", AllowedItem())
+        self.folder._setObject("denied", DeniedItem())
 
     def _makePS(self, context, id, params, body):
-        factory = context.manage_addProduct['PythonScripts']
+        factory = context.manage_addProduct["PythonScripts"]
         factory.manage_addPythonScript(id)
         ps = context[id]
         ps.ZPythonScript_edit(params, body)
 
     def testAcquisitionAllowed(self):
-        self._makePS(self.folder, 'ps', '', 'print(context.portal_membership)')
+        self._makePS(self.folder, "ps", "", "print(context.portal_membership)")
         self.folder.allowed.ps()
 
     def testAcquisitionDenied(self):
         # This test fails in Zope 2.7.3
         # Also see http://zope.org/Collectors/CMF/259
-        self._makePS(self.folder, 'ps', '', 'print(context.portal_membership)')
+        self._makePS(self.folder, "ps", "", "print(context.portal_membership)")
         self.folder.denied.ps()

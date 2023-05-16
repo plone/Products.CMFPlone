@@ -28,7 +28,7 @@ except ImportError:
     filestream_iterator = None
 
 
-_ = MessageFactory('plone')
+_ = MessageFactory("plone")
 logger = logging.getLogger(__name__)
 
 
@@ -56,18 +56,18 @@ def absolutize_path(path, is_source=True):
             err = _("You have to enter an alternative url.")
         else:
             err = _("You have to enter a target.")
-    elif not path.startswith('/'):
+    elif not path.startswith("/"):
         if is_source:
             err = _("Alternative url path must start with a slash.")
         else:
             # For targets, we accept external urls.
             # Do basic check.
             parsed = urlparse(path)
-            if parsed.scheme in ('https', 'http') and parsed.netloc:
+            if parsed.scheme in ("https", "http") and parsed.netloc:
                 is_external_url = True
             else:
                 err = _("Target path must start with a slash.")
-    elif '@@' in path:
+    elif "@@" in path:
         if is_source:
             err = _("Alternative url path must not be a view.")
         else:
@@ -76,7 +76,7 @@ def absolutize_path(path, is_source=True):
         context_path = "/".join(portal.getPhysicalPath())
         path = f"{context_path}{path}"
     if not err and not is_external_url:
-        catalog = getToolByName(portal, 'portal_catalog')
+        catalog = getToolByName(portal, "portal_catalog")
         if is_source:
             # Check whether already exists in storage
             storage = getUtility(IRedirectionStorage)
@@ -105,13 +105,11 @@ class RedirectsView(BrowserView):
         redirects = storage.redirects(context_path)
         for redirect in redirects:
             path = redirect[len(portal_path) :]
-            yield {'redirect': redirect, 'path': path}
+            yield {"redirect": redirect, "path": path}
 
     def edit_for_navigation_root(self, redirection):
         # Check navigation root
-        pps = getMultiAdapter(
-            (self.context, self.request), name='plone_portal_state'
-        )
+        pps = getMultiAdapter((self.context, self.request), name="plone_portal_state")
         nav_url = pps.navigation_root_url()
         portal_url = pps.portal_url()
         if nav_url != portal_url:
@@ -119,7 +117,7 @@ class RedirectsView(BrowserView):
             # Update the path accordingly, unless the user already did this.
             extra = nav_url[len(portal_url) :]
             if not redirection.startswith(extra):
-                redirection = f'{extra}{redirection}'
+                redirection = f"{extra}{redirection}"
         # Finally, return the (possibly edited) redirection
         return redirection
 
@@ -130,52 +128,46 @@ class RedirectsView(BrowserView):
         status = IStatusMessage(self.request)
         errors = {}
 
-        if 'form.button.Add' in form:
-            redirection = form.get('redirection')
-            if redirection and redirection.startswith('/'):
+        if "form.button.Add" in form:
+            redirection = form.get("redirection")
+            if redirection and redirection.startswith("/"):
                 # Check navigation root
                 redirection = self.edit_for_navigation_root(redirection)
 
             redirection, err = absolutize_path(redirection, is_source=True)
             if err:
-                errors['redirection'] = err
-                status.addStatusMessage(err, type='error')
+                errors["redirection"] = err
+                status.addStatusMessage(err, type="error")
             else:
-                del form['redirection']
+                del form["redirection"]
                 storage.add(
                     redirection,
                     "/".join(self.context.getPhysicalPath()),
                     manual=True,
                 )
-                status.addStatusMessage(
-                    _("Alternative url added."), type='info'
-                )
-        elif 'form.button.Remove' in form:
-            redirects = form.get('redirects', ())
+                status.addStatusMessage(_("Alternative url added."), type="info")
+        elif "form.button.Remove" in form:
+            redirects = form.get("redirects", ())
             for redirect in redirects:
                 storage.remove(redirect)
             if len(redirects) > 1:
-                status.addStatusMessage(
-                    _("Alternative urls removed."), type='info'
-                )
+                status.addStatusMessage(_("Alternative urls removed."), type="info")
             else:
-                status.addStatusMessage(
-                    _("Alternative url removed."), type='info'
-                )
+                status.addStatusMessage(_("Alternative url removed."), type="info")
 
         return self.index(errors=errors)
 
     @memoize
     def view_url(self):
-        return self.context.absolute_url() + '/@@manage-aliases'
+        return self.context.absolute_url() + "/@@manage-aliases"
 
 
 class RedirectionSet:
-    def __init__(self, query='', created='', manual=''):
+    def __init__(self, query="", created="", manual=""):
         self.storage = getUtility(IRedirectionStorage)
 
         portal = getSite()
-        self.portal_path = '/'.join(portal.getPhysicalPath())
+        self.portal_path = "/".join(portal.getPhysicalPath())
         self.portal_path_len = len(self.portal_path)
 
         # noinspection PyProtectedMember
@@ -184,34 +176,30 @@ class RedirectionSet:
             # min_k is /Plone/news and
             # max_k is /Plone/newt
             # Apparently that is the way to minize the keys we ask.
-            min_k = '{:s}/{:s}'.format(self.portal_path, query.strip('/'))
+            min_k = "{:s}/{:s}".format(self.portal_path, query.strip("/"))
             max_k = min_k[:-1] + chr(ord(min_k[-1]) + 1)
-            self.data = self.storage._paths.keys(
-                min=min_k, max=max_k, excludemax=True
-            )
+            self.data = self.storage._paths.keys(min=min_k, max=max_k, excludemax=True)
         else:
             self.data = self.storage._paths.keys()
         if manual:
             # either 'yes' or 'no', otherwise we ignore the filter
-            if manual == 'yes':
+            if manual == "yes":
                 manual = True
-            elif manual == 'no':
+            elif manual == "no":
                 manual = False
             else:
-                manual = ''
+                manual = ""
         if created:
             try:
                 created = DateTime(created)
             except DateTimeError:
-                logger.warning(
-                    'Failed to parse as DateTime: %s', created
-                )
-                created = ''
-        if created or manual != '':
+                logger.warning("Failed to parse as DateTime: %s", created)
+                created = ""
+        if created or manual != "":
             chosen = []
             for redirect in self.data:
                 info = self.storage.get_full(redirect)
-                if manual != '':
+                if manual != "":
                     if info[2] != manual:
                         continue
                 if created and info[1]:
@@ -235,22 +223,20 @@ class RedirectionSet:
         if redirect_to.startswith(self.portal_path):
             redirect_to = redirect_to[self.portal_path_len :]
         return {
-            'redirect': redirect,
-            'path': path,
-            'redirect-to': redirect_to,
-            'datetime': info[1],
-            'manual': info[2],
+            "redirect": redirect,
+            "path": path,
+            "redirect-to": redirect_to,
+            "datetime": info[1],
+            "manual": info[2],
         }
 
 
 class RedirectsBatchView(PloneBatchView):
     def make_link(self, pagenumber=None, omit_params=None):
         if omit_params is None:
-            omit_params = ['ajax_load']
-        url = super().make_link(
-            pagenumber, omit_params
-        )
-        return f'{url:s}#manage-existing-aliases'
+            omit_params = ["ajax_load"]
+        url = super().make_link(pagenumber, omit_params)
+        return f"{url:s}#manage-existing-aliases"
 
 
 class RedirectsControlPanel(BrowserView):
@@ -259,21 +245,21 @@ class RedirectsControlPanel(BrowserView):
 
     @memoize
     def redirects(self):
-        """ Get existing redirects from the redirection storage.
-            Return dict with the strings redirect, path and redirect-to.
-            Strip the id of the instance from path and redirect-to if
-            it is present. (Seems to be always true)
-            If id of instance is not present in path the var 'path' and
-            'redirect' are equal.
+        """Get existing redirects from the redirection storage.
+        Return dict with the strings redirect, path and redirect-to.
+        Strip the id of the instance from path and redirect-to if
+        it is present. (Seems to be always true)
+        If id of instance is not present in path the var 'path' and
+        'redirect' are equal.
         """
         return Batch(
             RedirectionSet(
-                query=self.request.form.get('q', ''),
-                created=self.request.form.get('datetime', ''),
-                manual=self.request.form.get('manual', ''),
+                query=self.request.form.get("q", ""),
+                created=self.request.form.get("datetime", ""),
+                manual=self.request.form.get("manual", ""),
             ),
-            int(self.request.form.get('b_size', '15')),
-            int(self.request.form.get('b_start', '0')),
+            int(self.request.form.get("b_size", "15")),
+            int(self.request.form.get("b_start", "0")),
             orphan=1,
         )
 
@@ -288,17 +274,15 @@ class RedirectsControlPanel(BrowserView):
         self.csv_errors = []
         self.form_errors = {}
 
-        if 'form.button.Remove' in form or 'form.button.MatchRemove' in form:
-            if 'form.button.Remove' in form:
-                redirects = form.get('redirects', ())
+        if "form.button.Remove" in form or "form.button.MatchRemove" in form:
+            if "form.button.Remove" in form:
+                redirects = form.get("redirects", ())
             else:
-                query = self.request.form.get('q', '')
-                created = self.request.form.get('datetime', '')
-                manual = self.request.form.get('manual', '')
-                if created or manual or (query and query != '/'):
-                    rset = RedirectionSet(
-                        query=query, created=created, manual=manual
-                    )
+                query = self.request.form.get("q", "")
+                created = self.request.form.get("datetime", "")
+                manual = self.request.form.get("manual", "")
+                if created or manual or (query and query != "/"):
+                    rset = RedirectionSet(query=query, created=created, manual=manual)
                     redirects = list(rset.data)
                 else:
                     redirects = []
@@ -306,31 +290,27 @@ class RedirectsControlPanel(BrowserView):
                 storage.remove(redirect)
             if len(redirects) == 0:
                 err = _("No alternative urls selected for removal.")
-                status.addStatusMessage(err, type='error')
-                self.form_errors['remove_redirects'] = err
+                status.addStatusMessage(err, type="error")
+                self.form_errors["remove_redirects"] = err
             elif len(redirects) > 1:
-                status.addStatusMessage(
-                    _("Alternative urls removed."), type='info'
-                )
+                status.addStatusMessage(_("Alternative urls removed."), type="info")
             else:
-                status.addStatusMessage(
-                    _("Alternative url removed."), type='info'
-                )
-        elif 'form.button.Add' in form:
+                status.addStatusMessage(_("Alternative url removed."), type="info")
+        elif "form.button.Add" in form:
             err = self.add(
-                form['redirection'],
-                form['target_path'],
+                form["redirection"],
+                form["target_path"],
                 portal,
                 storage,
                 status,
             )
             if not err:
                 # clear our the form
-                del form['redirection']
-                del form['target_path']
-        elif 'form.button.Upload' in form:
-            self.upload(form['file'], portal, storage, status)
-        elif 'form.button.Download' in form:
+                del form["redirection"]
+                del form["target_path"]
+        elif "form.button.Upload" in form:
+            self.upload(form["file"], portal, storage, status)
+        elif "form.button.Download" in form:
             return self.download()
 
         return self.index()
@@ -342,10 +322,10 @@ class RedirectsControlPanel(BrowserView):
         """
         abs_redirection, err = absolutize_path(redirection, is_source=True)
         if err:
-            self.form_errors['redirection'] = err
+            self.form_errors["redirection"] = err
         abs_target, target_err = absolutize_path(target, is_source=False)
         if target_err:
-            self.form_errors['target_path'] = target_err
+            self.form_errors["target_path"] = target_err
 
         if err and target_err:
             err = f"{err} {target_err}"
@@ -360,14 +340,14 @@ class RedirectsControlPanel(BrowserView):
                 # TODO: detect indirect recursion
 
         if err:
-            status.addStatusMessage(_(err), type='error')
+            status.addStatusMessage(_(err), type="error")
         else:
             storage.add(abs_redirection, abs_target, manual=True)
             status.addStatusMessage(
                 _("Alternative url from {0} to {1} added.").format(
                     abs_redirection, abs_target
                 ),
-                type='info',
+                type="info",
             )
         return err
 
@@ -377,13 +357,13 @@ class RedirectsControlPanel(BrowserView):
         # No file picked. Theres gotta be a better way to handle this.
         if not file.filename:
             err = _("Please pick a file to upload.")
-            status.addStatusMessage(err, type='error')
-            self.form_errors['file'] = err
+            status.addStatusMessage(err, type="error")
+            self.form_errors["file"] = err
             return
         # Turn all kinds of newlines into LF ones. The csv module doesn't do
         # its own newline sniffing and requires either \n or \r.
         contents = safe_text(file.read()).splitlines()
-        file = StringIO('\n'.join(contents))
+        file = StringIO("\n".join(contents))
 
         # Use first two lines as a representative sample for guessing format,
         # in case one is a bunch of headers.
@@ -406,28 +386,22 @@ class RedirectsControlPanel(BrowserView):
                         try:
                             now = DateTime(dt)
                         except DateTimeError:
-                            logger.warning(
-                                'Failed to parse as DateTime: %s', dt
-                            )
+                            logger.warning("Failed to parse as DateTime: %s", dt)
                             now = None
                 if len(fields) >= 4:
                     manual = fields[3].lower()
                     # Compare first character with false, no, 0.
-                    if manual and manual[0] in 'fn0':
+                    if manual and manual[0] in "fn0":
                         manual = False
                     else:
                         manual = True
-                abs_redirection, err = absolutize_path(
-                    redirection, is_source=True
-                )
-                abs_target, target_err = absolutize_path(
-                    target, is_source=False
-                )
+                abs_redirection, err = absolutize_path(redirection, is_source=True)
+                abs_target, target_err = absolutize_path(target, is_source=False)
                 if err and target_err:
                     if (
                         i == 0
-                        and not redirection.startswith('/')
-                        and not target.startswith('/')
+                        and not redirection.startswith("/")
+                        and not target.startswith("/")
                     ):
                         # First line is a header.  Ignore this.
                         continue
@@ -462,20 +436,20 @@ class RedirectsControlPanel(BrowserView):
             status.addStatusMessage(
                 _(
                     "${count} alternative urls added.",
-                    mapping={'count': len(successes)},
+                    mapping={"count": len(successes)},
                 ),
-                type='info',
+                type="info",
             )
         else:
             self.csv_errors.insert(
                 0,
                 dict(
                     line_number=0,
-                    line='',
+                    line="",
                     message=_(
-                        'msg_delimiter',
+                        "msg_delimiter",
                         default="Delimiter detected: ${delimiter}",
-                        mapping={'delimiter': dialect.delimiter},
+                        mapping={"delimiter": dialect.delimiter},
                     ),
                 ),
             )
@@ -490,11 +464,11 @@ class RedirectsControlPanel(BrowserView):
         portal_path = "/".join(portal.getPhysicalPath())
         len_portal_path = len(portal_path)
         file_descriptor, file_path = tempfile.mkstemp(
-            suffix='.csv', prefix='redirects_'
+            suffix=".csv", prefix="redirects_"
         )
-        with open(file_path, 'w') as stream:
+        with open(file_path, "w") as stream:
             csv_writer = writer(stream)
-            csv_writer.writerow(('old path', 'new path', 'datetime', 'manual'))
+            csv_writer.writerow(("old path", "new path", "datetime", "manual"))
             storage = getUtility(IRedirectionStorage)
             paths = storage._paths
             # Note that the old and new paths start with /plone-site-id.
@@ -517,18 +491,16 @@ class RedirectsControlPanel(BrowserView):
             length = len(contents)
 
         response = self.request.response
-        response.setHeader('Content-Type', 'text/csv')
-        response.setHeader('Content-Length', length)
-        response.setHeader(
-            'Content-Disposition', 'attachment; filename=redirects.csv'
-        )
+        response.setHeader("Content-Type", "text/csv")
+        response.setHeader("Content-Length", length)
+        response.setHeader("Content-Disposition", "attachment; filename=redirects.csv")
         if filestream_iterator is None:
             return contents
         # TODO: this is not enough to really stream the file.
         # I think we would need to handle Request-Range, like in the old
         # plone.app.blob.download.handleRequestRange
-        return filestream_iterator(file_path, 'rb')
+        return filestream_iterator(file_path, "rb")
 
     @memoize
     def view_url(self):
-        return self.context.absolute_url() + '/@@redirection-controlpanel'
+        return self.context.absolute_url() + "/@@redirection-controlpanel"

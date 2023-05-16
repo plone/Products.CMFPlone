@@ -12,40 +12,31 @@ import zope.deferredimport
 zope.deferredimport.deprecated(
     "It has been moved to plone.app.layout.navigation.interfaces. "
     "This alias will be removed in Plone 5.0",
-    INavigationRoot='plone.app.layout.navigation.interfaces:INavigationRoot',
+    INavigationRoot="plone.app.layout.navigation.interfaces:INavigationRoot",
 )
 
 
 class INavigationBreadcrumbs(Interface):
-
     def breadcrumbs():
-        """Breadcrumbs for Navigation.
-        """
+        """Breadcrumbs for Navigation."""
 
 
 class INavigationTabs(Interface):
-
-    def topLevelTabs(actions=None, category='portal_tabs'):
-        """Top level tabs
-        """
+    def topLevelTabs(actions=None, category="portal_tabs"):
+        """Top level tabs"""
 
 
 class INavigationTree(Interface):
-
     def navigationTreeRootPath():
-        """Get the path to the root of the navigation tree
-        """
+        """Get the path to the root of the navigation tree"""
 
     def navigationTree():
-        """Navigation tree
-        """
+        """Navigation tree"""
 
 
 class ISiteMap(Interface):
-
     def siteMap():
-        """Site map
-        """
+        """Site map"""
 
 
 class INavigationPortlet(Interface):
@@ -78,12 +69,12 @@ class INewsPortlet(Interface):
 
     def published_news_items():
         """Returns 5 most recently published News Items in reverse
-           chronological order
+        chronological order
         """
 
     def all_news_link():
         """Returns URL, relative to the portal, of a page that display all
-           published News Items
+        published News Items
         """
 
 
@@ -92,17 +83,17 @@ class IEventsPortlet(Interface):
 
     def published_events():
         """Returns 5 most recently published News Items in reverse
-           chronological order
+        chronological order
         """
 
     def all_events_link():
         """Returns URL, relative to the portal, of a page that display all
-           published News Items
+        published News Items
         """
 
     def prev_events_link():
         """Returns URL, relative to the portal, of a page that display all
-           past events.
+        past events.
         """
 
 
@@ -114,7 +105,6 @@ class IRecentPortlet(Interface):
 
 
 class ICalendarPortlet(Interface):
-
     def DateTime():
         """ """
 
@@ -174,7 +164,7 @@ class ICalendarPortlet(Interface):
 
     def isToday(self, day):
         """Returns True if the given day and the current month and year equals
-           today, otherwise False.
+        today, otherwise False.
         """
 
 
@@ -200,29 +190,28 @@ class IPlone(Interface):
     """ """
 
     def getCurrentUrl():
-        """ Returns the actual url plus the query string. """
+        """Returns the actual url plus the query string."""
 
     def uniqueItemIndex(pos=0):
         """Return an index iterator."""
 
     def toLocalizedTime(time, long_format=None, time_only=None):
-        """ The time parameter must be either a string that is suitable for
-            initializing a DateTime or a DateTime object. Returns a localized
-            string.
+        """The time parameter must be either a string that is suitable for
+        initializing a DateTime or a DateTime object. Returns a localized
+        string.
         """
 
     def toLocalizedSize(size):
-        """ Convert an integer to a localized size string
+        """Convert an integer to a localized size string
         3322 -> 3KB in english, 3Ko in french
         """
 
     def normalizeString(text):
-        """Normalizes a title to an id.
-        """
+        """Normalizes a title to an id."""
 
     def isDefaultPageInFolder():
-        """ Returns a boolean indicating whether the current context is the
-            default page of its parent folder.
+        """Returns a boolean indicating whether the current context is the
+        default page of its parent folder.
         """
 
     def isStructuralFolder():
@@ -234,139 +223,124 @@ class IPlone(Interface):
         """
 
     def navigationRootPath():
-        """Get the current navigation root path
-        """
+        """Get the current navigation root path"""
 
     def navigationRootUrl():
-        """Get the url to the current navigation root
-        """
+        """Get the url to the current navigation root"""
 
     def getParentObject():
         """Returns the parent of the current object, equivalent to
-           aq_inner(aq_parent(context)), or context.aq_inner.getParentNode()
+        aq_inner(aq_parent(context)), or context.aq_inner.getParentNode()
         """
 
     def getCurrentFolder():
         """If the context is the default page of a folder or is not itself a
-           folder, the parent is returned, otherwise the object itself is
-           returned.  This is useful for providing a context for methods
-           which wish to act on what is considered the current folder in the
-           ui.
+        folder, the parent is returned, otherwise the object itself is
+        returned.  This is useful for providing a context for methods
+        which wish to act on what is considered the current folder in the
+        ui.
         """
 
     def getCurrentFolderUrl():
         """Returns the URL of the current folder as determined by
-           self.getCurrentFolder(), used heavily in actions.
+        self.getCurrentFolder(), used heavily in actions.
         """
 
     def getCurrentObjectUrl():
         """Returns the URL of the current object unless that object is a
-           folder default page, in which case it returns the parent.
+        folder default page, in which case it returns the parent.
         """
 
     def isFolderOrFolderDefaultPage():
         """Returns true only if the current object is either a folder (as
-           determined by isStructuralFolder) or the default page in context.
+        determined by isStructuralFolder) or the default page in context.
         """
 
     def isPortalOrPortalDefaultPage():
         """Returns true only if the current object is either the portal object
-           or the default page of the portal.
+        or the default page of the portal.
         """
 
     def getViewTemplateId():
         """Returns the template Id corresponding to the default view method of
-           the context object.
+        the context object.
         """
 
     def showToolbar():
-        """Returns true if the editable border should be shown
-        """
+        """Returns true if the editable border should be shown"""
 
     def cropText(text, length, ellipsis):
-        """ Crop text on a word boundary """
+        """Crop text on a word boundary"""
 
     def site_encoding():
-        """ returns site encoding """
+        """returns site encoding"""
 
     def patterns_settings():
-        """ returns mockup pattern settings """
+        """returns mockup pattern settings"""
 
 
 class ISendToForm(Interface):
-    """ Interface for describing the 'sendto' form """
+    """Interface for describing the 'sendto' form"""
 
     send_to_address = Email(
-        title=_('label_send_to_mail',
-                default='Send to'),
-        description=_('help_send_to_mail',
-                      default='The e-mail address to send this link to.'),
-        required=True
+        title=_("label_send_to_mail", default="Send to"),
+        description=_(
+            "help_send_to_mail", default="The e-mail address to send this link to."
+        ),
+        required=True,
     )
 
     send_from_address = Email(
-        title=_('label_send_from',
-                default='From'),
-        description=_('help_send_from',
-                      default='Your email address.'),
-        required=True
+        title=_("label_send_from", default="From"),
+        description=_("help_send_from", default="Your email address."),
+        required=True,
     )
 
     comment = schema.Text(
-        title=_('label_comment',
-                default='Comment'),
-        description=_('help_comment_to_link',
-                      default='A comment about this link.'),
-        required=False
+        title=_("label_comment", default="Comment"),
+        description=_("help_comment_to_link", default="A comment about this link."),
+        required=False,
     )
 
 
 class IContactForm(Interface):
-    """ Interface for describing the contact info form """
+    """Interface for describing the contact info form"""
 
     sender_fullname = schema.TextLine(
-        title=_('label_sender_fullname',
-                default='Name'),
-        description=_('help_sender_fullname',
-                      default='Please enter your full name.'),
-        required=True
+        title=_("label_sender_fullname", default="Name"),
+        description=_("help_sender_fullname", default="Please enter your full name."),
+        required=True,
     )
 
     sender_from_address = Email(
-        title=_('label_sender_from_address',
-                default='From'),
-        description=_('help_sender_from_address',
-                      default='Please enter your e-mail address.'),
-        required=True
+        title=_("label_sender_from_address", default="From"),
+        description=_(
+            "help_sender_from_address", default="Please enter your e-mail address."
+        ),
+        required=True,
     )
 
     subject = schema.TextLine(
-        title=_('label_subject',
-                default='Subject'),
-        required=True
+        title=_("label_subject", default="Subject"), required=True
     )
 
     message = schema.Text(
-        title=_('label_message',
-                default='Message'),
-        description=_('help_message',
-                      default='Please enter the message you want to send.'),
-        required=False
+        title=_("label_message", default="Message"),
+        description=_(
+            "help_message", default="Please enter the message you want to send."
+        ),
+        required=False,
     )
 
 
 class IAuthorFeedbackForm(Interface):
-    """ Interface describing the author feedback form """
+    """Interface describing the author feedback form"""
 
     subject = schema.TextLine(
-        title=_('label_subject', default='Subject'),
-        required=True
+        title=_("label_subject", default="Subject"), required=True
     )
 
-    message = schema.Text(
-        title=_('label_message', default='Message'),
-        required=True
-    )
+    message = schema.Text(title=_("label_message", default="Message"), required=True)
 
     author = schema.TextLine()
     referer = schema.TextLine(required=False)

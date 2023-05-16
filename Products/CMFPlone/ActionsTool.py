@@ -8,7 +8,6 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 
 class ActionsTool(PloneBaseTool, BaseTool):
-
     meta_type = "Plone Actions Tool"
     toolicon = "skins/plone_images/confirm_icon.png"
 

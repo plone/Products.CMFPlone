@@ -26,78 +26,95 @@ from zope.publisher.interfaces.browser import IBrowserRequest
 
 @implementer(ITranslationServiceTool)
 class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
-    """ Utility methods to access the translation machinery """
+    """Utility methods to access the translation machinery"""
 
-    id = 'translation_service'
-    meta_type = 'Portal Translation Service Tool'
-    toolicon = 'skins/plone_images/site_icon.png'
+    id = "translation_service"
+    meta_type = "Portal Translation Service Tool"
+    toolicon = "skins/plone_images/site_icon.png"
     security = ClassSecurityInfo()
 
-    security.declarePublic('utranslate')
+    security.declarePublic("utranslate")
 
     def utranslate(self, *args, **kw):
         return self.translate(*args, **kw)
 
-    security.declarePublic('translate')
+    security.declarePublic("translate")
 
-    def translate(self, msgid, domain=None, mapping=None, context=None,
-                  target_language=None, default=None):
+    def translate(
+        self,
+        msgid,
+        domain=None,
+        mapping=None,
+        context=None,
+        target_language=None,
+        default=None,
+    ):
         # Translate method for resticted code like skins.
         if context is not None:
             if not IBrowserRequest.providedBy(context):
-                context = aq_get(context, 'REQUEST', None)
+                context = aq_get(context, "REQUEST", None)
 
-        return translate(msgid, domain=domain, mapping=mapping,
-                         context=context, target_language=target_language,
-                         default=default)
+        return translate(
+            msgid,
+            domain=domain,
+            mapping=mapping,
+            context=context,
+            target_language=target_language,
+            default=default,
+        )
 
-    security.declarePublic('encode')
+    security.declarePublic("encode")
 
-    def encode(self, m, input_encoding=None, output_encoding=None,
-               errors='strict'):
+    def encode(self, m, input_encoding=None, output_encoding=None, errors="strict"):
         # encode a give unicode type or string type to string type in encoding
         # output_encoding
 
         # check if input is not type unicode
         if not isinstance(m, str):
             if input_encoding is None:
-                input_encoding = 'utf-8'
+                input_encoding = "utf-8"
             m = str(str(m), input_encoding, errors)
 
         if output_encoding is None:
-            output_encoding = 'utf-8'
+            output_encoding = "utf-8"
 
         # return as type string
         return m.encode(output_encoding, errors)
 
-    security.declarePublic('asunicodetype')
+    security.declarePublic("asunicodetype")
 
-    def asunicodetype(self, m, input_encoding=None, errors='strict'):
+    def asunicodetype(self, m, input_encoding=None, errors="strict"):
         # create type unicode from type string
 
         if isinstance(m, str):
             return m
 
         if input_encoding is None:
-            input_encoding = 'utf-8'
+            input_encoding = "utf-8"
 
         # return as type unicode
         return str(str(m), input_encoding, errors)
 
-    security.declarePublic('ulocalized_time')
+    security.declarePublic("ulocalized_time")
 
-    def ulocalized_time(self, time, long_format=None, time_only=None,
-                        context=None, domain='plonelocales', request=None):
+    def ulocalized_time(
+        self,
+        time,
+        long_format=None,
+        time_only=None,
+        context=None,
+        domain="plonelocales",
+        request=None,
+    ):
         # get some context if none is passed
         if context is None:
             context = self
-        return ulocalized_time(time, long_format, time_only,
-                               context, domain, request)
+        return ulocalized_time(time, long_format, time_only, context, domain, request)
 
-    security.declarePublic('day_msgid')
+    security.declarePublic("day_msgid")
 
     def day_msgid(self, number, format=None):
-        """ Returns the msgid which can be passed to the translation service
+        """Returns the msgid which can be passed to the translation service
         for l10n of weekday names. Format is either None, 'a' or 's'.
 
         >>> ttool = TranslationServiceTool()
@@ -115,10 +132,10 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         'weekday_wed_short'
         """
         #
-        if format == 's':
+        if format == "s":
             # short format
             method = weekdayname_msgid_short
-        elif format == 'a':
+        elif format == "a":
             # abbreviation
             method = weekdayname_msgid_abbr
         else:
@@ -126,10 +143,10 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
             method = weekdayname_msgid
         return method(number)
 
-    security.declarePublic('month_msgid')
+    security.declarePublic("month_msgid")
 
     def month_msgid(self, number, format=None):
-        """ Returns the msgid which can be passed to the translation service
+        """Returns the msgid which can be passed to the translation service
         for l10n of month names. Format is either '' or 'a' (long or
         abbreviation).
 
@@ -144,14 +161,12 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> ttool.month_msgid(6, format='a')
         'month_jun_abbr'
         """
-        return 'a' == format \
-               and monthname_msgid_abbr(number) \
-               or monthname_msgid(number)
+        return "a" == format and monthname_msgid_abbr(number) or monthname_msgid(number)
 
-    security.declarePublic('month_english')
+    security.declarePublic("month_english")
 
     def month_english(self, number, format=None):
-        """ Returns the english name of month by number. Format is either '' or
+        """Returns the english name of month by number. Format is either '' or
         'a' (long or abbreviation).
 
         >>> ttool = TranslationServiceTool()
@@ -164,23 +179,23 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return monthname_english(number, format=format)
 
-    security.declarePublic('month')
+    security.declarePublic("month")
 
     def month(self, number, format=None, default=None):
-        """ Returns a Message with the month name, that can be translated by
+        """Returns a Message with the month name, that can be translated by
         the TAL engine. Format is either None or 'a' (long or abbreviation).
         """
         if default is None:
             default = monthname_english(number, format=format)
-        value = 'a' == format \
-                and monthname_msgid_abbr(number) \
-                or monthname_msgid(number)
+        value = (
+            "a" == format and monthname_msgid_abbr(number) or monthname_msgid(number)
+        )
         return PLMF(value, default=default)
 
-    security.declarePublic('weekday_english')
+    security.declarePublic("weekday_english")
 
     def weekday_english(self, number, format=None):
-        """ Returns the english name of a week by number. Format is
+        """Returns the english name of a week by number. Format is
         either None, 'a' or 'p'.
 
         >>> ttool = TranslationServiceTool()
@@ -198,5 +213,6 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         'Wed.'
         """
         return weekdayname_english(number, format=format)
+
 
 InitializeClass(TranslationServiceTool)

@@ -6,16 +6,15 @@ from zope.interface import implementer
 
 @implementer(IMainTemplate)
 class MainTemplate(BrowserView):
-
-    ajax_template_name = 'templates/ajax_main_template.pt'
-    main_template_name = 'templates/main_template.pt'
+    ajax_template_name = "templates/ajax_main_template.pt"
+    main_template_name = "templates/main_template.pt"
 
     def __call__(self):
         return ViewPageTemplateFile(self.template_name)
 
     @property
     def template_name(self):
-        if self.request.form.get('ajax_load'):
+        if self.request.form.get("ajax_load"):
             return self.ajax_template_name
         else:
             return self.main_template_name

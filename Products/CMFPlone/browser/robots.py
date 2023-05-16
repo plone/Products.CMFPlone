@@ -19,7 +19,8 @@ class Robots(BrowserView):
 
     def __call__(self):
         portal_state = getMultiAdapter(
-            (self.context, self.request), name='plone_portal_state')
+            (self.context, self.request), name="plone_portal_state"
+        )
         portal_url = portal_state.portal_url()
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSchema, prefix="plone")

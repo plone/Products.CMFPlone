@@ -9,7 +9,7 @@ import re
 VALID_CSS_ID = re.compile("[A-Za-z_@][A-Za-z0-9_@-]*")
 
 
-def folder_position(context, position='', id=None, delta=1, reverse=None):
+def folder_position(context, position="", id=None, delta=1, reverse=None):
     """
     XXX Why is this here you ask?
 
@@ -19,24 +19,23 @@ def folder_position(context, position='', id=None, delta=1, reverse=None):
     """
 
     position = position.lower()
-    if position == 'up':
+    if position == "up":
         context.moveObjectsUp(id, delta=delta)
-    elif position == 'down':
+    elif position == "down":
         context.moveObjectsDown(id, delta=delta)
-    elif position == 'top':
+    elif position == "top":
         context.moveObjectsToTop(id)
-    elif position == 'bottom':
+    elif position == "bottom":
         context.moveObjectsToBottom(id)
     # order folder by field
     # id in this case is the field
-    elif position == 'ordered':
+    elif position == "ordered":
         context.orderObjects(id, reverse)
     context.plone_utils.reindexOnReorder(context)
 
 
 class MockMailHost(MailBase):
-    """A MailHost that collects messages instead of sending them.
-    """
+    """A MailHost that collects messages instead of sending them."""
 
     def __init__(self, id):
         self.reset()
@@ -45,27 +44,29 @@ class MockMailHost(MailBase):
         self.messages = PersistentList()
 
     def _send(self, mfrom, mto, messageText, immediate=False):
-        """ Send the message """
+        """Send the message"""
         self.messages.append(messageText)
 
-    def send(self,
-             messageText,
-             mto=None,
-             mfrom=None,
-             subject=None,
-             encode=None,
-             immediate=False,
-             charset=None,
-             msg_type=None):
+    def send(
+        self,
+        messageText,
+        mto=None,
+        mfrom=None,
+        subject=None,
+        encode=None,
+        immediate=False,
+        charset=None,
+        msg_type=None,
+    ):
         """send *messageText* modified by the other parameters.
 
         *messageText* can either be an ``email.message.Message``
         or a string.
         Note that Products.MailHost 4.10 had changes here.
         """
-        msg, mto, mfrom = _mungeHeaders(messageText, mto, mfrom,
-                                        subject, charset, msg_type,
-                                        encode)
+        msg, mto, mfrom = _mungeHeaders(
+            messageText, mto, mfrom, subject, charset, msg_type, encode
+        )
         self.messages.append(msg)
 
 

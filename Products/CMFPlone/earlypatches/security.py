@@ -16,6 +16,8 @@ def traverse(self, name, ignored):
     if not name:
         raise TraversalError(self.context, name)
     return old_traverse(self, name, ignored)
+
+
 namespace.view.traverse = traverse
 
 # 3. be sure to check Access contents information permission for FTP users
@@ -26,8 +28,8 @@ if bbb.HAS_ZSERVER:
     from AccessControl import getSecurityManager
     from OFS.ObjectManager import ObjectManager
     from zExceptions import Unauthorized
-    ObjectManager.__old_manage_FTPlist = ObjectManager.manage_FTPlist
 
+    ObjectManager.__old_manage_FTPlist = ObjectManager.manage_FTPlist
 
     def manage_FTPlist(self, REQUEST):
         """Returns a directory listing consisting of a tuple of
@@ -38,10 +40,13 @@ if bbb.HAS_ZSERVER:
         In the case of non-foldoid objects it should return a single
         tuple (id,stat) representing itself."""
 
-        if not getSecurityManager().checkPermission('Access contents information', self):
-            raise Unauthorized('Not allowed to access contents.')
+        if not getSecurityManager().checkPermission(
+            "Access contents information", self
+        ):
+            raise Unauthorized("Not allowed to access contents.")
 
         return self.__old_manage_FTPlist(REQUEST)
+
     ObjectManager.manage_FTPlist = manage_FTPlist
 
 # 4. Make sure z3c.form widgets don't get declared as public
@@ -52,9 +57,11 @@ old_require = ClassDirective.require
 
 
 def require(self, *args, **kw):
-    if self._ClassDirective__class.__module__.startswith('z3c.form.browser'):
+    if self._ClassDirective__class.__module__.startswith("z3c.form.browser"):
         return
     return old_require(self, *args, **kw)
+
+
 ClassDirective.require = require
 
 # 5. Check return value of getToolByName

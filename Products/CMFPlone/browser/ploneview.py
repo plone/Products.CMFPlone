@@ -18,7 +18,6 @@ _marker = []
 
 @implementer(IPlone)
 class Plone(BrowserView):
-
     # Utility methods
 
     @memoize
