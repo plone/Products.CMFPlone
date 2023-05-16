@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
-     xmlns:itunesu="http://www.itunesu.com/feed" version="2.0"
-     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+<rss xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:itunesu="http://www.itunesu.com/feed"
      xmlns:tal="http://xml.zope.org/namespaces/tal"
-     tal:define="feed view/feed;">
-    <channel>
-        <title tal:content="feed/title" />
-        <link tal:content="feed/link" />
-        <language tal:content="feed/language" />
-        <copyright tal:content="feed/rights" />
-        <itunes:subtitle tal:content="feed/description" />
-        <itunes:author tal:condition="feed/show_about" tal:content="feed/author_name" />
-        <itunes:owner tal:condition="feed/show_about">
-            <itunes:name tal:content="feed/author_name" />
-            <itunes:email tal:content="feed/author_email" />
-        </itunes:owner>
-        <itunes:summary tal:content="feed/description" />
-        <description tal:content="feed/description" />
-        <itunes:image tal:attributes="href feed/logo" />
-        <itunes:explicit>no</itunes:explicit>
-        <item tal:repeat="item feed/items">
-            <title tal:content="item/title" />
-            <itunes:author >Jane Doe</itunes:author>
-            <itunes:summary tal:content="item/description" />
-            <tal:con tal:condition="item/has_enclosure">
-                <enclosure tal:attributes="url item/file_url;
-                                           length item/file_length;
-                                           type item/file_type;" />
-            </tal:con>
-            <guid tal:content="item/guid" />
-            <pubDate tal:content="item/published/HTML4|item/modified/HTML4" />
-            <itunes:keywords tal:content="python: ', '.join(item.categories)" />
-        </item>
-    </channel>
+     version="2.0"
+     tal:define="
+       feed view/feed;
+     "
+>
+  <channel>
+    <title tal:content="feed/title"></title>
+    <link tal:content="feed/link" />
+    <language tal:content="feed/language"></language>
+    <copyright tal:content="feed/rights"></copyright>
+    <itunes:subtitle tal:content="feed/description"></itunes:subtitle>
+    <itunes:author tal:condition="feed/show_about"
+                   tal:content="feed/author_name"
+    ></itunes:author>
+    <itunes:owner tal:condition="feed/show_about">
+      <itunes:name tal:content="feed/author_name"></itunes:name>
+      <itunes:email tal:content="feed/author_email"></itunes:email>
+    </itunes:owner>
+    <itunes:summary tal:content="feed/description"></itunes:summary>
+    <description tal:content="feed/description"></description>
+    <itunes:image tal:attributes="
+                    href feed/logo;
+                  "></itunes:image>
+    <itunes:explicit>no</itunes:explicit>
+    <item tal:repeat="item feed/items">
+      <title tal:content="item/title"></title>
+      <itunes:author>Jane Doe</itunes:author>
+      <itunes:summary tal:content="item/description"></itunes:summary>
+      <tal:con tal:condition="item/has_enclosure">
+        <enclosure tal:attributes="
+                     url item/file_url;
+                     length item/file_length;
+                     type item/file_type;
+                   "></enclosure>
+      </tal:con>
+      <guid tal:content="item/guid"></guid>
+      <pubdate tal:content="item/published/HTML4|item/modified/HTML4"></pubdate>
+      <itunes:keywords tal:content="python: ', '.join(item.categories)"></itunes:keywords>
+    </item>
+  </channel>
 </rss>
