@@ -1,62 +1,87 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
+      xml:lang="en"
+      tal:omit-tag=""
       i18n:domain="plone"
-      tal:omit-tag="">
-<body tal:omit-tag="">
+>
+  <body tal:omit-tag="">
 
-  <h1 tal:condition="view/label | nothing">
+    <h1 tal:condition="view/label | nothing">
       <span tal:replace="view/label">Form title</span>
-  </h1>
+    </h1>
 
-  <p tal:condition="view/description | nothing"
-     tal:content="structure view/description">Form description</p>
+    <p tal:condition="view/description | nothing"
+       tal:content="structure view/description"
+    >Form description</p>
 
-  <tal:widgets repeat="widget view/widgets/values">
-      <tal:widget tal:define="hidden python:widget.mode == 'hidden'"
-                  tal:omit-tag="hidden">
+    <tal:widgets repeat="widget view/widgets/values">
+      <tal:widget tal:define="
+                    hidden python:widget.mode == 'hidden';
+                  "
+                  tal:omit-tag="hidden"
+      >
 
         <p class="form-text text-muted"
-          tal:define="description widget/field/description"
-          tal:content="description"
-          tal:condition="python:description and not hidden">
+           tal:define="
+             description widget/field/description;
+           "
+           tal:condition="python:description and not hidden"
+           tal:content="description"
+        >
           field description
         </p>
 
         <div class="mb-3 field"
-          tal:define="error widget/error;
-                      hidden python:widget.mode == 'hidden';"
-          tal:attributes="class python:'mb-3 field' + (error and ' error' or '')">
+             tal:define="
+               error widget/error;
+               hidden python:widget.mode == 'hidden';
+             "
+             tal:attributes="
+               class python:'mb-3 field' + (error and ' error' or '');
+             "
+        >
 
-          <label class="form-label" for=""
-                 tal:attributes="for widget/id"
-                 tal:condition="not:hidden">
+          <label class="form-label"
+                 for=""
+                 tal:condition="not:hidden"
+                 tal:attributes="
+                   for widget/id;
+                 "
+          >
             <span tal:content="widget/label">label</span>
-            <span class="required horizontal" title="Required"
+            <span class="required horizontal"
+                  title="Required"
                   tal:condition="python:widget.required and not hidden"
-                  i18n:attributes="title title_required;">&nbsp;</span>
+                  i18n:attributes="title title_required;"
+            >&nbsp;</span>
           </label>
 
           <div tal:condition="error"
-               tal:content="structure error/render">
+               tal:content="structure error/render"
+          >
               Error
           </div>
 
           <div class="widget">
-              <input type="text" tal:replace="structure widget/render" />
+            <input type="text"
+                   tal:replace="structure widget/render"
+            />
           </div>
 
         </div>
       </tal:widget>
-  </tal:widgets>
+    </tal:widgets>
 
-  <div class="formControls">
+    <div class="formControls">
       <tal:actions tal:repeat="action view/actions/values|nothing">
-          <input type="submit" tal:replace="structure action/render" />
+        <input type="submit"
+               tal:replace="structure action/render"
+        />
       </tal:actions>
-  </div>
+    </div>
 
-</body>
+  </body>
 </html>

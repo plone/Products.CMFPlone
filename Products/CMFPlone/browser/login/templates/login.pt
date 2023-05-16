@@ -1,56 +1,79 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
-      i18n:domain="plone"
       metal:use-macro="here/main_template/macros/master"
+      xml:lang="en"
+      i18n:domain="plone"
 >
-<body>
-  <metal:main fill-slot="main">
-    <metal:main-macro define-macro="main">
+  <body>
+    <metal:main fill-slot="main">
+      <metal:main-macro define-macro="main">
 
-      <div class="login-wrapper">
+        <div class="login-wrapper">
 
-        <div class="card">
-          <div class="card-body">
-            <h1 class="card-title h5"
-                tal:content="view/label | nothing" />
+          <div class="card">
+            <div class="card-body">
+              <h1 class="card-title h5"
+                  tal:content="view/label | nothing"
+              ></h1>
 
-            <div id="login-form">
+              <div id="login-form">
 
-              <div class="alert alert-danger pat-cookietrigger" style="display:none">
-                <strong i18n:translate="">
+                <div class="alert alert-danger pat-cookietrigger"
+                     style="display:none"
+                >
+                  <strong i18n:translate="">
                   Error
-                </strong>
-                <span tal:omit-tag=""
-                  i18n:translate="enable_cookies_message_before_login">
+                  </strong>
+                  <span tal:omit-tag=""
+                        i18n:translate="enable_cookies_message_before_login"
+                  >
                   Cookies are not enabled. You must enable cookies before you can log in.
-                </span>
-              </div>
-              <metal:form use-macro="context/@@ploneform-macros/titlelessform" />
+                  </span>
+                </div>
+                <metal:form use-macro="context/@@ploneform-macros/titlelessform" />
 
-              <div class="footer mt-4"
-                  tal:define="portal_state context/@@plone_portal_state;
-                              portal_url portal_state/portal_url">
-                <div>
-                  <span i18n:translate="trouble_logging_in" tal:omit-tag="">Trouble logging in?</span>
-                  <a href="@@login-help" tal:attributes="href string:${portal_url}/@@login-help" i18n:translate="footer_login_link_get_help">Get help</a>.
+                <div class="footer mt-4"
+                     tal:define="
+                       portal_state context/@@plone_portal_state;
+                       portal_url portal_state/portal_url;
+                     "
+                >
+                  <div>
+                    <span tal:omit-tag=""
+                          i18n:translate="trouble_logging_in"
+                    >Trouble logging in?</span>
+                    <a href="@@login-help"
+                       tal:attributes="
+                         href string:${portal_url}/@@login-help;
+                       "
+                       i18n:translate="footer_login_link_get_help"
+                    >Get help</a>.
+                  </div>
+                  <div tal:condition="python:view.self_registration_enabled()">
+                    <span tal:omit-tag=""
+                          i18n:translate="need_an_account"
+                    >Need an account?</span>
+                    <a class="emph"
+                       href="@@register"
+                       tal:attributes="
+                         href string:${portal_url}/@@register;
+                       "
+                       i18n:translate="footer_login_link_signup"
+                    >Sign up here</a>.
+                  </div>
                 </div>
-                <div tal:condition="python:view.self_registration_enabled()">
-                  <span i18n:translate="need_an_account" tal:omit-tag="">Need an account?</span>
-                  <a href="@@register" tal:attributes="href string:${portal_url}/@@register" class="emph" i18n:translate="footer_login_link_signup">Sign up here</a>.
-                </div>
+
               </div>
 
             </div>
-
           </div>
+
         </div>
 
-      </div>
-
-    </metal:main-macro>
-  </metal:main>
-</body>
+      </metal:main-macro>
+    </metal:main>
+  </body>
 </html>
