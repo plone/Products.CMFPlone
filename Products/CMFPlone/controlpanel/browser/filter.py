@@ -41,7 +41,7 @@ class FilterControlPanel(controlpanel.RegistryEditForm):
     def handleCancel(self, action):
         IStatusMessage(self.request).addStatusMessage(_("Changes canceled."), "info")
         self.request.response.redirect(
-            "{}/{}".format(self.context.absolute_url(), self.control_panel_view)
+            f"{self.context.absolute_url()}/{self.control_panel_view}"
         )
 
 

@@ -14,7 +14,7 @@ class TestAccessControlPanelScripts(PloneTestCase):
     def testUserInformation(self):
         """Test access to user details."""
         response = self.publish(
-            "%s/@@user-information?userid=%s" % (self.portal_path, TEST_USER_ID),
+            f"{self.portal_path}/@@user-information?userid={TEST_USER_ID}",
             self.basic_auth,
         )
 
@@ -23,7 +23,7 @@ class TestAccessControlPanelScripts(PloneTestCase):
     def testUserPreferences(self):
         """Test access to user details."""
         response = self.publish(
-            "%s/@@user-preferences?userid=%s" % (self.portal_path, TEST_USER_ID),
+            f"{self.portal_path}/@@user-preferences?userid={TEST_USER_ID}",
             self.basic_auth,
         )
 

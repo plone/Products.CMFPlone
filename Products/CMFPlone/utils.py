@@ -510,7 +510,7 @@ def getSiteLogo(site=None, include_type=False):
 
     if getattr(settings, "site_logo", False):
         filename, data = b64decode_file(settings.site_logo)
-        site_logo_url = "{}/@@site-logo/{}".format(site_url, filename)
+        site_logo_url = f"{site_url}/@@site-logo/{filename}"
         site_logo_type = mimetypes.guess_type(filename)[0]
     else:
         site_logo_url = "%s/++resource++plone-logo.svg" % site_url

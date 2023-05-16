@@ -345,7 +345,7 @@ class TestPUTIndexHtml(PloneTestCase.PloneTestCase):
 class TestDAVOperations(PloneTestCase.FunctionalTestCase):
     def afterSetUp(self):
         self.loginAsPortalOwner()
-        self.basic_auth = "{}:{}".format(SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        self.basic_auth = f"{SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}"
         self.portal_path = self.portal.absolute_url(1)
         self.folder_path = self.folder.absolute_url(1)
 

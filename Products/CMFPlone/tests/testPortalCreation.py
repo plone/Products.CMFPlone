@@ -550,7 +550,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             # ensure that e.g. the 'copy' url contains object_copy
             self.assertTrue(
                 "object_" + url[0] in url[1],
-                "%s does not perform the expected object_%s action" % (url[0], url[0]),
+                f"{url[0]} does not perform the expected object_{url[0]} action",
             )
 
         delete_action = [(a["id"], a["url"]) for a in buttons if a["id"] == "delete"][0]

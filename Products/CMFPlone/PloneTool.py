@@ -290,7 +290,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         try:
             self.editMetadata(obj, **kwargs)
         except AttributeError as msg:
-            log("Failure editing metadata at: %s.\n%s\n" % (obj.absolute_url(), msg))
+            log(f"Failure editing metadata at: {obj.absolute_url()}.\n{msg}\n")
         if kwargs.get("id", None) is not None:
             self._renameObject(obj, id=kwargs["id"].strip())
         self._makeTransactionNote(obj)
@@ -739,7 +739,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         #
 
         raise AttributeError(
-            "Failed to get a default page or view_action for %s" % (obj.absolute_url(),)
+            f"Failed to get a default page or view_action for {obj.absolute_url()}"
         )
 
     @security.public

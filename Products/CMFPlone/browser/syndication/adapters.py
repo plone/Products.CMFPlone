@@ -303,7 +303,7 @@ class DexterityItem(BaseItem):
         if fi is not None:
             filename = fi.filename
             if filename:
-                url += "/@@download/{}/{}".format(self.field_name, filename)
+                url += f"/@@download/{self.field_name}/{filename}"
         return url
 
     @property

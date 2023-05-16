@@ -46,7 +46,7 @@ class Addon:
         self.check_module = check_module
 
     def __repr__(self):
-        return "<{} profile {}>".format(self.__class__.__name__, self.profile_id)
+        return f"<{self.__class__.__name__} profile {self.profile_id}>"
 
     def safe(self):
         # Is this addon safe to upgrade?
