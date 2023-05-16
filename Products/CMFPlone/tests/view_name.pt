@@ -1,1 +1,1 @@
-<h1 tal:content="view/__name__" />
+<h1 tal:content="view/__name__"></h1>

@@ -1,1 +1,1 @@
-<h1 tal:content="options/view/_authenticator" />
+<h1 tal:content="options/view/_authenticator"></h1>

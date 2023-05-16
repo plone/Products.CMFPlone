@@ -1,3 +1,6 @@
-<span tal:define="acc nocall:modules/AccessControl;
-                  piggyback python:{'unsafe': acc}"
-      tal:condition="nocall:piggyback/unsafe/users">hacked</span>
+<span tal:define="
+        acc nocall:modules/AccessControl;
+        piggyback python:{'unsafe': acc};
+      "
+      tal:condition="nocall:piggyback/unsafe/users"
+>hacked</span>
