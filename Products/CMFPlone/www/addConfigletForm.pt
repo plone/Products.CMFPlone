@@ -1,11 +1,15 @@
 <html>
-<body>
-<span tal:replace="structure here/manage_tabs" />
+  <body>
+    <span tal:replace="structure here/manage_tabs"></span>
 
-<form action="registerConfiglet" method="post">
-    <input name="id" />
-    <input type="submit" value="Create" />
-</form>
+    <form action="registerConfiglet"
+          method="post"
+    >
+      <input name="id" />
+      <input type="submit"
+             value="Create"
+      />
+    </form>
 
-</body>
+  </body>
 </html>
