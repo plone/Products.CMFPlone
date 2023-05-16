@@ -264,9 +264,9 @@ class AddPloneSite(BrowserView):
         grouped = OrderedDict()
         tz_values = [it.value for it in tz_vocab]
         for value in tz_values:
-            splitted = value.split("/")
-            group = splitted.pop(0)
-            label = "/".join(splitted)
+            split = value.split("/")
+            group = split.pop(0)
+            label = "/".join(split)
 
             entries = grouped.get(group, [])
             entries.append({"label": label or group, "value": value})

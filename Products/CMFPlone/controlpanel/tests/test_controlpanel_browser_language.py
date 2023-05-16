@@ -90,7 +90,7 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
     #     self.assertEqual(settings.available_languages, ['en', 'de'])
 
     def test_use_combined_language_codes(self):
-        """This checks swithing combined languages codes support off/on."""
+        """This checks switching combined languages codes support off/on."""
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ILanguageSchema, prefix="plone")
         self.browser.open("%s/@@language-controlpanel" % self.portal_url)

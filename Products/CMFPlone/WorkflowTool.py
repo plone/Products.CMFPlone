@@ -148,7 +148,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         # Returns a dictionary whose value is a sequence of dictionaries.
 
         # i.e. map[workflow_id]=(workflow definition map, )
-        # each workflow defintion map contains the following:
+        # each workflow definition map contains the following:
         # (worklist)id, guard (Guard instance), guard_permissions (permission
         # of Guard instance), guard_roles (roles of Guard instance),
         # catalog_vars (mapping), actbox_name (actions box label),

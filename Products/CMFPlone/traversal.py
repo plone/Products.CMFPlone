@@ -13,7 +13,7 @@ from zope.pagetemplate import engine as zpt_engine
 
 
 class PloneBundlesTraverser(ResourceTraverser):
-    # the name is missleading - it is used not only for bundles.
+    # the name is misleading - it is used not only for bundles.
     # in fact in Plone 6 bundles are no longer used, despite that the traverser
     # might be in use for other use cases.
 

@@ -436,7 +436,7 @@ class TestNavtreeSecurity(PloneTestCase.PloneTestCase, RestrictedPythonTest):
         )
 
     def testSitemapNavtreeStrategy(self):
-        # We don't test the decorator factory because that requres an
+        # We don't test the decorator factory because that requires an
         # actual brain in item
         self.check(
             "from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy;"
@@ -446,7 +446,7 @@ class TestNavtreeSecurity(PloneTestCase.PloneTestCase, RestrictedPythonTest):
         )
 
     def testDefaultNavtreeStrategy(self):
-        # We don't test the decorator factory because that requres an
+        # We don't test the decorator factory because that requires an
         # actual brain in item
         self.check(
             "from Products.CMFPlone.browser.navtree import DefaultNavtreeStrategy;"

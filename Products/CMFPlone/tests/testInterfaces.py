@@ -48,7 +48,7 @@ class InterfaceTest(TestCase):
 
     klass - the class object to test
     forcedImpl - a list of interface class objects that the class klass
-        *must* implement to fullfil this test
+        *must* implement to fulfill this test
 
     This test class doesn't implement a test* method so you have to provide
     a test method in your implementation. See above for two examples. One
@@ -169,7 +169,7 @@ class zope_interface_test(TestCase):
 
     klass - the class object to test
     forcedImpl - a list of interface class objects that the class klass
-        *must* implement to fullfil this test
+        *must* implement to fulfill this test
 
     This test class doesn't implement a test* method so you have to provide
     a test method in your implementation. See above for two examples. One

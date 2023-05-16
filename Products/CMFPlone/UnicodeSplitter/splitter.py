@@ -54,7 +54,7 @@ def process_str(s, enc="utf-8"):
     """Receive str and encoding, then return the list
     of str as bi-grammed result.
     Decode str into str and pass it to process_unicode.
-    When decode failed, return the result splitted per word.
+    When decode failed, return the result split per word.
     Splitting depends on locale specified by rx_L.
     """
     try:
@@ -72,7 +72,7 @@ def process_str_glob(s, enc="utf-8"):
     """Receive str and encoding, then return the list
     of str considering glob processing.
     Decode str into str and pass it to process_unicode_glob.
-    When decode failed, return the result splitted per word.
+    When decode failed, return the result split per word.
     Splitting depends on locale specified by rxGlob_L.
     """
     try:

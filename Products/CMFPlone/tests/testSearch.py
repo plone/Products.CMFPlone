@@ -315,7 +315,7 @@ class TestSection(SearchTestCase):
             view.results(query=dict(SearchableText='"spam eggs"')).sequence_length, 0
         )
 
-        # unquoted subtring search
+        # unquoted substring search
         self.assertEqual(
             view.results(query=dict(SearchableText="egg")).sequence_length, 12
         )

@@ -335,7 +335,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
             description=[
                 _(
                     "description_no_workflow",
-                    default="This type has no workflow. The visibilty "
+                    default="This type has no workflow. The visibility "
                     "of items of this type is determined by "
                     "the folder they are in.",
                 )
@@ -470,7 +470,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                 return [
                     _(
                         "description_no_workflow",
-                        default="This type has no workflow. The visibilty of "
+                        default="This type has no workflow. The visibility of "
                         "items of this type is determined by the "
                         "folder they are in.",
                     )

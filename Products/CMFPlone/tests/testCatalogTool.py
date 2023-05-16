@@ -1326,8 +1326,8 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.folder.doc.reindexObject()
         res = self.catalog.searchResults()
         self.assertResults(res, base_content)
-        # We should be able to further limit the search using the exipres
-        # and efective indices.
+        # We should be able to further limit the search using the expires
+        # and effective indices.
         res = self.catalog.searchResults(
             {
                 "expires": {"query": DateTime() + 3, "range": "min"},

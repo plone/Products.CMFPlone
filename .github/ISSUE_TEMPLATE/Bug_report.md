@@ -22,7 +22,7 @@ The best reproductions are in plain Plone installations without addons or at lea
 
 ### What I did:
 
-<!-- Please a reproducable description, including preconditions. -->
+<!-- Please a reproducible description, including preconditions. -->
 
 ### What I expect to happen:
 
