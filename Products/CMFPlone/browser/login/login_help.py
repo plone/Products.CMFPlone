@@ -21,6 +21,7 @@ from zope.interface import implementer
 
 import logging
 
+
 try:
     # Products.MailHost has a patch to fix quoted-printable soft line breaks.
     # See https://github.com/zopefoundation/Products.MailHost/issues/35

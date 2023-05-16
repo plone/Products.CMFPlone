@@ -2,8 +2,8 @@ from DateTime import DateTime
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.base.batch import Batch
-from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.base.interfaces import ISearchSchema
+from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.navtree import getNavigationRoot

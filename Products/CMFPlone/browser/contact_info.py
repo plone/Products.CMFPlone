@@ -15,6 +15,7 @@ from zope.component.hooks import getSite
 import logging
 import warnings
 
+
 try:
     # Products.MailHost has a patch to fix quoted-printable soft line breaks.
     # See https://github.com/zopefoundation/Products.MailHost/issues/35
