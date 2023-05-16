@@ -1,99 +1,138 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
-      i18n:domain="plone">
+      xml:lang="en"
+      i18n:domain="plone"
+>
 
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title i18n:translate="">Upgrade this site</title>
-  <link rel="stylesheet"
-        type="text/css"
-        href="${string:${context/absolute_url}/++theme++barceloneta/css/barceloneta.min.css}" />
-  <link rel="stylesheet"
-        type="text/css"
-        href="${string:${context/absolute_url}/++resource++plone-admin-ui.css}" />
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1"
+    />
+    <title i18n:translate="">Upgrade this site</title>
+    <link href="${string:${context/absolute_url}/++theme++barceloneta/css/barceloneta.min.css}"
+          rel="stylesheet"
+          type="text/css"
+    />
+    <link href="${string:${context/absolute_url}/++resource++plone-admin-ui.css}"
+          rel="stylesheet"
+          type="text/css"
+    />
+  </head>
 
-<body id="plone-upgrade-screen"
-      tal:define="versions view/versions;
-                  report options/report|nothing;">
+  <body id="plone-upgrade-screen"
+        tal:define="
+          versions view/versions;
+          report options/report|nothing;
+        "
+  >
 
     <div class="container admin mt-5 mb-5 p-4">
-        <header class="row">
-            <p><img src="/++resource++plone-logo.svg"
-                    width="215" height="56"
-                    tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.svg"
-                    alt="Plone logo"
-                    i18n:attributes="alt" /></p>
-            <h1>
-              <span i18n:translate="">Upgrade this site</span>
-            </h1>
-            <h2>${context/Title}</h2>
-            <p><span i18n:translate="">at path</span> <a href="${context/absolute_url}">${python:'/'.join(context.getPhysicalPath())}</a></p>
-            <p class="lead" i18n:translate="">
+      <header class="row">
+        <p><img alt="Plone logo"
+               height="56"
+               src="/++resource++plone-logo.svg"
+               width="215"
+               tal:attributes="
+                 src string:${context/absolute_url}/++resource++plone-logo.svg;
+               "
+               i18n:attributes="alt"
+          /></p>
+        <h1>
+          <span i18n:translate="">Upgrade this site</span>
+        </h1>
+        <h2>${context/Title}</h2>
+        <p><span i18n:translate="">at path</span>
+          <a href="${context/absolute_url}">${python:'/'.join(context.getPhysicalPath())}</a></p>
+        <p class="lead"
+           i18n:translate=""
+        >
                 More information about the upgrade procedure can be found in the documentation section of plone.org in the
-                <a href="http://docs.plone.org/manage/upgrading"
-                   i18n:name="upgrade_guide"
-                   i18n:translate="">Upgrade Guide</a>.
-            </p>
+          <a href="http://docs.plone.org/manage/upgrading"
+             i18n:name="upgrade_guide"
+             i18n:translate=""
+          >Upgrade Guide</a>.
+        </p>
 
-        </header>
-        <article class="row mb-4">
-          <div class="col-md-12 mb-3">
-            <p class="alert-success p-2" tal:condition="versions/equal">
-              <span i18n:translate="" tal:omit-tag="">Your site is up to date.</span>
-            </p>
+      </header>
+      <article class="row mb-4">
+        <div class="col-md-12 mb-3">
+          <p class="alert-success p-2"
+             tal:condition="versions/equal"
+          >
+            <span tal:omit-tag=""
+                  i18n:translate=""
+            >Your site is up to date.</span>
+          </p>
 
-            <p class="alert-danger p-2" tal:condition="versions/instance_gt">
-              <strong i18n:translate="">Warning!</strong> <span i18n:translate="">Your database requires a newer version of Plone than you are currently using. This is a dangerous situation. Please upgrade your Plone version as soon as possible.</span>
-            </p>
+          <p class="alert-danger p-2"
+             tal:condition="versions/instance_gt"
+          >
+            <strong i18n:translate="">Warning!</strong>
+            <span i18n:translate="">Your database requires a newer version of Plone than you are currently using. This is a dangerous situation. Please upgrade your Plone version as soon as possible.</span>
+          </p>
 
-            <p class="alert-warning p-2" tal:condition="versions/instance_lt">
-              <span i18n:translate="">The site configuration is outdated and needs to be upgraded.</span>
-            </p>
-            <dl tal:condition="versions/instance_lt">
-              <dt i18n:translate="">
+          <p class="alert-warning p-2"
+             tal:condition="versions/instance_lt"
+          >
+            <span i18n:translate="">The site configuration is outdated and needs to be upgraded.</span>
+          </p>
+          <dl tal:condition="versions/instance_lt">
+            <dt i18n:translate="">
                 Current active configuration
-              </dt>
-              <dd tal:content="versions/instance">
+            </dt>
+            <dd tal:content="versions/instance">
                 instance version
-              </dd>
-              <dt i18n:translate="">
+            </dd>
+            <dt i18n:translate="">
                 Latest available configuration
-              </dt>
-              <dd tal:content="versions/fs">
+            </dt>
+            <dd tal:content="versions/fs">
                 file system version
-              </dd>
-            </dl>
+            </dd>
+          </dl>
 
-            <tal:volto tal:condition="python: versions['equal'] and view.can_migrate_to_volto()">
-              <p class="alert-success p-2" i18n:translate="">
+          <tal:volto tal:condition="python: versions['equal'] and view.can_migrate_to_volto()">
+            <p class="alert-success p-2"
+               i18n:translate=""
+            >
                 You can prepare your site for Volto, the default frontend of Plone 6!
-              </p>
-              <a class="p-2" i18n:translate=""
-                 tal:attributes="href string:${context/absolute_url}/@@migrate_to_volto">
-                Click here if you want to learn more.
-              </a>
-            </tal:volto>
-
-          </div>
-          <form tal:condition="versions/instance_lt"
-                action="#"
-                method="post"
-                tal:attributes="action string:${context/absolute_url}/@@plone-upgrade">
-
-            <h3 i18n:translate="">
-              Upgrade steps
-            </h3>
-
-            <p class="alert-danger p-2" i18n:translate="">
-                Please ensure <strong>you have a backup of your site</strong> before performing the upgrade.
             </p>
+            <a class="p-2"
+               tal:attributes="
+                 href string:${context/absolute_url}/@@migrate_to_volto;
+               "
+               i18n:translate=""
+            >
+                Click here if you want to learn more.
+            </a>
+          </tal:volto>
+
+        </div>
+        <form action="#"
+              method="post"
+              tal:condition="versions/instance_lt"
+              tal:attributes="
+                action string:${context/absolute_url}/@@plone-upgrade;
+              "
+        >
+
+          <h3 i18n:translate="">
+              Upgrade steps
+          </h3>
+
+          <p class="alert-danger p-2"
+             i18n:translate=""
+          >
+                Please ensure
+            <strong>you have a backup of your site</strong>
+             before performing the upgrade.
+          </p>
 
           <p i18n:translate="">
             The following list shows which upgrade steps are going to be run.
@@ -103,75 +142,103 @@
           <dl class="mb-4">
             <tal:block tal:repeat="upgrade_info view/upgrades">
 
-                <tal:single condition="python:not isinstance(upgrade_info, list)"
-                            define="info upgrade_info">
-                  <dt tal:content="structure string:(${info/ssource} &amp;#8594; ${info/sdest})">
+              <tal:single define="
+                            info upgrade_info;
+                          "
+                          condition="python:not isinstance(upgrade_info, list)"
+              >
+                <dt tal:content="structure string:(${info/ssource} &amp;#8594; ${info/sdest})">
                     path
-                  </dt>
-                  <dd>
-                    <ul>
-                      <li tal:content="info/title">
+                </dt>
+                <dd>
+                  <ul>
+                    <li tal:content="info/title">
                         title
-                      </li>
-                    </ul>
-                  </dd>
-                </tal:single>
+                    </li>
+                  </ul>
+                </dd>
+              </tal:single>
 
-                <tal:multiple condition="python: isinstance(upgrade_info, list)">
-                  <dt tal:define="info python:upgrade_info[0]"
-                      tal:content="structure string:(${info/ssource} &amp;#8594; ${info/sdest})">
+              <tal:multiple condition="python: isinstance(upgrade_info, list)">
+                <dt tal:define="
+                      info python:upgrade_info[0];
+                    "
+                    tal:content="structure string:(${info/ssource} &amp;#8594; ${info/sdest})"
+                >
                     path
-                  </dt>
-                  <dd>
-                    <ul>
-                      <li tal:repeat="info upgrade_info"
-                          tal:content="info/title">
+                </dt>
+                <dd>
+                  <ul>
+                    <li tal:repeat="info upgrade_info"
+                        tal:content="info/title"
+                    >
                           title
-                      </li>
-                    </ul>
-                  </dd>
-                </tal:multiple>
+                    </li>
+                  </ul>
+                </dd>
+              </tal:multiple>
             </tal:block>
           </dl>
 
-        <div class="form-check mb-3">
-          <input class="form-check-input" id="dry_run" name="dry_run" type="checkbox" value="1:int" />
-          <label class="form-check-label" for="dry_run" i18n:translate="">Dry run mode</label>
+          <div class="form-check mb-3">
+            <input class="form-check-input"
+                   id="dry_run"
+                   name="dry_run"
+                   type="checkbox"
+                   value="1:int"
+            />
+            <label class="form-check-label"
+                   for="dry_run"
+                   i18n:translate=""
+            >Dry run mode</label>
 
-          <div class="form-text"
-               i18n:translate="">
+            <div class="form-text"
+                 i18n:translate=""
+            >
             Run the upgrade and show the result without actually writing anything to the database.
+            </div>
           </div>
-        </div>
 
-        <input type="hidden" name="form.submitted:boolean" value="True" />
-        <button type="submit"
-                name="submit"
-                class="btn btn-primary"
-                i18n:translate="" >Upgrade</button>
-    </form>
+          <input name="form.submitted:boolean"
+                 type="hidden"
+                 value="True"
+          />
+          <button class="btn btn-primary"
+                  name="submit"
+                  type="submit"
+                  i18n:translate=""
+          >Upgrade</button>
+        </form>
 
 
-    <tal:report tal:condition="report">
+        <tal:report tal:condition="report">
 
-      <h2 class="mt-4" i18n:translate="">
+          <h2 class="mt-4"
+              i18n:translate=""
+          >
         Upgrade report
-      </h2>
+          </h2>
 
-      <pre tal:content="report">
+          <pre tal:content="report">
         report details
       </pre>
 
-    </tal:report>
-  </article>
-  <footer class="row"
-          tal:define="corelist versions/corelist">
-    <h2 i18n:translate="heading_version_overview">Version Overview</h2>
-    <div>Plone <span tal:replace="corelist/Plone" /></div>
-    <div>Zope <span tal:replace="corelist/Zope" /></div>
-    <div>Python <span tal:replace="corelist/Python" /></div>
-  </footer>
+        </tal:report>
+      </article>
+      <footer class="row"
+              tal:define="
+                corelist versions/corelist;
+              "
+      >
+        <h2 i18n:translate="heading_version_overview">Version Overview</h2>
+        <div>Plone
+          <span tal:replace="corelist/Plone"></span></div>
+        <div>Zope
+          <span tal:replace="corelist/Zope"></span></div>
+        <div>Python
+          <span tal:replace="corelist/Python"></span></div>
+      </footer>
 
     </div>
-</body>
+  </body>
 </html>

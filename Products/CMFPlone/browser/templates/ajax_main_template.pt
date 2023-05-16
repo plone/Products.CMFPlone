@@ -1,11 +1,12 @@
 <metal:page define-macro="master">
-<tal:doctype tal:replace="structure string:&lt;!DOCTYPE html&gt;" />
+  <tal:doctype tal:replace="structure string:&lt;!DOCTYPE html&gt;" />
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
-      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      tal:define="portal_state python:context.restrictedTraverse('@@plone_portal_state');
+  <html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+        xmlns:metal="http://xml.zope.org/namespaces/metal"
+        xmlns:tal="http://xml.zope.org/namespaces/tal"
+        tal:define="
+          portal_state python:context.restrictedTraverse('@@plone_portal_state');
           context_state python:context.restrictedTraverse('@@plone_context_state');
           plone_view python:context.restrictedTraverse('@@plone');
           icons python:context.restrictedTraverse('@@iconresolver');
@@ -17,96 +18,113 @@
           checkPermission python:context.restrictedTraverse('portal_membership').checkPermission;
           site_properties python:context.restrictedTraverse('portal_properties').site_properties;
           ajax_include_head python:request.get('ajax_include_head', False);
-          ajax_load python:False;"
-      i18n:domain="plone"
-      tal:attributes="lang lang;">
+          ajax_load python:False;
+        "
+        tal:attributes="
+          lang lang;
+        "
+        i18n:domain="plone"
+  >
 
     <metal:cache tal:replace="structure provider:plone.httpheaders" />
 
-<head>
-    <meta charset="utf-8" />
+    <head>
+      <meta charset="utf-8" />
 
-    <tal:ajaxhead condition="ajax_include_head">
-    <div tal:replace="structure provider:plone.htmlhead" />
+      <tal:ajaxhead condition="ajax_include_head">
+        <div tal:replace="structure provider:plone.htmlhead"></div>
 
-    <tal:comment replace="nothing">
+        <tal:comment replace="nothing">
         Various slots where you can insert elements in the header from a template.
-    </tal:comment>
-    <metal:topslot define-slot="top_slot" />
-    <metal:headslot define-slot="head_slot" />
-    <metal:styleslot define-slot="style_slot" />
+        </tal:comment>
+        <metal:topslot define-slot="top_slot" />
+        <metal:headslot define-slot="head_slot" />
+        <metal:styleslot define-slot="style_slot" />
 
-    <div tal:replace="structure provider:plone.scripts" />
-    <metal:javascriptslot define-slot="javascript_head_slot" />
+        <div tal:replace="structure provider:plone.scripts"></div>
+        <metal:javascriptslot define-slot="javascript_head_slot" />
 
-    <link tal:replace="structure provider:plone.htmlhead.links" />
-    <meta name="generator" content="Plone - http://plone.org" />
-    </tal:ajaxhead>
+        <link tal:replace="structure provider:plone.htmlhead.links" />
+        <meta name="generator"
+              content="Plone - http://plone.org"
+        />
+      </tal:ajaxhead>
 
-</head>
+    </head>
 
-<body tal:define="isRTL portal_state/is_rtl;
-                  sl python:plone_layout.have_portlets('plone.leftcolumn', view);
-                  sr python:plone_layout.have_portlets('plone.rightcolumn', view);
-                  body_class python:plone_layout.bodyClass(template, view);"
-    tal:attributes="class string: ${body_class} ajax_load;
-                    dir python:isRTL and 'rtl' or 'ltr';
-                    python:plone_view.patterns_settings()"
-    id="visual-portal-wrapper">
+    <body id="visual-portal-wrapper"
+          tal:define="
+            isRTL portal_state/is_rtl;
+            sl python:plone_layout.have_portlets('plone.leftcolumn', view);
+            sr python:plone_layout.have_portlets('plone.rightcolumn', view);
+            body_class python:plone_layout.bodyClass(template, view);
+          "
+          tal:attributes="
+            class string: ${body_class} ajax_load;
+            dir python:isRTL and 'rtl' or 'ltr';
+            python:plone_view.patterns_settings();
+          "
+    >
 
-    <header id="portal-top" i18n:domain="plone"/>
+      <header id="portal-top"
+              i18n:domain="plone"
+      ></header>
 
-    <aside id="global_statusmessage">
-      <tal:message tal:content="structure provider:plone.globalstatusmessage"/>
-      <div metal:define-slot="global_statusmessage">
-      </div>
-    </aside>
+      <aside id="global_statusmessage">
+        <tal:message tal:content="structure provider:plone.globalstatusmessage" />
+        <div metal:define-slot="global_statusmessage">
+        </div>
+      </aside>
 
-    <article id="portal-column-content">
+      <article id="portal-column-content">
 
         <metal:block define-slot="content">
-            <div metal:define-macro="content">
+          <div metal:define-macro="content">
 
 
-                <metal:slot define-slot="body">
-                    <article id="content">
+            <metal:slot define-slot="body">
+              <article id="content">
 
-                        <metal:bodytext define-slot="main">
+                <metal:bodytext define-slot="main">
 
-                        <header>
-                         <metal:title define-slot="content-title">
-                            <h1  class="documentFirstHeading">${python:context.Title()}</h1>
-                            <metal:comment tal:content="nothing">
+                  <header>
+                    <metal:title define-slot="content-title">
+                      <h1 class="documentFirstHeading">${python:context.Title()}</h1>
+                      <metal:comment tal:content="nothing">
                                 If you write a custom title always use
-                                <h1 class="documentFirstHeading"></h1> for it
-                            </metal:comment>
-                         </metal:title>
+                        <h1 class="documentFirstHeading"></h1>
+                         for it
+                      </metal:comment>
+                    </metal:title>
 
-                         <metal:description define-slot="content-description">
-                            <div class="documentDescription">${python:context.Description()}</div>
-                            <metal:comment tal:content="nothing">
+                    <metal:description define-slot="content-description">
+                      <div class="documentDescription">${python:context.Description()}</div>
+                      <metal:comment tal:content="nothing">
                                 If you write a custom description always use
-                                <div class="documentDescription"></div> for it
-                            </metal:comment>
-                         </metal:description>
-                        </header>
+                        <div class="documentDescription"></div>
+                         for it
+                      </metal:comment>
+                    </metal:description>
+                  </header>
 
-                         <section id="content-core">
-                             <metal:text define-slot="content-core" tal:content="nothing">
+                  <section id="content-core">
+                    <metal:text define-slot="content-core"
+                                tal:content="nothing"
+                    >
                                  Page body text
-                             </metal:text>
-                         </section>
+                    </metal:text>
+                  </section>
 
-                        </metal:bodytext>
-                    </article>
-                </metal:slot>
+                </metal:bodytext>
+              </article>
+            </metal:slot>
 
-            </div>
+          </div>
         </metal:block>
 
-    </article>
+      </article>
 
-</body>
-</html>
+    </body>
+  </html>
 
 </metal:page>

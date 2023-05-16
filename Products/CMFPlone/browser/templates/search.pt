@@ -1,74 +1,120 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
       metal:use-macro="context/@@main_template/macros/master"
-      i18n:domain="plone">
+      xml:lang="en"
+      i18n:domain="plone"
+>
 
-<head>
-  <metal:block metal:fill-slot="head_slot">
+  <head>
+    <metal:block metal:fill-slot="head_slot">
 
-    <link rel="alternate" title="RSS 1.0" type="application/rss+xml" href="${context/@@plone_context_state/object_url}/search_rss?${request/QUERY_STRING}"
-          tal:condition="request/SearchableText|nothing"/>
-    <link rel="home" title="Home" i18n:attributes="title" href="${view/navroot_url}" />
+      <link href="${context/@@plone_context_state/object_url}/search_rss?${request/QUERY_STRING}"
+            rel="alternate"
+            title="RSS 1.0"
+            type="application/rss+xml"
+            tal:condition="request/SearchableText|nothing"
+      />
+      <link href="${view/navroot_url}"
+            rel="home"
+            title="Home"
+            i18n:attributes="title"
+      />
 
-  </metal:block>
+    </metal:block>
 
-  <metal:block fill-slot="top_slot"
-               tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);
-                           disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
-</head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="
+                   disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                   disable_column_two python:request.set('disable_plone.rightcolumn',1);
+                 "
+    />
+  </head>
 
-<body>
+  <body>
 
-  <div id="content-core" metal:fill-slot="main"
-       tal:define="b_start python:0;
-                   b_start request/b_start | b_start;
-                   batch python: view.results(b_start=b_start);
-                   normalizeString nocall:context/@@plone/normalizeString;">
+    <div id="content-core"
+         metal:fill-slot="main"
+         tal:define="
+           b_start python:0;
+           b_start request/b_start | b_start;
+           batch python: view.results(b_start=b_start);
+           normalizeString nocall:context/@@plone/normalizeString;
+         "
+    >
 
-    <form name="searchform"
-          id="searchform"
-          action="@@search"
-          role="search"
-          class="searchPage pat-formautofocus pat-search"
-          tal:define="portal context/@@plone_portal_state/portal;
-                      first_call not:request/advanced_search|nothing;
-                      st python:request.get('SearchableText', '');
-                      DateTime python:modules['DateTime'].DateTime;
-                      navigation_root_url view/navroot_url;
-                      icons python:context.restrictedTraverse('@@iconresolver');">
+      <form class="searchPage pat-formautofocus pat-search"
+            id="searchform"
+            action="@@search"
+            name="searchform"
+            role="search"
+            tal:define="
+              portal context/@@plone_portal_state/portal;
+              first_call not:request/advanced_search|nothing;
+              st python:request.get('SearchableText', '');
+              DateTime python:modules['DateTime'].DateTime;
+              navigation_root_url view/navroot_url;
+              icons python:context.restrictedTraverse('@@iconresolver');
+            "
+      >
 
-        <input type="hidden" name="sort_on" value="" />
-        <input type="hidden" name="sort_order" value="" />
-        <input type="hidden" id="search-batch-start" name="b_start:int" value="${request/b_start|string:0}" />
-        <input type="hidden" id="advanced-search-input" name="advanced_search" value="${python: 'True' if view.show_advanced_search() else 'False'}" />
+        <input name="sort_on"
+               type="hidden"
+               value=""
+        />
+        <input name="sort_order"
+               type="hidden"
+               value=""
+        />
+        <input id="search-batch-start"
+               name="b_start:int"
+               type="hidden"
+               value="${request/b_start|string:0}"
+        />
+        <input id="advanced-search-input"
+               name="advanced_search"
+               type="hidden"
+               value="${python: 'True' if view.show_advanced_search() else 'False'}"
+        />
 
         <div class="input-group">
           <input class="searchPage form-control"
                  name="SearchableText"
-                 type="text"
                  size="25"
                  title="Search Site"
+                 type="text"
                  value="${st}"
                  i18n:attributes="title title_search_title;"
-                 />
+          />
           <span class="input-group-btn">
-            <input class="searchPage allowMultiSubmit btn btn-primary" type="submit"
+            <input class="searchPage allowMultiSubmit btn btn-primary"
+                   type="submit"
                    value="Search"
-                   i18n:attributes="value label_search;" />
+                   i18n:attributes="value label_search;"
+            />
           </span>
         </div>
 
-        <input type="hidden" name="created.range:record" value="min" />
+        <input name="created.range:record"
+               type="hidden"
+               value="min"
+        />
 
         <div class="mt-3">
           <h1 id="search-term">
-            <span tal:condition="not:st" i18n:translate="">Search results</span>
-            <span tal:condition="st" i18n:translate="">
+            <span tal:condition="not:st"
+                  i18n:translate=""
+            >Search results</span>
+            <span tal:condition="st"
+                  i18n:translate=""
+            >
               Search results for
-              <span class="text-muted" tal:content="st" i18n:name="term">
+              <span class="text-muted"
+                    tal:content="st"
+                    i18n:name="term"
+              >
                 Search Term
               </span>
             </span>
@@ -78,85 +124,157 @@
         <div class="d-flex mb-2">
 
           <div class="flex-fill">
-            <a class="nav-link active ps-2" aria-current="page" href="#">
-              <span i18n:translate="batch_x_items_matching_your_criteria" class="d-flex" i18n:domain="plone" id="results-count" >
-                <span i18n:name="number" id="search-results-number" class="badge bg-primary me-2 d-flex justify-content-center align-items-center"
-                      tal:content="batch/sequence_length|string:0">234</span>
+            <a class="nav-link active ps-2"
+               aria-current="page"
+               href="#"
+            >
+              <span class="d-flex"
+                    id="results-count"
+                    i18n:domain="plone"
+                    i18n:translate="batch_x_items_matching_your_criteria"
+              >
+                <span class="badge bg-primary me-2 d-flex justify-content-center align-items-center"
+                      id="search-results-number"
+                      tal:content="batch/sequence_length|string:0"
+                      i18n:name="number"
+                >234</span>
                   items matching your search terms.
               </span>
             </a>
           </div>
 
-          <div class="nav-item dropdown" id="search-filter">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" id="search-filter-toggle" i18n:translate="narrow_search_options">
+          <div class="nav-item dropdown"
+               id="search-filter"
+          >
+            <a class="nav-link dropdown-toggle"
+               id="search-filter-toggle"
+               aria-expanded="false"
+               href="#"
+               role="button"
+               data-bs-toggle="dropdown"
+               i18n:translate="narrow_search_options"
+            >
               Filter the results
             </a>
             <div class="dropdown-menu dropdown-menu-md-end">
               <div class="d-flex text-nowrap">
                 <div class="mx-3">
-                  <span class="fw-bold" i18n:translate="label_item_type">Item type</span>
+                  <span class="fw-bold"
+                        i18n:translate="label_item_type"
+                  >Item type</span>
                   <ul class="list-unstyled search-type-options"
-                      tal:define="portal_types portal/portal_types;
-                                  types_list view/types_list;
-                                  all_checked python:(len(types_list) == len(request.get('portal_type', []))) or first_call;
-                                  toggle_select_state python:all_checked and 'true' or 'false';">
+                      tal:define="
+                        portal_types portal/portal_types;
+                        types_list view/types_list;
+                        all_checked python:(len(types_list) == len(request.get('portal_type', []))) or first_call;
+                        toggle_select_state python:all_checked and 'true' or 'false';
+                      "
+                  >
                     <li>
                       <div class="form-check">
-                        <input type="checkbox"
-                               name="pt_toggle"
-                               value="#"
+                        <input class="form-check-input"
                                id="pt_toggle"
-                               class="form-check-input"
-                               checked="${python:'checked' if all_checked else ''}" />
-                        <label for="pt_toggle" class="form-check-label"
-                               i18n:translate="label_toggle">Select All/None</label>
+                               checked="${python:'checked' if all_checked else ''}"
+                               name="pt_toggle"
+                               type="checkbox"
+                               value="#"
+                        />
+                        <label class="form-check-label"
+                               for="pt_toggle"
+                               i18n:translate="label_toggle"
+                        >Select All/None</label>
                       </div>
                     </li>
                     <li tal:repeat="type types_list">
                       <div class="form-check">
-                        <input type="checkbox" name="portal_type:list" class="form-check-input" checked="checked"
-                               value="${type}" id="portal_type_${repeat/type/number}" checked="${python:'checked' if ((type in request.get('portal_type', [])) or first_call) else ''}"/>
-                        <label for="portal_type_${repeat/type/number}" i18n:translate="" class="form-check-label"
-                               tal:content="python: portal_types.getTypeInfo(type).Title()" />
+                        <input class="form-check-input"
+                               id="portal_type_${repeat/type/number}"
+                               checked="${python:'checked' if ((type in request.get('portal_type', [])) or first_call) else ''}"
+                               name="portal_type:list"
+                               type="checkbox"
+                               value="${type}"
+                        />
+                        <label class="form-check-label"
+                               for="portal_type_${repeat/type/number}"
+                               tal:content="python: portal_types.getTypeInfo(type).Title()"
+                               i18n:translate=""
+                        ></label>
                       </div>
                     </li>
                   </ul>
                 </div>
                 <div class="mx-3">
-                  <span class="fw-bold" i18n:translate="label_new_items_since">New items since</span>
+                  <span class="fw-bold"
+                        i18n:translate="label_new_items_since"
+                  >New items since</span>
                   <ul class="list-unstyled"
-                      tal:define="today python:DateTime().earliestTime();
-                                  yesterday python:(today-1).ISO();
-                                  lastweek python:(today-7).ISO();
-                                  lastmonth python:(today-31).ISO();
-                                  ever python:DateTime('1970-01-02').ISO();
-                                  checked python:request.get('created', {}).get('query', ever)">
+                      tal:define="
+                        today python:DateTime().earliestTime();
+                        yesterday python:(today-1).ISO();
+                        lastweek python:(today-7).ISO();
+                        lastmonth python:(today-31).ISO();
+                        ever python:DateTime('1970-01-02').ISO();
+                        checked python:request.get('created', {}).get('query', ever);
+                      "
+                  >
                     <li>
                       <div class="form-check">
-                        <input type="radio" id="query-date-yesterday" name="created.query:record:date" class="form-check-input"
-                               value="${yesterday}" checked="${python:'checked' if checked==yesterday else ''}" />
-                        <label for="query-date-yesterday" i18n:translate="time_yesterday" class="form-check-label">Yesterday</label>
+                        <input class="form-check-input"
+                               id="query-date-yesterday"
+                               checked="${python:'checked' if checked==yesterday else ''}"
+                               name="created.query:record:date"
+                               type="radio"
+                               value="${yesterday}"
+                        />
+                        <label class="form-check-label"
+                               for="query-date-yesterday"
+                               i18n:translate="time_yesterday"
+                        >Yesterday</label>
                       </div>
                     </li>
                     <li>
                       <div class="form-check">
-                        <input type="radio" id="query-date-lastweek" name="created.query:record:date" class="form-check-input"
-                               value="${lastweek}" checked="${python:'checked' if checked==lastweek else ''}" />
-                        <label for="query-date-lastweek" i18n:translate="time_last_week" class="form-check-label">Last week</label>
+                        <input class="form-check-input"
+                               id="query-date-lastweek"
+                               checked="${python:'checked' if checked==lastweek else ''}"
+                               name="created.query:record:date"
+                               type="radio"
+                               value="${lastweek}"
+                        />
+                        <label class="form-check-label"
+                               for="query-date-lastweek"
+                               i18n:translate="time_last_week"
+                        >Last week</label>
                       </div>
                     </li>
                     <li>
                       <div class="form-check">
-                        <input type="radio" id="query-date-lastmonth" name="created.query:record:date" class="form-check-input"
-                               value="${lastmonth}" checked="${python:'checked' if checked==lastmonth else ''}" />
-                        <label for="query-date-lastmonth" i18n:translate="time_last_month" class="form-check-label">Last month</label>
+                        <input class="form-check-input"
+                               id="query-date-lastmonth"
+                               checked="${python:'checked' if checked==lastmonth else ''}"
+                               name="created.query:record:date"
+                               type="radio"
+                               value="${lastmonth}"
+                        />
+                        <label class="form-check-label"
+                               for="query-date-lastmonth"
+                               i18n:translate="time_last_month"
+                        >Last month</label>
                       </div>
                     </li>
                     <li>
                       <div class="form-check">
-                        <input type="radio" id="query-date-ever" name="created.query:record:date" class="form-check-input"
-                               value="${ever}" checked="${python:'checked' if checked==ever else ''}" />
-                        <label for="query-date-ever" i18n:translate="time_ever" class="form-check-label">Ever</label>
+                        <input class="form-check-input"
+                               id="query-date-ever"
+                               checked="${python:'checked' if checked==ever else ''}"
+                               name="created.query:record:date"
+                               type="radio"
+                               value="${ever}"
+                        />
+                        <label class="form-check-label"
+                               for="query-date-ever"
+                               i18n:translate="time_ever"
+                        >Ever</label>
                       </div>
                     </li>
                   </ul>
@@ -166,12 +284,23 @@
           </div>
 
           <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" i18n:translate="sort_by">Sort by</a>
-            <ul class="dropdown-menu dropdown-menu-md-end" id="sorting-options">
+            <a class="nav-link dropdown-toggle"
+               aria-expanded="false"
+               href="#"
+               role="button"
+               data-bs-toggle="dropdown"
+               i18n:translate="sort_by"
+            >Sort by</a>
+            <ul class="dropdown-menu dropdown-menu-md-end"
+                id="sorting-options"
+            >
               <li tal:repeat="item view/sort_options">
-                <a class="dropdown-item" href="${item/url}"
-                   data-sort="${item/sortkey}" data-order="${python:'reverse' if item.reverse else ''}"
-                   tal:content="item/title">sort option</a>
+                <a class="dropdown-item"
+                   href="${item/url}"
+                   data-order="${python:'reverse' if item.reverse else ''}"
+                   data-sort="${item/sortkey}"
+                   tal:content="item/title"
+                >sort option</a>
               </li>
             </ul>
           </div>
@@ -183,55 +312,84 @@
           <metal:searchresults define-macro="search_results">
 
             <div id="search-results"
-                 tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;
-                             show_images python:view.show_images;
-                             search_image_scale python:view.search_image_scale;"
-                 data-default-sort="${python:request.get('sort_on') or view.default_sort_on}">
+                 data-default-sort="${python:request.get('sort_on') or view.default_sort_on}"
+                 tal:define="
+                   navigation_root_url context/@@plone_portal_state/navigation_root_url;
+                   show_images python:view.show_images;
+                   search_image_scale python:view.search_image_scale;
+                 "
+            >
 
               <metal:noresults tal:condition="not: batch">
-                <div class="alert alert-info" i18n:translate="description_no_results_found">No results were found.</div>
+                <div class="alert alert-info"
+                     i18n:translate="description_no_results_found"
+                >No results were found.</div>
               </metal:noresults>
 
-              <metal:results tal:condition="batch"
-                             tal:define="isAnon context/@@plone_portal_state/anonymous;
-                                         toLocalizedTime nocall: context/@@plone/toLocalizedTime;
-                                         use_view_action python:context.portal_registry.get('plone.types_use_view_action_in_listings', []);
-                                         allowAnonymousViewAbout python:context.portal_registry['plone.allow_anon_views_about'];
-                                         show_about python:not isAnon or allowAnonymousViewAbout;
-                                         image_scale portal/@@image_scale;
-                                         count_offset python:request.get('b_start', 0)">
-                <ol class="searchResults list-group list-group-numbered" start="${python:count_offset + 1}" style="--list-start: ${count_offset}; counter-reset: section var(--list-start, 0)">
+              <metal:results tal:define="
+                               isAnon context/@@plone_portal_state/anonymous;
+                               toLocalizedTime nocall: context/@@plone/toLocalizedTime;
+                               use_view_action python:context.portal_registry.get('plone.types_use_view_action_in_listings', []);
+                               allowAnonymousViewAbout python:context.portal_registry['plone.allow_anon_views_about'];
+                               show_about python:not isAnon or allowAnonymousViewAbout;
+                               image_scale portal/@@image_scale;
+                               count_offset python:request.get('b_start', 0);
+                             "
+                             tal:condition="batch"
+              >
+                <ol class="searchResults list-group list-group-numbered"
+                    start="${python:count_offset + 1}"
+                    style="--list-start: ${count_offset}; counter-reset: section var(--list-start, 0)"
+                >
                   <tal:results repeat="item batch">
-                    <li tal:define="hasIcon item/getIcon" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start  fs-4">
+                    <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-start fs-4"
+                        tal:define="
+                          hasIcon item/getIcon;
+                        "
+                    >
                       <div class="ms-2 me-auto">
                         <div class="result-title">
-                          <a href="${python:(item_url + '/view') if item_type in use_view_action else item_url}"
-                            class="state-${item/review_state}"
-                            tal:define="item_url item/getURL;
-                                        item_type item/PortalType">
-                                        <span tal:replace="python:item.getDataOrigin().pretty_title_or_id()"></span>
+                          <a class="state-${item/review_state}"
+                             href="${python:(item_url + '/view') if item_type in use_view_action else item_url}"
+                             tal:define="
+                               item_url item/getURL;
+                               item_type item/PortalType;
+                             "
+                          >
+                            <span tal:replace="python:item.getDataOrigin().pretty_title_or_id()"></span>
                           </a>
                         </div>
 
-                        <small class="text-muted small fs-6" i18n:domain="plone"
-                              tal:condition="show_about">
+                        <small class="text-muted small fs-6"
+                               tal:condition="show_about"
+                               i18n:domain="plone"
+                        >
                           <span class="documentAuthor"
-                                i18n:translate="label_by_author">
+                                i18n:translate="label_by_author"
+                          >
                             by
-                            <tal:block tal:condition="item/Creator"
-                                      tal:define="author python:context.portal_membership.getMemberInfo(item.Creator())">
+                            <tal:block tal:define="
+                                         author python:context.portal_membership.getMemberInfo(item.Creator());
+                                       "
+                                       tal:condition="item/Creator"
+                            >
                               <a href="${navigation_root_url}/author/${item/Creator}"
-                                tal:content="python:author and author['fullname'] or item.Creator()"
-                                tal:omit-tag="not:item/Creator"
-                                i18n:name="author">
+                                 tal:content="python:author and author['fullname'] or item.Creator()"
+                                 tal:omit-tag="not:item/Creator"
+                                 i18n:name="author"
+                              >
                                   Bob Dobalina
                               </a>
                             </tal:block>
                           </span>
-                          <span tal:define="publication_date item/EffectiveDate;
-                                            modification_date item/ModificationDate">
+                          <span tal:define="
+                                  publication_date item/EffectiveDate;
+                                  modification_date item/ModificationDate;
+                                ">
 
-                            <span class="documentPublished" tal:condition="python: publication_date != 'None'">
+                            <span class="documentPublished"
+                                  tal:condition="python: publication_date != 'None'"
+                            >
                               &mdash;
                               <span i18n:translate="box_published">
                                 published
@@ -241,7 +399,9 @@
                               </span>
                             </span>
 
-                            <span class="documentModified" tal:condition="python: modification_date != publication_date">
+                            <span class="documentModified"
+                                  tal:condition="python: modification_date != publication_date"
+                            >
                               &mdash;
                               <span i18n:translate="box_last_modified">
                                 last modified
@@ -251,13 +411,19 @@
                               </span>
                             </span>
                           </span>
-                          <span tal:define="categories item/Subject|nothing"
-                                tal:condition="categories">
+                          <span tal:define="
+                                  categories item/Subject|nothing;
+                                "
+                                tal:condition="categories"
+                          >
                             &mdash;
                             <tal:filedunder i18n:translate="">filed under:</tal:filedunder>
                             <span tal:repeat="category categories">
-                              <a href="${navigation_root_url}/@@search?Subject%3Alist=${category}" class="link-category" rel="tag"
-                                tal:content="category">
+                              <a class="link-category"
+                                 href="${navigation_root_url}/@@search?Subject%3Alist=${category}"
+                                 rel="tag"
+                                 tal:content="category"
+                              >
                                 Category
                               </a><tal:separator condition="not: repeat/category/end">,</tal:separator>
                             </span>
@@ -265,24 +431,37 @@
                         </small>
 
                         <div class="croppedDescription mt-2 mb-2 fs-5 fw-light"
-                          tal:condition="item/CroppedDescription" tal:content="item/CroppedDescription">
+                             tal:condition="item/CroppedDescription"
+                             tal:content="item/CroppedDescription"
+                        >
                           Cropped description
                         </div>
 
                         <cite class="d-block small text-muted fs-6"
-                              tal:define="breadcrumbs python: view.breadcrumbs(item);
-                                          is_rtl context/@@plone_portal_state/is_rtl;"
-                              tal:condition='breadcrumbs'>
+                              tal:define="
+                                breadcrumbs python: view.breadcrumbs(item);
+                                is_rtl context/@@plone_portal_state/is_rtl;
+                              "
+                              tal:condition="breadcrumbs"
+                        >
                           <span i18n:translate="text_searchitem_location">
                             Located in
                           </span>
                           <span dir="${python:'rtl' if is_rtl else 'ltr'}"
-                                tal:repeat="crumb breadcrumbs">
-                            <tal:item tal:define="is_last repeat/crumb/end;
-                                                  url crumb/absolute_url;
-                                                  title crumb/Title">
-                              <a href="${url}" tal:omit-tag="not: url" tal:content="title">crumb</a>
-                              <span class="breadcrumbSeparator" tal:condition="not: is_last">
+                                tal:repeat="crumb breadcrumbs"
+                          >
+                            <tal:item tal:define="
+                                        is_last repeat/crumb/end;
+                                        url crumb/absolute_url;
+                                        title crumb/Title;
+                                      ">
+                              <a href="${url}"
+                                 tal:content="title"
+                                 tal:omit-tag="not: url"
+                              >crumb</a>
+                              <span class="breadcrumbSeparator"
+                                    tal:condition="not: is_last"
+                              >
                                 <tal:ltr condition="not: is_rtl">/</tal:ltr>
                                 <tal:rtl condition="is_rtl">/</tal:rtl>
                               </span>
@@ -292,19 +471,23 @@
 
                       </div>
 
-                      <a href="${python:(item_url + '/view') if item_type in use_view_action else item_url}"
-                          class="state-${item/review_state}"
-                          tal:define="item_url item/getURL;
-                                    item_type item/PortalType">
-                          <img class="thumb-icon"
-                            tal:condition="python: show_images and hasIcon"
-                            tal:replace="structure python: image_scale.tag(item, 'image', scale=search_image_scale, css_class='thumb-icon')">
+                      <a class="state-${item/review_state}"
+                         href="${python:(item_url + '/view') if item_type in use_view_action else item_url}"
+                         tal:define="
+                           item_url item/getURL;
+                           item_type item/PortalType;
+                         "
+                      >
+                        <img class="thumb-icon"
+                             tal:condition="python: show_images and hasIcon"
+                             tal:replace="structure python: image_scale.tag(item, 'image', scale=search_image_scale, css_class='thumb-icon')"
+                        />
                       </a>
 
                     </li>
                   </tal:results>
                 </ol>
-                <div metal:use-macro="context/batch_macros/macros/navigation" />
+                <div metal:use-macro="context/batch_macros/macros/navigation"></div>
               </metal:results>
             </div>
 
@@ -312,19 +495,25 @@
 
         </div>
 
-        <div class="my-3" id="rss-subscription" i18n:domain="plone"
-            tal:condition="context/@@syndication-util/search_rss_enabled">
-          <a class="mx-2 text-decoration-none -flex  align-items-center"
-             href="${context/@@plone_context_state/object_url}/search_rss?${request/QUERY_STRING}">
-              <img tal:replace="structure python:icons.tag('rss-fill')" />
-              <span i18n:translate="title_subscribe_rss_feed" class="ms-1">
+        <div class="my-3"
+             id="rss-subscription"
+             tal:condition="context/@@syndication-util/search_rss_enabled"
+             i18n:domain="plone"
+        >
+          <a class="mx-2 text-decoration-none -flex align-items-center"
+             href="${context/@@plone_context_state/object_url}/search_rss?${request/QUERY_STRING}"
+          >
+            <img tal:replace="structure python:icons.tag('rss-fill')" />
+            <span class="ms-1"
+                  i18n:translate="title_subscribe_rss_feed"
+            >
                 Subscribe to an always-updated RSS feed.
-              </span>
+            </span>
           </a>
         </div>
 
-    </form>
-  </div>
+      </form>
+    </div>
 
-</body>
+  </body>
 </html>

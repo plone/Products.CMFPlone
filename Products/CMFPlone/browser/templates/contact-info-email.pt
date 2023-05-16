@@ -1,21 +1,38 @@
-<div xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-     xmlns:tal="http://xml.zope.org/namespaces/tal"
-     xmlns:metal="http://xml.zope.org/namespaces/metal"
+<div xmlns="http://www.w3.org/1999/xhtml"
      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-     i18n:domain="plone"
+     xmlns:metal="http://xml.zope.org/namespaces/metal"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     xml:lang="en"
+     tal:define="
+       portal context/@@plone_portal_state/portal;
+       charset python:context.portal_registry.get('plone.email_charset', 'utf-8');
+       from_name python:context.portal_registry.get('plone.email_from_name', '');
+       dummy python:request.RESPONSE.setHeader('Content-Type', 'text/plain;;charset=%s' % charset);
+     "
      tal:omit-tag=""
-     tal:define="portal context/@@plone_portal_state/portal;
-                 charset python:context.portal_registry.get('plone.email_charset', 'utf-8');
-                 from_name python:context.portal_registry.get('plone.email_from_name', '');
-                 dummy python:request.RESPONSE.setHeader('Content-Type', 'text/plain;;charset=%s' % charset);"
-><span tal:omit-tag="" tal:content="options/message | nothing" />
+     i18n:domain="plone"
+><span tal:content="options/message | nothing"
+        tal:omit-tag=""
+  ></span>
 
 --
-<span tal:replace="from_name" />
+  <span tal:replace="from_name"></span>
 
-<div i18n:translate="site_feedback_mailtemplate_body" tal:omit-tag="">
-You are receiving this mail because <span i18n:name="fullname" tal:omit-tag="" tal:content="options/sender_fullname|nothing" />
-<span i18n:name="from_address" tal:omit-tag="" tal:content="options/sender_from_address"/>
-is sending feedback about the site you administer at <span i18n:name="url" tal:replace="options/url" />.
-</div>
+  <div tal:omit-tag=""
+       i18n:translate="site_feedback_mailtemplate_body"
+  >
+You are receiving this mail because
+    <span tal:content="options/sender_fullname|nothing"
+          tal:omit-tag=""
+          i18n:name="fullname"
+    ></span>
+    <span tal:content="options/sender_from_address"
+          tal:omit-tag=""
+          i18n:name="from_address"
+    ></span>
+is sending feedback about the site you administer at
+    <span tal:replace="options/url"
+          i18n:name="url"
+    ></span>.
+  </div>
 </div>

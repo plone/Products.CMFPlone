@@ -1,24 +1,45 @@
-<div
-     xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-     xmlns:tal="http://xml.zope.org/namespaces/tal"
-     xmlns:metal="http://xml.zope.org/namespaces/metal"
+<div xmlns="http://www.w3.org/1999/xhtml"
      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-     i18n:domain="plone"
+     xmlns:metal="http://xml.zope.org/namespaces/metal"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     xml:lang="en"
+     tal:define="
+       dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset=%s' % options['encoding']);
+     "
      tal:omit-tag=""
-     tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset=%s' % options['encoding']);"
+     i18n:domain="plone"
 >
 
-<span tal:omit-tag="" tal:content="options/message | nothing" />
+  <span tal:content="options/message | nothing"
+        tal:omit-tag=""
+  ></span>
 
 --
-<span tal:replace="options/email_from_name" />
+  <span tal:replace="options/email_from_name"></span>
 
-<div i18n:translate="author_feedback_mailtemplate_body" tal:omit-tag="" tal:condition="options/url">
-You are receiving this mail because <span i18n:name="from_address"
-tal:omit-tag="" tal:content="options/sender_id"/> is sending feedback about content you created at <span i18n:name="url" tal:replace="options/url" />.
-</div>
+  <div tal:condition="options/url"
+       tal:omit-tag=""
+       i18n:translate="author_feedback_mailtemplate_body"
+  >
+You are receiving this mail because
+    <span tal:content="options/sender_id"
+          tal:omit-tag=""
+          i18n:name="from_address"
+    ></span>
+    is sending feedback about content you created at
+    <span tal:replace="options/url"
+          i18n:name="url"
+    ></span>.
+  </div>
 
-<div i18n:translate="author_message_mailtemplate_body" tal:omit-tag="" tal:condition="not:options/url">
-You have received a message from <span i18n:name="from_address" tal:omit-tag="" tal:content="options/sender_id"/>.
-</div>
+  <div tal:condition="not:options/url"
+       tal:omit-tag=""
+       i18n:translate="author_message_mailtemplate_body"
+  >
+You have received a message from
+    <span tal:content="options/sender_id"
+          tal:omit-tag=""
+          i18n:name="from_address"
+    ></span>.
+  </div>
 </div>

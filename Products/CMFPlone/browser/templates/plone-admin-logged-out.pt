@@ -1,40 +1,51 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
-      i18n:domain="plone">
+      xml:lang="en"
+      i18n:domain="plone"
+>
 
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title i18n:translate="">Logged out</title>
-  <link rel="stylesheet"
-        type="text/css"
-        href="${string:${context/absolute_url}/++theme++barceloneta/css/barceloneta.min.css}" />
-  <link rel="stylesheet"
-        type="text/css"
-        href="${string:${context/absolute_url}/++resource++plone-admin-ui.css}" />
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1"
+    />
+    <title i18n:translate="">Logged out</title>
+    <link href="${string:${context/absolute_url}/++theme++barceloneta/css/barceloneta.min.css}"
+          rel="stylesheet"
+          type="text/css"
+    />
+    <link href="${string:${context/absolute_url}/++resource++plone-admin-ui.css}"
+          rel="stylesheet"
+          type="text/css"
+    />
+  </head>
 
-<body>
+  <body>
 
-  <div class="container admin mt-5 mb-5 p-4">
-    <div class="row">
-      <p><img src="/++resource++plone-logo.svg"
-              width="215" height="56"
-              tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.svg"
-              alt="Plone logo"
-              i18n:attributes="alt" /></p>
-      <h1 i18n:translate="">You are now logged out.</h1>
-      <a href="${context/absolute_url}"
-          class="btn btn-primary"
-          i18n:translate="">
+    <div class="container admin mt-5 mb-5 p-4">
+      <div class="row">
+        <p><img alt="Plone logo"
+               height="56"
+               src="/++resource++plone-logo.svg"
+               width="215"
+               tal:attributes="
+                 src string:${context/absolute_url}/++resource++plone-logo.svg;
+               "
+               i18n:attributes="alt"
+          /></p>
+        <h1 i18n:translate="">You are now logged out.</h1>
+        <a class="btn btn-primary"
+           href="${context/absolute_url}"
+           i18n:translate=""
+        >
         Go back to your site.
-      </a>
+        </a>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

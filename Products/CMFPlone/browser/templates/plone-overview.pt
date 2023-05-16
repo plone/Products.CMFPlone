@@ -1,135 +1,187 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
-      i18n:domain="plone">
+      xml:lang="en"
+      i18n:domain="plone"
+>
 
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Plone</title>
-  <link rel="stylesheet"
-        type="text/css"
-        href="${string:${context/absolute_url}/++theme++barceloneta/css/barceloneta.min.css}" />
-  <link rel="stylesheet"
-        type="text/css"
-        href="${string:${context/absolute_url}/++resource++plone-admin-ui.css}" />
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1"
+    />
+    <title>Plone</title>
+    <link href="${string:${context/absolute_url}/++theme++barceloneta/css/barceloneta.min.css}"
+          rel="stylesheet"
+          type="text/css"
+    />
+    <link href="${string:${context/absolute_url}/++resource++plone-admin-ui.css}"
+          rel="stylesheet"
+          type="text/css"
+    />
+  </head>
 
 
-<body tal:define="sites view/sites;
-                  many python:len(sites) > 1;">
-  <div class="container admin mt-5 mb-5 p-4">
-    <header class="row">
-        <p><img src="/++resource++plone-logo.svg"
-                width="215" height="56"
-                tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.svg"
-                alt="Plone logo"
-                i18n:attributes="alt" /></p>
+  <body tal:define="
+          sites view/sites;
+          many python:len(sites) &gt; 1;
+        ">
+    <div class="container admin mt-5 mb-5 p-4">
+      <header class="row">
+        <p><img alt="Plone logo"
+               height="56"
+               src="/++resource++plone-logo.svg"
+               width="215"
+               tal:attributes="
+                 src string:${context/absolute_url}/++resource++plone-logo.svg;
+               "
+               i18n:attributes="alt"
+          /></p>
         <h1 i18n:translate="">Plone is up and running.</h1>
         <p class="lead">
-            <span i18n:translate="label_plone_org_description"> For an introduction to Plone, documentation, demos, add-ons, support, and community, visit</span>
-            <a href="http://plone.org"
-              title="Plone Community Home"
-              i18n:attributes="title label_plone_org_title;">plone.org</a>.
-          </p>
+          <span i18n:translate="label_plone_org_description">
+            For an introduction to Plone, documentation, demos, add-ons, support, and community, visit</span>
+          <a href="http://plone.org"
+             title="Plone Community Home"
+             i18n:attributes="title label_plone_org_title;"
+          >plone.org</a>.
+        </p>
 
-    </header>
+      </header>
 
-    <article class="row mb-5">
+      <article class="row mb-5">
         <div class="col-md-12 mb-4"
-             tal:condition="sites">
-            <tal:loop tal:repeat="site sites">
-                <div tal:define="outdated python: view.outdated(site);"
-                     class="mb-3 ${python: 'p-3 alert-warning' if outdated else ''}">
-                    <p tal:condition="outdated" i18n:translate="">This site configuration is outdated and needs to be upgraded:</p>
-                    <a href="#" id="go-to-site-link" class="btn btn-primary ${python:'btn-lg' if not many and not outdated  else ''}"
-                        tal:attributes="href site/absolute_url"
-                        title="Go to your instance"
-                        i18n:attributes="title;">
-                        <tal:one condition="not: many" i18n:translate="">View your Plone site</tal:one>
-                        <tal:many condition="many">${python:site.title} <small>(${python:"/".join(site.getPhysicalPath())})</small></tal:many>
-                    </a>
-                    <form action=""
-                            style="display: inline;"
-                            method="get"
-                            tal:condition="outdated"
-                            tal:attributes="action python:view.upgrade_url(site)">
-                        <input tal:condition="not:view/can_manage"
-                                type="hidden" name="came_from"
-                                tal:attributes="value python:view.upgrade_url(site, can_manage=True)"/>
-                        <button type="submit"
-                                class="btn btn-warning me-3"
-                                i18n:translate="label_upgrade_hellip">Upgrade&hellip;</button>
-                    </form>
-                </div>
-            </tal:loop>
+             tal:condition="sites"
+        >
+          <tal:loop tal:repeat="site sites">
+            <div class="mb-3 ${python: 'p-3 alert-warning' if outdated else ''}"
+                 tal:define="
+                   outdated python: view.outdated(site);
+                 "
+            >
+              <p tal:condition="outdated"
+                 i18n:translate=""
+              >This site configuration is outdated and needs to be upgraded:</p>
+              <a class="btn btn-primary ${python:'btn-lg' if not many and not outdated else ''}"
+                 id="go-to-site-link"
+                 href="#"
+                 title="Go to your instance"
+                 tal:attributes="
+                   href site/absolute_url;
+                 "
+                 i18n:attributes="title;"
+              >
+                <tal:one condition="not: many"
+                         i18n:translate=""
+                >View your Plone site</tal:one>
+                <tal:many condition="many">${python:site.title}
+                  <small>(${python:"/".join(site.getPhysicalPath())})</small></tal:many>
+              </a>
+              <form action=""
+                    method="get"
+                    style="display: inline;"
+                    tal:condition="outdated"
+                    tal:attributes="
+                      action python:view.upgrade_url(site);
+                    "
+              >
+                <input name="came_from"
+                       type="hidden"
+                       tal:condition="not:view/can_manage"
+                       tal:attributes="
+                         value python:view.upgrade_url(site, can_manage=True);
+                       "
+                />
+                <button class="btn btn-warning me-3"
+                        type="submit"
+                        i18n:translate="label_upgrade_hellip"
+                >Upgrade&hellip;</button>
+              </form>
+            </div>
+          </tal:loop>
         </div>
         <div class="col-md-12">
-            <h2 i18n:translate="" >Add Plone site</h2>
-            <p i18n:translate=""
-               tal:condition="sites">
+          <h2 i18n:translate="">Add Plone site</h2>
+          <p tal:condition="sites"
+             i18n:translate=""
+          >
                 You can add another Plone site to the server.
-            </p>
-            <p i18n:translate=""
-               tal:condition="not:sites"
-               class="alert-warning p-1">
+          </p>
+          <p class="alert-warning p-1"
+             tal:condition="not:sites"
+             i18n:translate=""
+          >
                 Your Plone site has not been added yet.
-            </p>
-            <form id="add-plone-site"
-                    method="get"
-                    tal:define="site_number python: '' if not sites else len(sites) + 1;
-                                action string:${context/absolute_url}/@@plone-addsite"
-                    action="${action}">
-                <input type="hidden" name="site_id" value="Plone${site_number}" />
-                <button type="submit"
-                        class="btn btn-${python:'success' if sites else 'primary'}"
-                        i18n:translate="">Create a new Plone site</button>
-                <a class="btn btn-info"
+          </p>
+          <form id="add-plone-site"
+                action="${action}"
+                method="get"
+                tal:define="
+                  site_number python: '' if not sites else len(sites) + 1;
+                  action string:${context/absolute_url}/@@plone-addsite;
+                "
+          >
+            <input name="site_id"
+                   type="hidden"
+                   value="Plone${site_number}"
+            />
+            <button class="btn btn-${python:'success' if sites else 'primary'}"
+                    type="submit"
                     i18n:translate=""
-                    tal:condition="view/has_volto"
-                    href="${action}?site_id=Plone${site_number}&amp;classic=1"
-                    >Create Classic Plone site</a>
-                <a class="btn btn-secondary"
-                    i18n:translate=""
-                    href="${action}?site_id=Plone${site_number}&amp;advanced=1"
-                    >Advanced</a>
-            </form>
-            <br/>
-            <p i18n:translate="help_create_plone_site_buttons_1">
+            >Create a new Plone site</button>
+            <a class="btn btn-info"
+               href="${action}?site_id=Plone${site_number}&amp;classic=1"
+               tal:condition="view/has_volto"
+               i18n:translate=""
+            >Create Classic Plone site</a>
+            <a class="btn btn-secondary"
+               href="${action}?site_id=Plone${site_number}&amp;advanced=1"
+               i18n:translate=""
+            >Advanced</a>
+          </form>
+          <br />
+          <p i18n:translate="help_create_plone_site_buttons_1">
                 Starting with Plone 6, 'Create a new Plone site' applies a
                 profile and creates default content for the new React based
                 default frontend Volto. You are however required to set up and run
                 an additional frontend service to use this setup.
-            </p>
-            <p i18n:translate="help_create_plone_site_buttons_2">
+          </p>
+          <p i18n:translate="help_create_plone_site_buttons_2">
                 The 'Create Classic Plone site' button creates a Plone site configured
                 for HTML based output, as was already supported by previous Plone versions.
                 Please consult our
-                <a href="https://6.docs.plone.org/" title="Plone 6 developer documentation"
-                   i18n:translate=""
-                   i18n:name="docs_link"
-                   i18n:attributes="title">developer documentation overview </a>
+            <a href="https://6.docs.plone.org/"
+               title="Plone 6 developer documentation"
+               i18n:attributes="title"
+               i18n:name="docs_link"
+               i18n:translate=""
+            >developer documentation overview
+            </a>
                 for more information about differences and requirements for
                 these frontends and possible upgrade paths from older Plone versions
                 to Plone 6.
-            </p>
+          </p>
         </div>
-    </article>
+      </article>
 
-    <footer class="row">
-    <p>
-      <a href="#"
-        tal:attributes="href string:${context/absolute_url}/manage_main"
-        title="Go to the ZMI"
-        i18n:attributes="title;"
-        i18n:translate="label_zmi_link">Management Interface</a>
-      <span i18n:translate="label_zmi_link_description"> &#151; low-level technical configuration.</span>
-    </p>
-  </footer>
-</div>
-</body>
+      <footer class="row">
+        <p>
+          <a href="#"
+             title="Go to the ZMI"
+             tal:attributes="
+               href string:${context/absolute_url}/manage_main;
+             "
+             i18n:attributes="title;"
+             i18n:translate="label_zmi_link"
+          >Management Interface</a>
+          <span i18n:translate="label_zmi_link_description">
+            &#151; low-level technical configuration.</span>
+        </p>
+      </footer>
+    </div>
+  </body>
 </html>

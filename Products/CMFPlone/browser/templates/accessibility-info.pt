@@ -1,35 +1,45 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
       metal:use-macro="context/@@main_template/macros/master"
-      i18n:domain="plone">
+      xml:lang="en"
+      i18n:domain="plone"
+>
 
-<body>
-<metal:main fill-slot="main">
+  <body>
+    <metal:main fill-slot="main">
 
-    <h1 class="documentFirstHeading"
-        i18n:translate="heading_accessibility_info">Accessibility</h1>
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_accessibility_info"
+      >Accessibility</h1>
 
-    <div id="content-core">
+      <div id="content-core">
 
 
-      <p><tal:i18n i18n:translate="description_accessibility_info">
-            This site uses the open source Content Management System <a href="https://plone.org" i18n:name="plone">Plone</a>.
+        <p><tal:i18n i18n:translate="description_accessibility_info">
+            This site uses the open source Content Management System
+            <a href="https://plone.org"
+               i18n:name="plone"
+            >Plone</a>.
             It meets the Web Content Accessibility Guidelines
-	    (<a href="https://www.w3.org/TR/WCAG20/"><acronym i18n:name="wcag"
-                  title="Web Content Accessibility Guidelines"
-                  i18n:attributes="title title_wcag;">WCAG</acronym> v2.1</a>) level 'AA' for people with disabilities,
+            (<a href="https://www.w3.org/TR/WCAG20/"><acronym title="Web Content Accessibility Guidelines"
+                       i18n:attributes="title title_wcag;"
+                       i18n:name="wcag"
+              >WCAG</acronym>
+              v2.1</a>) level 'AA' for people with disabilities,
             including blindness and low vision, deafness and hearing loss, learning disabilities,
             cognitive limitations, limited movement, speech disabilities, photosensitivity,
             and combinations of these.</tal:i18n></p>
-         <p><tal:i18n i18n:translate="description_accessibility_info2">
+        <p><tal:i18n i18n:translate="description_accessibility_info2">
             It is also accessible to content authors with disabilities per the level 'AA' Authoring Tool Accessibility Guidelines
-            (<a href="https://www.w3.org/TR/ATAG20/"><acronym i18n:name="atag"
-                 title="Authoring Tool Accessibility Guidelines"
-                 i18n:attributes="title title_atag;">ATAG</acronym> 2.0</a>).
-         </tal:i18n>
+            (<a href="https://www.w3.org/TR/ATAG20/"><acronym title="Authoring Tool Accessibility Guidelines"
+                       i18n:attributes="title title_atag;"
+                       i18n:name="atag"
+              >ATAG</acronym>
+              2.0</a>).
+          </tal:i18n>
         </p>
 
         <h2 i18n:translate="heading_accessibility_statement">Accessibility Statement</h2>
@@ -45,36 +55,48 @@
        however, site standards and content vary over time.
 
         If this web site does not validate correctly, please contact the
-        <span i18n:name="site_admin"><a href="/contact-info"
-              tal:attributes="href string:${context/portal_url}/contact-info"
-              i18n:translate="label_site_admin">site administration</a></span>.
+          <span i18n:name="site_admin"><a href="/contact-info"
+               tal:attributes="
+                 href string:${context/portal_url}/contact-info;
+               "
+               i18n:translate="label_site_admin"
+            >site administration</a></span>.
         </p>
 
         <p i18n:translate="description_wcag_aa_rating">
         A number of checkpoints in
-        <acronym i18n:name="wcag"
-                 title="Web Content Accessibility Guidelines"
-                 i18n:attributes="title title_wcag;">WCAG</acronym> 2.1 and <acronym i18n:name="atag"
-                 title="Authoring Tool Accessibility Guidelines"
-                 i18n:attributes="title title_atag;">ATAG</acronym> 2.0 guidelines are
+          <acronym title="Web Content Accessibility Guidelines"
+                   i18n:attributes="title title_wcag;"
+                   i18n:name="wcag"
+          >WCAG</acronym>
+          2.1 and
+          <acronym title="Authoring Tool Accessibility Guidelines"
+                   i18n:attributes="title title_atag;"
+                   i18n:name="atag"
+          >ATAG</acronym>
+           2.0 guidelines are
         subjective; there may be instances where interpretations vary.
         </p>
 
-    	<h3 i18n:translate="heading_vpat">Voluntary Product Accessibility Template (VPAT)</h3>
+        <h3 i18n:translate="heading_vpat">Voluntary Product Accessibility Template (VPAT)</h3>
         <p i18n:translate="description_vpat">
           View
-            <a title="Plone's Voluntary Product Accessibility Template (VPAT)"
-               href="https://plone.org/plone-vpat.pdf/view"
-               i18n:attributes="title title_plone_vpat;">
+          <a href="https://plone.org/plone-vpat.pdf/view"
+             title="Plone's Voluntary Product Accessibility Template (VPAT)"
+             i18n:attributes="title title_plone_vpat;"
+          >
                Plone's VPAT
-            </a>
-            <a href="https://www.state.gov/m/irm/impact/126340.htm">
-                <acronym i18n:name="vpat" title="About VPAT" i18n:attributes="title title_vpat;">(about VPAT)</acronym>
-            </a>
+          </a>
+          <a href="https://www.state.gov/m/irm/impact/126340.htm">
+            <acronym title="About VPAT"
+                     i18n:attributes="title title_vpat;"
+                     i18n:name="vpat"
+            >(about VPAT)</acronym>
+          </a>
         </p>
 
-    </div>
+      </div>
 
-</metal:main>
-</body>
+    </metal:main>
+  </body>
 </html>
