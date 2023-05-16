@@ -1,41 +1,42 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-    i18n_domain="plone">
+    i18n_domain="plone"
+    >
 
   <genericsetup:registerProfile
       name="testfixture1"
       title="Plone Test Fixture 1"
-      directory="profiles/testfixture"
-      for="plone.base.interfaces.ITestCasePloneSiteRoot"
       provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="plone.base.interfaces.ITestCasePloneSiteRoot"
+      directory="profiles/testfixture"
       />
 
   <genericsetup:upgradeStep
-      source="*"
-      destination="1"
       title="Null upgrade step"
       description=""
       profile="Products.CMFPlone:testfixture1"
+      source="*"
+      destination="1"
       handler="Products.CMFPlone.controlpanel.tests.test_controlpanel_installer.dummy_handler"
       />
 
   <genericsetup:upgradeStep
-      source="2"
-      destination="3"
       title="Add pants"
       description=""
-      handler="Products.CMFPlone.controlpanel.tests.test_controlpanel_installer.dummy_handler"
       profile="Products.CMFPlone:testfixture1"
+      source="2"
+      destination="3"
+      handler="Products.CMFPlone.controlpanel.tests.test_controlpanel_installer.dummy_handler"
       />
 
   <genericsetup:upgradeStep
-      source="1"
-      destination="2"
       title="Remove pants"
       description=""
-      handler="Products.CMFPlone.controlpanel.tests.test_controlpanel_installer.dummy_handler"
       profile="Products.CMFPlone:testfixture1"
+      source="1"
+      destination="2"
+      handler="Products.CMFPlone.controlpanel.tests.test_controlpanel_installer.dummy_handler"
       />
 
 </configure>

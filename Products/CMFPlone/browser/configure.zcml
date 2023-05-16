@@ -1,12 +1,17 @@
-<configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:browser="http://namespaces.zope.org/browser"
-           xmlns:i18n="http://namespaces.zope.org/i18n"
-           xmlns:zcml="http://namespaces.zope.org/zcml"
-           i18n_domain="plone">
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
 
   <include package=".login" />
   <include file="admin.zcml" />
-  <include file="caching.zcml" zcml:condition="installed z3c.caching"/>
+  <include
+      file="caching.zcml"
+      zcml:condition="installed z3c.caching"
+      />
 
   <class class="Products.CMFPlone.Portal.PloneSite">
     <implements interface="plone.app.layout.navigation.interfaces.INavigationRoot" />
@@ -18,236 +23,237 @@
 
   <permission
       id="Products.CMFPlone.AllowSendto"
-      title="Allow sendto" />
+      title="Allow sendto"
+      />
 
   <browser:resource
-      file="static/plone-logo.svg"
       name="plone-logo.svg"
+      file="static/plone-logo.svg"
       />
 
   <browser:page
-      for="*"
       name="site-logo"
+      for="*"
       class=".sitelogo.SiteLogo"
       permission="zope.Public"
       />
 
   <browser:page
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="favicon.ico"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       class=".favicon.SiteFavicon"
       permission="zope.Public"
       />
 
   <browser:page
-      for="*"
       name="sendto_form"
+      for="*"
       class=".sendto.SendToForm"
       permission="Products.CMFPlone.AllowSendto"
       />
 
   <browser:page
-      for="*"
       name="breadcrumbs_view"
+      for="*"
       class=".navigation.PhysicalNavigationBreadcrumbs"
-      permission="zope.Public"
       allowed_attributes="breadcrumbs"
+      permission="zope.Public"
       />
 
   <browser:page
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="breadcrumbs_view"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       class=".navigation.RootPhysicalNavigationBreadcrumbs"
-      permission="zope.Public"
       allowed_attributes="breadcrumbs"
+      permission="zope.Public"
       />
 
   <browser:page
-      for="*"
       name="sitemap_builder_view"
+      for="*"
       class=".navigation.CatalogSiteMap"
-      permission="zope.Public"
       allowed_attributes="siteMap"
+      permission="zope.Public"
       />
 
   <browser:page
-      for="*"
       name="portal_tabs_view"
+      for="*"
       class=".navigation.CatalogNavigationTabs"
-      permission="zope.Public"
       allowed_attributes="topLevelTabs"
-      />
-
-  <browser:page
-      for="*"
-      name="plone"
-      class=".ploneview.Plone"
       permission="zope.Public"
-      allowed_interface=".interfaces.IPlone"
       />
 
   <browser:page
+      name="plone"
       for="*"
+      class=".ploneview.Plone"
+      allowed_interface=".interfaces.IPlone"
+      permission="zope.Public"
+      />
+
+  <browser:page
       name="sitemap"
+      for="*"
       class=".sitemap.SitemapView"
+      allowed_interface=".interfaces.ISitemapView"
       template="templates/sitemap.pt"
       permission="zope.Public"
-      allowed_interface=".interfaces.ISitemapView"
       />
 
   <browser:page
-      for="*"
       name="main_template"
+      for="*"
       class=".main_template.MainTemplate"
       allowed_interface=".interfaces.IMainTemplate"
       permission="zope.Public"
       />
 
   <browser:page
-      for="*"
       name="title"
+      for="*"
       template="templates/title.pt"
       permission="zope.Public"
       />
 
   <browser:page
-      for="*"
       name="description"
+      for="*"
       template="templates/description.pt"
       permission="zope.Public"
       />
 
   <browser:page
-      for="*"
       name="render-toolbar"
+      for="*"
       template="templates/toolbar.pt"
       permission="zope.Public"
       />
 
   <browser:page
-      for="*"
       name="global_statusmessage"
+      for="*"
       class=".global_statusmessage.GlobalStatusMessage"
       permission="zope.Public"
       />
 
   <browser:page
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="accessibility-info"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       template="templates/accessibility-info.pt"
       permission="zope.Public"
       />
 
   <browser:page
-      for="plone.base.interfaces.IPloneSiteRoot"
       name="author"
-      class=".author.AuthorView"
-      permission="zope.Public"
-      template="templates/author.pt"
-      />
-
-  <browser:page
       for="plone.base.interfaces.IPloneSiteRoot"
-      name="author-feedback-template"
+      class=".author.AuthorView"
+      template="templates/author.pt"
       permission="zope.Public"
-      template="templates/author_feedback_template.pt"
       />
 
   <browser:page
-      for="*"
+      name="author-feedback-template"
+      for="plone.base.interfaces.IPloneSiteRoot"
+      template="templates/author_feedback_template.pt"
+      permission="zope.Public"
+      />
+
+  <browser:page
       name="contact-info"
+      for="*"
       class=".contact_info.ContactForm"
       permission="zope.Public"
       />
 
   <browser:page
-      for="*"
       name="contact-info-email"
+      for="*"
       template="templates/contact-info-email.pt"
       permission="zope.Public"
       />
 
-   <adapter
-      for="*
-           .interfaces.INavigationTree"
+  <adapter
       factory=".navtree.DefaultNavtreeStrategy"
       provides="plone.app.layout.navigation.interfaces.INavtreeStrategy"
+      for="*
+           .interfaces.INavigationTree"
       />
 
-   <adapter
-      for="*
-          .interfaces.ISiteMap"
+  <adapter
       factory=".navtree.SitemapNavtreeStrategy"
       provides="plone.app.layout.navigation.interfaces.INavtreeStrategy"
+      for="*
+           .interfaces.ISiteMap"
       />
 
   <browser:page
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="robots.txt"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       class=".robots.Robots"
       permission="zope.Public"
       />
 
   <browser:page
-      for="*"
       name="ok"
+      for="*"
       class=".okay.OK"
       permission="zope.Public"
       />
 
   <!-- Useful for cross domain iframe proxying -->
   <browser:resource
-      file="static/blank.html"
       name="blank.html"
+      file="static/blank.html"
       />
 
   <include package=".syndication" />
 
   <browser:page
       name="search"
-      class=".search.Search"
-      permission="zope2.View"
       for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      class=".search.Search"
       template="templates/search.pt"
+      permission="zope2.View"
       />
 
   <browser:page
       name="ajax-search"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       class=".search.AjaxSearch"
       permission="zope2.View"
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       />
 
   <!-- AtD Support -->
   <browser:page
-      for="*"
       name="checkDocument"
+      for="*"
       class=".atd.ATDProxyView"
-      permission="zope2.View"
       attribute="checkDocument"
+      permission="zope2.View"
       />
 
   <!-- Default Page View -->
   <browser:page
-      for="OFS.interfaces.ITraversable"
       name="default_page"
+      for="OFS.interfaces.ITraversable"
       class=".defaultpage.DefaultPage"
-      permission="zope.Public"
       allowed_interface="plone.base.interfaces.defaultpage.IDefaultPage"
+      permission="zope.Public"
       />
 
   <browser:page
-      for="*"
       name="footer"
-      permission="zope.Public"
+      for="*"
       template="templates/footer.pt"
+      permission="zope.Public"
       />
 
   <browser:page
-      for="*"
       name="colophon"
-      permission="zope.Public"
+      for="*"
       template="templates/colophon.pt"
+      permission="zope.Public"
       />
 
   <browser:page
@@ -288,22 +294,22 @@
       />
 
   <browser:page
-      for="*"
       name="iconresolver"
+      for="*"
       class=".icons.IconsView"
       permission="zope.Public"
       />
 
   <browser:page
-      for="*"
       name="recently_modified"
+      for="*"
       template="templates/recently_modified.pt"
       permission="zope2.View"
       />
 
   <browser:page
-      for="*"
       name="recently_published"
+      for="*"
       template="templates/recently_published.pt"
       permission="zope2.View"
       />
