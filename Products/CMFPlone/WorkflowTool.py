@@ -94,7 +94,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
     security.declarePublic("getTransitionsFor")
 
     def getTransitionsFor(self, obj=None, container=None, REQUEST=None):
-        if isinstance(obj, []):
+        if isinstance(obj, list):
             return self.flattenTransitions(objs=obj, container=container)
         result = {}
         chain = self.getChainFor(obj)
