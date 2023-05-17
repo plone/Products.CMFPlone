@@ -311,17 +311,17 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getLink("Users").click()
         self.assertEqual(self.browser.url, self.users_url)
 
-    def test_usergroups_control_panel_link_users(self):
+    def test_usergroups_control_panel_link_groups(self):
         self.browser.open("%s/@@overview-controlpanel" % self.portal_url)
         self.browser.getLink("Groups").click()
         self.assertEqual(self.browser.url, self.groups_url)
 
-    def test_usergroups_control_panel_link_settings(self):
+    def test_usergroups_control_panel_link_settings_user_groups(self):
         self.browser.open("%s/@@overview-controlpanel" % self.portal_url)
         self.browser.getLink("User and Group Settings").click()
         self.assertEqual(self.browser.url, self.settings_url)
 
-    def test_usergroups_control_panel_link_settings(self):
+    def test_usergroups_control_panel_link_settings_member_fields(self):
         self.browser.open("%s/@@overview-controlpanel" % self.portal_url)
         self.browser.getLink("Member Fields").click()
         self.assertEqual(self.browser.url, self.memberfields_url)
