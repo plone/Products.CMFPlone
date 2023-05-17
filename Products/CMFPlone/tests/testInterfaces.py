@@ -18,6 +18,8 @@ from zope.interface import implementedBy
 from zope.interface import providedBy
 from zope.interface.interface import InterfaceClass
 
+import unittest
+
 
 # for Python 2
 try:
@@ -287,9 +289,7 @@ class zope_interface_test(TestCase):
                 self.interfaceProvidedBy(self.instance, iface)
 
 
-###############################################################################
-###                         testing starts here                             ###
-###############################################################################
+# testing starts here
 
 # format: (class object, (list interface objects))
 testClasses = [
@@ -333,8 +333,6 @@ for testClass in testClasses:
     # add the testing method to the class to get a nice name
     setattr(KlassInterfaceTest, funcName, lambda self: self._testStuff())
     tests.append(KlassInterfaceTest)
-
-import unittest
 
 
 def test_suite():

@@ -46,7 +46,7 @@ class TestFactoryPloneSite(unittest.TestCase):
 
     def test_site_creation_without_content_but_with_content_types(self):
         """Test site creation without example content have content types."""
-        ploneSite = addPloneSite(self.app, "ploneFoo", title="Foo", setup_content=False)
+        addPloneSite(self.app, "ploneFoo", title="Foo", setup_content=False)
         # Folder
         fti = queryUtility(IDexterityFTI, name="Folder")
         self.assertIsNotNone(fti)

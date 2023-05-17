@@ -94,7 +94,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
     security.declarePublic("getTransitionsFor")
 
     def getTransitionsFor(self, obj=None, container=None, REQUEST=None):
-        if type(obj) is type([]):
+        if isinstance(obj, []):
             return self.flattenTransitions(objs=obj, container=container)
         result = {}
         chain = self.getChainFor(obj)
@@ -110,7 +110,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                             and tdef.trigger_type == TRIGGER_USER_ACTION
                             and tdef.actbox_name
                             and wf._checkTransitionGuard(tdef, obj)
-                            and not tdef.id in result
+                            and tdef.id not in result
                         ):
                             result[tdef.id] = {
                                 "id": tdef.id,
@@ -342,7 +342,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                 else:
                     for state in state_folder.values():
                         key = f"{state.id}:{state.title}"
-                        if not key in dup_list:
+                        if key not in dup_list:
                             states.append(state)
                         dup_list[key] = 1
         return [(s.title, s.getId()) for s in states]

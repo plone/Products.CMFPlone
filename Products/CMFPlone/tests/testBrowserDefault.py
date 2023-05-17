@@ -274,7 +274,7 @@ class TestPortalBrowserDefault(unittest.TestCase):
 
         # Make sure we have the front page; the portal generator should take
         # care of this, but let's not be dependent on that in the test
-        if not "front-page" in self.portal.objectIds():
+        if "front-page" not in self.portal.objectIds():
             self.portal.invokeFactory(
                 "Document", "front-page", title="Welcome to Plone"
             )

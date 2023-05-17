@@ -29,7 +29,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         return bundle
 
     def test_bundle_defernot_asyncnot(self):
-        bundle = self._make_test_bundle()
+        self._make_test_bundle()
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
         view.update()
         rendered = view.render()
@@ -50,7 +50,6 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         bundle = self._make_test_bundle()
         bundle.load_async = True
         bundle.load_defer = False
-        request = self.app.REQUEST
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
         view.update()
         rendered = view.render()

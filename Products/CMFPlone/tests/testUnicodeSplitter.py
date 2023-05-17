@@ -35,7 +35,7 @@ def _setlocale(*names):
         try:
             locale.setlocale(locale.LC_ALL, name)
             break
-        except locale.Error as e:
+        except locale.Error:
             pass
     else:
         raise ValueError(

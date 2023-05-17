@@ -41,7 +41,6 @@ ADDITIONAL_CLASSES = [
 
 
 def _add_css_class(svgtree, cfg):
-    cssclass = cfg.get("cssclass", "")
     root = svgtree.getroot()
     current = root.attrib.get("class", "")
     root.attrib["class"] = f"{' '.join(ADDITIONAL_CLASSES)} {cfg['cssclass']} {current}"
