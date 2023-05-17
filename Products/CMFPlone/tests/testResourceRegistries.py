@@ -36,14 +36,6 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         self.assertTrue("async=" not in rendered)
         self.assertTrue("defer=" not in rendered)
 
-    def test_bundle_defernot_async(self):
-        bundle = self._make_test_bundle()
-        bundle.load_async = True
-        bundle.load_defer = False
-        view = ScriptsView(self.app, self.app.REQUEST, None, None)
-        view.update()
-        rendered = view.render()
-
     def test_bundle_defer_asyncnot(self):
         bundle = self._make_test_bundle()
         bundle.load_async = False

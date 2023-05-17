@@ -349,7 +349,3 @@ class TestEmailValidityChecker(unittest.TestCase):
     def test_long_tld(self):
         result = self.check("webmaster@example.onion")
         self.assertTrue(*result)
-
-
-class TestRegistrationToolEmailValidityChecker(PloneTestCase.PloneTestCase):
-    check = lambda _, email: _.portal.portal_registration.isValidEmail(email)
