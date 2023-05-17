@@ -34,7 +34,6 @@ from zExceptions import Unauthorized
 from zope.annotation.interfaces import IAnnotations
 from zope.component import queryMultiAdapter
 from zope.component.hooks import getSite
-from zope.deprecation.deprecation import deprecate
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import providedBy

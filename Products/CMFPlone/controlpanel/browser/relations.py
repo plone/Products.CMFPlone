@@ -1,5 +1,4 @@
 from collections import defaultdict
-from operator import itemgetter
 from plone.base import PloneMessageFactory as _
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.relationhelper import get_relations_stats
@@ -7,7 +6,6 @@ from Products.CMFPlone.relationhelper import rebuild_relations
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from zc.relation.interfaces import ICatalog
-from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.intid.interfaces import IIntIds

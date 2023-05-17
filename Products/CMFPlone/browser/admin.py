@@ -352,7 +352,7 @@ class Upgrade(BrowserView):
         if pm.getInstanceVersion() < "6005":
             return False
         try:
-            from plone.volto.browser import migrate_to_volto
+            from plone.volto.browser import migrate_to_volto  # noqa: F401
         except ImportError:
             return False
         installer = get_installer(self.context, self.request)

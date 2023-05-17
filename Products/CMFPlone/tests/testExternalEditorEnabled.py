@@ -5,7 +5,7 @@ import unittest
 
 
 try:
-    import Products.ExternalEditor
+    import Products.ExternalEditor  # noqa: F401
 except ImportError:
     HAS_EXTERNAL_EDITOR = False
 else:

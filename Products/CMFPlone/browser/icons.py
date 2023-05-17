@@ -1,17 +1,12 @@
 from lxml import etree
 from OFS.Image import File
 from plone.registry.interfaces import IRegistry
-from Products.CMFCore.interfaces import ISiteRoot
 from Products.Five.browser import BrowserView
 from zExceptions import NotFound
-from zope.component import adapter
 from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
-from zope.interface import Interface
-from zope.location.interfaces import LocationError
 from zope.publisher.interfaces import IPublishTraverse
-from zope.traversing.interfaces import ITraversable
 
 import logging
 

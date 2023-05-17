@@ -168,7 +168,6 @@ def initialize(context):
         TranslationServiceTool.TranslationServiceTool,
     )
 
-    from Products.CMFCore.utils import ContentInit
     from Products.CMFPlone.utils import ToolInit
 
     # Register tools and content

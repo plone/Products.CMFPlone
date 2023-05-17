@@ -5,7 +5,6 @@ from plone.registry.interfaces import IRegistry
 from unittest import mock
 from zope.component import getUtility
 
-import os
 import unittest
 
 

@@ -15,8 +15,6 @@ from zope.event import notify
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectCreatedEvent
 
-import json
-
 
 class ActionListControlPanel(BrowserView):
     """Control panel for the portal actions."""
