@@ -84,7 +84,7 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
             return
         try:
             user = '"%s"' % getSecurityManager().getUser().getUserName()
-        except:
+        except Exception:
             user = "unknown user"
         logger.info("Shutdown requested by %s" % user)
         if LIFETIME:
@@ -109,7 +109,7 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
 
         try:
             user = '"%s"' % getSecurityManager().getUser().getUserName()
-        except:
+        except Exception:
             user = "unknown user"
         logger.info("Restart requested by %s" % user)
         shutdown(1)

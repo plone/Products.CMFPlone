@@ -64,21 +64,21 @@ class TestActionsTool(unittest.TestCase):
         self.portal._delObject("portal_types")
         try:
             self.actions.listFilteredActionsFor(self.portal)
-        except:
+        except Exception:
             self.fail_tb("Should not bomb out if a provider is missing")
 
     def testBrokenActionProvider(self):
         self.portal.portal_types = self.portal.portal_catalog
         try:
             self.actions.listFilteredActionsFor(self.portal)
-        except:
+        except Exception:
             self.fail_tb("Should not bomb out if a provider is broken")
 
     def testMissingListActions(self):
         self.portal.portal_types = ExplicitItem()
         try:
             self.actions.listFilteredActionsFor(self.portal)
-        except:
+        except Exception:
             self.fail_tb("Should not bomb out if a provider is broken")
 
     def testDocumentActionsPermissionBug(self):
@@ -129,7 +129,7 @@ class TestActionsTool(unittest.TestCase):
         self.actions["not_a_category"] = me
         try:
             self.actions.listActions()
-        except:
+        except Exception:
             self.fail_tb(
                 "Should not fail if item exists w/o IActionCategory " "interface"
             )

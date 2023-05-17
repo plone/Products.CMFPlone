@@ -53,5 +53,5 @@ class ExceptionView(BrowserView):
 
         try:
             return self.index(error_type=error_type, error_tb=error_tb)
-        except:
+        except Exception:
             return self.basic_template(error_type=error_type, error_tb=error_tb)

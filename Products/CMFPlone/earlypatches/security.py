@@ -86,5 +86,5 @@ from ZPublisher.HTTPRequest import HTTPRequest
 for c in [BaseRequest, HTTPRequest, ZPBaseRequest, FTPRequest, ZPHTTPRequest]:
     try:
         del c.__doc__
-    except:
+    except Exception:
         pass

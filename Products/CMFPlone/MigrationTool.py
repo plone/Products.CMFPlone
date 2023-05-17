@@ -291,7 +291,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                     logger.info("Ran upgrade step: %s" % step["title"])
                 except (ConflictError, KeyboardInterrupt):
                     raise
-                except:
+                except Exception:
                     logger.error("Upgrade aborted. Error:\n", exc_info=True)
 
                     if not swallow_errors:
@@ -327,7 +327,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                         self._needRecatalog = 0
                     except (ConflictError, KeyboardInterrupt):
                         raise
-                    except:
+                    except Exception:
                         logger.error(
                             "Exception was thrown while cataloging:" "\n", exc_info=True
                         )
@@ -341,7 +341,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                         self._needUpdateRole = 0
                     except (ConflictError, KeyboardInterrupt):
                         raise
-                    except:
+                    except Exception:
                         logger.error(
                             "Exception was thrown while updating " "role mappings",
                             exc_info=True,

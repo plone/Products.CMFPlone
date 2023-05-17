@@ -56,7 +56,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                 trans = self.getTransitionsFor(o, container)
             except ConflictError:
                 raise
-            except:
+            except Exception:
                 pass
             if trans:
                 for t in trans:
@@ -81,7 +81,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                 trans = self.getTransitionsFor(o, o.aq_inner.aq_parent)
             except ConflictError:
                 raise
-            except:
+            except Exception:
                 pass
             if trans:
                 for t in trans:

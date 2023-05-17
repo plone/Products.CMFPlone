@@ -390,7 +390,7 @@ def _unrestricted_rename(container, id, new_id):
     """
     try:
         container._checkId(new_id)
-    except:
+    except Exception:
         raise CopyError(
             MessageDialog(
                 title="Invalid Id", message=sys.exc_info()[1], action="manage_main"
@@ -401,7 +401,7 @@ def _unrestricted_rename(container, id, new_id):
         raise CopyError(f"Not Supported {escape(id)}")
     try:
         ob._notifyOfCopyTo(container, op=1)
-    except:
+    except Exception:
         raise CopyError(
             MessageDialog(
                 title="Rename Error", message=sys.exc_info()[1], action="manage_main"
