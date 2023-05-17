@@ -332,7 +332,8 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
 
 
 class TestEmailValidityChecker(unittest.TestCase):
-    check = lambda _, email: _checkEmail(email)
+    def check(self, email):
+        return _checkEmail(email)
 
     def test_generic_tld(self):
         result = self.check("webmaster@example.org")

@@ -190,7 +190,7 @@ def restore_relations(context=None, all_relations=None):
         from_attribute = item["from_attribute"]
         try:
             to_id = intids.getId(target_obj)
-        except KeyError as e:
+        except KeyError:
             logger.warning(f"No intid for {target_obj}")
             continue
 

@@ -174,7 +174,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
     def isValidEmail(self, email):
         # Checks for valid email.
-        if EMAIL_RE.search(email) == None:
+        if EMAIL_RE.search(email) is None:
             return 0
         try:
             checkEmailAddress(email)

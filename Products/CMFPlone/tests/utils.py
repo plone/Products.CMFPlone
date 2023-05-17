@@ -73,7 +73,7 @@ class MockMailHost(MailBase):
 # a function to test if a string is a valid CSS identifier
 def validateCSSIdentifier(identifier):
     match = VALID_CSS_ID.match(identifier)
-    if not match is None:
+    if match is not None:
         return match.end() == len(identifier)
     else:
         return False

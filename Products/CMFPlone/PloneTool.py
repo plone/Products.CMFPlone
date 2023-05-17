@@ -432,7 +432,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Don't assign the traceback to s
         # (otherwise will generate a circular reference)
         s = sys.exc_info()[:2]
-        if s[0] == None:
+        if s[0] is None:
             return None
         if isinstance(s[0], str):
             return s[0]

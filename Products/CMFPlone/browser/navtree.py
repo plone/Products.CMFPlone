@@ -13,7 +13,6 @@ from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
-from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.interface import implementer
@@ -130,7 +129,6 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
 
     def decoratorFactory(self, node):
         context = aq_inner(self.context)
-        request = context.REQUEST
 
         newNode = node.copy()
         item = node["item"]
@@ -150,8 +148,6 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         showChildren = False
         if isFolderish and (portalType is None or portalType not in self.parentTypesNQ):
             showChildren = True
-
-        layout_view = getMultiAdapter((context, request), name="plone_layout")
 
         newNode["Title"] = utils.pretty_title_or_id(context, item)
         newNode["id"] = item.getId

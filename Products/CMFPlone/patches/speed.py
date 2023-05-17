@@ -3,7 +3,7 @@ from plone.memoize import forever
 
 
 # Remember the installed products and packages (unless running tests)
-if not "ZOPETESTCASE" in environ:
+if "ZOPETESTCASE" not in environ:
     from App import FactoryDispatcher
 
     FactoryDispatcher._product_packages = forever.memoize(

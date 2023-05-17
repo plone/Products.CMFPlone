@@ -120,9 +120,9 @@ class Plone(BrowserView):
             converted = True
         if len(text) > length:
             text = text[:length]
-            l = text.rfind(" ")
-            if l > length / 2:
-                text = text[: l + 1]
+            position = text.rfind(" ")
+            if position > length / 2:
+                text = text[: position + 1]
             text += ellipsis
         if converted:
             # encode back from unicode

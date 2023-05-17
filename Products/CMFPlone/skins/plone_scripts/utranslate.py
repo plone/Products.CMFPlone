@@ -14,7 +14,7 @@ if container.REQUEST.get("PUBLISHED") is script:
 
 # handle the possible "nothing" condition in folder_contents.pt ln 21
 # gracefully
-if msgid == None:
+if msgid is None:
     return None
 
 from Products.CMFCore.utils import getToolByName

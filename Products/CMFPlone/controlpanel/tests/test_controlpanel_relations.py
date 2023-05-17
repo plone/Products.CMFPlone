@@ -90,7 +90,7 @@ class TestRelationsControlpanel(unittest.TestCase):
         self.assertEqual(dict(broken), {})
 
         view = getMultiAdapter((self.portal, self.request), name="rebuild-relations")
-        results = view(rebuild=True)
+        view(rebuild=True)
 
         # relations are the same after a rebuild
         stats, broken = get_relations_stats()
@@ -114,7 +114,7 @@ class TestRelationsControlpanel(unittest.TestCase):
 
         # broken relations are gone after rebuilding
         view = getMultiAdapter((self.portal, self.request), name="rebuild-relations")
-        results = view(rebuild=True)
+        view(rebuild=True)
         stats, broken = get_relations_stats()
         self.assertEqual(dict(stats), {"relatedItems": 1})
         self.assertEqual(dict(broken), {})
@@ -145,7 +145,7 @@ class TestRelationsControlpanel(unittest.TestCase):
         self.assertEqual(dict(broken), {})
 
         view = getMultiAdapter((self.portal, self.request), name="rebuild-relations")
-        results = view(rebuild=True, flush_and_rebuild_intids=True)
+        view(rebuild=True, flush_and_rebuild_intids=True)
 
         # relations are the same after a rebuild
         stats, broken = get_relations_stats()
