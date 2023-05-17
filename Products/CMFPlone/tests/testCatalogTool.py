@@ -7,7 +7,6 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.textfield import RichTextValue
-from plone.dexterity.content import CEILING_DATE
 from plone.indexer.wrapper import IndexableObjectWrapper
 from plone.uuid.interfaces import IAttributeUUID
 from plone.uuid.interfaces import IUUID

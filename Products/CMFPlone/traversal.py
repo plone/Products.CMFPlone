@@ -1,6 +1,5 @@
 from plone.base.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
 from plone.resource.interfaces import IResourceDirectory
-from plone.resource.interfaces import IUniqueResourceRequest
 from plone.resource.traversal import ResourceTraverser
 from Products.PageTemplates.Expressions import getEngine
 from Products.PageTemplates.Expressions import getTrustedEngine
@@ -8,7 +7,6 @@ from Products.PageTemplates.interfaces import IZopeAwareEngine
 from zope.component import queryUtility
 from zope.globalrequest import getRequest
 from zope.interface import implementer
-from zope.interface import Interface
 from zope.pagetemplate import engine as zpt_engine
 
 

@@ -4,14 +4,12 @@ from AccessControl import ModuleSecurityInfo
 from AccessControl import Unauthorized
 from AccessControl.safe_formatter import SafeFormatter
 from Acquisition import aq_base
-from Acquisition import aq_get
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from App.Common import package_home
 from App.Dialogs import MessageDialog
 from App.ImageFile import ImageFile
 from DateTime import DateTime
-from DateTime.interfaces import DateTimeError
 from html import escape
 from OFS.CopySupport import CopyError
 from os.path import abspath
@@ -19,7 +17,6 @@ from os.path import join
 from os.path import split
 from plone.base import PloneMessageFactory as _
 from plone.base import utils as base_utils
-from plone.base.interfaces.controlpanel import IImagingSchema
 from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
@@ -40,9 +37,7 @@ from zope.component.hooks import getSite
 from zope.deferredimport import deprecated as deprecated_import
 from zope.deprecation import deprecate
 from zope.deprecation import deprecated  # noqa
-from zope.i18n import translate
 from zope.interface import implementedBy
-from zope.publisher.interfaces.browser import IBrowserRequest
 
 import OFS
 import pkg_resources

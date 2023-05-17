@@ -1,4 +1,3 @@
-from App.ApplicationManager import ApplicationManager
 from pkg_resources import get_distribution
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD

@@ -8,7 +8,6 @@ from Products.CMFPlone.RegistrationTool import _checkEmail
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
-from re import T
 from zope.component import getSiteManager
 from zope.component import getUtility
 

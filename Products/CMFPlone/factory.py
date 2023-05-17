@@ -1,5 +1,4 @@
 from logging import getLogger
-from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import INonInstallable
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.events import SiteManagerCreatedEvent

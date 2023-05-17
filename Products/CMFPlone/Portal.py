@@ -5,7 +5,6 @@ from Acquisition import aq_base
 from ComputedAttribute import ComputedAttribute
 from five.localsitemanager.registry import PersistentComponents
 from OFS.ObjectManager import REPLACEABLE
-from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.base.interfaces.syndication import ISyndicatable
 from plone.base.permissions import AddPortalContent

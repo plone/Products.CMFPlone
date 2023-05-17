@@ -20,7 +20,6 @@ from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component.hooks import getSite
 from zope.interface import implementer
-from zope.interface import Interface
 
 
 class BaseFeedData:
