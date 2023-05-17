@@ -5,7 +5,6 @@ from z3c.form import interfaces
 
 
 class EditingControlPanelForm(controlpanel.RegistryEditForm):
-
     id = "EditingControlPanel"
     label = _("Editing Settings")
     schema = IEditingSchema
@@ -14,7 +13,7 @@ class EditingControlPanelForm(controlpanel.RegistryEditForm):
     def updateWidgets(self):
         super().updateWidgets()
         # hide the available_editors field/widgets
-        self.widgets['available_editors'].mode = interfaces.HIDDEN_MODE
+        self.widgets["available_editors"].mode = interfaces.HIDDEN_MODE
 
 
 class EditingControlPanel(controlpanel.ControlPanelFormWrapper):

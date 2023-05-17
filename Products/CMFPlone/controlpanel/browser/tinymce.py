@@ -32,18 +32,21 @@ class TinyMCEAdvancedForm(group.GroupForm):
 
 
 class TinyMCEControlPanelForm(controlpanel.RegistryEditForm):
-
     id = "TinyMCEControlPanel"
     label = _("TinyMCE Settings")
     schema = ITinyMCESchema
     schema_prefix = "plone"
     fields = field.Fields(ITinyMCELayoutSchema)
-    groups = (TinyMCEPluginForm, TinyMCESpellCheckerForm,
-              TinyMCEResourceTypesForm, TinyMCEAdvancedForm)
+    groups = (
+        TinyMCEPluginForm,
+        TinyMCESpellCheckerForm,
+        TinyMCEResourceTypesForm,
+        TinyMCEAdvancedForm,
+    )
 
     def updateFields(self):
         super().updateFields()
-        self.groups[0].fields['plugins'].widgetFactory = CheckBoxFieldWidget
+        self.groups[0].fields["plugins"].widgetFactory = CheckBoxFieldWidget
 
 
 class TinyMCEControlPanel(controlpanel.ControlPanelFormWrapper):

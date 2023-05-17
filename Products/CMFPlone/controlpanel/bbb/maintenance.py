@@ -8,14 +8,14 @@ from zope.interface import implementer
 
 @implementer(IMaintenanceSchema)
 class MaintenanceControlPanelAdapter:
-
     adapts(IPloneSiteRoot)
 
     def __init__(self, context):
         self.context = context
         registry = getUtility(IRegistry)
         self.maintenance_settings = registry.forInterface(
-            IMaintenanceSchema, prefix="plone")
+            IMaintenanceSchema, prefix="plone"
+        )
 
     def get_days(self):
         return self.maintenance_settings.days

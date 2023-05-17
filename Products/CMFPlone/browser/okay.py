@@ -20,7 +20,7 @@ class OK(BrowserView):
         # plone/app/caching/operations/utils.py does in the doNotCache
         # function.
         set_header = self.request.response.setHeader
-        set_header('Expires', 'Sat, 1 Jan 2000 00:00:00 GMT')
-        set_header('Cache-Control', 'max-age=0, must-revalidate, private')
+        set_header("Expires", "Sat, 1 Jan 2000 00:00:00 GMT")
+        set_header("Cache-Control", "max-age=0, must-revalidate, private")
         # Return a short and simple message.
-        return 'OK'
+        return "OK"

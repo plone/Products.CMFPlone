@@ -4,7 +4,6 @@ from plone.base.interfaces import ISocialMediaSchema
 
 
 class SocialControlPanelForm(controlpanel.RegistryEditForm):
-
     id = "SocialControlPanel"
     label = _("Social Media Settings")
     description = _("Social media sharing settings.")

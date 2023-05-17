@@ -16,15 +16,15 @@ portal_name, default_user  # pyflakes
 
 class PloneTestCase(PloneTestCase):
     """This is a stub now, but in case you want to try
-       something fancy on Your Branch (tm), put it here.
+    something fancy on Your Branch (tm), put it here.
     """
 
     def setRequestMethod(self, method):
-        self.app.REQUEST.set('REQUEST_METHOD', method)
+        self.app.REQUEST.set("REQUEST_METHOD", method)
         self.app.REQUEST.method = method
 
     def getAuthenticator(self):
-        tag = AuthenticatorView('context', 'request').authenticator()
+        tag = AuthenticatorView("context", "request").authenticator()
         pattern = r'<input .*name="(\w+)".*value="(\w+)"'
         return match(pattern, tag).groups()
 
@@ -38,7 +38,7 @@ class PloneTestCase(PloneTestCase):
         if loggedIn:
             user = TEST_USER_NAME
             pwd = default_password
-            browser.addHeader('Authorization', f'Basic {user}:{pwd}')
+            browser.addHeader("Authorization", f"Basic {user}:{pwd}")
         return browser
 
 

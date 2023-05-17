@@ -16,7 +16,6 @@ from zope.ramcache.interfaces.ram import IRAMCache
 
 @implementer(IConfigurationChangedEvent)
 class ConfigurationChangedEvent:
-
     def __init__(self, context, data):
         self.context = context
         self.data = data
@@ -38,25 +37,23 @@ def handle_enable_self_reg(obj, event):
     added to ``Anonymous`` role to allow self registration for anonymous
     users. If the setting is disabled, this permission is removed.
     """
-    if event.record.fieldName != 'enable_self_reg':
+    if event.record.fieldName != "enable_self_reg":
         return
 
     portal = getSite()
     value = event.newValue
-    app_perms = portal.rolesOfPermission(
-        permission='Add portal member')
+    app_perms = portal.rolesOfPermission(permission="Add portal member")
     reg_roles = []
 
     for app_perm in app_perms:
-        if app_perm['selected'] == 'SELECTED':
-            reg_roles.append(app_perm['name'])
-    if value is True and 'Anonymous' not in reg_roles:
-        reg_roles.append('Anonymous')
-    if value is False and 'Anonymous' in reg_roles:
-        reg_roles.remove('Anonymous')
+        if app_perm["selected"] == "SELECTED":
+            reg_roles.append(app_perm["name"])
+    if value is True and "Anonymous" not in reg_roles:
+        reg_roles.append("Anonymous")
+    if value is False and "Anonymous" in reg_roles:
+        reg_roles.remove("Anonymous")
 
-    portal.manage_permission('Add portal member', roles=reg_roles,
-                             acquire=0)
+    portal.manage_permission("Add portal member", roles=reg_roles, acquire=0)
 
 
 @adapter(ISecuritySchema, IRecordModifiedEvent)
@@ -67,42 +64,42 @@ def handle_enable_user_folders(obj, event):
     If the setting is enabled, a new user action is added with a link to
     the personal folder. If the setting is disabled, the action is hidden.
     """
-    if event.record.fieldName != 'enable_user_folders':
+    if event.record.fieldName != "enable_user_folders":
         return
 
     portal = getSite()
     value = event.newValue
 
-    membership = getToolByName(portal, 'portal_membership')
+    membership = getToolByName(portal, "portal_membership")
     membership.memberareaCreationFlag = value
 
     # support the 'my folder' user action #8417
-    portal_actions = getToolByName(portal, 'portal_actions', None)
+    portal_actions = getToolByName(portal, "portal_actions", None)
     if portal_actions is not None:
-        object_category = getattr(portal_actions, 'user', None)
-        if value and not safe_hasattr(object_category, 'mystuff'):
+        object_category = getattr(portal_actions, "user", None)
+        if value and not safe_hasattr(object_category, "mystuff"):
             # add action
             _add_mystuff_action(object_category)
-        elif safe_hasattr(object_category, 'mystuff'):
-            a = getattr(object_category, 'mystuff')
-            a.visible = bool(value)    # show/hide action
+        elif safe_hasattr(object_category, "mystuff"):
+            a = getattr(object_category, "mystuff")
+            a.visible = bool(value)  # show/hide action
 
 
 def _add_mystuff_action(object_category):
     new_action = Action(
-        'mystuff',
-        title=_('My Folder'),
-        description='',
-        url_expr='string:${portal/portal_membership/getHomeUrl}',
-        available_expr='python:(member is not None) and \
-            (portal.portal_membership.getHomeFolder() is not None) ',
-        permissions=('View',),
+        "mystuff",
+        title=_("My Folder"),
+        description="",
+        url_expr="string:${portal/portal_membership/getHomeUrl}",
+        available_expr="python:(member is not None) and \
+            (portal.portal_membership.getHomeFolder() is not None) ",
+        permissions=("View",),
         visible=True,
-        i18n_domain='plone'
+        i18n_domain="plone",
     )
-    object_category._setObject('mystuff', new_action)
+    object_category._setObject("mystuff", new_action)
     # move action to top, at least before the logout action
-    object_category.moveObjectsToTop('mystuff')
+    object_category.moveObjectsToTop("mystuff")
 
 
 @adapter(ISecuritySchema, IRecordModifiedEvent)
@@ -114,7 +111,7 @@ def handle_use_email_as_login(obj, event):
     to email. If the setting is disabled, then the login names are migrated
     back to user ids.
     """
-    if event.record.fieldName != 'use_email_as_login':
+    if event.record.fieldName != "use_email_as_login":
         return
 
     value = event.newValue

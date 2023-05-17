@@ -1,214 +1,303 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
       metal:use-macro="context/prefs_main_template/macros/master"
-      i18n:domain="plone">
+      xml:lang="en"
+      i18n:domain="plone"
+>
 
-<body>
+  <body>
 
-<metal:main fill-slot="prefs_configlet_main"
-     tal:define="template_id string:@@usergroup-usermembership;
-                 portal context/@@plone_portal_state/portal;
-                 userid view/userid;
-                 member python:context.portal_membership.getMemberById(userid);
-                 groups view/getGroups;
-                 gtool view/gtool;
-                 errors python:request.get('errors', {});
-                 userquery python:view.makeQuery(userid=userid);
-                 portal_url context/portal_url;
-                 showAll python:request.get('showAll', '') and not view.newSearch and 'y';
-                 Batch python:modules['Products.CMFPlone'].Batch;
-                 b_size python:showAll and len(view.searchResults) or 20;
+    <metal:main fill-slot="prefs_configlet_main"
+                tal:define="
+                  template_id string:@@usergroup-usermembership;
+                  portal context/@@plone_portal_state/portal;
+                  userid view/userid;
+                  member python:context.portal_membership.getMemberById(userid);
+                  groups view/getGroups;
+                  gtool view/gtool;
+                  errors python:request.get('errors', {});
+                  userquery python:view.makeQuery(userid=userid);
+                  portal_url context/portal_url;
+                  showAll python:request.get('showAll', '') and not view.newSearch and 'y';
+                  Batch python:modules['Products.CMFPlone'].Batch;
+                  b_size python:showAll and len(view.searchResults) or 20;
+                  many_groups view/many_groups;
+                  mq python:modules['ZTUtils'].make_query;
+                  results view/searchResults;
+                  resultcount python:len(results);
+                  b_start python:0 if showAll or view.newSearch else view.atoi(request.get('b_start',0));
+                  b_start python:b_start if (b_start &lt;= resultcount) else (resultcount - resultcount % b_size);
+                  b_start python:b_start if (b_start &lt; resultcount) else max(b_start - b_size, 0);
+                  batch python:Batch(view.searchResults, b_size, int(b_start));
+                  batchformkeys python:['searchstring','_authenticator', 'userid'];
+                "
+    >
+
+      <article id="content"
+               tal:define="
                  many_groups view/many_groups;
-                 mq python:modules['ZTUtils'].make_query;
-                 results view/searchResults;
-                 resultcount python:len(results);
-                 b_start python:0 if showAll or view.newSearch else view.atoi(request.get('b_start',0));
-                 b_start python:b_start if (b_start &lt;= resultcount) else (resultcount - resultcount % b_size);
-                 b_start python:b_start if (b_start &lt; resultcount) else max(b_start - b_size, 0);
-                 batch python:Batch(view.searchResults, b_size, int(b_start));
-                 batchformkeys python:['searchstring','_authenticator', 'userid'];">
+               "
+      >
 
-  <article id="content" tal:define="many_groups view/many_groups">
-
-    <a href=""
-       class="link-parent"
-       tal:attributes="href string:$portal_url/@@usergroup-userprefs"
-       i18n:translate="label_up_to_usersoverview">
+        <a class="link-parent"
+           href=""
+           tal:attributes="
+             href string:$portal_url/@@usergroup-userprefs;
+           "
+           i18n:translate="label_up_to_usersoverview"
+        >
       Up to Users Overview
-    </a>
+        </a>
 
-    <h1 class="documentFirstHeading">
-      <span tal:replace="python:member.getProperty('fullname')" />
-      (<span tal:content="python:member.getUser().getUserName()"
-            tal:omit-tag="">login name</span>)
-    </h1>
+        <h1 class="documentFirstHeading">
+          <span tal:replace="python:member.getProperty('fullname')"></span>
+          (<span tal:content="python:member.getUser().getUserName()"
+                tal:omit-tag=""
+          >login name</span>)
+        </h1>
 
-    <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+        <div metal:use-macro="context/global_statusmessage/macros/portal_message">
       Portal status message
-    </div>
+        </div>
 
-    <div id="content-core">
+        <div id="content-core">
 
-      <p class="lead mt-4" i18n:translate="">Group membership</p>
+          <p class="lead mt-4"
+             i18n:translate=""
+          >Group membership</p>
 
-      <div class="autotabs">
-        <ul class="autotoc-nav nav nav-tabs">
-          <li class="nav-item">
-            <a class="nav-link" href="${portal_url}/@@user-information?${userquery}"
-            i18n:translate="title_personal_information_form">Personal Information</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="${portal_url}/@@user-preferences?${userquery}"
-            i18n:translate="">Personal Preferences</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" class="active"
-               href="${portal_url}/@@usergroup-usermembership?${userquery}"
-               i18n:translate="label_group_memberships">Group Memberships</a>
-          </li>
-        </ul>
+          <div class="autotabs">
+            <ul class="autotoc-nav nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link"
+                   href="${portal_url}/@@user-information?${userquery}"
+                   i18n:translate="title_personal_information_form"
+                >Personal Information</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"
+                   href="${portal_url}/@@user-preferences?${userquery}"
+                   i18n:translate=""
+                >Personal Preferences</a>
+              </li>
+              <li class="nav-item">
+                <a class="active"
+                   href="${portal_url}/@@usergroup-usermembership?${userquery}"
+                   i18n:translate="label_group_memberships"
+                >Group Memberships</a>
+              </li>
+            </ul>
 
-        <form method="post" class="mt-3"
-              tal:attributes="action string:$portal_url/$template_id?userid=${userid}">
+            <form class="mt-3"
+                  method="post"
+                  tal:attributes="
+                    action string:$portal_url/$template_id?userid=${userid};
+                  "
+            >
 
-          <h2 i18n:translate="heading_memberships_current">Current group memberships</h2>
-          <table tal:condition="groups" class="listing" summary="Group Memberships Listing">
-            <tr>
-              <th i18n:translate="listingheader_group_name">Group Name</th>
-              <th i18n:translate="listingheader_group_remove">Remove</th>
-            </tr>
-            <tal:block repeat="group groups">
-                <tr tal:define="oddrow repeat/group/odd;
-                                groupId group/getId;"
-                    tal:attributes="class python:'odd' if oddrow else 'even'">
-                    <td>
-                        <img tal:replace="structure python:icons.tag('people')">
-                        <a href="@@usergroup-groupdetails"
-                           tal:attributes="href string:@@usergroup-groupdetails?groupname=${groupId}">
-                           <span tal:replace="group/getGroupTitleOrName">group name</span>
-                        </a>
-                    </td>
-
-
-                    <td class="listingCheckbox">
-                        <span class="form-check"><input type="checkbox"
-                               class="noborder notify form-check-input"
-                               name="delete:list"
-                               tal:attributes="value groupId;
-                                               disabled python:member.canRemoveFromGroup(groupId) and default or 'disabled'" /></span>
-                    </td>
-                </tr>
-            </tal:block>
-          </table>
-          <p tal:condition="not:groups" i18n:translate="text_user_not_in_any_group">This user does not belong to any group.</p>
-          <button class="btn btn-danger mb-4"
-                 type="submit"
-                 name="form.button.Delete"
-                 i18n:translate="label_remove_selected_groups"
-                 tal:condition="groups">Remove from selected groups</button>
-
-          <h2 tal:condition="many_groups" i18n:translate="heading_search_groups">Search for groups</h2>
-          <h2 tal:condition="not:many_groups" i18n:translate="heading_assign_to_groups">Assign to groups</h2>
-
-          <table class="table overflow-auto table-bordered table-striped pat-checklist" summary="Groups">
-            <tr>
-              <th colspan="2" tal:condition="many_groups">
-                <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
-                      <input class="quickSearch form-control"
-                             type="text"
-                             name="searchstring"
-                             value=""
-                             tal:attributes="value view/searchString;"
-                             />
-
-                      <button type="submit"
-                             class="searchButton btn btn-primary"
-                             name="form.button.search"
-                             value="Search"
-                             i18n:attributes="value label_search;" />
-
-              </th>
-            </tr>
-            <tal:block condition="python:results">
+              <h2 i18n:translate="heading_memberships_current">Current group memberships</h2>
+              <table class="listing"
+                     summary="Group Memberships Listing"
+                     tal:condition="groups"
+              >
                 <tr>
-                  <th style="width:1.5rem;">
-                      <span class="form-check"><input class="form-check-input toggle-all"
-                             type="checkbox"
-                             name="selectButton"
-                             title="Select all items"
-                             alt="Select all items"
-                             i18n:attributes="title label_select_all_items; alt label_select_all_items;"/></span>
-                  </th>
                   <th i18n:translate="listingheader_group_name">Group Name</th>
+                  <th i18n:translate="listingheader_group_remove">Remove</th>
                 </tr>
-                <tal:block repeat="obj batch">
-                  <tr tal:define="oddrow repeat/obj/odd"
-                      tal:attributes="class python:'odd' if oddrow else 'even'">
-
-                    <td class="listingCheckbox">
-                      <span class="form-check"><input type="checkbox"
-                             class="form-check-input"
-                             name="add:list"
-                             value="value"
-                             tal:define="calcId obj/getGroupId | obj/getId;
-                                         canAddToGroup python:member.canAddToGroup(calcId) and ('Manager' not in obj.getRoles() or view.is_zope_manager)"
-                             tal:attributes="value calcId;
-                                             disabled python:canAddToGroup and default or 'disabled'" /></span>
+                <tal:block repeat="group groups">
+                  <tr tal:define="
+                        oddrow repeat/group/odd;
+                        groupId group/getId;
+                      "
+                      tal:attributes="
+                        class python:'odd' if oddrow else 'even';
+                      "
+                  >
+                    <td>
+                      <img tal:replace="structure python:icons.tag('people')" />
+                      <a href="@@usergroup-groupdetails"
+                         tal:attributes="
+                           href string:@@usergroup-groupdetails?groupname=${groupId};
+                         "
+                      >
+                        <span tal:replace="group/getGroupTitleOrName">group name</span>
+                      </a>
                     </td>
 
-                    <td>
-                        <img tal:replace="structure python:icons.tag('people')">
-                        <a href="" tal:attributes="href python:'@@usergroup-groupdetails?'+mq(groupname=obj.getGroupName())"
-                                  tal:content="obj/getGroupTitleOrName | default">
-                              <span i18n:translate="link_groupname_not_available">
-                                  groupname not available
-                              </span>
-                        </a>
+
+                    <td class="listingCheckbox">
+                      <span class="form-check"><input class="noborder notify form-check-input"
+                               name="delete:list"
+                               type="checkbox"
+                               tal:attributes="
+                                 value groupId;
+                                 disabled python:member.canRemoveFromGroup(groupId) and default or 'disabled';
+                               "
+                        /></span>
                     </td>
                   </tr>
                 </tal:block>
-            </tal:block>
-          </table>
+              </table>
+              <p tal:condition="not:groups"
+                 i18n:translate="text_user_not_in_any_group"
+              >This user does not belong to any group.</p>
+              <button class="btn btn-danger mb-4"
+                      name="form.button.Delete"
+                      type="submit"
+                      tal:condition="groups"
+                      i18n:translate="label_remove_selected_groups"
+              >Remove from selected groups</button>
 
-          <div metal:use-macro="context/batch_macros/macros/navigation" />
+              <h2 tal:condition="many_groups"
+                  i18n:translate="heading_search_groups"
+              >Search for groups</h2>
+              <h2 tal:condition="not:many_groups"
+                  i18n:translate="heading_assign_to_groups"
+              >Assign to groups</h2>
 
-          <div class="showAllSearchResults"
-               tal:condition="python:batch.next or batch.previous"
-               tal:define="mq python:modules['ZTUtils'].make_query;
-                           keys batchformkeys|nothing;
-                           linkparams python:keys and dict([(key, request.form[key]) for key in keys if key in request]) or request.form;
-                           url batch_base_url | string:${context/absolute_url}/${template_id}">
-              <a tal:attributes="href python: '%s?%s' % (url, mq( linkparams, {'showAll':'y'} ))"
-                 i18n:translate="description_pas_show_all_search_results">
+              <table class="table overflow-auto table-bordered table-striped pat-checklist"
+                     summary="Groups"
+              >
+                <tr>
+                  <th colspan="2"
+                      tal:condition="many_groups"
+                  >
+                    <span tal:omit-tag=""
+                          i18n:translate="label_quick_search"
+                    >Quick search</span>:
+                    <input class="quickSearch form-control"
+                           name="searchstring"
+                           type="text"
+                           value=""
+                           tal:attributes="
+                             value view/searchString;
+                           "
+                    />
+
+                    <button class="searchButton btn btn-primary"
+                            name="form.button.search"
+                            type="submit"
+                            value="Search"
+                            i18n:attributes="value label_search;"
+                    ></button>
+
+                  </th>
+                </tr>
+                <tal:block condition="python:results">
+                  <tr>
+                    <th style="width:1.5rem;">
+                      <span class="form-check"><input class="form-check-input toggle-all"
+                               alt="Select all items"
+                               name="selectButton"
+                               title="Select all items"
+                               type="checkbox"
+                               i18n:attributes="title label_select_all_items; alt label_select_all_items;"
+                        /></span>
+                    </th>
+                    <th i18n:translate="listingheader_group_name">Group Name</th>
+                  </tr>
+                  <tal:block repeat="obj batch">
+                    <tr tal:define="
+                          oddrow repeat/obj/odd;
+                        "
+                        tal:attributes="
+                          class python:'odd' if oddrow else 'even';
+                        "
+                    >
+
+                      <td class="listingCheckbox">
+                        <span class="form-check"><input class="form-check-input"
+                                 name="add:list"
+                                 type="checkbox"
+                                 value="value"
+                                 tal:define="
+                                   calcId obj/getGroupId | obj/getId;
+                                   canAddToGroup python:member.canAddToGroup(calcId) and ('Manager' not in obj.getRoles() or view.is_zope_manager);
+                                 "
+                                 tal:attributes="
+                                   value calcId;
+                                   disabled python:canAddToGroup and default or 'disabled';
+                                 "
+                          /></span>
+                      </td>
+
+                      <td>
+                        <img tal:replace="structure python:icons.tag('people')" />
+                        <a href=""
+                           tal:content="obj/getGroupTitleOrName | default"
+                           tal:attributes="
+                             href python:'@@usergroup-groupdetails?'+mq(groupname=obj.getGroupName());
+                           "
+                        >
+                          <span i18n:translate="link_groupname_not_available">
+                                  groupname not available
+                          </span>
+                        </a>
+                      </td>
+                    </tr>
+                  </tal:block>
+                </tal:block>
+              </table>
+
+              <div metal:use-macro="context/batch_macros/macros/navigation"></div>
+
+              <div class="showAllSearchResults"
+                   tal:define="
+                     mq python:modules['ZTUtils'].make_query;
+                     keys batchformkeys|nothing;
+                     linkparams python:keys and dict([(key, request.form[key]) for key in keys if key in request]) or request.form;
+                     url batch_base_url | string:${context/absolute_url}/${template_id};
+                   "
+                   tal:condition="python:batch.next or batch.previous"
+              >
+                <a tal:attributes="
+                     href python: '%s?%s' % (url, mq( linkparams, {'showAll':'y'} ));
+                   "
+                   i18n:translate="description_pas_show_all_search_results"
+                >
                   Show all search results
-              </a>
+                </a>
+              </div>
+
+              <input name="b_start"
+                     type="hidden"
+                     value="b_start"
+                     tal:attributes="
+                       value b_start;
+                     "
+              />
+
+              <input name="showAll"
+                     type="hidden"
+                     value=""
+                     tal:attributes="
+                       value showAll;
+                     "
+              />
+
+              <input name="form.submitted"
+                     type="hidden"
+                     value="1"
+              />
+
+              <button class="btn btn-primary"
+                      name="form.button.Add"
+                      type="submit"
+                      tal:condition="batch"
+                      i18n:translate="label_add_user_to_group"
+              >Add user to selected groups</button>
+              <input tal:replace="structure context/@@authenticator/authenticator" />
+
+            </form>
+
           </div>
+        </div>
+      </article>
 
-          <input type="hidden" value="b_start" name="b_start"
-                 tal:attributes="value b_start"/>
+    </metal:main>
 
-          <input type="hidden" value="" name="showAll"
-                 tal:attributes="value showAll"/>
-
-          <input type="hidden" name="form.submitted" value="1" />
-
-          <button class="btn btn-primary"
-                 type="submit"
-                 name="form.button.Add"
-                 tal:condition="batch"
-                 i18n:translate="label_add_user_to_group">Add user to selected groups</button>
-          <input tal:replace="structure context/@@authenticator/authenticator" />
-
-        </form>
-
-      </div>
-    </div>
-  </article>
-
-</metal:main>
-
-</body>
+  </body>
 </html>

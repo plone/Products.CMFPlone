@@ -15,6 +15,7 @@ from zope.component.hooks import getSite
 import logging
 import warnings
 
+
 try:
     # Products.MailHost has a patch to fix quoted-printable soft line breaks.
     # See https://github.com/zopefoundation/Products.MailHost/issues/35
@@ -28,9 +29,8 @@ log = logging.getLogger(__name__)
 
 
 class ContactForm(AutoExtensibleForm, form.Form):
-
-    template = ViewPageTemplateFile('templates/contact-info.pt')
-    template_mailview = '@@contact-info-email'
+    template = ViewPageTemplateFile("templates/contact-info.pt")
+    template_mailview = "@@contact-info-email"
 
     schema = IContactForm
     ignoreContext = True
@@ -43,14 +43,11 @@ class ContactForm(AutoExtensibleForm, form.Form):
             return False
         return True
 
-    @button.buttonAndHandler(_('label_send', default='Send'), name='send')
+    @button.buttonAndHandler(_("label_send", default="Send"), name="send")
     def handle_send(self, action):
         data, errors = self.extractData()
         if errors:
-            IStatusMessage(self.request).add(
-                self.formErrorsMessage,
-                type='error'
-            )
+            IStatusMessage(self.request).add(self.formErrorsMessage, type="error")
 
             return
 
@@ -73,25 +70,25 @@ class ContactForm(AutoExtensibleForm, form.Form):
         return result
 
     def send_message(self, data):
-        subject = data.get('subject')
+        subject = data.get("subject")
 
         portal = getSite()
         registry = getUtility(IRegistry)
-        mail_settings = registry.forInterface(IMailSchema, prefix='plone')
+        mail_settings = registry.forInterface(IMailSchema, prefix="plone")
         send_to_address = mail_settings.email_from_address
         from_address = mail_settings.email_from_address
         registry = getUtility(IRegistry)
-        encoding = registry.get('plone.email_charset', 'utf-8')
-        host = getToolByName(self.context, 'MailHost')
+        encoding = registry.get("plone.email_charset", "utf-8")
+        host = getToolByName(self.context, "MailHost")
 
-        data['url'] = portal.absolute_url()
+        data["url"] = portal.absolute_url()
         message = self.generate_mail(data)
         if isinstance(message, bytes):
             # Maybe someone has customized 'generate_mail'
             # and still handles the encoding keyword argument.
             message = message.decode(encoding)
         message = message_from_string(message)
-        message['Reply-To'] = data['sender_from_address']
+        message["Reply-To"] = data["sender_from_address"]
 
         try:
             # This actually sends out the mail
@@ -100,18 +97,21 @@ class ContactForm(AutoExtensibleForm, form.Form):
                 send_to_address,
                 from_address,
                 subject=subject,
-                charset=encoding
+                charset=encoding,
             )
         except (SMTPException, RuntimeError) as e:
             log.error(e)
-            plone_utils = getToolByName(portal, 'plone_utils')
+            plone_utils = getToolByName(portal, "plone_utils")
             exception = plone_utils.exceptionString()
-            message = _('Unable to send mail: ${exception}',
-                        mapping={'exception': exception})
-            IStatusMessage(self.request).add(message, type='error')
+            message = _(
+                "Unable to send mail: ${exception}", mapping={"exception": exception}
+            )
+            IStatusMessage(self.request).add(message, type="error")
 
     def send_feedback(self):
         IStatusMessage(self.request).add(
-            _('A mail has now been sent to the site administrator '
-              'regarding your questions and/or comments.')
+            _(
+                "A mail has now been sent to the site administrator "
+                "regarding your questions and/or comments."
+            )
         )

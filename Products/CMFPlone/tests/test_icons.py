@@ -10,34 +10,30 @@ class IconsTest(unittest.TestCase):
     layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
     def setUp(self):
-        self.app = self.layer['app']
-        self.portal = self.layer['portal']
+        self.app = self.layer["app"]
+        self.portal = self.layer["portal"]
 
     def test_icons_browser(self):
         browser = Browser(self.app)
         portal_url = self.portal.absolute_url()
-        url = portal_url + '/@@iconresolver/bug'
+        url = portal_url + "/@@iconresolver/bug"
         browser.open(url)
-        self.assertIn(b'bi bi-bug', browser.contents)
+        self.assertIn(b"bi bi-bug", browser.contents)
 
     def test_icons_view(self):
         page = self.app
-        view = page.restrictedTraverse('@@iconresolver')
-        self.assertIn(b'bi bi-bug', view.tag('bug'))
+        view = page.restrictedTraverse("@@iconresolver")
+        self.assertIn(b"bi bi-bug", view.tag("bug"))
 
     def test_icons_url(self):
         page = self.app
-        view = page.restrictedTraverse('@@iconresolver')
-        self.assertIn(
-            '++plone++bootstrap-icons/bug.svg',
-            view.url('bug')
-        )
+        view = page.restrictedTraverse("@@iconresolver")
+        self.assertIn("++plone++bootstrap-icons/bug.svg", view.url("bug"))
 
     def test_icons_tag(self):
         page = self.app
-        view = page.restrictedTraverse('@@iconresolver')
-        self.assertIn(b'bi bi-bug', view.tag('bug'))
-
+        view = page.restrictedTraverse("@@iconresolver")
+        self.assertIn(b"bi bi-bug", view.tag("bug"))
 
 
 class IconTraverserTest(unittest.TestCase):
@@ -46,8 +42,8 @@ class IconTraverserTest(unittest.TestCase):
     layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
     def setUp(self):
-        self.portal = self.layer['portal']
-        self.request = self.layer['request']
+        self.portal = self.layer["portal"]
+        self.request = self.layer["request"]
 
     def test_default_icon(self):
         self.portal.restrictedTraverse("++plone++icons/plone.svg")

@@ -20,20 +20,19 @@ from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component.hooks import getSite
 from zope.interface import implementer
-from zope.interface import Interface
 
 
 class BaseFeedData:
-
     def __init__(self, context):
         self.context = context
         self.settings = IFeedSettings(context)
         self.site = getSite()
         if self.show_about:
-            self.pm = getToolByName(self.context, 'portal_membership')
+            self.pm = getToolByName(self.context, "portal_membership")
         registry = getUtility(IRegistry)
         self.view_action_types = registry.get(
-            'plone.types_use_view_action_in_listings', [])
+            "plone.types_use_view_action_in_listings", []
+        )
 
     @lazy_property
     def show_about(self):
@@ -50,7 +49,8 @@ class BaseFeedData:
     @lazy_property
     def canonical_url(self):
         pcs = getMultiAdapter(
-            (self.context, self.context.REQUEST), name='plone_context_state')
+            (self.context, self.context.REQUEST), name="plone_context_state"
+        )
         return pcs.canonical_object_url()
 
     @property
@@ -68,7 +68,7 @@ class BaseFeedData:
     @property
     def published(self):
         date = self.context.EffectiveDate()
-        if date and date != 'None':
+        if date and date != "None":
             return DateTime(date)
 
     @property
@@ -80,7 +80,7 @@ class BaseFeedData:
     @property
     def uid(self):
         uuid = IUUID(self.context, None)
-        if uuid is None and hasattr(self.context, 'UID'):
+        if uuid is None and hasattr(self.context, "UID"):
             return self.context.UID()
         return uuid
 
@@ -90,14 +90,13 @@ class BaseFeedData:
 
     @property
     def publisher(self):
-        if hasattr(self.context, 'Publisher'):
+        if hasattr(self.context, "Publisher"):
             return self.context.Publisher()
-        return 'No Publisher'
+        return "No Publisher"
 
 
 @implementer(IFeed)
 class FolderFeed(BaseFeedData):
-
     @lazy_property
     def author(self):
         if self.show_about:
@@ -108,12 +107,12 @@ class FolderFeed(BaseFeedData):
     @property
     def author_name(self):
         if self.author:
-            return self.author.getProperty('fullname')
+            return self.author.getProperty("fullname")
 
     @property
     def author_email(self):
         if self.author:
-            return self.author.getProperty('email')
+            return self.author.getProperty("email")
 
     @property
     def logo(self):
@@ -121,14 +120,13 @@ class FolderFeed(BaseFeedData):
 
     @property
     def icon(self):
-        return '%s/favicon.ico' % self.site.absolute_url()
+        return "%s/favicon.ico" % self.site.absolute_url()
 
     def _brains(self):
-        catalog = getToolByName(self.context, 'portal_catalog')
-        return catalog(path={
-            'query': '/'.join(self.context.getPhysicalPath()),
-            'depth': 1
-        })
+        catalog = getToolByName(self.context, "portal_catalog")
+        return catalog(
+            path={"query": "/".join(self.context.getPhysicalPath()), "depth": 1}
+        )
 
     def _items(self):
         """
@@ -138,7 +136,7 @@ class FolderFeed(BaseFeedData):
 
     @property
     def items(self):
-        for item in self._items()[:self.limit]:
+        for item in self._items()[: self.limit]:
             # look for custom adapter
             # otherwise, just use default
             adapter = queryMultiAdapter((item, self), IFeedItem)
@@ -152,29 +150,27 @@ class FolderFeed(BaseFeedData):
 
     @property
     def language(self):
-        langtool = getToolByName(self.context, 'portal_languages')
+        langtool = getToolByName(self.context, "portal_languages")
         return langtool.getDefaultLanguage()
 
 
 class CollectionFeed(FolderFeed):
-
     def _brains(self):
-        return self.context.queryCatalog(batch=False)[:self.limit]
+        return self.context.queryCatalog(batch=False)[: self.limit]
 
 
 @implementer(ISearchFeed)
 class SearchFeed(FolderFeed):
-
     def _brains(self):
         max_items = self.limit
         request = self.context.REQUEST
-        start = int(request.get('b_start', 0))
-        end = int(request.get('b_end', start + max_items))
-        request.set('sort_order', 'reverse')
-        request.set('sort_on', request.get('sort_on', 'effective'))
+        start = int(request.get("b_start", 0))
+        end = int(request.get("b_end", start + max_items))
+        request.set("sort_order", "reverse")
+        request.set("sort_on", request.get("sort_on", "effective"))
         return self.context.queryCatalog(
-            show_all=1, use_types_blacklist=True,
-            use_navigation_root=True)[start:end]
+            show_all=1, use_types_blacklist=True, use_navigation_root=True
+        )[start:end]
 
 
 @implementer(IFeedItem)
@@ -187,7 +183,7 @@ class BaseItem(BaseFeedData):
 
     @lazy_property
     def creator(self):
-        if hasattr(self.context, 'Creator'):
+        if hasattr(self.context, "Creator"):
             return self.context.Creator()
 
     @lazy_property
@@ -195,30 +191,30 @@ class BaseItem(BaseFeedData):
         if self.feed.show_about:
             creator = self.context.Creator()
             member = self.feed.pm.getMemberById(creator)
-            return member and member.getProperty('fullname') or creator
+            return member and member.getProperty("fullname") or creator
 
     @property
     def author_name(self):
         author = self.author
-        if author and hasattr(author, 'getProperty'):
-            return author.getProperty('fullname')
+        if author and hasattr(author, "getProperty"):
+            return author.getProperty("fullname")
 
     @property
     def author_email(self):
         author = self.author
-        if author and hasattr(author, 'getProperty'):
-            return author.getProperty('email')
+        if author and hasattr(author, "getProperty"):
+            return author.getProperty("email")
 
     @property
     def body(self):
-        if hasattr(self.context, 'getText'):
+        if hasattr(self.context, "getText"):
             value = self.context.getText()
-        elif hasattr(self.context, 'text'):
+        elif hasattr(self.context, "text"):
             value = self.context.text
         else:
             value = self.description
         if not isinstance(value, str):
-            if hasattr(value, 'output'):
+            if hasattr(value, "output"):
                 # could be RichTextValue object, needs transform
                 value = value.output
         return value
@@ -233,7 +229,7 @@ class BaseItem(BaseFeedData):
     def link(self):
         url = self.base_url
         if self.context.portal_type in self.feed.view_action_types:
-            url = url + '/view'
+            url = url + "/view"
         else:
             url = self.canonical_url
         return url
@@ -256,7 +252,7 @@ class BaseItem(BaseFeedData):
         if fi is not None:
             filename = fi.getFilename()
             if filename:
-                url += '/@@download/file/%s' % filename
+                url += "/@@download/file/%s" % filename
         return url
 
     @property
@@ -272,24 +268,28 @@ class DexterityItem(BaseItem):
     adapts(IDexterityContent, IFeed)
 
     file = None
-    field_name = ''
+    field_name = ""
 
     def __init__(self, context, feed):
         super().__init__(context, feed)
         self.dexterity = IDexterityContent.providedBy(context)
         lead = ILeadImage(self.context, None)
         if lead:
-            if (lead.image
-                    and hasattr(lead.image, 'getSize')
-                    and lead.image.getSize() > 0):
+            if (
+                lead.image
+                and hasattr(lead.image, "getSize")
+                and lead.image.getSize() > 0
+            ):
                 self.file = lead.image
-                self.field_name = 'image'
+                self.field_name = "image"
         if self.file is None:
             try:
                 primary = IPrimaryFieldInfo(self.context, None)
-                if (INamedField.providedBy(primary.field)
-                        and hasattr(primary.value, 'getSize')
-                        and primary.value.getSize() > 0):
+                if (
+                    INamedField.providedBy(primary.field)
+                    and hasattr(primary.value, "getSize")
+                    and primary.value.getSize() > 0
+                ):
                     self.file = primary.value
                     self.field_name = primary.fieldname
             except TypeError:
@@ -302,8 +302,7 @@ class DexterityItem(BaseItem):
         if fi is not None:
             filename = fi.filename
             if filename:
-                url += '/@@download/{}/{}'.format(
-                    self.field_name, filename)
+                url += f"/@@download/{self.field_name}/{filename}"
         return url
 
     @property

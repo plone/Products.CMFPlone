@@ -88,7 +88,7 @@
     <p class="form-help"> Subtransactions allow Zope to commit small
     parts of a transaction over a period of time instead of all at
     once.  For ZCatalog, this means using subtransactions can
-    signficantly reduce the memory requirements needed to index huge
+    significantly reduce the memory requirements needed to index huge
     amounts of text all at once. Currently, subtransactions are only
     applied to text indexes.</p>
 

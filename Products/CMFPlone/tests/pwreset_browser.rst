@@ -389,7 +389,7 @@ We should have received an e-mail at this point:
 1B. User joins with e-mail validation enabled and forgets password
 ------------------------------------------------------------------
 
-What we do here is quite similiar to 1A, but instead of typing in the
+What we do here is quite similar to 1A, but instead of typing in the
 password ourselves, we will be sent an e-mail with the URL to set our
 password.
 
@@ -509,7 +509,7 @@ Remove got_user_logged_in_event registration:
 2B. Administrator adds user with email validation enabled
 ---------------------------------------------------------
 
-Simliar to 2A, but instead of setting the password for new member, an
+Similar to 2A, but instead of setting the password for new member, an
 e-mail is sent containing the URL that lets the user log in.
 
 First, we want to login as the portal owner:

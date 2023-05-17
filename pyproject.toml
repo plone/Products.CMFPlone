@@ -1,3 +1,5 @@
+# Generated from:
+# https://github.com/plone/meta/tree/master/config/default
 [tool.towncrier]
 filename = "CHANGES.md"
 directory = "news/"
@@ -20,3 +22,67 @@ showcontent = true
 directory = "bugfix"
 name = "Bug fixes:"
 showcontent = true
+
+[[tool.towncrier.type]]
+directory = "internal"
+name = "Internal:"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "documentation"
+name = "Documentation:"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "tests"
+name = "Tests"
+showcontent = true
+
+[tool.isort]
+profile = "plone"
+
+[tool.black]
+target-version = ["py38"]
+
+[tool.codespell]
+ignore-words-list = "discreet,aci,worl,unter,newslines"
+
+[tool.dependencychecker]
+Zope = [
+  # Zope own provided namespaces
+  'App', 'OFS', 'Products.Five', 'Products.OFSP', 'Products.PageTemplates',
+  'Products.SiteAccess', 'Shared', 'Testing', 'ZPublisher', 'ZTUtils',
+  'Zope2', 'webdav', 'zmi',
+  # ExtensionClass own provided namespaces
+  'ExtensionClass', 'ComputedAttribute', 'MethodObject',
+  # Zope dependencies
+  'AccessControl', 'Acquisition', 'AuthEncoding', 'beautifulsoup4', 'BTrees',
+  'cffi', 'Chameleon', 'DateTime', 'DocumentTemplate',
+  'MultiMapping', 'multipart', 'PasteDeploy', 'Persistence', 'persistent',
+  'pycparser', 'python-gettext', 'pytz', 'RestrictedPython', 'roman',
+  'soupsieve', 'transaction', 'waitress', 'WebOb', 'WebTest', 'WSGIProxy2',
+  'z3c.pt', 'zc.lockfile', 'ZConfig', 'zExceptions', 'ZODB', 'zodbpickle',
+  'zope.annotation', 'zope.browser', 'zope.browsermenu', 'zope.browserpage',
+  'zope.browserresource', 'zope.cachedescriptors', 'zope.component',
+  'zope.configuration', 'zope.container', 'zope.contentprovider',
+  'zope.contenttype', 'zope.datetime', 'zope.deferredimport',
+  'zope.deprecation', 'zope.dottedname', 'zope.event', 'zope.exceptions',
+  'zope.filerepresentation', 'zope.globalrequest', 'zope.hookable',
+  'zope.i18n', 'zope.i18nmessageid', 'zope.interface', 'zope.lifecycleevent',
+  'zope.location', 'zope.pagetemplate', 'zope.processlifetime', 'zope.proxy',
+  'zope.ptresource', 'zope.publisher', 'zope.schema', 'zope.security',
+  'zope.sequencesort', 'zope.site', 'zope.size', 'zope.structuredtext',
+  'zope.tal', 'zope.tales', 'zope.testbrowser', 'zope.testing',
+  'zope.traversing', 'zope.viewlet'
+]
+'Products.CMFCore' = [
+  'docutils', 'five.localsitemanager', 'Missing', 'Products.BTreeFolder2',
+  'Products.GenericSetup', 'Products.MailHost', 'Products.PythonScripts',
+  'Products.StandardCacheManagers', 'Products.ZCatalog', 'Record',
+  'zope.sendmail', 'Zope'
+]
+'plone.base' = [
+  'plone.batching', 'plone.registry', 'plone.schema','plone.z3cform',
+  'Products.CMFCore', 'Products.CMFDynamicViewFTI',
+]
+python-dateutil = ['dateutil']

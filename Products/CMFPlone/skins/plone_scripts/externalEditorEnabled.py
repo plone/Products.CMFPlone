@@ -11,15 +11,15 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import webdav_enabled
 
 
-portal = getToolByName(context, 'portal_url').getPortalObject()
-mtool = getToolByName(portal, 'portal_membership')
+portal = getToolByName(context, "portal_url").getPortalObject()
+mtool = getToolByName(portal, "portal_membership")
 
 if mtool.isAnonymousUser():
     return False
 
 # Check if the member property
 member = mtool.getAuthenticatedMember()
-if not member.getProperty('ext_editor', False):
+if not member.getProperty("ext_editor", False):
     return False
 
 if not webdav_enabled(context, container):

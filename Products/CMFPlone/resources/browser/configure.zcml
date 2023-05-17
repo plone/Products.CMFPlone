@@ -1,7 +1,8 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
-    i18n_domain="plone">
+    i18n_domain="plone"
+    >
 
   <browser:viewlet
       name="plone.resourceregistries.scripts"
@@ -18,10 +19,11 @@
       />
 
   <adapter
-      name="webresource"
-      for="* zope.publisher.interfaces.IRequest"
-      provides="zope.traversing.interfaces.ITraversable"
       factory="plone.resource.traversal.UniqueResourceTraverser"
+      provides="zope.traversing.interfaces.ITraversable"
+      for="*
+           zope.publisher.interfaces.IRequest"
+      name="webresource"
       />
 
 </configure>

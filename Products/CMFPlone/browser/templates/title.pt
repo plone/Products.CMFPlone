@@ -1,3 +1,8 @@
-<h1 tal:define="title context/Title" tal:condition="title" tal:content="title">
+<h1 tal:define="
+      title context/Title;
+    "
+    tal:condition="title"
+    tal:content="title"
+>
   Title or id
 </h1>

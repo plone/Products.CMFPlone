@@ -34,7 +34,6 @@ zope.deferredimport.deprecated(
 
 
 def initialize(context):
-
     # Stuff has been moved from module level to this method for a
     # better separation of import and installation.
     # For the general user this change does not make a difference.
@@ -169,7 +168,6 @@ def initialize(context):
         TranslationServiceTool.TranslationServiceTool,
     )
 
-    from Products.CMFCore.utils import ContentInit
     from Products.CMFPlone.utils import ToolInit
 
     # Register tools and content

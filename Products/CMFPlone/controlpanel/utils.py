@@ -3,11 +3,11 @@ from Products.CMFCore.utils import getToolByName
 import logging
 
 
-logger = logging.getLogger('Products.CMFPlone.controlpanel')
+logger = logging.getLogger("Products.CMFPlone.controlpanel")
 
 
 def migrate_to_email_login(context):
-    pas = getToolByName(context, 'acl_users')
+    pas = getToolByName(context, "acl_users")
 
     # We want the login name to be lowercase here.  This is new in
     # PAS.  Using 'manage_changeProperties' would change the login
@@ -15,14 +15,14 @@ def migrate_to_email_login(context):
     # and set the lowercase email address as login name, instead of
     # the lower case user id.
     # pas.manage_changeProperties(login_transform='lower')
-    pas.login_transform = 'lower'
+    pas.login_transform = "lower"
 
     # Update the users.
     for user in pas.getUsers():
         if user is None:
             continue
         user_id = user.getUserId()
-        email = user.getProperty('email', '')
+        email = user.getProperty("email", "")
         if email:
             login_name = pas.applyTransform(email)
             pas.updateLoginName(user_id, login_name)
@@ -31,14 +31,14 @@ def migrate_to_email_login(context):
 
 
 def migrate_from_email_login(context):
-    pas = getToolByName(context, 'acl_users')
+    pas = getToolByName(context, "acl_users")
 
     # Whether the login name is lowercase or not does not really
     # matter for this use case, but it may be better not to change
     # it at this point.
 
     # XXX
-    pas.login_transform = ''
+    pas.login_transform = ""
 
     # We do want to update the users.
     for user in pas.getUsers():

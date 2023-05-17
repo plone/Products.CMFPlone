@@ -16,9 +16,8 @@ class IAdditiveLayer(Interface):
 
 
 class TestBrowserLayerPrecedence(PloneTestCase):
-
     def _get_request_interfaces(self):
-        request = self.layer['request']
+        request = self.layer["request"]
         # Reset _plonebrowerlayer_ marker, so that we can still register
         # additional layers for testing. (WTF here?)
         del request._plonebrowserlayer_
@@ -27,9 +26,8 @@ class TestBrowserLayerPrecedence(PloneTestCase):
         return iro
 
     def testCustomBrowserLayerHasPrecedenceOverDefaultLayer(self):
-        register_layer(IAdditiveLayer, 'Plone.testlayer')
+        register_layer(IAdditiveLayer, "Plone.testlayer")
         iro = self._get_request_interfaces()
-        unregister_layer('Plone.testlayer')
+        unregister_layer("Plone.testlayer")
 
-        self.assertTrue(iro.index(IAdditiveLayer) <
-                        iro.index(IDefaultBrowserLayer))
+        self.assertTrue(iro.index(IAdditiveLayer) < iro.index(IDefaultBrowserLayer))

@@ -1,7 +1,8 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:five="http://namespaces.zope.org/five"
-    xmlns:browser="http://namespaces.zope.org/browser">
+    >
 
   <adapter factory=".editing.EditingControlPanelAdapter" />
   <adapter factory=".language.LanguageControlPanelAdapter" />

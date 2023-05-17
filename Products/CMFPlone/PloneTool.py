@@ -68,7 +68,10 @@ FLOOR_DATE = __FLOOR_DATE = DateTime(1970, 0)  # always effective
 BAD_CHARS = bad_id.__self__.findall
 
 # max 63 chars per label in domains, see RFC1035
-EMAIL_RE = re.compile(r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,63}|([0-9]{1,3}\.){3}[0-9]{1,3})$", re.IGNORECASE)  # noqa
+EMAIL_RE = re.compile(
+    r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,63}|([0-9]{1,3}\.){3}[0-9]{1,3})$",
+    re.IGNORECASE,
+)  # noqa
 # used to find double new line (in any variant)
 EMAIL_CUTOFF_RE = re.compile(r".*[\n\r][\n\r]")
 
@@ -77,53 +80,55 @@ METADATA_DCNAME = {
     # The first two rows are handle in a special way
     # 'Description'      : 'description',
     # 'Subject'          : 'keywords',
-    'Description': 'DC.description',
-    'Subject': 'DC.subject',
-    'Creator': 'DC.creator',
-    'Contributors': 'DC.contributors',
-    'Publisher': 'DC.publisher',
-    'CreationDate': 'DC.date.created',
-    'ModificationDate': 'DC.date.modified',
-    'Type': 'DC.type',
-    'Format': 'DC.format',
-    'Language': 'DC.language',
-    'Rights': 'DC.rights',
+    "Description": "DC.description",
+    "Subject": "DC.subject",
+    "Creator": "DC.creator",
+    "Contributors": "DC.contributors",
+    "Publisher": "DC.publisher",
+    "CreationDate": "DC.date.created",
+    "ModificationDate": "DC.date.modified",
+    "Type": "DC.type",
+    "Format": "DC.format",
+    "Language": "DC.language",
+    "Rights": "DC.rights",
 }
-METADATA_DC_AUTHORFIELDS = ('Creator', 'Contributors', 'Publisher')
+METADATA_DC_AUTHORFIELDS = ("Creator", "Contributors", "Publisher")
 
 
 @implementer(IPloneTool)
 class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     """Various utility methods."""
 
-    id = 'plone_utils'
-    meta_type = 'Plone Utility Tool'
-    toolicon = 'skins/plone_images/site_icon.png'
+    id = "plone_utils"
+    meta_type = "Plone Utility Tool"
+    toolicon = "skins/plone_images/site_icon.png"
     security = ClassSecurityInfo()
     plone_tool = 1
     # Prefix for forms fields!?
-    field_prefix = 'field_'
+    field_prefix = "field_"
 
     @security.protected(ManageUsers)
     @protect(CheckAuthenticator)
     def setMemberProperties(self, member, REQUEST=None, **properties):
-        pas = getToolByName(self, 'acl_users')
-        if safe_hasattr(member, 'getId'):
+        pas = getToolByName(self, "acl_users")
+        if safe_hasattr(member, "getId"):
             member = member.getId()
         user = pas.getUserById(member)
         user.setProperties(**properties)
 
     @security.public
-    @deprecate('`getSiteEncoding` is deprecated. Plone only supports UTF-8 '
-                'currently. This method always returns "utf-8"')
+    @deprecate(
+        "`getSiteEncoding` is deprecated. Plone only supports UTF-8 "
+        'currently. This method always returns "utf-8"'
+    )
     def getSiteEncoding(self):
-        """ Get the the site encoding, which is utf-8."""
-        return 'utf-8'
+        """Get the the site encoding, which is utf-8."""
+        return "utf-8"
 
     @security.private
     def getMailHost(self):
         """Gets the MailHost."""
-        return getattr(aq_parent(self), 'MailHost')
+        return getattr(aq_parent(self), "MailHost")
 
     @security.public
     def validateSingleNormalizedEmailAddress(self, address):
@@ -138,8 +143,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return False
 
         # sub is an empty string if the address is valid
-        sub = EMAIL_RE.sub('', address)
-        if sub == '':
+        sub = EMAIL_RE.sub("", address)
+        if sub == "":
             return True
         return False
 
@@ -185,13 +190,24 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return True
 
     @security.public
-    def editMetadata(self, obj, allowDiscussion=None, title=None,
-                     subject=None, description=None, contributors=None,
-                     effective_date=None, expiration_date=None, format=None,
-                     language=None, rights=None, **kwargs):
+    def editMetadata(
+        self,
+        obj,
+        allowDiscussion=None,
+        title=None,
+        subject=None,
+        description=None,
+        contributors=None,
+        effective_date=None,
+        expiration_date=None,
+        format=None,
+        language=None,
+        rights=None,
+        **kwargs,
+    ):
         # Responsible for setting metadata on a content object.
         # We assume the obj implements IDublinCoreMetadata.
-        mt = getToolByName(self, 'portal_membership')
+        mt = getToolByName(self, "portal_membership")
         if not mt.checkPermission(ModifyPortalContent, obj):
             # FIXME: Some scripts rely on this being string?
             raise Unauthorized
@@ -207,25 +223,25 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         if IDublinCore.providedBy(obj):
             if title is None:
-                title = getfield(REQUEST, 'title')
+                title = getfield(REQUEST, "title")
             if description is None:
-                description = getfield(REQUEST, 'description')
+                description = getfield(REQUEST, "description")
             if subject is None:
-                subject = getfield(REQUEST, 'subject')
+                subject = getfield(REQUEST, "subject")
             if subject is not None:
                 subject = tuplify(subject)
             if contributors is None:
-                contributors = getfield(REQUEST, 'contributors')
+                contributors = getfield(REQUEST, "contributors")
             if contributors is not None:
                 contributors = tuplify(contributors)
             if effective_date is None:
-                effective_date = getfield(REQUEST, 'effective_date')
-            if effective_date == '':
-                effective_date = 'None'
+                effective_date = getfield(REQUEST, "effective_date")
+            if effective_date == "":
+                effective_date = "None"
             if expiration_date is None:
-                expiration_date = getfield(REQUEST, 'expiration_date')
-            if expiration_date == '':
-                expiration_date = 'None'
+                expiration_date = getfield(REQUEST, "expiration_date")
+            if expiration_date == "":
+                expiration_date = "None"
 
         if IMutableDublinCore.providedBy(obj):
             if title is not None:
@@ -252,20 +268,19 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def _renameObject(self, obj, id):
         if not id:
             REQUEST = self.REQUEST
-            id = REQUEST.get('id', '')
-            id = REQUEST.get(self.field_prefix + 'id', '')
+            id = REQUEST.get("id", "")
+            id = REQUEST.get(self.field_prefix + "id", "")
         if id != obj.getId():
             parent = aq_parent(aq_inner(obj))
             parent.manage_renameObject(obj.getId(), id)
 
-    def _makeTransactionNote(self, obj, msg=''):
+    def _makeTransactionNote(self, obj, msg=""):
         # TODO Why not aq_parent()?
-        relative_path = '/'.join(
-            getToolByName(self, 'portal_url').getRelativeContentPath(obj)[:-1]
+        relative_path = "/".join(
+            getToolByName(self, "portal_url").getRelativeContentPath(obj)[:-1]
         )
         if not msg:
-            msg = relative_path + '/' + obj.title_or_id() \
-                + ' has been modified.'
+            msg = relative_path + "/" + obj.title_or_id() + " has been modified."
         if not transaction.get().description:
             transaction_note(safe_text(msg))
 
@@ -275,30 +290,29 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         try:
             self.editMetadata(obj, **kwargs)
         except AttributeError as msg:
-            log('Failure editing metadata at: %s.\n%s\n' %
-                (obj.absolute_url(), msg))
-        if kwargs.get('id', None) is not None:
-            self._renameObject(obj, id=kwargs['id'].strip())
+            log(f"Failure editing metadata at: {obj.absolute_url()}.\n{msg}\n")
+        if kwargs.get("id", None) is not None:
+            self._renameObject(obj, id=kwargs["id"].strip())
         self._makeTransactionNote(obj)
 
     @security.public
     def availableMIMETypes(self):
         # Returns a map of mimetypes.
         # Requires mimetype registry from Archetypes >= 1.3.
-        mtr = getToolByName(self, 'mimetypes_registry')
+        mtr = getToolByName(self, "mimetypes_registry")
         return mtr.list_mimetypes()
 
     @security.protected(View)
     def getWorkflowChainFor(self, object):
         # Proxy the request for the chain to the workflow tool, as
         # this method is private there.
-        wftool = getToolByName(self, 'portal_workflow')
+        wftool = getToolByName(self, "portal_workflow")
         wfs = ()
         try:
             wfs = wftool.getChainFor(object)
         except ConflictError:
             raise
-        except:
+        except Exception:
             pass
         return wfs
 
@@ -307,16 +321,15 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Get an icon for an action, from its icon_expr.
         if context is None:
             context = aq_parent(self)
-        action_chain = f'{category}/{id}'
-        if category == 'controlpanel':
-            tool = getToolByName(context, 'portal_controlpanel')
-            actions = [ai for ai in tool.listActionInfos() if ai['id'] == id]
+        action_chain = f"{category}/{id}"
+        if category == "controlpanel":
+            tool = getToolByName(context, "portal_controlpanel")
+            actions = [ai for ai in tool.listActionInfos() if ai["id"] == id]
         else:
-            tool = getToolByName(context, 'portal_actions')
-            actions = tool.listActionInfos(
-                action_chain=action_chain, object=context)
+            tool = getToolByName(context, "portal_actions")
+            actions = tool.listActionInfos(action_chain=action_chain, object=context)
         if len(actions) > 0:
-            icon = actions[0].get('icon', None)
+            icon = actions[0].get("icon", None)
             if icon:
                 return icon
         else:
@@ -332,11 +345,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Utility method that gets the workflow state title for the
         # object's review_state.
         # Returns None if no review_state found.
-        wf_tool = getToolByName(self, 'portal_workflow')
+        wf_tool = getToolByName(self, "portal_workflow")
         wfs = ()
         objstate = None
         try:
-            objstate = wf_tool.getInfoFor(obj, 'review_state')
+            objstate = wf_tool.getInfoFor(obj, "review_state")
             wfs = wf_tool.getWorkflowsFor(obj)
         except WorkflowException:
             pass
@@ -350,8 +363,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     @protect(CheckAuthenticator)
     def changeOwnershipOf(self, object, userid, recursive=0, REQUEST=None):
         """Changes the ownership of an object."""
-        membership = getToolByName(self, 'portal_membership')
-        acl_users = getattr(self, 'acl_users')
+        membership = getToolByName(self, "portal_membership")
+        acl_users = getattr(self, "acl_users")
         user = acl_users.getUserById(userid)
         if user is None:
             # The user could be in the top level acl_users folder in
@@ -359,42 +372,43 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             user = membership.getMemberById(userid)
             if user is None:
                 raise KeyError(
-                    'Only retrievable users in this site can be made owners.')
+                    "Only retrievable users in this site can be made owners."
+                )
             # Be careful not to pass MemberData to changeOwnership
             user = user.getUser()
         object.changeOwnership(user, recursive)
 
         def fixOwnerRole(object, user_id):
             # Get rid of all other owners
-            owners = object.users_with_local_role('Owner')
+            owners = object.users_with_local_role("Owner")
             for o in owners:
                 roles = list(object.get_local_roles_for_userid(o))
-                roles.remove('Owner')
+                roles.remove("Owner")
                 if roles:
                     object.manage_setLocalRoles(o, roles)
                 else:
                     object.manage_delLocalRoles([o])
             # Fix for 1750
             roles = list(object.get_local_roles_for_userid(user_id))
-            roles.append('Owner')
+            roles.append("Owner")
             object.manage_setLocalRoles(user_id, roles)
 
         fixOwnerRole(object, user.getId())
-        if base_hasattr(object, 'reindexObject'):
+        if base_hasattr(object, "reindexObject"):
             object.reindexObject()
 
         if recursive:
-            catalog_tool = getToolByName(self, 'portal_catalog')
-            purl = getToolByName(self, 'portal_url')
+            catalog_tool = getToolByName(self, "portal_catalog")
+            purl = getToolByName(self, "portal_url")
             _path = purl.getRelativeContentURL(object)
             subobjects = [
-                b.getObject()
-                for b in catalog_tool(path={'query': _path, 'level': 1})
+                b.getObject() for b in catalog_tool(path={"query": _path, "level": 1})
             ]
             for obj in subobjects:
                 fixOwnerRole(obj, user.getId())
-                if base_hasattr(obj, 'reindexObject'):
+                if base_hasattr(obj, "reindexObject"):
                     obj.reindexObject()
+
     changeOwnershipOf = postonly(changeOwnershipOf)
 
     @security.public
@@ -418,7 +432,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Don't assign the traceback to s
         # (otherwise will generate a circular reference)
         s = sys.exc_info()[:2]
-        if s[0] == None:
+        if s[0] is None:
             return None
         if isinstance(s[0], str):
             return s[0]
@@ -468,13 +482,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     @security.public
     def getInheritedLocalRoles(self, context):
         # Returns a tuple with the acquired local roles.
-        portal = getToolByName(context, 'portal_url').getPortalObject()
+        portal = getToolByName(context, "portal_url").getPortalObject()
         result = []
         cont = 1
         if portal != context:
             parent = aq_parent(context)
             while cont:
-                if not getattr(parent, 'acl_users', False):
+                if not getattr(parent, "acl_users", False):
                     break
                 userroles = parent.acl_users._getLocalRolesForDisplay(parent)
                 for user, roles, role_type, name in userroles:
@@ -535,13 +549,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Lookup happens over a view, for which in theory a different
         # implementation may be used.
         if request is None:
-            if hasattr(self, 'REQUEST'):
+            if hasattr(self, "REQUEST"):
                 request = self.REQUEST
         if request:
             return get_default_page_via_view(obj, request)
 
     @security.public
-    def addPortalMessage(self, message, type='info', request=None):
+    def addPortalMessage(self, message, type="info", request=None):
         # Call this once or more to add messages to be displayed at the
         # top of the web page.
 
@@ -627,18 +641,18 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # and then requests that object, for example for: /, with verb PROPFIND
         # means acquire PROPFIND from the folder and call it
         # its all very odd and WebDAV'y
-        request = getattr(self, 'REQUEST', None)
-        if request is not None and 'REQUEST_METHOD' in request:
-            if request['REQUEST_METHOD'] not in ['GET', 'POST']:
-                return obj, [request['REQUEST_METHOD']]
+        request = getattr(self, "REQUEST", None)
+        if request is not None and "REQUEST_METHOD" in request:
+            if request["REQUEST_METHOD"] not in ["GET", "POST"]:
+                return obj, [request["REQUEST_METHOD"]]
         # Now back to normal
 
         #
         # 1. Get an attribute or contained object index_html
         #
-        index_obj = getattr(aq_base(obj), 'index_html', None)
+        index_obj = getattr(aq_base(obj), "index_html", None)
         if index_obj is not None and not isinstance(index_obj, ComputedAttribute):
-            return obj, ['index_html']
+            return obj, ["index_html"]
 
         #
         # 2. Look for a default_page managed by an IBrowserDefault-implementing
@@ -656,14 +670,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     return obj, [defaultPage]
                 # Avoid infinite recursion in the case that the page id == the
                 # object id
-                elif (
-                    defaultPage != obj.getId()
-                    and defaultPage != '/'.join(obj.getPhysicalPath())
+                elif defaultPage != obj.getId() and defaultPage != "/".join(
+                    obj.getPhysicalPath()
                 ):
                     # For the default_page property, we may get things in the
                     # skin layers or with an explicit path - split this path
                     # to comply with the __browser_default__() spec
-                    return obj, defaultPage.split('/')
+                    return obj, defaultPage.split("/")
 
         # 5. If there is no default page, try IBrowserDefault.getLayout()
         if IBrowserDefault.providedBy(obj):
@@ -672,12 +685,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             browserDefault = queryAdapter(obj, IBrowserDefault)
         if browserDefault is not None:
             default_view_fallback = False
-            if base_hasattr(obj, 'getTypeInfo'):
+            if base_hasattr(obj, "getTypeInfo"):
                 default_view_fallback = obj.getTypeInfo().default_view_fallback
             layout = browserDefault.getLayout(check_exists=default_view_fallback)
             if layout is None:
                 raise AttributeError(
-                    "%s has no assigned layout, perhaps it needs an FTI" % obj)
+                    "%s has no assigned layout, perhaps it needs an FTI" % obj
+                )
             else:
                 return obj, [layout]
 
@@ -691,14 +705,16 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # action (this applies to old-style folders only, IBrowserDefault is
         # managed explicitly above)
 
-        if base_hasattr(obj, 'getTypeInfo'):
+        if base_hasattr(obj, "getTypeInfo"):
             try:
                 # XXX: This isn't quite right since it assumes the action
                 # starts with ${object_url}.  Should we raise an error if
                 # it doesn't?
-                act = obj.getTypeInfo().getActionInfo(
-                    'folder/folderlisting'
-                )['url'].split('/')[-1]
+                act = (
+                    obj.getTypeInfo()
+                    .getActionInfo("folder/folderlisting")["url"]
+                    .split("/")[-1]
+                )
                 return obj, [act]
             except ValueError:
                 pass
@@ -711,9 +727,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 # XXX: This isn't quite right since it assumes the action
                 # starts with ${object_url}.  Should we raise an error if
                 # it doesn't?
-                act = obj.getTypeInfo().getActionInfo(
-                    'object/view'
-                )['url'].split('/')[-1]
+                act = (
+                    obj.getTypeInfo().getActionInfo("object/view")["url"].split("/")[-1]
+                )
                 return obj, [act]
             except ValueError:
                 pass
@@ -723,8 +739,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         #
 
         raise AttributeError(
-            "Failed to get a default page or view_action for %s"
-            % (obj.absolute_url(),)
+            f"Failed to get a default page or view_action for {obj.absolute_url()}"
         )
 
     @security.public
@@ -735,10 +750,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         INonStructuralFolder to declare that it doesn't wish to be treated
         as a folder by the navtree, the tab generation etc.
         """
-        return (
-            obj.isPrincipiaFolderish
-            and not INonStructuralFolder.providedBy(obj)
-        )
+        return obj.isPrincipiaFolderish and not INonStructuralFolder.providedBy(obj)
 
     @security.public
     @protect(CheckAuthenticator)
@@ -747,7 +759,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # behaviour).
         # If it's 0, prohibit it (it will allow some kind of local role
         # blacklisting).
-        mt = getToolByName(self, 'portal_membership')
+        mt = getToolByName(self, "portal_membership")
         if not mt.checkPermission(ModifyPortalContent, obj):
             raise Unauthorized
 
@@ -756,18 +768,19 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not status:
             obj.__ac_local_roles_block__ = 1
         else:
-            if getattr(obj, '__ac_local_roles_block__', None):
+            if getattr(obj, "__ac_local_roles_block__", None):
                 obj.__ac_local_roles_block__ = None
 
         # Reindex the whole stuff.
         obj.reindexObjectSecurity()
+
     acquireLocalRoles = postonly(acquireLocalRoles)
 
     @security.public
     def isLocalRoleAcquired(self, obj):
         # Returns local role acquisition blocking status.
         # True if normal, false if blocked.
-        if getattr(obj, '__ac_local_roles_block__', None):
+        if getattr(obj, "__ac_local_roles_block__", None):
             return False
         return True
 
@@ -775,7 +788,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def getOwnerName(self, obj):
         # Returns the userid of the owner of an object.
         # Note: no docstring please, to avoid reflected XSS.
-        mt = getToolByName(self, 'portal_membership')
+        mt = getToolByName(self, "portal_membership")
         if not mt.checkPermission(View, obj):
             raise Unauthorized
         return obj.getOwner().getId()
@@ -797,24 +810,23 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Lists meta tags helper.
         # Creates a mapping of meta tags -> values for the listMetaTags script.
         result = {}
-        mt = getToolByName(self, 'portal_membership')
+        mt = getToolByName(self, "portal_membership")
 
         registry = getUtility(IRegistry)
-        site_settings = registry.forInterface(
-            ISiteSchema, prefix="plone", check=False)
+        site_settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
 
         try:
             use_all = site_settings.exposeDCMetaTags
         except AttributeError:
             use_all = False
 
-        security_settings = registry.forInterface(
-            ISecuritySchema, prefix='plone')
-        view_about = security_settings.allow_anon_views_about \
-            or not mt.isAnonymousUser()
+        security_settings = registry.forInterface(ISecuritySchema, prefix="plone")
+        view_about = (
+            security_settings.allow_anon_views_about or not mt.isAnonymousUser()
+        )
 
         if not use_all:
-            metadata_names = {'Description': METADATA_DCNAME['Description']}
+            metadata_names = {"Description": METADATA_DCNAME["Description"]}
         else:
             metadata_names = METADATA_DCNAME
         for accessor, key in metadata_names.items():
@@ -823,7 +835,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 continue
 
             # short circuit non-special cases
-            if not use_all and accessor not in ('Description', 'Subject'):
+            if not use_all and accessor not in ("Description", "Subject"):
                 continue
 
             method = getattr(aq_inner(context).aq_explicit, accessor, None)
@@ -839,7 +851,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if not value:
                 # No data
                 continue
-            if accessor == 'Publisher' and value == 'No publisher':
+            if accessor == "Publisher" and value == "No publisher":
                 # No publisher is hardcoded (TODO: still?)
                 continue
 
@@ -852,19 +864,19 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     member = mt.getMemberInfo(userid)
                     name = userid
                     if member:
-                        name = member['fullname'] or userid
+                        name = member["fullname"] or userid
                     tmp.append(name)
                 value = tmp
 
             if isinstance(value, (list, tuple)):
                 # convert a list to a string
-                value = ', '.join(value)
+                value = ", ".join(value)
 
             # Special cases
-            if accessor == 'Description':
-                result['description'] = value
-            elif accessor == 'Subject':
-                result['keywords'] = value
+            if accessor == "Description":
+                result["description"] = value
+            elif accessor == "Subject":
+                result["keywords"] = value
 
             if use_all:
                 result[key] = value
@@ -874,7 +886,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
             try:
                 effective = context.EffectiveDate()
-                if effective == 'None':
+                if effective == "None":
                     effective = None
                 if effective:
                     effective = DateTime(effective)
@@ -883,7 +895,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
             try:
                 expires = context.ExpirationDate()
-                if expires == 'None':
+                if expires == "None":
                     expires = None
                 if expires:
                     expires = DateTime(expires)
@@ -891,20 +903,22 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 expires = None
 
             # Filter out DWIMish artifacts on effective / expiration dates
-            if effective is not None and \
-               effective > FLOOR_DATE and \
-               effective != created:
+            if (
+                effective is not None
+                and effective > FLOOR_DATE
+                and effective != created
+            ):
                 eff_str = effective.Date()
             else:
-                eff_str = ''
+                eff_str = ""
 
             if expires is not None and expires < CEILING_DATE:
                 exp_str = expires.Date()
             else:
-                exp_str = ''
+                exp_str = ""
 
             if eff_str or exp_str:
-                result['DC.date.valid_range'] = f'{eff_str} - {exp_str}'
+                result["DC.date.valid_range"] = f"{eff_str} - {exp_str}"
 
         return result
 
@@ -925,7 +939,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         search_settings = registry.forInterface(ISearchSchema, prefix="plone")
         blacklistedTypes = search_settings.types_not_searched
 
-        ttool = getToolByName(self, 'portal_types')
+        ttool = getToolByName(self, "portal_types")
         tool_types = ttool.keys()
         if typesList:
             types = [t for t in typesList if t in tool_types]
@@ -959,7 +973,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Given an FTI, return the dict of method aliases defined on that
         # FTI. If there are no method aliases (i.e. this FTI doesn't support
         # it), return None.
-        getMethodAliases = getattr(typeInfo, 'getMethodAliases', None)
+        getMethodAliases = getattr(typeInfo, "getMethodAliases", None)
         if getMethodAliases is not None and safe_callable(getMethodAliases):
             return getMethodAliases()
         return None
@@ -976,12 +990,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         warnings.warn(
             "Use plone.api.content.delete instead of deleteObjectsByPaths. "
             "This method no longer does link integrity checks. Will be removed in Plone 7",
-            DeprecationWarning
+            DeprecationWarning,
         )
         failure = {}
         success = []
         # use the portal for traversal in case we have relative paths
-        portal = getToolByName(self, 'portal_url').getPortalObject()
+        portal = getToolByName(self, "portal_url").getPortalObject()
         traverse = portal.restrictedTraverse
         for path in paths:
             # Skip and note any errors
@@ -991,7 +1005,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 obj = traverse(path)
                 obj_parent = aq_parent(aq_inner(obj))
                 obj_parent.manage_delObjects([obj.getId()])
-                success.append(f'{obj.getId()} ({path})')
+                success.append(f"{obj.getId()} ({path})")
             except ConflictError:
                 raise
             except Exception as e:
@@ -1001,17 +1015,18 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     log_exc()
                 else:
                     raise
-        transaction_note('Deleted %s' % (', '.join(success)))
+        transaction_note("Deleted %s" % (", ".join(success)))
         return success, failure
 
     @security.public
     @protect(CheckAuthenticator)
-    def renameObjectsByPaths(self, paths, new_ids, new_titles,
-                             handle_errors=True, REQUEST=None):
+    def renameObjectsByPaths(
+        self, paths, new_ids, new_titles, handle_errors=True, REQUEST=None
+    ):
         failure = {}
         success = {}
         # use the portal for traversal in case we have relative paths
-        portal = getToolByName(self, 'portal_url').getPortalObject()
+        portal = getToolByName(self, "portal_url").getPortalObject()
         traverse = portal.restrictedTraverse
         for i, path in enumerate(paths):
             new_id = new_ids[i]
@@ -1025,9 +1040,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 change_title = new_title and title != new_title
                 changed = False
                 if change_title:
-                    getSecurityManager().validate(
-                        obj, obj, 'setTitle', obj.setTitle
-                    )
+                    getSecurityManager().validate(obj, obj, "setTitle", obj.setTitle)
                     obj.setTitle(new_title)
                     notify(ObjectModifiedEvent(obj))
                     changed = True
@@ -1049,8 +1062,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     failure[path] = e
                 else:
                     raise
-        transaction_note('Renamed %s' % str(success.keys()))
+        transaction_note("Renamed %s" % str(success.keys()))
         return success, failure
+
     renameObjectsByPaths = postonly(renameObjectsByPaths)
+
 
 InitializeClass(PloneTool)

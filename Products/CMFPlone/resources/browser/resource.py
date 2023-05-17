@@ -55,17 +55,17 @@ class ResourceBase:
 
     def _cache_attr_name(self, site):
         hashtool = hashlib.sha256()
-        hashtool.update(self.__class__.__name__.encode('utf8'))
-        hashtool.update(site.absolute_url().encode('utf8'))
+        hashtool.update(self.__class__.__name__.encode("utf8"))
+        hashtool.update(site.absolute_url().encode("utf8"))
         e_bundles, d_bundles = self._request_bundles()
         for bundle in e_bundles | d_bundles:
-            hashtool.update(bundle.encode('utf8'))
+            hashtool.update(bundle.encode("utf8"))
         hashtool.update(self._user_local_roles(site).encode("utf8"))
         if not getattr(self, "registry", None):
             self.registry = getUtility(IRegistry)
             mtime = getattr(self.registry, _RESOURCE_REGISTRY_MTIME, None)
             if mtime is not None:
-                hashtool.update(str(mtime).encode('utf8'))
+                hashtool.update(str(mtime).encode("utf8"))
         return f"_v_rendered_cache_{hashtool.hexdigest()}"
 
     @property
@@ -151,17 +151,15 @@ class ResourceBase:
                     # gracefully rewrite old bundle names
                     graceful_depends = GRACEFUL_DEPENDENCY_REWRITE[name]
                     logger.error(
-                            msg
-                            + f"Bundle dependency graceful rewritten to '{graceful_depends}' "
-                            + "Fallback will be removed in Plone 7."
-                        )
+                        msg
+                        + f"Bundle dependency graceful rewritten to '{graceful_depends}' "
+                        + "Fallback will be removed in Plone 7."
+                    )
                     valid_dependencies.append(graceful_depends)
                     continue
 
                 # if the dependency does not exist, skip the bundle
-                logger.error(
-                    msg + "Bundle ignored - This may break your site!"
-                )
+                logger.error(msg + "Bundle ignored - This may break your site!")
                 return "__broken__"
 
             return valid_dependencies
@@ -194,7 +192,7 @@ class ResourceBase:
                     async_=record.load_async or None,
                     defer=record.load_defer or None,
                     integrity=not external,
-                    **{'data-bundle': name},
+                    **{"data-bundle": name},
                 )
             if record.csscompilation:
                 depends = check_dependencies(name, record.depends, css_names)
@@ -214,7 +212,7 @@ class ResourceBase:
                     url=record.csscompilation if external else None,
                     media="all",
                     rel="stylesheet",
-                    **{'data-bundle': name},
+                    **{"data-bundle": name},
                 )
 
         # Collect theme data

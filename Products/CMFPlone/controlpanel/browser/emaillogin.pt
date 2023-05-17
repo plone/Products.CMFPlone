@@ -1,59 +1,96 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
-  xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:metal="http://xml.zope.org/namespaces/metal"
-  xmlns:i18n="http://xml.zope.org/namespaces/i18n" metal:use-macro="context/prefs_main_template/macros/master" i18n:domain="plone">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      xml:lang="en"
+      i18n:domain="plone"
+>
 
   <body>
 
     <metal:main metal:fill-slot="prefs_configlet_content">
       <header>
-        <a href=""
-            id="setup-link"
-            tal:attributes="href string:$portal_url/@@security-controlpanel"
-            i18n:translate="">
+        <a id="setup-link"
+           href=""
+           tal:attributes="
+             href string:$portal_url/@@security-controlpanel;
+           "
+           i18n:translate=""
+        >
             Security Settings
         </a>
-        <h1 class="documentFirstHeading" i18n:translate="heading_find_duplicate_login_names">
+        <h1 class="documentFirstHeading"
+            i18n:translate="heading_find_duplicate_login_names"
+        >
           Find duplicate login names
         </h1>
       </header>
       <div id="content-core">
         <p i18n:translate="help_duplicate_login_names">
       Switching the email login setting in the
-          <a i18n:name="link" tal:attributes="href string:${context/portal_url}/@@security-controlpanel" i18n:translate="">Security settings</a>
+          <a tal:attributes="
+               href string:${context/portal_url}/@@security-controlpanel;
+             "
+             i18n:name="link"
+             i18n:translate=""
+          >Security settings</a>
       on or off automatically changes the login name for existing users.
       This may fail when there are duplicates.
       On this page you can search for duplicates.
         </p>
       </div>
-      <div class="mb-4" tal:condition="request/form/submitted|nothing">
+      <div class="mb-4"
+           tal:condition="request/form/submitted|nothing"
+      >
         <div tal:condition="view/duplicates">
           <p i18n:translate="msg_login_duplicates_found">
           The following login names would be used by more than one account:
           </p>
           <div clas="list-group">
-            <div class="list-group-item" tal:repeat="dup view/duplicates">
-              <span tal:content="python:dup[0]" />:
-              <span tal:repeat="account python:dup[1]" tal:content="account" />
+            <div class="list-group-item"
+                 tal:repeat="dup view/duplicates"
+            >
+              <span tal:content="python:dup[0]"></span>:
+              <span tal:repeat="account python:dup[1]"
+                    tal:content="account"
+              ></span>
             </div>
           </div>
         </div>
-        <div class="mb-4" tal:condition="not:view/duplicates">
+        <div class="mb-4"
+             tal:condition="not:view/duplicates"
+        >
           <p i18n:translate="msg_no_login_duplicates_found">
           No login names found that are used by more than one account.
           </p>
         </div>
       </div>
 
-      <form action="" name="emaillogin-migrate" method="post" class="pat-formunloadalert pat-formautofocus">
+      <form class="pat-formunloadalert pat-formautofocus"
+            action=""
+            method="post"
+            name="emaillogin-migrate"
+      >
         <fieldset class="mb-4">
-          <input type="hidden" name="submitted" value="submitted" id="submitted" />
-          <button type="submit" name="check_email" class="btn btn-primary">
+          <input id="submitted"
+                 name="submitted"
+                 type="hidden"
+                 value="submitted"
+          />
+          <button class="btn btn-primary"
+                  name="check_email"
+                  type="submit"
+          >
             <span i18n:translate="label_check_duplicate_emails">Check for duplicate emails</span>
           </button>
         </fieldset>
         <fieldset>
-          <button type="submit" name="check_userid" class="btn btn-primary">
+          <button class="btn btn-primary"
+                  name="check_userid"
+                  type="submit"
+          >
             <span i18n:translate="label_check_duplicate_user_ids">Check for duplicate lower case user ids</span>
           </button>
         </fieldset>

@@ -25,7 +25,6 @@ except ImportError:
 
 
 class OverviewControlPanel(controlpanel.RegistryEditForm):
-
     template = ViewPageTemplateFile("overview.pt")
 
     base_category = "controlpanel"
@@ -76,7 +75,6 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
         }
 
     def version_overview(self):
-
         core_versions = self.core_versions()
         versions = [
             "Plone {} ({})".format(

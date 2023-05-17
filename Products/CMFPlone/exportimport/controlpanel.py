@@ -32,17 +32,17 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
 
     __used_for__ = IControlPanel
 
-    _LOGGER_ID = 'controlpanel'
+    _LOGGER_ID = "controlpanel"
 
-    name = 'controlpanel'
+    name = "controlpanel"
 
     def _exportNode(self):
         """
         Export the object as a DOM node.
         """
-        node = self._getObjectNode('object')
+        node = self._getObjectNode("object")
         node.appendChild(self._extractConfiglets())
-        self._logger.info('Control panel exported.')
+        self._logger.info("Control panel exported.")
         return node
 
     def _importNode(self, node):
@@ -50,7 +50,7 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
         Import the object from the DOM node.
         """
         self._initProvider(node)
-        self._logger.info('Control panel imported.')
+        self._logger.info("Control panel imported.")
 
     def _initProvider(self, node):
         if self.environ.shouldPurge():
@@ -74,21 +74,21 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
 
         if actions:
             actions = list(actions)
-            actions.sort(key=lambda action: action.getMapping()['id'])
+            actions.sort(key=lambda action: action.getMapping()["id"])
 
         for ai in actions:
             mapping = ai.getMapping()
-            child = self._doc.createElement('configlet')
-            child.setAttribute('action_id', mapping['id'])
-            child.setAttribute('category', mapping['category'])
-            child.setAttribute('condition_expr', mapping['condition'])
-            child.setAttribute('title', mapping['title'])
-            child.setAttribute('url_expr', mapping['action'])
-            child.setAttribute('visible', str(mapping['visible']))
-            child.setAttribute('appId', ai.getAppId())
-            child.setAttribute('icon_expr', mapping['icon_expr'])
-            for permission in mapping['permissions']:
-                sub = self._doc.createElement('permission')
+            child = self._doc.createElement("configlet")
+            child.setAttribute("action_id", mapping["id"])
+            child.setAttribute("category", mapping["category"])
+            child.setAttribute("condition_expr", mapping["condition"])
+            child.setAttribute("title", mapping["title"])
+            child.setAttribute("url_expr", mapping["action"])
+            child.setAttribute("visible", str(mapping["visible"]))
+            child.setAttribute("appId", ai.getAppId())
+            child.setAttribute("icon_expr", mapping["icon_expr"])
+            for permission in mapping["permissions"]:
+                sub = self._doc.createElement("permission")
                 sub.appendChild(self._doc.createTextNode(permission))
                 child.appendChild(sub)
             fragment.appendChild(child)
@@ -97,77 +97,79 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
     def _initConfiglets(self, node):
         controlpanel = self.context
         default_domain = "plone"
-        if node.nodeName == 'object':
-            domain = str(node.getAttribute('i18n:domain'))
+        if node.nodeName == "object":
+            domain = str(node.getAttribute("i18n:domain"))
             if domain:
                 default_domain = domain
         for child in node.childNodes:
-            if child.nodeName != 'configlet':
+            if child.nodeName != "configlet":
                 continue
 
-            domain = str(child.getAttribute('i18n:domain'))
+            domain = str(child.getAttribute("i18n:domain"))
             if not domain:
                 domain = default_domain
 
-            action_id = str(child.getAttribute('action_id'))
+            action_id = str(child.getAttribute("action_id"))
             # Remove previous action with same id and category.
             controlpanel.unregisterConfiglet(action_id)
-            remove = str(child.getAttribute('remove'))
-            if remove.lower() == 'true':
+            remove = str(child.getAttribute("remove"))
+            if remove.lower() == "true":
                 continue
 
-            title = Message(str(child.getAttribute('title')), domain=domain)
-            url_expr = str(child.getAttribute('url_expr'))
-            condition_expr = str(child.getAttribute('condition_expr'))
-            icon_expr = str(child.getAttribute('icon_expr'))
-            category = str(child.getAttribute('category'))
-            visible = str(child.getAttribute('visible'))
-            appId = str(child.getAttribute('appId'))
-            if visible.lower() == 'true':
+            title = Message(str(child.getAttribute("title")), domain=domain)
+            url_expr = str(child.getAttribute("url_expr"))
+            condition_expr = str(child.getAttribute("condition_expr"))
+            icon_expr = str(child.getAttribute("icon_expr"))
+            category = str(child.getAttribute("category"))
+            visible = str(child.getAttribute("visible"))
+            appId = str(child.getAttribute("appId"))
+            if visible.lower() == "true":
                 visible = 1
             else:
                 visible = 0
 
-            permission = ''
+            permission = ""
             for permNode in child.childNodes:
-                if permNode.nodeName == 'permission':
+                if permNode.nodeName == "permission":
                     for textNode in permNode.childNodes:
-                        if textNode.nodeName != '#text' or \
-                                not textNode.nodeValue.strip():
+                        if (
+                            textNode.nodeName != "#text"
+                            or not textNode.nodeValue.strip()
+                        ):
                             continue
                         permission = str(textNode.nodeValue)
                         break  # only one permission is allowed
                     if permission:
                         break
 
-            controlpanel.registerConfiglet(id=action_id,
-                                           name=title,
-                                           action=url_expr,
-                                           appId=appId,
-                                           condition=condition_expr,
-                                           category=category,
-                                           permission=permission,
-                                           visible=visible,
-                                           icon_expr=icon_expr)
+            controlpanel.registerConfiglet(
+                id=action_id,
+                name=title,
+                action=url_expr,
+                appId=appId,
+                condition=condition_expr,
+                category=category,
+                permission=permission,
+                visible=visible,
+                icon_expr=icon_expr,
+            )
 
 
 def importControlPanel(context):
-    """Import Plone control panel.
-    """
+    """Import Plone control panel."""
     site = context.getSite()
-    tool = getToolByName(site, 'portal_controlpanel', None)
+    tool = getToolByName(site, "portal_controlpanel", None)
     if tool is None:
         return
 
-    importObjects(tool, '', context)
+    importObjects(tool, "", context)
 
 
 def exportControlPanel(context):
-    """Export actions tool.
-    """
+    """Export actions tool."""
     site = context.getSite()
-    tool = getToolByName(site, 'portal_controlpanel', None)
+    tool = getToolByName(site, "portal_controlpanel", None)
     if tool is None:
         return
 
-    exportObjects(tool, '', context)
+    exportObjects(tool, "", context)

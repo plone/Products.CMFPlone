@@ -19,31 +19,31 @@ def delete_method_docstring(klass, method_name):
 
 
 klasses = (
-#    Node,
-#    Document,
+    #    Node,
+    #    Document,
     PloneSite,
     Item,
     Container,
 )
 methods = (
-    'EffectiveDate',
-    'ExpirationDate',
-    'getAttributes',
-    'getChildNodes',
-    'getFirstChild',
-    'getLastChild',
-    'getLayout',
-    'getNextSibling',
-    'getNodeName',
-    'getNodeType',
-    'getNodeValue',
-    'getOwnerDocument',
-    'getParentNode',
-    'getPhysicalPath',
-    'getPreviousSibling',
-    'getTagName',
-    'hasChildNodes',
-    'Type'
+    "EffectiveDate",
+    "ExpirationDate",
+    "getAttributes",
+    "getChildNodes",
+    "getFirstChild",
+    "getLastChild",
+    "getLayout",
+    "getNextSibling",
+    "getNodeName",
+    "getNodeType",
+    "getNodeValue",
+    "getOwnerDocument",
+    "getParentNode",
+    "getPhysicalPath",
+    "getPreviousSibling",
+    "getTagName",
+    "hasChildNodes",
+    "Type",
 )
 
 for klass in klasses:
@@ -51,15 +51,15 @@ for klass in klasses:
         delete_method_docstring(klass, method_name)
 
 property_methods = (
-    'getProperty',
-    'propertyValues',
-    'propertyItems',
-    'propertyMap',
-    'hasProperty',
-    'getPropertyType',
-    'propertyIds',
-    'propertyLabel',
-    'propertyDescription'
+    "getProperty",
+    "propertyValues",
+    "propertyItems",
+    "propertyMap",
+    "hasProperty",
+    "getPropertyType",
+    "propertyIds",
+    "propertyLabel",
+    "propertyDescription",
 )
 
 for method_name in property_methods:

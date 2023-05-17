@@ -10,5 +10,6 @@
 # The time parameter must be either a string that is suitable for
 # initializing a DateTime or a DateTime object.
 # Returns a localized string.
-return context.restrictedTraverse('@@plone').toLocalizedTime(
-            time, long_format, time_only)
+return context.restrictedTraverse("@@plone").toLocalizedTime(
+    time, long_format, time_only
+)

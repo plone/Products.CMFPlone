@@ -1,233 +1,320 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
       metal:use-macro="context/prefs_main_template/macros/master"
-      i18n:domain="plone">
+      xml:lang="en"
+      i18n:domain="plone"
+>
 
-<body>
+  <body>
 
-<metal:main fill-slot="prefs_configlet_main"
-    tal:define="template_id string:@@usergroup-userprefs;
-                showAll python:request.get('showAll', '') and not view.newSearch and 'y';
-                Batch python:modules['Products.CMFPlone'].Batch;
-                b_start python:0 if showAll or view.newSearch else request.get('b_start',0);
-                b_size python:showAll and len(view.searchResults) or 20;
-                portal_roles view/portal_roles;
-                portal_url context/portal_url;">
+    <metal:main fill-slot="prefs_configlet_main"
+                tal:define="
+                  template_id string:@@usergroup-userprefs;
+                  showAll python:request.get('showAll', '') and not view.newSearch and 'y';
+                  Batch python:modules['Products.CMFPlone'].Batch;
+                  b_start python:0 if showAll or view.newSearch else request.get('b_start',0);
+                  b_size python:showAll and len(view.searchResults) or 20;
+                  portal_roles view/portal_roles;
+                  portal_url context/portal_url;
+                "
+    >
 
-    <article id="content">
+      <article id="content">
 
-    <header>
+        <header>
 
-        <h1 class="documentFirstHeading"
-            i18n:translate="">Users</h1>
+          <h1 class="documentFirstHeading"
+              i18n:translate=""
+          >Users</h1>
 
-        <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+          <div metal:use-macro="context/global_statusmessage/macros/portal_message">
           Portal status message
-        </div>
+          </div>
 
-        <div i18n:translate="user_roles_note" class="text-muted mt-2">
+          <div class="text-muted mt-2"
+               i18n:translate="user_roles_note"
+          >
               Note that roles set here apply directly to a user.
-              The symbol <span i18n:name="image_link_icon"><tal:icon tal:replace="structure python:icons.tag('people', tag_alt='Inherited from Group')" /></span>
+              The symbol
+            <span i18n:name="image_link_icon"><tal:icon tal:replace="structure python:icons.tag('people', tag_alt='Inherited from Group')" /></span>
               indicates a role inherited from membership in a group.
-        </div>
-      </header>
+          </div>
+        </header>
 
-    <div id="content-core">
+        <div id="content-core">
 
-      <div class="autotabs">
-        <p tal:condition="view/show_users_listing_warning" class="alert alert-warn" role="status">
-          <strong i18n:translate="">Note</strong>
-          <span i18n:translate="description_pas_users_listing">Some or all of your PAS user source
+          <div class="autotabs">
+            <p class="alert alert-warn"
+               role="status"
+               tal:condition="view/show_users_listing_warning"
+            >
+              <strong i18n:translate="">Note</strong>
+              <span i18n:translate="description_pas_users_listing">Some or all of your PAS user source
           plugins do not allow listing of users, so you may not see
           the users defined by those plugins unless doing a specific
-          search.</span>
-        </p>
+                search.</span>
+            </p>
 
-        <form action=""
-              class="pat-formautofocus"
-              name="users_search"
-              method="post"
-              tal:attributes="action string:$portal_url/$template_id"
-              tal:define="findAll python:'form.button.FindAll' in request.keys();
-                          portal_users view/searchResults;
-                          batch python:Batch(portal_users, b_size, int(b_start), orphan=1);
-                          batchformkeys python:['searchstring','_authenticator'];
-                          many_users view/many_users">
-          <input type="hidden" name="form.submitted" value="1" />
+            <form class="pat-formautofocus"
+                  action=""
+                  method="post"
+                  name="users_search"
+                  tal:define="
+                    findAll python:'form.button.FindAll' in request.keys();
+                    portal_users view/searchResults;
+                    batch python:Batch(portal_users, b_size, int(b_start), orphan=1);
+                    batchformkeys python:['searchstring','_authenticator'];
+                    many_users view/many_users;
+                  "
+                  tal:attributes="
+                    action string:$portal_url/$template_id;
+                  "
+            >
+              <input name="form.submitted"
+                     type="hidden"
+                     value="1"
+              />
 
 
-        <div class="mb-3 input-group">
-          <a class="pat-plone-modal me-3 btn btn-success " id="add-user"
-             data-pat-plone-modal='{
+              <div class="mb-3 input-group">
+                <a class="pat-plone-modal me-3 btn btn-success"
+                   id="add-user"
+                   data-pat-plone-modal='{
                 "actionOptions": {
                   "redirectOnResponse": true,
                   "redirectToUrl": "${portal_url}/@@usergroup-userprefs"
                 }
               }'
-             tal:attributes="href string:${portal_url}/@@new-user"
-             i18n:translate="label_add_new_user">Add New User</a>
-          <span class="input-group-text" id="quickSearchLabel" i18n:translate="label_user_search">User Search</span>
-          <input class="form-control quickSearch"
-                  id="quickSearch"
-                  aria-labelledby="quickSearchLabel"
-                  type="text"
-                  name="searchstring"
-                  value=""
-                  tal:attributes="value view/searchString;"
-                  />
-          <button type="submit"
-                  class="searchButton btn btn-primary"
-                  name="form.button.Search"
-                  value="Search"
-                  i18n:translate=""
-                  i18n:attributes="value label_search;"
-                  >Search</button>
+                   tal:attributes="
+                     href string:${portal_url}/@@new-user;
+                   "
+                   i18n:translate="label_add_new_user"
+                >Add New User</a>
+                <span class="input-group-text"
+                      id="quickSearchLabel"
+                      i18n:translate="label_user_search"
+                >User Search</span>
+                <input class="form-control quickSearch"
+                       id="quickSearch"
+                       aria-labelledby="quickSearchLabel"
+                       name="searchstring"
+                       type="text"
+                       value=""
+                       tal:attributes="
+                         value view/searchString;
+                       "
+                />
+                <button class="searchButton btn btn-primary"
+                        name="form.button.Search"
+                        type="submit"
+                        value="Search"
+                        i18n:attributes="value label_search;"
+                        i18n:translate=""
+                >Search</button>
 
-          <button type="submit"
-                  class="searchButton btn btn-secondary"
-                  name="form.button.FindAll"
-                  value="Show all"
-                  i18n:translate="label_showall"
-                  i18n:attributes="value label_showall;"
-                  tal:condition="not:many_users"
-                  >Show all</button>
-        </div>
-          <table class="table table-responsive table-bordered table-striped text-center" summary="User Listing">
-              <thead tal:condition="portal_users">
-                <tr>
-                  <th  class="text-start" i18n:translate="listingheader_user_name">User name</th>
-                  <th class="rotate" tal:repeat="portal_role portal_roles"><div tal:content="portal_role" i18n:translate="">Role</div></th>
-                  <th class="rotate table-warning"><div i18n:translate="listingheader_reset_password">Reset Password</div></th>
-                  <th class="rotate table-danger"><div i18n:translate="listingheader_remove">Remove</div></th>
-                </tr>
-              </thead>
-              <tbody>
+                <button class="searchButton btn btn-secondary"
+                        name="form.button.FindAll"
+                        type="submit"
+                        value="Show all"
+                        tal:condition="not:many_users"
+                        i18n:attributes="value label_showall;"
+                        i18n:translate="label_showall"
+                >Show all</button>
+              </div>
+              <table class="table table-responsive table-bordered table-striped text-center"
+                     summary="User Listing"
+              >
+                <thead tal:condition="portal_users">
+                  <tr>
+                    <th class="text-start"
+                        i18n:translate="listingheader_user_name"
+                    >User name</th>
+                    <th class="rotate"
+                        tal:repeat="portal_role portal_roles"
+                    ><div tal:content="portal_role"
+                           i18n:translate=""
+                      >Role</div></th>
+                    <th class="rotate table-warning"><div i18n:translate="listingheader_reset_password">Reset Password</div></th>
+                    <th class="rotate table-danger"><div i18n:translate="listingheader_remove">Remove</div></th>
+                  </tr>
+                </thead>
+                <tbody>
                   <tal:loop repeat="user batch">
-                    <tr tal:define="oddrow repeat/user/odd;
-                                    userid user/userid;
-                                    userquery python:view.makeQuery(userid=userid);"
-                        tal:attributes="class python:oddrow and 'odd' or 'even'">
+                    <tr tal:define="
+                          oddrow repeat/user/odd;
+                          userid user/userid;
+                          userquery python:view.makeQuery(userid=userid);
+                        "
+                        tal:attributes="
+                          class python:oddrow and 'odd' or 'even';
+                        "
+                    >
 
-                        <td class="text-start">
-                            <a href="@@user-i0nformation"
-                               tal:attributes="href string:$portal_url/@@user-information?${userquery};
-                                               title userid">
-                                ${user/fullname} <span class="text-muted">(${user/login})</span>
-                            </a>
-                            <input type="hidden" name="users.id:records" tal:attributes="value userid" />
-                        </td>
+                      <td class="text-start">
+                        <a href="@@user-i0nformation"
+                           tal:attributes="
+                             href string:$portal_url/@@user-information?${userquery};
+                             title userid;
+                           "
+                        >
+                                ${user/fullname}
+                          <span class="text-muted">(${user/login})</span>
+                        </a>
+                        <input name="users.id:records"
+                               type="hidden"
+                               tal:attributes="
+                                 value userid;
+                               "
+                        />
+                      </td>
 
-                        <td class="listingCheckbox"
-                            tal:repeat="portal_role portal_roles">
-                          <tal:block tal:define="inherited python:user['roles'][portal_role]['inherited'];
-                                                 explicit python:user['roles'][portal_role]['explicit'];
-                                                 enabled python:user['roles'][portal_role]['canAssign']">
-                            <input type="checkbox"
-                                   class="noborder"
-                                   name="users.roles:list:records"
-                                   value="Manager"
-                                   tal:condition="not:inherited"
-                                   tal:attributes="value portal_role;
-                                       checked python:'checked' if explicit else nothing;
-                                       disabled python:default if enabled else 'disabled'" />
-                            <input type="hidden"
-                                   name="users.roles:list:records"
-                                   value="Manager"
-                                   tal:condition="python:inherited"
-                                   tal:attributes="value portal_role" />
-                            <tal:icon tal:condition="inherited" tal:replace="structure python:icons.tag('people', tag_alt='Inherited from Group')" />
+                      <td class="listingCheckbox"
+                          tal:repeat="portal_role portal_roles"
+                      >
+                        <tal:block tal:define="
+                                     inherited python:user['roles'][portal_role]['inherited'];
+                                     explicit python:user['roles'][portal_role]['explicit'];
+                                     enabled python:user['roles'][portal_role]['canAssign'];
+                                   ">
+                          <input class="noborder"
+                                 name="users.roles:list:records"
+                                 type="checkbox"
+                                 value="Manager"
+                                 tal:condition="not:inherited"
+                                 tal:attributes="
+                                   value portal_role;
+                                   checked python:'checked' if explicit else nothing;
+                                   disabled python:default if enabled else 'disabled';
+                                 "
+                          />
+                          <input name="users.roles:list:records"
+                                 type="hidden"
+                                 value="Manager"
+                                 tal:condition="python:inherited"
+                                 tal:attributes="
+                                   value portal_role;
+                                 "
+                          />
+                          <tal:icon tal:condition="inherited"
+                                    tal:replace="structure python:icons.tag('people', tag_alt='Inherited from Group')"
+                          />
 
-                          </tal:block>
+                        </tal:block>
 
-                        </td>
+                      </td>
 
-                        <td class="listingCheckbox table-warning">
-                          <input type="checkbox"
-                                 class="noborder"
-                                 name="users.resetpassword:records"
-                                 value=""
-                                 tal:attributes="value userid;
-                                                 title string:Reset password of user ${user/fullname};
-                                                 disabled python:user['can_set_password'] and default or 'disabled'" />
-                        </td>
+                      <td class="listingCheckbox table-warning">
+                        <input class="noborder"
+                               name="users.resetpassword:records"
+                               type="checkbox"
+                               value=""
+                               tal:attributes="
+                                 value userid;
+                                 title string:Reset password of user ${user/fullname};
+                                 disabled python:user['can_set_password'] and default or 'disabled';
+                               "
+                        />
+                      </td>
 
-                        <td class="listingCheckbox table-danger">
-                          <input type="checkbox"
-                                         class="noborder notify"
-                                         name="delete:list"
-                                         value=""
-                                         tal:attributes="value userid;
-                                                         title string:Remove user ${user/fullname};
-                                                         disabled python:user['can_delete'] and default or 'disabled'" />
-                        </td>
+                      <td class="listingCheckbox table-danger">
+                        <input class="noborder notify"
+                               name="delete:list"
+                               type="checkbox"
+                               value=""
+                               tal:attributes="
+                                 value userid;
+                                 title string:Remove user ${user/fullname};
+                                 disabled python:user['can_delete'] and default or 'disabled';
+                               "
+                        />
+                      </td>
                     </tr>
                   </tal:loop>
                   <tr tal:condition="not:batch">
-                      <td tal:condition="view/searchString"
-                          i18n:translate="text_nomatches"
-                          style="text-align:center;">No matches</td>
-                      <tal:block tal:condition="not:view/searchString">
-                        <td tal:condition="many_users"
-                            class="discreet"
-                            i18n:translate="text_no_user_searchstring"
-                            style="text-align:center; font-size: 100%;">
+                    <td style="text-align:center;"
+                        tal:condition="view/searchString"
+                        i18n:translate="text_nomatches"
+                    >No matches</td>
+                    <tal:block tal:condition="not:view/searchString">
+                      <td class="discreet"
+                          style="text-align:center; font-size: 100%;"
+                          tal:condition="many_users"
+                          i18n:translate="text_no_user_searchstring"
+                      >
                             Enter a username to search for
-                        </td>
-                        <td tal:condition="not:many_users"
-                            class="discreet"
-                            i18n:translate="text_no_user_searchstring_largesite"
-                            style="text-align:center; font-size: 100%;">
+                      </td>
+                      <td class="discreet"
+                          style="text-align:center; font-size: 100%;"
+                          tal:condition="not:many_users"
+                          i18n:translate="text_no_user_searchstring_largesite"
+                      >
                             Enter a username to search for, or click 'Show All'
-                        </td>
-                      </tal:block>
+                      </td>
+                    </tal:block>
                   </tr>
-              </tbody>
-          </table>
+                </tbody>
+              </table>
 
-          <div metal:use-macro="context/batch_macros/macros/navigation" />
+              <div metal:use-macro="context/batch_macros/macros/navigation"></div>
 
-          <div class="showAllSearchResults"
-               tal:condition="python:batch.next or batch.previous"
-               tal:define="mq python:modules['ZTUtils'].make_query;
-                           keys batchformkeys|nothing;
-                           linkparams python:keys and dict([(key, request.form[key]) for key in keys if key in request]) or request.form;
-                           url batch_base_url | string:${context/absolute_url}/${template_id}">
-              <a tal:attributes="href python: '%s?%s' % (url, mq( linkparams, {'showAll':'y'} ))"
-                 i18n:translate="description_pas_show_all_search_results">
+              <div class="showAllSearchResults"
+                   tal:define="
+                     mq python:modules['ZTUtils'].make_query;
+                     keys batchformkeys|nothing;
+                     linkparams python:keys and dict([(key, request.form[key]) for key in keys if key in request]) or request.form;
+                     url batch_base_url | string:${context/absolute_url}/${template_id};
+                   "
+                   tal:condition="python:batch.next or batch.previous"
+              >
+                <a tal:attributes="
+                     href python: '%s?%s' % (url, mq( linkparams, {'showAll':'y'} ));
+                   "
+                   i18n:translate="description_pas_show_all_search_results"
+                >
                   Show all search results
-              </a>
+                </a>
+              </div>
+
+              <input name="b_start"
+                     type="hidden"
+                     value="b_start"
+                     tal:attributes="
+                       value b_start;
+                     "
+              />
+
+              <input name="showAll"
+                     type="hidden"
+                     value=""
+                     tal:attributes="
+                       value showAll;
+                     "
+              />
+
+              <div tal:condition="batch">
+
+                <div class="btn-group">
+                  <button class="btn btn-primary"
+                          name="form.button.Modify"
+                          type="submit"
+                          value="Save"
+                          i18n:translate="label_apply_changes"
+                  >Apply changes</button>
+                </div>
+              </div>
+
+              <input tal:replace="structure context/@@authenticator/authenticator" />
+
+            </form>
           </div>
+        </div>
 
-          <input type="hidden" value="b_start" name="b_start"
-                 tal:attributes="value b_start"/>
+      </article>
 
-          <input type="hidden" value="" name="showAll"
-                 tal:attributes="value showAll"/>
+    </metal:main>
 
-          <div tal:condition="batch">
-
-            <div class="btn-group">
-              <button class="btn btn-primary"
-                 type="submit"
-                 name="form.button.Modify"
-                 value="Save"
-                 i18n:translate="label_apply_changes"
-                 >Apply changes</button>
-            </div>
-          </div>
-
-          <input tal:replace="structure context/@@authenticator/authenticator" />
-
-        </form>
-      </div>
-    </div>
-
-  </article>
-
-</metal:main>
-
-</body>
+  </body>
 </html>

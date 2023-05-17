@@ -8,7 +8,6 @@ from zope.interface import implementer
 
 @implementer(IDefaultPage)
 class DefaultPage(BrowserView):
-
     def isDefaultPage(self, obj):
         return is_default_page(aq_inner(self.context), obj)
 

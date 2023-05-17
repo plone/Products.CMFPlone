@@ -33,53 +33,57 @@ def test_request():
     request = HTTPRequest(
         sys.stdin,
         {
-            'SERVER_NAME': 'localhost',
-            'SERVER_PORT': '80',
-            'REQUEST_METHOD': 'GET',
+            "SERVER_NAME": "localhost",
+            "SERVER_PORT": "80",
+            "REQUEST_METHOD": "GET",
         },
-        response
+        response,
     )
-    request['ACTUAL_URL'] = 'http://nohost/plone'
+    request["ACTUAL_URL"] = "http://nohost/plone"
     setDefaultSkin(request)
     alsoProvides(request, IFormLayer)  # suitable for testing z3c.form views
     return request
 
 
 class SearchLayer(PloneSandboxLayer):
-
-    defaultBases = (PLONE_FIXTURE, )
+    defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
         import plone.app.contentlisting
-        xmlconfig.file('configure.zcml',
-                       plone.app.contentlisting, context=configurationContext)
+
+        xmlconfig.file(
+            "configure.zcml", plone.app.contentlisting, context=configurationContext
+        )
 
     def setUpPloneSite(self, portal):
         # Install into Plone site using portal_setup
-        if 'Document' not in portal.portal_types:
-            applyProfile(portal, 'plone.app.contenttypes:default')
-        setRoles(portal, TEST_USER_ID, ['Manager'])
+        if "Document" not in portal.portal_types:
+            applyProfile(portal, "plone.app.contenttypes:default")
+        setRoles(portal, TEST_USER_ID, ["Manager"])
         login(portal, TEST_USER_NAME)
         for i in range(0, 12):
             portal.invokeFactory(
-                'Document',
-                'my-page' + str(i),
+                "Document",
+                "my-page" + str(i),
                 text=RichTextValue(
-                    'spam spam ham eggs', 'text/html', 'text/x-html-safe'),
+                    "spam spam ham eggs", "text/html", "text/x-html-safe"
+                ),
             )
             # Sleep before creating the next one, otherwise ordering by date is
             # not deterministic.
             time.sleep(0.1)
-        setRoles(portal, TEST_USER_ID, ['Member'])
+        setRoles(portal, TEST_USER_ID, ["Member"])
 
         # Commit so that the test browser sees these objects
         import transaction
+
         transaction.commit()
 
 
 SEARCH_FIXTURE = SearchLayer()
-SEARCH_INTEGRATION_TESTING = IntegrationTesting(bases=(SEARCH_FIXTURE, ),
-                                                name="Search:Integration")
+SEARCH_INTEGRATION_TESTING = IntegrationTesting(
+    bases=(SEARCH_FIXTURE,), name="Search:Integration"
+)
 
 
 class SearchTestCase(unittest.TestCase):
@@ -87,6 +91,7 @@ class SearchTestCase(unittest.TestCase):
     we can put common utility or setup code in here. This applies to unit
     test cases.
     """
+
     layer = SEARCH_INTEGRATION_TESTING
 
 
@@ -96,20 +101,19 @@ class TestSection(SearchTestCase):
     """
 
     def test_breadcrumbs(self):
-        portal = self.layer['portal']
-        setRoles(portal, TEST_USER_ID, ['Manager'])
+        portal = self.layer["portal"]
+        setRoles(portal, TEST_USER_ID, ["Manager"])
         login(portal, TEST_USER_NAME)
 
-        portal.invokeFactory('Document', 'first_level_document')
-        portal.invokeFactory('Folder', 'first_level_folder',
-                             title='First Level Folder')
+        portal.invokeFactory("Document", "first_level_document")
+        portal.invokeFactory("Folder", "first_level_folder", title="First Level Folder")
         first_level_folder = portal.first_level_folder
-        first_level_folder.invokeFactory('Document', 'second_level_document')
-        first_level_folder.invokeFactory('Folder', 'second_level_folder')
+        first_level_folder.invokeFactory("Document", "second_level_document")
+        first_level_folder.invokeFactory("Folder", "second_level_folder")
         second_level_folder = first_level_folder.second_level_folder
-        second_level_folder.invokeFactory('Document', 'third_level_document')
+        second_level_folder.invokeFactory("Document", "third_level_document")
 
-        view = portal.restrictedTraverse('@@search')
+        view = portal.restrictedTraverse("@@search")
 
         def crumbs(item):
             return view.breadcrumbs(IContentListing([item])[0])
@@ -122,179 +126,223 @@ class TestSection(SearchTestCase):
         self.assertEqual(title, None)
 
         # return section for objects deeper in the hierarchy
-        title = crumbs(first_level_folder.second_level_document)[0]['Title']
-        self.assertEqual(title, 'First Level Folder')
+        title = crumbs(first_level_folder.second_level_document)[0]["Title"]
+        self.assertEqual(title, "First Level Folder")
 
-        title = crumbs(second_level_folder)[0]['Title']
-        self.assertEqual(title, 'First Level Folder')
+        title = crumbs(second_level_folder)[0]["Title"]
+        self.assertEqual(title, "First Level Folder")
 
-        title = crumbs(second_level_folder.third_level_document)[0]['Title']
-        self.assertEqual(title, 'First Level Folder')
+        title = crumbs(second_level_folder.third_level_document)[0]["Title"]
+        self.assertEqual(title, "First Level Folder")
 
     def test_blacklisted_types_in_results(self):
         """Make sure we don't break types' blacklisting in the new search
         results view.
         """
-        portal = self.layer['portal']
+        portal = self.layer["portal"]
         registry = getUtility(IRegistry)
         search_settings = registry.forInterface(ISearchSchema, prefix="plone")
-        q = {'SearchableText': 'spam'}
-        res = portal.restrictedTraverse('@@search').results(query=q,
-                                                            batch=False)
-        self.assertTrue('my-page1' in [r.getId() for r in res],
-                        'Test document is not found in the results.')
+        q = {"SearchableText": "spam"}
+        res = portal.restrictedTraverse("@@search").results(query=q, batch=False)
+        self.assertTrue(
+            "my-page1" in [r.getId() for r in res],
+            "Test document is not found in the results.",
+        )
 
         # Now let's exclude 'Document' from the search results:
-        search_settings.types_not_searched = ('Document',)
-        res = portal.restrictedTraverse('@@search').results(query=q,
-                                                            batch=False)
+        search_settings.types_not_searched = ("Document",)
+        res = portal.restrictedTraverse("@@search").results(query=q, batch=False)
         self.assertFalse(
-            'my-page1' in [r.getId() for r in res],
-            'Blacklisted type "Document" has been found in search results.')
+            "my-page1" in [r.getId() for r in res],
+            'Blacklisted type "Document" has been found in search results.',
+        )
 
     def test_default_search_order_relevance(self):
         """Test default order as relevance."""
-        portal = self.layer['portal']
+        portal = self.layer["portal"]
         registry = getUtility(IRegistry)
         search_settings = registry.forInterface(ISearchSchema, prefix="plone")
-        self.assertEqual(search_settings.sort_on, 'relevance')
+        self.assertEqual(search_settings.sort_on, "relevance")
 
-        q = {'SearchableText': 'spam'}
-        view = portal.restrictedTraverse('@@search')
-        self.assertEqual(view.default_sort_on, 'relevance')
+        q = {"SearchableText": "spam"}
+        view = portal.restrictedTraverse("@@search")
+        self.assertEqual(view.default_sort_on, "relevance")
         res = view.results(query=q)
         ids = [r.getId() for r in res]
         expected = [
-            'my-page11', 'my-page10', 'my-page9', 'my-page8', 'my-page7',
-            'my-page6', 'my-page5', 'my-page4', 'my-page3', 'my-page2'
+            "my-page11",
+            "my-page10",
+            "my-page9",
+            "my-page8",
+            "my-page7",
+            "my-page6",
+            "my-page5",
+            "my-page4",
+            "my-page3",
+            "my-page2",
         ]
         self.assertEqual(ids, expected)
 
     def test_default_search_order_date(self):
         """Test default order as date."""
-        portal = self.layer['portal']
+        portal = self.layer["portal"]
 
         # Change one object date to see if order change works
-        mp5 = portal['my-page5']
+        mp5 = portal["my-page5"]
         mp5.setEffectiveDate(DateTime() + 1)
         mp5.reindexObject()
 
         registry = getUtility(IRegistry)
         search_settings = registry.forInterface(ISearchSchema, prefix="plone")
-        search_settings.sort_on = 'Date'
-        q = {'SearchableText': 'spam'}
-        view = portal.restrictedTraverse('@@search')
-        self.assertEqual(view.default_sort_on, 'Date')
+        search_settings.sort_on = "Date"
+        q = {"SearchableText": "spam"}
+        view = portal.restrictedTraverse("@@search")
+        self.assertEqual(view.default_sort_on, "Date")
         res = view.results(query=q)
         ids = [r.getId() for r in res]
         expected = [
-            'my-page11', 'my-page10', 'my-page9', 'my-page8', 'my-page7',
-            'my-page6', 'my-page4', 'my-page3', 'my-page2', 'my-page1'
+            "my-page11",
+            "my-page10",
+            "my-page9",
+            "my-page8",
+            "my-page7",
+            "my-page6",
+            "my-page4",
+            "my-page3",
+            "my-page2",
+            "my-page1",
         ]
         self.assertEqual(ids, expected)
 
     def test_default_search_order_alphabetic(self):
         """Test default order as alphabetic."""
-        portal = self.layer['portal']
+        portal = self.layer["portal"]
 
         registry = getUtility(IRegistry)
         search_settings = registry.forInterface(ISearchSchema, prefix="plone")
-        search_settings.sort_on = 'sortable_title'
-        q = {'SearchableText': 'spam'}
-        view = portal.restrictedTraverse('@@search')
-        self.assertEqual(view.default_sort_on, 'sortable_title')
+        search_settings.sort_on = "sortable_title"
+        q = {"SearchableText": "spam"}
+        view = portal.restrictedTraverse("@@search")
+        self.assertEqual(view.default_sort_on, "sortable_title")
         res = view.results(query=q)
         ids = [r.getId() for r in res]
         expected = [
-            'my-page0', 'my-page1', 'my-page2', 'my-page3', 'my-page4',
-            'my-page5', 'my-page6', 'my-page7', 'my-page8', 'my-page9'
+            "my-page0",
+            "my-page1",
+            "my-page2",
+            "my-page3",
+            "my-page4",
+            "my-page5",
+            "my-page6",
+            "my-page7",
+            "my-page8",
+            "my-page9",
         ]
         self.assertEqual(ids, expected)
 
     def test_filter_empty(self):
         """Test filtering for empty query"""
-        portal = self.layer['portal']
+        portal = self.layer["portal"]
         req = test_request()
         # Search.filter_query() will get SearchableText from form if not
         # passed in explicit query argument:
-        req.form['SearchableText'] = 'spam'
-        view = getMultiAdapter((portal, req), name='search')
+        req.form["SearchableText"] = "spam"
+        view = getMultiAdapter((portal, req), name="search")
         res = view.results(batch=False)
-        self.assertTrue('my-page1' in [r.getId() for r in res],
-                        'Test document is not found in the results.')
+        self.assertTrue(
+            "my-page1" in [r.getId() for r in res],
+            "Test document is not found in the results.",
+        )
         # filter_query() will return None on invalid query (no real indexes):
         req = test_request()
-        req.form['garbanzo'] = 'chickpea'  # just noise, no index for this
-        view = getMultiAdapter((portal, req), name='search')
-        self.assertIsNone(view.filter_query({'b_start': 0, 'b_size': 10}))
+        req.form["garbanzo"] = "chickpea"  # just noise, no index for this
+        view = getMultiAdapter((portal, req), name="search")
+        self.assertIsNone(view.filter_query({"b_start": 0, "b_size": 10}))
         # resulting empty query, ergo no search performed, empty result:
         self.assertFalse(view.results(batch=False))
         # filter_query() succeeds if 1+ real index name added to request:
-        req.form['portal_type'] = 'Document'
-        self.assertIsNotNone(view.filter_query({'b_start': 0, 'b_size': 10}))
+        req.form["portal_type"] = "Document"
+        self.assertIsNotNone(view.filter_query({"b_start": 0, "b_size": 10}))
         res = view.results(batch=False)
-        self.assertTrue('my-page1' in [r.getId() for r in res],
-                        'Test document is not found in the results.')
+        self.assertTrue(
+            "my-page1" in [r.getId() for r in res],
+            "Test document is not found in the results.",
+        )
 
     def test_filter_with_plone3_query(self):
-        """Filter should ignore obsolete query parameters, not error. """
-        portal = self.layer['portal']
+        """Filter should ignore obsolete query parameters, not error."""
+        portal = self.layer["portal"]
         req = test_request()
         # Search.filter_query() will get SearchableText from form if not
         # passed in explicit query argument:
-        req.form['SearchableText'] = 'jobs'
-        req.form['Title'] = 'Human resource'
-        req.form['Description'] = ''
-        req.form['created'] = [DateTime('1970/02/01 00:00:00 GMT+0')]
-        req.form['created_usage'] = 'range:min'
-        req.form['submit'] = 'Search'
-        view = getMultiAdapter((portal, req), name='search')
+        req.form["SearchableText"] = "jobs"
+        req.form["Title"] = "Human resource"
+        req.form["Description"] = ""
+        req.form["created"] = [DateTime("1970/02/01 00:00:00 GMT+0")]
+        req.form["created_usage"] = "range:min"
+        req.form["submit"] = "Search"
+        view = getMultiAdapter((portal, req), name="search")
         res = view.results(batch=False)
         self.assertEqual([], [r for r in res])
 
     def test_quoted_phrase(self):
-        portal = self.layer['portal']
+        portal = self.layer["portal"]
         # searching for ""
-        view = portal.restrictedTraverse('@@search')
+        view = portal.restrictedTraverse("@@search")
         # unqoted
-        self.assertEqual(view.results(
-            query=dict(SearchableText='spam ham')).sequence_length, 12)
+        self.assertEqual(
+            view.results(query=dict(SearchableText="spam ham")).sequence_length, 12
+        )
         # quoted -> same result
-        self.assertEqual(view.results(
-            query=dict(SearchableText='"spam ham"')).sequence_length, 12)
+        self.assertEqual(
+            view.results(query=dict(SearchableText='"spam ham"')).sequence_length, 12
+        )
         # unquoted reverse order -> all results
-        self.assertEqual(view.results(
-            query=dict(SearchableText='ham spam')).sequence_length, 12)
+        self.assertEqual(
+            view.results(query=dict(SearchableText="ham spam")).sequence_length, 12
+        )
         # quoted reverse order -> no results!
-        self.assertEqual(view.results(
-            query=dict(SearchableText='"ham spam"')).sequence_length, 0)
+        self.assertEqual(
+            view.results(query=dict(SearchableText='"ham spam"')).sequence_length, 0
+        )
 
         # arbitrary words within index
-        self.assertEqual(view.results(
-            query=dict(SearchableText='spam eggs')).sequence_length, 12)
+        self.assertEqual(
+            view.results(query=dict(SearchableText="spam eggs")).sequence_length, 12
+        )
         # arbitrary words within index quoted -> no results
-        self.assertEqual(view.results(
-            query=dict(SearchableText='"spam eggs"')).sequence_length, 0)
+        self.assertEqual(
+            view.results(query=dict(SearchableText='"spam eggs"')).sequence_length, 0
+        )
 
-        # unquoted subtring search
-        self.assertEqual(view.results(
-            query=dict(SearchableText='egg')).sequence_length, 12)
+        # unquoted substring search
+        self.assertEqual(
+            view.results(query=dict(SearchableText="egg")).sequence_length, 12
+        )
         # quoted substring search -> exact match
-        self.assertEqual(view.results(
-            query=dict(SearchableText='"egg"')).sequence_length, 0)
+        self.assertEqual(
+            view.results(query=dict(SearchableText='"egg"')).sequence_length, 0
+        )
 
         # unquoted multi substring search
         # XXX: this is munged to "egg AND spa*" and doesn't find any results
-        self.assertEqual(view.results(
-            query=dict(SearchableText='egg spa')).sequence_length, 0)
+        self.assertEqual(
+            view.results(query=dict(SearchableText="egg spa")).sequence_length, 0
+        )
 
         # weird input
-        self.assertEqual(view.results(
-            query=dict(SearchableText='"eggs" ham spam')).sequence_length, 12)
-        self.assertEqual(view.results(
-            query=dict(SearchableText='"eggs ham spam')).sequence_length, 12)
-        self.assertEqual(view.results(
-            query=dict(SearchableText='eggs ham spam"')).sequence_length, 12)
+        self.assertEqual(
+            view.results(query=dict(SearchableText='"eggs" ham spam')).sequence_length,
+            12,
+        )
+        self.assertEqual(
+            view.results(query=dict(SearchableText='"eggs ham spam')).sequence_length,
+            12,
+        )
+        self.assertEqual(
+            view.results(query=dict(SearchableText='eggs ham spam"')).sequence_length,
+            12,
+        )
 
     def test_munge_search_term(self):
         from Products.CMFPlone.browser.search import BAD_CHARS
@@ -303,8 +351,8 @@ class TestSection(SearchTestCase):
         search_term_tests = [
             (
                 # search term
-                'spam ham',
-                'spam AND ham*',
+                "spam ham",
+                "spam AND ham*",
             ),
             (
                 # quoted term
@@ -318,14 +366,13 @@ class TestSection(SearchTestCase):
             ),
             (
                 # mixed cases
-                'Spam hAm',
-                'Spam AND hAm*',
+                "Spam hAm",
+                "Spam AND hAm*",
             ),
             (
                 # mix quoting and unquoted
                 'let\'s eat some "ham and eggs " without spam ',
-                '"ham and eggs" AND let\'s AND eat AND some '
-                'AND without AND spam*',
+                '"ham and eggs" AND let\'s AND eat AND some ' "AND without AND spam*",
             ),
             (
                 'test "Welcome" to "Plone" retest',
@@ -333,12 +380,12 @@ class TestSection(SearchTestCase):
             ),
             (
                 # parentheses
-                'spam (ham)',
+                "spam (ham)",
                 'spam AND "("ham")"*',
             ),
             (
                 # special keywords
-                'spam or not ham and eggs',
+                "spam or not ham and eggs",
                 'spam AND "or" AND "not" AND ham AND "and" AND eggs*',
             ),
             (
@@ -350,7 +397,7 @@ class TestSection(SearchTestCase):
                 # weird input
                 'test ""Welcome" to "Plone"" retest',
                 '"to" AND test AND WelcomePlone AND retest*',
-            )
+            ),
         ]
 
         for _in, _out in search_term_tests:

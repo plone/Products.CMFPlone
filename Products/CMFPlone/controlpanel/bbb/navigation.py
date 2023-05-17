@@ -9,13 +9,11 @@ from zope.interface import implementer
 @adapter(IPloneSiteRoot)
 @implementer(INavigationSchema)
 class NavigationControlPanelAdapter:
-
     def __init__(self, context):
         self.context = context
         registry = getUtility(IRegistry)
         self.navigation_settings = registry.forInterface(
-            INavigationSchema,
-            prefix="plone"
+            INavigationSchema, prefix="plone"
         )
 
     def get_generate_tabs(self):
@@ -40,10 +38,7 @@ class NavigationControlPanelAdapter:
     def set_show_excluded_items(self, value):
         self.navigation_settings.show_excluded_items = value
 
-    show_excluded_items = property(
-        get_show_excluded_items,
-        set_show_excluded_items
-    )
+    show_excluded_items = property(get_show_excluded_items, set_show_excluded_items)
 
     def get_displayed_types(self):
         return self.navigation_settings.displayed_types
@@ -59,10 +54,7 @@ class NavigationControlPanelAdapter:
     def set_filter_on_workflow(self, value):
         self.navigation_settings.filter_on_workflow = value
 
-    filter_on_workflow = property(
-        get_filter_on_workflow,
-        set_filter_on_workflow
-    )
+    filter_on_workflow = property(get_filter_on_workflow, set_filter_on_workflow)
 
     def get_workflow_states_to_show(self):
         return self.navigation_settings.workflow_states_to_show
@@ -71,8 +63,8 @@ class NavigationControlPanelAdapter:
         self.navigation_settings.workflow_states_to_show = value
 
     workflow_states_to_show = property(
-        get_workflow_states_to_show,
-        set_workflow_states_to_show)
+        get_workflow_states_to_show, set_workflow_states_to_show
+    )
 
     @property
     def root(self):

@@ -1,6 +1,5 @@
 from plone.app.redirector.interfaces import IRedirectionStorage
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
-from zExceptions import HTTPNotImplemented
 from zExceptions import NotFound
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -9,7 +8,6 @@ import unittest
 
 
 class TestErrorMessage(unittest.TestCase):
-
     layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
     def setUp(self):

@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <site>
- <property name="title">Site</property>
- <property name="description"></property>
+  <property name="title">Site</property>
+  <property name="description" />
 </site>

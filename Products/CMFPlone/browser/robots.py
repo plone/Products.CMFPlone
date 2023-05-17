@@ -8,7 +8,7 @@ from zope.component import getUtility
 class Robots(BrowserView):
     """Returns a robots.txt.
 
-    It is ediable ttw in /@@site-controlpanel or by setting a different
+    It is editable ttw in /@@site-controlpanel or by setting a different
     using a registry.xml with a line such as:
     <record name="plone.robots_txt">
         <value>User-agent: *
@@ -19,7 +19,8 @@ class Robots(BrowserView):
 
     def __call__(self):
         portal_state = getMultiAdapter(
-            (self.context, self.request), name='plone_portal_state')
+            (self.context, self.request), name="plone_portal_state"
+        )
         portal_url = portal_state.portal_url()
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSchema, prefix="plone")

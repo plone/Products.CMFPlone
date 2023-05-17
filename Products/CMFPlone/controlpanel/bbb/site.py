@@ -9,7 +9,6 @@ from zope.schema.fieldproperty import FieldProperty
 
 @implementer(ISiteSchema)
 class SiteControlPanelAdapter:
-
     adapts(IPloneSiteRoot)
 
     def __init__(self, context):
@@ -31,6 +30,6 @@ class SiteControlPanelAdapter:
     site_title = property(get_site_title, set_site_title)
     webstats_js = property(get_webstats_js, set_webstats_js)
 
-    site_logo = FieldProperty(ISiteSchema['site_logo'])
-    enable_sitemap = FieldProperty(ISiteSchema['enable_sitemap'])
-    exposeDCMetaTags = FieldProperty(ISiteSchema['exposeDCMetaTags'])
+    site_logo = FieldProperty(ISiteSchema["site_logo"])
+    enable_sitemap = FieldProperty(ISiteSchema["enable_sitemap"])
+    exposeDCMetaTags = FieldProperty(ISiteSchema["exposeDCMetaTags"])

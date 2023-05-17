@@ -1,35 +1,44 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
       metal:use-macro="context/@@main_template/macros/master"
-      i18n:domain="plone">
+      xml:lang="en"
+      i18n:domain="plone"
+>
 
-<head>
+  <head>
     <metal:block fill-slot="top_slot"
-                 tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);
-                             disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
-</head>
+                 tal:define="
+                   disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                   disable_column_two python:request.set('disable_plone.rightcolumn',1);
+                 "
+    />
+  </head>
 
-<body>
-<metal:main fill-slot="main">
+  <body>
+    <metal:main fill-slot="main">
 
-    <h1 class="documentFirstHeading"
-        i18n:translate="label_site_map">Site map</h1>
+      <h1 class="documentFirstHeading"
+          i18n:translate="label_site_map"
+      >Site map</h1>
 
-    <div class="documentDescription" i18n:translate="description_site_map">
+      <div class="documentDescription"
+           i18n:translate="description_site_map"
+      >
         An overview of the available content on this site. Keep the pointer still
         over an item for a few seconds to get its description.
-    </div>
+      </div>
 
-    <div id="content-core">
-        <ul id="portal-sitemap"
-            class="navTreeLevel0 visualNoMarker">
-            <tal:sitemap replace="structure view/createSiteMap" />
+      <div id="content-core">
+        <ul class="navTreeLevel0 visualNoMarker"
+            id="portal-sitemap"
+        >
+          <tal:sitemap replace="structure view/createSiteMap" />
         </ul>
-    </div>
+      </div>
 
-</metal:main>
-</body>
+    </metal:main>
+  </body>
 </html>

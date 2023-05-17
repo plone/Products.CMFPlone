@@ -11,11 +11,10 @@ from Products.Five.browser import BrowserView
 import logging
 
 
-logger = logging.getLogger('Products.CMFPlone')
+logger = logging.getLogger("Products.CMFPlone")
 
 
 class SecurityControlPanelForm(controlpanel.RegistryEditForm):
-
     id = "SecurityControlPanel"
     label = _("Security Settings")
     schema = ISecuritySchema
@@ -37,33 +36,32 @@ class EmailLogin(BrowserView):
     duplicates = []
 
     def __call__(self):
-        if self.request.form.get('check_email'):
+        if self.request.form.get("check_email"):
             self.duplicates = self.check_email()
-        elif self.request.form.get('check_userid'):
+        elif self.request.form.get("check_userid"):
             self.duplicates = self.check_userid()
         return self.index()
 
     @property
     def _email_list(self):
         context = aq_inner(self.context)
-        pas = getToolByName(context, 'acl_users')
+        pas = getToolByName(context, "acl_users")
         emails = defaultdict(list)
         orig_transform = pas.login_transform
         try:
             if not orig_transform:
                 # Temporarily set this to lower, as that will happen
                 # when turning emaillogin on.
-                pas.login_transform = 'lower'
+                pas.login_transform = "lower"
             for user in pas.getUsers():
                 if user is None:
                     # Created in the ZMI?
                     continue
-                email = user.getProperty('email', '')
+                email = user.getProperty("email", "")
                 if email:
                     email = pas.applyTransform(email)
                 else:
-                    logger.warning("User %s has no email address.",
-                                user.getUserId())
+                    logger.warning("User %s has no email address.", user.getUserId())
                     # Add the normal login name anyway.
                     email = pas.applyTransform(user.getUserName())
                 emails[email].append(user.getUserId())
@@ -75,8 +73,9 @@ class EmailLogin(BrowserView):
         duplicates = []
         for email, userids in self._email_list.items():
             if len(userids) > 1:
-                logger.warning("Duplicate accounts for email address %s: %r",
-                            email, userids)
+                logger.warning(
+                    "Duplicate accounts for email address %s: %r", email, userids
+                )
                 duplicates.append((email, userids))
 
         return duplicates
@@ -86,14 +85,14 @@ class EmailLogin(BrowserView):
         # user ids are unique, but their lowercase version might not
         # be unique.
         context = aq_inner(self.context)
-        pas = getToolByName(context, 'acl_users')
+        pas = getToolByName(context, "acl_users")
         userids = defaultdict(list)
         orig_transform = pas.login_transform
         try:
             if not orig_transform:
                 # Temporarily set this to lower, as that will happen
                 # when turning emaillogin on.
-                pas.login_transform = 'lower'
+                pas.login_transform = "lower"
             for user in pas.getUsers():
                 if user is None:
                     continue
@@ -107,8 +106,11 @@ class EmailLogin(BrowserView):
         duplicates = []
         for login_name, userids in self._userid_list.items():
             if len(userids) > 1:
-                logger.warning("Duplicate accounts for lower case user id "
-                            "%s: %r", login_name, userids)
+                logger.warning(
+                    "Duplicate accounts for lower case user id " "%s: %r",
+                    login_name,
+                    userids,
+                )
                 duplicates.append((login_name, userids))
 
         return duplicates

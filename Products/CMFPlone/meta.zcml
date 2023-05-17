@@ -1,45 +1,72 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:meta="http://namespaces.zope.org/meta"
     xmlns:zcml="http://namespaces.zope.org/zcml"
-    xmlns:meta="http://namespaces.zope.org/meta">
+    >
 
-    <!-- Register a feature; once this is in place, you can do
+  <!-- Register a feature; once this is in place, you can do
 
             zcml:condition="have plone-5"
 
          to register Plone 5-specific configuration
       -->
 
-    <meta:provides feature="plone-4" />
-    <meta:provides feature="plone-41" />
-    <meta:provides feature="plone-42" />
-    <meta:provides feature="plone-43" />
-    <meta:provides feature="plone-44" />
-    <meta:provides feature="plone-5" />
-    <meta:provides feature="plone-51" />
-    <meta:provides feature="plone-52" />
-    <meta:provides feature="plone-60" />
+  <meta:provides feature="plone-4" />
+  <meta:provides feature="plone-41" />
+  <meta:provides feature="plone-42" />
+  <meta:provides feature="plone-43" />
+  <meta:provides feature="plone-44" />
+  <meta:provides feature="plone-5" />
+  <meta:provides feature="plone-51" />
+  <meta:provides feature="plone-52" />
+  <meta:provides feature="plone-60" />
 
-    <include package="Products.CMFCore" file="meta.zcml" />
-    <include package="Products.GenericSetup" file="meta.zcml" />
+  <include
+      package="Products.CMFCore"
+      file="meta.zcml"
+      />
+  <include
+      package="Products.GenericSetup"
+      file="meta.zcml"
+      />
 
-    <include package="plone.dexterity" file="meta.zcml" />
-    <include package="plone.resource" file="meta.zcml" />
-    <include package="plone.app.dexterity" file="meta.zcml" />
-    <include package="plone.app.portlets" file="meta.zcml" />
-    <include package="plone.contentrules" file="meta.zcml" />
-    <include package="plone.session" file="meta.zcml" />
+  <include
+      package="plone.dexterity"
+      file="meta.zcml"
+      />
+  <include
+      package="plone.resource"
+      file="meta.zcml"
+      />
+  <include
+      package="plone.app.dexterity"
+      file="meta.zcml"
+      />
+  <include
+      package="plone.app.portlets"
+      file="meta.zcml"
+      />
+  <include
+      package="plone.contentrules"
+      file="meta.zcml"
+      />
+  <include
+      package="plone.session"
+      file="meta.zcml"
+      />
 
-    <!-- plone.autoinclude's `autoIncludePlugins` directive finds
+  <!-- plone.autoinclude's `autoIncludePlugins` directive finds
          and executes ZCML files from any installed packages
          that provide an entry point to declare themselves a
          plone plugin -->
-    <include package="plone.autoinclude" file="meta.zcml" />
-    <autoIncludePlugins
-        zcml:condition="not-have disable-autoinclude"
-        target="plone"
-        file="meta.zcml"
-        />
+  <include
+      package="plone.autoinclude"
+      file="meta.zcml"
+      />
+  <autoIncludePlugins
+      file="meta.zcml"
+      target="plone"
+      zcml:condition="not-have disable-autoinclude"
+      />
 
 </configure>
-

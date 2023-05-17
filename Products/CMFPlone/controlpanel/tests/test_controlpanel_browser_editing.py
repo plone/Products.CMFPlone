@@ -18,48 +18,41 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
     layer = PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 
     def setUp(self):
-        self.app = self.layer['app']
-        self.request = self.layer['request']
-        self.portal = self.layer['portal']
+        self.app = self.layer["app"]
+        self.request = self.layer["request"]
+        self.portal = self.layer["portal"]
         self.portal_url = self.portal.absolute_url()
 
         registry = getUtility(IRegistry)
-        self.settings = registry.forInterface(IEditingSchema, prefix='plone')
+        self.settings = registry.forInterface(IEditingSchema, prefix="plone")
 
         self.browser = Browser(self.app)
         self.browser.handleErrors = False
         self.browser.addHeader(
-            'Authorization',
-            f'Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}'
+            "Authorization", f"Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}"
         )
 
     def test_editing_control_panel_link(self):
-        self.browser.open(
-            "%s/@@overview-controlpanel" % self.portal_url)
-        self.browser.getLink('Editing').click()
+        self.browser.open("%s/@@overview-controlpanel" % self.portal_url)
+        self.browser.getLink("Editing").click()
 
     def test_editing_control_panel_backlink(self):
-        self.browser.open(
-            "%s/@@editing-controlpanel" % self.portal_url)
+        self.browser.open("%s/@@editing-controlpanel" % self.portal_url)
         self.assertTrue("Content" in self.browser.contents)
 
     def test_editing_control_panel_sidebar(self):
-        self.browser.open(
-            "%s/@@editing-controlpanel" % self.portal_url)
-        self.browser.getLink('Site Setup').click()
-        self.assertTrue(
-            self.browser.url.endswith('/plone/@@overview-controlpanel')
-        )
+        self.browser.open("%s/@@editing-controlpanel" % self.portal_url)
+        self.browser.getLink("Site Setup").click()
+        self.assertTrue(self.browser.url.endswith("/plone/@@overview-controlpanel"))
 
     @unittest.skip("TODO: Not implemented yet.")
     def test_visible_ids_active(self):
         pass
 
     def test_default_editor(self):
-        self.browser.open(
-            "%s/@@editing-controlpanel" % self.portal_url)
+        self.browser.open("%s/@@editing-controlpanel" % self.portal_url)
         self.browser.getControl("Default editor").value = ["None"]
-        self.browser.getControl('Save').click()
+        self.browser.getControl("Save").click()
 
         self.assertEqual(self.settings.default_editor, "None")
 
@@ -68,16 +61,13 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
         pass
 
     def test_available_editors_hidden(self):
-        self.browser.open(
-            "%s/@@editing-controlpanel" % self.portal_url)
-        self.assertTrue('Available editors' not in self.browser.contents)
+        self.browser.open("%s/@@editing-controlpanel" % self.portal_url)
+        self.assertTrue("Available editors" not in self.browser.contents)
 
     def test_ext_editor(self):
-        self.browser.open(
-            "%s/@@editing-controlpanel" % self.portal_url)
-        self.browser.getControl("Enable External Editor feature")\
-            .selected = True
-        self.browser.getControl('Save').click()
+        self.browser.open("%s/@@editing-controlpanel" % self.portal_url)
+        self.browser.getControl("Enable External Editor feature").selected = True
+        self.browser.getControl("Save").click()
 
         self.assertEqual(self.settings.ext_editor, True)
 
@@ -86,28 +76,24 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
         pass
 
     def test_enable_link_integrity_checks(self):
-        self.browser.open(
-            "%s/@@editing-controlpanel" % self.portal_url)
-        self.browser.getControl("Enable link integrity checks")\
-            .selected = True
-        self.browser.getControl('Save').click()
+        self.browser.open("%s/@@editing-controlpanel" % self.portal_url)
+        self.browser.getControl("Enable link integrity checks").selected = True
+        self.browser.getControl("Save").click()
 
         self.assertEqual(self.settings.enable_link_integrity_checks, True)
 
     def test_enable_link_integrity_checks_active(self):
-        self.browser.open(
-            "%s/@@editing-controlpanel" % self.portal_url)
-        self.browser.getControl("Enable link integrity checks")\
-            .selected = True
-        self.browser.getControl('Save').click()
+        self.browser.open("%s/@@editing-controlpanel" % self.portal_url)
+        self.browser.getControl("Enable link integrity checks").selected = True
+        self.browser.getControl("Save").click()
         self.assertTrue(linkintegrity_enabled())
 
     def test_lock_on_ttw_edit(self):
-        self.browser.open(
-            "%s/@@editing-controlpanel" % self.portal_url)
-        self.browser.getControl("Enable locking for through-the-web edits")\
-            .selected = True
-        self.browser.getControl('Save').click()
+        self.browser.open("%s/@@editing-controlpanel" % self.portal_url)
+        self.browser.getControl(
+            "Enable locking for through-the-web edits"
+        ).selected = True
+        self.browser.getControl("Save").click()
 
         self.assertEqual(self.settings.lock_on_ttw_edit, True)
 

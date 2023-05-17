@@ -30,20 +30,17 @@ from zope.publisher.interfaces import IPublishTraverse
 
 @implementer(IPasswordResetToolView)
 class PasswordResetToolView(BrowserView):
-
     @view.memoize_contextless
     def portal_state(self):
-        """ return portal_state of plone.app.layout
-        """
-        return getMultiAdapter((self.context, self.request),
-                               name="plone_portal_state")
+        """return portal_state of plone.app.layout"""
+        return getMultiAdapter((self.context, self.request), name="plone_portal_state")
 
     def encode_mail_header(self, text):
-        """ Encodes text into correctly encoded email header """
-        return Header(safe_text(text), 'utf-8')
+        """Encodes text into correctly encoded email header"""
+        return Header(safe_text(text), "utf-8")
 
     def encoded_mail_sender(self):
-        """ returns encoded version of Portal name <portal_email> """
+        """returns encoded version of Portal name <portal_email>"""
         registry = getUtility(IRegistry)
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
         from_ = mail_settings.email_from_name
@@ -54,9 +51,9 @@ class PasswordResetToolView(BrowserView):
         portal_name = self.portal_state().portal_title()
         return translate(
             _(
-                'mailtemplate_user_account_info',
-                default='User Account Information for ${portal_name}',
-                mapping={'portal_name': safe_text(portal_name)},
+                "mailtemplate_user_account_info",
+                default="User Account Information for ${portal_name}",
+                mapping={"portal_name": safe_text(portal_name)},
             ),
             context=self.request,
         )
@@ -64,18 +61,19 @@ class PasswordResetToolView(BrowserView):
     def mail_password_subject(self):
         return translate(
             _(
-                'mailtemplate_subject_resetpasswordrequest',
-                default='Password reset request',
+                "mailtemplate_subject_resetpasswordrequest",
+                default="Password reset request",
             ),
             context=self.request,
         )
 
     def construct_url(self, randomstring):
-        return '{}/passwordreset/{}'.format(
-            self.portal_state().navigation_root_url(), randomstring)
+        return "{}/passwordreset/{}".format(
+            self.portal_state().navigation_root_url(), randomstring
+        )
 
     def expiration_timeout(self):
-        pw_tool = getToolByName(self.context, 'portal_password_reset')
+        pw_tool = getToolByName(self.context, "portal_password_reset")
         timeout = int(pw_tool.getExpirationTimeout() or 0)
         return timeout * 24  # timeout is in days, but templates want in hours.
 
@@ -84,21 +82,18 @@ class PasswordResetToolView(BrowserView):
 class PasswordResetView(BrowserView):
     """ """
 
-    invalid = ViewPageTemplateFile('templates/pwreset_invalid.pt')
-    expired = ViewPageTemplateFile('templates/pwreset_expired.pt')
-    finish = ViewPageTemplateFile('templates/pwreset_finish.pt')
-    form = ViewPageTemplateFile('templates/pwreset_form.pt')
+    invalid = ViewPageTemplateFile("templates/pwreset_invalid.pt")
+    expired = ViewPageTemplateFile("templates/pwreset_expired.pt")
+    finish = ViewPageTemplateFile("templates/pwreset_finish.pt")
+    form = ViewPageTemplateFile("templates/pwreset_form.pt")
     subpath = None
 
     def _auto_login(self, userid, password):
         context = self.context
-        aclu = getToolByName(context, 'acl_users')
+        aclu = getToolByName(context, "acl_users")
         for name, plugin in aclu.plugins.listPlugins(ICredentialsUpdatePlugin):
             plugin.updateCredentials(
-                self.request,
-                self.request.response,
-                userid,
-                password
+                self.request, self.request.response, userid, password
             )
 
         is_initial_login = False
@@ -110,10 +105,10 @@ class PasswordResetView(BrowserView):
             self.request.response.redirect(self.context.absolute_url())
             IStatusMessage(self.request).addStatusMessage(
                 _(
-                    'password_reset_failed',
-                    default='Password reset failed.',
+                    "password_reset_failed",
+                    default="Password reset failed.",
                 ),
-                'info',
+                "info",
             )
             return
 
@@ -124,11 +119,10 @@ class PasswordResetView(BrowserView):
             is_initial_login = self._post_login()
             IStatusMessage(self.request).addStatusMessage(
                 _(
-                    'password_reset_successful',
-                    default='Password reset successful, '
-                            'you are logged in now!',
+                    "password_reset_successful",
+                    default="Password reset successful, " "you are logged in now!",
                 ),
-                'info',
+                "info",
             )
             self.redirect_after_login(is_initial_login=is_initial_login)
         finally:
@@ -137,9 +131,9 @@ class PasswordResetView(BrowserView):
         return
 
     def _post_login(self):
-        membership_tool = getToolByName(self.context, 'portal_membership')
+        membership_tool = getToolByName(self.context, "portal_membership")
         member = membership_tool.getAuthenticatedMember()
-        login_time = member.getProperty('login_time', None)
+        login_time = member.getProperty("login_time", None)
         is_initial_login = not has_logged_in(login_time)
         membership_tool.loginUser(self.request)
         if is_initial_login:
@@ -155,10 +149,7 @@ class PasswordResetView(BrowserView):
         # Note: for password reset a came_from parameter seems illogical.
         # But let's allow it, to be the same as in login.py.
         # The default implementation does not pass it in though.
-        adapter = queryMultiAdapter(
-            (self.context, self.request),
-            IRedirectAfterLogin
-        )
+        adapter = queryMultiAdapter((self.context, self.request), IRedirectAfterLogin)
         if adapter:
             came_from = adapter(came_from, is_initial_login)
         if not came_from:
@@ -170,8 +161,8 @@ class PasswordResetView(BrowserView):
         state = self.getErrors()
         if state:
             return self.form()
-        userid = self.request.form.get('userid')
-        password = self.request.form.get('password')
+        userid = self.request.form.get("userid")
+        password = self.request.form.get("password")
         try:
             pw_tool.resetPassword(userid, randomstring, password)
         except ExpiredRequestError:
@@ -181,7 +172,7 @@ class PasswordResetView(BrowserView):
         except RuntimeError:
             return self.invalid()
         registry = getUtility(IRegistry)
-        if registry.get('plone.autologin_after_password_reset', False):
+        if registry.get("plone.autologin_after_password_reset", False):
             return self._auto_login(userid, password)
         return self.finish()
 
@@ -190,10 +181,10 @@ class PasswordResetView(BrowserView):
             # Try traverse subpath first:
             randomstring = self.subpath[0]
         else:
-            randomstring = self.request.get('key', None)
+            randomstring = self.request.get("key", None)
 
-        pw_tool = getToolByName(self.context, 'portal_password_reset')
-        if self.request.method == 'POST':
+        pw_tool = getToolByName(self.context, "portal_password_reset")
+        if self.request.method == "POST":
             return self._reset_password(pw_tool, randomstring)
         try:
             pw_tool.verifyKey(randomstring)
@@ -210,42 +201,41 @@ class PasswordResetView(BrowserView):
         return self
 
     def getErrors(self):
-        if self.request.method != 'POST':
+        if self.request.method != "POST":
             return
-        password = self.request.form.get('password')
-        password2 = self.request.form.get('password2')
-        userid = self.request.form.get('userid')
-        reg_tool = getToolByName(self.context, 'portal_registration')
+        password = self.request.form.get("password")
+        password2 = self.request.form.get("password2")
+        userid = self.request.form.get("userid")
+        reg_tool = getToolByName(self.context, "portal_registration")
         pw_fail = reg_tool.testPasswordValidity(password, password2)
         state = {}
         if pw_fail:
-            state['password'] = pw_fail
+            state["password"] = pw_fail
 
         # Determine if we're checking userids or not
-        pw_tool = getToolByName(self.context, 'portal_password_reset')
+        pw_tool = getToolByName(self.context, "portal_password_reset")
         if not pw_tool.checkUser():
             return state
 
         if not userid:
-            state['userid'] = _(
-                'This field is required, please provide some information.',
+            state["userid"] = _(
+                "This field is required, please provide some information.",
             )
         if state:
-            state['status'] = 'failure'
-            state['portal_status_message'] = _(
-                'Please correct the indicated errors.'
-            )
+            state["status"] = "failure"
+            state["portal_status_message"] = _("Please correct the indicated errors.")
         return state
 
     def login_url(self):
-        portal_state = getMultiAdapter((self.context, self.request),
-                                       name="plone_portal_state")
-        return '{}/login?__ac_name={}'.format(
-            portal_state.navigation_root_url(),
-            self.request.form.get('userid', ''))
+        portal_state = getMultiAdapter(
+            (self.context, self.request), name="plone_portal_state"
+        )
+        return "{}/login?__ac_name={}".format(
+            portal_state.navigation_root_url(), self.request.form.get("userid", "")
+        )
 
     def expiration_timeout(self):
-        pw_tool = getToolByName(self.context, 'portal_password_reset')
+        pw_tool = getToolByName(self.context, "portal_password_reset")
         timeout = int(pw_tool.getExpirationTimeout() or 0)
         return timeout * 24  # timeout is in days, but templates want in hours.
 
@@ -257,7 +247,7 @@ class ExplainPWResetToolView(BrowserView):
         return self.context.getExpirationTimeout()
 
     def user_check(self):
-        return self.context._user_check and 'checked' or None
+        return self.context._user_check and "checked" or None
 
     @property
     def stats(self):
@@ -266,17 +256,22 @@ class ExplainPWResetToolView(BrowserView):
         about the number of open and expired reset requests.
         """
         # count expired reset requests by creating a list of it
-        bad = len([1 for expiry in self.context._requests.values()
-                   if self.context.expired(expiry)])
+        bad = len(
+            [
+                1
+                for expiry in self.context._requests.values()
+                if self.context.expired(expiry)
+            ]
+        )
         # open reset requests are all requests without the expired ones
         good = len(self.context._requests) - bad
         return {"open": good, "expired": bad}
 
     def __call__(self):
-        if self.request.method == 'POST':
-            timeout_days = safeToInt(self.request.get('timeout_days'), 7)
+        if self.request.method == "POST":
+            timeout_days = safeToInt(self.request.get("timeout_days"), 7)
             self.context.setExpirationTimeout(timeout_days)
             self.context._user_check = bool(
-                self.request.get('user_check', False),
+                self.request.get("user_check", False),
             )
         return self.index()

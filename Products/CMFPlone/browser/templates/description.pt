@@ -1,3 +1,9 @@
-<p class="lead" tal:define="description context/Description" tal:content="description" tal:condition="description">
+<p class="lead"
+   tal:define="
+     description context/Description;
+   "
+   tal:condition="description"
+   tal:content="description"
+>
   Description
 </p>

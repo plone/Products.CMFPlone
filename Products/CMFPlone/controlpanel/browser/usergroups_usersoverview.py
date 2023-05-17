@@ -16,18 +16,16 @@ from zope.component import getUtility
 import logging
 
 
-logger = logging.getLogger('Products.CMFPlone')
+logger = logging.getLogger("Products.CMFPlone")
 
 
 class UsersOverviewControlPanel(UsersGroupsControlPanelView):
-
     def __call__(self):
-
         form = self.request.form
-        submitted = form.get('form.submitted', False)
-        search = form.get('form.button.Search', None) is not None
-        findAll = form.get('form.button.FindAll', None) is not None
-        self.searchString = not findAll and form.get('searchstring', '') or ''
+        submitted = form.get("form.submitted", False)
+        search = form.get("form.button.Search", None) is not None
+        findAll = form.get("form.button.FindAll", None) is not None
+        self.searchString = not findAll and form.get("searchstring", "") or ""
         self.searchResults = []
         self.newSearch = False
 
@@ -35,43 +33,50 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             self.newSearch = True
 
         if submitted:
-            if form.get('form.button.Modify', None) is not None:
-                self.manageUser(form.get('users', None),
-                                form.get('resetpassword', []),
-                                form.get('delete', []))
+            if form.get("form.button.Modify", None) is not None:
+                self.manageUser(
+                    form.get("users", None),
+                    form.get("resetpassword", []),
+                    form.get("delete", []),
+                )
 
         # Only search for all ('') if the many_users flag is not set.
-        if not(self.many_users) or bool(self.searchString):
+        if not (self.many_users) or bool(self.searchString):
             self.searchResults = self.doSearch(self.searchString)
 
         return self.index()
 
     def doSearch(self, searchString):
-        acl = getToolByName(self, 'acl_users')
+        acl = getToolByName(self, "acl_users")
         rolemakers = acl.plugins.listPlugins(IRolesPlugin)
 
-        mtool = getToolByName(self, 'portal_membership')
+        mtool = getToolByName(self, "portal_membership")
 
-        searchView = getMultiAdapter((
-            aq_inner(self.context),
-            self.request
-        ), name='pas_search')
+        searchView = getMultiAdapter(
+            (aq_inner(self.context), self.request), name="pas_search"
+        )
 
         # First, search for all inherited roles assigned to each group.
         # We push this in the request so that IRoles plugins are told provide
         # the roles inherited from the groups to which the principal belongs.
-        self.request.set('__ignore_group_roles__', False)
-        self.request.set('__ignore_direct_roles__', True)
+        self.request.set("__ignore_group_roles__", False)
+        self.request.set("__ignore_direct_roles__", True)
         inheritance_enabled_users = searchView.merge(
-            chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
+            chain(
+                *[
+                    searchView.searchUsers(**{field: searchString})
+                    for field in ["login", "fullname", "email"]
+                ]
+            ),
+            "userid",
+        )
         allInheritedRoles = {}
         for user_info in inheritance_enabled_users:
-            userId = user_info['id']
+            userId = user_info["id"]
             user = acl.getUserById(userId)
             # play safe, though this should never happen
             if user is None:
-                logger.warning(
-                    'Skipped user without principal object: %s' % userId)
+                logger.warning("Skipped user without principal object: %s" % userId)
                 continue
             allAssignedRoles = []
             for rolemaker_id, rolemaker in rolemakers:
@@ -80,11 +85,16 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
         # We push this in the request such IRoles plugins don't provide
         # the roles from the groups the principal belongs.
-        self.request.set('__ignore_group_roles__', True)
-        self.request.set('__ignore_direct_roles__', False)
+        self.request.set("__ignore_group_roles__", True)
+        self.request.set("__ignore_direct_roles__", False)
         explicit_users = searchView.merge(
-            chain(*[searchView.searchUsers(**{field: searchString})
-                    for field in ['login', 'fullname', 'email']]), 'userid'
+            chain(
+                *[
+                    searchView.searchUsers(**{field: searchString})
+                    for field in ["login", "fullname", "email"]
+                ]
+            ),
+            "userid",
         )
 
         # Tack on some extra data, including whether each role is explicitly
@@ -92,48 +102,52 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
         # all (None).
         results = []
         for user_info in explicit_users:
-            userId = user_info['id']
+            userId = user_info["id"]
             user = mtool.getMemberById(userId)
             # play safe, though this should never happen
             if user is None:
-                logger.warning(
-                    'Skipped user without principal object: %s' % userId)
+                logger.warning("Skipped user without principal object: %s" % userId)
                 continue
             explicitlyAssignedRoles = []
             for rolemaker_id, rolemaker in rolemakers:
-                explicitlyAssignedRoles.extend(
-                    rolemaker.getRolesForPrincipal(user))
+                explicitlyAssignedRoles.extend(rolemaker.getRolesForPrincipal(user))
 
             roleList = {}
             for role in self.portal_roles:
                 canAssign = user.canAssignRole(role)
-                if role == 'Manager' and not self.is_zope_manager:
+                if role == "Manager" and not self.is_zope_manager:
                     canAssign = False
-                roleList[role] = {'canAssign': canAssign,
-                                  'explicit': role in explicitlyAssignedRoles,
-                                  'inherited': role in allInheritedRoles.get(userId, ())}
+                roleList[role] = {
+                    "canAssign": canAssign,
+                    "explicit": role in explicitlyAssignedRoles,
+                    "inherited": role in allInheritedRoles.get(userId, ()),
+                }
 
             canDelete = user.canDelete()
             canPasswordSet = user.canPasswordSet()
-            if roleList['Manager']['explicit'] or roleList['Manager']['inherited']:
+            if roleList["Manager"]["explicit"] or roleList["Manager"]["inherited"]:
                 if not self.is_zope_manager:
                     canDelete = False
                     canPasswordSet = False
 
-            user_info['roles'] = roleList
-            user_info['fullname'] = user.getProperty('fullname', '')
-            user_info['email'] = user.getProperty('email', '')
-            user_info['can_delete'] = canDelete
-            user_info['can_set_email'] = user.canWriteProperty('email')
-            user_info['can_set_password'] = canPasswordSet
+            user_info["roles"] = roleList
+            user_info["fullname"] = user.getProperty("fullname", "")
+            user_info["email"] = user.getProperty("email", "")
+            user_info["can_delete"] = canDelete
+            user_info["can_set_email"] = user.canWriteProperty("email")
+            user_info["can_set_password"] = canPasswordSet
             results.append(user_info)
 
         # Sort the users by fullname
-        results.sort(key=lambda x: x is not None and x[
-                     'fullname'] is not None and normalizeString(x['fullname']) or '')
+        results.sort(
+            key=lambda x: x is not None
+            and x["fullname"] is not None
+            and normalizeString(x["fullname"])
+            or ""
+        )
 
         # Reset the request variable, just in case.
-        self.request.set('__ignore_group_roles__', False)
+        self.request.set("__ignore_group_roles__", False)
         return results
 
     def manageUser(self, users=[], resetpassword=[], delete=[]):
@@ -141,11 +155,11 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
         if users:
             context = aq_inner(self.context)
-            acl_users = getToolByName(context, 'acl_users')
-            mtool = getToolByName(context, 'portal_membership')
-            regtool = getToolByName(context, 'portal_registration')
+            acl_users = getToolByName(context, "acl_users")
+            mtool = getToolByName(context, "portal_membership")
+            regtool = getToolByName(context, "portal_registration")
 
-            utils = getToolByName(context, 'plone_utils')
+            utils = getToolByName(context, "plone_utils")
 
             users_with_reset_passwords = []
 
@@ -157,35 +171,41 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                 member = mtool.getMemberById(user.id)
                 current_roles = member.getRoles()
                 # If email address was changed, set the new one
-                if hasattr(user, 'email'):
+                if hasattr(user, "email"):
                     # If the email field was disabled (ie: non-writeable), the
                     # property might not exist.
-                    if user.email != member.getProperty('email'):
+                    if user.email != member.getProperty("email"):
                         utils.setMemberProperties(
-                            member, REQUEST=context.REQUEST, email=user.email)
-                        utils.addPortalMessage(_('Changes applied.'))
+                            member, REQUEST=context.REQUEST, email=user.email
+                        )
+                        utils.addPortalMessage(_("Changes applied."))
 
                 # If reset password has been checked email user a new password
                 pw = None
-                if hasattr(user, 'resetpassword'):
-                    if 'Manager' in current_roles and not self.is_zope_manager:
+                if hasattr(user, "resetpassword"):
+                    if "Manager" in current_roles and not self.is_zope_manager:
                         raise Forbidden
-                    if not context.unrestrictedTraverse('@@overview-controlpanel').mailhost_warning():
+                    if not context.unrestrictedTraverse(
+                        "@@overview-controlpanel"
+                    ).mailhost_warning():
                         pw = regtool.generatePassword()
                     else:
                         utils.addPortalMessage(
-                            _('No mailhost defined. Unable to reset passwords.'), type='error')
+                            _("No mailhost defined. Unable to reset passwords."),
+                            type="error",
+                        )
 
-                roles = user.get('roles', [])
+                roles = user.get("roles", [])
                 if not self.is_zope_manager:
                     # don't allow adding or removing the Manager role
-                    if ('Manager' in roles) != ('Manager' in current_roles):
+                    if ("Manager" in roles) != ("Manager" in current_roles):
                         raise Forbidden
 
                 acl_users.userFolderEditUser(
-                    user.id, pw, roles, member.getDomains(), REQUEST=context.REQUEST)
+                    user.id, pw, roles, member.getDomains(), REQUEST=context.REQUEST
+                )
                 if pw:
-                    context.REQUEST.form['new_password'] = pw
+                    context.REQUEST.form["new_password"] = pw
                     regtool.mailPassword(user.id, context.REQUEST)
                     users_with_reset_passwords.append(user.id)
 
@@ -196,17 +216,17 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                     "reset_passwords_msg",
                     default="The following users have been sent an e-mail with link to reset their password: ${user_ids}",
                     mapping={
-                        "user_ids": ', '.join(users_with_reset_passwords),
+                        "user_ids": ", ".join(users_with_reset_passwords),
                     },
                 )
                 utils.addPortalMessage(reset_passwords_message)
-            utils.addPortalMessage(_('Changes applied.'))
+            utils.addPortalMessage(_("Changes applied."))
 
     def deleteMembers(self, member_ids):
         # this method exists to bypass the 'Manage Users' permission check
         # in the CMF member tool's version
         context = aq_inner(self.context)
-        mtool = getToolByName(self.context, 'portal_membership')
+        mtool = getToolByName(self.context, "portal_membership")
 
         # Delete members in acl_users.
         acl_users = context.acl_users
@@ -220,24 +240,22 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             else:
                 if not member.canDelete():
                     raise Forbidden
-                if 'Manager' in member.getRoles() and not self.is_zope_manager:
+                if "Manager" in member.getRoles() and not self.is_zope_manager:
                     raise Forbidden
         try:
             acl_users.userFolderDelUsers(member_ids)
         except (AttributeError, NotImplementedError):
-            raise NotImplementedError('The underlying User Folder '
-                                      'doesn\'t support deleting members.')
+            raise NotImplementedError(
+                "The underlying User Folder " "doesn't support deleting members."
+            )
 
         # Delete member data in portal_memberdata.
-        mdtool = getToolByName(context, 'portal_memberdata', None)
+        mdtool = getToolByName(context, "portal_memberdata", None)
         if mdtool is not None:
             for member_id in member_ids:
                 mdtool.deleteMemberData(member_id)
 
         # Delete members' local roles.
         mtool.deleteLocalRoles(
-            getUtility(ISiteRoot),
-            member_ids,
-            reindex=1,
-            recursive=1
+            getUtility(ISiteRoot), member_ids, reindex=1, recursive=1
         )

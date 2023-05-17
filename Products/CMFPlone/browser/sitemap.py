@@ -8,26 +8,25 @@ from zope.interface import implementer
 
 @implementer(ISitemapView)
 class SitemapView(BrowserView):
-
-    item_template = ViewPageTemplateFile('templates/sitemap-item.pt')
+    item_template = ViewPageTemplateFile("templates/sitemap-item.pt")
 
     def createSiteMap(self):
         context = aq_inner(self.context)
-        view = getMultiAdapter((context, self.request),
-                               name='sitemap_builder_view')
+        view = getMultiAdapter((context, self.request), name="sitemap_builder_view")
         data = view.siteMap()
-        return self._renderLevel(children=data.get('children', []))
+        return self._renderLevel(children=data.get("children", []))
 
     def _renderLevel(self, children=[], level=2):
-        output = ''
+        output = ""
         for node in children:
             output += '<li class="navTreeItem visualNoMarker">\n'
             output += self.item_template(node=node)
-            children = node.get('children', [])
+            children = node.get("children", [])
             if len(children):
-                output += \
-                    '<ul class="navTree navTreeLevel%d">\n%s\n</ul>\n' % (
-                        level, self._renderLevel(children, level + 1))
-            output += '</li>\n'
+                output += '<ul class="navTree navTreeLevel%d">\n%s\n</ul>\n' % (
+                    level,
+                    self._renderLevel(children, level + 1),
+                )
+            output += "</li>\n"
 
         return output

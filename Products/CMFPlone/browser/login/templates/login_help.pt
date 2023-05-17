@@ -1,54 +1,83 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone">
-<body>
-  <metal:main fill-slot="main">
-    <metal:main-macro define-macro="main">
+      xml:lang="en"
+      i18n:domain="plone"
+>
+  <body>
+    <metal:main fill-slot="main">
+      <metal:main-macro define-macro="main">
 
-      <h1 tal:condition="view/label | nothing">
-        <span tal:replace="view/label">Form title</span>
-      </h1>
+        <h1 tal:condition="view/label | nothing">
+          <span tal:replace="view/label">Form title</span>
+        </h1>
 
-      <p class="lead"
-        tal:condition="view/description | nothing"
-        tal:content="structure view/description">Form description</p>
+        <p class="lead"
+           tal:condition="view/description | nothing"
+           tal:content="structure view/description"
+        >Form description</p>
 
-      <div id="content-core">
-        <form action="." method="post" novalidate
-          tal:attributes="action view/action; enctype view/enctype"
-          tal:define="subforms view/subforms">
+        <div id="content-core">
+          <form action="."
+                method="post"
+                novalidate
+                tal:define="
+                  subforms view/subforms;
+                "
+                tal:attributes="
+                  action view/action;
+                  enctype view/enctype;
+                "
+          >
 
-          <div class="card-deck">
-            <div class="card" tal:repeat="subform subforms">
-              <div class="card-body">
-                <tal:subform replace="structure subform/render"></tal:subform>
+            <div class="card-deck">
+              <div class="card"
+                   tal:repeat="subform subforms"
+              >
+                <div class="card-body">
+                  <tal:subform replace="structure subform/render" />
+                </div>
+                <span tal:replace="structure context/@@authenticator/authenticator"></span>
               </div>
-              <span tal:replace="structure context/@@authenticator/authenticator"/>
+            </div>
+          </form>
+
+          <div class="footer mt-4"
+               tal:define="
+                 portal_state context/@@plone_portal_state;
+                 portal_url portal_state/portal_url;
+               "
+          >
+            <div class="trouble mb-2">
+              <div tal:omit-tag=""
+                   i18n:translate="need_more_help"
+              >Need more help?</div>
+              <a href="contact-info"
+                 tal:attributes="
+                   href string:${portal_url}/contact-info;
+                 "
+                 i18n:translate="contact_an_admin"
+              >Contact an admin.</a>
+            </div>
+            <div class="go_to_login">
+              <span tal:omit-tag=""
+                    i18n:translate="go_to_login"
+              >Go to</span>
+              <a class="pat-plone-modal"
+                 href="login"
+                 tal:attributes="
+                   href string:${portal_url}/login;
+                 "
+                 i18n:translate="to_login_view"
+              >login</a>.
             </div>
           </div>
-        </form>
 
-        <div class="footer mt-4"
-          tal:define="portal_state context/@@plone_portal_state;
-                      portal_url portal_state/portal_url">
-          <div class="trouble mb-2">
-            <div i18n:translate="need_more_help" tal:omit-tag="">Need more help?</div>
-            <a tal:attributes="href string:${portal_url}/contact-info"
-              href="contact-info" i18n:translate="contact_an_admin">Contact an admin.</a>
-          </div>
-          <div class="go_to_login">
-            <span i18n:translate="go_to_login" tal:omit-tag="">Go to</span>
-            <a tal:attributes="href string:${portal_url}/login" class="pat-plone-modal"
-              i18n:translate="to_login_view" href="login">login</a>.
-          </div>
         </div>
-
-    </div>
-    </metal:main-macro>
-  </metal:main>
-</body>
+      </metal:main-macro>
+    </metal:main>
+  </body>
 </html>

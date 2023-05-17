@@ -1,5 +1,4 @@
 from plone.formwidget.namedfile.converter import b64decode_file
-from plone.memoize import ram
 from plone.namedfile.browser import DisplayFile
 from plone.namedfile.file import NamedImage
 from plone.registry.interfaces import IRegistry

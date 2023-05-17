@@ -16,39 +16,35 @@ class SiteRegistryIntegrationTest(unittest.TestCase):
     layer = PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 
     def setUp(self):
-        self.portal = self.layer['portal']
-        self.request = self.layer['request']
+        self.portal = self.layer["portal"]
+        self.request = self.layer["request"]
         registry = getUtility(IRegistry)
-        self.settings = registry.forInterface(
-            ISiteSchema,
-            prefix="plone"
-        )
+        self.settings = registry.forInterface(ISiteSchema, prefix="plone")
 
     def test_site_controlpanel_view(self):
         view = getMultiAdapter(
-            (self.portal, self.portal.REQUEST),
-            name="site-controlpanel"
+            (self.portal, self.portal.REQUEST), name="site-controlpanel"
         )
         self.assertTrue(view())
 
     def test_site_in_controlpanel(self):
         self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
-        self.assertTrue('PloneReconfig' in [
-            a.getAction(self)['id']
-            for a in self.controlpanel.listActions()
-        ])
+        self.assertTrue(
+            "PloneReconfig"
+            in [a.getAction(self)["id"] for a in self.controlpanel.listActions()]
+        )
 
     def test_site_title_setting(self):
-        self.assertTrue(hasattr(self.settings, 'site_title'))
+        self.assertTrue(hasattr(self.settings, "site_title"))
 
     def test_site_logo_setting(self):
-        self.assertTrue(hasattr(self.settings, 'site_logo'))
+        self.assertTrue(hasattr(self.settings, "site_logo"))
 
     def test_exposeDCMetaTags_setting(self):
-        self.assertTrue(hasattr(self.settings, 'exposeDCMetaTags'))
+        self.assertTrue(hasattr(self.settings, "exposeDCMetaTags"))
 
     def test_webstats_js_setting(self):
-        self.assertTrue(hasattr(self.settings, 'webstats_js'))
+        self.assertTrue(hasattr(self.settings, "webstats_js"))
 
     def test_enable_sitemap_setting(self):
-        self.assertTrue(hasattr(self.settings, 'enable_sitemap'))
+        self.assertTrue(hasattr(self.settings, "enable_sitemap"))

@@ -5,7 +5,6 @@ from z3c.form.browser.checkbox import CheckBoxFieldWidget
 
 
 class MarkupControlPanelForm(controlpanel.RegistryEditForm):
-
     id = "MarkupControlPanel"
     label = _("Markup Settings")
     schema = IMarkupSchema
@@ -13,8 +12,7 @@ class MarkupControlPanelForm(controlpanel.RegistryEditForm):
 
     def updateFields(self):
         super().updateFields()
-        self.fields['allowed_types'].widgetFactory = \
-            CheckBoxFieldWidget
+        self.fields["allowed_types"].widgetFactory = CheckBoxFieldWidget
 
 
 class MarkupControlPanel(controlpanel.ControlPanelFormWrapper):

@@ -1,142 +1,201 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
       metal:use-macro="context/@@main_template/macros/master"
-      i18n:domain="plone">
-<body>
+      xml:lang="en"
+      i18n:domain="plone"
+>
+  <body>
 
-<metal:custom_title fill-slot="content-title">
-        <h1 class="documentFirstHeading"
-            i18n:translate="heading_reset_password">Set your password</h1>
-</metal:custom_title>
+    <metal:custom_title fill-slot="content-title">
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_reset_password"
+      >Set your password</h1>
+    </metal:custom_title>
 
-<metal:custom_desc fill-slot="content-description">
-        <div class="documentDescription"
-           i18n:translate="description_reset_password">
+    <metal:custom_desc fill-slot="content-description">
+      <div class="documentDescription"
+           i18n:translate="description_reset_password"
+      >
             Please fill out the form below to set your password.
-        </div>
-</metal:custom_desc>
+      </div>
+    </metal:custom_desc>
 
-<metal:content-core fill-slot="content-core">
-<metal:content-core define-macro="content-core" tal:define="errors view/getErrors">
+    <metal:content-core fill-slot="content-core">
+      <metal:content-core define-macro="content-core"
+                          tal:define="
+                            errors view/getErrors;
+                          "
+      >
 
-            <form class="enableAutoFocus"
-                  name="pwreset_action"
-                  method="post"
-                  tal:attributes="action request/getURL">
-                <fieldset>
-                    <legend i18n:translate="legend_new_password">New Password</legend>
-                    <input type="hidden"
-                           name="randomstring"
-                           value=""
-                           tal:attributes="value options/randomstring | request/randomstring | nothing" />
+        <form class="enableAutoFocus"
+              method="post"
+              name="pwreset_action"
+              tal:attributes="
+                action request/getURL;
+              "
+        >
+          <fieldset>
+            <legend i18n:translate="legend_new_password">New Password</legend>
+            <input name="randomstring"
+                   type="hidden"
+                   value=""
+                   tal:attributes="
+                     value options/randomstring | request/randomstring | nothing;
+                   "
+            />
 
-                    <div class="mb-3 field"
-                         tal:define="error errors/userid | nothing;
-                                     use_email_as_login python:context.portal_registry['plone.use_email_as_login'];"
-                         tal:attributes="class python:error and 'mb-3 field error' or 'mb-3 field'"
-                         tal:condition="here/portal_password_reset/checkUser | nothing">
+            <div class="mb-3 field"
+                 tal:define="
+                   error errors/userid | nothing;
+                   use_email_as_login python:context.portal_registry['plone.use_email_as_login'];
+                 "
+                 tal:condition="here/portal_password_reset/checkUser | nothing"
+                 tal:attributes="
+                   class python:error and 'mb-3 field error' or 'mb-3 field';
+                 "
+            >
 
-                      <tal:username tal:condition="not:use_email_as_login">
-                        <label class="form-label" for="userid"
-                               i18n:translate="label_my_user_name_is">My user name is</label>
+              <tal:username tal:condition="not:use_email_as_login">
+                <label class="form-label"
+                       for="userid"
+                       i18n:translate="label_my_user_name_is"
+                >My user name is</label>
 
-                        <input class="form-control"
-                            name="userid"
-                            required
-                            id="userid" />
+                <input class="form-control"
+                       id="userid"
+                       name="userid"
+                       required
+                />
 
-                        <div tal:content="error" class="invalid-feedback">Validation error output</div>
+                <div class="invalid-feedback"
+                     tal:content="error"
+                >Validation error output</div>
 
-                        <small class="formHelp text-muted" i18n:translate="help_userid">
+                <small class="formHelp text-muted"
+                       i18n:translate="help_userid"
+                >
                             Enter your user name for verification.
-                        </small>
-                      </tal:username>
+                </small>
+              </tal:username>
 
-                      <tal:email tal:condition="use_email_as_login">
-                        <label class="form-label required" for="userid"
-                               i18n:translate="label_my_email_address_is">My email address is</label>
+              <tal:email tal:condition="use_email_as_login">
+                <label class="form-label required"
+                       for="userid"
+                       i18n:translate="label_my_email_address_is"
+                >My email address is</label>
 
-                        <input class="form-control"
-                            name="userid"
-                            required
-                            id="userid" />
+                <input class="form-control"
+                       id="userid"
+                       name="userid"
+                       required
+                />
 
-                        <div tal:content="error" class="invalid-feedback">Validation error output</div>
+                <div class="invalid-feedback"
+                     tal:content="error"
+                >Validation error output</div>
 
-                        <small class="formHelp text-muted" i18n:translate="help_verify_email">
+                <small class="formHelp text-muted"
+                       i18n:translate="help_verify_email"
+                >
                             Enter your email address for verification.
-                        </small>
-                      </tal:email>
+                </small>
+              </tal:email>
 
-                    </div>
+            </div>
 
-                    <div class="mb-3 field"
-                         tal:define="error errors/password | nothing;"
-                         tal:attributes="class python:error and 'mb-3 field error' or 'mb-3 field'">
+            <div class="mb-3 field"
+                 tal:define="
+                   error errors/password | nothing;
+                 "
+                 tal:attributes="
+                   class python:error and 'mb-3 field error' or 'mb-3 field';
+                 "
+            >
 
-                        <label class="form-label required" for="password"
-                               i18n:translate="label_new_password">New password</label>
+              <label class="form-label required"
+                     for="password"
+                     i18n:translate="label_new_password"
+              >New password</label>
 
-                        <input class="form-control"
-                            type="password"
-                            id="password"
-                            name="password"
-                            required
-                            size="10" />
+              <input class="form-control"
+                     id="password"
+                     name="password"
+                     required
+                     size="10"
+                     type="password"
+              />
 
-                        <div tal:content="error" class="invalid-feedback">Validation error output</div>
+              <div class="invalid-feedback"
+                   tal:content="error"
+              >Validation error output</div>
 
-                        <small class="formHelp text-muted"
-                            i18n:translate="help_new_password">
+              <small class="formHelp text-muted"
+                     i18n:translate="help_new_password"
+              >
                             Enter your new password.
-                        </small>
+              </small>
 
-                    </div>
+            </div>
 
-                    <div class="mb-3 field"
-                         tal:define="error errors/password | nothing;"
-                         tal:attributes="class python:error and 'mb-3 field error' or 'mb-3 field'">
+            <div class="mb-3 field"
+                 tal:define="
+                   error errors/password | nothing;
+                 "
+                 tal:attributes="
+                   class python:error and 'mb-3 field error' or 'mb-3 field';
+                 "
+            >
 
-                        <label class="form-label required" for="password2"
-                        i18n:translate="label_confirm_password">Confirm password</label>
+              <label class="form-label required"
+                     for="password2"
+                     i18n:translate="label_confirm_password"
+              >Confirm password</label>
 
-                        <input class="form-control"
-                            type="password"
-                            id="password2"
-                            name="password2"
-                            required
-                            size="10"
-                            />
+              <input class="form-control"
+                     id="password2"
+                     name="password2"
+                     required
+                     size="10"
+                     type="password"
+              />
 
-                        <div tal:content="error" class="invalid-feedback">Validation error output</div>
+              <div class="invalid-feedback"
+                   tal:content="error"
+              >Validation error output</div>
 
-                        <small class="formHelp text-muted" i18n:translate="help_confirm_password">
+              <small class="formHelp text-muted"
+                     i18n:translate="help_confirm_password"
+              >
                             Re-enter the password. Make sure the passwords are identical.
-                        </small>
+              </small>
 
-                    </div>
+            </div>
 
-                    <div>
-                        <div class="label">&nbsp;</div>
+            <div>
+              <div class="label">&nbsp;</div>
 
-                        <div class="mb-3 field">
-                            <button class="btn btn-primary"
-                                type="submit"
-                                value="Set my password"
-                                i18n:attributes="value">
-                                <span i18n:translate="">Set my password</span>
-                            </button>
-                        </div>
-                    </div>
-                    <input type="hidden" name="form.submitted" value="1" />
-                </fieldset>
-            </form>
+              <div class="mb-3 field">
+                <button class="btn btn-primary"
+                        type="submit"
+                        value="Set my password"
+                        i18n:attributes="value"
+                >
+                  <span i18n:translate="">Set my password</span>
+                </button>
+              </div>
+            </div>
+            <input name="form.submitted"
+                   type="hidden"
+                   value="1"
+            />
+          </fieldset>
+        </form>
 
-</metal:content-core>
-</metal:content-core>
+      </metal:content-core>
+    </metal:content-core>
 
-</body>
+  </body>
 </html>

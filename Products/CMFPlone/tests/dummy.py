@@ -14,33 +14,31 @@ from ZPublisher.HTTPRequest import FileUpload
 import os
 
 
-TEXT = b'file data'
-UTEXT = 'file data'
-GIF_FILE = os.path.join(
-    os.path.dirname(__file__), os.pardir, 'tool.gif')
-with open(GIF_FILE, 'rb') as f:
+TEXT = b"file data"
+UTEXT = "file data"
+GIF_FILE = os.path.join(os.path.dirname(__file__), os.pardir, "tool.gif")
+with open(GIF_FILE, "rb") as f:
     GIF = f.read()
 # jpeg file of 900x900 pixels
-JPEG_FILE = os.path.join(
-    os.path.dirname(__file__), '900.jpg')
-with open(JPEG_FILE, 'rb') as f:
+JPEG_FILE = os.path.join(os.path.dirname(__file__), "900.jpg")
+with open(JPEG_FILE, "rb") as f:
     JPEG = f.read()
 
 
 class Dummy:
-    '''General purpose dummy object'''
+    """General purpose dummy object"""
 
     def __init__(self, **kw):
         self.__dict__.update(kw)
 
 
 class Item(SimpleItem):
-    '''Dummy Item
-       First-class Zope object. Can be _setObject'ed.
-    '''
+    """Dummy Item
+    First-class Zope object. Can be _setObject'ed.
+    """
 
-    id = 'dummy'
-    meta_type = 'Dummy Item'
+    id = "dummy"
+    meta_type = "Dummy Item"
 
     def __init__(self, id=None, title=None, **kw):
         self.__dict__.update(kw)
@@ -51,7 +49,7 @@ class Item(SimpleItem):
 
 
 class SizedItem(Item):
-    '''Item maintaining a size'''
+    """Item maintaining a size"""
 
     size = 0
 
@@ -63,8 +61,7 @@ class SizedItem(Item):
 
 
 class FieldStorage:
-
-    def __init__(self, file, filename='testfile', headers=None):
+    def __init__(self, file, filename="testfile", headers=None):
         self.file = file
         if headers is None:
             headers = {}
@@ -73,12 +70,12 @@ class FieldStorage:
 
 
 class File(FileUpload):
-    '''Dummy upload object
-       Used to fake uploaded files.
-    '''
+    """Dummy upload object
+    Used to fake uploaded files.
+    """
 
     __allow_access_to_unprotected_subobjects__ = 1
-    filename = 'dummy.txt'
+    filename = "dummy.txt"
     data = TEXT
     headers = {}
 
@@ -102,11 +99,11 @@ class File(FileUpload):
 
 
 class Image(File):
-    '''Dummy image upload object
-       Contains valid image data by default.
-    '''
+    """Dummy image upload object
+    Contains valid image data by default.
+    """
 
-    filename = 'dummy.gif'
+    filename = "dummy.gif"
     data = GIF
 
 
@@ -115,17 +112,18 @@ class JpegImage(File):
 
     900 by 900 pixels.
     """
+
     filename = "900.jpeg"
     data = JPEG
 
 
 class Folder(SimpleFolder):
-    '''Dummy Folder
-       First-class Zope object. Can be _setObject'ed.
-    '''
+    """Dummy Folder
+    First-class Zope object. Can be _setObject'ed.
+    """
 
-    id = 'dummy_folder'
-    meta_type = 'Dummy Folder'
+    id = "dummy_folder"
+    meta_type = "Dummy Folder"
 
     def __init__(self, id=None, title=None, **kw):
         self.__dict__.update(kw)
@@ -137,15 +135,15 @@ class Folder(SimpleFolder):
 
 @implementer(INonStructuralFolder)
 class NonStructuralFolder(Folder):
-    '''Folder implementing the INonStructuralFolder interface'''
+    """Folder implementing the INonStructuralFolder interface"""
 
 
 class Error(Exception):
-    '''Dummy exception'''
+    """Dummy exception"""
 
 
 class Raiser(SimpleItem):
-    '''Raises the stored exception when called'''
+    """Raises the stored exception when called"""
 
     exception = Error
 
@@ -158,22 +156,22 @@ class Raiser(SimpleItem):
 
 
 class ImageComputedProps(Item):
-    '''Helper for testing the imagePatch interaction with
+    """Helper for testing the imagePatch interaction with
     ComputedAttributes (which are used in Archetypes ImageField).
-    '''
+    """
 
     def get_title(self):
-        return getattr(self, '_title', '')
+        return getattr(self, "_title", "")
 
     title = ComputedAttribute(get_title, 1)
 
     def get_alt(self):
-        return getattr(self, '_alt', '')
+        return getattr(self, "_alt", "")
 
     alt = ComputedAttribute(get_alt, 1)
 
     def get_longdesc(self):
-        return getattr(self, '_longdesc', '')
+        return getattr(self, "_longdesc", "")
 
     longdesc = ComputedAttribute(get_longdesc, 1)
 
@@ -200,13 +198,13 @@ class DummyContent(Dummy):
     """Dummy DynamicType object"""
 
     def getPortalTypeName(self):
-        return getattr(self, 'portal_type')
+        return getattr(self, "portal_type")
 
 
 class DummyWorkflowTool:
     """A dummy workflow tool for testing adaptation based workflow"""
 
-    def __init__(self, id='portal_workflow'):
+    def __init__(self, id="portal_workflow"):
         self._chains_by_type = {}
 
     def setChainForPortalTypes(self, types, chain):
@@ -214,10 +212,10 @@ class DummyWorkflowTool:
             self._chains_by_type[ptype] = chain
 
     def getDefaultChainFor(self, context):
-        return ('Default Workflow',)
+        return ("Default Workflow",)
 
 
 @implementer(IWorkflowChain)
 def DummyWorkflowChainAdapter(context, tool):
     """A dummy adapter to IWorkflowChain"""
-    return ('Static Workflow',)
+    return ("Static Workflow",)

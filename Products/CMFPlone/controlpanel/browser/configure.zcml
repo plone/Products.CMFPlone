@@ -1,16 +1,19 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:zcml="http://namespaces.zope.org/zcml">
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    >
 
   <permission
       id="plone.app.controlpanel.Imaging"
-      title="Plone Site Setup: Imaging" />
+      title="Plone Site Setup: Imaging"
+      />
 
   <permission
       id="plone.app.controlpanel.TinyMCE"
-      title="Plone Site Setup: TinyMCE">
-    <role name="Manager"/>
+      title="Plone Site Setup: TinyMCE"
+      >
+    <role name="Manager" />
   </permission>
 
   <!-- Control Panel Main Template -->
@@ -168,8 +171,8 @@
       name="resourceregistry-controlpanel"
       for="plone.base.interfaces.IPloneSiteRoot"
       class=".resourceregistry.ResourceRegistryControlPanelView"
-      permission="plone.app.controlpanel.Site"
       template="resourceregistry.pt"
+      permission="plone.app.controlpanel.Site"
       />
 
   <!-- Markup Control Panel -->
@@ -206,40 +209,40 @@
       name="usergroup-userprefs"
       for="plone.base.interfaces.IPloneSiteRoot"
       class=".usergroups_usersoverview.UsersOverviewControlPanel"
-      permission="plone.app.controlpanel.UsersAndGroups"
       template="usergroups_usersoverview.pt"
+      permission="plone.app.controlpanel.UsersAndGroups"
       />
 
   <browser:page
       name="usergroup-groupprefs"
       for="plone.base.interfaces.IPloneSiteRoot"
       class=".usergroups_groupsoverview.GroupsOverviewControlPanel"
-      permission="plone.app.controlpanel.UsersAndGroups"
       template="usergroups_groupsoverview.pt"
+      permission="plone.app.controlpanel.UsersAndGroups"
       />
 
   <browser:page
       name="usergroup-groupmembership"
       for="plone.base.interfaces.IPloneSiteRoot"
       class=".usergroups_groupmembership.GroupMembershipControlPanel"
-      permission="plone.app.controlpanel.UsersAndGroups"
       template="usergroups_groupmembership.pt"
+      permission="plone.app.controlpanel.UsersAndGroups"
       />
 
   <browser:page
       name="usergroup-usermembership"
       for="plone.base.interfaces.IPloneSiteRoot"
       class=".usergroups_usermembership.UserMembershipControlPanel"
-      permission="plone.app.controlpanel.UsersAndGroups"
       template="usergroups_usermembership.pt"
+      permission="plone.app.controlpanel.UsersAndGroups"
       />
 
   <browser:page
       name="usergroup-groupdetails"
       for="plone.base.interfaces.IPloneSiteRoot"
       class=".usergroups_groupdetails.GroupDetailsControlPanel"
-      permission="plone.app.controlpanel.UsersAndGroups"
       template="usergroups_groupdetails.pt"
+      permission="plone.app.controlpanel.UsersAndGroups"
       />
 
   <!-- Add-ons control panel -->
@@ -247,18 +250,18 @@
   <!-- First register an easy to remember browser view '@@installer'.
        It is the replacement for any use of the portal_quickinstaller. -->
   <browser:page
-    for="*"
-    name="installer"
-    class=".quickinstaller.InstallerView"
-    permission="cmf.ManagePortal"
-    />
+      name="installer"
+      for="*"
+      class=".quickinstaller.InstallerView"
+      permission="cmf.ManagePortal"
+      />
 
   <browser:page
       name="prefs_install_products_form"
       for="plone.base.interfaces.IPloneSiteRoot"
       class=".quickinstaller.ManageProductsView"
-      permission="cmf.ManagePortal"
       template="quickinstaller.pt"
+      permission="cmf.ManagePortal"
       />
 
   <browser:page
@@ -306,7 +309,7 @@
       permission="cmf.ManagePortal"
       />
 
-  <adapter factory=".actions.ActionControlPanelAdapter"/>
+  <adapter factory=".actions.ActionControlPanelAdapter" />
 
   <browser:page
       name="action-form"
@@ -344,9 +347,9 @@
       name="manage-aliases"
       for="Products.CMFCore.interfaces.IContentish"
       class=".redirects.RedirectsView"
+      allowed_attributes="redirects view_url"
       template="redirects-manage.pt"
       permission="Products.CMFPlone.ManageContextAliases"
-      allowed_attributes="redirects view_url"
       />
 
   <!-- Relations -->

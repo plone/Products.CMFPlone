@@ -5,7 +5,6 @@ from plone.registry.interfaces import IRegistry
 from unittest import mock
 from zope.component import getUtility
 
-import os
 import unittest
 
 
@@ -26,7 +25,6 @@ def mock_getUtility4(iface):
 
 
 class TestControlPanel(unittest.TestCase):
-
     layer = PLONE_INTEGRATION_TESTING
 
     def setUp(self):

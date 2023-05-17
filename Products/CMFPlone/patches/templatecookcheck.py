@@ -24,8 +24,11 @@ def _cook_check(self):
     self.pt_edit(text, type_)
     assert self._v_cooked
     if self._v_errors:
-        logging.error('PageTemplateFile: Error in template %s: %s',
-                      self.filename, '\n'.join(self._v_errors))
+        logging.error(
+            "PageTemplateFile: Error in template %s: %s",
+            self.filename,
+            "\n".join(self._v_errors),
+        )
         return
     self._v_last_read = mtime
 

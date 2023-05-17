@@ -1,1 +1,1 @@
-<div tal:replace="structure provider:plone.toolbar" />
+<div tal:replace="structure provider:plone.toolbar"></div>

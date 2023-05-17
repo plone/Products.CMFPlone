@@ -1,71 +1,116 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
-      metal:use-macro="context/prefs_main_template/macros/master">
+      metal:use-macro="context/prefs_main_template/macros/master"
+      xml:lang="en"
+>
 
-<body>
+  <body>
 
 
-<metal:main metal:fill-slot="prefs_configlet_main" i18n:domain="plone">
-  <header>
+    <metal:main metal:fill-slot="prefs_configlet_main"
+                i18n:domain="plone"
+    >
+      <header>
 
-    <h1 class="documentFirstHeading"
-      i18n:translate="portal_actions_controlpanel_header">Portal actions</h1>
+        <h1 class="documentFirstHeading"
+            i18n:translate="portal_actions_controlpanel_header"
+        >Portal actions</h1>
 
-    <div class="text-muted"
-      i18n:translate="portal_actions_controlpanel_description">
+        <div class="text-muted"
+             i18n:translate="portal_actions_controlpanel_description"
+        >
         This is the portal actions configuration section, you can manage the
         actions contained in the different action categories.
-    </div>
-  </header>
-  <div id="content-core">
-    <p class="addAction">
-      <a href="@@new-action"
-        class="context pat-plone-modal btn btn-success"
-        i18n:translate="">Add new action</a>
-    </p>
-    <section class="category" tal:repeat="category view/actions" class="card mb-4">
-      <header tal:content="category/title" class="card-header" />
-      <section>
-        <ol class="configlets list-group list-group-flush">
-          <li tal:repeat="action category/actions"
-              class="list-group-item bg-transparent d-flex align-items-center justify-content-between">
-            <span><span tal:replace="repeat/action/number" />. <span tal:replace="action/title" i18n:translate="" /></span>
-            <form action="@@actions-controlpanel"
-                  class="plone-action-${action/id} flex-shrink-0"
-                  method="POST">
-              <input type="hidden" name="actionid"
-                tal:attributes="value action/id" />
-              <input type="hidden" name="category"
-                tal:attributes="value category/id" />
-              <button tal:condition="not:action/visible"
-                type="submit" class="btn btn-sm btn-link standalone me-5" name="show"
-                value="Show" i18n:attributes="value" >
-                <tal:icon tal:replace="structure python:icons.tag('square', tag_alt='Toggle to show')" /><span class="ms-2" i18n:translate="">visible</span>
-              </button>
-              <button tal:condition="action/visible"
-                type="submit" class="btn  btn-sm btn-link standalone me-5" name="hide"
-                value="Hide" i18n:attributes="value" >
-                <tal:icon tal:replace="structure python:icons.tag('check-square', tag_alt='Toggle to hide')" /><span class="ms-2" i18n:translate="">visible</span>
-              </button>
-              <a class="pat-plone-modal btn btn-sm btn-primary standalone"
-                tal:attributes="href string:${action/url}/@@action-form"
-                ><tal:icon tal:replace="structure python:icons.tag('plone-edit', tag_alt='Edit')" /><span class="ms-2" i18n:translate="">Edit</span></a>
-              <button type="submit" class="btn btn-sm btn-danger destructive" name="delete"
-                value="Delete"
-                confirm-message="Delete the action?"
-                i18n:attributes="value; confirm-message"
-                onclick="return confirm(this.getAttribute('confirm-message'));" >
-                <tal:icon tal:replace="structure python:icons.tag('plone-delete', tag_alt='Delete')" /><span class="ms-2" i18n:translate="">Delete</span>
-              </button>
-            </form>
-          </li>
-        </ol>
-      </section>
-    </section>
-  </div>
-</metal:main>
-</body>
+        </div>
+      </header>
+      <div id="content-core">
+        <p class="addAction">
+          <a class="context pat-plone-modal btn btn-success"
+             href="@@new-action"
+             i18n:translate=""
+          >Add new action</a>
+        </p>
+        <section class="card mb-4"
+                 tal:repeat="category view/actions"
+        >
+          <header class="card-header"
+                  tal:content="category/title"
+          ></header>
+          <section>
+            <ol class="configlets list-group list-group-flush">
+              <li class="list-group-item bg-transparent d-flex align-items-center justify-content-between"
+                  tal:repeat="action category/actions"
+              >
+                <span><span tal:replace="repeat/action/number"></span>.
+                  <span tal:replace="action/title"
+                        i18n:translate=""
+                  ></span></span>
+                <form class="plone-action-${action/id} flex-shrink-0"
+                      action="@@actions-controlpanel"
+                      method="POST"
+                >
+                  <input name="actionid"
+                         type="hidden"
+                         tal:attributes="
+                           value action/id;
+                         "
+                  />
+                  <input name="category"
+                         type="hidden"
+                         tal:attributes="
+                           value category/id;
+                         "
+                  />
+                  <button class="btn btn-sm btn-link standalone me-5"
+                          name="show"
+                          type="submit"
+                          value="Show"
+                          tal:condition="not:action/visible"
+                          i18n:attributes="value"
+                  >
+                    <tal:icon tal:replace="structure python:icons.tag('square', tag_alt='Toggle to show')" /><span class="ms-2"
+                          i18n:translate=""
+                    >visible</span>
+                  </button>
+                  <button class="btn btn-sm btn-link standalone me-5"
+                          name="hide"
+                          type="submit"
+                          value="Hide"
+                          tal:condition="action/visible"
+                          i18n:attributes="value"
+                  >
+                    <tal:icon tal:replace="structure python:icons.tag('check-square', tag_alt='Toggle to hide')" /><span class="ms-2"
+                          i18n:translate=""
+                    >visible</span>
+                  </button>
+                  <a class="pat-plone-modal btn btn-sm btn-primary standalone"
+                     tal:attributes="
+                       href string:${action/url}/@@action-form;
+                     "
+                  ><tal:icon tal:replace="structure python:icons.tag('plone-edit', tag_alt='Edit')" /><span class="ms-2"
+                          i18n:translate=""
+                    >Edit</span></a>
+                  <button class="btn btn-sm btn-danger destructive"
+                          confirm-message="Delete the action?"
+                          name="delete"
+                          onclick="return confirm(this.getAttribute('confirm-message'));"
+                          type="submit"
+                          value="Delete"
+                          i18n:attributes="value; confirm-message"
+                  >
+                    <tal:icon tal:replace="structure python:icons.tag('plone-delete', tag_alt='Delete')" /><span class="ms-2"
+                          i18n:translate=""
+                    >Delete</span>
+                  </button>
+                </form>
+              </li>
+            </ol>
+          </section>
+        </section>
+      </div>
+    </metal:main>
+  </body>
 </html>

@@ -4,11 +4,10 @@ from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.controlpanel import IImagingSchema
 
 
-log = getLogger('Plone')
+log = getLogger("Plone")
 
 
 class ImagingControlPanelForm(controlpanel.RegistryEditForm):
-
     id = "ImagingSettings"
     label = _("Image Handling Settings")
     schema = IImagingSchema

@@ -3,8 +3,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 
 class PrefsMainTemplate(BrowserView):
-
-    prefs_main_template_name = 'prefsmaintemplate.pt'
+    prefs_main_template_name = "prefsmaintemplate.pt"
 
     def __call__(self):
         return ViewPageTemplateFile(self.prefs_main_template_name)

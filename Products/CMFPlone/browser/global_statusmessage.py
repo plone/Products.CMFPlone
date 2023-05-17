@@ -8,7 +8,7 @@ from zope.interface import implementer
 class GlobalStatusMessage(BrowserView):
     """Display messages to the current user"""
 
-    index = ViewPageTemplateFile('templates/global_statusmessage.pt')
+    index = ViewPageTemplateFile("templates/global_statusmessage.pt")
 
     def __call__(self):
         return self.index()

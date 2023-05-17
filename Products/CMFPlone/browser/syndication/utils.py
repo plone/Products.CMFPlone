@@ -13,16 +13,16 @@ from zope.schema.interfaces import IVocabularyFactory
 
 @implementer(ISyndicationUtil)
 class SyndicationUtil(BrowserView):
-
     def allowed_feed_types(self):
         settings = IFeedSettings(self.context)
-        factory = getUtility(IVocabularyFactory,
-                             "plone.app.vocabularies.SyndicationFeedTypes")
+        factory = getUtility(
+            IVocabularyFactory, "plone.app.vocabularies.SyndicationFeedTypes"
+        )
         vocabulary = factory(self.context)
         types = []
         for typ in settings.feed_types:
             types.append(vocabulary.getTerm(typ))
-        return [{'path': t.value, 'title': t.title} for t in types]
+        return [{"path": t.value, "title": t.title} for t in types]
 
     def rss_url(self):
         settings = IFeedSettings(self.context)
@@ -31,7 +31,7 @@ class SyndicationUtil(BrowserView):
         if len(types) == 0:
             return url
         _type = types[0]
-        return f'{url}/{_type}'
+        return f"{url}/{_type}"
 
     def context_allowed(self):
         if not ISyndicatable.providedBy(self.context):

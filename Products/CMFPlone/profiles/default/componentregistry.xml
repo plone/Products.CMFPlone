@@ -1,99 +1,99 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <componentregistry>
- <adapters/>
- <utilities>
-  <utility
-     interface="Products.CMFCore.interfaces.ITypesTool"
-     object="portal_types"/>
-  <utility
-     interface="Products.CMFCore.interfaces.IActionsTool"
-     object="portal_actions"/>
-  <utility
-     interface="Products.CMFCore.interfaces.ISkinsTool"
-     object="portal_skins"/>
-  <utility
-     interface="Products.CMFCore.interfaces.IWorkflowTool"
-     object="portal_workflow"/>
-  <utility
-     interface="Products.CMFCore.interfaces.ICachingPolicyManager"
-     object="caching_policy_manager"/>
-  <utility
-     interface="Products.CMFCore.interfaces.ICatalogTool"
-     object="portal_catalog"/>
-  <utility
-     interface="Products.CMFCore.interfaces.IContentTypeRegistry"
-     object="content_type_registry"/>
-  <utility
-     interface="Products.MailHost.interfaces.IMailHost"
-     object="MailHost"/>
-  <utility
-     interface="Products.CMFCore.interfaces.IMemberDataTool"
-     object="portal_memberdata"/>
-  <utility
-     interface="Products.CMFCore.interfaces.IMembershipTool"
-     object="portal_membership"/>
-  <utility
-     interface="Products.CMFCore.interfaces.IURLTool"
-     object="portal_url"/>
-  <utility
-     interface="Products.CMFCore.interfaces.IMetadataTool"
-     object="portal_metadata"/>
-  <utility
-     interface="Products.CMFCore.interfaces.IRegistrationTool"
-     object="portal_registration"/>
-  <utility
-     interface="Products.CMFCore.interfaces.ISyndicationTool"
-     object="portal_syndication"/>
-  <utility
-     interface="Products.CMFCore.interfaces.IUndoTool"
-     object="portal_undo"/>
-  <utility
-     interface="five.customerize.interfaces.IViewTemplateContainer"
-     object="portal_view_customizations"/>
-  <utility
-     interface="plone.app.redirector.interfaces.IRedirectionStorage"
-     factory="plone.app.redirector.storage.RedirectionStorage"/>
-  <utility
-     interface="plone.contentrules.engine.interfaces.IRuleStorage"
-     factory="plone.contentrules.engine.storage.RuleStorage"/>
-  <utility
-     interface="plone.app.i18n.locales.interfaces.ICountries"
-     factory="plone.app.i18n.locales.countries.Countries"/>
-  <utility
-     interface="plone.app.i18n.locales.interfaces.IContentLanguages"
-     factory="plone.app.i18n.locales.languages.ContentLanguages"/>
-  <utility
-     interface="plone.app.i18n.locales.interfaces.IMetadataLanguages"
-     factory="plone.app.i18n.locales.languages.MetadataLanguages"/>
-  <utility
-     interface="plone.app.viewletmanager.interfaces.IViewletSettingsStorage"
-     factory="plone.app.viewletmanager.storage.ViewletSettingsStorage"/>
-  <utility
-     interface="Products.CMFCore.interfaces.IPropertiesTool"
-     object="portal_properties"/>
-  <utility
-     interface="Products.CMFCore.interfaces.ISiteRoot"
-     object=""/>
-  <utility
-     interface="Products.CMFUid.interfaces.IUniqueIdAnnotationManagement"
-     object="portal_uidannotation"/>
-  <utility
-     interface="Products.CMFUid.interfaces.IUniqueIdGenerator"
-     object="portal_uidgenerator"/>
-  <utility
-     interface="Products.CMFDiffTool.interfaces.IDiffTool"
-     object="portal_diff"/>
-  <utility
-     interface="Products.CMFPlone.interfaces.IPloneSiteRoot"
-     object=""/>
-  <utility
-     interface="Products.CMFPlone.interfaces.IMigrationTool"
-     object="portal_migration"/>
-  <utility
-     interface="Products.MailHost.interfaces.IMailHost"
-     object="MailHost"/>
-  <utility
-     interface="zope.ramcache.interfaces.ram.IRAMCache"
-     factory="zope.ramcache.ram.RAMCache"/>
- </utilities>
+  <adapters />
+  <utilities>
+    <utility interface="Products.CMFCore.interfaces.ITypesTool"
+             object="portal_types"
+    />
+    <utility interface="Products.CMFCore.interfaces.IActionsTool"
+             object="portal_actions"
+    />
+    <utility interface="Products.CMFCore.interfaces.ISkinsTool"
+             object="portal_skins"
+    />
+    <utility interface="Products.CMFCore.interfaces.IWorkflowTool"
+             object="portal_workflow"
+    />
+    <utility interface="Products.CMFCore.interfaces.ICachingPolicyManager"
+             object="caching_policy_manager"
+    />
+    <utility interface="Products.CMFCore.interfaces.ICatalogTool"
+             object="portal_catalog"
+    />
+    <utility interface="Products.CMFCore.interfaces.IContentTypeRegistry"
+             object="content_type_registry"
+    />
+    <utility interface="Products.MailHost.interfaces.IMailHost"
+             object="MailHost"
+    />
+    <utility interface="Products.CMFCore.interfaces.IMemberDataTool"
+             object="portal_memberdata"
+    />
+    <utility interface="Products.CMFCore.interfaces.IMembershipTool"
+             object="portal_membership"
+    />
+    <utility interface="Products.CMFCore.interfaces.IURLTool"
+             object="portal_url"
+    />
+    <utility interface="Products.CMFCore.interfaces.IMetadataTool"
+             object="portal_metadata"
+    />
+    <utility interface="Products.CMFCore.interfaces.IRegistrationTool"
+             object="portal_registration"
+    />
+    <utility interface="Products.CMFCore.interfaces.ISyndicationTool"
+             object="portal_syndication"
+    />
+    <utility interface="Products.CMFCore.interfaces.IUndoTool"
+             object="portal_undo"
+    />
+    <utility interface="five.customerize.interfaces.IViewTemplateContainer"
+             object="portal_view_customizations"
+    />
+    <utility factory="plone.app.redirector.storage.RedirectionStorage"
+             interface="plone.app.redirector.interfaces.IRedirectionStorage"
+    />
+    <utility factory="plone.contentrules.engine.storage.RuleStorage"
+             interface="plone.contentrules.engine.interfaces.IRuleStorage"
+    />
+    <utility factory="plone.app.i18n.locales.countries.Countries"
+             interface="plone.app.i18n.locales.interfaces.ICountries"
+    />
+    <utility factory="plone.app.i18n.locales.languages.ContentLanguages"
+             interface="plone.app.i18n.locales.interfaces.IContentLanguages"
+    />
+    <utility factory="plone.app.i18n.locales.languages.MetadataLanguages"
+             interface="plone.app.i18n.locales.interfaces.IMetadataLanguages"
+    />
+    <utility factory="plone.app.viewletmanager.storage.ViewletSettingsStorage"
+             interface="plone.app.viewletmanager.interfaces.IViewletSettingsStorage"
+    />
+    <utility interface="Products.CMFCore.interfaces.IPropertiesTool"
+             object="portal_properties"
+    />
+    <utility interface="Products.CMFCore.interfaces.ISiteRoot"
+             object=""
+    />
+    <utility interface="Products.CMFUid.interfaces.IUniqueIdAnnotationManagement"
+             object="portal_uidannotation"
+    />
+    <utility interface="Products.CMFUid.interfaces.IUniqueIdGenerator"
+             object="portal_uidgenerator"
+    />
+    <utility interface="Products.CMFDiffTool.interfaces.IDiffTool"
+             object="portal_diff"
+    />
+    <utility interface="Products.CMFPlone.interfaces.IPloneSiteRoot"
+             object=""
+    />
+    <utility interface="Products.CMFPlone.interfaces.IMigrationTool"
+             object="portal_migration"
+    />
+    <utility interface="Products.MailHost.interfaces.IMailHost"
+             object="MailHost"
+    />
+    <utility factory="zope.ramcache.ram.RAMCache"
+             interface="zope.ramcache.interfaces.ram.IRAMCache"
+    />
+  </utilities>
 </componentregistry>

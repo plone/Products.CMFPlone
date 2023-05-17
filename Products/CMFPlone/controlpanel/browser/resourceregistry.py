@@ -94,7 +94,11 @@ class ResourceRegistryControlPanelView(BrowserView):
                 return
             if new_name in bundles:
                 IStatusMessage(self.request).addStatusMessage(
-                    _("Record name ${new_name} already taken.", mapping=dict(new_name=new_name)), "error"
+                    _(
+                        "Record name ${new_name} already taken.",
+                        mapping=dict(new_name=new_name),
+                    ),
+                    "error",
                 )
                 return
             record = bundles[original_name]
