@@ -312,7 +312,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             wfs = wftool.getChainFor(object)
         except ConflictError:
             raise
-        except:
+        except Exception:
             pass
         return wfs
 

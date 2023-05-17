@@ -271,7 +271,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         # Safe removal of an index.
         try:
             self.manage_delIndex(index)
-        except:
+        except Exception:
             pass
 
     def _listAllowedRolesAndUsers(self, user):

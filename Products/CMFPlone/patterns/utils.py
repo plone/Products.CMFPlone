@@ -8,7 +8,7 @@ def format_pattern_settings(option, config):
     if option.startswith("json:"):
         try:
             return json.loads(option.lstrip("json:") % config)
-        except:
+        except Exception:
             return {}
     return option % config
 

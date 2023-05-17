@@ -258,11 +258,11 @@ class AjaxSearch(Search):
         items = []
         try:
             per_page = int(self.request.form.get("perPage"))
-        except:
+        except Exception:
             per_page = 10
         try:
             page = int(self.request.form.get("page"))
-        except:
+        except Exception:
             page = 1
 
         results = self.results(batch=False, use_content_listing=False)
