@@ -308,7 +308,9 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
 
     def test_usergroups_control_panel_link_users(self):
         self.browser.open("%s/@@overview-controlpanel" % self.portal_url)
-        self.browser.getLink("Users").click()
+        # There are two Users links.  The first is the Users tab.
+        # We need to open the second one.
+        self.browser.getLink("Users", index=1).click()
         self.assertEqual(self.browser.url, self.users_url)
 
     def test_usergroups_control_panel_link_groups(self):
