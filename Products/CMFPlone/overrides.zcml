@@ -7,7 +7,7 @@
     <include package="five.localsitemanager" file="overrides.zcml" />
     <include package="plone.i18n" file="overrides.zcml" />
     <include package="plone.app.portlets" file="overrides.zcml" />
-    <include package="plone.app.multilingual" file="overrides.zcml" />
+    <include zcml:condition="installed plone.app.multilingual" package="plone.app.multilingual" file="overrides.zcml" />
     <include package="plone.app.dexterity" file="overrides.zcml" />
 
     <utility
