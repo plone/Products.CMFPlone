@@ -8,7 +8,6 @@ from zope.interface import implementer
 
 @implementer(IMarkupSchema)
 class MarkupControlPanelAdapter:
-
     adapts(IPloneSiteRoot)
 
     def __init__(self, context):

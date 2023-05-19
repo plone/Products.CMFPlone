@@ -1,9 +1,15 @@
-<?xml version="1.0"?>
-<object name="portal_properties" meta_type="Plone Properties Tool">
- <object name="navtree_properties" meta_type="Plone Property Sheet">
-  <property name="title">NavigationTree properties</property>
- </object>
- <object name="site_properties" meta_type="Plone Property Sheet">
-  <property name="title">Site wide properties</property>
- </object>
+<?xml version="1.0" encoding="utf-8"?>
+<object meta_type="Plone Properties Tool"
+        name="portal_properties"
+>
+  <object meta_type="Plone Property Sheet"
+          name="navtree_properties"
+  >
+    <property name="title">NavigationTree properties</property>
+  </object>
+  <object meta_type="Plone Property Sheet"
+          name="site_properties"
+  >
+    <property name="title">Site wide properties</property>
+  </object>
 </object>

@@ -155,7 +155,7 @@
           <p class="text-muted" i18n:translate="description_bulk_upload">
             Add many alternative urls at once by uploading a CSV file. The first column should be the path to
             redirect from; the second, the path to redirect to. Both paths must be Plone-site-relative,
-            starting with a slash (/). An optional third colum can contain a date and time.
+            starting with a slash (/). An optional third column can contain a date and time.
             An optional fourth column can contain a boolean to mark as a manual redirect (default true).
           </p>
           <p>

@@ -1,80 +1,88 @@
 <configure
-   xmlns="http://namespaces.zope.org/zope"
-   xmlns:five="http://namespaces.zope.org/five"
-   xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-   xmlns:zcml="http://namespaces.zope.org/zcml"
-   i18n_domain="plone"
-   >
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
 
   <genericsetup:importStep
       name="content"
       title="Content"
       description="Import the site's structure and content."
-      handler="Products.CMFCore.exportimport.content.importSiteStructure">
-    <depends name="typeinfo"/>
+      handler="Products.CMFCore.exportimport.content.importSiteStructure"
+      >
+    <depends name="typeinfo" />
   </genericsetup:importStep>
 
   <genericsetup:importStep
       name="viewlets"
       title="Viewlet Settings"
       description="Import viewlet settings"
-      handler="plone.app.viewletmanager.exportimport.storage.importViewletSettingsStorage">
-    <depends name="componentregistry"/>
+      handler="plone.app.viewletmanager.exportimport.storage.importViewletSettingsStorage"
+      >
+    <depends name="componentregistry" />
   </genericsetup:importStep>
 
   <genericsetup:importStep
       name="controlpanel"
-      handler="Products.CMFPlone.exportimport.controlpanel.importControlPanel"
       title="Control Panel"
-      description="Import Plone control panel actions.">
-   <depends name="actions" />
-   <depends name="componentregistry" />
+      description="Import Plone control panel actions."
+      handler="Products.CMFPlone.exportimport.controlpanel.importControlPanel"
+      >
+    <depends name="actions" />
+    <depends name="componentregistry" />
   </genericsetup:importStep>
 
   <genericsetup:importStep
       name="memberdata-properties"
-      handler="Products.CMFPlone.exportimport.memberdata_properties.importMemberDataProperties"
       title="MemberData Properties"
-      description="Import MemberData properties.">
-   <depends name="componentregistry" />
+      description="Import MemberData properties."
+      handler="Products.CMFPlone.exportimport.memberdata_properties.importMemberDataProperties"
+      >
+    <depends name="componentregistry" />
   </genericsetup:importStep>
 
   <genericsetup:importStep
       name="plone-final"
-      handler="Products.CMFPlone.setuphandlers.dummy_import_step"
       title="Final Plone Config (old)"
-      description="Dummy import step for backwards compatibility. The old import step is now used as a post_handler.">
-   <depends name="portlets" />
-   <depends name="rolemap" />
-   <depends name="catalog" />
-   <depends name="viewlets" />
-   <depends name="controlpanel" />
-   <depends name="propertiestool" />
-   <depends name="workflow" />
+      description="Dummy import step for backwards compatibility. The old import step is now used as a post_handler."
+      handler="Products.CMFPlone.setuphandlers.dummy_import_step"
+      >
+    <depends name="portlets" />
+    <depends name="rolemap" />
+    <depends name="catalog" />
+    <depends name="viewlets" />
+    <depends name="controlpanel" />
+    <depends name="propertiestool" />
+    <depends name="workflow" />
   </genericsetup:importStep>
 
   <genericsetup:importStep
       name="propertiestool"
-      handler="Products.CMFPlone.exportimport.propertiestool.importPloneProperties"
       title="Plone Properties"
-      description="Import plone properties tool and subobjects.">
-   <depends name="componentregistry" />
+      description="Import plone properties tool and subobjects."
+      handler="Products.CMFPlone.exportimport.propertiestool.importPloneProperties"
+      >
+    <depends name="componentregistry" />
   </genericsetup:importStep>
 
   <genericsetup:importStep
       name="update-workflow-rolemap"
       title="Update workflow role mappings"
       description="Update workflow role map after workflow changes in an extension profile.     This is only necessary if the 'structure' step has imported content."
-      handler="Products.CMFPlone.setuphandlers.updateWorkflowRoleMappings">
-    <depends name="workflow"/>
+      handler="Products.CMFPlone.setuphandlers.updateWorkflowRoleMappings"
+      >
+    <depends name="workflow" />
   </genericsetup:importStep>
 
   <genericsetup:importStep
       name="plone-difftool"
-      handler="Products.CMFDiffTool.exportimport.difftool.importDiffTool"
       title="Diff Tool"
-      description="Import CMFDiffTool settings">
-  </genericsetup:importStep>
+      description="Import CMFDiffTool settings"
+      handler="Products.CMFDiffTool.exportimport.difftool.importDiffTool"
+      >
+</genericsetup:importStep>
 
   <genericsetup:exportStep
       name="content"
@@ -112,38 +120,38 @@
       />
 
   <adapter
-     factory=".propertiestool.PlonePropertiesToolXMLAdapter"
-     provides="Products.GenericSetup.interfaces.IBody"
-     for="plone.base.interfaces.IPropertiesTool
-          Products.GenericSetup.interfaces.ISetupEnviron"
-     />
+      factory=".propertiestool.PlonePropertiesToolXMLAdapter"
+      provides="Products.GenericSetup.interfaces.IBody"
+      for="plone.base.interfaces.IPropertiesTool
+           Products.GenericSetup.interfaces.ISetupEnviron"
+      />
 
   <adapter
-     factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
-     provides="Products.GenericSetup.interfaces.IBody"
-     for="plone.base.interfaces.ISimpleItemWithProperties
-          Products.GenericSetup.interfaces.ISetupEnviron"
-     />
+      factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
+      provides="Products.GenericSetup.interfaces.IBody"
+      for="plone.base.interfaces.ISimpleItemWithProperties
+           Products.GenericSetup.interfaces.ISetupEnviron"
+      />
 
   <adapter
-     factory="Products.CMFCore.exportimport.content.StructureFolderWalkingAdapter"
-     provides="Products.GenericSetup.interfaces.IFilesystemImporter"
-     for="Products.CMFCore.interfaces.ISiteRoot"
-     />
+      factory="Products.CMFCore.exportimport.content.StructureFolderWalkingAdapter"
+      provides="Products.GenericSetup.interfaces.IFilesystemImporter"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      />
 
   <adapter
-     zcml:condition="not-installed Products.CMFCore.exportimport.memberdata"
-     factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
-     provides="Products.GenericSetup.interfaces.IBody"
-     for="Products.CMFCore.interfaces.IMemberDataTool
-          Products.GenericSetup.interfaces.ISetupEnviron"
-     />
+      factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
+      provides="Products.GenericSetup.interfaces.IBody"
+      for="Products.CMFCore.interfaces.IMemberDataTool
+           Products.GenericSetup.interfaces.ISetupEnviron"
+      zcml:condition="not-installed Products.CMFCore.exportimport.memberdata"
+      />
 
   <adapter
-     factory=".controlpanel.ControlPanelXMLAdapter"
-     provides="Products.GenericSetup.interfaces.IBody"
-     for="plone.base.interfaces.IControlPanel
-          Products.GenericSetup.interfaces.ISetupEnviron"
-     />
+      factory=".controlpanel.ControlPanelXMLAdapter"
+      provides="Products.GenericSetup.interfaces.IBody"
+      for="plone.base.interfaces.IControlPanel
+           Products.GenericSetup.interfaces.ISetupEnviron"
+      />
 
 </configure>
