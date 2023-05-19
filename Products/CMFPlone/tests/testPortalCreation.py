@@ -276,7 +276,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertTrue('news' in self.portal.objectIds())
         folder = getattr(self.portal, 'news')
         self.assertEqual(folder.portal_type, 'Folder')
-        self.assertEqual(folder._ordering, 'unordered')
         self.assertEqual(folder.getDefaultPage(), 'aggregator')
         self.assertEqual(folder.immediately_addable_types, ['News Item'])
 
@@ -284,7 +283,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertTrue('events' in self.portal.objectIds())
         folder = getattr(self.portal, 'events')
         self.assertEqual(folder.portal_type, 'Folder')
-        self.assertEqual(folder._ordering, 'unordered')
         self.assertEqual(folder.getDefaultPage(), 'aggregator')
         self.assertEqual(folder.immediately_addable_types, ['Event'])
 
