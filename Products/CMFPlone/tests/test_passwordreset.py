@@ -11,7 +11,8 @@ import unittest
 
 
 OPTIONFLAGS = (
-    doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE  # |
+    doctest.ELLIPSIS
+    | doctest.NORMALIZE_WHITESPACE  # |
     #               doctest.REPORT_ONLY_FIRST_FAILURE
 )
 
@@ -23,14 +24,16 @@ class Py23DocChecker(doctest.OutputChecker):
 
 
 def test_suite():
-    return unittest.TestSuite((
-        layered(
-            doctest.DocFileSuite(
-                'pwreset_browser.rst',
-                optionflags=OPTIONFLAGS,
-                package='Products.CMFPlone.tests',
-                checker=Py23DocChecker(),
+    return unittest.TestSuite(
+        (
+            layered(
+                doctest.DocFileSuite(
+                    "pwreset_browser.rst",
+                    optionflags=OPTIONFLAGS,
+                    package="Products.CMFPlone.tests",
+                    checker=Py23DocChecker(),
+                ),
+                layer=PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING,
             ),
-            layer=PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-        ),
-    ))
+        )
+    )

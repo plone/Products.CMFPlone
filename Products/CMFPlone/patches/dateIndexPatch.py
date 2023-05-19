@@ -14,6 +14,7 @@ def _convert(self, value, default=None):
     except OverflowError:
         return self.__old_convert(maxDate, default)
 
+
 DateIndex.__old_convert = DateIndex._convert
 DateIndex._convert = _convert
 
@@ -23,6 +24,7 @@ def _convertDateTime(self, value):
         return self.__old_convertDateTime(value)
     except OverflowError:
         return self.__old_convertDateTime(maxDate)
+
 
 DateRangeIndex.__old_convertDateTime = DateRangeIndex._convertDateTime
 DateRangeIndex._convertDateTime = _convertDateTime

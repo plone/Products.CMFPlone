@@ -3,7 +3,7 @@ from OFS.ObjectManager import ObjectManager
 
 # FIXME: This no longer works with the new ZMI
 
-ADD_PLONE_SITE_HTML = '''
+ADD_PLONE_SITE_HTML = """
 <dtml-if "_.len(this().getPhysicalPath()) == 1 or this().meta_type == 'Folder' and 'PloneSite' not in [o.__class__.__name__ for o in this().aq_chain]">
   <!-- Add Plone site action-->
   <form method="get"
@@ -28,11 +28,11 @@ ADD_PLONE_SITE_HTML = '''
     </div>
   </dtml-if>
 </dtml-if>
-'''
+"""
 
 main = ObjectManager.manage_main
 orig = main.read()
-pos = orig.find('<!-- Add object widget -->')
+pos = orig.find("<!-- Add object widget -->")
 
 # Add in our button html at the right position
 new = orig[:pos] + ADD_PLONE_SITE_HTML + orig[pos:]

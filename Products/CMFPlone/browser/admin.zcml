@@ -1,55 +1,57 @@
-<configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:browser="http://namespaces.zope.org/browser">
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    >
 
   <browser:view
-      for="plone.base.interfaces.IPloneSiteRoot"
       name="plone-frontpage-setup"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".admin.FrontPage"
       permission="zope.Public"
       />
 
   <browser:page
-      for="OFS.interfaces.IApplication"
       name="plone-addsite"
+      for="OFS.interfaces.IApplication"
       class=".admin.AddPloneSite"
-      permission="zope2.ViewManagementScreens"
       template="templates/plone-addsite.pt"
+      permission="zope2.ViewManagementScreens"
       />
 
   <browser:page
+      name="plone-addsite"
       for="OFS.Folder.Folder"
-      name="plone-addsite"
       class=".admin.AddPloneSite"
-      permission="zope2.ViewManagementScreens"
       template="templates/plone-addsite.pt"
+      permission="zope2.ViewManagementScreens"
       />
 
   <browser:page
-      for="plone.base.interfaces.IPloneSiteRoot"
       name="plone-upgrade"
+      for="plone.base.interfaces.IPloneSiteRoot"
       class=".admin.Upgrade"
-      permission="cmf.ManagePortal"
       template="templates/plone-upgrade.pt"
+      permission="cmf.ManagePortal"
       />
 
   <browser:page
-      for="OFS.interfaces.IApplication"
       name="plone-overview"
+      for="OFS.interfaces.IApplication"
       class=".admin.Overview"
-      permission="zope.Public"
       template="templates/plone-overview.pt"
+      permission="zope.Public"
       />
 
   <browser:page
-      for="OFS.interfaces.IApplication"
       name="plone-root-login"
+      for="OFS.interfaces.IApplication"
       class=".admin.RootLoginRedirect"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="plone-root-logout"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       class=".admin.RootLogout"
       permission="zope.Public"
       />
@@ -57,18 +59,18 @@
   <adapter factory=".admin.AppTraverser" />
 
   <browser:resource
-      file="static/plone-admin-ui.css"
       name="plone-admin-ui.css"
+      file="static/plone-admin-ui.css"
       />
 
   <browser:resource
-      file="static/plone-admin-ui.js"
       name="plone-admin-ui.js"
+      file="static/plone-admin-ui.js"
       />
 
   <browser:resource
-      file="static/jstz-1.0.4.min.js"
       name="jstz-1.0.4.min.js"
+      file="static/jstz-1.0.4.min.js"
       />
 
 

@@ -7,7 +7,7 @@
 # only utf-8 encoded strings though in order to limit the performance impact
 # instead of supporting all encodings.
 
-# Therefor these patches will probably stay here for quite a while.
+# Therefore these patches will probably stay here for quite a while.
 
 # import hacks
 from .unicodehacks import _nulljoin

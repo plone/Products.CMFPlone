@@ -16,12 +16,10 @@ class TypesRegistryIntegrationTest(unittest.TestCase):
     layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
     def setUp(self):
-        self.portal = self.layer['portal']
-        self.request = self.layer['request']
+        self.portal = self.layer["portal"]
+        self.request = self.layer["request"]
         registry = getUtility(IRegistry)
-        self.settings = registry.forInterface(
-            IUserGroupsSettingsSchema, prefix="plone"
-        )
+        self.settings = registry.forInterface(IUserGroupsSettingsSchema, prefix="plone")
 
     def test_usergroups_controlpanel_view(self):
         view = getMultiAdapter(
@@ -31,17 +29,14 @@ class TypesRegistryIntegrationTest(unittest.TestCase):
 
     def test_usergroups_in_controlpanel(self):
         self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
-        actions = [
-            a.getAction(self)['id']
-            for a in self.controlpanel.listActions()
-        ]
-        self.assertTrue('UsersGroups' in actions)
-        self.assertTrue('UsersGroups2' in actions)
-        self.assertTrue('UsersGroupsSettings' in actions)
-        self.assertTrue('MemberFields' in actions)
+        actions = [a.getAction(self)["id"] for a in self.controlpanel.listActions()]
+        self.assertTrue("UsersGroups" in actions)
+        self.assertTrue("UsersGroups2" in actions)
+        self.assertTrue("UsersGroupsSettings" in actions)
+        self.assertTrue("MemberFields" in actions)
 
     def test_many_groups_setting(self):
-        self.assertTrue(hasattr(self.settings, 'many_groups'))
+        self.assertTrue(hasattr(self.settings, "many_groups"))
 
     def test_many_users_setting(self):
-        self.assertTrue(hasattr(self.settings, 'many_users'))
+        self.assertTrue(hasattr(self.settings, "many_users"))
