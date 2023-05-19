@@ -10,7 +10,6 @@ from App.special_dtml import DTMLFile
 from BTrees.Length import Length
 from DateTime import DateTime
 from OFS.interfaces import IOrderedContainer
-from plone.app.discussion.interfaces import DISCUSSION_ANNOTATION_KEY
 from plone.base.interfaces import INonStructuralFolder
 from plone.base.interfaces import IPloneCatalogTool
 from plone.base.utils import base_hasattr
@@ -46,6 +45,13 @@ import urllib
 
 
 logger = logging.getLogger("Plone")
+try:
+    from plone.app.discussion.interfaces import DISCUSSION_ANNOTATION_KEY
+except ImportError:  # pragma: no cover
+    DISCUSSION_ANNOTATION_KEY = None
+
+
+logger = logging.getLogger('Plone')
 
 _marker = object()
 
@@ -455,9 +461,13 @@ class CatalogTool(PloneBaseTool, BaseTool):
             ):
                 try:
                     self.reindexObject(obj, idxs=idxs)
-                    # index conversions from plone.app.discussion
+                    # index conversations from plone.app.discussion
                     annotions = IAnnotations(obj)
-                    if DISCUSSION_ANNOTATION_KEY in annotions:
+                    if (
+                        DISCUSSION_ANNOTATION_KEY is not None
+                        and DISCUSSION_ANNOTATION_KEY in annotions
+
+                    ):
                         conversation = annotions[DISCUSSION_ANNOTATION_KEY]
                         conversation = conversation.__of__(obj)
                         for comment in conversation.getComments():

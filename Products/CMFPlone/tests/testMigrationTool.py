@@ -177,14 +177,13 @@ class TestAddonList(PloneTestCase.PloneTestCase):
 
         # real ones:
         cmfeditions = Addon(profile_id="Products.CMFEditions:CMFEditions")
-        discussion = Addon(profile_id="plone.app.discussion:default")
         # real one with failing check_module:
         dexterity = Addon(
             profile_id="plone.app.dexterity:default", check_module="no.such.module"
         )
         # non-existing one:
         foo = Addon(profile_id="foo")
-        addonlist = AddonList([cmfeditions, discussion, dexterity, foo])
+        addonlist = AddonList([cmfeditions, dexterity, foo])
         # Calling it should give no errors.
         addonlist.upgrade_all(self.portal)
 
@@ -196,9 +195,6 @@ class TestAddonList(PloneTestCase.PloneTestCase):
         # Now mess with the profile versions.
         setup.setLastVersionForProfile(cmfeditions.profile_id, "2.0")
         setup.setLastVersionForProfile(dexterity.profile_id, "0.1")
-        # 'unknown' needs special handling, otherwise the version will
-        # become a tuple ('unknown',):
-        setup._profile_upgrade_versions[discussion.profile_id] = "unknown"
 
         # Run the upgrade again.
         addonlist.upgrade_all(self.portal)
@@ -228,28 +224,23 @@ class TestAddonList(PloneTestCase.PloneTestCase):
         # Several addons did not get fully upgraded in the past, which
         # is why this list was created.
         cmfeditions_id = "Products.CMFEditions:CMFEditions"
-        discussion_id = "plone.app.discussion:default"
         querystring_id = "plone.app.querystring:default"
         # Note the current versions.
         setup = getToolByName(self.portal, "portal_setup")
         getversion = setup.getLastVersionForProfile
         cmfeditions_version = getversion(cmfeditions_id)
-        discussion_version = getversion(discussion_id)
         querystring_version = getversion(querystring_id)
         # Check that they are not unknown
         self.assertNotEqual(cmfeditions_version, "unknown")
-        self.assertNotEqual(discussion_version, "unknown")
         self.assertNotEqual(querystring_version, "unknown")
         # So let's mess with some profile versions.  We get some older
         # versions that really exist.
         setversion = setup.setLastVersionForProfile
         setversion(cmfeditions_id, "2.0")
-        setversion(discussion_id, "100")
         setversion(querystring_id, "7")
         # Check that it worked, that the profile versions really are
         # different.
         self.assertNotEqual(cmfeditions_version, getversion(cmfeditions_id))
-        self.assertNotEqual(discussion_version, getversion(discussion_id))
         self.assertNotEqual(querystring_version, getversion(querystring_id))
 
         # Run the upgrade.
@@ -258,5 +249,4 @@ class TestAddonList(PloneTestCase.PloneTestCase):
         # Check that it worked, that the profiles are now at their
         # original versions.
         self.assertEqual(cmfeditions_version, getversion(cmfeditions_id))
-        self.assertEqual(discussion_version, getversion(discussion_id))
         self.assertEqual(querystring_version, getversion(querystring_id))
