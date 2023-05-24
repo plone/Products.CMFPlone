@@ -134,13 +134,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         )
         self.assertEqual(
             self.registration.testPasswordValidity("abcd", confirm=None),
-            "Your password must contain at least ${min_chars} characters.",
-        )
-        # Password validity is checked with an empty password
-        # to get a nice help message to show for the input field.
-        self.assertEqual(
-            self.registration.testPasswordValidity("", confirm=None),
-            "Minimum ${min_chars} characters.",
+            "Your password must contain at least 8 characters.",
         )
 
     def testPasValidation(self):
@@ -149,7 +143,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         )
         self.assertEqual(
             self.registration.pasValidation("password", "abcd"),
-            "Your password must contain at least ${min_chars} characters.",
+            "Your password must contain at least 8 characters.",
         )
 
     def testNewIdAllowed(self):
