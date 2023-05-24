@@ -489,7 +489,7 @@ class ITinyMCEPluginSchema(Interface):
         missing_value=[],
         default=[
             u'edit', u'table', u'format',
-            u'tools' u'view', u'insert'])
+            u'tools', u'view', u'insert'])
 
     menu = schema.Text(
         title=_('label_tinymce_menu', 'Menu'),
