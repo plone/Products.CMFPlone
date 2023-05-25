@@ -81,7 +81,7 @@ Bug fixes:
 - Update HTMLFilter settings to enable TinyMCE styling features. See #2329, #2482, #2535
   [petschki] (#2482)
 - If 'tinymce-content-css' option is missing in themes manifest.cfg prevent unnecessary loading of a css at nav_root_url while editing a page.  [krissik] (#2861)
-- Redirect (when possible) also ajax requests and do not return an unuseful body
+- Redirect (when possible) also ajax requests and do not return an useless body
   [ale-rt] (#3014)
 - Merge Hotfix20200121 Check of the strength of password could be skipped. (#3021)
 - Merge Hotfix20200121: isURLInPortal could be tricked into accepting malicious links. (#3021)
@@ -116,7 +116,7 @@ New features:
 Bug fixes:
 
 
-- fix creation of Plone site not adding default Dexterity content types if example content not explicitily selected by user.
+- fix creation of Plone site not adding default Dexterity content types if example content not explicitly selected by user.
   [ericof] (#1318)
 - fix default value for email msgid
   [erral] (#2790)
@@ -207,10 +207,10 @@ Bug fixes:
 
 - gracefully handle tracebacks during addon installation
   [petschki] (#2228)
-- Add workaround for the case when a inifite recusion in a page-template that uses the main-template crashes the instance instead of raising a RecursionError.
+- Add workaround for the case when a infinite recursion in a page-template that uses the main-template crashes the instance instead of raising a RecursionError.
   [pbauer, esteele] (#2666)
 - Fixed unstable Markup Control Panel robot test again.  [maurits] (#2809)
-- add a missing space in an error message in the redirects control panel and replace "deffered" by "deferred" [vincentfretin] (#2821)
+- add a missing space in an error message in the redirects control panel and replace a typo [vincentfretin] (#2821)
 - Fixes: Cooking resources with non ASCII resulted in encoding error.
   Further, writing legacy resources resulted in ValueError. [jensens] (#2827)
 - restore ``exclude_from_nav`` combined with ``show_excluded_items`` handling
@@ -396,7 +396,7 @@ New features:
   Some testbrowser based tests needed changes because of z3c.form based login form .
   The Plone specific, rarely used cross site __ac cookie SSO feature/hack was removed.
   In case somebody needs this, please make it an addon package.
-  Better use a field proven, more secure way, like OAuth2, Shibboleth or someting similar.
+  Better use a field proven, more secure way, like OAuth2, Shibboleth or something similar.
   [jensens, et al]
 
 - Upgrade grunt + plugins to same versions as in
@@ -621,7 +621,7 @@ Bug Fixes:
 - Show example for expression in actions control panel.
   [maurits]
 
-- Fix test where you cannot instanciate a PythonScript with the id script.
+- Fix test where you cannot instantiate a PythonScript with the id script.
   [pbauer]
 
 - Set the status of an exception view according to the exception type.
@@ -646,11 +646,11 @@ Bug Fixes:
 
 - Fix test issue with rarely used multi-site SSO feature.
   ``came_from`` on ``@register`` link would point to wrong site.
-  Completly removed ``came_from`` on ``@@register`` link.
+  Completely removed ``came_from`` on ``@@register`` link.
   It does not make much sense anyway and we test nowhere if there is a came_from on that link.
   [jensens]
 
-- Remove depricated ``type`` attribute from ``script`` and ``link`` tags.
+- Remove deprecated ``type`` attribute from ``script`` and ``link`` tags.
   [newbazz]
 
 - Render tinymce attributes correctly in Python3.
@@ -714,7 +714,7 @@ Breaking changes:
   Discussion on that at https://github.com/plone/Products.CMFPlone/issues/1800
   [loechel]
 
-- Fix and migrate safe_html filter completly into Plone registry and sync settings with TinyMCE.
+- Fix and migrate safe_html filter completely into Plone registry and sync settings with TinyMCE.
   Also some unused options in controlpanel where removed, like stripped_combinations and class_blacklist.
   [MrTango]
 
@@ -865,7 +865,7 @@ Bug fixes:
 - Fixed addons/donations links, removed dead "add your site" link
   [sgrepos]
 
-- Fix isssue where collapsed toolbar was not initialized properly on page
+- Fix issue where collapsed toolbar was not initialized properly on page
   refresh, resulting wide blank space between collapsed toolbar and page
   content
   [datakurre]
@@ -988,7 +988,7 @@ Breaking changes:
     - ``navigationParent.py`` with test
     - ``plone_log.py``
     - ``plone.css.py``
-    - ``returnNone.py`` with occurence refactored
+    - ``returnNone.py`` with occurrence refactored
     - ``reverseList.py`` with test
     - ``sort_modified_ascending.py``
 
@@ -1059,11 +1059,11 @@ New features:
 
 - Toolbar: Make menu hover background fit whole menu width. [thet]
 
-- Toolbar: Don't force scoll buttons to be left, when toolbar is right. [thet]
+- Toolbar: Don't force scroll buttons to be left, when toolbar is right. [thet]
 
-- Toolbar: Make first level list items exand the whole toolbar width - also when scroll buttons are shown. [thet]
+- Toolbar: Make first level list items expand the whole toolbar width - also when scroll buttons are shown. [thet]
 
-- Toolbar: Make scroll buttons exand whole toolbar width. [thet]
+- Toolbar: Make scroll buttons expand whole toolbar width. [thet]
 
 - Toolbar: Let the toolbar submenus be as wide as they need to be and do not break entries into multiple lines. [thet]
 
@@ -1209,7 +1209,7 @@ Bug fixes:
 - Fix #1846 plone-compile-resources: Missing Support for Sites in Mountpoints
   [jensens]
 
-- Do not use unittest2 (superfluos since part of Python 2.7).
+- Do not use unittest2 (superfluous since part of Python 2.7).
   [jensens]
 
 - Fix security test assertion:
@@ -1306,10 +1306,10 @@ New features:
 - Add link to training.plone.org
   [svx]
 
-- Allow to define multiple ``tinymce-content-css`` in theme ``manifest.cfg`` files, seperated by a comma.
+- Allow to define multiple ``tinymce-content-css`` in theme ``manifest.cfg`` files, separated by a comma.
   [thet]
 
-- Update npm package depencies.
+- Update npm package dependencies.
   [thet]
 
 - Supported ``remove`` keyword for configlets in controlpanel.xml.  [maurits]
@@ -1388,7 +1388,7 @@ Fixes:
    [iham]
 
 - Do not hide document byline viewlet by default;
-  it is controled by the `Allow anyone to view 'about' information` option in the `Security Settings` of `Site Setup` (closes `#1556`_).
+  it is controlled by the `Allow anyone to view 'about' information` option in the `Security Settings` of `Site Setup` (closes `#1556`_).
   [hvelarde]
 
 - Removed docstrings from some methods to avoid publishing them.  From
@@ -1416,7 +1416,7 @@ Fixes:
 - Gruntfile failed if only css or only javascripts were registered.
   [jensens]
 
-- Bundle aggregation must use ++plone++static overrided versions if any.
+- Bundle aggregation must use ++plone++static overridden versions if any.
   [ebrehault]
 
 - Fix bundle aggregation when bundle has no CSS (or no JS)
@@ -1677,7 +1677,7 @@ New:
 - Added missing_value parameter to controlpanel list and tuple fields.
   [tomgross]
 
-- Split hard coded JavaScript resources into seperate method for easier
+- Split hard coded JavaScript resources into separate method for easier
   customization.
   [tomgross]
 
@@ -1798,7 +1798,7 @@ Fixes:
 
 - Purge profile upgrade versions from portal_setup when applying our
   default CMFPlone:plone profile.  This signals that nothing has been
-  installed yet, so depencies will get reapplied instead of possibly
+  installed yet, so dependencies will get reapplied instead of possibly
   upgraded.  This could cause problems mostly in tests.  Closes
   `#1041`_.
   [maurits]
@@ -2267,7 +2267,7 @@ Fixes:
 
 - Add __version__ attribute to __init__.py. This allows us to retrieve the
   current Plone version with 'Products.CMFPlone.__version__'. Even though this
-  is no offical standard, many packages in the Python standard library provide
+  is no official standard, many packages in the Python standard library provide
   this.
   [timo]
 
@@ -2364,7 +2364,7 @@ Fixes:
   expressions out of the DB and into a RAM cache.
   [rpatterson]
 
-- Fix endless resource dependency loop when dependeing on a bundle that also has
+- Fix endless resource dependency loop when depending on a bundle that also has
   a dependency.
   [rpatterson]
 
@@ -2457,7 +2457,7 @@ Fixes:
   [saily]
 
 - PLIP 13260: Migration contact-info to ``z3c.form`` and make it highly
-  customizeable.
+  customizable.
   [timitos, saily]
 
 
@@ -2719,9 +2719,9 @@ Fixes:
   we do so for new sites as well.
   [esteele]
 
-- Fix commas in kss-bbb.js since IE7/8 is sensative [vangheem]
+- Fix commas in kss-bbb.js since IE7/8 is sensitive [vangheem]
 
-- Reenable forgotten tests [kiorky]
+- Re-enable forgotten tests [kiorky]
 
 - Fail nicely when userid is not provided to mail_password script.
   [esteele]
@@ -2733,7 +2733,7 @@ Fixes:
   Add id for image details.
   [cedricmessiant]
 
-- update registerPloneFunction call in login.js (depreacted)
+- update registerPloneFunction call in login.js (deprecated)
   [toutpt]
 
 4.3 (2013-04-06)
@@ -2854,7 +2854,7 @@ Fixes:
 - Revealed hidden features for sorting folders (#11317).
   [keul]
 
-- Don't swallow exceptins on object_paste and folder_paste (#9365).
+- Don't swallow exceptions on object_paste and folder_paste (#9365).
   [gaudenz]
 
 4.3a2 (2012-10-18)
@@ -2935,7 +2935,7 @@ Fixes:
 - Define a ZCML feature called `plone-43` in addition to the existing ones.
   [thet]
 
-- Deprecated getSiteEncoding and changed occurences to hardcoded `utf-8`
+- Deprecated getSiteEncoding and changed occurrences to hardcoded `utf-8`
   [tom_gross]
 
 - zope.globalrequest is a required dependency on tests.
@@ -3236,7 +3236,7 @@ Fixes:
   http://dev.plone.org/ticket/7885
   [davisagli]
 
-- Remove uneeded kss debugging code
+- Remove unneeded kss debugging code
   [jfroche]
 
 - Allow users with the Manage Users permission to change the login
@@ -3431,7 +3431,7 @@ Fixes:
 4.1 - 2011-07-12
 ----------------
 
-- Make the ``plone-final`` import step dependend on ``rolemap`` to
+- Make the ``plone-final`` import step dependent on ``rolemap`` to
   prevent some hard-to-debug add-on product related issues.
   Closes http://dev.plone.org/plone/ticket/11997;
   [MatthewWilkes]
@@ -3576,7 +3576,7 @@ Fixes:
   performed against it.
   [hannosch]
 
-- Fix cicular dependency in import steps.
+- Fix circular dependency in import steps.
   This partially fixes http://dev.plone.org/plone/ticket/8350
   [kiorky]
 
@@ -3808,7 +3808,7 @@ Fixes:
   This fixes http://dev.plone.org/plone/ticket/10868.
   [thomasdesvenain]
 
-- Fix cicular dependency in import steps.
+- Fix circular dependency in import steps.
   This partially fixes http://dev.plone.org/plone/ticket/8350
   [kiorky]
 
@@ -4104,7 +4104,7 @@ Fixes:
 
 - Make the jQueryTools overlay configuration options in popupforms.js be
   the default overlay configuration for jQueryTools so that popup forms in
-  other add ons look similar.
+  other add-ons look similar.
   [smcmahon]
 
 4.0b4 - 2010-06-03
@@ -4292,7 +4292,7 @@ Fixes:
   [davisagli]
 
 - batch_macros.pt: Use request/ACTUAL_URL instead of context/absolute_url as
-  batching base url so that batching works for diffent views and FSPageTemplates
+  batching base url so that batching works for different views and FSPageTemplates
   appended to context/absolute_url.
   The approach ${context/absolute_url}/${template/getId} didn't work for views.
   [thet]
@@ -4577,7 +4577,7 @@ Fixes:
   [spliter]
 
 - Register common CSS resources as blank files here. Other themes are
-  supposed to override them to style the site appropiately.
+  supposed to override them to style the site appropriately.
   Refs http://dev.plone.org/plone/ticket/9988.
   [dukebody]
 
@@ -5540,7 +5540,7 @@ Fixes:
   http://dev.plone.org/plone/ticket/7172
   [hannosch]
 
-- Removed testing of sendto action visibilty from sendto.cpy. There's a
+- Removed testing of sendto action visibility from sendto.cpy. There's a
   permission to use to restrict sending mail. This closes
   http://dev.plone.org/plone/ticket/5377
   [hannosch]
@@ -5719,7 +5719,7 @@ Fixes:
 3.3.5 - March 3rd, 2010
 -----------------------
 
-- Check for existance of a hash in the location before attempting to scroll to
+- Check for existence of a hash in the location before attempting to scroll to
   that location in toc.js. Fixes bug introduced in r32066, and refs
   http://dev.plone.org/plone/ticket/9364
   [dunlapm]
@@ -5971,7 +5971,7 @@ Fixes:
   http://dev.plone.org/plone/ticket/8933
   [vincentfretin]
 
-- Splitted label_event_byline into two in folder_summary_view.pt like in
+- Split label_event_byline into two in folder_summary_view.pt like in
   folder_listing.pt fixed in Plone 3.3rc1, this closes
   http://dev.plone.org/plone/ticket/8358
   [vincentfretin]
@@ -5980,7 +5980,7 @@ Fixes:
   Javascript errors in IE.  This closes http://dev.plone.org/plone/ticket/9157
   [davisagli]
 
-- Splitted description_no_account msgid into two, heading_new_user msgid added.
+- Split description_no_account msgid into two, heading_new_user msgid added.
   [vincentfretin]
 
 - Added Internet Explorer 8 support. We only load the workaround CSS file for
@@ -6172,7 +6172,7 @@ Fixes:
 
 - Added time_only for use with toLocalizedTime so that event_view now localizes
   the start/end times if the start/end dates are the same. Added migration for
-  3.2 to 3.2.1 to add new property to the propery tool. Closes
+  3.2 to 3.2.1 to add new property to the property tool. Closes
   http://dev.plone.org/plone/ticket/8607
   [jnelson, calvinhp]
 
@@ -6788,8 +6788,8 @@ Fixes:
   [hannosch]
 
 
-3.0.6 - released Febuary 15, 2008
----------------------------------
+3.0.6 - released February 15, 2008
+----------------------------------
 
 - Make @@plone_lock_info not required for object_cut, object_delete and
   delete_confirmation scripts (not all content is lockable.)
@@ -6889,7 +6889,7 @@ Fixes:
   [alecm]
 
 - Fix for user titles on ownership_form, which were showing the
-  currrent member title instead of prospective owners.  Thanks to
+  current member title instead of prospective owners.  Thanks to
   younga for the fix.
   Fixes http://dev.plone.org/plone/ticket/7286
   [alecm]
@@ -7205,7 +7205,7 @@ Fixes:
   him that the email failed.
   [wichert]
 
-- Do not allow user registration if the site is configured to emai
+- Do not allow user registration if the site is configured to email
   password but no mail configuration has been set.
   [wichert]
 
@@ -7638,7 +7638,7 @@ Fixes:
   profiles.
   [wichert]
 
-- Register the tool inteface for the membership and workflow tools
+- Register the tool interface for the membership and workflow tools
   using the CMFCore interface, overriding the CMFDefault registration.
   [wichert]
 
@@ -7673,7 +7673,7 @@ Fixes:
   [hannosch]
 
 - Cleaned up code in unicodehacks.py so we don't have a performance
-  penality for mixed unicode/non-unicode pages.
+  penalty for mixed unicode/non-unicode pages.
   [hannosch]
 
 - Micro optimization: Use a truly local variable for language lookup,
@@ -7763,7 +7763,7 @@ Fixes:
 - Remove GRUF usage for local role handling in PloneTool
   [wichert]
 
-- Updated language dependend portal creation step. We set the default
+- Updated language dependent portal creation step. We set the default
   language of the portal, the allowed languages and if necessary the
   combined languages support option. If we get a territory code in the
   locale we also set the visible_ids setting to true for non-latin-scripts,
@@ -7832,7 +7832,7 @@ Fixes:
 
 - Moved version overview and server debug mode to the maintenance control
   panel. Added warning message about missing mail host or email from
-  adress to the main control panel view.
+  address to the main control panel view.
   [hannosch]
 
 - Added external_links_open_new_window to site properties which controls
@@ -7925,7 +7925,7 @@ Fixes:
   update the latter to reflect a label change from plone.app.contentmenu.
   [optilude]
 
-- Deprectated viewThreadsAtBottom and getReplyReplies in favour of a
+- Deprecated viewThreadsAtBottom and getReplyReplies in favour of a
   viewlet for IBelowContent, defined in plone.app.form.
   [optilude]
 
@@ -8017,7 +8017,7 @@ Fixes:
   [hannosch]
 
 - Added Google-specific extensions to the robots.txt file to deny it from
-  indexing a gazillion sendo_forms. The standard doesnt allow for
+  indexing a gazillion sento_forms. The standard doesn't allow for
   wildcards boot Google does.
   [elvix]
 
@@ -8129,7 +8129,7 @@ Fixes:
   [hannosch]
 
 - Add a new interface INonInstallable for which you can register named
-  utilites that provide a list of profiles that should not be available as
+  utilities that provide a list of profiles that should not be available as
   installable during site creation. We exclude certain products that are
   installed anyways by Plone from the config screen this way.
   [hannosch]
@@ -8141,7 +8141,7 @@ Fixes:
   [hannosch]
 
 - Added support for plone.app.redirector to the 404 template. This enables
-  automatic redirects when an objet has been moved or renamed, and offers
+  automatic redirects when an object has been moved or renamed, and offers
   suggested search results on the 404 page otherwise.
   [optilude]
 
@@ -8306,7 +8306,7 @@ Fixes:
 - Added first part of multilingual front-page support code.
   [hannosch]
 
-- livesearch_reply.py wrote quotes (") in the title-attribute. misformed
+- livesearch_reply.py wrote quotes (") in the title-attribute. malformed
   XML was generated. replaced quotes by &quot;.
   [jensens]
 
@@ -8460,7 +8460,7 @@ Fixes:
 
 _ Add a new IHideFromBreadcrumbs interface. Items marked with this
   interface will not be shown in the breadcrumb trail. Mark the portal
-  factory with this interface so it no longer polutes the breadcrumbs.
+  factory with this interface so it no longer pollutes the breadcrumbs.
   [wichert]
 
 - Made CatalogTool.ExtensibleIndexableObjectWrapper a subclass of the
@@ -8647,7 +8647,7 @@ _ Add a new IHideFromBreadcrumbs interface. Items marked with this
   http://dev.plone.org/plone/ticket/5828.
   [ajung]
 
-- livesearch_reply.py wrote quotes (") in the title-attribute. misformed
+- livesearch_reply.py wrote quotes (") in the title-attribute. malformed
   XML was generated. replaced quotes by &quot;.
   [jensens]
 
@@ -8696,7 +8696,7 @@ _ Add a new IHideFromBreadcrumbs interface. Items marked with this
 - Make the object_delete and folder_delete methods require non-GET
   requests. This is a bit of a band-aid and it is likely we will want
   to do the same for other object actions which could be easily triggered
-  by a crawler (a paste for instance, which may have been preceeded by a
+  by a crawler (a paste for instance, which may have been preceded by a
   cut or copy). Related to http://dev.plone.org/plone/ticket/4886
   [alecm] [limi]
 
@@ -9124,7 +9124,7 @@ Beta 2 - released May 17, 2006
   expressions.
   [alecm]
 
-- Readd folder_edit_form which is still used to edit the site root.
+- Re-add folder_edit_form which is still used to edit the site root.
   This closes http://dev.plone.org/plone/ticket/5430.
   [hannosch]
 
@@ -9200,7 +9200,7 @@ Beta 2 - released May 17, 2006
   http://dev.plone.org/plone/ticket/5504
   [hannosch]
 
-- Readd a couple prematurely deleted scripts. Fixes #5482.
+- Re-add a couple prematurely deleted scripts. Fixes #5482.
   [alecm]
 
 - Fixes #5487.  Changed 'orig_template' query value from context's
@@ -9581,7 +9581,7 @@ Beta 1 - released March 31, 2006
   when there is no description (all similar to document_view).
   [ender]
 
-- Re-added support for topLevel and bottomLevel navtree propreties, as
+- Re-added support for topLevel and bottomLevel navtree properties, as
   well as the new name (of the navtree portlet) and root (of site
   navigation) properties, and added the Sprout navtree preference panel to
   let users manage these settings. Factored the navtree code out to
@@ -9602,7 +9602,7 @@ Beta 1 - released March 31, 2006
   [wichert]
 
 - Remove use of zLOG in favor of the python logger, add some content
-  classes to five:deprecatedManageAddDelete to avoid some warinings.
+  classes to five:deprecatedManageAddDelete to avoid some warnings.
   [alecm]
 
 - Added a BBB getMultiAdapter to lookup views for zope 2.8, which means
@@ -9634,7 +9634,7 @@ Beta 1 - released March 31, 2006
 - Added drag'n'drop reordering of folder contents.
   [fschulze, alecm]
 
-- Fix PloneTool.changeOwnershipOf to not test for user existance by
+- Fix PloneTool.changeOwnershipOf to not test for user existence by
   trying to find a user id in listMemberIds().
   [wichert]
 
@@ -10023,8 +10023,8 @@ Alpha 1 - released January 29, 2006
   http://dev.plone.org/plone/ticket/4933
   [hannosch]
 
-- Fixed #5021 - 'History' beeing expanded was visible through the vertical
-  table, containig event's summary
+- Fixed #5021 - 'History' being expanded was visible through the vertical
+  table, containing event's summary
   http://dev.plone.org/plone/ticket/5021
   [spliter]
 
@@ -10118,7 +10118,7 @@ Alpha 1 - released January 29, 2006
   [limi]
 
 - Harmonized table-less and table-based skin, the former was using a special
-  getBodyTagClass which has an existing equvalent in the normal skin anyway.
+  getBodyTagClass which has an existing equivalent in the normal skin anyway.
   Deprecated the special file used for this, it will disappear in Plone 2.5.
   This fixes #3915.
   http://dev.plone.org/plone/ticket/3915
@@ -10252,7 +10252,7 @@ Alpha 1 - released January 29, 2006
   [stefan]
 
 - Send new generated plain password via email directly when reset password,
-  but not the one stored in userfolder since it could be encypted. Also use
+  but not the one stored in userfolder since it could be encrypted. Also use
   getProperty to retrieve email address for better LDAP integration.
   [panjunyong]
 
@@ -10728,12 +10728,12 @@ Alpha 1 - released January 29, 2006
   http://dev.plone.org/plone/ticket/4381
   [alecm]
 
-- Fixed bug trigerred when reindexing order in a folder with improperly
+- Fixed bug triggered when reindexing order in a folder with improperly
   deleted content (i.e. when brain.getObject() returns None in
   plone_utils.reindexOnReorder(folder)).
   [alecm]
 
-- Readded current_page_url to global_defines for backwards compatibility.
+- Re-added current_page_url to global_defines for backwards compatibility.
   [alecm]
 
 - Removed unnecessary and lazy uses of global in tal expressions.
@@ -10901,8 +10901,8 @@ Alpha 1 - released January 29, 2006
   the search box.
   [hannosch]
 
-- Reenabled visible_ids memberdata property.  This field will determine
-  the visiblity of ids on a member by member basis, only if the sitewide
+- Re-enabled visible_ids memberdata property.  This field will determine
+  the visibility of ids on a member by member basis, only if the sitewide
   property is enabled.
   [alecm]
 
@@ -10923,7 +10923,7 @@ Alpha 1 - released January 29, 2006
   description.
   [jok2]
 
-- Fixed #4335 added a method to URLTool to determine whther a URL is local
+- Fixed #4335 added a method to URLTool to determine whether a URL is local
   to the portal. This will be moved into CMFCore ASAP, pending write access.
   http://dev.plone.org/plone/ticket/4335
   [alecm]
@@ -11002,7 +11002,7 @@ Alpha 1 - released January 29, 2006
   match and now they do.
   [ender]
 
-- Applied patch from #4205. Better check for existance of member folders.
+- Applied patch from #4205. Better check for existence of member folders.
   Thanks to Tiran.
   http://dev.plone.org/plone/ticket/4205
   [ender]
@@ -11120,7 +11120,7 @@ Alpha 1 - released January 29, 2006
   [alecm]
 
 - Added in some more character mappings to UnicodeNormalizer that were
-  definied in ATCT's now removed cleanupFilename method
+  defined in ATCT's now removed cleanupFilename method
   [hannosch]
 
 - Remove accesskeys as they are interfering with screen reader shortcuts.
@@ -11159,7 +11159,7 @@ Alpha 1 - released January 29, 2006
   http://dev.plone.org/plone/ticket/4224
   [stefan]
 
-- Removed PropertyManagedBrowserDefault, and mane the portal root support
+- Removed PropertyManagedBrowserDefault, and update the portal root support
   BrowserDefaultMixin as implemented by CMFDynamicViewFTI.
   [alecm]
 
@@ -11397,7 +11397,7 @@ Alpha 1 - released January 29, 2006
 - Added framework for ECMAScript Unit Tests.
   [fschulze]
 
-- Partially fixed #4077 and #3535 accesskeys are properly definied now, but
+- Partially fixed #4077 and #3535 accesskeys are properly defined now, but
   still need to be changed to numeric values.
   http://dev.plone.org/plone/ticket/3535
   http://dev.plone.org/plone/ticket/4077
@@ -11538,7 +11538,7 @@ Alpha 1 - released January 29, 2006
 
 - Overrode listTypeInfo from CMFCore.TypesTool.  The original method was
   doing security checks on the TypeInformation objects themselves in
-  addtion to the isConstructionAllowed test.  This was very expensive and
+  addition to the isConstructionAllowed test.  This was very expensive and
   only useful if someone had set custom security restrictions on some
   TypeInformation objects in the types tool through the ZMI.  I cannot see
   a reasonable reason for someone to do such a thing.  Also, removed a
@@ -11655,7 +11655,7 @@ Alpha 1 - released January 29, 2006
   It's already a personal bar.
   [ender]
 
-- Renamed titleToNormalizedId to the variation prefered by limi
+- Renamed titleToNormalizedId to the variation preferred by limi
   normalizeString()
   [alecm]
 
@@ -11755,7 +11755,7 @@ Alpha 1 - released January 29, 2006
   [alecm]
 
 - Remove permission check in search_form, there's no reason to disallow
-  review_state seraches to users that are not granted 'Review portal
+  review_state searches to users that are not granted 'Review portal
   contents' on the portal root.  The catalog enforces 'View' security
   just fine. Resolves #2175.
   http://dev.plone.org/plone/ticket/2175
@@ -12179,7 +12179,7 @@ Alpha 1 - released January 29, 2006
 
 - Introduced the ExtensibleIndexableObjectWrapper. It's a wrapper based on
   the IndexableObjectWrapper for the catalog tool that can easily be
-  extented by registering methods.
+  extended by registering methods.
   [tiran]
 
 - Renamed ugly 'PloneUtilities.py' module to 'utils.py'. The former is
@@ -12258,7 +12258,7 @@ Alpha 1 - released January 29, 2006
 
 - queryCatalog was altering the queries passed to it to filter out types.
   This is unnecessary; it should only filter when no explicit types list is
-  passed.  Also, queryCatalog is uesful in places other than the search
+  passed.  Also, queryCatalog is useful in places other than the search
   (folder_contents) where the filtering may be undesirable.  As a result
   the filtering is now optional and enabled by a parameter use_types_blacklist,
   which is used by default in search.pt and search_rss.dtml.
@@ -12349,7 +12349,7 @@ Alpha 1 - released January 29, 2006
   [alecm]
 
 - Turned off DC MetaTags by default, added a global config to
-  site_properties so that they can be reenabled if desired.
+  site_properties so that they can be re-enabled if desired.
   [alecm]
 
 - Made the calendar portlet HTML output Not Suck. The code, however
@@ -12523,7 +12523,7 @@ Alpha 1 - released January 29, 2006
     we don't need to show the single year.
     [panjunyong]
 
-- Old popup calender (Plone 1.x) works again.
+- Old popup calendar (Plone 1.x) works again.
   [panjunyong]
 
 - Don't install SecureMailHost if already installed.
@@ -12635,7 +12635,7 @@ Alpha 1 - released January 29, 2006
 - Fixed several potentially unsafe uses of acl_users.getUserById().
   [stefan]
 
-- Intergrated PLIP16. It is now possible to stop acquisition of local roles
+- Integrated PLIP16. It is now possible to stop acquisition of local roles
   in a Plone Folder and change the roles of already assigned users/groups.
   Many thanks to: ender, MrTopf, hazmat and pjgrizel.
   [jladage]
@@ -12766,7 +12766,7 @@ Alpha 1 - released January 29, 2006
   [stefan]
 
 - Fixed #3557 - Lines properties may still be lists if an old ZODB is
-  upraded to newer Zopes. Catching such a case in migrations. Thanks to
+  upgraded to newer Zopes. Catching such a case in migrations. Thanks to
   Xenru for the patch.
   http://dev.plone.org/plone/ticket/3557
   [stefan]
@@ -12978,7 +12978,7 @@ Alpha 1 - released January 29, 2006
   http://dev.plone.org/plone/ticket/3457
   [limi]
 
-- Fixed #2857 - changed show_id.py to accomodate postback of a submitted id
+- Fixed #2857 - changed show_id.py to accommodate postback of a submitted id
   in the case where validation fails on the first edit of a newly created
   content object. Thanks to zenwryly.
   http://dev.plone.org/plone/ticket/2857
@@ -13122,7 +13122,7 @@ Alpha 1 - released January 29, 2006
 
 - Merged fixes from tiran-plip30 branch. Changed PloneGenerator and
   MembershipTool.createMemberarea() to always use portal-aware factory
-  methods for creating content. Prerequesite for future integration
+  methods for creating content. Prerequisite for future integration
   with ATContentTypes.
   [tiran]
 
@@ -13215,7 +13215,7 @@ Alpha 1 - released January 29, 2006
   [andym]
 
 - Fixed a small bug in plone_javascripts.js that prevents the highlight
-  of the search term in simple searchs.
+  of the search term in simple searches.
   [azy]
 
 
@@ -13368,7 +13368,7 @@ Alpha 1 - released January 29, 2006
   http://dev.plone.org/plone/ticket/2821
   [tiran]
 
-- Fixed #2876 - Folder rename does not reindex title. Added a explict
+- Fixed #2876 - Folder rename does not reindex title. Added a explicit
   reindex if only the title has been changed.
   http://dev.plone.org/plone/ticket/2876
   [tiran]
@@ -13538,7 +13538,7 @@ Alpha 1 - released January 29, 2006
   [tiran]
 
 - Fixed #2804 - plone_memberprefs_panel.pt ignored the 'visible' of
-  configlet actions. thats corrected now.
+  configlet actions. that's corrected now.
   http://dev.plone.org/plone/ticket/2804
   [zworkb]
 
@@ -13675,7 +13675,7 @@ Alpha 1 - released January 29, 2006
    RC5
 
 - Removed false 'required' indicators for Title attribute on file/image
-  edit forms.  You simply need to upload a file.  Thats it.
+  edit forms.  You simply need to upload a file.  That's it.
   [runyaga]
 
 - Added extra check for dictionary-based actions. Will work better
@@ -13800,7 +13800,7 @@ Alpha 1 - released January 29, 2006
     by 'Copy or Move' instead of 'Modify portal content'
 
 - moved CMFPlone/migrations files into CMFPlone/migrations/v1 or v2
-  modules.   Although this is not a permenant solution.  It will work
+  modules.   Although this is not a permanent solution.  It will work
   well enough.
 
 - allowedContentTypes is a expensive call.  made this global inside of
@@ -13840,7 +13840,7 @@ Alpha 1 - released January 29, 2006
 - Now in setup/ConfigurationMethods.py where the left/right_slots for the
   portal root are created have been changed.  It is quite sensible.  We
   are removing the terminology of 'slots'.  We are moving towards the
-  prefered naming, 'portlets'.  Macro paths are sensible:
+  preferred naming, 'portlets'.  Macro paths are sensible:
   context/portlet_foo/macros/portlet
   This means that all slots are now renamed portlet_$name and all macro have
   been renamed to 'portlet'.  The old slot code still exists and has
@@ -13930,7 +13930,7 @@ Alpha 1 - released January 29, 2006
 
   * creating an action who's category is: object_actions
 
-  * create an action_icon whos category is: object_actions
+  * create an action_icon whose category is: object_actions
     and icon_id is the same as the 'id' above
 
   this potentially invokes lots of calls down to portal_actionicons
@@ -14041,8 +14041,8 @@ Alpha 1 - released January 29, 2006
   installed.  QuickInstaller is now subclassed in Plone and has a test
   that installs/uninstalls a product.  [runyaga]
 
-- CatalogTool's searchResults takes Permission settings aquired trough
-  local groups into acount. Permission local roles assigned to users
+- CatalogTool's searchResults takes Permission settings acquired through
+  local groups into account. Permission local roles assigned to users
   is still not honoured.
   [_robert_]
 
@@ -14209,7 +14209,7 @@ Alpha 1 - released January 29, 2006
 
   - trimmed down plone initialize
 
-  - added seperate setup widgets for languages, skins etc
+  - added separate setup widgets for languages, skins etc
 
   - added needUpdating and needRecataloguing
 
@@ -14396,7 +14396,7 @@ Alpha 1 - released January 29, 2006
 
 - Removed the About slot from site generation. This is not in migrations, as
   it's bad form to mess with people's existing slots - however, new sites
-  created with 1.1 shuld not have it, sinc it is now integrated into the
+  created with 1.1 should not have it, sinc it is now integrated into the
   documents themselves. [limi]
 
 - removed all .properties files and made them .metadata files
@@ -14489,7 +14489,7 @@ Alpha 1 - released January 29, 2006
 
 - main_template and header cleanup (needs to be re-aligned with CMFDefault)
 
-- added CMFDefault variables to main_template.pt and moving to use alot of
+- added CMFDefault variables to main_template.pt and moving to use a lot of
   the variables declared in main_template else where in PageTemplates
 
 - items listed in folder_contents generatd urls pointing to immediate_view
@@ -14633,7 +14633,7 @@ Alpha 1 - released January 29, 2006
   we now check isIDAutoGenerated() and if not then we keep the old id.
 
 - added member and portal global variables in main_template for backwards
-  compatability
+  compatibility
 
 - fixed bug in new issue formPlone 1.0
 
@@ -14941,7 +14941,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
   and dispatch to an appropriate PageTemplate depending on the error that was raised.  Thanks
   to Tino Wildenhain for providing insight.  #zope is such a great resource.
 
-- factored out logged_in.pt into 4 entities: logged_in.py (dispatches to appopriate view),
+- factored out logged_in.pt into 4 entities: logged_in.py (dispatches to appropriate view),
   login_success.pt, login_failed.pt, login_password.pt
 
 - fixed workflow permissions so that:
@@ -14964,8 +14964,8 @@ We released a beta3 tarball and then decided to fix the above before a final bet
   just show 'Add New $contenttype' and insert a hidden form variable
 
 - PrivateCustomizationPolicy had *no way* to let anonymous users view content.  This is
-  debatable feature but 99% end users will want a tranistion that allows content to
-  be visible by a Anonymous user.  Thus introduced the public state and publicize tranistion
+  debatable feature but 99% end users will want a transition that allows content to
+  be visible by a Anonymous user.  Thus introduced the public state and publicize transition
 
 - PloneFolder mixes in DefaultDublinCoreImpl and declares the DublinCore interface
   also it maps manage_addFolder to manage_addPloneFolder
@@ -14978,7 +14978,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 
 - Bugs fixed 373, 383, 316, 433, 329, 441
 
-- metadate_edit_form added a '\n' in Contrbutors field, everytime it was saved.
+- metadate_edit_form added a '\n' in Contrbutors field, every time it was saved.
 
 - Issue 403 - added '<meta>' tags to header, not really used by modern search engines
   need script listMetaTags.py
@@ -15047,7 +15047,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 - topic has been changed to to make the icon clickable, it now uses title or
   id of the catalog brain
 
-- related box now has '<br />' seperating elements and will not show related
+- related box now has '<br />' separating elements and will not show related
   items that dont have a title - thanks kpm!
   added icons, sort by Type and changed up navigationLocal and only shows
   published items - thanks Raphael Volz!
@@ -15082,7 +15082,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 
 - moved edit_forms in with content
 
-- moved event_* into plone_3rdParty/CMFCalendar for consitency
+- moved event_* into plone_3rdParty/CMFCalendar for consistency
 
 - Issue 204 fixed
 
@@ -15147,7 +15147,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 
 - moved all content forms to portal_form machinery
 
-- 'editor view' wasnt going to the parent to list folder_contents
+- 'editor view' wasn't going to the parent to list folder_contents
 
 - added personazlie_form/reconfig_form to portal_from machinery
 
@@ -15169,9 +15169,9 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 
 - removed old CMF skins in portal_skins
 
-- if your object didnt have a title in a topic it wouldnt show the id
+- if your object didn't have a title in a topic it wouldn't show the id
 
-- Issue 345 - content_status_modify wasnt using editMetadata and wasnt guaranteed to
+- Issue 345 - content_status_modify wasn't using editMetadata and wasn't guaranteed to
   set the effective/expiration date - FIXED.  and minor aethetic cleanups to boot
 
 - since we got rid of 'index_html' as a PageTemplate and its a Document.  there
@@ -15186,7 +15186,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 - removed tabs, request.set('disable_border',1) from: news, roster, search,
   and search_form
 
-- reconfig_form for site wide configuraiton has form validation, and exposes
+- reconfig_form for site wide configuration has form validation, and exposes
   loads of configuration options
 
 - change in main_template for portal_types to get object_tabs from
@@ -15213,7 +15213,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
   in the ZODB and the form will be rendered against this proxy object.
 
 - portal_form tool has been added - Geoff Davis (what a great idea!)
-  this co-ordinates the instance, portal_navigation and the edit forms and
+  this coordinates the instance, portal_navigation and the edit forms and
   acts like a 'Controller'
 
 - portal_properties has been extended to now be a container - Alan and Geoff
@@ -15225,7 +15225,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 
 - Topic interface has been completely skinned - cheers to Helge/Alex duo!
 
-- if event data isnt set it now shows back up in the form - helge
+- if event data isn't set it now shows back up in the form - helge
 
 - integrated XSDHTMLEditor and a way to add other "popup" editor boxes
 
@@ -15255,7 +15255,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
   Events.
 
 - Publish tabs now appear on all content types if they have available
-  tranistions
+  transitions
 
 - configurable tabs and buttons have change:
 
@@ -15267,14 +15267,14 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 
 - change status ('mass publishing') now works as expected
 
-- personalize_form was reseting values on form validation failure
+- personalize_form was resetting values on form validation failure
 
 - on the rename form you can now change the id and title (maybe the id
   should be optional)
 
 - the way forms interacted with editing scripts has changed:
 
-- form validation has been refactored (basiclly the only thing you need
+- form validation has been refactored (basically the only thing you need
   in validate_*.py)
 
 - the actual editing scripts call plone_utils.getNext???For() to get the
@@ -15297,7 +15297,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 - some python scripts did not have context namespaces bound to them (on the
   filesystem)
 
-- `` __init__.py`` files that declard modules in folders if had 0 bytes made
+- `` __init__.py`` files that declared modules in folders if had 0 bytes made
   winzip unhappy
 
 - folder_contents will no longer show empty dropdown/add new item button or
@@ -15363,7 +15363,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 
 - created a CustomizationPolicy for alternate Customizations to be applied
   to Plone on site creation
-  these can be seperate products that register with the Portal.addPolicy()
+  these can be separate products that register with the Portal.addPolicy()
 
 - all forms were majorly refactored: popup help boxes were added, i18n
   namespaces were used, general html cleanup
@@ -15418,7 +15418,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 
 - added a FormulatorTool (portal_form_validation) which is a *thin* wrapper
   around Formulator and exposes
-  minimal amounts of functionality.  I didnt know about CMFFormsTool when I
+  minimal amounts of functionality.  I didn't know about CMFFormsTool when I
   did this (cmf.zope.org not doing its job)
   so I will have to take another look at whether or not we should go with
   this more advanced component.
@@ -15438,10 +15438,10 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 - navigate* scripts were fixed (thanks to AndyD) which were causing some
   authentication errors
 
-- seperated form specific scripts into plone_form_scripts (this includes
+- separated form specific scripts into plone_form_scripts (this includes
   validation scripts)
 
-- file_view when you download no longers puts trailing 0's and uploaded file
+- file_view when you download no longer puts trailing 0's and uploaded file
   and image views
 
 - file and images will change id's to the uploaded file (strip extension).
@@ -15503,7 +15503,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 - from folder_contents you can now publish multiple objects if you have
   permission
 
-- join_box doesnt show up if anonymous doenst have access to add portal
+- join_box doesn't show up if anonymous doesn't have access to add portal
   member
 
 - Netscape 4.x graceful degrading added. It has its own CSS files.
@@ -15520,7 +15520,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 - Changed ALL pages to use main_template as their template, instead of the
   previous two portal_template and content_template.
   This means we are compatible with all existing CMF Products, although
-  they can break our look a wee bit if they are coded
+  they can break our look a bit if they are coded
   badly, which a lot of Products unfortunately are.
 
 - Added new method to deal with CSS values - stylesheet_properties.props
@@ -15545,7 +15545,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 - rejected content status no longer redirects to a search page
 
 - if you upload a binary into a Document object, form validation gripes
-  [useability issue]
+  [usability issue]
 
 - CMFTopics pretty much work, there is a bit more work to do.
 
@@ -15555,7 +15555,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 - showEditableBorder has gone through quite a bit of changes.. still is
   wrong
 
-- Comments have been modified - they are still unuseable ;(
+- Comments have been modified - they are still unusable ;(
 
 - Lucas Marshall pointed out a javascript error in the calendar slot on
   MacOS and a fix 8)
@@ -15573,14 +15573,14 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 
 - refactored filesystem directory view skin structure
 
-- plone_scripts contains scrips and supporting form_scripts
+- plone_scripts contains scripts and supporting form_scripts
 
 - plone_templates containers site wide templates and supporting ui_slots
 
 - plone_styles container default style and optional plone_themes
 
 - base href is now compatible with how other CMF Products work.  This
-  means you can use other CMFProducts out of hte box (hopefully ;)
+  means you can use other CMFProducts out of the box (hopefully ;)
 
 - beginnings of workspace
 
@@ -15605,7 +15605,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 - on Memberarea creation creates a .personal folder for Portrait and
   future private items (by convention)
 
-- fixed it so that http:// isnt always added to link's remote_url
+- fixed it so that http:// isn't always added to link's remote_url
 
 - other things I forgot ;'(
 
@@ -15684,7 +15684,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 0.6
 ===
 
-- so fast didnt have time to catch 'em
+- so fast didn't have time to catch 'em
 
 
 0.5 - Released December 3rd, 2001
@@ -15693,7 +15693,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 - fixed search form up
 
 - fixed folder_contents (not have an extended_edit, since we muck w/
-  metadata alot)
+  metadata a lot)
 
 
 0.4 - Released October 23rd, 2001

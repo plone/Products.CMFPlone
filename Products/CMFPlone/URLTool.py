@@ -10,10 +10,9 @@ from zope.component import getUtility
 
 
 class URLTool(PloneBaseTool, BaseTool):
-
-    meta_type = 'Plone URL Tool'
+    meta_type = "Plone URL Tool"
     security = ClassSecurityInfo()
-    toolicon = 'skins/plone_images/link_icon.png'
+    toolicon = "skins/plone_images/link_icon.png"
 
     @security.public
     def isURLInPortal(self, url, context=None):

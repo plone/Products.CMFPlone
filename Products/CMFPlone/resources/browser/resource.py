@@ -7,8 +7,10 @@ from plone.app.theming.utils import theming_policy
 from plone.base.interfaces import IBundleRegistry
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
+from time import time
 from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.component import queryUtility
 from zope.component.hooks import getSite
 
 import hashlib
@@ -19,7 +21,7 @@ import webresource
 logger = logging.getLogger(__name__)
 
 REQUEST_CACHE_KEY = "_WEBRESOURCE_CACHE_"
-
+_RESOURCE_REGISTRY_MTIME = "__RESOURCE_REGISTRY_MTIME"
 GRACEFUL_DEPENDENCY_REWRITE = {
     "plone-base": "plone",
     "plone-legacy": "plone",
@@ -53,13 +55,18 @@ class ResourceBase:
 
     def _cache_attr_name(self, site):
         hashtool = hashlib.sha256()
-        hashtool.update(self.__class__.__name__.encode('utf8'))
-        hashtool.update(site.absolute_url().encode('utf8'))
+        hashtool.update(self.__class__.__name__.encode("utf8"))
+        hashtool.update(site.absolute_url().encode("utf8"))
         e_bundles, d_bundles = self._request_bundles()
         for bundle in e_bundles | d_bundles:
-            hashtool.update(bundle.encode('utf8'))
+            hashtool.update(bundle.encode("utf8"))
         hashtool.update(self._user_local_roles(site).encode("utf8"))
-        return f"_v_renderend_cache_{hashtool.hexdigest()}"
+        if not getattr(self, "registry", None):
+            self.registry = getUtility(IRegistry)
+            mtime = getattr(self.registry, _RESOURCE_REGISTRY_MTIME, None)
+            if mtime is not None:
+                hashtool.update(str(mtime).encode("utf8"))
+        return f"_v_rendered_cache_{hashtool.hexdigest()}"
 
     @property
     def _rendered_cache(self):
@@ -144,17 +151,15 @@ class ResourceBase:
                     # gracefully rewrite old bundle names
                     graceful_depends = GRACEFUL_DEPENDENCY_REWRITE[name]
                     logger.error(
-                            msg
-                            + f"Bundle dependency graceful rewritten to '{graceful_depends}' "
-                            + "Fallback will be removed in Plone 7."
-                        )
+                        msg
+                        + f"Bundle dependency graceful rewritten to '{graceful_depends}' "
+                        + "Fallback will be removed in Plone 7."
+                    )
                     valid_dependencies.append(graceful_depends)
                     continue
 
                 # if the dependency does not exist, skip the bundle
-                logger.error(
-                    msg + "Bundle ignored - This may break your site!"
-                )
+                logger.error(msg + "Bundle ignored - This may break your site!")
                 return "__broken__"
 
             return valid_dependencies
@@ -187,7 +192,7 @@ class ResourceBase:
                     async_=record.load_async or None,
                     defer=record.load_defer or None,
                     integrity=not external,
-                    **{'data-bundle': name},
+                    **{"data-bundle": name},
                 )
             if record.csscompilation:
                 depends = check_dependencies(name, record.depends, css_names)
@@ -207,7 +212,7 @@ class ResourceBase:
                     url=record.csscompilation if external else None,
                     media="all",
                     rel="stylesheet",
-                    **{'data-bundle': name},
+                    **{"data-bundle": name},
                 )
 
         # Collect theme data
@@ -313,3 +318,19 @@ class StylesView(ResourceView):
             rendered = self.renderer["css"].render()
             self._rendered_cache = rendered
         return rendered
+
+
+def update_resource_registry_mtime():
+    """Update the last modification time of the resource registry.
+
+    Call this when you change anything that may influence the resource registry
+    and any of its rendered cache.
+    See discussion in https://github.com/plone/Products.CMFPlone/issues/3505
+    and https://github.com/plone/Products.CMFPlone/pull/3771
+    """
+    registry = queryUtility(IRegistry)
+    if registry is None:
+        # This can happen for example during site creation.
+        return
+    setattr(registry, _RESOURCE_REGISTRY_MTIME, time())
+    logger.info("Updated resource registry mtime.")

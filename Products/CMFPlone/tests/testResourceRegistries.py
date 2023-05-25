@@ -29,20 +29,12 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         return bundle
 
     def test_bundle_defernot_asyncnot(self):
-        bundle = self._make_test_bundle()
+        self._make_test_bundle()
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
         view.update()
         rendered = view.render()
         self.assertTrue("async=" not in rendered)
         self.assertTrue("defer=" not in rendered)
-
-    def test_bundle_defernot_async(self):
-        bundle = self._make_test_bundle()
-        bundle.load_async = True
-        bundle.load_defer = False
-        view = ScriptsView(self.app, self.app.REQUEST, None, None)
-        view.update()
-        rendered = view.render()
 
     def test_bundle_defer_asyncnot(self):
         bundle = self._make_test_bundle()
@@ -58,7 +50,6 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         bundle = self._make_test_bundle()
         bundle.load_async = True
         bundle.load_defer = False
-        request = self.app.REQUEST
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
         view.update()
         rendered = view.render()
@@ -296,7 +287,6 @@ class TestStylesViewlet(PloneTestCase.PloneTestCase):
 
 
 class TestExpressions(PloneTestCase.PloneTestCase):
-
     def setUp(self):
         # Add three bundles with three different expressions.
         registry = getUtility(IRegistry)
@@ -409,21 +399,26 @@ class TestExpressions(PloneTestCase.PloneTestCase):
 
 
 class TestRRControlPanel(PloneTestCase.PloneTestCase):
-
     def setUp(self):
-        self.portal = self.layer['portal']
-        self.app = self.layer['app']
+        self.portal = self.layer["portal"]
+        self.app = self.layer["app"]
         self.browser = Browser(self.app)
         self.browser.handleErrors = False
         self.browser.addHeader(
-            'Authorization',
-            f'Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}'
+            "Authorization", f"Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}"
         )
-        self.browser.open(self.portal.absolute_url() + "/@@resourceregistry-controlpanel")
+        self.browser.open(
+            self.portal.absolute_url() + "/@@resourceregistry-controlpanel"
+        )
 
     def test_controlpanel(self):
-        self.assertIn("<h1 class=\"documentFirstHeading\">Resource Registry</h1>", self.browser.contents)
-        self.assertIn("++plone++static/bundle-plone/bundle.min.js", self.browser.contents)
+        self.assertIn(
+            '<h1 class="documentFirstHeading">Resource Registry</h1>',
+            self.browser.contents,
+        )
+        self.assertIn(
+            "++plone++static/bundle-plone/bundle.min.js", self.browser.contents
+        )
 
     def test_add_resource(self):
         # the last form is the add form
@@ -434,7 +429,7 @@ class TestRRControlPanel(PloneTestCase.PloneTestCase):
         add_form.getControl("add").click()
 
         self.assertIn(
-            "<h2 class=\"accordion-header\" id=\"heading-my-resource\">",
+            '<h2 class="accordion-header" id="heading-my-resource">',
             self.browser.contents,
         )
 
@@ -452,6 +447,6 @@ class TestRRControlPanel(PloneTestCase.PloneTestCase):
         form.getControl("update").click()
 
         self.assertIn(
-             "<h2 class=\"accordion-header\" id=\"heading-new-resource-name\">",
+            '<h2 class="accordion-header" id="heading-new-resource-name">',
             self.browser.contents,
         )

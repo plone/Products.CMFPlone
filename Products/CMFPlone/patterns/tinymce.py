@@ -171,7 +171,13 @@ class TinyMCESettingsGenerator:
             parts = plugin.split("|")
             if len(parts) != 2:
                 continue
-            tiny_config["external_plugins"][parts[0]] = parts[1]
+            url = parts[1].strip()
+            if not url:
+                continue
+            if url.find("//", 0, 8) == -1:
+                # assuming relative/absolute w/out url scheme
+                url = f"{self.nav_root_url}/{url}"
+            tiny_config["external_plugins"][parts[0]] = url
 
         tiny_config["style_formats"] = self.get_all_style_formats()
         if settings.formats:
@@ -194,7 +200,7 @@ class TinyMCESettingsGenerator:
             except ValueError:
                 pass
 
-        # add safe_html settings, which are useed in backend for filtering:
+        # add safe_html settings, which are used in backend for filtering:
         if not self.filter_settings.disable_filtering:
             valid_tags = self.filter_settings.valid_tags
             nasty_tags = self.filter_settings.nasty_tags

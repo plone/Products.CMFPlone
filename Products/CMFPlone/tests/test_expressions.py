@@ -36,7 +36,6 @@ path = os.path.dirname(__file__)
 
 
 class DummyView:
-
     __name__ = "dummy-view"
     _authenticator = "secret"
     _ = "translation"
@@ -48,6 +47,7 @@ class DummyView:
 
 class DummyContent(SimpleItem):
     """Dummy content class to show the (un)restrictedTraverse works."""
+
     security = ClassSecurityInfo()
 
     @security.public
@@ -185,19 +185,34 @@ class TestDirectAttackVector(unittest.TestCase):
         with self.assertRaises(Unauthorized):
             traverse_function(content, ("protected",), None)
 
-        self.assertEqual(trusted_traverse_function(content, ("public",), None)(), "I am public")
-        self.assertEqual(trusted_traverse_function(content, ("private",), None)(), "I am private")
-        self.assertEqual(trusted_traverse_function(content, ("protected",), None)(), "I am protected")
+        self.assertEqual(
+            trusted_traverse_function(content, ("public",), None)(), "I am public"
+        )
+        self.assertEqual(
+            trusted_traverse_function(content, ("private",), None)(), "I am private"
+        )
+        self.assertEqual(
+            trusted_traverse_function(content, ("protected",), None)(), "I am protected"
+        )
 
     def test_traverse_function_accesscontrol_getSecurityManager(self):
         # Only getSecurityManager is allowed.
-        self.assertEqual(traverse_function(AccessControl, ("getSecurityManager",), None), AccessControl.getSecurityManager)
-        self.assertEqual(trusted_traverse_function(AccessControl, ("getSecurityManager",), None), AccessControl.getSecurityManager)
+        self.assertEqual(
+            traverse_function(AccessControl, ("getSecurityManager",), None),
+            AccessControl.getSecurityManager,
+        )
+        self.assertEqual(
+            trusted_traverse_function(AccessControl, ("getSecurityManager",), None),
+            AccessControl.getSecurityManager,
+        )
 
     def test_traverse_function_accesscontrol_direct(self):
         with self.assertRaises(NotFound):
             traverse_function(AccessControl, ("SecurityManagement",), None)
-        self.assertEqual(trusted_traverse_function(AccessControl, ("SecurityManagement",), None), AccessControl.SecurityManagement)
+        self.assertEqual(
+            trusted_traverse_function(AccessControl, ("SecurityManagement",), None),
+            AccessControl.SecurityManagement,
+        )
 
     def test_traverse_function_accesscontrol_via_modules(self):
         from Products.PageTemplates.ZRPythonExpr import _SecureModuleImporter
@@ -205,13 +220,19 @@ class TestDirectAttackVector(unittest.TestCase):
         modules = _SecureModuleImporter()
         with self.assertRaises(NotFound):
             traverse_function(modules, ("AccessControl", "users"), None)
-        self.assertEqual(trusted_traverse_function(modules, ("AccessControl", "users"), None), AccessControl.users)
+        self.assertEqual(
+            trusted_traverse_function(modules, ("AccessControl", "users"), None),
+            AccessControl.users,
+        )
 
     def test_traverse_function_accesscontrol_via_dict(self):
         piggyback = {"unsafe": AccessControl}
         with self.assertRaises(NotFound):
             traverse_function(piggyback, ("unsafe", "users"), None)
-        self.assertEqual(trusted_traverse_function(piggyback, ("unsafe", "users"), None), AccessControl.users)
+        self.assertEqual(
+            trusted_traverse_function(piggyback, ("unsafe", "users"), None),
+            AccessControl.users,
+        )
 
     def test_traverse_class_random(self):
         with self.assertRaises(NotFound):
@@ -241,25 +262,43 @@ class TestDirectAttackVector(unittest.TestCase):
 
     def test_traverse_class_content(self):
         content = DummyContent("dummy")
-        self.assertEqual(TraverseClass.traverse(content, None, ("public",))(), "I am public")
+        self.assertEqual(
+            TraverseClass.traverse(content, None, ("public",))(), "I am public"
+        )
         with self.assertRaises(Unauthorized):
             TraverseClass.traverse(content, None, ("private",))
         with self.assertRaises(Unauthorized):
             TraverseClass.traverse(content, None, ("protected",))
 
-        self.assertEqual(TrustedTraverseClass.traverse(content, None, ("public",))(), "I am public")
-        self.assertEqual(TrustedTraverseClass.traverse(content, None, ("private",))(), "I am private")
-        self.assertEqual(TrustedTraverseClass.traverse(content, None, ("protected",))(), "I am protected")
+        self.assertEqual(
+            TrustedTraverseClass.traverse(content, None, ("public",))(), "I am public"
+        )
+        self.assertEqual(
+            TrustedTraverseClass.traverse(content, None, ("private",))(), "I am private"
+        )
+        self.assertEqual(
+            TrustedTraverseClass.traverse(content, None, ("protected",))(),
+            "I am protected",
+        )
 
     def test_traverse_class_accesscontrol_getSecurityManager(self):
         # AccessControl.getSecurityManager is the only item allowed.
-        self.assertEqual(TraverseClass.traverse(AccessControl, None, ("getSecurityManager",)), AccessControl.getSecurityManager)
-        self.assertEqual(TrustedTraverseClass.traverse(AccessControl, None, ("getSecurityManager",)), AccessControl.getSecurityManager)
+        self.assertEqual(
+            TraverseClass.traverse(AccessControl, None, ("getSecurityManager",)),
+            AccessControl.getSecurityManager,
+        )
+        self.assertEqual(
+            TrustedTraverseClass.traverse(AccessControl, None, ("getSecurityManager",)),
+            AccessControl.getSecurityManager,
+        )
 
     def test_traverse_class_accesscontrol_direct(self):
         with self.assertRaises(NotFound):
             TraverseClass.traverse(AccessControl, None, ("SecurityManagement",))
-        self.assertEqual(TrustedTraverseClass.traverse(AccessControl, None, ("SecurityManagement",)), AccessControl.SecurityManagement)
+        self.assertEqual(
+            TrustedTraverseClass.traverse(AccessControl, None, ("SecurityManagement",)),
+            AccessControl.SecurityManagement,
+        )
 
     def test_traverse_class_accesscontrol_via_modules(self):
         from Products.PageTemplates.ZRPythonExpr import _SecureModuleImporter
@@ -267,10 +306,16 @@ class TestDirectAttackVector(unittest.TestCase):
         modules = _SecureModuleImporter()
         with self.assertRaises(NotFound):
             TraverseClass.traverse(modules, None, ("AccessControl", "users"))
-        self.assertEqual(TrustedTraverseClass.traverse(modules, None, ("AccessControl", "users")), AccessControl.users)
+        self.assertEqual(
+            TrustedTraverseClass.traverse(modules, None, ("AccessControl", "users")),
+            AccessControl.users,
+        )
 
     def test_traverse_class_accesscontrol_via_dict(self):
         piggyback = {"unsafe": AccessControl}
         with self.assertRaises(NotFound):
             TraverseClass.traverse(piggyback, None, ("unsafe", "users"))
-        self.assertEqual(TrustedTraverseClass.traverse(piggyback, None, ("unsafe", "users")), AccessControl.users)
+        self.assertEqual(
+            TrustedTraverseClass.traverse(piggyback, None, ("unsafe", "users")),
+            AccessControl.users,
+        )

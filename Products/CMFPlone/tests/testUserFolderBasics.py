@@ -15,16 +15,15 @@ from ZPublisher.utils import basic_auth_encode
 import unittest
 
 
-user_role = 'Member'
+user_role = "Member"
 
 
 class TestUserFolder(unittest.TestCase):
-
     layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
     def setUp(self):
-        self.portal = self.layer['portal']
-        self.request = self.layer['request']
+        self.portal = self.layer["portal"]
+        self.request = self.layer["request"]
 
         self.uf = self.portal.acl_users
         self.basic = basic_auth_encode(TEST_USER_NAME, TEST_USER_PASSWORD)
@@ -33,50 +32,49 @@ class TestUserFolder(unittest.TestCase):
         self.folder = self.portal.portal_membership.getHomeFolder(TEST_USER_ID)
 
         # Set up a published object accessible to the default user
-        self.folder.addDTMLMethod('doc', file='')
-        self.folder.doc.manage_permission('View', [user_role], acquire=0)
+        self.folder.addDTMLMethod("doc", file="")
+        self.folder.doc.manage_permission("View", [user_role], acquire=0)
         # Rig the REQUEST so it looks like we traversed to 'doc'
-        self.request.set('PUBLISHED', self.folder['doc'])
-        self.request.set('PARENTS', [self.folder, self.portal])
+        self.request.set("PUBLISHED", self.folder["doc"])
+        self.request.set("PARENTS", [self.folder, self.portal])
         folder_path = list(self.folder.getPhysicalPath())
-        self.request.steps = folder_path + ['doc']
+        self.request.steps = folder_path + ["doc"]
 
-        if 'auto_group' in self.uf:
-            self.uf.manage_delObjects(['auto_group'])
+        if "auto_group" in self.uf:
+            self.uf.manage_delObjects(["auto_group"])
 
         # Nuke Administators and Reviewers groups added in 2.1a2 migrations
         # (and any other migrated-in groups) to avoid test confusion
-        self.portal.portal_groups.removeGroups(
-            self.portal.portal_groups.listGroupIds())
+        self.portal.portal_groups.removeGroups(self.portal.portal_groups.listGroupIds())
 
         login(self.portal, TEST_USER_NAME)
-        setRoles(self.portal, TEST_USER_ID, [user_role, ])
+        setRoles(
+            self.portal,
+            TEST_USER_ID,
+            [
+                user_role,
+            ],
+        )
 
     def testGetUser(self):
         self.assertNotEqual(self.uf.getUser(TEST_USER_NAME), None)
 
     def testGetBadUser(self):
-        self.assertEqual(self.uf.getUser('user2'), None)
+        self.assertEqual(self.uf.getUser("user2"), None)
 
     def testGetUserById(self):
         self.assertNotEqual(self.uf.getUserById(TEST_USER_ID), None)
 
     def testGetBadUserById(self):
-        self.assertEqual(self.uf.getUserById('user2'), None)
+        self.assertEqual(self.uf.getUserById("user2"), None)
 
     def testGetUsers(self):
         users = self.uf.getUsers()
-        self.assertIn(
-            TEST_USER_NAME,
-            [u.getUserName() for u in users]
-        )
+        self.assertIn(TEST_USER_NAME, [u.getUserName() for u in users])
 
     def testGetUserNames(self):
         names = self.uf.getUserNames()
-        self.assertIn(
-            TEST_USER_NAME,
-            names
-        )
+        self.assertIn(TEST_USER_NAME, names)
 
     def testGetRoles(self):
         user = self.uf.getUser(TEST_USER_NAME)
@@ -84,10 +82,10 @@ class TestUserFolder(unittest.TestCase):
 
     def testGetRolesInContext(self):
         user = self.uf.getUser(TEST_USER_NAME)
-        self.folder.manage_addLocalRoles(TEST_USER_ID, ['Owner'])
+        self.folder.manage_addLocalRoles(TEST_USER_ID, ["Owner"])
         roles = user.getRolesInContext(self.folder)
         self.assertTrue(user_role in roles)
-        self.assertTrue('Owner' in roles)
+        self.assertTrue("Owner" in roles)
 
     def testHasRole(self):
         user = self.uf.getUser(TEST_USER_NAME)
@@ -95,20 +93,20 @@ class TestUserFolder(unittest.TestCase):
 
     def testHasLocalRole(self):
         user = self.uf.getUser(TEST_USER_NAME)
-        self.folder.manage_addLocalRoles(TEST_USER_ID, ['Owner'])
-        self.assertTrue(user.has_role('Owner', self.folder))
+        self.folder.manage_addLocalRoles(TEST_USER_ID, ["Owner"])
+        self.assertTrue(user.has_role("Owner", self.folder))
 
     def testHasPermission(self):
         user = self.uf.getUser(TEST_USER_NAME)
-        self.assertTrue(user.has_permission('View', self.folder))
-        self.folder.manage_role(user_role, ['Add Folders'])
-        self.assertTrue(user.has_permission('Add Folders', self.folder))
+        self.assertTrue(user.has_permission("View", self.folder))
+        self.folder.manage_role(user_role, ["Add Folders"])
+        self.assertTrue(user.has_permission("Add Folders", self.folder))
 
     def testHasLocalRolePermission(self):
         user = self.uf.getUser(TEST_USER_NAME)
-        self.folder.manage_role('Owner', ['Add Folders'])
-        self.folder.manage_addLocalRoles(TEST_USER_ID, ['Owner'])
-        self.assertTrue(user.has_permission('Add Folders', self.folder))
+        self.folder.manage_role("Owner", ["Add Folders"])
+        self.folder.manage_addLocalRoles(TEST_USER_ID, ["Owner"])
+        self.assertTrue(user.has_permission("Add Folders", self.folder))
 
     def testValidate(self):
         self.request._auth = self.basic
@@ -117,8 +115,8 @@ class TestUserFolder(unittest.TestCase):
         self.assertEqual(user.getUserName(), TEST_USER_NAME)
 
     def testNotValidateWithoutAuth(self):
-        self.request._auth = ''
-        user = self.uf.validate(self.request, '', ['role1'])
+        self.request._auth = ""
+        user = self.uf.validate(self.request, "", ["role1"])
         self.assertEqual(user, None)
 
     def testValidateWithoutRoles(self):
@@ -134,16 +132,16 @@ class TestUserFolder(unittest.TestCase):
 
     def testNotValidateWithWrongRoles(self):
         self.request._auth = self.basic
-        user = self.uf.validate(self.request, self.basic, ['Manager'])
+        user = self.uf.validate(self.request, self.basic, ["Manager"])
         self.assertEqual(user, None)
 
     def testAllowAccessToUser(self):
         login(self.portal, TEST_USER_NAME)
         try:
-            self.folder.restrictedTraverse('doc')
+            self.folder.restrictedTraverse("doc")
         except Unauthorized:
-            self.fail('Unauthorized')
+            self.fail("Unauthorized")
 
     def testDenyAccessToAnonymous(self):
         logout()
-        self.assertRaises(Unauthorized, self.folder.restrictedTraverse, 'doc')
+        self.assertRaises(Unauthorized, self.folder.restrictedTraverse, "doc")

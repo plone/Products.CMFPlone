@@ -32,22 +32,23 @@ def catchAllExceptions(func):
 
 def applyPatches():
     from zope.sendmail.mailer import SMTPMailer
-    old_mailer = getattr(SMTPMailer, 'vote', None) is None
+
+    old_mailer = getattr(SMTPMailer, "vote", None) is None
     if old_mailer:
         SMTPMailer.send = catchAllExceptions(SMTPMailer.send)
 
 
 def new_init(
-        self,
-        hostname='localhost',
-        port=25,
-        username=None,
-        password=None,
-        no_tls=False,
-        force_tls=False):
-
+    self,
+    hostname="localhost",
+    port=25,
+    username=None,
+    password=None,
+    no_tls=False,
+    force_tls=False,
+):
     registry = getUtility(IRegistry)
-    mail_settings = registry.forInterface(IMailSchema, prefix='plone')
+    mail_settings = registry.forInterface(IMailSchema, prefix="plone")
     self.hostname = mail_settings.smtp_host
     self.port = mail_settings.smtp_port
     self.username = mail_settings.smtp_userid

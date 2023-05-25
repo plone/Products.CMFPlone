@@ -23,7 +23,8 @@ second_pass = {}
 if REQUEST is None:
     REQUEST = context.REQUEST
 
-multispace = '\u3000'
+multispace = "\u3000"
+
 
 def quotestring(s):
     return '"%s"' % s
@@ -38,17 +39,16 @@ def quotequery(s):
         raise
     except Exception:
         return s
-    tokens = ('OR', 'AND', 'NOT')
-    s_tokens = ('OR', 'AND')
+    tokens = ("OR", "AND", "NOT")
+    s_tokens = ("OR", "AND")
     check = (0, -1)
     for idx in check:
         if terms[idx].upper() in tokens:
             terms[idx] = quotestring(terms[idx])
     for idx in range(1, len(terms)):
-        if (terms[idx].upper() in s_tokens and
-            terms[idx - 1].upper() in tokens):
+        if terms[idx].upper() in s_tokens and terms[idx - 1].upper() in tokens:
             terms[idx] = quotestring(terms[idx])
-    return ' '.join(terms)
+    return " ".join(terms)
 
 
 # We need to quote parentheses when searching text indices (we use
@@ -61,43 +61,44 @@ def quote_bad_chars(s):
 
 
 def ensureFriendlyTypes(query):
-    ploneUtils = getToolByName(context, 'plone_utils')
-    portal_type = query.get('portal_type', [])
+    ploneUtils = getToolByName(context, "plone_utils")
+    portal_type = query.get("portal_type", [])
     if not same_type(portal_type, []):
         portal_type = [portal_type]
-    Type = query.get('Type', [])
+    Type = query.get("Type", [])
     if not same_type(Type, []):
         Type = [Type]
     typesList = portal_type + Type
     if not typesList:
         friendlyTypes = ploneUtils.getUserFriendlyTypes(typesList)
-        query['portal_type'] = friendlyTypes
+        query["portal_type"] = friendlyTypes
 
 
 def rootAtNavigationRoot(query):
-    if 'path' not in query:
-        query['path'] = getNavigationRoot(context)
+    if "path" not in query:
+        query["path"] = getNavigationRoot(context)
+
 
 # Avoid creating a session implicitly.
 for k in REQUEST.keys():
-    if k in ('SESSION',):
+    if k in ("SESSION",):
         continue
     v = REQUEST.get(k)
     if v and k in indexes:
         if k in quote_logic_indexes:
             v = quote_bad_chars(v)
             if multispace in v:
-                v = v.replace(multispace, ' ')
+                v = v.replace(multispace, " ")
             if quote_logic:
                 v = quotequery(v)
         query[k] = v
         show_query = 1
-    elif k.endswith('_usage'):
+    elif k.endswith("_usage"):
         key = k[:-6]
-        param, value = v.split(':')
+        param, value = v.split(":")
         second_pass[key] = {param: value}
-    elif k in ('sort_on', 'sort_order', 'sort_limit'):
-        if k == 'sort_limit' and not same_type(v, 0):
+    elif k in ("sort_on", "sort_order", "sort_limit"):
+        if k == "sort_limit" and not same_type(v, 0):
             query[k] = int(v)
         else:
             query[k] = v
@@ -107,7 +108,7 @@ for k in second_pass.keys():
     qs = query.get(k)
     if qs is None:
         continue
-    query[k] = q = {'query': qs}
+    query[k] = q = {"query": qs}
     q.update(v)
 
 # doesn't normal call catalog unless some field has been queried
@@ -119,7 +120,7 @@ if show_query:
             ensureFriendlyTypes(query)
         if use_navigation_root:
             rootAtNavigationRoot(query)
-        query['show_inactive'] = show_inactive
+        query["show_inactive"] = show_inactive
         results = catalog(**query)
     except ParseError:
         pass

@@ -1,7 +1,9 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    i18n_domain="plone.registry">
+    i18n_domain="plone.registry"
+    >
 
-    <include package=".browser" />
+  <include package=".browser" />
+  <subscriber handler=".eventhandlers.check_registry_update" />
 
 </configure>

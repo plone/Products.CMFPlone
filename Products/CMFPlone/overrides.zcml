@@ -1,25 +1,45 @@
-<configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:zcml="http://namespaces.zope.org/zcml"
-           xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-           i18n_domain="plone">
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
 
-    <include package="Products.CMFCore" file="overrides.zcml" />
-    <include package="five.localsitemanager" file="overrides.zcml" />
-    <include package="plone.i18n" file="overrides.zcml" />
-    <include package="plone.app.portlets" file="overrides.zcml" />
-    <include package="plone.app.multilingual" file="overrides.zcml" />
-    <include package="plone.app.dexterity" file="overrides.zcml" />
+  <include
+      package="Products.CMFCore"
+      file="overrides.zcml"
+      />
+  <include
+      package="five.localsitemanager"
+      file="overrides.zcml"
+      />
+  <include
+      package="plone.i18n"
+      file="overrides.zcml"
+      />
+  <include
+      package="plone.app.portlets"
+      file="overrides.zcml"
+      />
+  <include
+      package="plone.app.multilingual"
+      file="overrides.zcml"
+      />
+  <include
+      package="plone.app.dexterity"
+      file="overrides.zcml"
+      />
 
-    <utility
-        provides="Products.PageTemplates.interfaces.IUnicodeEncodingConflictResolver"
-        component="Products.CMFPlone.unicodeconflictresolver.UTF8EncodingConflictResolver"
-        />
+  <utility
+      provides="Products.PageTemplates.interfaces.IUnicodeEncodingConflictResolver"
+      component="Products.CMFPlone.unicodeconflictresolver.UTF8EncodingConflictResolver"
+      />
 
-    <!-- include plone plugins with plone.autoinclude -->
-    <autoIncludePluginsOverrides
-        zcml:condition="not-have disable-autoinclude"
-        target="plone"
-        file="overrides.zcml"
-        />
+  <!-- include plone plugins with plone.autoinclude -->
+  <autoIncludePluginsOverrides
+      file="overrides.zcml"
+      target="plone"
+      zcml:condition="not-have disable-autoinclude"
+      />
 
 </configure>
