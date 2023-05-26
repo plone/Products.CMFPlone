@@ -1,20 +1,18 @@
+from itertools import chain
+
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
-from itertools import chain
 from plone.autoform.form import AutoExtensibleForm
 from plone.base import PloneMessageFactory as _
-from plone.base.interfaces import ISecuritySchema
-from plone.base.interfaces import IUserGroupsSettingsSchema
+from plone.base.interfaces import ISecuritySchema, IUserGroupsSettingsSchema
 from plone.z3cform import layout
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import normalizeString
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from z3c.form import button
-from z3c.form import form
-from zope.component import getAdapter
-from zope.component import getMultiAdapter
+from z3c.form import button, form
+from zope.component import getAdapter, getMultiAdapter
 from ZTUtils import make_query
 
 
@@ -86,45 +84,49 @@ class UsersGroupsControlPanelView(BrowserView):
         )
 
         if searchGroups:
-            groupResults = searchView.merge(
-                chain(
-                    *[
-                        searchView.searchGroups(**{field: searchString})
-                        for field in ["id", "title"]
-                    ]
-                ),
-                "groupid",
-            )
-            groupResults = [
-                gtool.getGroupById(g["id"])
-                for g in groupResults
-                if g["id"] not in ignore
-            ]
-            groupResults.sort(
-                key=lambda x: x is not None and normalizeString(x.getGroupTitleOrName())
-            )
+            # Only search for all ('') if the many_groups flag is not set.
+            if not (self.many_groups) or bool(searchString):
+                groupResults = searchView.merge(
+                    chain(
+                        *[
+                            searchView.searchGroups(**{field: searchString})
+                            for field in ["id", "title"]
+                        ]
+                    ),
+                    "groupid",
+                )
+                groupResults = [
+                    gtool.getGroupById(g["id"])
+                    for g in groupResults
+                    if g["id"] not in ignore
+                ]
+                groupResults.sort(
+                    key=lambda x: x is not None and normalizeString(x.getGroupTitleOrName())
+                )
 
         if searchUsers:
-            userResults = searchView.merge(
-                chain(
-                    *[
-                        searchView.searchUsers(**{field: searchString})
-                        for field in ["login", "fullname", "email"]
-                    ]
-                ),
-                "userid",
-            )
-            userResults = [
-                mtool.getMemberById(u["id"])
-                for u in userResults
-                if u["id"] not in ignore
-            ]
-            userResults.sort(
-                key=lambda x: x is not None
-                and x.getProperty("fullname") is not None
-                and normalizeString(x.getProperty("fullname"))
-                or ""
-            )
+            # Only search for all ('') if the many_users flag is not set.
+            if not (self.many_users) or bool(searchString):
+                userResults = searchView.merge(
+                    chain(
+                        *[
+                            searchView.searchUsers(**{field: searchString})
+                            for field in ["login", "fullname", "email"]
+                        ]
+                    ),
+                    "userid",
+                )
+                userResults = [
+                    mtool.getMemberById(u["id"])
+                    for u in userResults
+                    if u["id"] not in ignore
+                ]
+                userResults.sort(
+                    key=lambda x: x is not None
+                    and x.getProperty("fullname") is not None
+                    and normalizeString(x.getProperty("fullname"))
+                    or ""
+                )
 
         return groupResults + userResults
 
