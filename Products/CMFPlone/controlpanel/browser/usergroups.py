@@ -86,45 +86,50 @@ class UsersGroupsControlPanelView(BrowserView):
         )
 
         if searchGroups:
-            groupResults = searchView.merge(
-                chain(
-                    *[
-                        searchView.searchGroups(**{field: searchString})
-                        for field in ["id", "title"]
-                    ]
-                ),
-                "groupid",
-            )
-            groupResults = [
-                gtool.getGroupById(g["id"])
-                for g in groupResults
-                if g["id"] not in ignore
-            ]
-            groupResults.sort(
-                key=lambda x: x is not None and normalizeString(x.getGroupTitleOrName())
-            )
+            # Only search for all ('') if the many_users flag is not set.
+            if not (self.many_groups) or bool(self.searchString):
+                groupResults = searchView.merge(
+                    chain(
+                        *[
+                            searchView.searchGroups(**{field: searchString})
+                            for field in ["id", "title"]
+                        ]
+                    ),
+                    "groupid",
+                )
+                groupResults = [
+                    gtool.getGroupById(g["id"])
+                    for g in groupResults
+                    if g["id"] not in ignore
+                ]
+                groupResults.sort(
+                    key=lambda x: x is not None
+                    and normalizeString(x.getGroupTitleOrName())
+                )
 
         if searchUsers:
-            userResults = searchView.merge(
-                chain(
-                    *[
-                        searchView.searchUsers(**{field: searchString})
-                        for field in ["login", "fullname", "email"]
-                    ]
-                ),
-                "userid",
-            )
-            userResults = [
-                mtool.getMemberById(u["id"])
-                for u in userResults
-                if u["id"] not in ignore
-            ]
-            userResults.sort(
-                key=lambda x: x is not None
-                and x.getProperty("fullname") is not None
-                and normalizeString(x.getProperty("fullname"))
-                or ""
-            )
+            # Only search for all ('') if the many_users flag is not set.
+            if not (self.many_users) or bool(self.searchString):
+                userResults = searchView.merge(
+                    chain(
+                        *[
+                            searchView.searchUsers(**{field: searchString})
+                            for field in ["login", "fullname", "email"]
+                        ]
+                    ),
+                    "userid",
+                )
+                userResults = [
+                    mtool.getMemberById(u["id"])
+                    for u in userResults
+                    if u["id"] not in ignore
+                ]
+                userResults.sort(
+                    key=lambda x: x is not None
+                    and x.getProperty("fullname") is not None
+                    and normalizeString(x.getProperty("fullname"))
+                    or ""
+                )
 
         return groupResults + userResults
 

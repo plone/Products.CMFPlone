@@ -552,3 +552,63 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open(self.groups_url)
         self.assertNotIn("Show all", self.browser.contents)
         self.assertNotIn("DIispfuF", self.browser.contents)
+
+    def test_usergroups_membership_many_users(self):
+        from io import StringIO
+        from lxml import etree
+
+        # add user | many_users=False | many_groups=False
+        self.browser.open(
+            "%s/@@usergroup-groupmembership?groupname=group1" % self.portal_url
+        )
+        self.browser.getControl(name="searchstring").value = "TWrMCLIo"
+        self.browser.getControl(name="form.button.Search").click()
+        self.browser.getControl(name="add:list").getControl(
+            value="TWrMCLIo"
+        ).selected = True
+        self.browser.getControl("Add selected groups and users to this group").click()
+
+        tree = etree.parse(StringIO(self.browser.contents), etree.HTMLParser())
+        result = tree.xpath("count(//table[@summary='Groups']/tbody/tr)")
+
+        # Rows with User Entries exists
+        self.assertGreater(result, 1.0, "Table should contain User Entries")
+
+        # delete the user
+        self.browser.open(
+            "%s/@@usergroup-groupmembership?groupname=group1" % self.portal_url
+        )
+        self.browser.getControl(name="searchstring").value = "TWrMCLIo"
+        self.browser.getControl(name="form.button.Search").click()
+        self.browser.getControl(name="delete:list").getControl(
+            value="TWrMCLIo"
+        ).selected = True
+        self.browser.getControl("Remove selected groups / users").click()
+
+        # set many_user and many_groups to True
+        self.browser.open("%s/@@usergroup-controlpanel" % self.portal_url)
+
+        self.browser.getControl(name="form.widgets.many_users:list").controls[
+            0
+        ].selected = True
+        self.browser.getControl(name="form.widgets.many_groups:list").controls[
+            0
+        ].selected = True
+        self.browser.getControl("Save").click()
+
+        # add user | many_users=True | many_groups=True
+        self.browser.open(
+            "%s/@@usergroup-groupmembership?groupname=group1" % self.portal_url
+        )
+        self.browser.getControl(name="searchstring").value = "j5g0xPmr"
+        self.browser.getControl(name="form.button.Search").click()
+        self.browser.getControl(name="add:list").getControl(
+            value="j5g0xPmr"
+        ).selected = True
+        self.browser.getControl("Add selected groups and users to this group").click()
+
+        tree = etree.parse(StringIO(self.browser.contents), etree.HTMLParser())
+        result = tree.xpath("count(//table[@summary='Groups']/tbody/tr)")
+
+        # No Rows with User Entries exists, only a row with a hint-text is visible
+        self.assertEqual(1.0, result, "Table should contain no User Entries")
