@@ -1,12 +1,11 @@
-from plone.app.testing import SITE_OWNER_NAME
-from plone.app.testing import SITE_OWNER_PASSWORD
+import unittest
+
+import transaction
+from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.testing.zope import Browser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from Products.CMFPlone.utils import normalizeString
-
-import transaction
-import unittest
 
 
 class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
@@ -305,7 +304,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.addHeader(
             "Authorization", f"Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}"
         )
-
+    
     def test_usergroups_control_panel_link_users(self):
         self.browser.open("%s/@@overview-controlpanel" % self.portal_url)
         # There are two Users links.  The first is the Users tab.
@@ -552,15 +551,14 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open(self.groups_url)
         self.assertNotIn("Show all", self.browser.contents)
         self.assertNotIn("DIispfuF", self.browser.contents)
-
+    
     def test_usergroups_membership_many_users(self):
         from io import StringIO
+
         from lxml import etree
 
         # add user | many_users=False | many_groups=False
-        self.browser.open(
-            "%s/@@usergroup-groupmembership?groupname=group1" % self.portal_url
-        )
+        self.browser.open("%s/@@usergroup-groupmembership?groupname=group1" % self.portal_url)
         self.browser.getControl(name="searchstring").value = "TWrMCLIo"
         self.browser.getControl(name="form.button.Search").click()
         self.browser.getControl(name="add:list").getControl(
@@ -569,23 +567,23 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl("Add selected groups and users to this group").click()
 
         tree = etree.parse(StringIO(self.browser.contents), etree.HTMLParser())
-        result = tree.xpath("count(//table[@summary='Groups']/tbody/tr)")
-
+        result = tree.xpath(
+            "count(//table[@summary='Groups']/tbody/tr)"
+        )
+        
         # Rows with User Entries exists
         self.assertGreater(result, 1.0, "Table should contain User Entries")
 
         # delete the user
-        self.browser.open(
-            "%s/@@usergroup-groupmembership?groupname=group1" % self.portal_url
-        )
+        self.browser.open("%s/@@usergroup-groupmembership?groupname=group1" % self.portal_url)
         self.browser.getControl(name="searchstring").value = "TWrMCLIo"
         self.browser.getControl(name="form.button.Search").click()
         self.browser.getControl(name="delete:list").getControl(
             value="TWrMCLIo"
         ).selected = True
-        self.browser.getControl("Remove selected groups / users").click()
-
-        # set many_user and many_groups to True
+        self.browser.getControl("Remove selected groups / users").click()        
+        
+        # set many_user and many_groups to True        
         self.browser.open("%s/@@usergroup-controlpanel" % self.portal_url)
 
         self.browser.getControl(name="form.widgets.many_users:list").controls[
@@ -597,9 +595,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl("Save").click()
 
         # add user | many_users=True | many_groups=True
-        self.browser.open(
-            "%s/@@usergroup-groupmembership?groupname=group1" % self.portal_url
-        )
+        self.browser.open("%s/@@usergroup-groupmembership?groupname=group1" % self.portal_url)
         self.browser.getControl(name="searchstring").value = "j5g0xPmr"
         self.browser.getControl(name="form.button.Search").click()
         self.browser.getControl(name="add:list").getControl(
@@ -608,7 +604,10 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl("Add selected groups and users to this group").click()
 
         tree = etree.parse(StringIO(self.browser.contents), etree.HTMLParser())
-        result = tree.xpath("count(//table[@summary='Groups']/tbody/tr)")
-
+        result = tree.xpath(
+            "count(//table[@summary='Groups']/tbody/tr)"
+        )
+        
         # No Rows with User Entries exists, only a row with a hint-text is visible
         self.assertEqual(1.0, result, "Table should contain no User Entries")
+        
