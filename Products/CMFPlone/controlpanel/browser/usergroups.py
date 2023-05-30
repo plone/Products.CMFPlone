@@ -103,7 +103,8 @@ class UsersGroupsControlPanelView(BrowserView):
                     if g["id"] not in ignore
                 ]
                 groupResults.sort(
-                    key=lambda x: x is not None and normalizeString(x.getGroupTitleOrName())
+                    key=lambda x: x is not None
+                    and normalizeString(x.getGroupTitleOrName())
                 )
 
         if searchUsers:
