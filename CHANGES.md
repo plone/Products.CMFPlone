@@ -15,6 +15,15 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.5 (2023-05-30)
+
+
+### Bug fixes:
+
+- Fix password validation tests. [tschorr] #3784
+- membershipSearch in UsersGroupsControlPanelView should respect many_groups, many_users Option and empty Searchstring |1letter #3790
+
+
 ## 6.0.5rc1 (2023-05-25)
 
 
