@@ -156,20 +156,31 @@ def restore_relations(context=None, all_relations=None):
         all_relations = unique_relations
 
     intids = getUtility(IIntIds)
-    for index, item in enumerate(all_relations, start=1):
-        if not index % 500:
-            logger.info(f"Restored {index} of {len(all_relations)} relations...")
+    new_index = 0
+    for index, item in enumerate(unique_relations, start=1):
+        # Get source object for UID. Skip relation if no object found.
+        if item["from_uuid"] is None:
+            logger.warning(f"No source object. {tuple(item.items())}.")
+            continue
+        else:
+            try:
+                source_obj = uuidToObject(item["from_uuid"])
+            except KeyError:
+                # brain exists but no object
+                source_obj = None
 
-        try:
-            source_obj = uuidToObject(item["from_uuid"])
-        except KeyError:
-            # brain exists but no object
-            source_obj = None
-        try:
-            target_obj = uuidToObject(item["to_uuid"])
-        except KeyError:
-            # brain exists but no object
+        # Get target object of UID. Do not skip relation, but update source_obj below.
+        if item["to_uuid"] is None:
             target_obj = None
+        else:
+            try:
+                target_obj = uuidToObject(item["to_uuid"])
+            except KeyError:
+                # brain exists but no object
+                target_obj = None
+        if target_obj is None:
+            logger.warning(f"No target object. {tuple(item.items())}")
+            # The source_obj will be updated to remove the broken relation below.
 
         if not source_obj:
             logger.info(f'{item["from_uuid"]} is missing')
@@ -191,8 +202,8 @@ def restore_relations(context=None, all_relations=None):
         try:
             to_id = intids.getId(target_obj)
         except KeyError:
-            logger.warning(f"No intid for {target_obj}")
-            continue
+            logger.warning(f"No intId for {target_obj}")
+            to_id = None
 
         if from_attribute == referencedRelationship:
             # Ignore linkintegrity for now. We'll rebuilt it at the end!
