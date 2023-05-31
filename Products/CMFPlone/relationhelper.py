@@ -171,13 +171,21 @@ def restore_relations(context=None, all_relations=None):
             logger.warning(f"No source object. {tuple(item.items())}.")
             continue
         else:
-            source_obj = uuidToObject(item["from_uuid"])
+            try:
+                source_obj = uuidToObject(item["from_uuid"])
+            except KeyError:
+                # brain exists but no object
+                source_obj = None
 
         # Get target object of UID. Do not skip relation, but update source_obj below.
         if item["to_uuid"] is None:
             target_obj = None
         else:
-            target_obj = uuidToObject(item["to_uuid"])
+            try:
+                target_obj = uuidToObject(item["to_uuid"])
+            except KeyError:
+                # brain exists but no object
+                target_obj = None
         if target_obj is None:
             logger.warning(f"No target object. {tuple(item.items())}")
             # The source_obj will be updated to remove the broken relation below.
@@ -192,7 +200,7 @@ def restore_relations(context=None, all_relations=None):
         # Get intId for target_obj.
         try:
             to_id = intids.getId(target_obj)
-        except KeyError as e:
+        except KeyError:
             logger.warning(f"No intId for {target_obj}")
             to_id = None
 
