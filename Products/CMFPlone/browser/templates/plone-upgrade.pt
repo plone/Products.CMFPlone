@@ -45,15 +45,15 @@
         </header>
         <article class="row mb-4">
           <div class="col-md-12 mb-3">
-            <p class="alert-success p-2" tal:condition="versions/equal">
+            <p class="alert alert-success p-2" tal:condition="versions/equal">
               <span i18n:translate="" tal:omit-tag="">Your site is up to date.</span>
             </p>
 
-            <p class="alert-danger p-2" tal:condition="versions/instance_gt">
+            <p class="alert alert-danger p-2" tal:condition="versions/instance_gt">
               <strong i18n:translate="">Warning!</strong> <span i18n:translate="">Your database requires a newer version of Plone than you are currently using. This is a dangerous situation. Please upgrade your Plone version as soon as possible.</span>
             </p>
 
-            <p class="alert-warning p-2" tal:condition="versions/instance_lt">
+            <p class="alert alert-warning p-2" tal:condition="versions/instance_lt">
               <span i18n:translate="">The site configuration is outdated and needs to be upgraded.</span>
             </p>
             <dl tal:condition="versions/instance_lt">
@@ -72,7 +72,7 @@
             </dl>
 
             <tal:volto tal:condition="python: versions['equal'] and view.can_migrate_to_volto()">
-              <p class="alert-success p-2" i18n:translate="">
+              <p class="alert alert-success p-2" i18n:translate="">
                 You can prepare your site for Volto, the default frontend of Plone 6!
               </p>
               <a class="p-2" i18n:translate=""
@@ -91,7 +91,7 @@
               Upgrade steps
             </h3>
 
-            <p class="alert-danger p-2" i18n:translate="">
+            <p class="alert alert-danger p-2" i18n:translate="">
                 Please ensure <strong>you have a backup of your site</strong> before performing the upgrade.
             </p>
 
