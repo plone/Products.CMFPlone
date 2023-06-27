@@ -96,6 +96,10 @@ I reorder the elements
 
 The Order Should Be
     [Arguments]  ${first}  ${second}  ${third}  ${fourth}
+    Wait Until Element Is Visible  css=#doc${first}
+    Wait Until Element Is Visible  css=#doc${second}
+    Wait Until Element Is Visible  css=#doc${third}
+    Wait Until Element Is Visible  css=#doc${fourth}
     Should be above  css=tr[data-id="doc${first}"]   css=tr[data-id="doc${second}"]
     Should be above  css=tr[data-id="doc${second}"]  css=tr[data-id="doc${third}"]
     Should be above  css=tr[data-id="doc${third}"]   css=tr[data-id="doc${fourth}"]
