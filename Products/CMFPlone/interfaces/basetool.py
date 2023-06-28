@@ -1,4 +1,4 @@
 from zope.deprecation import moved
 
 
-moved('plone.base.interfaces.basetool', 'Version 7.0')
+moved("plone.base.interfaces.basetool", "Version 7.0")

@@ -15,42 +15,43 @@ from zope.lifecycleevent import ObjectModifiedEvent
 
 
 class DateTimeTests(PloneTestCase):
-
     def testModificationDate(self):
         obj = self.folder
         before = DateTime()
         notify(ObjectModifiedEvent(obj))
         after = DateTime()
-        modified = obj.ModificationDate()   # the string representation...
-        modified = DateTime(modified)       # is usually parsed again in Plone
-        self.assertTrue(int(before) <= int(modified) <= int(after),
-                        (before, modified, after))
+        modified = obj.ModificationDate()  # the string representation...
+        modified = DateTime(modified)  # is usually parsed again in Plone
+        self.assertTrue(
+            int(before) <= int(modified) <= int(after), (before, modified, after)
+        )
 
     def testCreationDate(self):
         before = DateTime()
-        obj = self.folder[self.folder.invokeFactory('Document', 'foo')]
+        obj = self.folder[self.folder.invokeFactory("Document", "foo")]
         after = DateTime()
-        creation = obj.CreationDate()       # the string representation...
-        creation = DateTime(creation)       # is usually parsed again in Plone
-        self.assertTrue(int(before) <= int(creation) <= int(after),
-                        (before, creation, after))
+        creation = obj.CreationDate()  # the string representation...
+        creation = DateTime(creation)  # is usually parsed again in Plone
+        self.assertTrue(
+            int(before) <= int(creation) <= int(after), (before, creation, after)
+        )
 
     def testEffectiveDate(self):
         obj = self.folder
-        date = DateTime() + 365             # expire one year from today
-        date = DateTime(date.ISO8601())     # but strip off milliseconds
+        date = DateTime() + 365  # expire one year from today
+        date = DateTime(date.ISO8601())  # but strip off milliseconds
         obj.setEffectiveDate(date)
         notify(ObjectModifiedEvent(obj))
-        effective = obj.EffectiveDate()     # the string representation...
-        effective = DateTime(effective)     # is usually parsed again in Plone
+        effective = obj.EffectiveDate()  # the string representation...
+        effective = DateTime(effective)  # is usually parsed again in Plone
         self.assertTrue(date.equalTo(effective), (date, effective))
 
     def testExpirationDate(self):
         obj = self.folder
-        date = DateTime() + 365             # expire one year from today
-        date = DateTime(date.ISO8601())     # but strip off milliseconds
+        date = DateTime() + 365  # expire one year from today
+        date = DateTime(date.ISO8601())  # but strip off milliseconds
         obj.setExpirationDate(date)
         notify(ObjectModifiedEvent(obj))
-        expired = obj.ExpirationDate()      # the string representation...
-        expired = DateTime(expired)         # is usually parsed again in Plone
+        expired = obj.ExpirationDate()  # the string representation...
+        expired = DateTime(expired)  # is usually parsed again in Plone
         self.assertTrue(date.equalTo(expired), (date, expired))

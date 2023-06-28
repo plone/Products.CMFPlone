@@ -7,7 +7,6 @@ from zope.component import getUtility
 
 
 class SiteLogo(Download):
-
     def __init__(self, context, request):
         super().__init__(context, request)
         self.filename = None
@@ -15,7 +14,7 @@ class SiteLogo(Download):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSchema, prefix="plone")
-        if getattr(settings, 'site_logo', False):
+        if getattr(settings, "site_logo", False):
             filename, data = b64decode_file(settings.site_logo)
             data = NamedImage(data=data, filename=filename)
             self.data = data

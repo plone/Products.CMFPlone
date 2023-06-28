@@ -6,7 +6,6 @@ from z3c.form import interfaces
 
 
 class SiteControlPanelForm(controlpanel.RegistryEditForm):
-
     id = "SiteControlPanel"
     label = _("Site Settings")
     description = _("Site-wide settings.")
@@ -15,13 +14,13 @@ class SiteControlPanelForm(controlpanel.RegistryEditForm):
 
     def updateFields(self):
         super().updateFields()
-        self.fields['site_logo'].widgetFactory = NamedImageFieldWidget
-        self.fields['site_favicon'].widgetFactory = NamedImageFieldWidget
+        self.fields["site_logo"].widgetFactory = NamedImageFieldWidget
+        self.fields["site_favicon"].widgetFactory = NamedImageFieldWidget
 
     def updateWidgets(self):
         super().updateWidgets()
         # hide the default_page field/widgets
-        self.widgets['default_page'].mode = interfaces.HIDDEN_MODE
+        self.widgets["default_page"].mode = interfaces.HIDDEN_MODE
 
 
 class SiteControlPanel(controlpanel.ControlPanelFormWrapper):

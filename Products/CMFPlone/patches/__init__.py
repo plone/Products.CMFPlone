@@ -13,7 +13,7 @@ from . import unicodeFallbackPatch  # Makes the TAL engine in Zope 2.10+ accept
 
 # utf-8 encoded strings as well as Unicode
 
-csrf.applyPatches()             # CSRF attacks
+csrf.applyPatches()  # CSRF attacks
 
 from . import iso8601  # use `DateTime.ISO8601` for `DateTime.ISO`
 from . import speed  # Various caching patches to improve speed

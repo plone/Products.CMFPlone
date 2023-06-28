@@ -9,23 +9,24 @@ import unittest
 
 
 optionflags = (
-    doctest.ELLIPSIS |
-    doctest.NORMALIZE_WHITESPACE |
-    doctest.REPORT_ONLY_FIRST_FAILURE)
+    doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE | doctest.REPORT_ONLY_FIRST_FAILURE
+)
 normal_testfiles = [
-    '../README.rst',
+    "../README.rst",
 ]
 
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTests([
-        layered(
-            doctest.DocFileSuite(
-                test,
-                optionflags=optionflags,
-                globs={'pprint': pprint.pprint}
-            ),
-            layer=PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-        ) for test in normal_testfiles])
+    suite.addTests(
+        [
+            layered(
+                doctest.DocFileSuite(
+                    test, optionflags=optionflags, globs={"pprint": pprint.pprint}
+                ),
+                layer=PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING,
+            )
+            for test in normal_testfiles
+        ]
+    )
     return suite

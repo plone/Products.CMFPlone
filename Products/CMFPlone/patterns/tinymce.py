@@ -200,7 +200,7 @@ class TinyMCESettingsGenerator:
             except ValueError:
                 pass
 
-        # add safe_html settings, which are useed in backend for filtering:
+        # add safe_html settings, which are used in backend for filtering:
         if not self.filter_settings.disable_filtering:
             valid_tags = self.filter_settings.valid_tags
             nasty_tags = self.filter_settings.nasty_tags
