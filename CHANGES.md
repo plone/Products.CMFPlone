@@ -15,6 +15,27 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.6 (2023-06-27)
+
+
+### Internal:
+
+- Prepare 6.0.6 final release.  No changes since the release candidate.
+  [maurits] #606
+
+
+## 6.0.6rc1 (2023-06-22)
+
+
+### Bug fixes:
+
+- Fix repairing relations.
+  [ksuess] #3457
+- Fix alerts to follow Bootstrap convention.
+  [petschki] #3806
+- Updated metadata version to 6017.  [maurits] #6017
+
+
 ## 6.0.5 (2023-05-30)
 
 
