@@ -44,7 +44,7 @@
              tal:condition="sites">
             <tal:loop tal:repeat="site sites">
                 <div tal:define="outdated python: view.outdated(site);"
-                     class="mb-3 ${python: 'p-3 alert-warning' if outdated else ''}">
+                     class="mb-3 ${python: 'p-3 alert alert-warning' if outdated else ''}">
                     <p tal:condition="outdated" i18n:translate="">This site configuration is outdated and needs to be upgraded:</p>
                     <a href="#" id="go-to-site-link" class="btn btn-primary ${python:'btn-lg' if not many and not outdated  else ''}"
                         tal:attributes="href site/absolute_url"
@@ -76,7 +76,7 @@
             </p>
             <p i18n:translate=""
                tal:condition="not:sites"
-               class="alert-warning p-1">
+               class="alert alert-warning p-1">
                 Your Plone site has not been added yet.
             </p>
             <form id="add-plone-site"
