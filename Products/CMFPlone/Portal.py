@@ -29,7 +29,6 @@ from Products.CMFCore.PortalObject import PortalObjectBase
 from Products.CMFCore.Skinnable import SkinnableObjectManager
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone import bbb
 from Products.Five.component.interfaces import IObjectManagerSite
 from zope.event import notify
@@ -45,7 +44,7 @@ if bbb.HAS_ZSERVER:
 
 
 @implementer(IPloneSiteRoot, ISiteRoot, ISyndicatable, IObjectManagerSite)
-class PloneSite(Container, SkinnableObjectManager, UniqueObject):
+class PloneSite(Container, SkinnableObjectManager):
     """The Plone site object."""
 
     security = ClassSecurityInfo()
