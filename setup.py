@@ -65,7 +65,6 @@ setup(
         "plone.app.layout >= 2.5.15",
         "plone.app.linkintegrity >=1.0.3",
         "plone.app.locales",
-        "plone.app.multilingual",
         "plone.app.portlets",
         "plone.app.redirector",
         "plone.app.registry",

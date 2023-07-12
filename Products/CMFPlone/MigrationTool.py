@@ -101,7 +101,7 @@ ADDON_LIST = AddonList(
         Addon(profile_id="plone.app.discussion:default"),
         Addon(profile_id="plone.app.event:default"),
         Addon(profile_id="plone.app.iterate:default", check_module="plone.app.iterate"),
-        Addon(profile_id="plone.app.multilingual:default"),
+        Addon(profile_id="plone.app.multilingual:default", check_module="plone.app.multilingual"),
         Addon(profile_id="plone.app.querystring:default"),
         Addon(profile_id="plone.app.theming:default"),
         Addon(profile_id="plone.app.users:default"),

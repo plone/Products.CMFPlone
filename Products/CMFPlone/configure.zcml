@@ -49,7 +49,7 @@
   <include package="plone.app.layout" />
   <include package="plone.app.linkintegrity" />
   <include package="plone.app.locales" />
-  <include package="plone.app.multilingual" />
+  <include zcml:condition="installed plone.app.multilingual" package="plone.app.multilingual" />
   <include package="plone.app.portlets" />
   <include package="plone.app.redirector" />
   <include package="plone.app.registry" />
