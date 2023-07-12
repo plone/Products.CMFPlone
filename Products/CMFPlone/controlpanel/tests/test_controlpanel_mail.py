@@ -16,23 +16,23 @@ class MailRegistryIntegrationTest(unittest.TestCase):
     layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
     def setUp(self):
-        self.portal = self.layer['portal']
-        self.request = self.layer['request']
+        self.portal = self.layer["portal"]
+        self.request = self.layer["request"]
         registry = getUtility(IRegistry)
-        self.settings = registry.forInterface(
-            IMailSchema, prefix="plone")
+        self.settings = registry.forInterface(IMailSchema, prefix="plone")
 
     def test_mail_controlpanel_view(self):
-        view = getMultiAdapter((self.portal, self.portal.REQUEST),
-                               name="mail-controlpanel")
+        view = getMultiAdapter(
+            (self.portal, self.portal.REQUEST), name="mail-controlpanel"
+        )
         self.assertTrue(view())
 
     def test_mail_in_controlpanel(self):
         self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
-        self.assertTrue('MailHost' in [
-            a.getAction(self)['id']
-            for a in self.controlpanel.listActions()
-        ])
+        self.assertTrue(
+            "MailHost"
+            in [a.getAction(self)["id"] for a in self.controlpanel.listActions()]
+        )
 
     def test_mail_smtp_host_setting(self):
-        self.assertTrue(hasattr(self.settings, 'smtp_host'))
+        self.assertTrue(hasattr(self.settings, "smtp_host"))

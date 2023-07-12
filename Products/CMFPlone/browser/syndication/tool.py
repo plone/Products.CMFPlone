@@ -22,8 +22,14 @@ class SyndicationTool:
     backwards compatibility.
     """
 
-    def editProperties(self, updatePeriod=None, updateFrequency=None,
-                       updateBase=None, isAllowed=None, max_items=None):
+    def editProperties(
+        self,
+        updatePeriod=None,
+        updateFrequency=None,
+        updateBase=None,
+        isAllowed=None,
+        max_items=None,
+    ):
         """
         Edit the properties for the SystemWide defaults on the
         SyndicationTool.
@@ -78,4 +84,5 @@ class SyndicationTool:
         settings = IFeedSettings(obj)
         settings.enabled = False
 
-registerToolInterface('portal_syndication', ISyndicationTool)
+
+registerToolInterface("portal_syndication", ISyndicationTool)

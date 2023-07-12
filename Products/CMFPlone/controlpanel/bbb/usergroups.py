@@ -9,7 +9,6 @@ from zope.interface import implementer
 
 @implementer(IUserGroupsSettingsSchema)
 class UserGroupsSettingsControlPanelAdapter:
-
     adapts(IPloneSiteRoot)
 
     def __init__(self, context):
@@ -17,7 +16,8 @@ class UserGroupsSettingsControlPanelAdapter:
         self.portal = getSite()
         registry = getUtility(IRegistry)
         self.usergroups_settings = registry.forInterface(
-            IUserGroupsSettingsSchema, prefix="plone")
+            IUserGroupsSettingsSchema, prefix="plone"
+        )
 
     def get_many_groups(self):
         return self.usergroups_settings.many_groups

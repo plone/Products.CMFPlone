@@ -28,7 +28,7 @@
     If "username check" is on, users following the confirmation link from their email
     will be required to re-enter their username. This is to combat anonymous email
     sniffing attacks and it is <strong>highly recommended</strong> that you leave
-    this <strong>ON</strong> if the portal is publicly accesible.
+    this <strong>ON</strong> if the portal is publicly accessible.
   </p>
     <p>
     <input type="checkbox" name="user_check" checked="${view/user_check}" />

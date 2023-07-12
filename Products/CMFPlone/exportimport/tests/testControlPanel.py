@@ -21,31 +21,31 @@ _CONTROLPANEL_XML = b"""\
 
 
 class ControlPanelXMLAdapterTests(BodyAdapterTestCase):
-
     def _getTargetClass(self):
         from Products.CMFPlone.exportimport.controlpanel import ControlPanelXMLAdapter
+
         return ControlPanelXMLAdapter
 
     def _populate(self, obj):
         obj.registerConfiglet(
-            id='QuickInstaller',
-            name='Add/Remove Products',
-            action='string:${portal_url}/prefs_install_products_form',
-            permission='Manage portal',
-            category='Plone',
+            id="QuickInstaller",
+            name="Add/Remove Products",
+            action="string:${portal_url}/prefs_install_products_form",
+            permission="Manage portal",
+            category="Plone",
             visible=True,
-            appId='QuickInstaller',
-            icon_expr='string:${portal_url}/product_icon.png',
+            appId="QuickInstaller",
+            icon_expr="string:${portal_url}/product_icon.png",
         )
 
     def setUp(self):
         from Products.GenericSetup.interfaces import IBody
         from Products.GenericSetup.interfaces import ISetupEnviron
-        self.site = Folder('site')
+
+        self.site = Folder("site")
         self.site.portal_control_panel = PloneControlPanel()
         provideUtility(self.site.portal_control_panel, IControlPanel)
-        provideAdapter(self._getTargetClass(),
-                       (IControlPanel, ISetupEnviron), IBody)
+        provideAdapter(self._getTargetClass(), (IControlPanel, ISetupEnviron), IBody)
         self._obj = self.site.portal_control_panel
         self._BODY = _CONTROLPANEL_XML
 
@@ -53,6 +53,7 @@ class ControlPanelXMLAdapterTests(BodyAdapterTestCase):
 def test_suite():
     from unittest import makeSuite
     from unittest import TestSuite
+
     suite = TestSuite()
     suite.addTest(makeSuite(ControlPanelXMLAdapterTests))
     return suite

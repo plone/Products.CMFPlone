@@ -23,17 +23,17 @@ def profileImportedEventHandler(event):
     profile_id = event.profile_id
     if profile_id is None:
         return
-    profile_id = profile_id.replace('profile-', '')
+    profile_id = profile_id.replace("profile-", "")
     gs = event.tool
     installed_version = gs.getLastVersionForProfile(profile_id)
-    if installed_version == ('latest',):
+    if installed_version == ("latest",):
         qi = get_installer(gs, gs.REQUEST)
         actual_version = qi.get_latest_upgrade_step(profile_id)
         gs.setLastVersionForProfile(profile_id, actual_version)
 
 
 def removeBase(event):
-    """ Make Zope not to inject a <base> tag into the returned HTML
+    """Make Zope not to inject a <base> tag into the returned HTML
     https://dev.plone.org/ticket/13705
     """
     event.request.response.base = None

@@ -1,8 +1,15 @@
-<?xml version="1.0"?>
-<object name="portal_types" meta_type="Plone Types Tool">
- <property
-    name="title">Controls the available content types in your portal</property>
- <object name="Discussion Item" meta_type="Factory-based Type Information"/>
- <object name="TempFolder" meta_type="Factory-based Type Information"/>
- <object name="Plone Site" meta_type="Dexterity FTI" />
+<?xml version="1.0" encoding="utf-8"?>
+<object meta_type="Plone Types Tool"
+        name="portal_types"
+>
+  <property name="title">Controls the available content types in your portal</property>
+  <object meta_type="Factory-based Type Information"
+          name="Discussion Item"
+  />
+  <object meta_type="Factory-based Type Information"
+          name="TempFolder"
+  />
+  <object meta_type="Dexterity FTI"
+          name="Plone Site"
+  />
 </object>

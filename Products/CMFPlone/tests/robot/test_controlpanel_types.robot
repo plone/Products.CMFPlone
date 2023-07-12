@@ -16,7 +16,7 @@ Test Teardown  Run keywords  Plone Test Teardown
 
 Scenario: Allow comments for Link Type
   Given a logged-in manager
-    and Globaly enabled comments
+    and Globally enabled comments
     and the types control panel
    When I select 'Link' in types dropdown
     and Allow discussion
@@ -24,7 +24,7 @@ Scenario: Allow comments for Link Type
    When I add new Link 'my_link'
     Then Link 'my_link' should have comments enabled
 
-Scenarion: Change default workflow
+Scenario: Change default workflow
   Given a logged-in site administrator
     and the types control panel
    When I select 'Single State Workflow' workflow
@@ -44,7 +44,7 @@ the types control panel
   Go to  ${PLONE_URL}/@@content-controlpanel
   Wait until page contains  Content Settings
 
-Globaly enabled comments
+Globally enabled comments
   Go to  ${PLONE_URL}/@@discussion-settings
   Wait until page contains  Discussion settings
   Select checkbox  name=form.widgets.globally_enabled:list

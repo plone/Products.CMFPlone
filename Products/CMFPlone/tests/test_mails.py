@@ -12,7 +12,7 @@ import re
 import unittest
 
 
-OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
+OPTIONFLAGS = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE
 
 
 class MockConfiguredMailHostLayer(PloneSandboxLayer):
@@ -24,16 +24,13 @@ class MockConfiguredMailHostLayer(PloneSandboxLayer):
     def setUpPloneSite(self, portal):
         # We need to fake a valid mail setup:
         registry = getUtility(IRegistry)
-        mail_settings = registry.forInterface(IMailSchema, prefix='plone')
+        mail_settings = registry.forInterface(IMailSchema, prefix="plone")
         mail_settings.email_from_address = "mail@plone.test"
 
 
 MOCK_CONFIGURED_MAILHOST_FIXTURE = MockConfiguredMailHostLayer()
 MOCK_MAILHOST_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(
-        MOCK_CONFIGURED_MAILHOST_FIXTURE,
-    ),
-    name="MockMailHostFixture:Functional"
+    bases=(MOCK_CONFIGURED_MAILHOST_FIXTURE,), name="MockMailHostFixture:Functional"
 )
 
 
@@ -44,17 +41,25 @@ class Py23DocChecker(doctest.OutputChecker):
 
 
 def test_suite():
-    return unittest.TestSuite((
-        layered(doctest.DocFileSuite(
-            'mails.txt',
-            optionflags=OPTIONFLAGS,
-            package='Products.CMFPlone.tests',
-            checker=Py23DocChecker(),
-        ), layer=MOCK_MAILHOST_FUNCTIONAL_TESTING),
-        layered(doctest.DocFileSuite(
-            'emaillogin.rst',
-            optionflags=OPTIONFLAGS,
-            package='Products.CMFPlone.tests',
-            checker=Py23DocChecker(),
-        ), layer=MOCK_MAILHOST_FUNCTIONAL_TESTING),
-    ))
+    return unittest.TestSuite(
+        (
+            layered(
+                doctest.DocFileSuite(
+                    "mails.txt",
+                    optionflags=OPTIONFLAGS,
+                    package="Products.CMFPlone.tests",
+                    checker=Py23DocChecker(),
+                ),
+                layer=MOCK_MAILHOST_FUNCTIONAL_TESTING,
+            ),
+            layered(
+                doctest.DocFileSuite(
+                    "emaillogin.rst",
+                    optionflags=OPTIONFLAGS,
+                    package="Products.CMFPlone.tests",
+                    checker=Py23DocChecker(),
+                ),
+                layer=MOCK_MAILHOST_FUNCTIONAL_TESTING,
+            ),
+        )
+    )

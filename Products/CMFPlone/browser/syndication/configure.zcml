@@ -1,92 +1,101 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope"
-  xmlns:browser="http://namespaces.zope.org/browser"
-  xmlns:plone="http://namespaces.plone.org/plone"
-  xmlns:zcml="http://namespaces.zope.org/zcml"
-  i18n_domain="Products.CMFPlone">
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="Products.CMFPlone"
+    >
 
   <class class="plone.dexterity.content.Container">
     <implements interface="plone.base.interfaces.syndication.ISyndicatable" />
   </class>
 
   <adapter factory=".settings.FeedSettings" />
-  <adapter factory=".adapters.FolderFeed"
-    for="Products.CMFCore.interfaces._content.IFolderish" />
-  <adapter factory=".adapters.CollectionFeed"
-    for="plone.app.contenttypes.interfaces.ICollection" />
-  <adapter factory=".adapters.SearchFeed"
-    for="plone.base.interfaces.siteroot.IPloneSiteRoot"
-    provides="plone.base.interfaces.syndication.ISearchFeed" />
-  <adapter factory=".adapters.DexterityItem"
-    for="plone.dexterity.interfaces.IDexterityContent
-         plone.base.interfaces.syndication.IFeed"
-    provides="plone.base.interfaces.syndication.IFeedItem" />
+  <adapter
+      factory=".adapters.FolderFeed"
+      for="Products.CMFCore.interfaces._content.IFolderish"
+      />
+  <adapter
+      factory=".adapters.CollectionFeed"
+      for="plone.app.contenttypes.interfaces.ICollection"
+      />
+  <adapter
+      factory=".adapters.SearchFeed"
+      provides="plone.base.interfaces.syndication.ISearchFeed"
+      for="plone.base.interfaces.siteroot.IPloneSiteRoot"
+      />
+  <adapter
+      factory=".adapters.DexterityItem"
+      provides="plone.base.interfaces.syndication.IFeedItem"
+      for="plone.dexterity.interfaces.IDexterityContent
+           plone.base.interfaces.syndication.IFeed"
+      />
 
   <browser:page
-    for="plone.base.interfaces.syndication.ISyndicatable"
-    name="synPropertiesForm"
-    class=".views.SettingsFormView"
-    permission="cmf.ModifyPortalContent"
-    />
+      name="synPropertiesForm"
+      for="plone.base.interfaces.syndication.ISyndicatable"
+      class=".views.SettingsFormView"
+      permission="cmf.ModifyPortalContent"
+      />
 
   <browser:page
-    for="*"
-    name="syndication-util"
-    class=".utils.SyndicationUtil"
-    allowed_interface="plone.base.interfaces.syndication.ISyndicationUtil"
-    permission="zope2.View"
-    />
+      name="syndication-util"
+      for="*"
+      class=".utils.SyndicationUtil"
+      allowed_interface="plone.base.interfaces.syndication.ISyndicationUtil"
+      permission="zope2.View"
+      />
 
   <browser:page
-    for="plone.base.interfaces.syndication.ISyndicatable"
-    class=".views.FeedView"
-    name="atom.xml"
-    permission="zope2.View"
-    template="templates/atom.xml.pt"
-    />
+      name="atom.xml"
+      for="plone.base.interfaces.syndication.ISyndicatable"
+      class=".views.FeedView"
+      template="templates/atom.xml.pt"
+      permission="zope2.View"
+      />
 
   <browser:page
-    for="plone.base.interfaces.syndication.ISyndicatable"
-    class=".views.FeedView"
-    name="rss.xml"
-    permission="zope2.View"
-    template="templates/rss.xml.pt"
-    />
+      name="rss.xml"
+      for="plone.base.interfaces.syndication.ISyndicatable"
+      class=".views.FeedView"
+      template="templates/rss.xml.pt"
+      permission="zope2.View"
+      />
   <browser:page
-    for="plone.base.interfaces.syndication.ISyndicatable"
-    class=".views.FeedView"
-    name="RSS"
-    permission="zope2.View"
-    template="templates/RSS.pt"
-    />
+      name="RSS"
+      for="plone.base.interfaces.syndication.ISyndicatable"
+      class=".views.FeedView"
+      template="templates/RSS.pt"
+      permission="zope2.View"
+      />
 
   <browser:page
-    for="plone.base.interfaces.syndication.ISyndicatable"
-    class=".views.FeedView"
-    name="itunes.xml"
-    permission="zope2.View"
-    template="templates/itunes.xml.pt"
-    />
+      name="itunes.xml"
+      for="plone.base.interfaces.syndication.ISyndicatable"
+      class=".views.FeedView"
+      template="templates/itunes.xml.pt"
+      permission="zope2.View"
+      />
 
   <browser:page
-    for="*"
-    class=".views.SearchFeedView"
-    name="search_rss"
-    permission="zope2.View"
-    template="templates/search-rss.pt"
-    />
+      name="search_rss"
+      for="*"
+      class=".views.SearchFeedView"
+      template="templates/search-rss.pt"
+      permission="zope2.View"
+      />
 
   <browser:page
-    for="plone.base.interfaces.syndication.ISyndicatable"
-    class=".views.NewsMLFeedView"
-    name="newsml.xml"
-    permission="zope2.View"
-    template="templates/newsml.xml.pt"
-    />
+      name="newsml.xml"
+      for="plone.base.interfaces.syndication.ISyndicatable"
+      class=".views.NewsMLFeedView"
+      template="templates/newsml.xml.pt"
+      permission="zope2.View"
+      />
 
   <utility
-    factory=".tool.SyndicationTool"
-    provides="Products.CMFCore.interfaces.ISyndicationTool"
-    />
+      factory=".tool.SyndicationTool"
+      provides="Products.CMFCore.interfaces.ISyndicationTool"
+      />
 
 </configure>

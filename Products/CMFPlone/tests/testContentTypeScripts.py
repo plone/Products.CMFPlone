@@ -91,7 +91,7 @@ class TestFileURL(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory("Link", id="link", remoteUrl="file:///foo.txt")
         self.assertEqual(self.folder.link.remoteUrl, "file:///foo.txt")
 
-    # DX does not pass url trough urlparse/urlunparse like setRemoteUrl does.
+    # DX does not pass url through urlparse/urlunparse like setRemoteUrl does.
     # def testFileURLFourSlash(self):
     #     self.folder.invokeFactory('Link', id='link',
     #                               remoteUrl='file:////foo.com/baz.txt')
