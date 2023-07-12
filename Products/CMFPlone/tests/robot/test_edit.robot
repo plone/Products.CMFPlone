@@ -34,22 +34,18 @@ Scenario: Switch tabs
       and no other tab is shown
 
 Scenario: Adding a related item
-    Pass Execution  Disabled until plone.app.widgets is merged
     # Order of the next two lines is important
     # First we're creating a new item and then editing the original page
     Given a logged-in site administrator
       and at least one other item
       and an edited page
      When i click the Categorization tab
-      and i click the add related item button
-      and an overlay pops up
       and i select a related item
-      and i close the overlay
       and i save the page
      Then the related item is shown in the page
 
 Scenario: DateTime widget follows form dropdowns values
-    Pass Execution  Disabled until plone.app.widgets is merged
+    Pass Execution  Disabled because of browser native datepicker
     Given a logged-in site administrator
       and an edited page
      When i click the Dates tab
@@ -58,7 +54,7 @@ Scenario: DateTime widget follows form dropdowns values
      Then popup calendar should have the same date
 
 Scenario: Form dropdowns follows DateTime widget values
-    Pass Execution  Disabled until plone.app.widgets is merged
+    Pass Execution  Disabled because of browser native datepicker
     Given a logged-in site administrator
       and an edited page
      When i click the Dates tab
@@ -92,29 +88,14 @@ I click the ${tab} tab
     Given patterns are loaded
     Click link  ${tab}
 
-I click the add related item button
-    Click Button  xpath=//input[contains(@class, 'addreference')]
-
 I select a related item
-    Click Element  xpath=//div[contains(@class, 'overlay')]//input[@class='insertreference']
-    Wait until keyword succeeds  10s  1s  Xpath Should Match X Times  //ul[@id = 'ref_browser_items_relatedItems']/descendant::input  1
-
-I close the overlay
-   Click Element  xpath=//div[contains(@class, 'overlay')]//div[@class='close']
+    Wait For Then Click Element  jquery=.pat-relateditems-container ul.select2-choices:visible
+    Wait For Then Click Element  jquery=a.pat-relateditems-result-select:first
 
 I save the page
    Click Button  Save
 
-I select a date using the dropdowns
-    Select From List By Label  xpath=//select[@id='edit_form_effectiveDate_0_year']  2001
-    Select From List By Label  xpath=//select[@id='edit_form_effectiveDate_0_month']  January
-    Select From List By Label  xpath=//select[@id='edit_form_effectiveDate_0_day']  01
-    Select From List By Label  xpath=//select[@id='edit_form_effectiveDate_0_hour']  01
-    Select From List By Label  xpath=//select[@id='edit_form_effectiveDate_0_minute']  00
-    Select From List By Label  xpath=//select[@id='edit_form_effectiveDate_0_ampm']  AM
-
 I click the calendar icon
-
     Click Element  xpath=//span[@id='edit_form_effectiveDate_0_popup']
     Element Should Be Visible  xpath=//div[@class='calendar']
 
@@ -136,7 +117,7 @@ form dropdowns should not have the default values anymore
     Should Not Be Equal  ${dayLabel}  --
 
 the related item is shown in the page
-   Xpath Should Match X Times  //dl[@id = 'relatedItemBox']/dd  1
+    Page should contain element  css=#section-related
 
 an overlay pops up
     Wait Until Page Contains Element  xpath=//div[contains(@class, 'overlay')]//input[@class='insertreference']
