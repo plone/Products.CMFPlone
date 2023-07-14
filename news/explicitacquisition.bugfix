@@ -1,0 +1,2 @@
+Explicitly disable ``Products.CMFCore.explicitacquisition`` in Plone 6.
+[jaroel]
