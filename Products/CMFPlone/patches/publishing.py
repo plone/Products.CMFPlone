@@ -2,11 +2,12 @@
 # From Products.PloneHotfix20160419
 # Plus extras for properties.
 # Plus Products.PloneHotfix20210518.
+# Plus https://github.com/zopefoundation/Products.CMFCore/security/advisories/GHSA-4hpj-8rhv-9x87
 from OFS.PropertyManager import PropertyManager
 #from OFS.ZDOM import Document
 #from OFS.ZDOM import Node
+from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFPlone.Portal import PloneSite
-
 
 try:
     from plone.dexterity.content import Item
@@ -97,3 +98,10 @@ property_methods = (
 
 for method_name in property_methods:
     delete_method_docstring(PropertyManager, method_name)
+
+folder_filter_methods = (
+    'encodeFolderFilter',
+    'decodeFolderFilter',
+)
+for method_name in folder_filter_methods:
+    delete_method_docstring(PortalFolderBase, method_name)
