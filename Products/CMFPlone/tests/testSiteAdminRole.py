@@ -142,7 +142,6 @@ class TestSiteAdministratorRole(unittest.TestCase):
             "Portlets: Manage portlets": 1,
             "Portlets: View dashboard": 1,
             "Query Vocabulary": 0,
-            "Reply to item": 0,
             "Request review": 1,
             "Review portal content": 1,
             "Search for principals": 0,
