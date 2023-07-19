@@ -1,0 +1,3 @@
+Officially drop Python 3.7 support, as this version is end of life.
+We try not to break it though.
+[maurits]
