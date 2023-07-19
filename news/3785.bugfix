@@ -1,4 +1,0 @@
-Fixed TinyMCE menubar settings when creating new Plone Site.
-It contained "toolsview" instead of "tools" and "view" due to a missing comma.
-Nothing goes wrong in Plone 5, but it causes those two menus to miss in Plone 6.
-[maurits]

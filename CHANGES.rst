@@ -12,6 +12,25 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.13 (2023-07-20)
+-------------------
+
+Bug fixes:
+
+
+- Officially drop Python 3.7 support, as this version is end of life.
+  We try not to break it though.
+  [maurits] (#37)
+- Fixed TinyMCE menubar settings when creating new Plone Site.
+  It contained "toolsview" instead of "tools" and "view" due to a missing comma.
+  Nothing goes wrong in Plone 5, but it causes those two menus to miss in Plone 6.
+  [maurits] (#3785)
+- Do not publish unused CMFCore folder filter methods.
+  [maurits] (#3826)
+- Update metadata version to 5221, Plone 5.2.13.
+  [maurits] (#5221)
+
+
 5.2.12 (2023-04-21)
 -------------------
 
