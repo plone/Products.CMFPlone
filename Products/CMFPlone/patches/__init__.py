@@ -30,6 +30,6 @@ from . import gtbn
 from . import publishing
 from . import templatecookcheck  # Make sure templates aren't re-read in
 from . import z3c_form
-
+from . import cmfcatalogaware
 
 # production sites

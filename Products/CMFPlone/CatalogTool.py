@@ -290,6 +290,17 @@ class CatalogTool(PloneBaseTool, BaseTool):
         result.append("Anonymous")
         return result
 
+    def __url(self, ob):
+        try:
+            return aq_base(ob).UID()
+        except AttributeError:
+            return "/".join(ob.getPhysicalPath())
+
+    @security.protected(SearchZCatalog)
+    def getpath(self, rid):
+        # Return the path to a cataloged object given a 'data_record_id_'
+        return self.Indexes["path"]._unindex[rid]
+
     @security.private
     def indexObject(self, object, idxs=None):
         # Add object to catalog.
