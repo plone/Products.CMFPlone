@@ -8,6 +8,7 @@ from zope.container.interfaces import IObjectMovedEvent
 from zope.lifecycleevent.interfaces import IObjectCopiedEvent
 from zope.lifecycleevent.interfaces import IObjectCreatedEvent
 from zope.component import queryUtility
+from zope.component import ComponentLookupError
 
 
 def handleContentishEvent(ob, event):
@@ -18,25 +19,54 @@ def handleContentishEvent(ob, event):
         ob.indexObject()
 
     elif IObjectWillBeMovedEvent.providedBy(event):
-        if event.oldParent is not None:
-            catalog = queryUtility(ICatalogTool)
-            uid = catalog._CatalogTool__url(ob)
-            if uid.startswith("/") or not event.newParent:
+        # Move/Rename
+        if event.oldParent is not None and event.newParent is not None:
+            try:
+                catalog = queryUtility(ICatalogTool)
+            except ComponentLookupError:
+                # Happens when renaming a Plone Site in the ZMI.
+                # Then it is best to manually clear and rebuild
+                # the catalog later anyway.
+                # But for now do what would happen without our patch.
                 ob.unindexObject()
+            else:
+                ob_path = '/'.join(ob.getPhysicalPath())
+                rid = catalog._catalog.uids.get(ob_path)
+                if rid is not None:
+                    setattr(ob, '_v_rid', rid)
+                else:
+                    # This may happen if deferred indexing is active and an
+                    # object is added and renamed/moved in the same transaction
+                    # (e.g. moved in an IObjectAddedEvent handler)
+                    return
+        elif event.oldParent is not None:
+            # Delete
+            ob.unindexObject()
 
     elif IObjectMovedEvent.providedBy(event):
         if event.newParent is not None:
-            catalog = queryUtility(ICatalogTool)
-            uid = catalog._CatalogTool__url(ob)
-            if uid.startswith("/"):
-                # path-based catalog key.
-                # the object was unindexed at the old path
-                # and needs to be completely re-added
-                ob.indexObject()
+            rid = getattr(ob, '_v_rid', None)
+            if rid:
+                catalog = queryUtility(ICatalogTool)
+                _catalog = catalog._catalog
+
+                new_path = '/'.join(ob.getPhysicalPath())
+                old_path = _catalog.paths[rid]
+
+                del _catalog.uids[old_path]
+                _catalog.uids[new_path] = rid
+                _catalog.paths[rid] = new_path
+
+                ob.reindexObject(
+                    idxs=["allowedRolesAndUsers", "path", "getId", "id"]
+                )
+
+                delattr(ob, '_v_rid')
             else:
-                # UID-based catalog key.
-                # we can update only the indexes that are path-dependent
-                ob.reindexObject(idxs=["path", "allowedRolesAndUsers", "id", "getId"])
+                # This may happen if deferred indexing is active and an
+                # object is added and renamed/moved in the same transaction
+                # (e.g. moved in an IObjectAddedEvent handler)
+                ob.indexObject()
 
     elif IObjectCopiedEvent.providedBy(event):
         if hasattr(aq_base(ob), 'workflow_history'):
