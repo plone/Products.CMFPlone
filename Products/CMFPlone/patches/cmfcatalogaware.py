@@ -33,7 +33,7 @@ def handleContentishEvent(ob, event):
                 ob_path = '/'.join(ob.getPhysicalPath())
                 rid = catalog._catalog.uids.get(ob_path)
                 if rid is not None:
-                    setattr(ob, '_v_rid', rid)
+                    setattr(ob, '__rid', rid)
                 else:
                     # This may happen if deferred indexing is active and an
                     # object is added and renamed/moved in the same transaction
@@ -45,7 +45,7 @@ def handleContentishEvent(ob, event):
 
     elif IObjectMovedEvent.providedBy(event):
         if event.newParent is not None:
-            rid = getattr(ob, '_v_rid', None)
+            rid = getattr(ob, '__rid', None)
             if rid:
                 catalog = queryUtility(ICatalogTool)
                 _catalog = catalog._catalog
@@ -61,7 +61,7 @@ def handleContentishEvent(ob, event):
                     idxs=["allowedRolesAndUsers", "path", "getId", "id"]
                 )
 
-                delattr(ob, '_v_rid')
+                delattr(ob, '__rid')
             else:
                 # This may happen if deferred indexing is active and an
                 # object is added and renamed/moved in the same transaction
