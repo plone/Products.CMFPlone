@@ -2,6 +2,7 @@ import inspect
 from Acquisition import aq_base
 from OFS.interfaces import IObjectWillBeMovedEvent
 from Products.CMFCore.CMFCatalogAware import handleContentishEvent as orig
+from Products.CMFCore.indexing import getQueue
 from Products.CMFCore.interfaces import ICatalogTool
 from zope.container.interfaces import IObjectAddedEvent
 from zope.container.interfaces import IObjectMovedEvent
@@ -53,6 +54,9 @@ def handleContentishEvent(ob, event):
                 new_path = '/'.join(ob.getPhysicalPath())
                 old_path = _catalog.paths[rid]
 
+                # Make sure the queue is empty before we update catalog internals
+                getQueue().process()
+
                 del _catalog.uids[old_path]
                 _catalog.uids[new_path] = rid
                 _catalog.paths[rid] = new_path
@@ -78,6 +82,8 @@ def handleContentishEvent(ob, event):
 
 
 globals = orig.__globals__
-source = inspect.getsource(handleContentishEvent)
-exec(source, globals)
-orig.func_code = globals["handleContentishEvent"].__code__
+globals.update({"getQueue": getQueue})
+source = "\n" * (handleContentishEvent.__code__.co_firstlineno - 1) + inspect.getsource(handleContentishEvent)
+code = compile(source, handleContentishEvent.__code__.co_filename, 'exec')
+exec(code, globals)
+orig.__code__ = globals["handleContentishEvent"].__code__
