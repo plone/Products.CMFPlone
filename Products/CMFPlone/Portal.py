@@ -222,8 +222,7 @@ class PloneSite(Container, SkinnableObjectManager):
         return 1
 
 
-# Remove the IContentish interface so we don't listen to events that won't
-# apply to the site root, ie handleUidAnnotationEvent
-classImplementsOnly(PloneSite, implementedBy(PloneSite) - IContentish)
+# Add the IContentish interface back to the PloneSite class
+classImplementsOnly(PloneSite, implementedBy(PloneSite) + IContentish)
 
 InitializeClass(PloneSite)
