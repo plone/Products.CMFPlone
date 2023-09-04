@@ -221,8 +221,4 @@ class PloneSite(Container, SkinnableObjectManager):
         # Override DefaultDublinCoreImpl's test, since we are always viewable.
         return 1
 
-
-# Add the IContentish interface back to the PloneSite class
-classImplementsOnly(PloneSite, implementedBy(PloneSite) + IContentish)
-
 InitializeClass(PloneSite)
