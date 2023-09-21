@@ -15,6 +15,15 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.7 (2023-09-21)
+
+
+### Bug fixes:
+
+- Register site syndication settings from plone.base instead of CMFPlone.
+  [maurits] #315
+
+
 ## 6.0.7rc1 (2023-09-14)
 
 
