@@ -20,7 +20,6 @@ import webresource
 
 logger = logging.getLogger(__name__)
 
-REQUEST_CACHE_KEY = "_WEBRESOURCE_CACHE_"
 _RESOURCE_REGISTRY_MTIME = "__RESOURCE_REGISTRY_MTIME"
 GRACEFUL_DEPENDENCY_REWRITE = {
     "plone-base": "plone",
@@ -84,7 +83,9 @@ class ResourceBase:
 
     def update(self):
         # cache on request
-        cached = getattr(self.request, self._cache_attr_name(), None)
+        REQUEST_CACHE_KEY = self._cache_attr_name()
+
+        cached = getattr(self.request, REQUEST_CACHE_KEY, None)
         if cached is not None:
             self.renderer = cached
             return
