@@ -48,19 +48,19 @@ class ResourceBase:
             request_disabled_bundles.update(getattr(request, "disabled_bundles", []))
         return request_enabled_bundles, request_disabled_bundles
 
-    def _user_local_roles(self, site):
-        portal_membership = getToolByName(site, "portal_membership")
+    def _user_local_roles(self):
+        portal_membership = getToolByName(getSite(), "portal_membership")
         user = portal_membership.getAuthenticatedMember()
         return "|".join(user.getRolesInContext(self.context))
 
-    def _cache_attr_name(self, site):
+    def _cache_attr_name(self):
         hashtool = hashlib.sha256()
         hashtool.update(self.__class__.__name__.encode("utf8"))
-        hashtool.update(site.absolute_url().encode("utf8"))
+        hashtool.update(self.context.absolute_url().encode("utf8"))
         e_bundles, d_bundles = self._request_bundles()
         for bundle in e_bundles | d_bundles:
             hashtool.update(bundle.encode("utf8"))
-        hashtool.update(self._user_local_roles(site).encode("utf8"))
+        hashtool.update(self._user_local_roles().encode("utf8"))
         if not getattr(self, "registry", None):
             self.registry = getUtility(IRegistry)
             mtime = getattr(self.registry, _RESOURCE_REGISTRY_MTIME, None)
@@ -75,16 +75,16 @@ class ResourceBase:
         self.registry = getUtility(IRegistry)
         if not self.registry["plone.resources.development"]:
             site = getSite()
-            return getattr(site, self._cache_attr_name(site), None)
+            return getattr(site, self._cache_attr_name(), None)
 
     @_rendered_cache.setter
     def _rendered_cache(self, value):
         site = getSite()
-        setattr(site, self._cache_attr_name(site), value)
+        setattr(site, self._cache_attr_name(), value)
 
     def update(self):
         # cache on request
-        cached = getattr(self.request, REQUEST_CACHE_KEY, None)
+        cached = getattr(self.request, self._cache_attr_name(), None)
         if cached is not None:
             self.renderer = cached
             return
@@ -296,28 +296,24 @@ class ResourceBase:
 
 class ResourceView(ResourceBase, ViewletBase):
     """Viewlet Information for script rendering."""
+    resource_type = None
+
+    def index(self):
+        rendered = self._rendered_cache
+        if not rendered and self.resource_type is not None:
+            rendered = self.renderer[self.resource_type].render()
+            self._rendered_cache = rendered
+        return rendered
 
 
 class ScriptsView(ResourceView):
     """Script Viewlet."""
-
-    def index(self):
-        rendered = self._rendered_cache
-        if not rendered:
-            rendered = self.renderer["js"].render()
-            self._rendered_cache = rendered
-        return rendered
+    resource_type = "js"
 
 
 class StylesView(ResourceView):
     """Styles Viewlet."""
-
-    def index(self):
-        rendered = self._rendered_cache
-        if not rendered:
-            rendered = self.renderer["css"].render()
-            self._rendered_cache = rendered
-        return rendered
+    resource_type = "css"
 
 
 def update_resource_registry_mtime():
