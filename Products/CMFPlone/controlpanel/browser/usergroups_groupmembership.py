@@ -63,7 +63,7 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
             if findAll or unbatchedAll or edit or add:
                 form["searchstring"] = ""
             self.searchString = form.get("searchstring", "")
-            if findAll or bool(self.searchString):
+            if not (self.many_users) or bool(self.searchString):
                 self.searchResults = self.getPotentialMembers(self.searchString)
 
             if search or findAll:
