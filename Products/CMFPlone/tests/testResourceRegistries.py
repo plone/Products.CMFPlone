@@ -10,6 +10,7 @@ from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
 from Products.CMFPlone.resources import add_bundle_on_request
 from Products.CMFPlone.resources import remove_bundle_on_request
+from Products.CMFPlone.resources.browser.resource import _RESOURCE_REGISTRY_MTIME
 from Products.CMFPlone.resources.browser.resource import ScriptsView
 from Products.CMFPlone.resources.browser.resource import StylesView
 from Products.CMFPlone.tests import PloneTestCase
@@ -396,7 +397,6 @@ class TestExpressions(PloneTestCase.PloneTestCase):
         self.assertIn("http://test4.foo/test.css", results)
         self.assertIn("http://test3.foo/test.css", results)
 
-
     def test_scripts_authenticated(self):
         scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
         scripts.update()
@@ -455,6 +455,7 @@ class TestExpressions(PloneTestCase.PloneTestCase):
 class TestRRControlPanel(PloneTestCase.PloneTestCase):
     def setUp(self):
         self.portal = self.layer["portal"]
+        self.registry = getUtility(IRegistry)
         self.app = self.layer["app"]
         self.browser = Browser(self.app)
         self.browser.handleErrors = False
@@ -503,4 +504,44 @@ class TestRRControlPanel(PloneTestCase.PloneTestCase):
         self.assertIn(
             '<h2 class="accordion-header" id="heading-new-resource-name">',
             self.browser.contents,
+        )
+
+    def test_update_registry_mtime(self):
+        mtime = str(getattr(self.registry, _RESOURCE_REGISTRY_MTIME, ""))
+
+        add_form = self.browser.getForm(index=5)
+        add_form.getControl(name="name").value = "my-resource"
+        add_form.getControl(name="jscompilation").value = "++resource++my.resource.js"
+        add_form.getControl(name="enabled").value = "checked"
+        add_form.getControl("add").click()
+
+        # check for updates ScriptsViewlet
+        self.assertIn(
+            '++resource++my.resource.js"></script>',
+            self.browser.contents,
+        )
+
+        # new modification time has to be larger
+        self.assertTrue(
+            str(getattr(self.registry, _RESOURCE_REGISTRY_MTIME, ""))
+            > mtime
+        )
+
+        mtime = str(getattr(self.registry, _RESOURCE_REGISTRY_MTIME, ""))
+
+        # new resource form has index=3
+        my_resource_form = self.browser.getForm(index=3)
+        my_resource_form.getControl(name="enabled").value = ""
+        my_resource_form.getControl("update").click()
+
+        # check for updated ScriptsViewlet with disabled resource
+        self.assertNotIn(
+            '++resource++my.resource.js"></script>',
+            self.browser.contents,
+        )
+
+        # new modification time has to be larger
+        self.assertTrue(
+            str(getattr(self.registry, _RESOURCE_REGISTRY_MTIME, ""))
+            > mtime
         )

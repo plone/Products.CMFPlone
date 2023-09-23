@@ -62,9 +62,9 @@ class ResourceBase:
         hashtool.update(self._user_local_roles().encode("utf8"))
         if not getattr(self, "registry", None):
             self.registry = getUtility(IRegistry)
-            mtime = getattr(self.registry, _RESOURCE_REGISTRY_MTIME, None)
-            if mtime is not None:
-                hashtool.update(str(mtime).encode("utf8"))
+        mtime = getattr(self.registry, _RESOURCE_REGISTRY_MTIME, None)
+        if mtime is not None:
+            hashtool.update(str(mtime).encode("utf8"))
         return f"_v_rendered_cache_{hashtool.hexdigest()}"
 
     @property
