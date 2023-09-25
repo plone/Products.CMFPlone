@@ -1030,6 +1030,11 @@ def _check_for_collision(contained_by, id, **kwargs):
                 u'There is already an item named ${name} in this folder.',
                 mapping={u'name': id})
 
+    # containers may have a field / attribute of the same name
+    # see original fix in https://github.com/plone/plone.base/issues/35
+    if base_hasattr(contained_by, id):
+        return _("${name} is reserved.", mapping={"name": id})
+    
     if base_hasattr(contained_by, 'checkIdAvailable'):
         # This used to be called from the check_id skin script,
         # which would check the permission automatically,
