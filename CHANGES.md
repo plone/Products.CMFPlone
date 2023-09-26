@@ -15,6 +15,34 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.7 (2023-09-21)
+
+
+### Bug fixes:
+
+- Register site syndication settings from plone.base instead of CMFPlone.
+  [maurits] #315
+
+
+## 6.0.7rc1 (2023-09-14)
+
+
+### Bug fixes:
+
+- Explicitly disable ``Products.CMFCore.explicitacquisition`` in Plone 6.
+  [jaroel] explicitacquisition
+- Update `plone.app.z3cform` dependency version and deprecate `plone.app.widgets`
+  [petschki] #3821
+- Updated metadata version to 6018.
+  [maurits] #6018
+
+
+### Tests
+
+- Fix unstable robot test scenario Reorder Folder Contents.
+  [maurits] #3811
+
+
 ## 6.0.6 (2023-06-27)
 
 
