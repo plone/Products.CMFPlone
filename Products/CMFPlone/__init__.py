@@ -9,9 +9,13 @@ import zope.deferredimport
 
 __version__ = pkg_resources.require("Products.CMFPlone")[0].version
 
-if __version__ < '7':
+if __version__ < "7":
+    import Products.CMFCore.explicitacquisition
     from Products.CMFCore.explicitacquisition import PTA_ENV_KEY
-    os.environ[PTA_ENV_KEY] = os.environ.get(PTA_ENV_KEY, 'false')
+
+    # Importing (from) the module sets SKIP_PTA. We need to override that too.
+    Products.CMFCore.explicitacquisition.SKIP_PTA = os.environ[PTA_ENV_KEY] == "false"
+    os.environ[PTA_ENV_KEY] = os.environ.get(PTA_ENV_KEY, "false")
 
 cmfplone_globals = globals()
 this_module = sys.modules[__name__]
