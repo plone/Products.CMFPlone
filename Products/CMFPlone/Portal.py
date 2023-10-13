@@ -222,9 +222,4 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         # Override DefaultDublinCoreImpl's test, since we are always viewable.
         return 1
 
-
-# Remove the IContentish interface so we don't listen to events that won't
-# apply to the site root, ie handleUidAnnotationEvent
-classImplementsOnly(PloneSite, implementedBy(PloneSite) - IContentish)
-
 InitializeClass(PloneSite)
