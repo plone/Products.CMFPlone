@@ -10,6 +10,7 @@ import zope.deferredimport
 __version__ = pkg_resources.require("Products.CMFPlone")[0].version
 
 if __version__ < "7":
+    # Check for Publication through acquisition in Plone 7+
     import Products.CMFCore.explicitacquisition
     from Products.CMFCore.explicitacquisition import PTA_ENV_KEY
 
