@@ -120,7 +120,6 @@ setup(
     extras_require={
         "test": [
             "lxml",
-            "mock",
             "plone.app.robotframework>=1.0",
             "robotframework-debuglibrary",
             "plone.app.testing",
