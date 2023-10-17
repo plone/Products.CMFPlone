@@ -1,1 +1,1 @@
-cleanup: remove mock dependencie from test dependencies.
+cleanup: remove `mock` from test dependencies. @jairhenrique 
