@@ -15,6 +15,41 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.0a1.dev0 (2023-10-18)
+
+
+### New features:
+
+- Remove deprecated ``plone.app.widgets``
+  [petschki] #3686
+- Add `plone-61` as zcml feature, and define `PLONE61MARKER` as True.
+  [maurits] #6100
+
+
+### Bug fixes:
+
+- Explicitly disable ``Products.CMFCore.explicitacquisition`` in Plone 6.
+  [jaroel] explicitacquisition
+- Register site syndication settings from plone.base instead of CMFPlone.
+  [maurits] #315
+- Remove the plone.app.multilingual dependency
+  [@folix-01] #3779
+- Do not use `UniqueObject` class for `PlonePortal`
+  [petschki] #3823
+- Fix deprecated imports.
+  [petschki] #3830
+- avoid searching all users after group editing, when many_users is flagged @mamico #3845
+- Updated metadata version to 6019.
+  [maurits] #6019
+- Updated metadata version to 6100.
+  [maurits] #6100
+
+
+### Internal:
+
+- cleanup: remove `mock` from test dependencies. @jairhenrique #3857
+
+
 ## 6.0.7 (2023-09-21)
 
 
