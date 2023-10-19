@@ -2,7 +2,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = "6.0.8.dev0"
+version = "6.1.0a1.dev1"
 
 
 setup(
@@ -120,7 +120,6 @@ setup(
     extras_require={
         "test": [
             "lxml",
-            "mock",
             "plone.app.robotframework>=1.0",
             "robotframework-debuglibrary",
             "plone.app.testing",
