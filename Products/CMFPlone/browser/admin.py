@@ -176,7 +176,11 @@ class AddPloneSite(BrowserView):
         ]
         utils = getAllUtilitiesRegisteredFor(INonInstallable)
         for util in utils:
-            not_installable.extend(util.getNonInstallableProfiles())
+            not_installable.extend(
+                util.getNonInstallableProfiles()
+                if hasattr(util, "getNonInstallableProfiles")
+                else []
+            )
 
         for info in profile_registry.listProfileInfo():
             if info.get("type") == EXTENSION and info.get("for") in (
