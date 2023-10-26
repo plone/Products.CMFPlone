@@ -1,2 +1,0 @@
-Fix problem when adding a Plone site with a custom INonInstallable utility without a getNonInstallableProfiles method.
-Fixes [issue 3862](https://github.com/plone/Products.CMFPlone/issues/3862).

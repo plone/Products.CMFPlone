@@ -15,6 +15,17 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.8rc1 (2023-10-26)
+
+
+### Bug fixes:
+
+- Fix problem when adding a Plone site with a custom INonInstallable utility without a getNonInstallableProfiles method.
+  Fixes [issue 3862](https://github.com/plone/Products.CMFPlone/issues/3862). #3862
+- Updated metadata version to 6019.
+  [maurits] #6019
+
+
 ## 6.0.7 (2023-09-21)
 
 
