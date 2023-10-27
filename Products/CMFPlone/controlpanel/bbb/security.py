@@ -7,12 +7,20 @@ from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
 
+import warnings
+
 
 @implementer(ISecuritySchema)
 class SecurityControlPanelAdapter:
     adapts(IPloneSiteRoot)
 
     def __init__(self, context):
+        warnings.warn(
+            f"Usage of bbb controlpanel '{self.__class__.__name__}' is deprecated."
+            "Use registry record plone.base.interfaces.ISecuritySchema instead."
+            "It will be removed in Plone 6.1",
+            DeprecationWarning,
+        )
         self.portal = getSite()
         self.pmembership = getToolByName(context, "portal_membership")
         registry = getUtility(IRegistry)

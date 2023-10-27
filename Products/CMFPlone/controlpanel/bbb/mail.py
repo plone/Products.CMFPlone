@@ -7,12 +7,20 @@ from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
 
+import warnings
+
 
 @implementer(IMailSchema)
 class MailControlPanelAdapter:
     adapts(IPloneSiteRoot)
 
     def __init__(self, context):
+        warnings.warn(
+            f"Usage of bbb controlpanel '{self.__class__.__name__}' is deprecated."
+            "Use registry record plone.base.interfaces.controlpanel.IMailSchema instead."
+            "It will be removed in Plone 6.1",
+            DeprecationWarning,
+        )
         self.context = context
         self.portal = getSite()
         registry = getUtility(IRegistry)

@@ -5,12 +5,20 @@ from zope.component import adapts
 from zope.component import getUtility
 from zope.interface import implementer
 
+import warnings
+
 
 @implementer(IEditingSchema)
 class EditingControlPanelAdapter:
     adapts(IPloneSiteRoot)
 
     def __init__(self, context):
+        warnings.warn(
+            f"Usage of bbb controlpanel '{self.__class__.__name__}' is deprecated."
+            "Use registry record plone.base.interfaces.IEditingSchema instead."
+            "It will be removed in Plone 6.1",
+            DeprecationWarning,
+        )
         registry = getUtility(IRegistry)
         self.settings = registry.forInterface(IEditingSchema, prefix="plone")
 
