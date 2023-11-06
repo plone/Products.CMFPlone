@@ -15,6 +15,15 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.8 (2023-11-06)
+
+
+### Internal:
+
+- Prepare 6.0.8 final. No changes compared to the release candidate.
+  [maurits] #608
+
+
 ## 6.0.8rc1 (2023-10-26)
 
 
