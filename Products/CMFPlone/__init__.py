@@ -10,8 +10,10 @@ import zope.deferredimport
 __version__ = pkg_resources.require("Products.CMFPlone")[0].version
 
 if __version__ < '7':
-    from Products.CMFCore.explicitacquisition import PTA_ENV_KEY
+    from Products.CMFCore import explicitacquisition
+    PTA_ENV_KEY = explicitacquisition.PTA_ENV_KEY
     os.environ[PTA_ENV_KEY] = os.environ.get(PTA_ENV_KEY, 'false')
+    explicitacquisition.SKIP_PTA = os.environ.get(PTA_ENV_KEY, "true") == "false"
 
 cmfplone_globals = globals()
 this_module = sys.modules[__name__]
