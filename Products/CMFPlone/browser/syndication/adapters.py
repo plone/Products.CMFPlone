@@ -1,6 +1,6 @@
 from DateTime import DateTime
 from OFS.interfaces import IItem
-from plone.app.contenttypes.behaviors.leadimage import ILeadImage
+from plone.app.contenttypes.behaviors.leadimage import ILeadImageBehavior
 from plone.base.interfaces.syndication import IFeed
 from plone.base.interfaces.syndication import IFeedItem
 from plone.base.interfaces.syndication import IFeedSettings
@@ -273,7 +273,7 @@ class DexterityItem(BaseItem):
     def __init__(self, context, feed):
         super().__init__(context, feed)
         self.dexterity = IDexterityContent.providedBy(context)
-        lead = ILeadImage(self.context, None)
+        lead = ILeadImageBehavior(self.context, None)
         if lead:
             if (
                 lead.image
