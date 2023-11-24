@@ -2,16 +2,15 @@ from plone.base.interfaces import IPloneSiteRoot
 from plone.base.interfaces.controlpanel import IMailSchema
 from plone.base.utils import safe_hasattr
 from plone.registry.interfaces import IRegistry
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
 
 
+@adapter(IPloneSiteRoot)
 @implementer(IMailSchema)
 class MailControlPanelAdapter:
-    adapts(IPloneSiteRoot)
-
     def __init__(self, context):
         self.context = context
         self.portal = getSite()
