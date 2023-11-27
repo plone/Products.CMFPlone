@@ -14,7 +14,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import getSiteLogo
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.cachedescriptors.property import Lazy as lazy_property
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
@@ -129,9 +129,7 @@ class FolderFeed(BaseFeedData):
         )
 
     def _items(self):
-        """
-        do catalog query
-        """
+        """Do catalog query."""
         return [b.getObject() for b in self._brains()]
 
     @property
@@ -173,9 +171,9 @@ class SearchFeed(FolderFeed):
         )[start:end]
 
 
+@adapter(IItem, IFeed)
 @implementer(IFeedItem)
 class BaseItem(BaseFeedData):
-    adapts(IItem, IFeed)
 
     def __init__(self, context, feed):
         self.context = context
@@ -264,8 +262,8 @@ class BaseItem(BaseFeedData):
         return self.file.getContentType()
 
 
+@adapter(IDexterityContent, IFeed)
 class DexterityItem(BaseItem):
-    adapts(IDexterityContent, IFeed)
 
     file = None
     field_name = ""

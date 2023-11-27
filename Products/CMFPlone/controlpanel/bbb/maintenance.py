@@ -1,15 +1,14 @@
 from plone.base.interfaces import IMaintenanceSchema
 from plone.base.interfaces import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getUtility
 from zope.interface import implementer
 
 
+@adapter(IPloneSiteRoot)
 @implementer(IMaintenanceSchema)
 class MaintenanceControlPanelAdapter:
-    adapts(IPloneSiteRoot)
-
     def __init__(self, context):
         self.context = context
         registry = getUtility(IRegistry)
