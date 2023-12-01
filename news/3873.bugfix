@@ -1,2 +1,1 @@
-Fix label in plone overview install chooser. Fix for #3872
-[1letter]
+Corrected the name in a button and help text to "Classic UI" when creating a Plone site. @1letter
