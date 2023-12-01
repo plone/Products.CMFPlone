@@ -92,7 +92,7 @@
                     i18n:translate=""
                     tal:condition="view/has_volto"
                     href="${action}?site_id=Plone${site_number}&amp;classic=1"
-                    >Create Classic Plone UI site</a>
+                    >Create Classic UI Plone site</a>
                 <a class="btn btn-secondary"
                     i18n:translate=""
                     href="${action}?site_id=Plone${site_number}&amp;advanced=1"
