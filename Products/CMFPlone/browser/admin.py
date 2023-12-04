@@ -19,7 +19,7 @@ from Products.GenericSetup import profile_registry
 from Products.GenericSetup.upgrade import normalize_version
 from urllib import parse
 from ZODB.broken import Broken
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
@@ -46,9 +46,8 @@ except pkg_resources.DistributionNotFound:
 LOGGER = logging.getLogger("Products.CMFPlone")
 
 
+@adapter(IApplication, IRequest)
 class AppTraverser(DefaultPublishTraverse):
-    adapts(IApplication, IRequest)
-
     def publishTraverse(self, request, name):
         if name == "index_html":
             view = queryMultiAdapter(
