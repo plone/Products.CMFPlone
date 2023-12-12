@@ -12,7 +12,7 @@
       .bd-cheatsheet .bd-heading
         {
           padding: 1em 0;
-          background-color: #fff;
+          background-color: var(--bs-body-bg);
         }
 
     </style>
