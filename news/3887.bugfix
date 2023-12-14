@@ -1,0 +1,2 @@
+Deprecate `get_production_resource_directory` since it is not used anywhere in core.
+[@jensens]
