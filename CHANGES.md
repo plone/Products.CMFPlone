@@ -15,6 +15,27 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.9rc1 (2023-12-14)
+
+
+### Bug fixes:
+
+- Update `@@test-rendering-cheatsheet` to Bootstrap 5.3 features including color mode switcher.
+  [petschki] #3870
+- Corrected the name in a button and help text to "Classic UI" when creating a Plone site. @1letter #3873
+- Correct the behavior interface for lead image in the syndication adapter.
+  [thet] #3877
+- Change adapts to @adapter decorator.
+  [thet] #3878
+- Handle catalog queries with parenthesis inside quotes
+  [erral] #3879
+
+
+### Internal:
+
+- Updated metadata version to 6020.
+  [maurits] #6020
+
 ## 6.0.8 (2023-11-06)
 
 
