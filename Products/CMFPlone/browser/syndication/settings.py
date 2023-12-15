@@ -4,7 +4,7 @@ from plone.base.interfaces.syndication import ISiteSyndicationSettings
 from plone.base.interfaces.syndication import ISyndicatable
 from plone.registry.interfaces import IRegistry
 from zope.annotation.interfaces import IAnnotations
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getUtility
 from zope.interface import implementer
 
@@ -12,10 +12,9 @@ from zope.interface import implementer
 FEED_SETTINGS_KEY = "syndication_settings"
 
 
+@adapter(ISyndicatable)
 @implementer(IFeedSettings)
 class FeedSettings:
-    adapts(ISyndicatable)
-
     def __init__(self, context):
         self.context = context
         self.annotations = IAnnotations(context)
