@@ -50,7 +50,7 @@ class ResourceBase:
     def _user_local_roles(self):
         portal_membership = getToolByName(getSite(), "portal_membership")
         user = portal_membership.getAuthenticatedMember()
-        return "|".join(user.getRolesInContext(self.context))
+        return "|".join(sorted(set(user.getRolesInContext(self.context))))
 
     def _cache_attr_name(self):
         hashtool = hashlib.sha256()
