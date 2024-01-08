@@ -242,6 +242,7 @@ class ResourceBase:
                 url=themedata["production_js"] if external else None,
                 crossorigin="anonymous" if external else None,
                 integrity=not external,
+                **{"data-bundle": "diazo"},
             )
 
         # add Theme CSS
@@ -264,6 +265,7 @@ class ResourceBase:
                 url=themedata["production_css"] if external else None,
                 media="all",
                 rel="stylesheet",
+                **{"data-bundle": "diazo"},
             )
 
         # add Custom CSS
@@ -280,6 +282,7 @@ class ResourceBase:
                 group=root_group_css,
                 media="all",
                 rel="stylesheet",
+                **{"data-bundle": "plonecustomcss"},
             )
 
         self.renderer = {}
