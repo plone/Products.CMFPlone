@@ -1,16 +1,15 @@
 from plone.base.interfaces import IPloneSiteRoot
 from plone.base.interfaces import ISiteSchema
 from plone.registry.interfaces import IRegistry
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getUtility
 from zope.interface import implementer
 from zope.schema.fieldproperty import FieldProperty
 
 
+@adapter(IPloneSiteRoot)
 @implementer(ISiteSchema)
 class SiteControlPanelAdapter:
-    adapts(IPloneSiteRoot)
-
     def __init__(self, context):
         registry = getUtility(IRegistry)
         self.settings = registry.forInterface(ISiteSchema, prefix="plone")

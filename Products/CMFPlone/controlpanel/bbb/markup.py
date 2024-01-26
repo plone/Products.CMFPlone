@@ -1,15 +1,14 @@
 from plone.base.interfaces import IMarkupSchema
 from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getUtility
 from zope.interface import implementer
 
 
+@adapter(IPloneSiteRoot)
 @implementer(IMarkupSchema)
 class MarkupControlPanelAdapter:
-    adapts(IPloneSiteRoot)
-
     def __init__(self, context):
         registry = getUtility(IRegistry)
         self.settings = registry.forInterface(IMarkupSchema, prefix="plone")

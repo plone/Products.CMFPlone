@@ -1,5 +1,5 @@
 from plone.app.registry.browser import controlpanel
-from plone.app.z3cform.widget import SelectFieldWidget
+from plone.app.z3cform.widgets.select import Select2FieldWidget
 from plone.base.interfaces.syndication import ISiteSyndicationSettings
 from Products.CMFCore.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
@@ -17,7 +17,7 @@ class SyndicationControlPanelForm(controlpanel.RegistryEditForm):
 
     def updateFields(self):
         super().updateFields()
-        self.fields["site_rss_items"].widgetFactory = SelectFieldWidget
+        self.fields["site_rss_items"].widgetFactory = Select2FieldWidget
 
     def getSyndicationSettingsButtonShown(self):
         actions = getToolByName(self.context, "portal_actions")

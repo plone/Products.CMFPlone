@@ -1,8 +1,8 @@
 from lxml import html
-from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.theming.utils import theming_policy
 from plone.base.interfaces import IFilterSchema
 from plone.base.interfaces import ITinyMCESchema
+from plone.base.navigationroot import get_navigation_root_object
 from plone.base.utils import safe_text
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
@@ -22,7 +22,7 @@ class TinyMCESettingsGenerator:
         self.filter_settings = getUtility(IRegistry).forInterface(
             IFilterSchema, prefix="plone", check=False
         )
-        self.nav_root = getNavigationRootObject(
+        self.nav_root = get_navigation_root_object(
             self.context,
             get_portal(),
         )

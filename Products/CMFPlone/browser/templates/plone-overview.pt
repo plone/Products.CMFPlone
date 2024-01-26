@@ -92,7 +92,7 @@
                     i18n:translate=""
                     tal:condition="view/has_volto"
                     href="${action}?site_id=Plone${site_number}&amp;classic=1"
-                    >Create Classic Plone site</a>
+                    >Create Classic UI Plone site</a>
                 <a class="btn btn-secondary"
                     i18n:translate=""
                     href="${action}?site_id=Plone${site_number}&amp;advanced=1"
@@ -106,7 +106,7 @@
                 an additional frontend service to use this setup.
             </p>
             <p i18n:translate="help_create_plone_site_buttons_2">
-                The 'Create Classic Plone site' button creates a Plone site configured
+                The 'Create Classic UI Plone site' button creates a Plone site configured
                 for HTML based output, as was already supported by previous Plone versions.
                 Please consult our
                 <a href="https://6.docs.plone.org/" title="Plone 6 developer documentation"

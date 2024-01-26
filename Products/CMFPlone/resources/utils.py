@@ -8,6 +8,7 @@ from Products.CMFCore.Expression import createExprContext
 from Products.CMFCore.utils import getToolByName
 from zExceptions import NotFound
 from zope.component import queryUtility
+from zope.deprecation import deprecate
 
 import logging
 
@@ -16,7 +17,12 @@ PRODUCTION_RESOURCE_DIRECTORY = "production"
 logger = logging.getLogger(__name__)
 
 
+@deprecate(
+    "get_production_resource_directory is deprecated and will be removed in Plone 7. "
+)
 def get_production_resource_directory():
+    # this function is not used in Plone 6.1 anymore, but we keep it for
+    # backwards compatibility until Plone 7
     persistent_directory = queryUtility(IResourceDirectory, name="persistent")
     if persistent_directory is None:
         return ""

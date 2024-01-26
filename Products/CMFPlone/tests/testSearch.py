@@ -365,6 +365,21 @@ class TestSection(SearchTestCase):
                 '"spam ham"',
             ),
             (
+                # quoted term with inner parenthesis
+                '"spam (ham)"',
+                '"spam (ham)"',
+            ),
+            (
+                # quoted term with inner parenthesis
+                '"spam" (ham)',
+                '"spam" AND "("ham")"*',
+            ),
+            (
+                # quoted term with inner parenthesis
+                '"(spam ham)"',
+                '"(spam ham)"',
+            ),
+            (
                 # mixed cases
                 "Spam hAm",
                 "Spam AND hAm*",

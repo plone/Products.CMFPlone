@@ -2,16 +2,15 @@ from plone.base.interfaces import ISecuritySchema
 from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
 
 
+@adapter(IPloneSiteRoot)
 @implementer(ISecuritySchema)
 class SecurityControlPanelAdapter:
-    adapts(IPloneSiteRoot)
-
     def __init__(self, context):
         self.portal = getSite()
         self.pmembership = getToolByName(context, "portal_membership")

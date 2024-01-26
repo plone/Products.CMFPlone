@@ -1,16 +1,15 @@
 from plone.base.interfaces import ISearchSchema
 from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
 
 
+@adapter(IPloneSiteRoot)
 @implementer(ISearchSchema)
 class SearchControlPanelAdapter:
-    adapts(IPloneSiteRoot)
-
     def __init__(self, context):
         self.portal = getSite()
         registry = getUtility(IRegistry)

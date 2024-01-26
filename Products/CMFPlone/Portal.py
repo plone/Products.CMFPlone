@@ -15,7 +15,6 @@ from plone.base.permissions import ReplyToItem
 from plone.base.permissions import View
 from plone.dexterity.content import Container
 from Products.CMFCore import permissions
-from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.permissions import AccessContentsInformation
 from Products.CMFCore.permissions import AddPortalMember
@@ -32,8 +31,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import bbb
 from Products.Five.component.interfaces import IObjectManagerSite
 from zope.event import notify
-from zope.interface import classImplementsOnly
-from zope.interface import implementedBy
 from zope.interface import implementer
 from zope.interface.interfaces import ComponentLookupError
 from zope.traversing.interfaces import BeforeTraverseEvent
@@ -221,9 +218,5 @@ class PloneSite(Container, SkinnableObjectManager):
         # Override DefaultDublinCoreImpl's test, since we are always viewable.
         return 1
 
-
-# Remove the IContentish interface so we don't listen to events that won't
-# apply to the site root, ie handleUidAnnotationEvent
-classImplementsOnly(PloneSite, implementedBy(PloneSite) - IContentish)
 
 InitializeClass(PloneSite)

@@ -20,10 +20,11 @@ _CONTENT_PROFILE = "plone.app.contenttypes:plone-content"
 _IMREALLYPLONE5 = True
 
 # Marker hints for code that needs to know the major Plone version
-# Works the same way than zcml condition hints so it contains the current and the
-# last ones
+# Works the same way as zcml condition hints so it contains the current and the
+# previous ones
 PLONE52MARKER = True
 PLONE60MARKER = True
+PLONE61MARKER = True
 
 logger = getLogger("Plone")
 

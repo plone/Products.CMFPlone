@@ -2,7 +2,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = "6.0.7.dev0"
+version = "6.1.0a1.dev1"
 
 
 setup(
@@ -25,6 +25,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
     ],
     python_requires=">=3.8",
     keywords="Plone CMF Python Zope CMS Webapplication",
@@ -119,7 +120,6 @@ setup(
     extras_require={
         "test": [
             "lxml",
-            "mock",
             "plone.app.robotframework>=1.0",
             "robotframework-debuglibrary",
             "plone.app.testing",

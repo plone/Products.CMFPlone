@@ -103,7 +103,7 @@
       <element>plone.dashboard4</element>
     </value>
   </record>
-  <records interface="Products.CMFPlone.interfaces.syndication.ISiteSyndicationSettings" />
+  <records interface="plone.base.interfaces.syndication.ISiteSyndicationSettings" />
 
   <!-- Plone resource registry -->
   <record name="plone.resources.development">
