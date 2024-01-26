@@ -15,6 +15,30 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.0a1 (2024-01-26)
+
+
+### Bug fixes:
+
+- Make PloneSite have IContentish again. @Akshat2Jain @jaroel #3833
+- Fix problem when adding a Plone site with a custom INonInstallable utility without a getNonInstallableProfiles method.
+
+  Fixes: #3862. #3862
+- Update `@@test-rendering-cheatsheet` to Bootstrap 5.3 features including color mode switcher.
+  [petschki] #3870
+- Corrected the name in a button and help text to "Classic UI" when creating a Plone site. @1letter #3873
+- Correct the behavior interface for lead image in the syndication adapter.
+  [thet] #3875
+- Change adapts to @adapter decorator.
+  [thet] #3876
+- Handle catalog queries with parenthesis inside quotes
+  [erral] #3879
+- Deprecate `get_production_resource_directory` since it is not used anywhere in core.
+  [@jensens] #3887
+- Add data-bundle="diazo" back, for backward compatibility with backend.xml (Classic UI).
+  Add a data-bundle="plonecustomcss" also for @@custom.css stylesheet
+  [yurj] #3890
+
 ## 6.1.0a1.dev0 (2023-10-18)
 
 
