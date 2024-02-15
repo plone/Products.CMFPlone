@@ -8,6 +8,7 @@ from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
 from Products.CMFPlone.resources import add_bundle_on_request
 from Products.CMFPlone.resources import remove_bundle_on_request
+from Products.CMFPlone.resources.browser.resource import REQUEST_CACHE_KEY
 from Products.CMFPlone.resources.browser.resource import ScriptsView
 from Products.CMFPlone.resources.browser.resource import StylesView
 from Products.CMFPlone.tests import PloneTestCase
@@ -287,6 +288,10 @@ class TestStylesViewlet(PloneTestCase.PloneTestCase):
 
 
 class TestExpressions(PloneTestCase.PloneTestCase):
+    def logout(self):
+        setattr(self.layer["request"], REQUEST_CACHE_KEY, None)
+        logout()
+
     def setUp(self):
         # Add three bundles with three different expressions.
         registry = getUtility(IRegistry)
@@ -333,7 +338,7 @@ class TestExpressions(PloneTestCase.PloneTestCase):
             registry.records[f"plone.bundles/testbundle3.{key}"] = record
 
     def test_styles_authenticated(self):
-        styles = StylesView(self.layer["portal"], self.layer["request"], None)
+        styles = StylesView(self.portal, self.layer["request"], None)
         styles.update()
         results = styles.render()
         # Check that standard resources are still there, signalling that
@@ -346,8 +351,8 @@ class TestExpressions(PloneTestCase.PloneTestCase):
         self.assertIn("http://test3.foo/test.css", results)
 
     def test_styles_anonymous(self):
-        logout()
-        styles = StylesView(self.layer["portal"], self.layer["request"], None)
+        self.logout()
+        styles = StylesView(self.portal, self.layer["request"], None)
         styles.update()
         results = styles.render()
         # Check that standard resources are still there, signalling that
@@ -359,8 +364,25 @@ class TestExpressions(PloneTestCase.PloneTestCase):
         self.assertNotIn("http://test2.foo/member.css", results)
         self.assertIn("http://test3.foo/test.css", results)
 
+    def test_styles_on_portal_type(self):
+        styles = StylesView(self.portal, self.layer["request"], None)
+        styles.update()
+        results = styles.render()
+        # Check that special portal_type expression styles is missing on portal
+        self.assertNotIn("http://test4.foo/test.css", results)
+        self.assertIn("http://test3.foo/test.css", results)
+
+        # switch context
+        setattr(self.layer["request"], REQUEST_CACHE_KEY, None)
+        styles = StylesView(self.portal["test-file"], self.layer["request"], None)
+        styles.update()
+        results = styles.render()
+        # Check that special portal_type expression styles is available on context
+        self.assertIn("http://test4.foo/test.css", results)
+        self.assertIn("http://test3.foo/test.css", results)
+
     def test_scripts_authenticated(self):
-        scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        scripts = ScriptsView(self.portal, self.layer["request"], None)
         scripts.update()
         results = scripts.render()
         # Check that standard resources are still there, signalling that
@@ -372,8 +394,8 @@ class TestExpressions(PloneTestCase.PloneTestCase):
         self.assertIn("http://test3.foo/test.min.js", results)
 
     def test_scripts_anonymous(self):
-        logout()
-        scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        self.logout()
+        scripts = ScriptsView(self.portal, self.layer["request"], None)
         scripts.update()
         results = scripts.render()
         # Check that standard resources are still there, signalling that
@@ -384,15 +406,32 @@ class TestExpressions(PloneTestCase.PloneTestCase):
         self.assertNotIn("http://test2.foo/member.min.js", results)
         self.assertIn("http://test3.foo/test.min.js", results)
 
+    def test_scripts_on_portal_type(self):
+        scripts = ScriptsView(self.portal, self.layer["request"], None)
+        scripts.update()
+        results = scripts.render()
+        # Check that special portal_type expression scripts is missing on portal
+        self.assertNotIn("http://test4.foo/test.min.js", results)
+        self.assertIn("http://test3.foo/test.min.js", results)
+
+        # switch context
+        setattr(self.layer["request"], REQUEST_CACHE_KEY, None)
+        scripts = ScriptsView(self.portal["test-file"], self.layer["request"], None)
+        scripts.update()
+        results = scripts.render()
+        # Check that special portal_type expression scripts is available on context
+        self.assertIn("http://test4.foo/test.min.js", results)
+        self.assertIn("http://test3.foo/test.min.js", results)
+
     def test_scripts_switching_roles(self):
-        scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        scripts = ScriptsView(self.portal, self.layer["request"], None)
         scripts.update()
         results = scripts.render()
         self.assertIn("http://test2.foo/member.min.js", results)
 
-        logout()
+        self.logout()
 
-        scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        scripts = ScriptsView(self.portal, self.layer["request"], None)
         scripts.update()
         results = scripts.render()
         self.assertNotIn("http://test2.foo/member.min.js", results)
