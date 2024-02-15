@@ -1,6 +1,8 @@
 from plone.app.testing import logout
+from plone.app.testing import setRoles
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.app.testing import TEST_USER_ID
 from plone.base.interfaces import IBundleRegistry
 from plone.registry import field as regfield
 from plone.registry import Record
@@ -293,6 +295,9 @@ class TestExpressions(PloneTestCase.PloneTestCase):
         logout()
 
     def setUp(self):
+        self.portal = self.layer["portal"]
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
+
         # Add three bundles with three different expressions.
         registry = getUtility(IRegistry)
         data = {
@@ -336,6 +341,22 @@ class TestExpressions(PloneTestCase.PloneTestCase):
             record = Record(regdef[1])
             record.value = regdef[0]
             registry.records[f"plone.bundles/testbundle3.{key}"] = record
+
+        # test expression on different context
+        self.portal.invokeFactory("File", id="test-file", file=None)
+        data = {
+            "jscompilation": ("http://test4.foo/test.min.js", regfield.TextLine()),
+            "csscompilation": ("http://test4.foo/test.css", regfield.TextLine()),
+            "expression": ("python: object.portal_type == 'File'", regfield.TextLine()),
+            "enabled": (True, regfield.Bool()),
+            "depends": ("", regfield.TextLine()),
+            "load_async": (True, regfield.Bool()),
+            "load_defer": (True, regfield.Bool()),
+        }
+        for key, regdef in data.items():
+            record = Record(regdef[1])
+            record.value = regdef[0]
+            registry.records[f"plone.bundles/testbundle4.{key}"] = record
 
     def test_styles_authenticated(self):
         styles = StylesView(self.portal, self.layer["request"], None)
