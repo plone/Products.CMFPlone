@@ -77,15 +77,14 @@ a link in rich text
   Click Button  css=button[aria-label="Insert/edit link"]
 
   Given patterns are loaded
-  # Somehow this does not work:
-  # Wait For Then Click Element  css=.pat-relateditems .select2-input.select2-default
   Wait until element is visible  css=.pat-relateditems .select2-input.select2-default
   Click Element  css=.pat-relateditems .select2-input.select2-default
   Wait until element is visible  css=.pat-relateditems-result.one-level-up a.pat-relateditems-result-browse
   Click Element  css=.pat-relateditems-result.one-level-up a.pat-relateditems-result-browse
   Wait until element is visible  xpath=(//span[contains(., 'Foo')])
+  Sleep  2s
   Click Element  xpath=(//span[contains(., 'Foo')])
-  Wait until page contains  Foo
+  Wait until element is visible  css=.pat-relateditems-item-title
   Wait For Then Click Element  css=.modal-footer .btn-primary
   Wait For Then Click Element  css=#form-buttons-save
 
