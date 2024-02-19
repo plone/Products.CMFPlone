@@ -1,19 +1,15 @@
 from ..webresource import PloneScriptResource
 from ..webresource import PloneStyleResource
-from App.config import getConfiguration
 from plone.app.layout.viewlets.common import ViewletBase
 from plone.app.theming.interfaces import IThemeSettings
 from plone.app.theming.utils import theming_policy
 from plone.base.interfaces import IBundleRegistry
 from plone.registry.interfaces import IRegistry
-from Products.CMFCore.utils import getToolByName
 from time import time
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryUtility
-from zope.component.hooks import getSite
 
-import hashlib
 import logging
 import webresource
 
@@ -48,45 +44,11 @@ class ResourceBase:
             request_disabled_bundles.update(getattr(request, "disabled_bundles", []))
         return request_enabled_bundles, request_disabled_bundles
 
-    def _user_local_roles(self, site):
-        portal_membership = getToolByName(site, "portal_membership")
-        user = portal_membership.getAuthenticatedMember()
-        return "|".join(user.getRolesInContext(self.context))
-
-    def _cache_attr_name(self, site):
-        hashtool = hashlib.sha256()
-        hashtool.update(self.__class__.__name__.encode("utf8"))
-        hashtool.update(site.absolute_url().encode("utf8"))
-        e_bundles, d_bundles = self._request_bundles()
-        for bundle in e_bundles | d_bundles:
-            hashtool.update(bundle.encode("utf8"))
-        hashtool.update(self._user_local_roles(site).encode("utf8"))
-        if not getattr(self, "registry", None):
-            self.registry = getUtility(IRegistry)
-            mtime = getattr(self.registry, _RESOURCE_REGISTRY_MTIME, None)
-            if mtime is not None:
-                hashtool.update(str(mtime).encode("utf8"))
-        return f"_v_rendered_cache_{hashtool.hexdigest()}"
-
-    @property
-    def _rendered_cache(self):
-        if getConfiguration().debug_mode:
-            return
-        self.registry = getUtility(IRegistry)
-        if not self.registry["plone.resources.development"]:
-            site = getSite()
-            return getattr(site, self._cache_attr_name(site), None)
-
-    @_rendered_cache.setter
-    def _rendered_cache(self, value):
-        site = getSite()
-        setattr(site, self._cache_attr_name(site), value)
-
     def update(self):
         # cache on request
         cached = getattr(self.request, REQUEST_CACHE_KEY, None)
         if cached is not None:
-            self.renderer = cached
+            self.rendered = cached
             return
 
         # prepare
@@ -285,42 +247,34 @@ class ResourceBase:
                 **{"data-bundle": "plonecustomcss"},
             )
 
-        self.renderer = {}
-        setattr(self.request, REQUEST_CACHE_KEY, self.renderer)
+        self.rendered = {}
+        setattr(self.request, REQUEST_CACHE_KEY, self.rendered)
         resolver_js = webresource.ResourceResolver(root_group_js)
-        self.renderer["js"] = webresource.ResourceRenderer(
+        self.rendered["js"] = webresource.ResourceRenderer(
             resolver_js, base_url=self.portal_state.portal_url()
-        )
+        ).render()
         resolver_css = webresource.ResourceResolver(root_group_css)
-        self.renderer["css"] = webresource.ResourceRenderer(
+        self.rendered["css"] = webresource.ResourceRenderer(
             resolver_css, base_url=self.portal_state.portal_url()
-        )
+        ).render()
 
 
 class ResourceView(ResourceBase, ViewletBase):
-    """Viewlet Information for script rendering."""
+    """Viewlet Information for resource rendering."""
 
 
 class ScriptsView(ResourceView):
     """Script Viewlet."""
 
     def index(self):
-        rendered = self._rendered_cache
-        if not rendered:
-            rendered = self.renderer["js"].render()
-            self._rendered_cache = rendered
-        return rendered
+        return self.rendered["js"]
 
 
 class StylesView(ResourceView):
     """Styles Viewlet."""
 
     def index(self):
-        rendered = self._rendered_cache
-        if not rendered:
-            rendered = self.renderer["css"].render()
-            self._rendered_cache = rendered
-        return rendered
+        return self.rendered["css"]
 
 
 def update_resource_registry_mtime():
