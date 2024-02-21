@@ -1,0 +1,3 @@
+Adapt tests after plone.app.iterate permissions use rolemap.xml
+See https://github.com/plone/plone.app.iterate/pull/120
+[pbauer]
