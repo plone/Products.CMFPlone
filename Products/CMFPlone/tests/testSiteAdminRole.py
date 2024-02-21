@@ -174,7 +174,7 @@ class TestSiteAdministratorRole(unittest.TestCase):
             pass
         else:
             expected.update(
-                {"iterate : Check in content": 1, "iterate : Check out content": 1}
+                {"iterate : Check in content": 0, "iterate : Check out content": 0}
             )
 
         site = self.portal
