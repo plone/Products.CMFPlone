@@ -1,3 +1,0 @@
-Add data-bundle="diazo" back, for backward compatibility with backend.xml (Classic UI).
-Add a data-bundle="plonecustomcss" also for @@custom.css stylesheet
-[yurj]

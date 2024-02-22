@@ -15,6 +15,27 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.10rc1 (2024-02-22)
+
+
+### Bug fixes:
+
+- Remove volatile cached resource viewlet content to fix context aware expressions.
+  [petschki] #3789
+- Add data-bundle="diazo" back, for backward compatibility with backend.xml (Classic UI).
+  Add a data-bundle="plonecustomcss" also for @@custom.css stylesheet
+  [yurj] #3889
+- Adapt tests after plone.app.iterate permissions use rolemap.xml
+  See https://github.com/plone/plone.app.iterate/pull/120
+  [pbauer] #3907
+
+
+### Internal:
+
+- Fix robot test "When page is linked show warning". @wesleybl #3904
+- Updated metadata version to 6021.
+  [maurits] #6021
+
 ## 6.0.9 (2023-12-19)
 
 
