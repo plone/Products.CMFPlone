@@ -15,6 +15,14 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.10 (2024-02-27)
+
+
+### Internal:
+
+- Prepare 6.0.10 final. No changes compared to the release candidate.
+  [maurits] #6010
+
 ## 6.0.10rc1 (2024-02-22)
 
 
