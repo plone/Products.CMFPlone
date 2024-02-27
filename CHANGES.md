@@ -15,6 +15,24 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.0a2 (2024-02-27)
+
+
+### Bug fixes:
+
+- Remove volatile cached resource viewlet content to fix context aware expressions.
+  [petschki] #3789
+- Adapt tests after plone.app.iterate permissions use rolemap.xml
+  See https://github.com/plone/plone.app.iterate/pull/120
+  [pbauer] #3907
+- Updated metadata version to 6101.
+  [maurits] #6101
+
+
+### Internal:
+
+- Fix robot test "When page is linked show warning". @wesleybl #3902
+
 ## 6.1.0a1 (2024-01-26)
 
 
