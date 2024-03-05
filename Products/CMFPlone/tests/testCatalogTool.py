@@ -10,6 +10,7 @@ from plone.app.textfield import RichTextValue
 from plone.indexer.wrapper import IndexableObjectWrapper
 from plone.uuid.interfaces import IAttributeUUID
 from plone.uuid.interfaces import IUUID
+from plone.namedfile.file import NamedImage
 from Products.CMFCore.indexing import processQueue
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone.CatalogTool import CatalogTool
@@ -1413,6 +1414,21 @@ class TestIndexers(PloneTestCase):
         wrapped = IndexableObjectWrapper(self.doc, self.portal.portal_catalog)
         self.assertTrue(wrapped.UID)
         self.assertTrue(uuid == wrapped.UID)
+
+    def test_getIcon(self):
+        from Products.CMFPlone.CatalogTool import getIcon
+
+        get_icon = getIcon.callable
+        self.assertFalse(get_icon(self.folder))
+        # Create an item inside the test folder
+        self.folder.invokeFactory("Image", "image", title="Image")
+        # Do not get the "image" content item
+        self.assertFalse(get_icon(self.folder))
+        # Return False if item doesn't have an image
+        self.assertFalse(get_icon(self.folder.image))
+        self.folder.image.image=NamedImage(dummy.Image())
+        # Item has a proper image, return True
+        self.assertTrue(get_icon(self.folder.image))
 
 
 class TestObjectProvidedIndexExtender(unittest.TestCase):

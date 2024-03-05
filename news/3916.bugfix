@@ -1,0 +1,2 @@
+When indexing for `getIcon`, check that the returned `image` is an instance of `plone.namedfile.interfaces.IImage`
+[frapell]
