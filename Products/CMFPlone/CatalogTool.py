@@ -20,6 +20,7 @@ from plone.base.utils import safe_text
 from plone.i18n.normalizer.base import mapUnicode
 from plone.indexer import indexer
 from plone.indexer.interfaces import IIndexableObject
+from plone.namedfile.interfaces import IImage
 from Products.CMFCore.CatalogTool import _mergedLocalRoles
 from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
 from Products.CMFCore.indexing import processQueue
@@ -234,7 +235,8 @@ def getIcon(obj):
     when obj is an image or has a lead image
     or has an image field with name 'image': true else false
     """
-    return bool(getattr(obj.aq_base, "image", False))
+    img_field = getattr(obj.aq_base, "image", False)
+    return bool(IImage.providedBy(img_field))
 
 
 @indexer(Interface)
