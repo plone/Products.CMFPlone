@@ -31,7 +31,6 @@ deprecated(
     ITinyMCEPluginSchema="plone.base.interfaces.controlpanel:ITinyMCEPluginSchema",
     ITinyMCEResourceTypesSchema="plone.base.interfaces.controlpanel:ITinyMCEResourceTypesSchema",
     ITinyMCESchema="plone.base.interfaces.controlpanel:ITinyMCESchema",
-    ITinyMCESpellCheckerSchema="plone.base.interfaces.controlpanel:ITinyMCESpellCheckerSchema",
     ITypesSchema="plone.base.interfaces.controlpanel:ITypesSchema",
     IUserGroupsSettingsSchema="plone.base.interfaces.controlpanel:IUserGroupsSettingsSchema",
     IConfigurationChangedEvent="plone.base.interfaces.events:IConfigurationChangedEvent",

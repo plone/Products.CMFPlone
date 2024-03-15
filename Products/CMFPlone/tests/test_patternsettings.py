@@ -22,15 +22,6 @@ class TestTinyMCESettings(unittest.TestCase):
         )
         return json.loads(adapter.tinymce()["data-pat-tinymce"])
 
-    def test_atd_included(self):
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(ITinyMCESchema, prefix="plone")
-        settings.libraries_spellchecker_choice = "AtD"
-        login(self.layer["portal"], TEST_USER_NAME)
-        conf = self.get_conf()
-        self.assertTrue("compat3x" in conf["tiny"]["plugins"])
-        self.assertTrue("AtD" in conf["tiny"]["external_plugins"])
-
     def test_style_formats(self):
         conf = self.get_conf()
         self.assertEqual(len(conf["tiny"]["style_formats"]), 5)
