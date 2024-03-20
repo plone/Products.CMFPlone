@@ -1,0 +1,1 @@
+Fixes case where empty links would be present in the search results for content that does not have an icon. @ewohnlich 
