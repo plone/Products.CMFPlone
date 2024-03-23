@@ -21,6 +21,14 @@
   <meta:provides feature="plone-52" />
   <meta:provides feature="plone-60" />
   <meta:provides feature="plone-61" />
+  <!-- XXX plone.portlet.static has autoinclude, which does not help here.
+       So temporarily switch this off.
+       See remarks in _disable_classic_ui.py -->
+  <meta:provides feature="disable-autoinclude" />
+
+  <configure zcml:condition="installed Products.CMFPlone._disable_classic_ui">
+    <meta:provides feature="disable-classic-ui" />
+  </configure>
 
   <include
       package="Products.CMFCore"
@@ -43,10 +51,13 @@
       package="plone.app.dexterity"
       file="meta.zcml"
       />
-  <include
-      package="plone.app.portlets"
-      file="meta.zcml"
-      />
+  <configure zcml:condition="not-have disable-classic-ui">
+    <include
+        package="plone.app.portlets"
+        file="meta.zcml"
+        zcml:condition="installed plone.app.portlets"
+        />
+  </configure>
   <include
       package="plone.contentrules"
       file="meta.zcml"

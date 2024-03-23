@@ -17,12 +17,16 @@
       package="plone.i18n"
       file="overrides.zcml"
       />
+  <configure zcml:condition="not-have disable-classic-ui">
+    <include package="disable.override" />
+    <include
+        package="plone.app.portlets"
+        file="overrides.zcml"
+        zcml:condition="installed plone.app.portlets"
+        />
+  </configure>
   <include
-      package="plone.app.portlets"
-      file="overrides.zcml"
-      />
-  <include
-      zcml:condition="installed plone.app.multilingual"     
+      zcml:condition="installed plone.app.multilingual"
       package="plone.app.multilingual"
       file="overrides.zcml"
       />
