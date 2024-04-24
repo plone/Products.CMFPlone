@@ -38,24 +38,16 @@ def applyPatches():
         SMTPMailer.send = catchAllExceptions(SMTPMailer.send)
 
 
-def new_init(
-    self,
-    hostname="localhost",
-    port=25,
-    username=None,
-    password=None,
-    no_tls=False,
-    force_tls=False,
-):
-    registry = getUtility(IRegistry)
-    mail_settings = registry.forInterface(IMailSchema, prefix="plone")
-    self.hostname = mail_settings.smtp_host
-    self.port = mail_settings.smtp_port
-    self.username = mail_settings.smtp_userid
-    self.password = mail_settings.smtp_pass
-    self.force_tls = force_tls
-    self.no_tls = no_tls
-    self._smtp = _SMTPState()
+def mail_settings_wrapper(func):
+    def wrapper(self, **kwargs):
+        registry = getUtility(IRegistry)
+        mail_settings = registry.forInterface(IMailSchema, prefix="plone")
+        kwargs["hostname"] = mail_settings.smtp_host
+        kwargs["port"] = mail_settings.smtp_port
+        kwargs["username"] = mail_settings.smtp_userid
+        kwargs["password"] = mail_settings.smtp_pass
+        return func(self, **kwargs)
 
+    return wrapper
 
-SMTPMailer.__init__ = new_init
+SMTPMailer.__init__ = mail_settings_wrapper(SMTPMailer.__init__)
