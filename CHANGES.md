@@ -15,6 +15,29 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.11 (2024-04-25)
+
+
+### New features:
+
+- Extends `SMTPMailer.__init__` patch to allow to use other arguments.
+  [mamico] #3941
+
+
+### Bug fixes:
+
+- Cleanup `viewlets.xml` to not mention viewlets that no longer exist.
+  [maurits] #3911
+- When indexing for `getIcon`, check that the returned `image` is an instance of `plone.namedfile.interfaces.IImage`
+  [frapell] #3916
+
+
+### Internal:
+
+- Fix test Scenario: Select All items. @wesleybl #3930
+- Updated metadata version to 6022.
+  [maurits] #6022
+
 ## 6.0.10 (2024-02-27)
 
 
