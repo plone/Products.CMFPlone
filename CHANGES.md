@@ -15,6 +15,30 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.0a3 (2024-04-26)
+
+
+### New features:
+
+- Extends `SMTPMailer.__init__` patch to allow to use other arguments.
+  [mamico] #3941
+
+
+### Bug fixes:
+
+- Cleanup `viewlets.xml` to not mention viewlets that no longer exist.
+  [maurits] #3911
+- When indexing for `getIcon`, check that the returned `image` is an instance of `plone.namedfile.interfaces.IImage`
+  [frapell] #3916
+- Fixes case where empty links would be present in the search results for content that does not have an icon. @ewohnlich #3919
+
+
+### Internal:
+
+- Fix test Scenario: Select All items. @wesleybl #3929
+- Updated metadata version to 6102.
+  [maurits] #6102
+
 ## 6.1.0a2 (2024-02-27)
 
 
