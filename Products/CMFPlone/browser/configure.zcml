@@ -14,7 +14,7 @@
       />
 
   <class class="Products.CMFPlone.Portal.PloneSite">
-    <implements interface="plone.app.layout.navigation.interfaces.INavigationRoot" />
+    <implements interface="plone.base.interfaces.INavigationRoot" />
   </class>
 
   <class class=".navtree.NavtreeQueryBuilder">
@@ -40,7 +40,7 @@
 
   <browser:page
       name="favicon.ico"
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      for="plone.base.interfaces.INavigationRoot"
       class=".favicon.SiteFavicon"
       permission="zope.Public"
       />
@@ -62,7 +62,7 @@
 
   <browser:page
       name="breadcrumbs_view"
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      for="plone.base.interfaces.INavigationRoot"
       class=".navigation.RootPhysicalNavigationBreadcrumbs"
       allowed_attributes="breadcrumbs"
       permission="zope.Public"
@@ -139,7 +139,7 @@
 
   <browser:page
       name="accessibility-info"
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      for="plone.base.interfaces.INavigationRoot"
       template="templates/accessibility-info.pt"
       permission="zope.Public"
       />
@@ -189,7 +189,7 @@
 
   <browser:page
       name="robots.txt"
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      for="plone.base.interfaces.INavigationRoot"
       class=".robots.Robots"
       permission="zope.Public"
       />
@@ -211,7 +211,7 @@
 
   <browser:page
       name="search"
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      for="plone.base.interfaces.INavigationRoot"
       class=".search.Search"
       template="templates/search.pt"
       permission="zope2.View"
@@ -219,7 +219,7 @@
 
   <browser:page
       name="ajax-search"
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      for="plone.base.interfaces.INavigationRoot"
       class=".search.AjaxSearch"
       permission="zope2.View"
       />
