@@ -1,0 +1,3 @@
+Use `context` instead of `here` in templates.
+Call `@@main_template` (with prefix `@@`) to optimize lookup.
+[@jensens]
