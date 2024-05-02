@@ -51,7 +51,7 @@
 
   <browser:page
       name="plone-root-logout"
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      for="plone.base.interfaces.INavigationRoot"
       class=".admin.RootLogout"
       permission="zope.Public"
       />
