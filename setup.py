@@ -96,7 +96,6 @@ setup(
         "plone.staticresources",
         "plone.theme",
         "plonetheme.barceloneta",
-        "Products.CMFEditions",
         "Products.DCWorkflow",
         "Products.ExtendedPathIndex",
         "Products.isurlinportal",
