@@ -1,10 +1,13 @@
 from DateTime import DateTime
 from OFS.interfaces import IItem
 from plone.app.contenttypes.behaviors.leadimage import ILeadImageBehavior
+from plone.base.batch import Batch
+from plone.base.interfaces import IPloneSiteRoot
 from plone.base.interfaces.syndication import IFeed
 from plone.base.interfaces.syndication import IFeedItem
 from plone.base.interfaces.syndication import IFeedSettings
 from plone.base.interfaces.syndication import ISearchFeed
+from plone.base.navigationroot import get_navigation_root_object
 from plone.dexterity.interfaces import IDexterityContent
 from plone.namedfile.interfaces import INamedField
 from plone.registry.interfaces import IRegistry
@@ -154,21 +157,27 @@ class FolderFeed(BaseFeedData):
 
 class CollectionFeed(FolderFeed):
     def _brains(self):
+        # call the collection query method as defined in
+        # plone.app.contenttypes.interfaces.ICollection
+        # usually implemented at plone.aapp.contenttypes.item.collection
         return self.context.queryCatalog(batch=False)[: self.limit]
 
 
 @implementer(ISearchFeed)
 class SearchFeed(FolderFeed):
     def _brains(self):
-        max_items = self.limit
         request = self.context.REQUEST
+        navroot = get_navigation_root_object(self.context, IPloneSiteRoot(self.context))
+        catalog = getToolByName(self.context, "portal_catalog")
+        query = {
+            "path": {"query": navroot.absolute_url_path(), "depth": 1},
+            "sort_order": "reverse",
+            "sort_on": request.get("sort_on", "effective"),
+        }
+        result = catalog(**query)
         start = int(request.get("b_start", 0))
-        end = int(request.get("b_end", start + max_items))
-        request.set("sort_order", "reverse")
-        request.set("sort_on", request.get("sort_on", "effective"))
-        return self.context.queryCatalog(
-            show_all=1, use_types_blacklist=True, use_navigation_root=True
-        )[start:end]
+        end = int(request.get("b_end", start + self.limit))
+        return Batch(result, start, end)
 
 
 @adapter(IItem, IFeed)

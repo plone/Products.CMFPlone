@@ -8,11 +8,11 @@
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   tal:define="syn context/@@syndication-util;">
 
-<tal:synd tal:define="feed view/feed;
+<tal:synd tal:define="feed python:view.feed();
                       objects python: [i for i in feed.items];">
 <channel rdf:about="" tal:attributes="rdf:about request/URL">
-  <title tal:content="context/pretty_title_or_id">The title</title>
-  <link tal:content="context/portal_url">http://url.to.portal</link>
+  <title tal:content="python:context.Title() or context.getId()">The title</title>
+  <link tal:content="python:context.portal_url">http://url.to.portal</link>
 
   <image tal:attributes="rdf:resource feed/logo" />
 
@@ -29,7 +29,7 @@
 
 <tal:block repeat="item python: objects">
   <item rdf:about="" tal:attributes="rdf:about item/link">
-    <title tal:content="item/title">Title</title>
+    <title tal:content="python:item.Title()">Title</title>
     <link tal:content="item/link">Identifier</link>
     <description tal:content="item/description">Description</description>
     <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"
