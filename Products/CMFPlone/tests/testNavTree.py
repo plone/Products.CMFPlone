@@ -48,8 +48,8 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         """
         self.setRoles(["Manager"])
 
-        for item in self.portal.getFolderContents():
-            self.portal._delObject(item.getId)
+        for cid in self.portal.contentIds():
+            self.portal._delObject(cid)
 
         self.portal.invokeFactory("Document", "doc1")
         self.portal.invokeFactory("Document", "doc2")

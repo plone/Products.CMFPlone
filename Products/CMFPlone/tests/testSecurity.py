@@ -124,10 +124,6 @@ class TestAttackVectorsFunctional(PloneTestCase):
         res = self.publish("/plone/portal_membership/getMemberInfo?id=admin")
         self.assertEqual(404, res.status)
 
-    def test_queryCatalog(self):
-        res = self.publish("/plone/news/aggregator/queryCatalog")
-        self.assertEqual(404, res.status)
-
     def test_resolve_url(self):
         res = self.publish("/plone/uid_catalog/resolve_url?path=/evil")
         self.assertEqual(404, res.status)
@@ -135,10 +131,6 @@ class TestAttackVectorsFunctional(PloneTestCase):
     def test_atat_does_not_return_anything(self):
         res = self.publish("/plone/@@")
         self.assertEqual(404, res.status)
-
-    def test_getFolderContents(self):
-        res = self.publish("/plone/getFolderContents")
-        self.assertEqual(403, res.status)
 
     def test_translate(self):
         res = self.publish("/plone/translate?msgid=foo")
