@@ -1,2 +1,2 @@
-Fix deprecation warnings in navtree code. Apply black/isort to file.
+Fix deprecation warnings in "navtree" code + some micro optimizations
 [jensens]
