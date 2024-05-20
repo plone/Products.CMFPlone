@@ -2,10 +2,10 @@ from Acquisition import aq_base
 from Acquisition import aq_inner
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.navtree import buildFolderTree
-from plone.app.layout.navigation.root import getNavigationRoot
 from plone.base.defaultpage import check_default_page_via_view
 from plone.base.interfaces import IHideFromBreadcrumbs
 from plone.base.interfaces import INavigationSchema
+from plone.base.navigationroot import get_navigation_root
 from plone.base.utils import pretty_title_or_id
 from plone.base.utils import safe_callable
 from plone.registry.interfaces import IRegistry
@@ -79,7 +79,7 @@ class CatalogNavigationTabs(BrowserView):
         else:
             query = {}
 
-        query["path"] = {"query": getNavigationRoot(self.context), "depth": 1}
+        query["path"] = {"query": get_navigation_root(self.context), "depth": 1}
         query["portal_type"] = [t for t in navigation_settings.displayed_types]
         query["sort_on"] = navigation_settings.sort_tabs_on
         if navigation_settings.sort_tabs_reversed:
@@ -189,7 +189,7 @@ class CatalogNavigationBreadcrumbs(BrowserView):
         dec_result = [(len(r.getPath()), r) for r in rawresult]
         dec_result.sort()
 
-        rootPath = getNavigationRoot(context)
+        rootPath = get_navigation_root(context)
 
         # Build result dict
         result = []
@@ -234,7 +234,7 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         if IHideFromBreadcrumbs.providedBy(context):
             return base
 
-        rootPath = getNavigationRoot(context)
+        rootPath = get_navigation_root(context)
         itemPath = "/".join(context.getPhysicalPath())
 
         # don't show default pages in breadcrumbs or pages above the navigation

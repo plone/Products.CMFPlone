@@ -7,8 +7,8 @@ from Acquisition import aq_inner
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.navtree import NavtreeStrategyBase
-from plone.app.layout.navigation.root import getNavigationRoot
 from plone.base.interfaces import INavigationSchema
+from plone.base.navigationroot import get_navigation_root
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
@@ -44,7 +44,7 @@ class NavtreeQueryBuilder:
 
         # Construct the path query
 
-        rootPath = getNavigationRoot(context)
+        rootPath = get_navigation_root(context)
         currentPath = "/".join(context.getPhysicalPath())
 
         # If we are above the navigation root, a navtree query would return
@@ -115,7 +115,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         )
 
         self.showAllParents = True
-        self.rootPath = getNavigationRoot(context)
+        self.rootPath = get_navigation_root(context)
 
         membership = getToolByName(context, "portal_membership")
         self.memberId = membership.getAuthenticatedMember().getId()
@@ -196,7 +196,7 @@ class DefaultNavtreeStrategy(SitemapNavtreeStrategy):
         if view is not None:
             self.rootPath = view.navigationTreeRootPath()
         else:
-            self.rootPath = getNavigationRoot(context)
+            self.rootPath = get_navigation_root(context)
 
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)
