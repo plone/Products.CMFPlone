@@ -1,22 +1,19 @@
 from plone.base.interfaces import ISearchSchema
 from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
 
 
+@adapter(IPloneSiteRoot)
 @implementer(ISearchSchema)
 class SearchControlPanelAdapter:
-
-    adapts(IPloneSiteRoot)
-
     def __init__(self, context):
         self.portal = getSite()
         registry = getUtility(IRegistry)
-        self.search_settings = registry.forInterface(
-            ISearchSchema, prefix="plone")
+        self.search_settings = registry.forInterface(ISearchSchema, prefix="plone")
 
     def get_enable_livesearch(self):
         return self.search_settings.enable_livesearch
@@ -35,10 +32,7 @@ class SearchControlPanelAdapter:
     def set_types_not_searched(self, value):
         self.search_settings.types_not_searched = value
 
-    types_not_searched = property(
-        get_types_not_searched,
-        set_types_not_searched
-    )
+    types_not_searched = property(get_types_not_searched, set_types_not_searched)
 
     @property
     def sort_on(self):

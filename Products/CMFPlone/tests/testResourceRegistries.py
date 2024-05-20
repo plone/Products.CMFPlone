@@ -1,6 +1,8 @@
 from plone.app.testing import logout
+from plone.app.testing import setRoles
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.app.testing import TEST_USER_ID
 from plone.base.interfaces import IBundleRegistry
 from plone.registry import field as regfield
 from plone.registry import Record
@@ -8,6 +10,7 @@ from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
 from Products.CMFPlone.resources import add_bundle_on_request
 from Products.CMFPlone.resources import remove_bundle_on_request
+from Products.CMFPlone.resources.browser.resource import REQUEST_CACHE_KEY
 from Products.CMFPlone.resources.browser.resource import ScriptsView
 from Products.CMFPlone.resources.browser.resource import StylesView
 from Products.CMFPlone.tests import PloneTestCase
@@ -29,20 +32,12 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         return bundle
 
     def test_bundle_defernot_asyncnot(self):
-        bundle = self._make_test_bundle()
+        self._make_test_bundle()
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
         view.update()
         rendered = view.render()
         self.assertTrue("async=" not in rendered)
         self.assertTrue("defer=" not in rendered)
-
-    def test_bundle_defernot_async(self):
-        bundle = self._make_test_bundle()
-        bundle.load_async = True
-        bundle.load_defer = False
-        view = ScriptsView(self.app, self.app.REQUEST, None, None)
-        view.update()
-        rendered = view.render()
 
     def test_bundle_defer_asyncnot(self):
         bundle = self._make_test_bundle()
@@ -58,7 +53,6 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         bundle = self._make_test_bundle()
         bundle.load_async = True
         bundle.load_defer = False
-        request = self.app.REQUEST
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
         view.update()
         rendered = view.render()
@@ -296,8 +290,14 @@ class TestStylesViewlet(PloneTestCase.PloneTestCase):
 
 
 class TestExpressions(PloneTestCase.PloneTestCase):
+    def logout(self):
+        setattr(self.layer["request"], REQUEST_CACHE_KEY, None)
+        logout()
 
     def setUp(self):
+        self.portal = self.layer["portal"]
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
+
         # Add three bundles with three different expressions.
         registry = getUtility(IRegistry)
         data = {
@@ -342,8 +342,24 @@ class TestExpressions(PloneTestCase.PloneTestCase):
             record.value = regdef[0]
             registry.records[f"plone.bundles/testbundle3.{key}"] = record
 
+        # test expression on different context
+        self.portal.invokeFactory("File", id="test-file", file=None)
+        data = {
+            "jscompilation": ("http://test4.foo/test.min.js", regfield.TextLine()),
+            "csscompilation": ("http://test4.foo/test.css", regfield.TextLine()),
+            "expression": ("python: object.portal_type == 'File'", regfield.TextLine()),
+            "enabled": (True, regfield.Bool()),
+            "depends": ("", regfield.TextLine()),
+            "load_async": (True, regfield.Bool()),
+            "load_defer": (True, regfield.Bool()),
+        }
+        for key, regdef in data.items():
+            record = Record(regdef[1])
+            record.value = regdef[0]
+            registry.records[f"plone.bundles/testbundle4.{key}"] = record
+
     def test_styles_authenticated(self):
-        styles = StylesView(self.layer["portal"], self.layer["request"], None)
+        styles = StylesView(self.portal, self.layer["request"], None)
         styles.update()
         results = styles.render()
         # Check that standard resources are still there, signalling that
@@ -356,8 +372,8 @@ class TestExpressions(PloneTestCase.PloneTestCase):
         self.assertIn("http://test3.foo/test.css", results)
 
     def test_styles_anonymous(self):
-        logout()
-        styles = StylesView(self.layer["portal"], self.layer["request"], None)
+        self.logout()
+        styles = StylesView(self.portal, self.layer["request"], None)
         styles.update()
         results = styles.render()
         # Check that standard resources are still there, signalling that
@@ -369,8 +385,25 @@ class TestExpressions(PloneTestCase.PloneTestCase):
         self.assertNotIn("http://test2.foo/member.css", results)
         self.assertIn("http://test3.foo/test.css", results)
 
+    def test_styles_on_portal_type(self):
+        styles = StylesView(self.portal, self.layer["request"], None)
+        styles.update()
+        results = styles.render()
+        # Check that special portal_type expression styles is missing on portal
+        self.assertNotIn("http://test4.foo/test.css", results)
+        self.assertIn("http://test3.foo/test.css", results)
+
+        # switch context
+        setattr(self.layer["request"], REQUEST_CACHE_KEY, None)
+        styles = StylesView(self.portal["test-file"], self.layer["request"], None)
+        styles.update()
+        results = styles.render()
+        # Check that special portal_type expression styles is available on context
+        self.assertIn("http://test4.foo/test.css", results)
+        self.assertIn("http://test3.foo/test.css", results)
+
     def test_scripts_authenticated(self):
-        scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        scripts = ScriptsView(self.portal, self.layer["request"], None)
         scripts.update()
         results = scripts.render()
         # Check that standard resources are still there, signalling that
@@ -382,8 +415,8 @@ class TestExpressions(PloneTestCase.PloneTestCase):
         self.assertIn("http://test3.foo/test.min.js", results)
 
     def test_scripts_anonymous(self):
-        logout()
-        scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        self.logout()
+        scripts = ScriptsView(self.portal, self.layer["request"], None)
         scripts.update()
         results = scripts.render()
         # Check that standard resources are still there, signalling that
@@ -394,36 +427,58 @@ class TestExpressions(PloneTestCase.PloneTestCase):
         self.assertNotIn("http://test2.foo/member.min.js", results)
         self.assertIn("http://test3.foo/test.min.js", results)
 
+    def test_scripts_on_portal_type(self):
+        scripts = ScriptsView(self.portal, self.layer["request"], None)
+        scripts.update()
+        results = scripts.render()
+        # Check that special portal_type expression scripts is missing on portal
+        self.assertNotIn("http://test4.foo/test.min.js", results)
+        self.assertIn("http://test3.foo/test.min.js", results)
+
+        # switch context
+        setattr(self.layer["request"], REQUEST_CACHE_KEY, None)
+        scripts = ScriptsView(self.portal["test-file"], self.layer["request"], None)
+        scripts.update()
+        results = scripts.render()
+        # Check that special portal_type expression scripts is available on context
+        self.assertIn("http://test4.foo/test.min.js", results)
+        self.assertIn("http://test3.foo/test.min.js", results)
+
     def test_scripts_switching_roles(self):
-        scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        scripts = ScriptsView(self.portal, self.layer["request"], None)
         scripts.update()
         results = scripts.render()
         self.assertIn("http://test2.foo/member.min.js", results)
 
-        logout()
+        self.logout()
 
-        scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        scripts = ScriptsView(self.portal, self.layer["request"], None)
         scripts.update()
         results = scripts.render()
         self.assertNotIn("http://test2.foo/member.min.js", results)
 
 
 class TestRRControlPanel(PloneTestCase.PloneTestCase):
-
     def setUp(self):
-        self.portal = self.layer['portal']
-        self.app = self.layer['app']
+        self.portal = self.layer["portal"]
+        self.app = self.layer["app"]
         self.browser = Browser(self.app)
         self.browser.handleErrors = False
         self.browser.addHeader(
-            'Authorization',
-            f'Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}'
+            "Authorization", f"Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}"
         )
-        self.browser.open(self.portal.absolute_url() + "/@@resourceregistry-controlpanel")
+        self.browser.open(
+            self.portal.absolute_url() + "/@@resourceregistry-controlpanel"
+        )
 
     def test_controlpanel(self):
-        self.assertIn("<h1 class=\"documentFirstHeading\">Resource Registry</h1>", self.browser.contents)
-        self.assertIn("++plone++static/bundle-plone/bundle.min.js", self.browser.contents)
+        self.assertIn(
+            '<h1 class="documentFirstHeading">Resource Registry</h1>',
+            self.browser.contents,
+        )
+        self.assertIn(
+            "++plone++static/bundle-plone/bundle.min.js", self.browser.contents
+        )
 
     def test_add_resource(self):
         # the last form is the add form
@@ -434,7 +489,7 @@ class TestRRControlPanel(PloneTestCase.PloneTestCase):
         add_form.getControl("add").click()
 
         self.assertIn(
-            "<h2 class=\"accordion-header\" id=\"heading-my-resource\">",
+            '<h2 class="accordion-header" id="heading-my-resource">',
             self.browser.contents,
         )
 
@@ -452,6 +507,6 @@ class TestRRControlPanel(PloneTestCase.PloneTestCase):
         form.getControl("update").click()
 
         self.assertIn(
-             "<h2 class=\"accordion-header\" id=\"heading-new-resource-name\">",
+            '<h2 class="accordion-header" id="heading-new-resource-name">',
             self.browser.contents,
         )

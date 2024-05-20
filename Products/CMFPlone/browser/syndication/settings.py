@@ -4,18 +4,17 @@ from plone.base.interfaces.syndication import ISiteSyndicationSettings
 from plone.base.interfaces.syndication import ISyndicatable
 from plone.registry.interfaces import IRegistry
 from zope.annotation.interfaces import IAnnotations
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getUtility
 from zope.interface import implementer
 
 
-FEED_SETTINGS_KEY = 'syndication_settings'
+FEED_SETTINGS_KEY = "syndication_settings"
 
 
+@adapter(ISyndicatable)
 @implementer(IFeedSettings)
 class FeedSettings:
-    adapts(ISyndicatable)
-
     def __init__(self, context):
         self.context = context
         self.annotations = IAnnotations(context)
@@ -27,8 +26,9 @@ class FeedSettings:
             self.needs_saving = True
 
         registry = getUtility(IRegistry)
-        self.site_settings = registry.forInterface(ISiteSyndicationSettings,
-                                                   check=False)
+        self.site_settings = registry.forInterface(
+            ISiteSyndicationSettings, check=False
+        )
 
     def _set(self):
         """
@@ -40,8 +40,13 @@ class FeedSettings:
             self.annotations[FEED_SETTINGS_KEY] = self._metadata
 
     def __setattr__(self, name, value):
-        if name in ('context', '_metadata', 'site_settings', 'annotations',
-                    'needs_saving'):
+        if name in (
+            "context",
+            "_metadata",
+            "site_settings",
+            "annotations",
+            "needs_saving",
+        ):
             self.__dict__[name] = value
         else:
             self._metadata[name] = value
@@ -51,7 +56,7 @@ class FeedSettings:
         default = None
         if name in ISiteSyndicationSettings.names():
             default = getattr(self.site_settings, name)
-        elif name == 'enabled' and self.site_settings.default_enabled:
+        elif name == "enabled" and self.site_settings.default_enabled:
             default = True
         elif name in IFeedSettings.names():
             default = IFeedSettings[name].default

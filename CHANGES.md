@@ -15,6 +15,221 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.0a3 (2024-04-26)
+
+
+### New features:
+
+- Extends `SMTPMailer.__init__` patch to allow to use other arguments.
+  [mamico] #3941
+
+
+### Bug fixes:
+
+- Cleanup `viewlets.xml` to not mention viewlets that no longer exist.
+  [maurits] #3911
+- When indexing for `getIcon`, check that the returned `image` is an instance of `plone.namedfile.interfaces.IImage`
+  [frapell] #3916
+- Fixes case where empty links would be present in the search results for content that does not have an icon. @ewohnlich #3919
+
+
+### Internal:
+
+- Fix test Scenario: Select All items. @wesleybl #3929
+- Updated metadata version to 6102.
+  [maurits] #6102
+
+## 6.1.0a2 (2024-02-27)
+
+
+### Bug fixes:
+
+- Remove volatile cached resource viewlet content to fix context aware expressions.
+  [petschki] #3789
+- Adapt tests after plone.app.iterate permissions use rolemap.xml
+  See https://github.com/plone/plone.app.iterate/pull/120
+  [pbauer] #3907
+- Updated metadata version to 6101.
+  [maurits] #6101
+
+
+### Internal:
+
+- Fix robot test "When page is linked show warning". @wesleybl #3902
+
+## 6.1.0a1 (2024-01-26)
+
+
+### Bug fixes:
+
+- Make PloneSite have IContentish again. @Akshat2Jain @jaroel #3833
+- Fix problem when adding a Plone site with a custom INonInstallable utility without a getNonInstallableProfiles method.
+
+  Fixes: #3862. #3862
+- Update `@@test-rendering-cheatsheet` to Bootstrap 5.3 features including color mode switcher.
+  [petschki] #3870
+- Corrected the name in a button and help text to "Classic UI" when creating a Plone site. @1letter #3873
+- Correct the behavior interface for lead image in the syndication adapter.
+  [thet] #3875
+- Change adapts to @adapter decorator.
+  [thet] #3876
+- Handle catalog queries with parenthesis inside quotes
+  [erral] #3879
+- Deprecate `get_production_resource_directory` since it is not used anywhere in core.
+  [@jensens] #3887
+- Add data-bundle="diazo" back, for backward compatibility with backend.xml (Classic UI).
+  Add a data-bundle="plonecustomcss" also for @@custom.css stylesheet
+  [yurj] #3890
+
+## 6.1.0a1.dev0 (2023-10-18)
+
+
+### New features:
+
+- Remove deprecated ``plone.app.widgets``
+  [petschki] #3686
+- Add `plone-61` as zcml feature, and define `PLONE61MARKER` as True.
+  [maurits] #6100
+
+
+### Bug fixes:
+
+- Explicitly disable ``Products.CMFCore.explicitacquisition`` in Plone 6.
+  [jaroel] explicitacquisition
+- Register site syndication settings from plone.base instead of CMFPlone.
+  [maurits] #315
+- Remove the plone.app.multilingual dependency
+  [@folix-01] #3779
+- Do not use `UniqueObject` class for `PlonePortal`
+  [petschki] #3823
+- Fix deprecated imports.
+  [petschki] #3830
+- avoid searching all users after group editing, when many_users is flagged @mamico #3845
+- Updated metadata version to 6019.
+  [maurits] #6019
+- Updated metadata version to 6100.
+  [maurits] #6100
+
+
+### Internal:
+
+- cleanup: remove `mock` from test dependencies. @jairhenrique #3857
+
+
+## 6.0.7 (2023-09-21)
+
+
+### Bug fixes:
+
+- Register site syndication settings from plone.base instead of CMFPlone.
+  [maurits] #315
+
+
+## 6.0.7rc1 (2023-09-14)
+
+
+### Bug fixes:
+
+- Explicitly disable ``Products.CMFCore.explicitacquisition`` in Plone 6.
+  [jaroel] explicitacquisition
+- Update `plone.app.z3cform` dependency version and deprecate `plone.app.widgets`
+  [petschki] #3821
+- Updated metadata version to 6018.
+  [maurits] #6018
+
+
+### Tests
+
+- Fix unstable robot test scenario Reorder Folder Contents.
+  [maurits] #3811
+
+
+## 6.0.6 (2023-06-27)
+
+
+### Internal:
+
+- Prepare 6.0.6 final release.  No changes since the release candidate.
+  [maurits] #606
+
+
+## 6.0.6rc1 (2023-06-22)
+
+
+### Bug fixes:
+
+- Fix repairing relations.
+  [ksuess] #3457
+- Fix alerts to follow Bootstrap convention.
+  [petschki] #3806
+- Updated metadata version to 6017.  [maurits] #6017
+
+
+## 6.0.5 (2023-05-30)
+
+
+### Bug fixes:
+
+- Fix password validation tests. [tschorr] #3784
+- membershipSearch in UsersGroupsControlPanelView should respect many_groups, many_users Option and empty Searchstring |1letter #3790
+
+
+## 6.0.5rc1 (2023-05-25)
+
+
+### Bug fixes:
+
+- Do not truncate the sortable_title index
+  [erral] #3690
+- Fix password validation tests. [tschorr] #3784
+- Updated metadata version to 6016.
+  [maurits] #6016
+
+
+### Internal:
+
+- Update configuration files.
+  [plone devs] 2a5f5557
+
+
+## 6.0.4 (2023-04-24)
+
+
+### Bug fixes:
+
+- Prepare 6.0.4 final. No changes compared to the release candidate.
+  [maurits] #604
+
+
+## 6.0.4rc1 (2023-04-21)
+
+
+### Bug fixes:
+
+- Prepare 6.0.3 final. No changes compared to the release candidate.
+  [maurits] #603
+- Add a last modification time of the resource registry.
+  We update this when changing anything related: when changing the resource registry in its control panel or activating an add-on.
+  This avoids needing a restart before seeing changes when you run in production mode.
+  Fixes [issue 3505](https://github.com/plone/Products.CMFPlone/issues/3505).
+  [maurits] #3505
+- Removed path query from search view when context is site root.
+  [malthe] #3753
+- Fixed encoding issue on Python 3 for some mail servers.
+  This could result in missing characters in an email body.
+  [maurits] #3754
+- Mockup TinyMCE settings: Fix URLs in TinyMCE external_plugins settings.
+
+  Add the portal URL to external_plugins values for relative and absolute
+  URLs.
+
+  Before this fix external plugins could not be found if they were not added with
+  the full path or a full URL. The path is different for virtual hosted sites and
+  sites directly served from Zope. #3767
+- Updated metadata version to 6015.
+  [maurits] #6015
+
+
 ## 6.0.3 (2023-03-27)
 
 
@@ -195,11 +410,11 @@
   [rohnsha0] (#3600)
 - Fix visual issue with long action name in @@actions-controlpanel.
   [petschki] (#3601)
-- Fixed an error where Main Template (line: 42) referenced plone.com istead of plone.org
+- Fixed an error where Main Template (line: 42) referenced plone.com instead of plone.org
   [rohnsha0] (#3605)
 - In traversal.py remove a Zope 4 BBB code, add a comment about bundle traverser and apply black.isort on the file.
   [jensens] (#3609)
-- Supress warning of intentional deprecated import for BBB.
+- Suppress warning of intentional deprecated import for BBB.
   [jensens] (#3610)
 - Use plone.base and reduce deprecation warnings.
   In utils remove functions already moved to plone.base and add deferred import with message.
@@ -270,7 +485,7 @@
 ### Breaking changes:
 
 
-- Remove Archtypes specific ``isIDAutoGenerated`` helper.
+- Remove Archetypes specific ``isIDAutoGenerated`` helper.
   This was dead code not used anywhere in Plone 6.
   [jensens] (#3487)
 - ``PloneFolder`` was once used with early Archetypes.
@@ -440,7 +655,7 @@
   [pbauer] (#3463)
 - Add missing i18n:translate tags
   [erral] (#3467)
-- Remove obsolte combine_bundles and related code.
+- Remove obsolete combine_bundles and related code.
   [pbauer] (#3468)
 - Enhanced folder_contents robot tests
   [petschki] (#3478)
@@ -506,7 +721,7 @@
 - Fix #3323DX-Site-Root: ZMI Nav-Tree is no longer expandable.
   [jensens] (#3323)
 - Fixes #3337:
-  Remove dead code that wont work in Py 3 anyway if called (cmp).
+  Remove dead code that won't work in Py 3 anyway if called (cmp).
   [jensens] (#3337)
 - Remove DYNAMIC_CONTENT from translation files
   [erral] (#3342)
@@ -610,7 +825,7 @@
 
 
 - Custom date format strings from registry can be in the ``${}`` format as in the locales files.
-  If theres a day or month name used, this will be translated.
+  If there's a day or month name used, this will be translated.
   For bbb the classic strftime ``%`` strings are still behaving like before.
   [jensens] (#3084)
 - Add icon resolver to return url or tag for given icon.

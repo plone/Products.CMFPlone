@@ -2,8 +2,8 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from borg.localrole.interfaces import IFactoryTempFolder
 from plone.app.content.browser.interfaces import IFolderContentsView
-from plone.app.widgets.utils import get_relateditems_options
 from plone.app.z3cform.utils import call_callables
+from plone.app.z3cform.widgets.relateditems import get_relateditems_options
 from plone.base.interfaces import IImagingSchema
 from plone.base.interfaces import ILinkSchema
 from plone.base.interfaces import IPatternsSettings

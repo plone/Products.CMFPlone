@@ -60,7 +60,7 @@ I click the '${link_name}' link
 
 I select all the elements
     Wait until page contains element  css=.pat-structure .select-all
-    Wait until page contains element  css=.itemRow
+    Sleep  1s
     ${select_all_selector}  Set Variable  .pat-structure .select-all
     Wait Until Element Is Visible  css=${select_all_selector}
     Click Element  css=${select_all_selector}
@@ -96,6 +96,10 @@ I reorder the elements
 
 The Order Should Be
     [Arguments]  ${first}  ${second}  ${third}  ${fourth}
+    Wait Until Element Is Visible  css=#doc${first}
+    Wait Until Element Is Visible  css=#doc${second}
+    Wait Until Element Is Visible  css=#doc${third}
+    Wait Until Element Is Visible  css=#doc${fourth}
     Should be above  css=tr[data-id="doc${first}"]   css=tr[data-id="doc${second}"]
     Should be above  css=tr[data-id="doc${second}"]  css=tr[data-id="doc${third}"]
     Should be above  css=tr[data-id="doc${third}"]   css=tr[data-id="doc${fourth}"]

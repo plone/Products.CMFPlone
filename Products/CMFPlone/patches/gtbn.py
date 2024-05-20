@@ -8,21 +8,25 @@ from ZPublisher.BaseRequest import RequestContainer
 
 
 def rewrap_in_request_container(obj, context=None):
-    '''Fix an object's acquisition wrapper to be able to acquire the REQUEST.'''
-    request = getattr(context, 'REQUEST', None) or getRequest()
+    """Fix an object's acquisition wrapper to be able to acquire the REQUEST."""
+    request = getattr(context, "REQUEST", None) or getRequest()
     if IAcquirer.providedBy(obj) and request is not None:
         chain = []
         parent = obj
         while 1:
             chain.append(parent)
             parent = aq_parent(aq_inner(parent))
-            if parent in chain or parent is None or isinstance(
-                    parent, RequestContainer):
+            if (
+                parent in chain
+                or parent is None
+                or isinstance(parent, RequestContainer)
+            ):
                 break
         obj = RequestContainer(REQUEST=request)
         for ob in reversed(chain):
             obj = aq_base(ob).__of__(obj)
     return obj
+
 
 # Check return value of getToolByName
 # this used to be step 5 in earlypatches, but was moved to avoid
@@ -51,13 +55,16 @@ def check_getToolByName(obj, name, default=_marker):
         raise TypeError("Object found is not a portal tool (%s)" % (name,))
     return result
 """
-if '_marker' not in utils.getToolByName.__globals__:
-    raise Exception("This Version of Products.CMFPlone is not compatible "
-                    "with Products.PloneHotfix20121106, the fixes are "
-                    "included already in Products.CMFPlone, please remove "
-                    "the hotfix")
+if "_marker" not in utils.getToolByName.__globals__:
+    raise Exception(
+        "This Version of Products.CMFPlone is not compatible "
+        "with Products.PloneHotfix20121106, the fixes are "
+        "included already in Products.CMFPlone, please remove "
+        "the hotfix"
+    )
 utils.getToolByName.__globals__[
-    'rewrap_in_request_container'] = rewrap_in_request_container
+    "rewrap_in_request_container"
+] = rewrap_in_request_container
 exec(code, utils.getToolByName.__globals__)
 utils._getToolByName.__code__ = utils.getToolByName.__code__
 utils.getToolByName.__code__ = utils.check_getToolByName.__code__

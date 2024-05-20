@@ -6,10 +6,8 @@ import unittest
 
 
 class BodyAdapterTestCase(BodyAdapterTestCase, unittest.TestCase):
-
     layer = UNIT_TESTING
 
 
 class NodeAdapterTestCase(NodeAdapterTestCase, unittest.TestCase):
-
     layer = UNIT_TESTING

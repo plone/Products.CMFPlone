@@ -1,19 +1,17 @@
 from plone.base.interfaces import IEditingSchema
 from plone.base.interfaces import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getUtility
 from zope.interface import implementer
 
 
+@adapter(IPloneSiteRoot)
 @implementer(IEditingSchema)
 class EditingControlPanelAdapter:
-
-    adapts(IPloneSiteRoot)
-
     def __init__(self, context):
         registry = getUtility(IRegistry)
-        self.settings = registry.forInterface(IEditingSchema, prefix='plone')
+        self.settings = registry.forInterface(IEditingSchema, prefix="plone")
 
     def get_visible_ids(self):
         return self.settings.visible_ids
@@ -47,8 +45,7 @@ class EditingControlPanelAdapter:
 
     visible_ids = property(get_visible_ids, set_visible_ids)
     enable_link_integrity_checks = property(
-        get_enable_link_integrity_checks,
-        set_enable_link_integrity_checks
+        get_enable_link_integrity_checks, set_enable_link_integrity_checks
     )
     ext_editor = property(get_ext_editor, set_ext_editor)
     default_editor = property(get_default_editor, set_default_editor)

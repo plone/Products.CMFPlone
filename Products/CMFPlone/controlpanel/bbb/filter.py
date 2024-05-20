@@ -1,19 +1,17 @@
 from plone.base.interfaces import IFilterSchema
 from plone.base.interfaces import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getUtility
 from zope.interface import implementer
 
 
+@adapter(IPloneSiteRoot)
 @implementer(IFilterSchema)
 class FilterControlPanelAdapter:
-
-    adapts(IPloneSiteRoot)
-
     def __init__(self, context):
         registry = getUtility(IRegistry)
-        self.settings = registry.forInterface(IFilterSchema, prefix='plone')
+        self.settings = registry.forInterface(IFilterSchema, prefix="plone")
 
     def get_disable_filtering(self):
         return self.settings.disable_filtering
@@ -39,8 +37,7 @@ class FilterControlPanelAdapter:
     def set_custom_attributes(self, value):
         self.settings.custom_attributes = value
 
-    custom_attributes = property(
-        get_custom_attributes, set_custom_attributes)
+    custom_attributes = property(get_custom_attributes, set_custom_attributes)
     valid_tags = property(get_valid_tags, set_valid_tags)
     nasty_tags = property(get_nasty_tags, set_nasty_tags)
     disable_filtering = property(get_disable_filtering, set_disable_filtering)

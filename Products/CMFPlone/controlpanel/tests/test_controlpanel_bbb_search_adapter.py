@@ -10,58 +10,40 @@ import unittest
 
 
 class SearchControlPanelAdapterTest(unittest.TestCase):
-
     layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
     def setUp(self):
-        self.portal = self.layer['portal']
-        self.request = self.layer['request']
-        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        self.portal = self.layer["portal"]
+        self.request = self.layer["request"]
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
         registry = getUtility(IRegistry)
-        self.search_settings = registry.forInterface(
-            ISearchSchema, prefix="plone")
+        self.search_settings = registry.forInterface(ISearchSchema, prefix="plone")
 
     def test_adapter_lookup(self):
         self.assertTrue(getAdapter(self.portal, ISearchSchema))
 
     def test_get_enable_livesearch(self):
-        self.assertEqual(
-            getAdapter(self.portal, ISearchSchema).enable_livesearch,
-            True
-        )
+        self.assertEqual(getAdapter(self.portal, ISearchSchema).enable_livesearch, True)
         self.search_settings.enable_livesearch = False
         self.assertEqual(
-            getAdapter(self.portal, ISearchSchema).enable_livesearch,
-            False
+            getAdapter(self.portal, ISearchSchema).enable_livesearch, False
         )
 
     def test_set_enable_livesearch(self):
-        self.assertEqual(
-            self.search_settings.enable_livesearch,
-            True
-        )
+        self.assertEqual(self.search_settings.enable_livesearch, True)
         getAdapter(self.portal, ISearchSchema).enable_livesearch = False
-        self.assertEqual(
-            self.search_settings.enable_livesearch,
-            False
-        )
+        self.assertEqual(self.search_settings.enable_livesearch, False)
 
     def test_get_types_not_searched(self):
         self.assertTrue(
-            'Folder' not in
-            getAdapter(self.portal, ISearchSchema).types_not_searched
+            "Folder" not in getAdapter(self.portal, ISearchSchema).types_not_searched
         )
-        self.search_settings.types_not_searched = ('Folder',)
+        self.search_settings.types_not_searched = ("Folder",)
         self.assertTrue(
-            'Folder' in
-            getAdapter(self.portal, ISearchSchema).types_not_searched
+            "Folder" in getAdapter(self.portal, ISearchSchema).types_not_searched
         )
 
     def test_set_types_not_searched(self):
-        self.assertTrue(
-            'Folder' not in self.search_settings.types_not_searched
-        )
-        getAdapter(self.portal, ISearchSchema).types_not_searched = ('Folder',)
-        self.assertTrue(
-            'Folder' in self.search_settings.types_not_searched
-        )
+        self.assertTrue("Folder" not in self.search_settings.types_not_searched)
+        getAdapter(self.portal, ISearchSchema).types_not_searched = ("Folder",)
+        self.assertTrue("Folder" in self.search_settings.types_not_searched)

@@ -1,9 +1,11 @@
-<configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:browser="http://namespaces.zope.org/browser"
-           xmlns:cmf="http://namespaces.zope.org/cmf"
-           xmlns:zcml="http://namespaces.zope.org/zcml"
-           xmlns:i18n="http://namespaces.zope.org/i18n"
-           i18n_domain="plone">
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:cmf="http://namespaces.zope.org/cmf"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
 
   <!-- basic zope/cmf -->
   <include package="zope.app.locales" />
@@ -47,7 +49,7 @@
   <include package="plone.app.layout" />
   <include package="plone.app.linkintegrity" />
   <include package="plone.app.locales" />
-  <include package="plone.app.multilingual" />
+  <include zcml:condition="installed plone.app.multilingual" package="plone.app.multilingual" />
   <include package="plone.app.portlets" />
   <include package="plone.app.redirector" />
   <include package="plone.app.registry" />
@@ -64,20 +66,25 @@
   <include package="plonetheme.barceloneta" />
 
   <!-- conditional -->
-  <include zcml:condition="installed plone.app.upgrade" package="plone.app.upgrade" />
+  <include
+      package="plone.app.upgrade"
+      zcml:condition="installed plone.app.upgrade"
+      />
 
   <include package=".resources" />
   <include package=".patterns" />
 
   <!-- local role PAS plugin -->
   <include package="borg.localrole" />
-  <include package="borg.localrole"
-           file="default.zcml" />
+  <include
+      package="borg.localrole"
+      file="default.zcml"
+      />
 
   <include package=".browser" />
   <include package=".exportimport" />
 
-  <include file="profiles.zcml"/>
+  <include file="profiles.zcml" />
   <include file="catalog.zcml" />
 
   <!-- images scales poc -->
@@ -97,15 +104,18 @@
     <implements interface="plone.base.interfaces.IHideFromBreadcrumbs" />
   </class>
 
-  <utility factory=".factory.NonInstallable"
-           name="Products.CMFPlone" />
+  <utility
+      factory=".factory.NonInstallable"
+      name="Products.CMFPlone"
+      />
 
   <!-- Adapter for the ++plone++ bundles traverser -->
   <adapter
-      name="plone"
-      for="* zope.publisher.interfaces.IRequest"
-      provides="zope.traversing.interfaces.ITraversable"
       factory=".traversal.PloneBundlesTraverser"
+      provides="zope.traversing.interfaces.ITraversable"
+      for="*
+           zope.publisher.interfaces.IRequest"
+      name="plone"
       />
 
   <!-- Adapter for default workflow lookup -->
@@ -116,20 +126,24 @@
 
   <!-- include plone plugins with plone.autoinclude -->
   <autoIncludePlugins
-      zcml:condition="not-have disable-autoinclude"
-      target="plone"
       file="configure.zcml"
+      target="plone"
+      zcml:condition="not-have disable-autoinclude"
       />
 
-  <subscriber for="Products.GenericSetup.events.ProfileImportedEvent"
-              handler=".events.profileImportedEventHandler"/>
+  <subscriber
+      for="Products.GenericSetup.events.ProfileImportedEvent"
+      handler=".events.profileImportedEventHandler"
+      />
 
-  <subscriber for="ZPublisher.interfaces.IPubAfterTraversal"
-              handler=".events.removeBase"/>
+  <subscriber
+      for="ZPublisher.interfaces.IPubAfterTraversal"
+      handler=".events.removeBase"
+      />
 
   <adapter
-      for="zope.pagetemplate.engine.ZopeBaseEngine"
       factory=".traversal.get_zope_page_template_engine"
+      for="zope.pagetemplate.engine.ZopeBaseEngine"
       />
 
 </configure>

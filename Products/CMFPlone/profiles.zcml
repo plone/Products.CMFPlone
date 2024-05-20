@@ -1,33 +1,34 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-    i18n_domain="plone">
+    i18n_domain="plone"
+    >
 
   <genericsetup:registerProfile
       name="plone"
       title="Plone Site"
-      directory="profiles/default"
       description="Profile for a default Plone."
       for="plone.base.interfaces.IPloneSiteRoot"
+      directory="profiles/default"
       post_handler="Products.CMFPlone.setuphandlers.importFinalSteps"
       />
 
   <genericsetup:registerProfile
       name="dependencies"
       title="Mandatory dependencies for a Plone site"
-      directory="profiles/dependencies"
       description="Load all profiles from other packages/products that are needed for a full Plone site."
-      for="plone.base.interfaces.IPloneSiteRoot"
       provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="plone.base.interfaces.IPloneSiteRoot"
+      directory="profiles/dependencies"
       />
 
   <genericsetup:registerProfile
       name="testfixture"
       title="Plone Test Fixture"
-      directory="profiles/testfixture"
       description="Extension profile to configure a test fixture"
-      for="plone.base.interfaces.ITestCasePloneSiteRoot"
       provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="plone.base.interfaces.ITestCasePloneSiteRoot"
+      directory="profiles/testfixture"
       />
 
 </configure>

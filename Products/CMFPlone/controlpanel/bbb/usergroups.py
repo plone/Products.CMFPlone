@@ -1,23 +1,22 @@
 from plone.base.interfaces import IPloneSiteRoot
 from plone.base.interfaces import IUserGroupsSettingsSchema
 from plone.registry.interfaces import IRegistry
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
 
 
+@adapter(IPloneSiteRoot)
 @implementer(IUserGroupsSettingsSchema)
 class UserGroupsSettingsControlPanelAdapter:
-
-    adapts(IPloneSiteRoot)
-
     def __init__(self, context):
         self.context = context
         self.portal = getSite()
         registry = getUtility(IRegistry)
         self.usergroups_settings = registry.forInterface(
-            IUserGroupsSettingsSchema, prefix="plone")
+            IUserGroupsSettingsSchema, prefix="plone"
+        )
 
     def get_many_groups(self):
         return self.usergroups_settings.many_groups

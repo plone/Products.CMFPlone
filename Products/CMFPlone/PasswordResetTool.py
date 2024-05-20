@@ -22,13 +22,14 @@ from zope.interface import implementer
 import datetime
 
 
-module_security = ModuleSecurityInfo('Products.CMFPlone.PasswordResetTool')
+module_security = ModuleSecurityInfo("Products.CMFPlone.PasswordResetTool")
 
 
 @module_security.public
 class InvalidRequestError(Exception):
-    """ Request reset URL is invalid """
-    def __init__(self, value=''):
+    """Request reset URL is invalid"""
+
+    def __init__(self, value=""):
         self.value = value
 
     def __str__(self):
@@ -37,11 +38,11 @@ class InvalidRequestError(Exception):
 
 @module_security.public
 class ExpiredRequestError(InvalidRequestError):
-    """ Request reset URL is expired """
+    """Request reset URL is expired"""
 
 
 @implementer(IPWResetTool)
-class PasswordResetTool (UniqueObject, SimpleItem):
+class PasswordResetTool(UniqueObject, SimpleItem):
     """Provides a default implementation for a password reset scheme.
 
     From a 'forgotten password' template, you submit your username to
@@ -52,8 +53,8 @@ class PasswordResetTool (UniqueObject, SimpleItem):
     The user visits that URL (the 'reset form') and enters their username,
     """
 
-    id = 'portal_password_reset'
-    meta_type = 'Password Reset Tool'
+    id = "portal_password_reset"
+    meta_type = "Password Reset Tool"
 
     security = ClassSecurityInfo()
 
@@ -62,7 +63,7 @@ class PasswordResetTool (UniqueObject, SimpleItem):
 
     # Internal attributes
     _user_check = True
-    _timedelta = 7   # DAYS
+    _timedelta = 7  # DAYS
 
     # Interface fulfillment ##
     @security.protected(ManagePortal)
@@ -88,9 +89,9 @@ class PasswordResetTool (UniqueObject, SimpleItem):
         self._p_changed = 1
 
         retval = {}
-        retval['randomstring'] = randomstring
-        retval['expires'] = expiry
-        retval['userid'] = userid
+        retval["randomstring"] = randomstring
+        retval["expires"] = expiry
+        retval["userid"] = userid
         return retval
 
     @security.public
@@ -109,7 +110,8 @@ class PasswordResetTool (UniqueObject, SimpleItem):
         """
         if get_member_by_login_name:
             found_member = get_member_by_login_name(
-                self, userid, raise_exceptions=False)
+                self, userid, raise_exceptions=False
+            )
             if found_member is not None:
                 userid = found_member.getId()
         try:
@@ -130,7 +132,7 @@ class PasswordResetTool (UniqueObject, SimpleItem):
 
         # actually change password
         user = member.getUser()
-        uf = getToolByName(self, 'acl_users')
+        uf = getToolByName(self, "acl_users")
         uf.userSetPassword(user.getUserId(), password)
         member.setMemberProperties(dict(must_change_password=0))
 
@@ -140,14 +142,12 @@ class PasswordResetTool (UniqueObject, SimpleItem):
 
     @security.protected(ManagePortal)
     def setExpirationTimeout(self, timedelta):
-        """Set the length of time a reset request will be valid in days.
-        """
+        """Set the length of time a reset request will be valid in days."""
         self._timedelta = abs(timedelta)
 
     @security.public
     def getExpirationTimeout(self):
-        """Get the length of time a reset request will be valid.
-        """
+        """Get the length of time a reset request will be valid."""
         return self._timedelta
 
     @security.public
@@ -158,8 +158,7 @@ class PasswordResetTool (UniqueObject, SimpleItem):
 
     @security.public
     def verifyKey(self, key):
-        """Verify a key. Raises an exception if the key is invalid or expired.
-        """
+        """Verify a key. Raises an exception if the key is invalid or expired."""
         try:
             u, expiry = self._requests[key]
         except KeyError:
@@ -169,7 +168,7 @@ class PasswordResetTool (UniqueObject, SimpleItem):
             raise ExpiredRequestError
 
         if not self.getValidUser(u):
-            raise InvalidRequestError('No such user')
+            raise InvalidRequestError("No such user")
 
     @security.private
     def clearExpired(self, days=0):
@@ -207,24 +206,17 @@ class PasswordResetTool (UniqueObject, SimpleItem):
 
         This is used by housekeeping methods (like clearEpired)
         and stored in reset request records."""
-        return (
-            datetime.datetime.utcnow() +
-            datetime.timedelta(days=self._timedelta)
-        )
+        return datetime.datetime.utcnow() + datetime.timedelta(days=self._timedelta)
 
     @security.private
     def getValidUser(self, userid):
         """Returns the member with 'userid' if available and None otherwise."""
         if get_member_by_login_name:
             registry = getUtility(IRegistry)
-            settings = registry.forInterface(ISecuritySchema, prefix='plone')
+            settings = registry.forInterface(ISecuritySchema, prefix="plone")
             if settings.use_email_as_login:
-                return get_member_by_login_name(
-                    self,
-                    userid,
-                    raise_exceptions=False
-                )
-        membertool = getToolByName(self, 'portal_membership')
+                return get_member_by_login_name(self, userid, raise_exceptions=False)
+        membertool = getToolByName(self, "portal_membership")
         return membertool.getMemberById(userid)
 
     @security.private

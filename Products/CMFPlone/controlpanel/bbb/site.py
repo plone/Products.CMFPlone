@@ -1,17 +1,15 @@
 from plone.base.interfaces import IPloneSiteRoot
 from plone.base.interfaces import ISiteSchema
 from plone.registry.interfaces import IRegistry
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getUtility
 from zope.interface import implementer
 from zope.schema.fieldproperty import FieldProperty
 
 
+@adapter(IPloneSiteRoot)
 @implementer(ISiteSchema)
 class SiteControlPanelAdapter:
-
-    adapts(IPloneSiteRoot)
-
     def __init__(self, context):
         registry = getUtility(IRegistry)
         self.settings = registry.forInterface(ISiteSchema, prefix="plone")
@@ -31,6 +29,6 @@ class SiteControlPanelAdapter:
     site_title = property(get_site_title, set_site_title)
     webstats_js = property(get_webstats_js, set_webstats_js)
 
-    site_logo = FieldProperty(ISiteSchema['site_logo'])
-    enable_sitemap = FieldProperty(ISiteSchema['enable_sitemap'])
-    exposeDCMetaTags = FieldProperty(ISiteSchema['exposeDCMetaTags'])
+    site_logo = FieldProperty(ISiteSchema["site_logo"])
+    enable_sitemap = FieldProperty(ISiteSchema["enable_sitemap"])
+    exposeDCMetaTags = FieldProperty(ISiteSchema["exposeDCMetaTags"])

@@ -1,46 +1,56 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <object>
-  <order manager="plone.portaltop" skinname="Plone Default">
 
-  </order>
-  <order manager="plone.portalheader" skinname="Plone Default">
+  <order manager="plone.portalheader"
+         skinname="Plone Default"
+  >
     <viewlet name="plone.anontools" />
     <viewlet name="plone.membertools" />
     <viewlet name="plone.logo" />
-    <viewlet name="plone.favicon" />
     <viewlet name="plone.searchbox" />
     <viewlet name="plone.app.i18n.locales.languageselector" />
     <viewlet name="plone.app.multilingual.languageselector" />
   </order>
-  <order manager="plone.mainnavigation" skinname="Plone Default">
+  <order manager="plone.mainnavigation"
+         skinname="Plone Default"
+  >
     <viewlet name="plone.global_sections" />
   </order>
-  <order manager="plone.abovecontent" skinname="Plone Default">
+  <order manager="plone.abovecontent"
+         skinname="Plone Default"
+  >
     <viewlet name="plone.path_bar" />
   </order>
-  <order manager="plone.toolbar" skinname="Plone Default">
+  <order manager="plone.toolbar"
+         skinname="Plone Default"
+  >
     <viewlet name="plone.contentviews" />
   </order>
-  <order manager="plone.belowcontentbody" skinname="Plone Default">
+  <order manager="plone.belowcontentbody"
+         skinname="Plone Default"
+  >
     <viewlet name="plone.contributors" />
     <viewlet name="plone.rights" />
     <viewlet name="plone.keywords" />
-    <viewlet name="plone.belowcontentbody.relateditems" />
+    <viewlet name="plone.relateditems" />
   </order>
-  <order manager="plone.belowcontent" skinname="Plone Default">
+  <order manager="plone.belowcontent"
+         skinname="Plone Default"
+  >
     <viewlet name="plone.documentactions" />
     <viewlet name="plone.nextprevious" />
   </order>
-  <order manager="plone.portalfooter" skinname="Plone Default">
+  <order manager="plone.portalfooter"
+         skinname="Plone Default"
+  >
     <viewlet name="plone.footer" />
     <viewlet name="plone.colophon" />
     <viewlet name="plone.site_actions" />
   </order>
-  <hidden manager="plone.portalfooter" skinname="Plone Default">
+  <hidden manager="plone.portalfooter"
+          skinname="Plone Default"
+  >
     <viewlet name="plone.colophon" />
     <viewlet name="plone.site_actions" />
-  </hidden>
-  <hidden manager="plone.belowcontent" skinname="Plone Default">
-    <viewlet name="plone.manage_portlets_fallback"/>
   </hidden>
 </object>

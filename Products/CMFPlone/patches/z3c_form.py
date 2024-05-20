@@ -7,7 +7,7 @@ from z3c.form import widget
 # Usually all forms are only for POST, and we disallow filling it with GET
 # data.  This works the way around too: allow prefilling from a POST request
 # when the form only handles GET.  But that is unlikely.
-ALLOW_PREFILL = 'allow_prefill_from_GET_request'
+ALLOW_PREFILL = "allow_prefill_from_GET_request"
 
 
 def _wrap_update(update):
@@ -20,12 +20,14 @@ def _wrap_update(update):
         # all widgets.  But it seems an international sport to override the
         # update or updateWidgets method of the base z3c form, which makes it
         # hard to fix all occurrences by one check on the form.
-        if not self.ignoreRequest and getattr(self.form, 'ignoreRequest', False):
+        if not self.ignoreRequest and getattr(self.form, "ignoreRequest", False):
             self.ignoreRequest = True
         # If we are not already ignoring the request, check the request method.
-        if (not self.ignoreRequest
-                and hasattr(self.form, 'method')
-                and hasattr(self.request, 'REQUEST_METHOD')):
+        if (
+            not self.ignoreRequest
+            and hasattr(self.form, "method")
+            and hasattr(self.request, "REQUEST_METHOD")
+        ):
             if self.request.REQUEST_METHOD.lower() != self.form.method.lower():
                 # This is an unexpected request method.
                 # For special cases we allow a form to bail out.
@@ -33,9 +35,9 @@ def _wrap_update(update):
                     self.ignoreRequest = True
                     self.form.ignoreRequest = True
         # If we are not already ignoring the request, check the referer.
-        if not self.ignoreRequest and hasattr(self.request, 'environ'):
+        if not self.ignoreRequest and hasattr(self.request, "environ"):
             env = self.request.environ
-            referrer = env.get('HTTP_REFERER', env.get('HTTP_REFERRER'))
+            referrer = env.get("HTTP_REFERER", env.get("HTTP_REFERRER"))
             if referrer:
                 req_url_parsed = urlparse(self.request.URL)
                 referrer_parsed = urlparse(referrer)
@@ -44,6 +46,7 @@ def _wrap_update(update):
                     self.ignoreRequest = True
                     self.form.ignoreRequest = True
         return update(self)
+
     return _wrapped
 
 

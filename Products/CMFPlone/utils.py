@@ -4,14 +4,12 @@ from AccessControl import ModuleSecurityInfo
 from AccessControl import Unauthorized
 from AccessControl.safe_formatter import SafeFormatter
 from Acquisition import aq_base
-from Acquisition import aq_get
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from App.Common import package_home
 from App.Dialogs import MessageDialog
 from App.ImageFile import ImageFile
 from DateTime import DateTime
-from DateTime.interfaces import DateTimeError
 from html import escape
 from OFS.CopySupport import CopyError
 from os.path import abspath
@@ -19,7 +17,6 @@ from os.path import join
 from os.path import split
 from plone.base import PloneMessageFactory as _
 from plone.base import utils as base_utils
-from plone.base.interfaces.controlpanel import IImagingSchema
 from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
@@ -40,9 +37,7 @@ from zope.component.hooks import getSite
 from zope.deferredimport import deprecated as deprecated_import
 from zope.deprecation import deprecate
 from zope.deprecation import deprecated  # noqa
-from zope.i18n import translate
 from zope.interface import implementedBy
-from zope.publisher.interfaces.browser import IBrowserRequest
 
 import OFS
 import pkg_resources
@@ -62,19 +57,19 @@ else:
 
 deprecated_import(
     "Import from plone.base.utils instead (will be removed in Plone 7)",
-    base_hasattr='plone.base.utils:base_hasattr',
-    getEmptyTitle='plone.base.utils:get_empty_title',
-    human_readable_size='plone.base.utils:human_readable_size',
-    safeToInt='plone.base.utils:safe_int',
-    safe_bytes='plone.base.utils:safe_bytes',
-    safe_callable='plone.base.utils:safe_callable',
-    safe_hasattr='plone.base.utils:safe_hasattr',
-    safe_text='plone.base.utils:safe_text',
-    get_installer='plone.base.utils:get_installer',
-    get_top_request='plone.base.utils:get_top_request',
-    get_top_site_from_url='plone.base.utils:get_top_site_from_url',
-    pretty_title_or_id='plone.base.utils:pretty_title_or_id',
-    _createObjectByType='plone.base.utils:unrestricted_construct_instance',
+    base_hasattr="plone.base.utils:base_hasattr",
+    getEmptyTitle="plone.base.utils:get_empty_title",
+    human_readable_size="plone.base.utils:human_readable_size",
+    safeToInt="plone.base.utils:safe_int",
+    safe_bytes="plone.base.utils:safe_bytes",
+    safe_callable="plone.base.utils:safe_callable",
+    safe_hasattr="plone.base.utils:safe_hasattr",
+    safe_text="plone.base.utils:safe_text",
+    get_installer="plone.base.utils:get_installer",
+    get_top_request="plone.base.utils:get_top_request",
+    get_top_site_from_url="plone.base.utils:get_top_site_from_url",
+    pretty_title_or_id="plone.base.utils:pretty_title_or_id",
+    _createObjectByType="plone.base.utils:unrestricted_construct_instance",
 )
 
 deprecated_import(
@@ -84,44 +79,46 @@ deprecated_import(
     getQuality="plone.namedfile.utils:getQuality",
 )
 
+
 @deprecate("Use plone.base.utils.safe_bytes instead (will be removed in Plone 7)")
 def safe_encode(*args, **kwargs):
     return base_utils.safe_bytes(*args, **kwargs)
+
 
 @deprecate("Use plone.base.utils.safe_text instead (will be removed in Plone 7)")
 def safe_unicode(*args, **kwargs):
     return base_utils.safe_text(*args, **kwargs)
 
+
 @deprecate("Use plone.base.utils.safe_text instead (will be removed in Plone 7)")
-def safe_nativestring(value, encoding='utf-8'):
-    """Convert a value to str in py2 and to text in py3
-    """
+def safe_nativestring(value, encoding="utf-8"):
+    """Convert a value to str in py2 and to text in py3"""
     if isinstance(value, bytes):
         value = base_utils.safe_text(value, encoding)
     return value
 
 
 security = ModuleSecurityInfo()
-security.declarePrivate('deprecated')
-security.declarePrivate('abspath')
-security.declarePrivate('re')
-security.declarePrivate('OFS')
-security.declarePrivate('aq_get')
-security.declarePrivate('package_home')
-security.declarePrivate('ImageFile')
-security.declarePrivate('CMFCoreToolInit')
-security.declarePrivate('transaction')
-security.declarePrivate('zope')
+security.declarePrivate("deprecated")
+security.declarePrivate("abspath")
+security.declarePrivate("re")
+security.declarePrivate("OFS")
+security.declarePrivate("aq_get")
+security.declarePrivate("package_home")
+security.declarePrivate("ImageFile")
+security.declarePrivate("CMFCoreToolInit")
+security.declarePrivate("transaction")
+security.declarePrivate("zope")
 
 # Canonical way to get at CMFPlone directory
 PACKAGE_HOME = package_home(globals())
-security.declarePrivate('PACKAGE_HOME')
-WWW_DIR = join(PACKAGE_HOME, 'www')
-security.declarePrivate('WWW_DIR')
+security.declarePrivate("PACKAGE_HOME")
+WWW_DIR = join(PACKAGE_HOME, "www")
+security.declarePrivate("WWW_DIR")
 
 # image-scaling
 QUALITY_DEFAULT = 88
-pattern = re.compile(r'^(.*)\s+(\d+)\s*:\s*(\d+)$')
+pattern = re.compile(r"^(.*)\s+(\d+)\s*:\s*(\d+)$")
 
 _marker = []
 
@@ -144,18 +141,17 @@ def parent(obj):
 
 
 def createBreadCrumbs(context, request):
-    view = getMultiAdapter((context, request), name='breadcrumbs_view')
+    view = getMultiAdapter((context, request), name="breadcrumbs_view")
     return view.breadcrumbs()
 
 
 def createSiteMap(context, request, sitemap=False):
-    view = getMultiAdapter((context, request), name='sitemap_builder_view')
+    view = getMultiAdapter((context, request), name="sitemap_builder_view")
     return view.siteMap()
 
 
-
 def isExpired(content):
-    """ Find out if the object is expired (copied from skin script) """
+    """Find out if the object is expired (copied from skin script)"""
 
     expiry = None
 
@@ -167,11 +163,11 @@ def isExpired(content):
     # convert to a DateTime
 
     # Try DC accessor first
-    if base_hasattr(content, 'ExpirationDate'):
+    if base_hasattr(content, "ExpirationDate"):
         expiry = content.ExpirationDate
 
     # Try the direct way
-    if not expiry and base_hasattr(content, 'expires'):
+    if not expiry and base_hasattr(content, "expires"):
         expiry = content.expires
 
     # See if we have a callable
@@ -179,7 +175,7 @@ def isExpired(content):
         expiry = expiry()
 
     # Convert to DateTime if necessary, ExpirationDate may return 'None'
-    if expiry and expiry != 'None' and isinstance(expiry, str):
+    if expiry and expiry != "None" and isinstance(expiry, str):
         expiry = DateTime(expiry)
 
     if isinstance(expiry, DateTime) and expiry.isPast():
@@ -189,7 +185,7 @@ def isExpired(content):
 
 def typesToList(context):
     registry = getUtility(IRegistry)
-    return registry.get('plone.displayed_types', ())
+    return registry.get("plone.displayed_types", ())
 
 
 def normalizeString(text, context=None, encoding=None):
@@ -202,6 +198,7 @@ class RealIndexIterator:
     """The 'real' version of the IndexIterator class, that's actually
     used to generate unique indexes.
     """
+
     __allow_access_to_unprotected_subobjects__ = 1
 
     def __init__(self, pos=0):
@@ -218,14 +215,13 @@ class RealIndexIterator:
 
 @security.private
 class ToolInit(CMFCoreToolInit):
-
     def getProductContext(self, context):
-        name = '_ProductContext__prod'
-        return getattr(context, name, getattr(context, '__prod', None))
+        name = "_ProductContext__prod"
+        return getattr(context, name, getattr(context, "__prod", None))
 
     def getPack(self, context):
-        name = '_ProductContext__pack'
-        return getattr(context, name, getattr(context, '__pack__', None))
+        name = "_ProductContext__pack"
+        return getattr(context, name, getattr(context, "__pack__", None))
 
     def getIcon(self, context, path):
         pack = self.getPack(context)
@@ -243,9 +239,10 @@ class ToolInit(CMFCoreToolInit):
             except OSError:
                 # if there is some problem loading the fancy image
                 # from the tool then  tell someone about it
-                log('The icon for the product: %s which was set to: %s, '
-                     'was not found. Using the default.' %
-                     (self.product_name, icon_path))
+                log(
+                    "The icon for the product: %s which was set to: %s, "
+                    "was not found. Using the default." % (self.product_name, icon_path)
+                )
         return icon
 
     def initialize(self, context):
@@ -253,7 +250,7 @@ class ToolInit(CMFCoreToolInit):
         CMFCoreToolInit.initialize(self, context)
         for tool in self.tools:
             # Get the icon path from the tool
-            path = getattr(tool, 'toolicon', None)
+            path = getattr(tool, "toolicon", None)
             if path is not None:
                 pc = self.getProductContext(context)
                 if pc is not None:
@@ -264,7 +261,7 @@ class ToolInit(CMFCoreToolInit):
                         # Icon was not found
                         return
                     icon.__roles__ = None
-                    tool.icon = f'misc_/{self.product_name}/{name}'
+                    tool.icon = f"misc_/{self.product_name}/{name}"
                     misc = OFS.misc_.misc_
                     Misc = OFS.misc_.Misc_
                     if not hasattr(misc, pid):
@@ -272,28 +269,28 @@ class ToolInit(CMFCoreToolInit):
                     getattr(misc, pid)[name] = icon
 
 
-release_levels = ('alpha', 'beta', 'candidate', 'final')
-rl_abbr = {'a': 'alpha', 'b': 'beta', 'rc': 'candidate'}
+release_levels = ("alpha", "beta", "candidate", "final")
+rl_abbr = {"a": "alpha", "b": "beta", "rc": "candidate"}
 
 
 def versionTupleFromString(v_str):
     """Returns version tuple from passed in version string
 
-        >>> versionTupleFromString('1.2.3')
-        (1, 2, 3, 'final', 0)
+    >>> versionTupleFromString('1.2.3')
+    (1, 2, 3, 'final', 0)
 
-        >>> versionTupleFromString('2.1-final1 (SVN)')
-        (2, 1, 0, 'final', 1)
+    >>> versionTupleFromString('2.1-final1 (SVN)')
+    (2, 1, 0, 'final', 1)
 
-        >>> versionTupleFromString('3-beta')
-        (3, 0, 0, 'beta', 0)
+    >>> versionTupleFromString('3-beta')
+    (3, 0, 0, 'beta', 0)
 
-        >>> versionTupleFromString('2.0a3')
-        (2, 0, 0, 'alpha', 3)
+    >>> versionTupleFromString('2.0a3')
+    (2, 0, 0, 'alpha', 3)
 
-        >>> versionTupleFromString('foo') is None
-        True
-        """
+    >>> versionTupleFromString('foo') is None
+    True
+    """
     regex_str = r"(^\d+)[.]?(\d*)[.]?(\d*)[- ]?(alpha|beta|candidate|final|a|b|rc)?(\d*)"  # noqa
     v_regex = re.compile(regex_str)
     match = v_regex.match(v_str)
@@ -304,7 +301,7 @@ def versionTupleFromString(v_str):
         for i in (0, 1, 2, 4):
             groups[i] = base_utils.safe_int(groups[i])
         if groups[3] is None:
-            groups[3] = 'final'
+            groups[3] = "final"
         elif groups[3] in rl_abbr.keys():
             groups[3] = rl_abbr[groups[3]]
         v_tpl = tuple(groups)
@@ -313,7 +310,7 @@ def versionTupleFromString(v_str):
 
 def getFSVersionTuple():
     """Returns Products.CMFPlone version tuple"""
-    version = pkg_resources.get_distribution('Products.CMFPlone').version
+    version = pkg_resources.get_distribution("Products.CMFPlone").version
     return versionTupleFromString(version)
 
 
@@ -321,7 +318,7 @@ def transaction_note(note):
     """Write human legible note"""
     T = transaction.get()
     if (len(T.description) + len(note)) >= 65533:
-        log('Transaction note too large omitting %s' % str(note))
+        log("Transaction note too large omitting %s" % str(note))
     else:
         T.note(base_utils.safe_text(note))
 
@@ -378,7 +375,7 @@ def webdav_enabled(obj, container):
 # a dependency.
 
 
-security.declarePrivate('sys')
+security.declarePrivate("sys")
 
 
 def _unrestricted_rename(container, id, new_id):
@@ -393,21 +390,23 @@ def _unrestricted_rename(container, id, new_id):
     """
     try:
         container._checkId(new_id)
-    except:
-        raise CopyError(MessageDialog(
-            title='Invalid Id',
-            message=sys.exc_info()[1],
-            action='manage_main'))
+    except Exception:
+        raise CopyError(
+            MessageDialog(
+                title="Invalid Id", message=sys.exc_info()[1], action="manage_main"
+            )
+        )
     ob = container._getOb(id)
     if not ob.cb_isMoveable():
-        raise CopyError(f'Not Supported {escape(id)}')
+        raise CopyError(f"Not Supported {escape(id)}")
     try:
         ob._notifyOfCopyTo(container, op=1)
-    except:
-        raise CopyError(MessageDialog(
-            title='Rename Error',
-            message=sys.exc_info()[1],
-            action='manage_main'))
+    except Exception:
+        raise CopyError(
+            MessageDialog(
+                title="Rename Error", message=sys.exc_info()[1], action="manage_main"
+            )
+        )
     container._delObject(id)
     ob = aq_base(ob)
     ob._setId(new_id)
@@ -423,7 +422,7 @@ def _unrestricted_rename(container, id, new_id):
 
 # Copied '_getSecurity' from Archetypes.utils to avoid a dependency.
 
-security.declarePrivate('ClassSecurityInfo')
+security.declarePrivate("ClassSecurityInfo")
 
 
 def _getSecurity(klass, create=True):
@@ -433,7 +432,7 @@ def _getSecurity(klass, create=True):
     info = vars(klass)
     security = None
     for k, v in info.items():
-        if hasattr(v, '__security_info__'):
+        if hasattr(v, "__security_info__"):
             security = v
             break
     # Didn't found a ClassSecurityInfo object
@@ -444,7 +443,7 @@ def _getSecurity(klass, create=True):
         # could theoretically lead to name clashes, and doesn't matter for
         # zope 2 anyway.
         security = ClassSecurityInfo()
-        setattr(klass, '__security__', security)
+        setattr(klass, "__security__", security)
     return security
 
 
@@ -456,37 +455,37 @@ def set_own_login_name(member, loginname):
     bit weird then.  Historical accident.
     """
     portal = getSite()
-    pas = getToolByName(portal, 'acl_users')
-    mt = getToolByName(portal, 'portal_membership')
+    pas = getToolByName(portal, "acl_users")
+    mt = getToolByName(portal, "portal_membership")
     if member.getId() == mt.getAuthenticatedMember().getId():
         pas.updateOwnLoginName(loginname)
         return
     secman = getSecurityManager()
     if not secman.checkPermission(ManageUsers, member):
-        raise Unauthorized('You can only change your OWN login name.')
+        raise Unauthorized("You can only change your OWN login name.")
     pas.updateLoginName(member.getId(), loginname)
 
 
 def ajax_load_url(url):
-    if url and 'ajax_load' not in url:
-        sep = '?' in url and '&' or '?'  # url parameter seperator
-        url = f'{url}{sep}ajax_load=1'
+    if url and "ajax_load" not in url:
+        sep = "?" in url and "&" or "?"  # url parameter separator
+        url = f"{url}{sep}ajax_load=1"
     return url
 
 
 def bodyfinder(text):
-    """ Return body or unchanged text if no body tags found.
+    """Return body or unchanged text if no body tags found.
 
     Always use html_headcheck() first.
     """
     lowertext = text.lower()
-    bodystart = lowertext.find('<body')
+    bodystart = lowertext.find("<body")
     if bodystart == -1:
         return text
-    bodystart = lowertext.find('>', bodystart) + 1
+    bodystart = lowertext.find(">", bodystart) + 1
     if bodystart == 0:
         return text
-    bodyend = lowertext.rfind('</body>', bodystart)
+    bodyend = lowertext.rfind("</body>", bodystart)
     if bodyend == -1:
         return text
     return text[bodystart:bodyend]
@@ -504,13 +503,12 @@ def getSiteLogo(site=None, include_type=False):
     settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
     site_url = site.absolute_url()
 
-    if getattr(settings, 'site_logo', False):
+    if getattr(settings, "site_logo", False):
         filename, data = b64decode_file(settings.site_logo)
-        site_logo_url = '{}/@@site-logo/{}'.format(
-            site_url, filename)
+        site_logo_url = f"{site_url}/@@site-logo/{filename}"
         site_logo_type = mimetypes.guess_type(filename)[0]
     else:
-        site_logo_url = '%s/++resource++plone-logo.svg' % site_url
+        site_logo_url = "%s/++resource++plone-logo.svg" % site_url
         site_logo_type = "image/svg+xml"
 
     if not include_type:
@@ -529,8 +527,8 @@ def _safe_format(inst, method):
 
 
 def check_id(
-        context, id=None, required=0, alternative_id=None, contained_by=None,
-        **kwargs):
+    context, id=None, required=0, alternative_id=None, contained_by=None, **kwargs
+):
     """Test an id to make sure it is valid.
 
     This used to be in Products/CMFPlone/skins/plone_scripts/check_id.py.
@@ -556,8 +554,9 @@ def check_id(
     it can cause some confusion; since the real problem is the name of
     the image file name, not in the name of the autogenerated id.
     """
+
     def xlate(message):
-        ts = getToolByName(context, 'translation_service', None)
+        ts = getToolByName(context, "translation_service", None)
         if ts is None:
             return message
         return ts.translate(message, context=context.REQUEST)
@@ -569,7 +568,7 @@ def check_id(
     # make sure we have an id if one is required
     if not id:
         if required:
-            return xlate(_('Please enter a name.'))
+            return xlate(_("Please enter a name."))
 
         # Id is not required and no alternative was specified, so assume the
         # object's id will be context.getId(). We still should check to make
@@ -585,30 +584,35 @@ def check_id(
     #
 
     # check for reserved names
-    if id in ('login', 'layout', 'plone', 'zip', 'properties', ):
-        return xlate(
-            _('${name} is reserved.',
-              mapping={'name': id}))
+    if id in (
+        "login",
+        "layout",
+        "plone",
+        "zip",
+        "properties",
+    ):
+        return xlate(_("${name} is reserved.", mapping={"name": id}))
 
     # check for bad characters
-    plone_utils = getToolByName(context, 'plone_utils', None)
+    plone_utils = getToolByName(context, "plone_utils", None)
     if plone_utils is not None:
         bad_chars = plone_utils.bad_chars(id)
         if len(bad_chars) > 0:
-            bad_chars = ''.join(bad_chars).decode('utf-8')
-            decoded_id = id.decode('utf-8')
+            bad_chars = "".join(bad_chars).decode("utf-8")
+            decoded_id = id.decode("utf-8")
             return xlate(
-                _('${name} is not a legal name. The following characters are '
-                  'invalid: ${characters}',
-                  mapping={'name': decoded_id, 'characters': bad_chars}))
+                _(
+                    "${name} is not a legal name. The following characters are "
+                    "invalid: ${characters}",
+                    mapping={"name": decoded_id, "characters": bad_chars},
+                )
+            )
 
     # check for a catalog index
-    portal_catalog = getToolByName(context, 'portal_catalog', None)
+    portal_catalog = getToolByName(context, "portal_catalog", None)
     if portal_catalog is not None:
         if id in list(portal_catalog.indexes()) + list(portal_catalog.schema()):
-            return xlate(
-                _('${name} is reserved.',
-                  mapping={'name': id}))
+            return xlate(_("${name} is reserved.", mapping={"name": id}))
 
     # id is good; decide if we should check for id collisions
     if contained_by is not None:
@@ -618,7 +622,7 @@ def check_id(
     else:
         # if we have an existing object, only check for collisions
         # if we are changing the id
-        checkForCollision = (context.getId() != id)
+        checkForCollision = context.getId() != id
 
     # check for id collisions
     if not checkForCollision:
@@ -637,11 +641,11 @@ def check_id(
         result = _check_for_collision(contained_by, id, **kwargs)
     except Unauthorized:
         # There is a permission problem. Safe to assume we can't use this id.
-        return xlate(
-            _('${name} is reserved.',
-              mapping={'name': id}))
+        return xlate(_("${name} is reserved.", mapping={"name": id}))
     if result is not None:
-        result = xlate(result, )
+        result = xlate(
+            result,
+        )
     return result
 
 
@@ -671,48 +675,49 @@ def _check_for_collision(contained_by, id, **kwargs):
     # Check for an existing object.
     if id in contained_by:
         existing_obj = getattr(contained_by, id, None)
-        if base_hasattr(existing_obj, 'portal_type'):
+        if base_hasattr(existing_obj, "portal_type"):
             return _(
-                'There is already an item named ${name} in this folder.',
-                mapping={'name': id})
+                "There is already an item named ${name} in this folder.",
+                mapping={"name": id},
+            )
 
-    if base_hasattr(contained_by, 'checkIdAvailable'):
+    if base_hasattr(contained_by, "checkIdAvailable"):
         # This used to be called from the check_id skin script,
         # which would check the permission automatically,
         # and the code would catch the Unauthorized exception.
         if secman.checkPermission(AddPortalContent, contained_by):
             if not contained_by.checkIdAvailable(id):
-                return _('${name} is reserved.', mapping={'name': id})
+                return _("${name} is reserved.", mapping={"name": id})
 
     # containers may implement this hook to further restrict ids
-    if base_hasattr(contained_by, 'checkValidId'):
+    if base_hasattr(contained_by, "checkValidId"):
         try:
             contained_by.checkValidId(id)
         except ConflictError:
             raise
         except:  # noqa: E722
-            return _('${name} is reserved.', mapping={'name': id})
+            return _("${name} is reserved.", mapping={"name": id})
 
     # make sure we don't collide with any parent method aliases
-    plone_utils = getToolByName(contained_by, 'plone_utils', None)
-    portal_types = getToolByName(contained_by, 'portal_types', None)
+    plone_utils = getToolByName(contained_by, "plone_utils", None)
+    portal_types = getToolByName(contained_by, "portal_types", None)
     if plone_utils is not None and portal_types is not None:
         parentFti = portal_types.getTypeInfo(contained_by)
         if parentFti is not None:
             aliases = plone_utils.getMethodAliases(parentFti)
             if aliases is not None:
                 if id in aliases.keys():
-                    return _('${name} is reserved.', mapping={'name': id})
+                    return _("${name} is reserved.", mapping={"name": id})
 
     # Lastly, we want to disallow the id of any of the tools in the portal
     # root, as well as any object that can be acquired via portal_skins.
     # However, we do want to allow overriding of *content* in the object's
     # parent path, including the portal root.
 
-    if id == 'index_html':
+    if id == "index_html":
         # always allow index_html
         return
-    portal_url = getToolByName(contained_by, 'portal_url', None)
+    portal_url = getToolByName(contained_by, "portal_url", None)
     if portal_url is None:
         # Probably a test.
         # All other code needs the portal, so there is nothing left to check.
@@ -726,10 +731,12 @@ def _check_for_collision(contained_by, id, **kwargs):
     # object is outside the portal.
     outsideportal = getattr(aq_parent(portal), id, None)
     insideportal = getattr(portal, id, None)
-    if (insideportal is not None
-            and outsideportal is not None
-            and aq_base(outsideportal) == aq_base(insideportal)):
+    if (
+        insideportal is not None
+        and outsideportal is not None
+        and aq_base(outsideportal) == aq_base(insideportal)
+    ):
         return
     # but not other things
     if getattr(portal, id, None) is not None:
-        return _('${name} is reserved.', mapping={'name': id})
+        return _("${name} is reserved.", mapping={"name": id})

@@ -8,15 +8,14 @@ from Products.GenericSetup.interfaces import IBody
 from zope.component import queryMultiAdapter
 
 
-_FILENAME = 'memberdata_properties.xml'
+_FILENAME = "memberdata_properties.xml"
 
 
 def importMemberDataProperties(context):
-    """ Import MemberData tool properties.
-    """
+    """Import MemberData tool properties."""
     site = context.getSite()
-    logger = context.getLogger('memberdata')
-    ptool = getToolByName(site, 'portal_memberdata')
+    logger = context.getLogger("memberdata")
+    ptool = getToolByName(site, "portal_memberdata")
 
     body = context.readDataFile(_FILENAME)
     if body is None:
@@ -24,26 +23,25 @@ def importMemberDataProperties(context):
 
     importer = queryMultiAdapter((ptool, context), IBody)
     if importer is None:
-        logger.warning('Import adapter missing.')
+        logger.warning("Import adapter missing.")
         return
 
     importer.body = body
-    logger.info('MemberData tool imported.')
+    logger.info("MemberData tool imported.")
 
 
 def exportMemberDataProperties(context):
-    """ Export MemberData tool properties .
-    """
+    """Export MemberData tool properties ."""
     site = context.getSite()
-    logger = context.getLogger('memberdata')
-    ptool = getToolByName(site, 'portal_memberdata', None)
+    logger = context.getLogger("memberdata")
+    ptool = getToolByName(site, "portal_memberdata", None)
     if ptool is None:
         return
 
     exporter = queryMultiAdapter((ptool, context), IBody)
     if exporter is None:
-        logger.warning('Export adapter missing.')
+        logger.warning("Export adapter missing.")
         return
 
     context.writeDataFile(_FILENAME, exporter.body, exporter.mime_type)
-    logger.info('MemberData tool exported.')
+    logger.info("MemberData tool exported.")
