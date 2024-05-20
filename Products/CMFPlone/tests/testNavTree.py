@@ -1,8 +1,8 @@
-from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.navtree import NavtreeStrategyBase
-from plone.app.layout.navigation.root import getNavigationRoot
+from plone.base.interfaces import INavigationRoot
 from plone.base.interfaces import INonStructuralFolder
+from plone.base.navigationroot import get_navigation_root
 from Products.CMFCore.CMFCatalogAware import CatalogAware
 from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFCore.utils import getToolByName
@@ -48,8 +48,8 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         """
         self.setRoles(["Manager"])
 
-        for item in self.portal.getFolderContents():
-            self.portal._delObject(item.getId)
+        for cid in self.portal.contentIds():
+            self.portal._delObject(cid)
 
         self.portal.invokeFactory("Document", "doc1")
         self.portal.invokeFactory("Document", "doc2")
@@ -577,33 +577,33 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
 
 
 class TestNavigationRoot(PloneTestCase.PloneTestCase):
-    def testGetNavigationRootPropertyNotSet(self):
+    def testGet_navigation_rootPropertyNotSet(self):
         del self.portal.portal_registry.records["plone.root"]
-        root = getNavigationRoot(self.portal)
+        root = get_navigation_root(self.portal)
         self.assertEqual(root, "/".join(self.portal.getPhysicalPath()))
 
-    def testGetNavigationRootPropertyEmptyNoVirtualHost(self):
+    def testGet_navigation_rootPropertyEmptyNoVirtualHost(self):
         self.portal.portal_registry["plone.root"] = ""
-        root = getNavigationRoot(self.portal)
+        root = get_navigation_root(self.portal)
         self.assertEqual(root, "/".join(self.portal.getPhysicalPath()))
 
-    def testGetNavigationRootPropertyIsRoot(self):
+    def testGet_navigation_rootPropertyIsRoot(self):
         self.portal.portal_registry["plone.root"] = "/"
-        root = getNavigationRoot(self.portal)
+        root = get_navigation_root(self.portal)
         self.assertEqual(root, "/".join(self.portal.getPhysicalPath()))
 
-    def testGetNavigationRootPropertyIsFolder(self):
+    def testGet_navigation_rootPropertyIsFolder(self):
         folderPath = "/".join(self.folder.getPhysicalPath())
         portalPath = "/".join(self.portal.getPhysicalPath())
         relativePath = folderPath[len(portalPath) :]
         self.portal.portal_registry["plone.root"] = relativePath
-        root = getNavigationRoot(self.portal)
+        root = get_navigation_root(self.portal)
         self.assertEqual(root, folderPath)
 
-    def testGetNavigationRootWithINavigationRoot(self):
+    def testGet_navigation_rootWithINavigationRoot(self):
         folderPath = "/".join(self.folder.getPhysicalPath())
         self.folder.invokeFactory("Folder", "folder1")
         self.folder.folder1.invokeFactory("Document", "doc1")
         directlyProvides(self.folder, INavigationRoot)
-        root = getNavigationRoot(self.folder.folder1.doc1)
+        root = get_navigation_root(self.folder.folder1.doc1)
         self.assertEqual(root, folderPath)

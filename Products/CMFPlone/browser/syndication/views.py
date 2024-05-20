@@ -20,10 +20,10 @@ class FeedView(BrowserView):
     content_type = "application/atom+xml"
 
     def feed(self):
-        f = queryAdapter(self.context, IFeed)
-        if f is None:
+        feed = queryAdapter(self.context, IFeed)
+        if feed is None:
             raise NotFound
-        return f
+        return feed
 
     def __call__(self):
         util = getMultiAdapter((self.context, self.request), name="syndication-util")
@@ -40,10 +40,10 @@ class FeedView(BrowserView):
 
 class SearchFeedView(FeedView):
     def feed(self):
-        f = queryAdapter(self.context, ISearchFeed)
-        if f is None:
+        feed = queryAdapter(self.context, ISearchFeed)
+        if feed is None:
             raise NotFound
-        return f
+        return feed
 
     def __call__(self):
         util = getMultiAdapter((self.context, self.request), name="syndication-util")

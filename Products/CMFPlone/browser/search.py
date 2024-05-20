@@ -1,12 +1,12 @@
 from DateTime import DateTime
 from plone.app.contentlisting.interfaces import IContentListing
-from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.base.batch import Batch
+from plone.base.interfaces import INavigationRoot
 from plone.base.interfaces import ISearchSchema
 from plone.base.interfaces.siteroot import IPloneSiteRoot
+from plone.base.navigationroot import get_navigation_root
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.ZCTextIndex.ParseTree import ParseError
 from zope.cachedescriptors.property import Lazy as lazy_property
 from zope.component import getMultiAdapter
@@ -147,7 +147,7 @@ class Search(BrowserView):
         query["show_inactive"] = False
         # respect navigation root if we're not at the site root.
         if "path" not in query and not IPloneSiteRoot.providedBy(self.context):
-            query["path"] = getNavigationRoot(self.context)
+            query["path"] = get_navigation_root(self.context)
 
         if "sort_order" in query and not query["sort_order"]:
             del query["sort_order"]
