@@ -80,7 +80,6 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
         settings = registry.forInterface(INavigationSchema, prefix="plone")
         self.browser.open("%s/@@navigation-controlpanel" % self.portal_url)
         self.browser.getControl("Collection", index=0).selected = True
-        self.browser.getControl("Comment").selected = True
         self.browser.getControl("Event").selected = True
         self.browser.getControl("File").selected = True
         self.browser.getControl("Folder").selected = True
@@ -91,7 +90,6 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl("Save").click()
 
         self.assertTrue("Collection" in settings.displayed_types)
-        self.assertTrue("Discussion Item" in settings.displayed_types)
         self.assertTrue("Event" in settings.displayed_types)
         self.assertTrue("File" in settings.displayed_types)
         self.assertTrue("Folder" in settings.displayed_types)
