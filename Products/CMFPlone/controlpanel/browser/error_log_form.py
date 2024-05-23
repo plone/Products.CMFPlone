@@ -1,14 +1,14 @@
 from DateTime import DateTime
 from plone.base import PloneMessageFactory as _
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_nativestring
 from Products.Five import BrowserView
-
-import plone.api as api
 
 
 class ErrorLogUpdate(BrowserView):
     def __call__(self):
-        member = api.user.get_current()
+        portal_membership = getToolByName(self.context, "portal_membership")
+        member = portal_membership.getAuthenticatedMember()
 
         if getattr(self.request, "form.button.search", None) is not None:
             search = self.request.form.get("search_entry")
