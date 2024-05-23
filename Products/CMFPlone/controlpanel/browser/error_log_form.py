@@ -7,7 +7,7 @@ from Products.Five import BrowserView
 
 class ErrorLogUpdate(BrowserView):
     def __call__(self):
-        portal_membership = getToolByName("portal_membership")
+        portal_membership = getToolByName(self.context, "portal_membership")
         member = portal_membership.getAuthenticatedMember()
 
         if getattr(self.request, "form.button.search", None) is not None:
