@@ -2,6 +2,7 @@ from AccessControl import getSecurityManager
 from AccessControl.Permissions import view_management_screens
 from Acquisition import aq_inner
 from App.config import getConfiguration
+from html import escape
 from plone.autoform.form import AutoExtensibleForm
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import IMaintenanceSchema
@@ -23,12 +24,6 @@ try:
     from Lifetime import shutdown
 except ImportError:
     LIFETIME = False
-
-try:
-    from html import escape
-except ImportError:
-    from cgi import escape
-
 
 logger = logging.getLogger(__file__)
 
