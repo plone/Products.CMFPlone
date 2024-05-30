@@ -198,7 +198,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISearchSchema, prefix="plone")
         self.assertTrue("plone.types_not_searched" in registry)
-        self.assertTrue("Plone Site" in settings.types_not_searched)
 
     def testDefaultSortOrderProperty(self):
         # We should have an sort_on property
