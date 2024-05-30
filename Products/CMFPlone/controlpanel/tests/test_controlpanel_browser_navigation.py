@@ -109,7 +109,7 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             "Internally published [internally_published]"
         ).selected = True  # noqa
-        self.browser.getControl("Pending [pending]").selected = True
+        self.browser.getControl("Pending review [pending]").selected = True
         self.browser.getControl("Private [private]").selected = True
         self.browser.getControl("Public draft [visible]").selected = True
         self.browser.getControl("Published [published]").selected = True
