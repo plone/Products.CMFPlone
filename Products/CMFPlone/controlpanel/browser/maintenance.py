@@ -90,7 +90,7 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
         if LIFETIME:
             shutdown(0)
         else:
-            raise
+            raise NotImplementedError("Lifetime is not available.")
         # TODO: returning html has no effect in button handlers
         self.request.response.setHeader("X-Theme-Disabled", "True")
         return """<html><head></head><body>{}</body></html>""".format(
@@ -136,6 +136,9 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
         if "ZMANAGED" in os.environ:
             return True
         return False
+
+    def isShutdownable(self):
+        return LIFETIME
 
     def isDevelopmentMode(self):
         return bool(getConfiguration().debug_mode)
