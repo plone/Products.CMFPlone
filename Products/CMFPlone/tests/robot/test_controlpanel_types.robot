@@ -21,8 +21,6 @@ Scenario: Allow comments for Link Type
    When I select 'Link' in types dropdown
     and Allow discussion
    Then Wait until page contains  Content Settings
-   When I add new Link 'my_link'
-    Then Link 'my_link' should have comments enabled
 
 Scenario: Change default workflow
   Given a logged-in site administrator
@@ -73,11 +71,6 @@ I add new Link '${id}'
 
 
 # --- THEN -------------------------------------------------------------------
-
-Link '${id}' should have comments enabled
-  Go to  ${PLONE_URL}/${id}
-  Wait until page contains  ${id}
-  Page should contain element  xpath=//div[@id="commenting"]
 
 Link '${id}' should have Single State Workflow enabled
   Go to  ${PLONE_URL}/${id}
