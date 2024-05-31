@@ -17,7 +17,7 @@
                 portal_roles view/portal_roles;
                 portal_url context/portal_url;">
 
-    <article id="content">
+    <tal:content>
 
     <header>
 
@@ -225,7 +225,7 @@
       </div>
     </div>
 
-  </article>
+  </tal:content>
 
 </metal:main>
 
