@@ -21,7 +21,7 @@
                         batchformkeys python:['searchstring','_authenticator'];
                         portal_url context/portal_url;">
 
-  <article id="content">
+  <tal:content>
     <header>
         <h1 class="documentFirstHeading"
             i18n:translate="">Groups</h1>
@@ -207,7 +207,7 @@
             </div>
         </form>
     </div>
-  </article>
+  </tal:content>
 
 </metal:main>
 </body>
