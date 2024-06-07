@@ -51,7 +51,7 @@
                   body_class python:plone_layout.bodyClass(template, view);"
     tal:attributes="class string: ${body_class} ajax_load;
                     dir python:isRTL and 'rtl' or 'ltr';
-                    python:plone_view.patterns_settings()"
+                    python:context.restrictedTraverse('@@plone_patterns_settings')();"
     id="visual-portal-wrapper">
 
     <header id="portal-top" i18n:domain="plone"/>
