@@ -63,7 +63,7 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
             for m in self.gtool.getGroupsForPrincipal(self.member)
         ]
         groupResults.sort(
-            key=lambda x: x is not None and normalizeString(x.getGroupTitleOrName())
+            key=lambda x: normalizeString(x.getGroupTitleOrName()) if x else ''
         )
         return [i for i in groupResults if i]
 
