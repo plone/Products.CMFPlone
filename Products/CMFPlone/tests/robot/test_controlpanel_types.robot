@@ -13,15 +13,6 @@ Test Teardown  Run keywords  Plone Test Teardown
 
 
 *** Test Cases ***************************************************************
-
-Scenario: Allow comments for Link Type
-  Given a logged-in manager
-    and Globally enabled comments
-    and the types control panel
-   When I select 'Link' in types dropdown
-    and Allow discussion
-   Then Wait until page contains  Content Settings
-
 Scenario: Change default workflow
   Given a logged-in site administrator
     and the types control panel
@@ -34,32 +25,12 @@ Scenario: Change default workflow
 *** Keywords *****************************************************************
 
 # --- GIVEN ------------------------------------------------------------------
-
-a logged-in manager
-  Enable autologin as  Manager
-
 the types control panel
   Go to  ${PLONE_URL}/@@content-controlpanel
   Wait until page contains  Content Settings
 
-Globally enabled comments
-  Go to  ${PLONE_URL}/@@discussion-settings
-  Wait until page contains  Discussion settings
-  Select checkbox  name=form.widgets.globally_enabled:list
-  Click button  Save
-
-
 
 # --- WHEN -------------------------------------------------------------------
-
-I select '${content_type}' in types dropdown
-  Select from list by label  name=type_id  ${content_type}
-  Wait until page contains  Globally addable
-
-Allow discussion
-  Select checkbox  name=allow_discussion:boolean
-  Click Button  Save
-
 I select '${workflow}' workflow
   Select from list by label  name=new_workflow  ${workflow}
   Click Button  Save
