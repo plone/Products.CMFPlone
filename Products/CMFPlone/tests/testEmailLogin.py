@@ -79,10 +79,6 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
         # Strange, but valid as id:
         self.assertTrue(pattern.match("no.address@example"))
         self.assertTrue(registration.isMemberIdAllowed("no.address@example"))
-        # http://dev.plone.org/ticket/11616 mentions some non-standard
-        # email addresses.
-        # A plus sign in the id gives problems in some parts of the
-        # UI, so we do not allow it.
         # testing if it breaks anything (according to https://github.com/plone/Products.CMFPlone/issues/3968)
         self.assertTrue(pattern.match("user+test@example.org")) 
         self.assertTrue(registration.isMemberIdAllowed("user+test@example.org"))
