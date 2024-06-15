@@ -102,39 +102,27 @@
              "
         >
           <tal:block tal:repeat="bundle python:view.bundles_data">
-            <div class="accordion-item ${python:'active' if bundle['name'] == request.form.get('name', None) else ''}">
-              <h2 class="accordion-header"
-                  id="heading-${python:bundle['safe_name']}"
-              >
-                <button class="accordion-button"
-                        aria-controls="collapse-${python:bundle['safe_name']}"
-                        aria-expanded="false"
-                        type="button"
-                        data-bs-target="#collapse-${python:bundle['safe_name']}"
-                        data-bs-toggle="collapse"
-                >
-                  <span class="me-2"
-                        tal:condition="python:bundle['name'] and bundle['enabled']"
+            <details class="accordion-item ${python:'active' if bundle['name'] == request.form.get('name', None) else ''}">
+              <summary class="accordion-button">
+                <span class="me-2"
+                      tal:condition="python:bundle['name'] and bundle['enabled']"
+                      i18n:translate=""
+                ><tal:icon tal:replace="structure python:icons.tag('file-check', tag_alt='Enabled bundle')" /></span>
+                <span class="me-2"
+                      tal:condition="python:bundle['name'] and not bundle['enabled']"
+                      i18n:translate=""
+                ><tal:icon tal:replace="structure python:icons.tag('file-x', tag_alt='Disabled bundle')" /></span>
+                <span class="me-2"
+                      tal:condition="python:not bundle['name']"
+                      i18n:translate=""
+                ><tal:icon tal:replace="structure python:icons.tag('file-plus', tag_alt='Add a bundle')" /></span>
+                <h2 class="accordion-header fs-5 fw-bold" tal:condition="python:bundle['name']">${python:bundle["name"]}</h2>
+                <h2 class="accordion-header fs-5 fw-bold" tal:condition="python:not bundle['name']"
                         i18n:translate=""
-                  ><tal:icon tal:replace="structure python:icons.tag('file-check', tag_alt='Enabled bundle')" /></span>
-                  <span class="me-2"
-                        tal:condition="python:bundle['name'] and not bundle['enabled']"
-                        i18n:translate=""
-                  ><tal:icon tal:replace="structure python:icons.tag('file-x', tag_alt='Disabled bundle')" /></span>
-                  <span class="me-2"
-                        tal:condition="python:not bundle['name']"
-                        i18n:translate=""
-                  ><tal:icon tal:replace="structure python:icons.tag('file-plus', tag_alt='Add a bundle')" /></span>
-                  <strong tal:condition="python:bundle['name']">${python:bundle["name"]}</strong>
-                  <strong tal:condition="python:not bundle['name']"
-                          i18n:translate=""
-                  >Add new bundle</strong>
-                </button>
-              </h2>
-              <div class="accordion-collapse collapse show"
-                   id="collapse-${python:bundle['safe_name']}"
+                >Add new bundle</h2>
+              </summary>
+              <div id="collapse-${python:bundle['safe_name']}"
                    aria-labelledby="heading${python:bundle['safe_name']}"
-                   data-bs-parent="#accordionRR"
               >
                 <div class="accordion-body">
                   <form action="${python:context.absolute_url()}/@@resourceregistry-controlpanel"
@@ -267,9 +255,10 @@
                   </form>
                 </div>
               </div>
-            </div>
+            </details>
           </tal:block>
         </div>
+
         <div class="mt-3">
           <h2 i18n:translate="">Additional Resources</h2>
           <p i18n:translate="">After the above resources, the following might get loaded:</p>
@@ -292,14 +281,14 @@
           </dl>
         </div>
       </div>
+
       <script>
-     /* collapse accordion via script here, so that it stays open when JS is disabled */
-     window.addEventListener('DOMContentLoaded', (event) => {
-      document.querySelector(".alert.js-errors").style.display = "none";
-      document.querySelectorAll(".accordion-item:not(.active) .accordion-button").forEach(el => el.classList.add("collapsed"));
-      document.querySelectorAll(".accordion-item:not(.active) .accordion-collapse").forEach(el => el.classList.remove("show"));
-    });
+        window.addEventListener('DOMContentLoaded', (event) => {
+          /* Hide the JavaScript warning when JavaScript is enabled. */
+          document.querySelector(".alert.js-errors").style.display = "none";
+        });
       </script>
+
     </metal:main>
 
   </body>
