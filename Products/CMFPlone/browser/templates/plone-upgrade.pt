@@ -21,6 +21,7 @@
 
 <body id="plone-upgrade-screen"
       tal:define="versions view/versions;
+                  upgrades view/upgrades;
                   report options/report|nothing;">
 
     <div class="container admin mt-5 mb-5 p-4">
@@ -101,7 +102,7 @@
           </p>
 
           <dl class="mb-4">
-            <tal:block tal:repeat="upgrade_info view/upgrades">
+            <tal:block tal:repeat="upgrade_info upgrades">
 
                 <tal:single condition="python:not isinstance(upgrade_info, list)"
                             define="info upgrade_info">
@@ -144,9 +145,20 @@
           </div>
         </div>
 
+        <p class="alert alert-danger p-2" tal:condition="not:upgrades">
+          <span i18n:translate="msg_no_upgrades">
+            No upgrade steps are available.
+          </span>
+          <strong tal:condition="not:view/has_upgrade"
+                i18n:translate="msg_plone_app_upgrade_missing">
+            The plone.app.upgrade package is missing.
+          </strong>
+        </p>
+
         <input type="hidden" name="form.submitted:boolean" value="True" />
         <button type="submit"
                 name="submit"
+                tal:attributes="disabled python:'disabled' if not upgrades else ''"
                 class="btn btn-primary"
                 i18n:translate="" >Upgrade</button>
     </form>

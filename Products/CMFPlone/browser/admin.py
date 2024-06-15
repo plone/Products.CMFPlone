@@ -1,6 +1,8 @@
 from AccessControl import getSecurityManager
 from AccessControl.Permissions import view as View
 from collections import OrderedDict
+from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError
 from OFS.interfaces import IApplication
 from plone.base.interfaces import INonInstallable
 from plone.base.interfaces import IPloneSiteRoot
@@ -35,14 +37,18 @@ from zope.schema.interfaces import IVocabularyFactory
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 
 import logging
-import pkg_resources
 
 
 try:
-    pkg_resources.get_distribution("plone.volto")
+    distribution("plone.volto")
     HAS_VOLTO = True
-except pkg_resources.DistributionNotFound:
+except PackageNotFoundError:
     HAS_VOLTO = False
+try:
+    distribution("plone.app.upgrade")
+    HAS_UPGRADE = True
+except PackageNotFoundError:
+    HAS_UPGRADE = False
 LOGGER = logging.getLogger("Products.CMFPlone")
 
 
@@ -313,6 +319,8 @@ class AddPloneSite(BrowserView):
 
 
 class Upgrade(BrowserView):
+    has_upgrade = HAS_UPGRADE
+
     def upgrades(self):
         pm = getattr(self.context, "portal_migration")
         return pm.listUpgrades()
