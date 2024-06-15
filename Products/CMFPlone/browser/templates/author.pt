@@ -218,9 +218,8 @@
                           </div>
 
                           <p>
-                          <a href=""
-                             tal:attributes="href string:$here_url/search?Creator=${view.makeQuery(username)}&amp;sort_on=created&amp;sort_order=reverse"
-                             i18n:translate="go_to_search_author_content">
+                          <a href="${here_url}/search?${python:view.makeQuery(Creator=username, sort_on='created', sort_order='reverse')}"
+                             i18n:translate="go_to_search_author_content">                       
                               All content created by
                               <span i18n:name="user" tal:omit-tag="" tal:content="python:authorinfo['fullname'] or username"/>&hellip;
                           </a>
