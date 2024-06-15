@@ -1,6 +1,7 @@
 from AccessControl import getSecurityManager
 from AccessControl.Permissions import view as View
 from collections import OrderedDict
+from functools import cached_property
 from importlib.metadata import distribution
 from importlib.metadata import PackageNotFoundError
 from OFS.interfaces import IApplication
@@ -324,6 +325,37 @@ class Upgrade(BrowserView):
     def upgrades(self):
         pm = getattr(self.context, "portal_migration")
         return pm.listUpgrades()
+
+    @cached_property
+    def missing_packages(self):
+        """Get list of missing packages that were installed in GS.
+
+        Main use case:
+
+        * Create a Product.CMFPlone 6.0 site.
+        * Upgrade the code to Products.CMFPlone 6.1.
+        * Now the plone.app.discussion package is missing.
+          This will give problems, because its GS profile was installed
+          by default in 6.0.
+
+        Beware of false positives.  For example when upgrading from Plone 5.2,
+        CMFFormController will be missing, but we have code in plone.app.upgrade
+        to properly clean this up. So we should not bother the admin with this.
+        """
+        setup = getattr(self.context, "portal_setup")
+        installed = sorted(
+            set([x.split(":")[0] for x in setup._profile_upgrade_versions.keys()])
+        )
+        ignore = ["Products.CMFFormController"]
+        missing = []
+        for package in installed:
+            if package in ignore:
+                continue
+            try:
+                distribution(package)
+            except PackageNotFoundError:
+                missing.append(package)
+        return missing
 
     def versions(self):
         pm = getattr(self.context, "portal_migration")

@@ -46,6 +46,12 @@
         </header>
         <article class="row mb-4">
           <div class="col-md-12 mb-3">
+            <div class="alert alert-danger" tal:condition="view/missing_packages">
+              <p><strong i18n:translate="msg_missing_packages">The following packages were previously installed, but are currently missing. This may be a problem.</strong></p>
+              <ul>
+                <li tal:repeat="package view/missing_packages">${package}</li>
+              </ul>
+            </div>
             <p class="alert alert-success p-2" tal:condition="versions/equal">
               <span i18n:translate="" tal:omit-tag="">Your site is up to date.</span>
             </p>
