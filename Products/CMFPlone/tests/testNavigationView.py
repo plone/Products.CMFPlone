@@ -121,29 +121,6 @@ class TestSiteMap(PloneTestCase.PloneTestCase):
         self.assertEqual(subfolder221map["item"].getPath(), path(subfolder221))
         self.assertEqual(len(subfolder221map["children"]), 0)
 
-    def testSitemapUnchangedWithTopLevel(self):
-        # Test that setting topLevel does not alter the sitemap
-        ntp = self.portal.portal_properties.navtree_properties
-        for topLevel in range(0, 5):
-            ntp.manage_changeProperties(topLevel=topLevel)
-            view = self.view_class(self.portal, self.request)
-            sitemap = view.siteMap()
-            self.assertEqual(
-                sitemap["children"][-1]["item"].getPath(), "/plone/folder2"
-            )
-
-    def testSitemapUnchangedWithBottomLevel(self):
-        # Test that setting bottomLevel does not alter the sitemap
-        ntp = self.portal.portal_properties.navtree_properties
-        for bottomLevel in range(0, 5):
-            ntp.manage_changeProperties(bottomLevel=bottomLevel)
-            view = self.view_class(self.portal, self.request)
-            sitemap = view.siteMap()
-            self.assertEqual(
-                sitemap["children"][-1]["item"].getPath(), "/plone/folder2"
-            )
-            self.assertTrue(len(sitemap["children"][-1]["children"]) > 0)
-
     def testSitemapWithNavigationRoot(self):
         self.navigation_settings.root = "/folder2"
         view = self.view_class(self.portal, self.request)

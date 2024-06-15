@@ -121,11 +121,6 @@ class ZMITests(unittest.TestCase):
         view = self.portal.restrictedTraverse(url)
         self.assertTrue(view(), msg=f"{url} is broken")
 
-    def test_portal_properties(self):
-        url = "portal_properties/manage_main"
-        view = self.portal.restrictedTraverse(url)
-        self.assertTrue(view(), msg=f"{url} is broken")
-
     def test_portal_purgepolicy(self):
         url = "portal_purgepolicy/manage_propertiesForm"
         view = self.portal.restrictedTraverse(url)
