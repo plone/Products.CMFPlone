@@ -121,140 +121,123 @@
                         i18n:translate=""
                 >Add new bundle</h2>
               </summary>
-              <div id="collapse-${python:bundle['safe_name']}"
-                   aria-labelledby="heading${python:bundle['safe_name']}"
+              <form class="accordion-body"
+                    action="${python:context.absolute_url()}/@@resourceregistry-controlpanel"
+                    method="post"
               >
-                <div class="accordion-body">
-                  <form action="${python:context.absolute_url()}/@@resourceregistry-controlpanel"
-                        method="post"
-                  >
-                    <input name="original_name"
-                           type="hidden"
+                <input name="original_name"
+                       type="hidden"
+                       value="${python:bundle['name']}"
+                />
+                <div class="mb-3">
+                  <label class="form-label">
+                    <tal:i18n i18n:translate="label_bundle_name">Name</tal:i18n>
+                    <input class="form-control"
+                           name="name"
+                           type="text"
                            value="${python:bundle['name']}"
                     />
-                    <div class="mb-3">
-                      <label class="form-label"
-                             for="name"
-                             i18n:translate="label_bundle_name"
-                      >Name</label>
-                      <input class="form-control"
-                             name="name"
-                             type="text"
-                             value="${python:bundle['name']}"
-                      />
-                    </div>
-                    <div class="mb-3">
-                      <label class="form-label"
-                             for="jscompilation"
-                      >Javascript</label>
-                      <input class="form-control"
-                             name="jscompilation"
-                             type="text"
-                             value="${python:bundle['jscompilation']}"
-                      />
-                    </div>
-                    <div class="mb-3">
-                      <label class="form-label"
-                             for="csscompilation"
-                      >CSS</label>
-                      <input class="form-control"
-                             name="csscompilation"
-                             type="text"
-                             value="${python:bundle['csscompilation']}"
-                      />
-                    </div>
-                    <div class="form-check mb-3">
-                      <input class="form-check-input"
-                             checked="${python:'checked' if bundle['enabled'] else None}"
-                             name="enabled"
-                             type="checkbox"
-                             value=""
-                      />
-                      <label class="form-check-label"
-                             for="enabled"
-                             i18n:translate="label_bundle_enabled"
-                      >
-                    enabled
-                      </label>
-                    </div>
-                    <div class="mb-3">
-                      <label class="form-label"
-                             for="expression"
-                             i18n:translate="label_bundle_condition"
-                      >Condition</label>
-                      <input class="form-control"
-                             name="expression"
-                             placeholder="expression"
-                             type="text"
-                             value="${python:bundle['expression']}"
-                             i18n:attributes="placeholder label_expression_placeholder"
-                      />
-                    </div>
-                    <div class="mb-3">
-                      <label class="form-label"
-                             for="depends"
-                             i18n:translate=""
-                      >Depends on</label>
-                      <input class="form-control"
-                             name="depends"
-                             type="text"
-                             value="${python:bundle['depends']}"
-                      />
-                    </div>
-                    <div class="form-check mb-3">
-                      <input class="form-check-input"
-                             checked="${python:'checked' if bundle['load_async'] else None}"
-                             name="load_async"
-                             type="checkbox"
-                             value="1"
-                      />
-                      <label class="form-check-label"
-                             for="load_async"
-                             i18n:translate="label_bundle_js_load_async"
-                      >
-                    Async
-                      </label>
-                    </div>
-                    <div class="form-check mb-3">
-                      <input class="form-check-input"
-                             checked="${python:'checked' if bundle['load_defer'] else None}"
-                             name="load_defer"
-                             type="checkbox"
-                             value="1"
-                      />
-                      <label class="form-check-label"
-                             for="load_defer"
-                             i18n:translate="label_bundle_js_load_defer"
-                      >
-                    Defer
-                      </label>
-                    </div>
-                    <div class="mb-3">
-                      <button class="btn btn-primary me-1"
-                              name="action"
-                              type="submit"
-                              value="update"
-                              tal:condition="python:bundle['name']"
-                              i18n:translate=""
-                      >Save</button>
-                      <button class="btn btn-success me-1"
-                              name="action"
-                              type="submit"
-                              value="add"
-                              tal:condition="python:not bundle['name']"
-                              i18n:translate=""
-                      >Add</button>
-                      <button class="btn btn-danger"
-                              name="action"
-                              type="submit"
-                              value="delete"
-                              tal:condition="python:bundle['name']"
-                              i18n:translate=""
-                      >Delete</button>
-                    </div>
-                  </form>
+                  </label>
                 </div>
-              </div>
+                <div class="mb-3">
+                  <label class="form-label">
+                    JavaScript
+                    <input class="form-control"
+                           name="jscompilation"
+                           type="text"
+                           value="${python:bundle['jscompilation']}"
+                    />
+                  </label>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">
+                    CSS
+                    <input class="form-control"
+                           name="csscompilation"
+                           type="text"
+                           value="${python:bundle['csscompilation']}"
+                    />
+                  </label>
+                </div>
+                <div class="form-check mb-3">
+                  <label class="form-check-label">
+                    <input class="form-check-input"
+                           checked="${python:'checked' if bundle['enabled'] else None}"
+                           name="enabled"
+                           type="checkbox"
+                           value=""
+                    />
+                    <tal:i18n i18n:translate="label_bundle_enabled">enabled</tal:i18n>
+                  </label>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">
+                    <tal:i18n i18n:translate="label_bundle_condition">Condition</tal:i18n>
+                    <input class="form-control"
+                           name="expression"
+                           placeholder="expression"
+                           type="text"
+                           value="${python:bundle['expression']}"
+                           i18n:attributes="placeholder label_expression_placeholder"
+                    />
+                  </label>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">
+                    <tal:i18n i18n:translate="">Depends on</tal:i18n>
+                    <input class="form-control"
+                           name="depends"
+                           type="text"
+                           value="${python:bundle['depends']}"
+                    />
+                  </label>
+                </div>
+                <div class="form-check mb-3">
+                  <label class="form-check-label">
+                    <input class="form-check-input"
+                           checked="${python:'checked' if bundle['load_async'] else None}"
+                           name="load_async"
+                           type="checkbox"
+                           value="1"
+                    />
+                    <tal:i18n i18n:translate="label_bundle_js_load_async">Async</tal:i18n>
+                  </label>
+                </div>
+                <div class="form-check mb-3">
+                  <label class="form-check-label">
+                    <input class="form-check-input"
+                           checked="${python:'checked' if bundle['load_defer'] else None}"
+                           name="load_defer"
+                           type="checkbox"
+                           value="1"
+                    />
+                    <tal:i18n i18n:translate="label_bundle_js_load_defer">Defer</tal:i18n>
+                  </label>
+                </div>
+                <div class="mb-3">
+                  <button class="btn btn-primary me-1"
+                          name="action"
+                          type="submit"
+                          value="update"
+                          tal:condition="python:bundle['name']"
+                          i18n:translate=""
+                  >Save</button>
+                  <button class="btn btn-success me-1"
+                          name="action"
+                          type="submit"
+                          value="add"
+                          tal:condition="python:not bundle['name']"
+                          i18n:translate=""
+                  >Add</button>
+                  <button class="btn btn-danger"
+                          name="action"
+                          type="submit"
+                          value="delete"
+                          tal:condition="python:bundle['name']"
+                          i18n:translate=""
+                  >Delete</button>
+                </div>
+              </form>
             </details>
           </tal:block>
         </div>
