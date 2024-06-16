@@ -260,3 +260,27 @@ class TestAddonList(PloneTestCase.PloneTestCase):
         self.assertEqual(cmfeditions_version, getversion(cmfeditions_id))
         self.assertEqual(discussion_version, getversion(discussion_id))
         self.assertEqual(querystring_version, getversion(querystring_id))
+
+
+class TestPloneUpgradePage(PloneTestCase.PloneTestCase):
+    def afterSetUp(self):
+        self.migration = getToolByName(self.portal, "portal_migration")
+        self.setup = getToolByName(self.portal, "portal_setup")
+
+    def test_upgrades(self):
+        self.setRoles(["Manager"])
+        view = self.portal.restrictedTraverse("@@plone-upgrade")
+        self.assertEqual(view.upgrades(), [])
+        self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, START_PROFILE)
+        self.assertGreater(len(view.upgrades()), 0)
+
+    def test_missing_packages(self):
+        self.setRoles(["Manager"])
+        view = self.portal.restrictedTraverse("@@plone-upgrade")
+        self.assertEqual(view.missing_packages, [])
+
+        # Fake a missing package that was installed.
+        self.setup.setLastVersionForProfile("my.dummy.package:default", 1)
+        # Delete the cached property.
+        del view.missing_packages
+        self.assertEqual(view.missing_packages, ["my.dummy.package"])
