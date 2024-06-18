@@ -21,6 +21,10 @@ Resource  keywords.robot
 Test Setup  Run keywords  Plone Test Setup
 Test Teardown  Run keywords  Plone Test Teardown
 
+*** Variables ****************************************************************
+
+${SELENIUM_RUN_ON_FAILURE}  Capture page screenshot and log source
+
 
 *** Test Cases ***************************************************************
 
@@ -74,18 +78,16 @@ a link in rich text
   Input text  css=.mce-content-body  foo
   Execute Javascript    function selectElementContents(el) {var range = document.createRange(); range.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);} var el = document.getElementById("tinymce"); selectElementContents(el);
   UnSelect Frame
-  Click Button  css=button[aria-label="Insert/edit link"]
 
-  Given patterns are loaded
-  Wait until element is visible  css=.pat-relateditems .select2-input.select2-default
-  Click Element  css=.pat-relateditems .select2-input.select2-default
-  Wait until element is visible  css=.pat-relateditems-result.one-level-up a.pat-relateditems-result-browse
-  Click Element  css=.pat-relateditems-result.one-level-up a.pat-relateditems-result-browse
-  Wait until element is visible  xpath=(//span[contains(., 'Foo')])
-  Sleep  2s
-  Click Element  xpath=(//span[contains(., 'Foo')])
-  Wait until element is visible  css=.pat-relateditems-item-title
-  Wait For Then Click Element  css=.modal-footer .btn-primary
+  Click Button  css=button[aria-label="Insert/edit link"]
+  Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
+  Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[3]
+  Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+  Wait For Then Click Element  css=.modal-footer input[name="insert"]
+  Select Frame  css=.tox-edit-area iframe
+  Execute Javascript  window.getSelection().removeAllRanges()
+  UnSelect Frame
+  Wait Until Element Is Not Visible  css=.modal-footer input[name="insert"]
   Wait For Then Click Element  css=#form-buttons-save
 
 
