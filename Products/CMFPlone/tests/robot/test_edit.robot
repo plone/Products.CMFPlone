@@ -14,6 +14,7 @@ Test Teardown  Run keywords  Plone Test Teardown
 
 *** Variables ****************************************************************
 
+${SELENIUM_RUN_ON_FAILURE}  Capture Page Screenshot and log source
 ${TITLE}  An edited page
 ${PAGE_ID}  an-edited-page
 
@@ -89,8 +90,9 @@ I click the ${tab} tab
     Click link  ${tab}
 
 I select a related item
-    Wait For Then Click Element  jquery=.pat-relateditems-container ul.select2-choices:visible
-    Wait For Then Click Element  jquery=a.pat-relateditems-result-select:first
+    Wait For Then Click Element  xpath=//div[@class=".content-browser-wrapper"]//button[contains(@class, "btn-primary")]
+    Wait For Then Click Element  xpath=//div[@class=".content-browser-wrapper"]//div[contains(@class, "levelColumns")]/div[0]/div[contains(@class, "contentItem")][3]
+    Wait For Then Click Element  xpath=//div[@class=".content-browser-wrapper"]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
 
 I save the page
    Click Button  Save
