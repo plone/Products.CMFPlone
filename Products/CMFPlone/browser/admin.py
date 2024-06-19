@@ -5,7 +5,6 @@ from functools import cached_property
 from importlib.metadata import distribution
 from importlib.metadata import PackageNotFoundError
 from OFS.interfaces import IApplication
-from plone.base.interfaces import INonInstallable
 from plone.base.interfaces import IPloneSiteRoot
 from plone.base.utils import get_installer
 from plone.i18n.locales.interfaces import IContentLanguageAvailability
@@ -16,14 +15,10 @@ from Products.CMFCore.permissions import ManagePortal
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.factory import addPloneSite
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.GenericSetup import BASE
-from Products.GenericSetup import EXTENSION
-from Products.GenericSetup import profile_registry
 from Products.GenericSetup.upgrade import normalize_version
 from urllib import parse
 from ZODB.broken import Broken
 from zope.component import adapter
-from zope.component import getAllUtilitiesRegisteredFor
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
@@ -46,6 +41,11 @@ try:
 except PackageNotFoundError:
     HAS_VOLTO = False
 try:
+    distribution("plone.app.caching")
+    HAS_CACHING = True
+except PackageNotFoundError:
+    HAS_CACHING = False
+try:
     distribution("plone.app.upgrade")
     HAS_UPGRADE = True
 except PackageNotFoundError:
@@ -66,8 +66,6 @@ class AppTraverser(DefaultPublishTraverse):
 
 
 class Overview(BrowserView):
-    has_volto = HAS_VOLTO
-
     def sites(self, root=None):
         if root is None:
             root = self.context
@@ -154,67 +152,14 @@ class FrontPage(BrowserView):
 
 
 class AddPloneSite(BrowserView):
-    # Profiles that are installed by default,
-    # but can be removed later.
-    default_extension_profiles = (
-        "plone.app.caching:default",
-        "plonetheme.barceloneta:default",
-    )
-    # Let's have a separate list for Volto.
-    volto_default_extension_profiles = (
-        "plone.app.caching:default",
-        "plonetheme.barceloneta:default",
-        "plone.volto:default",
-    )
-
-    def profiles(self):
-        base_profiles = []
-        extension_profiles = []
-        if HAS_VOLTO and not self.request.get("classic"):
-            selected_extension_profiles = self.volto_default_extension_profiles
-        else:
-            selected_extension_profiles = self.default_extension_profiles
-
-        # profiles available for install/uninstall, but hidden at the time
-        # the Plone site is created
-        not_installable = [
-            "Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow",
-        ]
-        utils = getAllUtilitiesRegisteredFor(INonInstallable)
-        for util in utils:
-            not_installable.extend(
-                util.getNonInstallableProfiles()
-                if hasattr(util, "getNonInstallableProfiles")
-                else []
-            )
-
-        for info in profile_registry.listProfileInfo():
-            if info.get("type") == EXTENSION and info.get("for") in (
-                IPloneSiteRoot,
-                None,
-            ):
-                profile_id = info.get("id")
-                if profile_id not in not_installable:
-                    if profile_id in selected_extension_profiles:
-                        info["selected"] = "selected"
-                    extension_profiles.append(info)
-
-        def _key(v):
-            # Make sure implicitly selected items come first
-            selected = v.get("selected") and "automatic" or "manual"
-            return "{}-{}".format(selected, v.get("title", ""))
-
-        extension_profiles.sort(key=_key)
-
-        for info in profile_registry.listProfileInfo():
-            if info.get("type") == BASE and info.get("for") in (IPloneSiteRoot, None):
-                base_profiles.append(info)
-
-        return dict(
-            base=tuple(base_profiles),
-            default=_DEFAULT_PROFILE,
-            extensions=tuple(extension_profiles),
-        )
+    @property
+    def default_extension_profiles(self):
+        # Profiles that are installed by default,
+        # but can be removed later.
+        profiles = ["plonetheme.barceloneta:default"]
+        if HAS_CACHING:
+            profiles.insert(0, "plone.app.caching:default")
+        return profiles
 
     def browser_language(self):
         language = "en"
@@ -307,9 +252,9 @@ class AddPloneSite(BrowserView):
                 context,
                 site_id,
                 title=form.get("title", ""),
-                profile_id=form.get("profile_id", _DEFAULT_PROFILE),
-                extension_ids=form.get("extension_ids", ()),
-                setup_content=form.get("setup_content", False),
+                profile_id=_DEFAULT_PROFILE,
+                extension_ids=self.default_extension_profiles,
+                setup_content=False,
                 default_language=form.get("default_language", "en"),
                 portal_timezone=form.get("portal_timezone", "UTC"),
             )

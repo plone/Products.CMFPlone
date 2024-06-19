@@ -87,24 +87,9 @@
                 <input type="hidden" name="site_id" value="Plone${site_number}" />
                 <button type="submit"
                         class="btn btn-${python:'success' if sites else 'primary'}"
-                        i18n:translate="">Create a new Plone site</button>
-                <a class="btn btn-info"
-                    i18n:translate=""
-                    tal:condition="view/has_volto"
-                    href="${action}?site_id=Plone${site_number}&amp;classic=1"
-                    >Create Classic UI Plone site</a>
-                <a class="btn btn-secondary"
-                    i18n:translate=""
-                    href="${action}?site_id=Plone${site_number}&amp;advanced=1"
-                    >Advanced</a>
+                        i18n:translate="">Create Classic UI Plone site</button>
             </form>
             <br/>
-            <p i18n:translate="help_create_plone_site_buttons_1">
-                Starting with Plone 6, 'Create a new Plone site' applies a
-                profile and creates default content for the new React based
-                default frontend Volto. You are however required to set up and run
-                an additional frontend service to use this setup.
-            </p>
             <p i18n:translate="help_create_plone_site_buttons_2">
                 The 'Create Classic UI Plone site' button creates a Plone site configured
                 for HTML based output, as was already supported by previous Plone versions.
@@ -116,6 +101,11 @@
                 for more information about differences and requirements for
                 these frontends and possible upgrade paths from older Plone versions
                 to Plone 6.
+            </p>
+            <p i18n:translate="help_create_plone_site_buttons_3">
+                Starting with Plone 6.1, you should add the <code>plone.classicui</code>
+                package if you want to create the default content.
+                If you see this text, that means you do not have this package yet.
             </p>
         </div>
     </article>
