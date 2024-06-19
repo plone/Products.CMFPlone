@@ -18,7 +18,7 @@ class TestFactoryPloneSite(unittest.TestCase):
 
     def testPlonesiteWithUnicodeTitle(self):
         TITLE = "Ploné"
-        ploneSite = addPloneSite(self.app, "ploneFoo", title=TITLE, setup_content=False)
+        ploneSite = addPloneSite(self.app, "ploneFoo", title=TITLE)
         ploneSiteTitleProperty = ploneSite.getProperty("title")
         # CMF stores title as string only so Plone should keep the same track
         self.assertTrue(isinstance(ploneSiteTitleProperty, str))
@@ -29,7 +29,7 @@ class TestFactoryPloneSite(unittest.TestCase):
 
     def testPlonesiteWithoutUnicodeTitle(self):
         TITLE = "Plone"
-        ploneSite = addPloneSite(self.app, "ploneFoo", title=TITLE, setup_content=False)
+        ploneSite = addPloneSite(self.app, "ploneFoo", title=TITLE)
         ploneSiteTitleProperty = ploneSite.getProperty("title")
         # CMF stores title as string only so Plone should keep the same track
         self.assertTrue(isinstance(ploneSiteTitleProperty, str))
@@ -38,21 +38,32 @@ class TestFactoryPloneSite(unittest.TestCase):
         self.assertTrue(isinstance(ploneSiteTitle, str))
         self.assertEqual(ploneSiteTitle, TITLE)
 
-    def test_site_creation_without_content_but_with_dexterity(self):
-        """Test site creation without example content have dexterity installed."""
-        ploneSite = addPloneSite(self.app, "ploneFoo", title="Foo", setup_content=False)
-        qi = get_installer(ploneSite, self.request)
-        self.assertTrue(qi.is_product_installed("plone.app.dexterity"))
+    def test_site_creation_has_no_dexterity(self):
+        """Test site creation does not even have dexterity installed.
 
-    def test_site_creation_without_content_but_with_content_types(self):
-        """Test site creation without example content have content types."""
-        addPloneSite(self.app, "ploneFoo", title="Foo", setup_content=False)
+        If you want it, you need to pass more extension_ids,
+        like the plone-addsite view does.
+        """
+        ploneSite = addPloneSite(self.app, "ploneFoo", title="Foo")
+        qi = get_installer(ploneSite, self.request)
+        self.assertFalse(qi.is_product_installed("plone.app.dexterity"))
+
+    def test_site_creation_has_no_content_types(self):
+        """Test site creation has no content types.
+
+        If you want them, you need to pass more extension_ids,
+        like the plone-addsite view does.
+        """
+        addPloneSite(self.app, "ploneFoo", title="Foo")
         # Folder
         fti = queryUtility(IDexterityFTI, name="Folder")
+        self.assertIsNone(fti)
+        # For good measure we check that there is at least on FTI.
+        fti = queryUtility(IDexterityFTI, name="Plone Site")
         self.assertIsNotNone(fti)
 
     def test_site_creation_title_is_set_in_registry(self):
         """Plone site title should be stored in registry"""
-        ploneSite = addPloneSite(self.app, "ploneFoo", title="Foo", setup_content=False)
+        ploneSite = addPloneSite(self.app, "ploneFoo", title="Foo")
         registry = getUtility(IRegistry, context=ploneSite)
         self.assertEqual(registry["plone.site_title"], "Foo")
