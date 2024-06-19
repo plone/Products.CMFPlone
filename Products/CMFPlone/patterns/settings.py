@@ -156,9 +156,6 @@ class PatternSettingsAdapter:
             "pictureVariants": self.picture_variants,
             "imageCaptioningEnabled": self.image_captioning,
             "linkAttribute": "UID",
-            # This is for loading the languages on tinymce
-            "loadingBaseUrl": "{}/++plone++static/components/tinymce-builded/"
-            "js/tinymce".format(portal_url),
             "relatedItems": related_items_config,
             "prependToScalePart": "/@@images/image/",
             "prependToUrl": "{}/resolveuid/".format(site_path.rstrip("/")),
