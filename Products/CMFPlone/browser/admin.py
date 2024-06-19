@@ -13,6 +13,7 @@ from plone.protect.authenticator import check as checkCSRF
 from plone.protect.interfaces import IDisableCSRFProtection
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
+from Products.CMFPlone.factory import _TYPES_PROFILE
 from Products.CMFPlone.factory import addPloneSite
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.GenericSetup.upgrade import normalize_version
@@ -156,9 +157,10 @@ class AddPloneSite(BrowserView):
     def default_extension_profiles(self):
         # Profiles that are installed by default,
         # but can be removed later.
-        profiles = ["plonetheme.barceloneta:default"]
+        profiles = [_TYPES_PROFILE]
         if HAS_CACHING:
-            profiles.insert(0, "plone.app.caching:default")
+            profiles.append("plone.app.caching:default")
+        profiles.append("plonetheme.barceloneta:default")
         return profiles
 
     def browser_language(self):
@@ -254,7 +256,6 @@ class AddPloneSite(BrowserView):
                 title=form.get("title", ""),
                 profile_id=_DEFAULT_PROFILE,
                 extension_ids=self.default_extension_profiles,
-                setup_content=False,
                 default_language=form.get("default_language", "en"),
                 portal_timezone=form.get("portal_timezone", "UTC"),
             )
