@@ -1,0 +1,6 @@
+Use details element for collapsibles in the resource registry
+
+Makes it possible to toggle elements even with broken or missing javascript.
+Also properly connect form labels with their inputs.
+
+Fixes #3942
