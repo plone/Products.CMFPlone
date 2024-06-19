@@ -489,7 +489,7 @@ class TestRRControlPanel(PloneTestCase.PloneTestCase):
         add_form.getControl("add").click()
 
         self.assertIn(
-            "<h2>my-resource</h2>",
+            '<h2 class="accordion-header fs-5 fw-bold">my-resource</h2>',
             self.browser.contents,
         )
 
@@ -507,6 +507,6 @@ class TestRRControlPanel(PloneTestCase.PloneTestCase):
         form.getControl("update").click()
 
         self.assertIn(
-            "<h2>new-resource-name</h2>",
+            '<h2 class="accordion-header fs-5 fw-bold">new-resource-name</h2>',
             self.browser.contents,
         )
