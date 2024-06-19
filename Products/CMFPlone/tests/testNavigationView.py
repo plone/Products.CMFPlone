@@ -247,7 +247,7 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.assertTrue("review_state" in tab and tab["review_state"])
 
     def testDisableFolderTabs(self):
-        # Setting the site_property disable_folder_sections should remove
+        # Setting the registry setting generate_tabs to False should remove
         # all folder based tabs
         self.navigation_settings.generate_tabs = False
         view = self.view_class(self.portal, self.request)
