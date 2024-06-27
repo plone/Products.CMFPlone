@@ -103,9 +103,9 @@
                 to Plone 6.
             </p>
             <p i18n:translate="help_create_plone_site_buttons_3">
-                Starting with Plone 6.1, you should add the <code>plone.classicui</code>
-                package if you want to create the default content.
-                If you see this text, that means you do not have this package yet.
+                Starting with Plone 6.1, default content is not loaded into the site.
+                If you want to load the default content, you should install the <code>plone.classicui</code> package.
+                If you see this text, that means you have not installed that package yet.
             </p>
         </div>
     </article>
