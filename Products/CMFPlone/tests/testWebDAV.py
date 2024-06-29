@@ -18,17 +18,6 @@ html = """\
 """
 
 
-class TestDAVProperties(PloneTestCase.PloneTestCase):
-    def testPropertiesToolTitle(self):
-        ptool = getToolByName(self.portal, "portal_properties")
-        psets = dict(ptool.propertysheets.items())
-        self.assertTrue("webdav" in psets.keys())
-        default = psets["webdav"]
-        items = dict(default.propertyItems())
-        self.assertTrue("displayname" in items.keys())
-        self.assertEqual(items["displayname"], ptool.title)
-
-
 class TestPUTObjects(PloneTestCase.PloneTestCase):
     # PUT objects into Plone including special cases like index_html.
     # Confirms fix for http://dev.plone.org/plone/ticket/1375

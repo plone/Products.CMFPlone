@@ -1,0 +1,3 @@
+Remove `propertiestool` import step and usage of `portal_properties`.
+Remove `site_properties` from `main_template.pt` and ajax template.
+[maurits]

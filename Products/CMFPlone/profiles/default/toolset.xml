@@ -42,9 +42,6 @@
   <required class="Products.CMFPlone.PasswordResetTool.PasswordResetTool"
             tool_id="portal_password_reset"
   />
-  <required class="Products.CMFPlone.PropertiesTool.PropertiesTool"
-            tool_id="portal_properties"
-  />
   <required class="Products.CMFPlone.RegistrationTool.RegistrationTool"
             tool_id="portal_registration"
   />

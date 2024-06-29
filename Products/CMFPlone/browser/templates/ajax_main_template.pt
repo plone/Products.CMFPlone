@@ -15,7 +15,6 @@
           dummy python: plone_layout.mark_view(view);
           portal_url python:portal_state.portal_url();
           checkPermission python:context.restrictedTraverse('portal_membership').checkPermission;
-          site_properties python:context.restrictedTraverse('portal_properties').site_properties;
           ajax_include_head python:request.get('ajax_include_head', False);
           ajax_load python:False;"
       i18n:domain="plone"
