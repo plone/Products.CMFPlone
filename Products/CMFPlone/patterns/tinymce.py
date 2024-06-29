@@ -139,31 +139,6 @@ class TinyMCESettingsGenerator:
                 "plonelink ploneimage inserttable |" " cell row column deletetable"
             )
 
-        if settings.libraries_spellchecker_choice == "AtD":
-            mtool = getToolByName(self.context, "portal_membership")
-            member = mtool.getAuthenticatedMember()
-            member_id = member.getId()
-            if member_id:
-                if "compat3x" not in tiny_config["plugins"]:
-                    tiny_config["plugins"].append("compat3x")
-                tiny_config["external_plugins"][
-                    "AtD"
-                ] = "{}/++plone++static/tinymce-AtD-plugin/" "editor_plugin.js".format(
-                    self.nav_root_url
-                )
-                # None when Anonymous User
-                tiny_config["atd_rpc_id"] = "plone-" + member_id
-                tiny_config["atd_rpc_url"] = self.nav_root_url
-                tiny_config["atd_show_types"] = ",".join(
-                    settings.libraries_atd_show_types
-                )
-                tiny_config["atd_ignore_strings"] = ",".join(
-                    settings.libraries_atd_ignore_strings
-                )
-                toolbar_additions.append("AtD")
-        elif settings.libraries_spellchecker_choice == "AtD":
-            tiny_config["browser_spellcheck"] = True
-
         if toolbar_additions:
             tiny_config["toolbar"] += " | {}".format(" ".join(toolbar_additions))
 
