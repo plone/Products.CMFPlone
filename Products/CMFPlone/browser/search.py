@@ -189,7 +189,8 @@ class Search(BrowserView):
         # only show those types that have any content
         catalog = getToolByName(self.context, "portal_catalog")
         used_types = catalog._catalog.getIndex("portal_type").uniqueValues()
-        return self.filter_types(list(used_types))
+        filtered_list= self.filter_types(list(used_types))
+        return sorted(filtered_list)
 
     def sort_options(self):
         """Sorting options for search results view."""
