@@ -1,4 +1,6 @@
 from Acquisition import aq_base
+from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError
 from plone.base.interfaces import IFilterSchema
 from plone.base.interfaces import INavigationSchema
 from plone.base.interfaces import ISearchSchema
@@ -33,6 +35,15 @@ from zope.component.hooks import setSite
 from zope.interface.interfaces import IComponentLookup
 from zope.interface.interfaces import IComponentRegistry
 from zope.location.interfaces import ISite
+
+import unittest
+
+
+try:
+    distribution("plone.distribution")
+    HAS_DISTRIBUTION = True
+except PackageNotFoundError:
+    HAS_DISTRIBUTION = False
 
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
@@ -955,6 +966,10 @@ class TestManagementPageCharset(PloneTestCase.PloneTestCase):
         self.assertEqual(manage_charset, "utf-8")
 
 
+@unittest.skipIf(
+    HAS_DISTRIBUTION,
+    "@@plone-addsite is not available because plone.distribution is used.",
+)
 class TestAddPloneSite(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.request = self.app.REQUEST
@@ -965,7 +980,6 @@ class TestAddPloneSite(PloneTestCase.PloneTestCase):
         form = self.request.form
         form["form.submitted"] = 1
         form["site_id"] = "plonesite1"
-        form["setup_content"] = 1
         self.request["_authenticator"] = createToken()
         addsite = self.app.restrictedTraverse("@@plone-addsite")
         addsite()
@@ -981,6 +995,6 @@ class TestAddPloneSite(PloneTestCase.PloneTestCase):
         # because translations are not available in the tests.
         self.assertIn("Learn more about Plone", plonesite.text.raw)
 
-        # XXX maybe it is better to reset the sire in the @@plone-addsite view
+        # XXX maybe it is better to reset the site in the @@plone-addsite view
         # or somewhere else?
         setSite(None)

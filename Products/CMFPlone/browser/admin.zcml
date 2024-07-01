@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     >
 
   <browser:view
@@ -10,21 +11,34 @@
       permission="zope.Public"
       />
 
-  <browser:page
-      name="plone-addsite"
-      for="OFS.interfaces.IApplication"
-      class=".admin.AddPloneSite"
-      template="templates/plone-addsite.pt"
-      permission="zope2.ViewManagementScreens"
-      />
+  <configure zcml:condition="not-installed plone.distribution">
+    <adapter factory=".admin.AppTraverser" />
 
-  <browser:page
-      name="plone-addsite"
-      for="OFS.Folder.Folder"
-      class=".admin.AddPloneSite"
-      template="templates/plone-addsite.pt"
-      permission="zope2.ViewManagementScreens"
-      />
+    <browser:page
+        name="plone-overview"
+        for="OFS.interfaces.IApplication"
+        class=".admin.Overview"
+        template="templates/plone-overview.pt"
+        permission="zope.Public"
+        />
+
+    <browser:page
+        name="plone-addsite"
+        for="OFS.interfaces.IApplication"
+        class=".admin.AddPloneSite"
+        template="templates/plone-addsite.pt"
+        permission="zope2.ViewManagementScreens"
+        />
+
+    <browser:page
+        name="plone-addsite"
+        for="OFS.Folder.Folder"
+        class=".admin.AddPloneSite"
+        template="templates/plone-addsite.pt"
+        permission="zope2.ViewManagementScreens"
+        />
+
+  </configure>
 
   <browser:page
       name="plone-upgrade"
@@ -32,14 +46,6 @@
       class=".admin.Upgrade"
       template="templates/plone-upgrade.pt"
       permission="cmf.ManagePortal"
-      />
-
-  <browser:page
-      name="plone-overview"
-      for="OFS.interfaces.IApplication"
-      class=".admin.Overview"
-      template="templates/plone-overview.pt"
-      permission="zope.Public"
       />
 
   <browser:page
@@ -55,8 +61,6 @@
       class=".admin.RootLogout"
       permission="zope.Public"
       />
-
-  <adapter factory=".admin.AppTraverser" />
 
   <browser:resource
       name="plone-admin-ui.css"
