@@ -1,2 +1,0 @@
-Import INavigationRoot from plone.base, removes DeprecationWarning.
-[@jensens]

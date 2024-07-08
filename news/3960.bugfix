@@ -1,3 +1,0 @@
-Remove queryCatalog and getFolderContents skins script.
-This includes a refactoring in the search RSS and updates to soe tests
-[@jensens]
