@@ -20,6 +20,7 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
+from ZTUtils import make_query
 
 import logging
 
@@ -136,6 +137,9 @@ class AuthorView(BrowserView):
 
         self.username = name
         return self
+
+    def makeQuery(self, **kw):
+        return make_query(**kw)
 
     @property
     def is_anonymous(self):

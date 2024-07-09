@@ -15,6 +15,60 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.0a4.dev0 (2024-07-08)
+
+
+### Bug fixes:
+
+- Mockup TinyMCE settings: Remove unused loadingBaseUrl option. 3765-1
+- Mockup TinyMCE settings: Remove deprecated AtD plugin settings. 3765-2
+- Mockup TinyMCE settings: Remove unused AtD related views. 3765-3
+- Mockup TinyMCE settings: Remove unused ITinyMCESpellCheckerSchema and ITinyMCESpellCheckerForm. 3765-4
+- Fix deprecation warnings in "navtree" code + some micro optimizations
+  [jensens] #3756
+- Use details element for collapsibles in the resource registry.
+  Makes it possible to toggle elements even with broken or missing javascript.
+  Also properly connect form labels with their inputs.
+  Fixes #3942
+- Import INavigationRoot from plone.base, removes DeprecationWarning.
+  [@jensens] #3945
+- Use `context` instead of `here` in templates.
+  Call `@@main_template` (with prefix `@@`) to optimize lookup.
+  [@jensens] #3946
+- Reduce DeprecationWarnings. [@jensens] #3949
+- Fix TypeError in getGroups sorting
+  [@rohnsha0] #3952
+- Remove queryCatalog and getFolderContents skins script.
+  This includes a refactoring in the search RSS and updates to soe tests
+  [@jensens] #3960
+- Products.CMFPlone  must not depend on plone.api [@jensens] #3962
+- Removes duplicate `<article id="content">` in controlpanel templates
+  [@szakitibi] #3964
+- Do not test types_not_searched for a element that is not part of the underlying vocabulary.
+  [@jensens] #3965
+- Remove unused leftover reference to the Zope2 package from test. [@jensens] #3966
+- Fix: Traceback in maintenance control panel on shutdown if feature is not available.
+  Hide button if action is not possible.
+  [@jensens] #3967
+- Fixed RegistrationTool to take user email with `__+__@abc.com`.
+  [@rohnsha0] #3968
+- Plone upgrade page: show error when upgrade is needed but no upgrades are available.
+  Especially show a note when the `plone.app.upgrade` package is not available.
+  [maurits] #3975
+- Plone upgrade page: show list of previously installed packages that are currently missing.
+  For example: `plone.app.discussion` may be missing in Plone 6.1, unless you explicitly add it, or depend on the `Plone` package.
+  [maurits] #3975
+
+
+### Internal:
+
+- Resourceregistry controlpanel: zprettify template.
+  [thet] #3942
+- Automatically set the label to `03 type: feature (plip)` for PLIPs. @stevepiercy #3982
+- Automatically add a PLIP issue to the PLIP project board. @stevepiercy #3984
+- Updated metadata version to 6103.
+  [maurits] #6103
+
 ## 6.1.0a3 (2024-04-26)
 
 

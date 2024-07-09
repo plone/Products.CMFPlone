@@ -5,7 +5,6 @@ from plone.base.interfaces import ITinyMCELayoutSchema
 from plone.base.interfaces import ITinyMCEPluginSchema
 from plone.base.interfaces import ITinyMCEResourceTypesSchema
 from plone.base.interfaces import ITinyMCESchema
-from plone.base.interfaces import ITinyMCESpellCheckerSchema
 from z3c.form import field
 from z3c.form import group
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
@@ -14,11 +13,6 @@ from z3c.form.browser.checkbox import CheckBoxFieldWidget
 class TinyMCEPluginForm(group.GroupForm):
     label = _("Plugins and Toolbar")
     fields = field.Fields(ITinyMCEPluginSchema)
-
-
-class TinyMCESpellCheckerForm(group.GroupForm):
-    label = _("Spell Checker")
-    fields = field.Fields(ITinyMCESpellCheckerSchema)
 
 
 class TinyMCEResourceTypesForm(group.GroupForm):
@@ -39,7 +33,6 @@ class TinyMCEControlPanelForm(controlpanel.RegistryEditForm):
     fields = field.Fields(ITinyMCELayoutSchema)
     groups = (
         TinyMCEPluginForm,
-        TinyMCESpellCheckerForm,
         TinyMCEResourceTypesForm,
         TinyMCEAdvancedForm,
     )

@@ -224,15 +224,6 @@
       permission="zope2.View"
       />
 
-  <!-- AtD Support -->
-  <browser:page
-      name="checkDocument"
-      for="*"
-      class=".atd.ATDProxyView"
-      attribute="checkDocument"
-      permission="zope2.View"
-      />
-
   <!-- Default Page View -->
   <browser:page
       name="default_page"

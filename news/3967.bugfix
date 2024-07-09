@@ -1,3 +1,0 @@
-Fix: Traceback in maintenance control panel on shutdown if feature is not available.
-Hide button if action is not possible.
-[@jensens]
