@@ -15,10 +15,10 @@ from zope.component import queryUtility
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
 from ZTUtils import make_query
+from zope.schema.interfaces import IVocabularyFactory
 
 import json
 import re
-from icu import Locale, Collator
 
 
 _ = MessageFactory("plone")
@@ -184,10 +184,27 @@ class Search(BrowserView):
         plone_utils = getToolByName(self.context, "plone_utils")
         if not isinstance(types, list):
             types = [types]
-        return plone_utils.getUserFriendlyTypes(types)
+
+        # Get the vocabulary
+        vocab_factory = self._portal_types_vocabulary()
+        if vocab_factory is None:
+            # Fallback to original behavior if vocabulary is not available
+            return plone_utils.getUserFriendlyTypes(types)
+
+        vocab = vocab_factory(self.context)
+
+        # Filter types based on plone_utils and maintain vocabulary order
+        user_friendly_types = set(plone_utils.getUserFriendlyTypes(types))
+        sorted_types = [term.value for term in vocab if term.value in user_friendly_types]
+
+        return sorted_types
+    
+    def _portal_types_vocabulary(self):
+        return queryUtility(
+            IVocabularyFactory, "plone.app.vocabularies.ReallyUserFriendlyTypes"
+        )
 
     def types_list(self):
-        # only show those types that have any content
         catalog = getToolByName(self.context, "portal_catalog")
         used_types = catalog._catalog.getIndex("portal_type").uniqueValues()
         return self.filter_types(list(used_types))
@@ -196,23 +213,11 @@ class Search(BrowserView):
         """Sorting options for search results view."""
         if "sort_on" not in self.request.form:
             self.request.form["sort_on"] = self.default_sort_on
-        
-        options = [
+        return (
             SortOption(self.request, _("relevance"), "relevance"),
             SortOption(self.request, _("date (newest first)"), "Date", reverse=True),
             SortOption(self.request, _("alphabetically"), "sortable_title"),
-        ]
-        
-        # Get the current locale
-        language_tool = getToolByName(self.context, 'portal_languages')
-        current_lang = language_tool.getPreferredLanguage()
-        locale = Locale(current_lang)
-        
-        # Create a collator for the current locale
-        collator = Collator.createInstance(locale)
-        
-        # Sort the options using PyICU
-        return sorted(options, key=lambda x: collator.getSortKey(x.title))
+        )
 
     def show_advanced_search(self):
         """Whether we need to show advanced search options a.k.a. filters?"""
@@ -340,17 +345,3 @@ class SortOption:
 
         base_url = self.request.URL
         return base_url + "?" + make_query(q)
-    
-    def icu_sorted(iterable, key=None, reverse=False):
-        """
-        Sort the iterable using ICU collation rules for the current locale.
-        """
-        language_tool = getToolByName(None, 'portal_languages')
-        current_lang = language_tool.getPreferredLanguage()
-        locale = Locale(current_lang)
-        collator = Collator.createInstance(locale)
-        
-        if key is None:
-            key = lambda x: x
-        
-        return sorted(iterable, key=lambda x: collator.getSortKey(key(x)), reverse=reverse)
