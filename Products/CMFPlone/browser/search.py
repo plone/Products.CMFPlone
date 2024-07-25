@@ -14,8 +14,8 @@ from zope.component import getUtility
 from zope.component import queryUtility
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
-from ZTUtils import make_query
 from zope.schema.interfaces import IVocabularyFactory
+from ZTUtils import make_query
 
 import json
 import re
@@ -192,7 +192,7 @@ class Search(BrowserView):
         vocab = vocab_factory(self.context)
 
         # Filter types based on plone_utils and maintain vocabulary order
-        user_friendly_types = set(plone_utils.getUserFriendlyTypes(types))
+        user_friendly_types = plone_utils.getUserFriendlyTypes(types)
         sorted_types = [term.value for term in vocab if term.value in user_friendly_types]
 
         return sorted_types
