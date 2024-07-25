@@ -186,7 +186,7 @@ class Search(BrowserView):
             types = [types]
 
         # Get the vocabulary
-        vocab_factory = self.queryUtility(
+        vocab_factory = queryUtility(
             IVocabularyFactory, "plone.app.vocabularies.ReallyUserFriendlyTypes"
         )
         vocab = vocab_factory(self.context)
@@ -196,11 +196,6 @@ class Search(BrowserView):
         sorted_types = [term.value for term in vocab if term.value in user_friendly_types]
 
         return sorted_types
-    
-    def _portal_types_vocabulary(self):
-        return queryUtility(
-            IVocabularyFactory, "plone.app.vocabularies.ReallyUserFriendlyTypes"
-        )
 
     def types_list(self):
         # only show those types that have any content
