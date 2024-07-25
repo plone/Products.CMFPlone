@@ -186,11 +186,9 @@ class Search(BrowserView):
             types = [types]
 
         # Get the vocabulary
-        vocab_factory = self._portal_types_vocabulary()
-        if vocab_factory is None:
-            # Fallback to original behavior if vocabulary is not available
-            return plone_utils.getUserFriendlyTypes(types)
-
+        vocab_factory = self.queryUtility(
+            IVocabularyFactory, "plone.app.vocabularies.ReallyUserFriendlyTypes"
+        )
         vocab = vocab_factory(self.context)
 
         # Filter types based on plone_utils and maintain vocabulary order
@@ -205,6 +203,7 @@ class Search(BrowserView):
         )
 
     def types_list(self):
+        # only show those types that have any content
         catalog = getToolByName(self.context, "portal_catalog")
         used_types = catalog._catalog.getIndex("portal_type").uniqueValues()
         return self.filter_types(list(used_types))
