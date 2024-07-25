@@ -1,1 +1,1 @@
-Fixes sort portal types alphabetically in search filter
+Sort portal types in search filter according to `ReallyUserFriendlyTypes` using `unidecode` in `plone.app.vocabularies`. @rohnsha0
