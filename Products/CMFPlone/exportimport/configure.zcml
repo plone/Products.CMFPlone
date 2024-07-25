@@ -54,17 +54,7 @@
     <depends name="catalog" />
     <depends name="viewlets" />
     <depends name="controlpanel" />
-    <depends name="propertiestool" />
     <depends name="workflow" />
-  </genericsetup:importStep>
-
-  <genericsetup:importStep
-      name="propertiestool"
-      title="Plone Properties"
-      description="Import plone properties tool and subobjects."
-      handler="Products.CMFPlone.exportimport.propertiestool.importPloneProperties"
-      >
-    <depends name="componentregistry" />
   </genericsetup:importStep>
 
   <genericsetup:importStep
@@ -106,13 +96,6 @@
       />
 
   <genericsetup:exportStep
-      name="propertiestool"
-      title="Plone Properties"
-      description="Export plone properties tool and subobjects."
-      handler="Products.CMFPlone.exportimport.propertiestool.exportPloneProperties"
-      />
-
-  <genericsetup:exportStep
       name="viewlets"
       title="Viewlet Settings"
       description="Export viewlet settings"
@@ -120,31 +103,9 @@
       />
 
   <adapter
-      factory=".propertiestool.PlonePropertiesToolXMLAdapter"
-      provides="Products.GenericSetup.interfaces.IBody"
-      for="plone.base.interfaces.IPropertiesTool
-           Products.GenericSetup.interfaces.ISetupEnviron"
-      />
-
-  <adapter
-      factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
-      provides="Products.GenericSetup.interfaces.IBody"
-      for="plone.base.interfaces.ISimpleItemWithProperties
-           Products.GenericSetup.interfaces.ISetupEnviron"
-      />
-
-  <adapter
       factory="Products.CMFCore.exportimport.content.StructureFolderWalkingAdapter"
       provides="Products.GenericSetup.interfaces.IFilesystemImporter"
       for="Products.CMFCore.interfaces.ISiteRoot"
-      />
-
-  <adapter
-      factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
-      provides="Products.GenericSetup.interfaces.IBody"
-      for="Products.CMFCore.interfaces.IMemberDataTool
-           Products.GenericSetup.interfaces.ISetupEnviron"
-      zcml:condition="not-installed Products.CMFCore.exportimport.memberdata"
       />
 
   <adapter
