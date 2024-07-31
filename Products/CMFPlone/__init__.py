@@ -153,7 +153,6 @@ def initialize(context):
     from Products.CMFPlone import patches  # noqa
     from Products.CMFPlone import PloneControlPanel
     from Products.CMFPlone import PloneTool
-    from Products.CMFPlone import PropertiesTool
     from Products.CMFPlone import RegistrationTool
     from Products.CMFPlone import SkinsTool
     from Products.CMFPlone import TranslationServiceTool
@@ -166,7 +165,6 @@ def initialize(context):
         PloneTool.PloneTool,
         WorkflowTool.WorkflowTool,
         CachingPolicyManager.CachingPolicyManager,
-        PropertiesTool.PropertiesTool,
         MigrationTool.MigrationTool,
         PloneControlPanel.PloneControlPanel,
         RegistrationTool.RegistrationTool,
