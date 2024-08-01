@@ -2,7 +2,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = "6.1.0a4.dev1"
+version = "6.1.0a4"
 
 
 setup(
