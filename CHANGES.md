@@ -15,6 +15,20 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.12 (2024-08-01)
+
+
+### Bug fixes:
+
+- Using @@plone_patterns_settings browserview avoid deprecation warnings
+  [yurj] #3970
+
+
+### Internal:
+
+- Updated metadata version to 6023.
+  [maurits] #6023
+
 ## 6.0.11 (2024-04-25)
 
 
