@@ -1,1 +1,0 @@
-Fix problem when adding a Plone site with a custom INonInstallable utility without a getNonInstallableProfiles method.

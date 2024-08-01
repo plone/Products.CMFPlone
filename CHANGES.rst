@@ -12,6 +12,19 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.15 (2024-08-01)
+-------------------
+
+Bug fixes:
+
+
+- Check for container field / attribute when trying to create content with same id
+  [laulaz] (#3847)
+- Fix problem when adding a Plone site with a custom INonInstallable utility without a getNonInstallableProfiles method. (#3862)
+- Update metadata version to 5223, Plone 5.2.15.
+  [maurits] (#5223)
+
+
 5.2.14 (2023-09-21)
 -------------------
 
