@@ -135,8 +135,8 @@ class TestSection(SearchTestCase):
         title = crumbs(second_level_folder.third_level_document)[0]["Title"]
         self.assertEqual(title, "First Level Folder")
 
-    def test_blacklisted_types_in_results(self):
-        """Make sure we don't break types' blacklisting in the new search
+    def test_Denylisted_types_in_results(self):
+        """Make sure we don't break types' Denylisting in the new search
         results view.
         """
         portal = self.layer["portal"]
@@ -154,7 +154,7 @@ class TestSection(SearchTestCase):
         res = portal.restrictedTraverse("@@search").results(query=q, batch=False)
         self.assertFalse(
             "my-page1" in [r.getId() for r in res],
-            'Blacklisted type "Document" has been found in search results.',
+            'Denylisted type "Document" has been found in search results.',
         )
 
     def test_default_search_order_relevance(self):

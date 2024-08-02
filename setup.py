@@ -60,7 +60,6 @@ setup(
         "plone.app.contenttypes",
         "plone.app.customerize",
         "plone.app.dexterity",
-        "plone.app.discussion",
         "plone.app.i18n",
         "plone.app.layout >= 2.5.15",
         "plone.app.linkintegrity >=1.0.3",

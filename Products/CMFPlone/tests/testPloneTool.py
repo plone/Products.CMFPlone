@@ -134,17 +134,17 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         types = set(ttool.keys())
         registry = getUtility(IRegistry)
         search_settings = registry.forInterface(ISearchSchema, prefix="plone")
-        blacklistedTypes = search_settings.types_not_searched
+        denylistedTypes = search_settings.types_not_searched
 
-        # 'ChangeSet' is blacklisted, but not in the types by default,
+        # 'ChangeSet' is denylisted, but not in the types by default,
         # so we filter that out.
-        blacklistedTypes = {t for t in blacklistedTypes if t in types}
+        denylistedTypes = {t for t in denylistedTypes if t in types}
         # No black listed types should be returned.
         self.assertEqual(
-            [t for t in self.utils.getUserFriendlyTypes() if t in blacklistedTypes], []
+            [t for t in self.utils.getUserFriendlyTypes() if t in denylistedTypes], []
         )
         self.assertEqual(
-            len(self.utils.getUserFriendlyTypes()), len(types) - len(blacklistedTypes)
+            len(self.utils.getUserFriendlyTypes()), len(types) - len(denylistedTypes)
         )
         # Non-existing types should be filtered out.
         self.assertEqual(self.utils.getUserFriendlyTypes(["File"]), ["File"])

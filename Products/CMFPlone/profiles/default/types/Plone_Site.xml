@@ -38,7 +38,6 @@
     <element value="plone.richtext" />
     <element value="plone.relateditems" />
     <element value="plone.locking" />
-    <element value="plone.allowdiscussion" />
     <element value="plone.excludefromnavigation" />
     <element value="plone.tableofcontents" />
   </property>

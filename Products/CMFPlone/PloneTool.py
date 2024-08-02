@@ -757,7 +757,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # If status is 1, allow acquisition of local roles (regular
         # behaviour).
         # If it's 0, prohibit it (it will allow some kind of local role
-        # blacklisting).
+        # denylisting).
         mt = getToolByName(self, "portal_membership")
         if not mt.checkPermission(ModifyPortalContent, obj):
             raise Unauthorized
@@ -936,7 +936,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             typesList = []
         registry = getUtility(IRegistry)
         search_settings = registry.forInterface(ISearchSchema, prefix="plone")
-        blacklistedTypes = search_settings.types_not_searched
+        denylistedTypes = search_settings.types_not_searched
 
         ttool = getToolByName(self, "portal_types")
         tool_types = ttool.keys()
@@ -945,7 +945,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         else:
             types = tool_types
 
-        friendlyTypes = set(types) - set(blacklistedTypes)
+        friendlyTypes = set(types) - set(denylistedTypes)
         return list(friendlyTypes)
 
     @security.public
