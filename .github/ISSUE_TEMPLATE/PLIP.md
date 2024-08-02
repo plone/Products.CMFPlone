@@ -12,7 +12,7 @@ projects: 'plone/47'
 
 <!--
 
-Read https://5.docs.plone.org/develop/coredev/docs/plips.html first!
+Read https://6.docs.plone.org/contributing/core/plips.html first!
 
 Mention the @plone/framework-team when the PLIP is information complete!
 

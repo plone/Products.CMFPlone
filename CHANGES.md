@@ -15,6 +15,21 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.0a4 (2024-08-01)
+
+
+### Breaking changes:
+
+- Remove `propertiestool` import step and usage of `portal_properties`.
+  Remove `site_properties` from `main_template.pt` and ajax template.
+  Remove `PropertiesTool` module.
+  [maurits] #125
+
+
+### Internal:
+
+- Update the link to the PLIPs page for Plone 6 Documentation. @stevepiercy #3988
+
 ## 6.1.0a4.dev0 (2024-07-08)
 
 
