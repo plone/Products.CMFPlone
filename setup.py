@@ -41,7 +41,7 @@ setup(
         "Forum": "https://community.plone.org/",
         "Chat": "https://discord.gg/zFY3EBbjaj",
         "Mastodon": "https://plone.social/@plone",
-        "Twitter": "https://twitter.com/plone",
+        "Twitter": "https://x.com/plone",
         "Videos": "https://youtube.com/@plonecms",
         "Sponsor": "https://github.com/sponsors/plone",
     },
