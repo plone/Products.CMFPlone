@@ -51,8 +51,6 @@ deprecated(
     IPasswordResetToolView="plone.base.interfaces.password_reset:IPasswordResetToolView",
     IPWResetTool="plone.base.interfaces.password_reset:IPWResetTool",
     IPatternsSettings="plone.base.interfaces.patterns:IPatternsSettings",
-    IPropertiesTool="plone.base.interfaces.properties:IPropertiesTool",
-    ISimpleItemWithProperties="plone.base.interfaces.properties:ISimpleItemWithProperties",
     IBundleRegistry="plone.base.interfaces.resources:IBundleRegistry",
     IResourceRegistry="plone.base.interfaces.resources:IResourceRegistry",
     IMigratingPloneSiteRoot="plone.base.interfaces.siteroot:IMigratingPloneSiteRoot",
