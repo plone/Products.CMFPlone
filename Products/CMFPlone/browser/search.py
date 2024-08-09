@@ -185,15 +185,15 @@ class Search(BrowserView):
         if not isinstance(types, list):
             types = [types]
 
-        # We want to have the configured types to be exposed in the search sorted for humans (by translated Title).     
-        # Those are stored in the Plone registry. They are called here UserFriendlyTypes.        
-        # 
-        # Confusingly, on the other hand we have the ReallyUserFriendlyTypes vocabulary from 
-        # plone.app.vocabularies, which is already sorted accordingly and contain all possible types, 
-        # except "Temp Folder", "Plone Site" and deprecated types. 
+        # We want to have the configured types to be exposed in the search sorted for humans (by translated Title).
+        # Those are stored in the Plone registry. They are called here UserFriendlyTypes.
+        #
+        # Confusingly, on the other hand we have the ReallyUserFriendlyTypes vocabulary from
+        # plone.app.vocabularies, which is already sorted accordingly and contain all possible types,
+        # except "Temp Folder", "Plone Site" and deprecated types.
 
         # fetch the sorted ReallyUserFriendlyTypes vocabulary
-          vocab_factory = queryUtility(
+        vocab_factory = queryUtility(
             IVocabularyFactory, "plone.app.vocabularies.ReallyUserFriendlyTypes"
         )
         vocab = vocab_factory(self.context)
