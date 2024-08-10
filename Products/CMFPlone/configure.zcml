@@ -26,7 +26,6 @@
   <include package="plone.locking" />
   <include package="plone.memoize" />
   <include package="plone.outputfilters" />
-  <include package="plone.portlets" />
   <include package="plone.protect" />
   <include package="plone.registry" />
   <include package="plone.resource" />
@@ -50,7 +49,6 @@
   <include package="plone.app.linkintegrity" />
   <include package="plone.app.locales" />
   <include zcml:condition="installed plone.app.multilingual" package="plone.app.multilingual" />
-  <include package="plone.app.portlets" />
   <include package="plone.app.redirector" />
   <include package="plone.app.registry" />
   <include package="plone.app.theming" />
@@ -61,8 +59,17 @@
   <include package="plone.app.workflow" />
 
   <!-- plone extra -->
-  <include package="plone.portlet.static" />
-  <include package="plone.portlet.collection" />
+  <configure zcml:condition="not-have disable-classic-ui">
+    <include zcml:condition="installed plone.portlets" package="plone.portlets" />
+    <include zcml:condition="installed plone.app.portlets" package="plone.app.portlets" />
+    <include zcml:condition="installed plone.portlet.static" package="plone.portlet.static" />
+    <include zcml:condition="installed plone.portlet.collection" package="plone.portlet.collection" />
+  </configure>
+  <configure zcml:condition="have disable-classic-ui">
+    <!-- We must include this, otherwise the CMFPlone rolemap.xml cannot be imported. -->
+    <include package="plone.app.portlets" file="permissions.zcml" />
+  </configure>
+
   <include package="plonetheme.barceloneta" />
 
   <!-- conditional -->
