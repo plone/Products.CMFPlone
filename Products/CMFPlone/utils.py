@@ -163,11 +163,11 @@ def isExpired(content):
     # convert to a DateTime
 
     # Try DC accessor first
-    if base_hasattr(content, "ExpirationDate"):
+    if base_utils.base_hasattr(content, "ExpirationDate"):
         expiry = content.ExpirationDate
 
     # Try the direct way
-    if not expiry and base_hasattr(content, "expires"):
+    if not expiry and base_utils.base_hasattr(content, "expires"):
         expiry = content.expires
 
     # See if we have a callable
@@ -675,13 +675,13 @@ def _check_for_collision(contained_by, id, **kwargs):
     # Check for an existing object.
     if id in contained_by:
         existing_obj = getattr(contained_by, id, None)
-        if base_hasattr(existing_obj, "portal_type"):
+        if base_utils.base_hasattr(existing_obj, "portal_type"):
             return _(
                 "There is already an item named ${name} in this folder.",
                 mapping={"name": id},
             )
 
-    if base_hasattr(contained_by, "checkIdAvailable"):
+    if base_utils.base_hasattr(contained_by, "checkIdAvailable"):
         # This used to be called from the check_id skin script,
         # which would check the permission automatically,
         # and the code would catch the Unauthorized exception.
@@ -690,7 +690,7 @@ def _check_for_collision(contained_by, id, **kwargs):
                 return _("${name} is reserved.", mapping={"name": id})
 
     # containers may implement this hook to further restrict ids
-    if base_hasattr(contained_by, "checkValidId"):
+    if base_utils.base_hasattr(contained_by, "checkValidId"):
         try:
             contained_by.checkValidId(id)
         except ConflictError:
