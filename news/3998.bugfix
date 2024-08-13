@@ -1,0 +1,2 @@
+Do not use deprecated `base_hasattr` in `utils.py`.
+[maurits]
