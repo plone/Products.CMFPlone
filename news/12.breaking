@@ -1,0 +1,3 @@
+Use `Products.isurlinportal` directly, instead of relying on it patching our `URLTool`.
+This solves a cyclic dependency.
+[maurits]
