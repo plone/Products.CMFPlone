@@ -46,12 +46,10 @@
   <include package="plone.app.contenttypes" />
   <include package="plone.app.customerize" />
   <include package="plone.app.dexterity" />
-  <include package="plone.app.discussion" />
   <include package="plone.app.i18n" />
   <include package="plone.app.layout" />
   <include package="plone.app.linkintegrity" />
   <include package="plone.app.locales" />
-  <include zcml:condition="installed plone.app.multilingual" package="plone.app.multilingual" />
   <include package="plone.app.portlets" />
   <include package="plone.app.redirector" />
   <include package="plone.app.registry" />
@@ -67,11 +65,21 @@
   <include package="plone.portlet.collection" />
   <include package="plonetheme.barceloneta" />
 
-  <!-- conditional -->
+  <!-- plone.app.* optional/conditional Core Add-ons -->
+  <include
+      package="plone.app.discussion"
+      zcml:condition="installed plone.app.discussion"
+      />
+  <include
+      package="plone.app.multilingual"
+      zcml:condition="installed plone.app.multilingual"
+      />
   <include
       package="plone.app.upgrade"
       zcml:condition="installed plone.app.upgrade"
       />
+
+
 
   <include package=".resources" />
   <include package=".patterns" />

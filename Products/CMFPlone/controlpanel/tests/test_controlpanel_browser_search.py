@@ -58,12 +58,10 @@ class SearchControlPanelFunctionalTest(unittest.TestCase):
     def test_types_not_searched(self):
         self.browser.open("%s/@@search-controlpanel" % self.portal_url)
         self.browser.getControl(name="form.widgets.types_not_searched:list").value = [
-            "Discussion Item",
             "News Item",
         ]
         self.browser.getControl("Save").click()
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISearchSchema, prefix="plone")
-        self.assertTrue("Discussion Item" in settings.types_not_searched)
         self.assertTrue("News Item" in settings.types_not_searched)
