@@ -118,13 +118,13 @@ I select a related item image via contentbrowser
    # Click the select button
    Wait For Then Click Element    //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//button
    # Click third element in first column, that is the "Assets" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[4]/div[contains(@class, "browseSub")]
+   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[4]
    # Click first element in second column, that is the "Mixed" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelItems")]/div[1]/div[contains(@class, "browseSub")]
+   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelItems")]/div[1]
    # Click fifth element in third column, that is the "Files" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelItems")]/div[5]/div[contains(@class, "browseSub")]
+   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelItems")]/div[5]
    # Click third element in fourth column, that is the "Images" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[4]/div[contains(@class, "levelItems")]/div[3]/div[contains(@class, "browseSub")]
+   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[4]/div[contains(@class, "levelItems")]/div[3]
    # Click second element in fifth column, that is the "Image2" Object
    Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[2]
    # Click the select Button in the Toolbar of column 6
@@ -138,13 +138,13 @@ I select two related item images via contentbrowser
    # Click the select button
    Wait For Then Click Element    //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//button
    # Click third element in first column, that is the "Assets" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[4]/div[contains(@class, "browseSub")]
+   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[4]
    # Click first element in second column, that is the "Mixed" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelItems")]/div[1]/div[contains(@class, "browseSub")]
+   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelItems")]/div[1]
    # Click fifth element in third column, that is the "Files" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelItems")]/div[5]/div[contains(@class, "browseSub")]
+   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelItems")]/div[5]
    # Click third element in fourth column, that is the "Images" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[4]/div[contains(@class, "levelItems")]/div[3]/div[contains(@class, "browseSub")]
+   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[4]/div[contains(@class, "levelItems")]/div[3]
    
    # now we select two items in a colum via CTRL+Click
    # Click second element in fifth column, that is the "Image1" Object
@@ -174,7 +174,7 @@ I set an internal link via contentbrowser
     ...    }; selectText();
     Click Button  //button[@aria-label="Insert/edit link"]
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[3]
+    Click item in column    1    3
     Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
     Wait Until Element Is Not Visible    xpath=//div[contains(@class,"content-browser-position-wrapper")]
     Wait For Then Click Element    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
@@ -187,9 +187,9 @@ I set an image via contentbrowser
     UnSelect Frame
     Click Button  //button[@aria-label="Insert/edit image"]
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[3]
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelItems")]/div[1]
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelItems")]/div[1]
+    Click item in column    1    3    
+    Click item in column    2    1    
+    Click item in column    3    1
     Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
     Wait Until Element Is Not Visible    xpath=//div[contains(@class,"content-browser-position-wrapper")]
     Wait For Then Click Element    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
@@ -202,12 +202,12 @@ I upload an image via contentbrowser
     UnSelect Frame
     Click Button  //button[@aria-label="Insert/edit image"]
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[3]
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelItems")]/div[1]
+    Click item in column    1    3    
+    Click item in column    2    1
     Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]/button[contains(@class,"upload")]
     Choose File    xpath=//div[contains(@class,"pat-upload")]//input[@class="dz-hidden-input"]    ${PATH_TO_TEST_FILES}/plone-logo.png
     Wait For Then Click Element  xpath=//div[contains(@class,"pat-upload")]//button[contains(@class,"upload-all")]
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelItems")]/div[3]
+    Click item in column    3    3
     Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
     Wait Until Element Is Not Visible    xpath=//div[contains(@class,"content-browser-position-wrapper")]
     Wait For Then Click Element    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
@@ -220,16 +220,16 @@ I search and select an image via contentbrowser
     UnSelect Frame
     Click Button  //button[@aria-label="Insert/edit image"]
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[3]
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelItems")]/div[1]
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelItems")]/div[2]
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[4]/div[contains(@class, "levelItems")]/div[1]    
+    Click item in column    1    3
+    Click item in column    2    1
+    Click item in column    3    2
+    Click item in column    4    1
     Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]
     Press Keys    xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]    Anot
     # here we need a timeout, because the search filter is not so fast like the testbrowser, it looks like a asynch operation
     ${speed}    Get Selenium Speed
     Set Selenium Speed    1 seconds
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[1]
+    Click item in column    5    1
     Set Selenium Speed    ${speed}
     Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
     Wait Until Element Is Not Visible    xpath=//div[contains(@class,"content-browser-position-wrapper")]
@@ -280,3 +280,7 @@ Element exists
     Element Should Be Visible    ${element}
     ${_attr}=  Get Element Attribute    ${element}    ${attr}
     Should End With    ${_attr}    ${value}
+
+Click item in column
+    [arguments]  ${colnumber}    ${itemposition}
+    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[${colnumber}]/div[contains(@class, "levelItems")]/div[${itemposition}]
