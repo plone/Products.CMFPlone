@@ -175,8 +175,8 @@ I set an internal link via contentbrowser
     Click Button  //button[@aria-label="Insert/edit link"]
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
-    Wait Until Element Is Not Visible    xpath=//div[contains(@class,"content-browser-position-wrapper")]
+    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Wait Until Element Is Not Visible    //div[contains(@class,"content-browser-position-wrapper")]
     Wait For Then Click Element    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
     Wait Until Element Is Not Visible  css=.modal-footer input[name="insert"]
 
@@ -190,8 +190,8 @@ I set an image via contentbrowser
     Click item in column    1    3    
     Click item in column    2    1    
     Click item in column    3    1
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
-    Wait Until Element Is Not Visible    xpath=//div[contains(@class,"content-browser-position-wrapper")]
+    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Wait Until Element Is Not Visible    //div[contains(@class,"content-browser-position-wrapper")]
     Wait For Then Click Element    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
     Wait Until Element Is Not Visible  css=.modal-footer input[name="insert"]
 
@@ -204,12 +204,12 @@ I upload an image via contentbrowser
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3    
     Click item in column    2    1
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]/button[contains(@class,"upload")]
-    Choose File    xpath=//div[contains(@class,"pat-upload")]//input[@class="dz-hidden-input"]    ${PATH_TO_TEST_FILES}/plone-logo.png
-    Wait For Then Click Element  xpath=//div[contains(@class,"pat-upload")]//button[contains(@class,"upload-all")]
+    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]/button[contains(@class,"upload")]
+    Choose File    //div[contains(@class,"pat-upload")]//input[@class="dz-hidden-input"]    ${PATH_TO_TEST_FILES}/plone-logo.png
+    Wait For Then Click Element  //div[contains(@class,"pat-upload")]//button[contains(@class,"upload-all")]
     Click item in column    3    3
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
-    Wait Until Element Is Not Visible    xpath=//div[contains(@class,"content-browser-position-wrapper")]
+    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Wait Until Element Is Not Visible    //div[contains(@class,"content-browser-position-wrapper")]
     Wait For Then Click Element    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
     Wait Until Element Is Not Visible  css=.modal-footer input[name="insert"]
 
@@ -224,20 +224,20 @@ I search and select an image via contentbrowser
     Click item in column    2    1
     Click item in column    3    2
     Click item in column    4    1
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]
-    Press Keys    xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]    Anot
+    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]
+    Press Keys    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]    Anot
     # here we need a timeout, because the search filter is not so fast like the testbrowser, it looks like a asynch operation
     ${speed}    Get Selenium Speed
     Set Selenium Speed    1 seconds
     Click item in column    5    1
     Set Selenium Speed    ${speed}
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
-    Wait Until Element Is Not Visible    xpath=//div[contains(@class,"content-browser-position-wrapper")]
+    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Wait Until Element Is Not Visible    //div[contains(@class,"content-browser-position-wrapper")]
     Wait For Then Click Element    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
     Wait Until Element Is Not Visible  css=.modal-footer input[name="insert"]
 
 I save the document
-    Click Button    xpath=//button[@id="form-buttons-save"]
+    Click Button    //button[@id="form-buttons-save"]
 
 
 
@@ -283,4 +283,4 @@ Element exists
 
 Click item in column
     [arguments]  ${colnumber}    ${itemposition}
-    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[${colnumber}]/div[contains(@class, "levelItems")]/div[${itemposition}]
+    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[${colnumber}]/div[contains(@class, "levelItems")]/div[${itemposition}]
