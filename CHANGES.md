@@ -15,6 +15,23 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.13 (2024-09-05)
+
+
+### Bug fixes:
+
+- Do not use deprecated `base_hasattr` in `utils.py`.
+  [maurits] #3998
+- Use `five.registerPackage` so an editable install with `pip` works.
+  [maurits] #4002
+- Fix help text for redirect target path. @davisagli #4007
+
+
+### Internal:
+
+- Updated metadata version to 6024.
+  [maurits] #6024
+
 ## 6.0.12 (2024-08-01)
 
 
