@@ -156,8 +156,7 @@ I set an internal link via contentbrowser
     ...    var iframe_document = document.querySelector(".tox-edit-area iframe").contentDocument;
     ...    var body = iframe_document.body;
     ...    var p = body.firstChild;
-    ...    var range = new Range();    
-    ...    console.log(iframe_document, body, p, p.firstChild, range);
+    ...    var range = new Range();
     ...    range.setStart(p.firstChild, 5);
     ...    range.setEnd(p.firstChild, 12);
     ...    iframe_document.getSelection().removeAllRanges();
