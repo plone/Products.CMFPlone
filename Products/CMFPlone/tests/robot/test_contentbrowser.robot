@@ -58,7 +58,15 @@ Scenario: upload an image via contentbrowser
       and a nested asset folder
      When I upload an image via contentbrowser
       and I save the document
-     Then the document contain the uploaded image      
+     Then the document contain the uploaded image
+
+Scenario: search and select an image via contentbrowser
+    Given a logged-in site administrator
+      and a document
+      and a nested asset folder
+     When I search and select an image via contentbrowser
+      and I save the document
+     Then the document contain the image by search       
       
 
 *** Keywords *****************************************************************
@@ -95,6 +103,8 @@ a nested asset folder
     ${folder_images_uid}=  Create content    type=Folder    title=Images    container=${folder_files_uid}
     Create content    type=Image    id=image-1    title=Image1    container=${folder_images_uid}
     Create content    type=Image    id=image-2    title=Image2    container=${folder_images_uid}
+    Create content    type=Image    id=image-3    title=My Image    container=${folder_images_uid}
+    Create content    type=Image    id=image-4    title=Another Image    container=${folder_images_uid}
 
 a document
     Create content  type=Document  id=${DOCUMENT_ID}    title=My Page
@@ -201,7 +211,30 @@ I upload an image via contentbrowser
     Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
     Wait Until Element Is Not Visible    xpath=//div[contains(@class,"content-browser-position-wrapper")]
     Wait For Then Click Element    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
-    Wait Until Element Is Not Visible  css=.modal-footer input[name="insert"]    
+    Wait Until Element Is Not Visible  css=.modal-footer input[name="insert"]
+
+I search and select an image via contentbrowser
+    Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
+    Select Frame  css=.tox-edit-area iframe
+    Press Keys    //body[@id="tinymce"]    Susi Sorglos and John Doe
+    UnSelect Frame
+    Click Button  //button[@aria-label="Insert/edit image"]
+    Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
+    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[3]
+    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelItems")]/div[1]
+    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelItems")]/div[2]
+    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[4]/div[contains(@class, "levelItems")]/div[1]    
+    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]
+    Press Keys    xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]    Anot
+    # here we need a timeout, because the search filter is not so fast like the testbrowser, it looks like a asynch operation
+    ${speed}    Get Selenium Speed
+    Set Selenium Speed    1 seconds
+    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[1]
+    Set Selenium Speed    ${speed}
+    Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Wait Until Element Is Not Visible    xpath=//div[contains(@class,"content-browser-position-wrapper")]
+    Wait For Then Click Element    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
+    Wait Until Element Is Not Visible  css=.modal-footer input[name="insert"]
 
 I save the document
     Click Button    xpath=//button[@id="form-buttons-save"]
@@ -223,6 +256,9 @@ the document contain the internal link
 
 the document contain the image
     rendered textfield contain the image with title    Image1
+
+the document contain the image by search
+    rendered textfield contain the image with title    Another Image
 
 the document contain the uploaded image
     rendered textfield contain the image with title    plone-logo.png
