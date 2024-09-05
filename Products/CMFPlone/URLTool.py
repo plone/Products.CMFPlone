@@ -6,6 +6,7 @@ from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.URLTool import URLTool as BaseTool
 from Products.CMFPlone.patches.gtbn import rewrap_in_request_container
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.isurlinportal import isURLInPortal
 from zope.component import getUtility
 
 
@@ -14,26 +15,10 @@ class URLTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = "skins/plone_images/link_icon.png"
 
-    @security.public
-    def isURLInPortal(self, url, context=None):
-        # Note: no docstring, because the method is publicly available
-        # but does not need to be callable on site-url/portal_url/isURLInPortal.
-        #
-        # This method is overridden by Products.isurlinportal,
-        # but the public declaration still seems needed.
-        #
-        # Also, in tests/testURLTool.py we do not use layers,
-        # which means the Products code is not loaded,
-        # so we need to import it explicitly.
-        # This is done once.
-        try:
-            from Products.isurlinportal import isURLInPortal
-        except ImportError:
-            # If this somehow fails, it seems better to have a safe fallback,
-            # instead of a hard failure.
-            return False
-
-        return isURLInPortal(self, url, context=context)
+    # The implementation of this method was moved to Products.isurlinportal
+    # to be able to more quickly do a security release in case there is a
+    # problem in this part.
+    isURLInPortal = isURLInPortal
 
     def getPortalObject(self):
         portal = aq_parent(aq_inner(self))

@@ -68,9 +68,6 @@
     <utility factory="plone.app.viewletmanager.storage.ViewletSettingsStorage"
              interface="plone.app.viewletmanager.interfaces.IViewletSettingsStorage"
     />
-    <utility interface="Products.CMFCore.interfaces.IPropertiesTool"
-             object="portal_properties"
-    />
     <utility interface="Products.CMFCore.interfaces.ISiteRoot"
              object=""
     />

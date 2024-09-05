@@ -4,6 +4,7 @@ about: Plone Improvement Proposal
 title: ''
 labels: '03 type: feature (plip)'
 assignees: ''
+projects: 'plone/47'
 
 ---
 
@@ -11,7 +12,7 @@ assignees: ''
 
 <!--
 
-Read https://5.docs.plone.org/develop/coredev/docs/plips.html first!
+Read https://6.docs.plone.org/contributing/core/plips.html first!
 
 Mention the @plone/framework-team when the PLIP is information complete!
 

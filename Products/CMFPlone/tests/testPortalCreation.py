@@ -53,7 +53,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.types = self.portal.portal_types
         self.cp = self.portal.portal_controlpanel
         self.actions = self.portal.portal_actions
-        self.properties = self.portal.portal_properties
         self.memberdata = self.portal.portal_memberdata
         self.catalog = self.portal.portal_catalog
         self.groups = self.portal.portal_groups
@@ -157,35 +156,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # portal_navigation should have been removed
         self.assertFalse("portal_navigation" in self.portal)
 
-    def testNoFormProperties(self):
-        # form_properties should have been removed
-        self.assertFalse("form_properties" in self.properties)
-
-    def testNoNavigationProperties(self):
-        # navigation_properties should have been removed
-        self.assertFalse("navigation_properties" in self.properties)
-
     def testFormToolTipsProperty(self):
         # formtooltips should have been removed
         self.assertFalse(self.memberdata.hasProperty("formtooltips"))
 
     def testNavTreeProperties(self):
-        # navtree_properties should contain the new properties
-        self.assertFalse(
-            self.properties.navtree_properties.hasProperty("parentMetaTypesNotToQuery")
-        )
-        self.assertFalse(self.properties.navtree_properties.hasProperty("sitemapDepth"))
-        self.assertFalse(
-            self.properties.navtree_properties.hasProperty("showAllParents")
-        )
-        self.assertFalse(
-            self.properties.navtree_properties.hasProperty("metaTypesNotToList")
-        )  # noqa
-        self.assertFalse(
-            self.properties.navtree_properties.hasProperty("sortAttribute")
-        )
-        self.assertFalse(self.properties.navtree_properties.hasProperty("sortOrder"))
-
         registry = getUtility(IRegistry)
         self.assertTrue("plone.workflow_states_to_show" in registry)
         self.assertTrue("plone.filter_on_workflow" in registry)
@@ -618,13 +593,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         ][0]
         self.assertTrue(member_has_permission["selected"])
 
-    def testDiscussionItemWorkflow(self):
-        # By default the discussion item has the comment_one_state_workflow
-        self.assertEqual(
-            self.workflow.getChainForPortalType("Discussion Item"),
-            ("comment_one_state_workflow",),
-        )
-
     def testFolderHasFolderListingView(self):
         # Folder type should allow 'folder_listing'
         self.assertTrue("listing_view" in self.types.Folder.view_methods)
@@ -957,9 +925,6 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
 
 
 class TestManagementPageCharset(PloneTestCase.PloneTestCase):
-    def afterSetUp(self):
-        self.properties = self.portal.portal_properties
-
     def testManagementPageCharset(self):
         manage_charset = getattr(self.portal, "management_page_charset", None)
         self.assertTrue(manage_charset)

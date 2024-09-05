@@ -121,29 +121,6 @@ class TestSiteMap(PloneTestCase.PloneTestCase):
         self.assertEqual(subfolder221map["item"].getPath(), path(subfolder221))
         self.assertEqual(len(subfolder221map["children"]), 0)
 
-    def testSitemapUnchangedWithTopLevel(self):
-        # Test that setting topLevel does not alter the sitemap
-        ntp = self.portal.portal_properties.navtree_properties
-        for topLevel in range(0, 5):
-            ntp.manage_changeProperties(topLevel=topLevel)
-            view = self.view_class(self.portal, self.request)
-            sitemap = view.siteMap()
-            self.assertEqual(
-                sitemap["children"][-1]["item"].getPath(), "/plone/folder2"
-            )
-
-    def testSitemapUnchangedWithBottomLevel(self):
-        # Test that setting bottomLevel does not alter the sitemap
-        ntp = self.portal.portal_properties.navtree_properties
-        for bottomLevel in range(0, 5):
-            ntp.manage_changeProperties(bottomLevel=bottomLevel)
-            view = self.view_class(self.portal, self.request)
-            sitemap = view.siteMap()
-            self.assertEqual(
-                sitemap["children"][-1]["item"].getPath(), "/plone/folder2"
-            )
-            self.assertTrue(len(sitemap["children"][-1]["children"]) > 0)
-
     def testSitemapWithNavigationRoot(self):
         self.navigation_settings.root = "/folder2"
         view = self.view_class(self.portal, self.request)
@@ -270,7 +247,7 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.assertTrue("review_state" in tab and tab["review_state"])
 
     def testDisableFolderTabs(self):
-        # Setting the site_property disable_folder_sections should remove
+        # Setting the registry setting generate_tabs to False should remove
         # all folder based tabs
         self.navigation_settings.generate_tabs = False
         view = self.view_class(self.portal, self.request)
