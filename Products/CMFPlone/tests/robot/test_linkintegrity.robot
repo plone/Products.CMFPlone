@@ -83,6 +83,7 @@ a link in rich text
   Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
   Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[3]
   Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+  Wait Until Element Is Not Visible    xpath=//div[contains(@class,"content-browser-position-wrapper")]
   Wait For Then Click Element  css=.modal-footer input[name="insert"]
   Select Frame  css=.tox-edit-area iframe
   Execute Javascript  window.getSelection().removeAllRanges()
