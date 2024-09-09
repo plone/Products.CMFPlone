@@ -66,8 +66,8 @@ Scenario: search and select an image via contentbrowser
       and a nested asset folder
      When I search and select an image via contentbrowser
       and I save the document
-     Then the document contain the image by search       
-      
+     Then the document contain the image by search
+
 
 *** Keywords *****************************************************************
 
@@ -77,7 +77,7 @@ a nested asset folder
     #
     # + Assets
     #  + Mixed
-    #   - File1    
+    #   - File1
     #   - Image1
     #   - Document1
     #   - News Item1
@@ -99,7 +99,7 @@ a nested asset folder
     ${folder_files_uid}=  Create content    type=Folder    title=Files    container=${folder_mixed_uid}
     Create content    type=File    title=File1    container=${folder_files_uid}
     Create content    type=File    title=File2    container=${folder_files_uid}
-    
+
     ${folder_images_uid}=  Create content    type=Folder    title=Images    container=${folder_files_uid}
     Create content    type=Image    id=image-1    title=Image1    container=${folder_images_uid}
     Create content    type=Image    id=image-2    title=Image2    container=${folder_images_uid}
@@ -145,14 +145,13 @@ I select two related item images via contentbrowser
    Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelItems")]/div[5]
    # Click third element in fourth column, that is the "Images" folder
    Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[4]/div[contains(@class, "levelItems")]/div[3]
-   
-   # now we select two items in a colum via CTRL+Click
-   # Click second element in fifth column, that is the "Image1" Object
-   Wait For Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[1]
-   Click Element        //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[1]    CTRL
-   # Click second element in fifth column, that is the "Image2" Object
+
+   # now we select two items in a colum via Shift+Click
+   # Click first element in fifth column, that is the "Image1" Object
+   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[1]
+   # Click second element in fifth column with SHIFT, that is the "Image2" Object
    Wait For Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[2]
-   Click Element        //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[2]    CTRL
+   Click Element        //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[2]    SHIFT
    # Click the select Button in the Toolbar of column 6
    Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[6]/div[contains(@class, "levelToolbar")]/button
 
@@ -187,8 +186,8 @@ I set an image via contentbrowser
     UnSelect Frame
     Click Button  //button[@aria-label="Insert/edit image"]
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
-    Click item in column    1    3    
-    Click item in column    2    1    
+    Click item in column    1    3
+    Click item in column    2    1
     Click item in column    3    1
     Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
     Wait Until Element Is Not Visible    //div[contains(@class,"content-browser-position-wrapper")]
@@ -202,7 +201,7 @@ I upload an image via contentbrowser
     UnSelect Frame
     Click Button  //button[@aria-label="Insert/edit image"]
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
-    Click item in column    1    3    
+    Click item in column    1    3
     Click item in column    2    1
     Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]/button[contains(@class,"upload")]
     Choose File    //div[contains(@class,"pat-upload")]//input[@class="dz-hidden-input"]    ${PATH_TO_TEST_FILES}/plone-logo.png
@@ -241,16 +240,16 @@ I save the document
 
 
 
-# --- THEN ------------------------------------------------------------------    
+# --- THEN ------------------------------------------------------------------
 
 a image is selected as related item
-    image is releated item    //div[contains(@class, "content-browser-selected-items")]/div[1]/img    /asset-folder/mixed/files/images/image-2/@@images/image/mini    
+    image is releated item    //div[contains(@class, "content-browser-selected-items")]/div[1]/img    /asset-folder/mixed/files/images/image-2/@@images/image/mini
 
 
 two images are selected as related item
-    image is releated item    //div[contains(@class, "content-browser-selected-items")]/div[1]/img    /asset-folder/mixed/files/images/image-1/@@images/image/mini    
+    image is releated item    //div[contains(@class, "content-browser-selected-items")]/div[1]/img    /asset-folder/mixed/files/images/image-1/@@images/image/mini
     image is releated item    //div[contains(@class, "content-browser-selected-items")]/div[2]/img    /asset-folder/mixed/files/images/image-2/@@images/image/mini
-    
+
 the document contain the internal link
     Element exists    //div[@id="parent-fieldname-text"]//a    href    /plone/doc
 
