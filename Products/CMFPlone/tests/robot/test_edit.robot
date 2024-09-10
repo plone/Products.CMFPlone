@@ -89,8 +89,12 @@ I click the ${tab} tab
     Click link  ${tab}
 
 I select a related item
-    Wait For Then Click Element  jquery=.pat-relateditems-container ul.select2-choices:visible
-    Wait For Then Click Element  jquery=a.pat-relateditems-result-select:first
+    # Click the select button
+    Wait For Then Click Element  //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//button
+    # Click first element in first column
+    Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[1]
+    # Click the select Button in the Toolbar of column 2
+    Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelToolbar")]/button
 
 I save the page
    Click Button  Save
