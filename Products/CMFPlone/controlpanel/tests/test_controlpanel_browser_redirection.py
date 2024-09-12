@@ -336,7 +336,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
 
         redirects = RedirectionSet()
         self.assertEqual(len(redirects), 400)
-        # created can be anything that can be parsed by DateTime.
+        # created can be anything that can be parsed by DateTime. (deprecated)
         # Otherwise it is ignored.
         self.assertEqual(len(RedirectionSet(created="2019-01-01")), 400)
         self.assertEqual(len(RedirectionSet(created="1999-01-01")), 0)
@@ -346,38 +346,57 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertEqual(len(RedirectionSet(created="2001-02-01 00:00:00")), 31)
         self.assertEqual(len(RedirectionSet(created="2001-02-01 00:00:01")), 32)
         self.assertEqual(len(RedirectionSet(created="badvalue")), 400)
+        # start is inclusive and can be anything that can be parsed by DateTime.
+        # Otherwise it is ignored.
+        self.assertEqual(len(RedirectionSet(start="2019-01-01")), 0)
+        self.assertEqual(len(RedirectionSet(start="2001-01-02")), 399)
+        self.assertEqual(len(RedirectionSet(start="2001-02-01 00:00:00")), 369)
+        self.assertEqual(len(RedirectionSet(start="2001-02-01 00:00:01")), 368)
+        self.assertEqual(len(RedirectionSet(start="badvalue")), 400)
+
+        # End is exclisive and can be anything that can be parsed by DateTime.
+        # Otherwise it is ignored.
+        self.assertEqual(len(RedirectionSet(end="1999-01-01")), 0)
+        self.assertEqual(len(RedirectionSet(end="2000-01-01")), 0)
+        self.assertEqual(len(RedirectionSet(end="2001-02-01")), 31)
+        self.assertEqual(len(RedirectionSet(end="2001-02-01 00:00:00")), 31)
+        self.assertEqual(len(RedirectionSet(end="2001-02-01 00:00:01")), 32)
+        self.assertEqual(len(RedirectionSet(end="badvalue")), 400)
+
+        self.assertEqual(len(RedirectionSet(start="2001-01-01", end="2001-01-01")), 0)
+        self.assertEqual(len(RedirectionSet(start="2001-01-01", end="2001-01-02")), 1)
 
         # DateTime('2002-01-01') results in a timezone GMT+0
-        self.assertEqual(len(RedirectionSet(created="2002-01-01")), 365)
+        self.assertEqual(len(RedirectionSet(end="2002-01-01")), 365)
         # DateTime('2002/01/01') results in a timezone GMT+1 for me,
         # or a different zone depending on where in the world you are.
         # So we need to be lenient in the tests.
-        self.assertGreaterEqual(len(RedirectionSet(created="2002/01/01")), 364)
-        self.assertLessEqual(len(RedirectionSet(created="2002/01/01")), 366)
+        self.assertGreaterEqual(len(RedirectionSet(end="2002/01/01")), 364)
+        self.assertLessEqual(len(RedirectionSet(end="2002/01/01")), 366)
 
         request = self.layer["request"].clone()
-        request.form["datetime"] = ""
+        request.form["start"] = ""
         view = getMultiAdapter(
             (self.layer["portal"], request), name="redirection-controlpanel"
         )
         self.assertEqual(view.redirects().numpages, math.ceil(400 / 15.0))
 
         request = self.layer["request"].clone()
-        request.form["datetime"] = "2001-01-27"
+        request.form["end"] = "2001-01-27"
         view = getMultiAdapter(
             (self.layer["portal"], request), name="redirection-controlpanel"
         )
         self.assertEqual(view.redirects().numpages, math.ceil(27 / 15.0))
 
         request = self.layer["request"].clone()
-        request.form["datetime"] = "2002-01-01"
+        request.form["end"] = "2002-01-01"
         view = getMultiAdapter(
             (self.layer["portal"], request), name="redirection-controlpanel"
         )
         self.assertEqual(view.redirects().numpages, math.ceil(365 / 15.0))
 
         request = self.layer["request"].clone()
-        request.form["datetime"] = "2019-01-01"
+        request.form["end"] = "2019-01-01"
         view = getMultiAdapter(
             (self.layer["portal"], request), name="redirection-controlpanel"
         )
