@@ -138,8 +138,34 @@ def addPloneSite(
     setup_content=None,
     default_language="en",
     portal_timezone="UTC",
+    distribution_name=None,
+    **kwargs,
 ):
     """Add a PloneSite to the context."""
+    if distribution_name:
+        from plone.distribution.api import site as site_api
+
+        # Pass all arguments and keyword arguments in the answers,
+        # But the 'distribution_name' is not needed there.
+        answers = {
+            "site_id": site_id,
+            "title": title,
+            "description": description,
+            "profile_id": profile_id,
+            "snapshot": snapshot,
+            "content_profile_id": content_profile_id,
+            "extension_ids": extension_ids,
+            "setup_content": setup_content,
+            "default_language": default_language,
+            "portal_timezone": portal_timezone,
+        }
+        answers.update(kwargs)
+        site = site_api._create_site(
+            context=context, distribution_name=distribution_name, answers=answers
+        )
+        setSite(site)
+        return site
+
     if content_profile_id is not None:
         warnings.warn(
             "addPloneSite ignores the content_profile_id keyword argument "
