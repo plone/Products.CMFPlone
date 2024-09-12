@@ -1,0 +1,3 @@
+No longer hide plone.app.caching from Add-ons control panel.
+It is a core add-on, so you should be able to activate it if you add the package later.
+[maurits]

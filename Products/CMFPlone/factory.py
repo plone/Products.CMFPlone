@@ -62,7 +62,6 @@ class NonInstallable:
             "Products.CMFEditions",
             "Products.NuPlone",
             "borg.localrole",
-            "plone.app.caching",
             "plone.app.dexterity",
             "plone.app.event",
             "plone.app.intid",
