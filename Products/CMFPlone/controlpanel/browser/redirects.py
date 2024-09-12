@@ -1,4 +1,5 @@
 from csv import writer
+import warnings
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
 from io import StringIO
@@ -163,7 +164,7 @@ class RedirectsView(BrowserView):
 
 
 class RedirectionSet:
-    def __init__(self, query="", created="", manual=""):
+    def __init__(self, query="", created="", manual="", start="", end=""):
         self.storage = getUtility(IRedirectionStorage)
 
         portal = getSite()
@@ -190,20 +191,35 @@ class RedirectionSet:
             else:
                 manual = ""
         if created:
+            end = created
+            warnings.warn(
+                "The 'created' parameter is deprecated. Use 'end' parameter instead.",
+                DeprecationWarning,
+            )
+        if start:
             try:
-                created = DateTime(created)
+                start = DateTime(start)
             except DateTimeError:
-                logger.warning("Failed to parse as DateTime: %s", created)
-                created = ""
-        if created or manual != "":
+                logger.warning("Failed to parse as DateTime: %s", start)
+                start = ""
+        if end:
+            try:
+                end = DateTime(end)
+            except DateTimeError:
+                logger.warning("Failed to parse as DateTime: %s", end)
+                end = ""
+        if start or end or manual != "":
             chosen = []
             for redirect in self.data:
                 info = self.storage.get_full(redirect)
                 if manual != "":
                     if info[2] != manual:
                         continue
-                if created and info[1]:
-                    if info[1] >= created:
+                if start and info[1]:
+                    if info[1] < start:
+                        continue
+                if end and info[1]:
+                    if info[1] >= end:
                         continue
                 chosen.append(redirect)
             self.data = chosen
@@ -256,6 +272,8 @@ class RedirectsControlPanel(BrowserView):
             RedirectionSet(
                 query=self.request.form.get("q", ""),
                 created=self.request.form.get("datetime", ""),
+                start=self.request.form.get("start", ""),
+                end=self.request.form.get("end", ""),
                 manual=self.request.form.get("manual", ""),
             ),
             int(self.request.form.get("b_size", "15")),
@@ -280,9 +298,17 @@ class RedirectsControlPanel(BrowserView):
             else:
                 query = self.request.form.get("q", "")
                 created = self.request.form.get("datetime", "")
+                start = self.request.form.get("start", "")
+                end = self.request.form.get("end", "")
                 manual = self.request.form.get("manual", "")
-                if created or manual or (query and query != "/"):
-                    rset = RedirectionSet(query=query, created=created, manual=manual)
+                if created or start or end or manual or (query and query != "/"):
+                    rset = RedirectionSet(
+                        query=query,
+                        created=created,
+                        manual=manual,
+                        start=start,
+                        end=end,
+                    )
                     redirects = list(rset.data)
                 else:
                     redirects = []
