@@ -71,13 +71,6 @@ Scenario: search and select an image via contentbrowser
 
 *** Keywords *****************************************************************
 
-Pause
-    [Documentation]  Visually pause test execution with interactive dialog by
-    ...              importing **Dialogs**-library and calling its
-    ...              **Pause Execution**-keyword.
-    Import library  Dialogs
-    Pause execution
-
 # --- GIVEN ------------------------------------------------------------------
 
 a nested asset folder
