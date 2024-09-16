@@ -71,6 +71,13 @@ Scenario: search and select an image via contentbrowser
 
 *** Keywords *****************************************************************
 
+Pause
+    [Documentation]  Visually pause test execution with interactive dialog by
+    ...              importing **Dialogs**-library and calling its
+    ...              **Pause Execution**-keyword.
+    Import library  Dialogs
+    Pause execution
+
 # --- GIVEN ------------------------------------------------------------------
 
 a nested asset folder
@@ -158,9 +165,7 @@ I select two related item images via contentbrowser
 
 I set an internal link via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
-    Select Frame  css=.tox-edit-area iframe
-    Press Keys    //body[@id="tinymce"]    Susi Sorglos and John Doe
-    UnSelect Frame
+    Fill text to tinymce editor    Susi Sorglos and John Doe
     Execute Javascript    function selectText() {
     ...    var iframe_document = document.querySelector(".tox-edit-area iframe").contentDocument;
     ...    var body = iframe_document.body;
@@ -171,7 +176,9 @@ I set an internal link via contentbrowser
     ...    iframe_document.getSelection().removeAllRanges();
     ...    iframe_document.getSelection().addRange(range);
     ...    }; selectText();
-    Click Button  //button[@aria-label="Insert/edit link"]
+    # hack for button behind sticky formcontrols on small screens
+    Scroll Element Into View    //select[@name="form.widgets.IRichTextBehavior.text.mimeType"]
+    Click Button    //button[@aria-label='Insert/edit link']
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
     Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
@@ -181,10 +188,10 @@ I set an internal link via contentbrowser
 
 I set an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
-    Select Frame  css=.tox-edit-area iframe
-    Press Keys    //body[@id="tinymce"]    Susi Sorglos and John Doe
-    UnSelect Frame
-    Click Button  //button[@aria-label="Insert/edit image"]
+    Fill text to tinymce editor    Susi Sorglos and John Doe
+    # hack for button behind sticky formcontrols on small screens
+    Scroll Element Into View    //select[@name="form.widgets.IRichTextBehavior.text.mimeType"]
+    Click Button    //button[@aria-label='Insert/edit image']
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
     Click item in column    2    1
@@ -196,9 +203,9 @@ I set an image via contentbrowser
 
 I upload an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
-    Select Frame  css=.tox-edit-area iframe
-    Press Keys    //body[@id="tinymce"]    Susi Sorglos and John Doe
-    UnSelect Frame
+    Fill text to tinymce editor    Susi Sorglos and John Doe
+    # hack for button behind sticky formcontrols on small screens
+    Scroll Element Into View    //select[@name="form.widgets.IRichTextBehavior.text.mimeType"]
     Click Button  //button[@aria-label="Insert/edit image"]
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
@@ -214,9 +221,9 @@ I upload an image via contentbrowser
 
 I search and select an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
-    Select Frame  css=.tox-edit-area iframe
-    Press Keys    //body[@id="tinymce"]    Susi Sorglos and John Doe
-    UnSelect Frame
+    Fill text to tinymce editor    Susi Sorglos and John Doe
+    # hack for button behind sticky formcontrols on small screens
+    Scroll Element Into View    //select[@name="form.widgets.IRichTextBehavior.text.mimeType"]
     Click Button  //button[@aria-label="Insert/edit image"]
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
@@ -264,6 +271,13 @@ the document contain the uploaded image
 
 
 #--- Helper DRY -------------------------------------------------------------
+
+Fill text to tinymce editor
+    [arguments]    ${text}
+    Wait Until Element Is Visible    css=.tox-edit-area iframe
+    Select Frame    css=.tox-edit-area iframe
+    Input Text    //body[@id="tinymce"]    ${text}
+    UnSelect Frame
 
 image is releated item
     [arguments]    ${xpath}    ${imagepath}
