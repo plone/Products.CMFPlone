@@ -169,8 +169,6 @@ I set an internal link via contentbrowser
     ...    iframe_document.getSelection().removeAllRanges();
     ...    iframe_document.getSelection().addRange(range);
     ...    }; selectText();
-    # hack for button behind sticky formcontrols on small screens
-    Scroll Element Into View    //select[@name="form.widgets.IRichTextBehavior.text.mimeType"]
     Click Button    //button[@aria-label='Insert/edit link']
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
@@ -182,8 +180,6 @@ I set an internal link via contentbrowser
 I set an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
     Fill text to tinymce editor    Susi Sorglos and John Doe
-    # hack for button behind sticky formcontrols on small screens
-    Scroll Element Into View    //select[@name="form.widgets.IRichTextBehavior.text.mimeType"]
     Click Button    //button[@aria-label='Insert/edit image']
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
@@ -197,8 +193,6 @@ I set an image via contentbrowser
 I upload an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
     Fill text to tinymce editor    Susi Sorglos and John Doe
-    # hack for button behind sticky formcontrols on small screens
-    Scroll Element Into View    //select[@name="form.widgets.IRichTextBehavior.text.mimeType"]
     Click Button  //button[@aria-label="Insert/edit image"]
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
@@ -215,8 +209,6 @@ I upload an image via contentbrowser
 I search and select an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
     Fill text to tinymce editor    Susi Sorglos and John Doe
-    # hack for button behind sticky formcontrols on small screens
-    Scroll Element Into View    //select[@name="form.widgets.IRichTextBehavior.text.mimeType"]
     Click Button  //button[@aria-label="Insert/edit image"]
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
