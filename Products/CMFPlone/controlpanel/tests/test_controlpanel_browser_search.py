@@ -29,7 +29,9 @@ class SearchControlPanelFunctionalTest(unittest.TestCase):
 
     def test_search_control_panel_link(self):
         self.browser.open("%s/@@overview-controlpanel" % self.portal_url)
-        self.browser.getLink("Search").click()
+        # The first "Search" link actually points to "Advanced Search"...
+        # self.browser.getLink("Search").click()
+        self.browser.getLink(url=f"{self.portal_url}/@@search-controlpanel").click()
 
     def test_search_control_panel_backlink(self):
         self.browser.open("%s/@@search-controlpanel" % self.portal_url)

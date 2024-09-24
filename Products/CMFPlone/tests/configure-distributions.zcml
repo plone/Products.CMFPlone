@@ -1,0 +1,18 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
+
+  <configure zcml:condition="installed plone.distribution">
+    <include package="plone.distribution" />
+    <plone:distribution
+        name="testdistro"
+        title="Plone Site"
+        headless="false"
+        post_handler="plone.distribution.handler.post_handler"
+        />
+  </configure>
+
+</configure>

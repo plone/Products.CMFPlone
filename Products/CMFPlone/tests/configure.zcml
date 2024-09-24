@@ -13,14 +13,4 @@
       permission="zope2.View"
       />
 
-  <configure zcml:condition="installed plone.distribution">
-    <include package="plone.distribution" />
-    <plone:distribution
-        name="testdistro"
-        title="Plone Site"
-        headless="false"
-        post_handler="plone.distribution.handler.post_handler"
-        />
-  </configure>
-
 </configure>
