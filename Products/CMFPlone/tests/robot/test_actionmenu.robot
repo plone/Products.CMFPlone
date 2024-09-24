@@ -52,9 +52,9 @@ Scenario: Click from expanded menu on other menu shows that menu
      Then second menu should be visible
       and first menu should not be visible
 
----
-Clicking outside of Contentactions menu
----
+# ---
+# Clicking outside of Contentactions menu
+# ---
 
 Scenario: Clicking outside of Contentactions menu
     Given a logged-in site administrator
