@@ -57,10 +57,6 @@ Scenario: Delete an action in Actions Control Panel
 
 # GIVEN
 
-a logged-in administrator
-    Enable autologin as    Manager
-
-
 the actions control panel
     Go to    ${PLONE_URL}/@@actions-controlpanel
     Get Text    //body    contains    Portal actions
