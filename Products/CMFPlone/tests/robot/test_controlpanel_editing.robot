@@ -28,19 +28,19 @@ Scenario: Disable Standard Editor in the Editing Control Panel
 
 
 Scenario: Enable Link Integrity Check in the Editing Control Panel
-  Given a logged-in site administrator
-    and the editing control panel
-   When I enable link integrity checks
-  # Linkintegrity checks are in `test_linkintegrity.robot`
+    Given a logged-in site administrator
+      and the editing control panel
+    When I enable link integrity checks
+    # Linkintegrity checks are in `test_linkintegrity.robot`
 
 
 Scenario: Enable Lock on Through The Web in the Editing Control Panel
-  Given a logged-in site administrator
-    and the editing control panel
-    and a document '${PAGE_TITLE}'
-   When I enable lock on through the web
-    and I edit the document
-   Then I will see a warning if a document is edited by another user
+    Given a logged-in site administrator
+      and the editing control panel
+      and a document '${PAGE_TITLE}'
+     When I enable lock on through the web
+      and I edit the document
+     Then I will see a warning if a document is edited by another user
 
 
 *** Keywords ***
