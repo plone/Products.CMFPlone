@@ -1,51 +1,43 @@
-*** Settings *****************************************************************
+*** Settings ***
 
-Resource  plone/app/robotframework/keywords.robot
-Resource  plone/app/robotframework/saucelabs.robot
-Resource  plone/app/robotframework/selenium.robot
+Resource    plone/app/robotframework/browser.robot
+Resource    keywords.robot
 
-Library  Remote  ${PLONE_URL}/RobotRemote
+Library    Remote    ${PLONE_URL}/RobotRemote
 
-Resource  keywords.robot
+Test Setup    Run Keywords    Plone test setup
+Test Teardown    Run keywords     Plone test teardown
 
-Test Setup  Run keywords  Plone Test Setup
-Test Teardown  Run keywords  Plone Test Teardown
-
-
-*** Test Cases ***************************************************************
+*** Test Cases ***
 
 Scenario: Set Site Language in the Language Control Panel
-  Given a logged-in site administrator
-    and the language control panel
-   When I set the site language to German
-   Then the Plone user interface is in German
+    Given a logged-in site administrator
+      and the language control panel
+     When I set the site language to German
+     Then the Plone user interface is in German
 
 
-*** Keywords *****************************************************************
+*** Keywords ***
 
-# --- GIVEN ------------------------------------------------------------------
-
-a logged-in site administrator
-  Enable autologin as  Site Administrator
+# GIVEN
 
 the language control panel
-  Go to  ${PLONE_URL}/@@language-controlpanel
-  Wait until page contains  Language Settings
+    Go to  ${PLONE_URL}/@@language-controlpanel
+    Get Text    //body    contains    Language Settings
 
 
-# --- WHEN -------------------------------------------------------------------
+# WHEN
 
 I set the site language to German
-  Select From List By Label  form.widgets.default_language:list  Deutsch
-  Select From List By Label  form.widgets.available_languages.from  Deutsch
-  Click Button  →
-  Click Button  Save
-  Wait until page contains  Changes saved
+    Select Options By    //select[@name="form.widgets.default_language:list"]    label    Deutsch
+    Select Options By    //select[@name="form.widgets.available_languages.from"]    label    Deutsch
+    Click    //button[@value="→"]
+    Click    //button[@name="form.buttons.save"]
+    Get Text    //body    contains    Changes saved.
 
 
-# --- THEN -------------------------------------------------------------------
+# THEN
 
 the Plone user interface is in German
-  Go to  ${PLONE_URL}
-  Wait until page contains  Lizensiert unter der
-  Page should contain  Lizensiert unter der
+    Go to    ${PLONE_URL}
+    Get Text    //body    contains    Lizensiert unter der
