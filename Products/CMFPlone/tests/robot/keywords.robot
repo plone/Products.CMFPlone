@@ -55,3 +55,35 @@ a folder with a document '${title}'
     ...    type=Document
     ...    container=${folder_uid}
     ...    title=${title}
+
+Remove line from textarea
+    [Arguments]    ${fieldName}    ${value}
+
+    Import library    String
+    ${lines}=  Get Text    //textarea[@name="${fieldName}"]
+    ${lines}=  Remove String    ${lines}    ${value}\n
+    Type Text    //textarea[@name="${fieldName}"]    ${lines}
+
+
+Fill text to tinymce editor
+    [Arguments]    ${attr_name}    ${input}
+
+    Wait For Condition    Attribute    //body    class    contains    patterns-loaded
+
+    Sleep    1
+
+    Evaluate JavaScript    //textarea[@name="${attr_name}"]
+    ...    (elem, text) => {
+    ...        elem["pattern-tinymce"].instance.tiny.setContent('${input}');
+    ...    }
+    ...    all_elements=False
+
+    Sleep    0.5
+
+    ${check}=    Evaluate JavaScript    //textarea[@name="${attr_name}"]
+    ...    (elem) => {
+    ...        return elem["pattern-tinymce"].instance.tiny.getContent();
+    ...    }
+    ...    all_elements=False
+
+    Should not be empty    ${check}
