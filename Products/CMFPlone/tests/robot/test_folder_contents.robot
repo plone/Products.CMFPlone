@@ -1,18 +1,15 @@
-*** Settings *****************************************************************
+*** Settings ***
 
-Resource  plone/app/robotframework/keywords.robot
-Resource  plone/app/robotframework/saucelabs.robot
-Resource  plone/app/robotframework/selenium.robot
+Resource    plone/app/robotframework/browser.robot
+Resource    keywords.robot
 
-Library  Remote  ${PLONE_URL}/RobotRemote
+Library    Remote    ${PLONE_URL}/RobotRemote
 
-Resource  keywords.robot
-
-Test Setup  Run keywords  Plone Test Setup
-Test Teardown  Run keywords  Plone Test Teardown
+Test Setup    Run Keywords    Plone test setup
+Test Teardown    Run keywords     Plone test teardown
 
 
-*** Test cases ***************************************************************
+*** Test cases ***
 
 
 Scenario: Select All items
@@ -36,77 +33,83 @@ Scenario: Reorder Folder Contents
    Given a logged-in site administrator
      and a folder with four pages
      and the folder contents view
-    Then The Order Should Be  1   2   3   4
+    Then The Order Should Be    1    2    3    4
     When I reorder the elements
-    Then The Order Should Be  4   3   2   1
+    Then The Order Should Be    4    3    2    1
 
 
-*** Keywords *****************************************************************
+*** Keywords ***
 
 
 a folder with four pages
-    ${folder_uid}=  Create content  type=Folder  title=My Folder
-    Create content  type=Document  title=Doc1  container=${folder_uid}
-    Create content  type=Document  title=Doc2  container=${folder_uid}
-    Create content  type=Document  title=Doc3  container=${folder_uid}
-    Create content  type=Document  title=Doc4  container=${folder_uid}
+    ${folder_uid}=    Create content
+    ...    type=Folder
+    ...    title=My Folder
+    Create content
+    ...    type=Document
+    ...    title=Doc1
+    ...    container=${folder_uid}
+    Create content
+    ...    type=Document
+    ...    title=Doc2
+    ...    container=${folder_uid}
+    Create content
+    ...    type=Document
+    ...    title=Doc3
+    ...    container=${folder_uid}
+    Create content
+    ...    type=Document
+    ...    title=Doc4
+    ...    container=${folder_uid}
 
 the folder contents view
-    Go to  ${PLONE_URL}/my-folder/folder_contents
-    Given folder contents pattern loaded
+    Go to    ${PLONE_URL}/my-folder/folder_contents
 
 I click the '${link_name}' link
-    Click Link  ${link_name}
+    Click    //a[contains(text(),${link_name})]
 
 I select all the elements
-    Wait until page contains element  css=.pat-structure .select-all
-    Sleep  1s
-    ${select_all_selector}  Set Variable  .pat-structure .select-all
-    Wait Until Element Is Visible  css=${select_all_selector}
-    Click Element  css=${select_all_selector}
+    Check Checkbox    //*[contains(@class,"pat-structure")]//input[contains(@class,"select-all")]
 
 the four elements got selected
-    Checkbox Should Be Selected  css=tr[data-id="doc1"] input
-    Checkbox Should Be Selected  css=tr[data-id="doc2"] input
-    Checkbox Should Be Selected  css=tr[data-id="doc3"] input
-    Checkbox Should Be Selected  css=tr[data-id="doc4"] input
+    Get Checkbox State      //tr[@data-id="doc1"]//input    ==    checked
+    Get Checkbox State      //tr[@data-id="doc2"]//input    ==    checked
+    Get Checkbox State      //tr[@data-id="doc3"]//input    ==    checked
+    Get Checkbox State      //tr[@data-id="doc4"]//input    ==    checked
 
 the selection count appears
-    Wait until page contains element  css=#btn-selected-items .label-success
-    Element Should Contain  css=#btn-selected-items .label-success  4
+    Get Text    //*[@id="btn-selected-items"]//*[contains(@class,"label-success")]    should be    4
 
 the clear selection link appears
-    Page Should Contain Element  css=a.remove-all
+    Get Element Count    //a[contains(@class,"remove-all")]    greater than    0
 
 I clear the selection
-    Click link  id=btn-selected-items
-    Click link  css=a.remove-all
+    Click    //a[@id="btn-selected-items"]
+    Wait For Condition    Element States    //*[@id="popover-selected-items"]    contains    visible
+    Click    //a[contains(@class,"remove-all")]
 
 no elements should be selected
-    Checkbox Should Not Be Selected  css=tr[data-id="doc1"] input
-    Checkbox Should Not Be Selected  css=tr[data-id="doc2"] input
-    Checkbox Should Not Be Selected  css=tr[data-id="doc3"] input
-    Checkbox Should Not Be Selected  css=tr[data-id="doc4"] input
+    Get Checkbox State      //tr[@data-id="doc1"]//input    ==    unchecked
+    Get Checkbox State      //tr[@data-id="doc2"]//input    ==    unchecked
+    Get Checkbox State      //tr[@data-id="doc3"]//input    ==    unchecked
+    Get Checkbox State      //tr[@data-id="doc4"]//input    ==    unchecked
 
 I reorder the elements
-    Click link  css=#btn-structure-rearrange
-    Click element  name=reversed
-    Click button  css=#popover-structure-rearrange .btn-primary
-    Wait until page contains  Successfully rearranged folder
+    Click    //a[@id="btn-structure-rearrange"]
+    Check Checkbox    //*[@id="popover-structure-rearrange"]//input[@name="reversed"]
+    Click    //*[@id="popover-structure-rearrange"]//button[contains(text(),"Rearrange")]
+    Wait For Condition    Text    //body    contains    Successfully rearranged folder
 
 The Order Should Be
-    [Arguments]  ${first}  ${second}  ${third}  ${fourth}
-    Wait Until Element Is Visible  css=#doc${first}
-    Wait Until Element Is Visible  css=#doc${second}
-    Wait Until Element Is Visible  css=#doc${third}
-    Wait Until Element Is Visible  css=#doc${fourth}
-    Should be above  css=tr[data-id="doc${first}"]   css=tr[data-id="doc${second}"]
-    Should be above  css=tr[data-id="doc${second}"]  css=tr[data-id="doc${third}"]
-    Should be above  css=tr[data-id="doc${third}"]   css=tr[data-id="doc${fourth}"]
+    [Arguments]    ${first}    ${second}    ${third}    ${fourth}
+    Should be above    //tr[@data-id="doc${first}"]    //tr[@data-id="doc${second}"]
+    Should be above    //tr[@data-id="doc${second}"]    //tr[@data-id="doc${third}"]
+    Should be above    //tr[@data-id="doc${third}"]    //tr[@data-id="doc${fourth}"]
 
 Should be above
-    [Arguments]  ${locator1}  ${locator2}
+    [Arguments]    ${locator1}    ${locator2}
 
-    ${locator1-position} =  Get vertical position  ${locator1}
-    ${locator2-position} =  Get vertical position  ${locator2}
-    Should be true  ${locator1-position} < ${locator2-position}
+    ${locator1-position}=    Get BoundingBox    ${locator1}    y
+    ${locator2-position}=    Get BoundingBox    ${locator2}    y
+
+    Should be true    ${locator1-position} < ${locator2-position}
