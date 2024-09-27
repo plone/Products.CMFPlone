@@ -87,7 +87,3 @@ Fill text to tinymce editor
     ...    all_elements=False
 
     Should not be empty    ${check}
-
-Pause
-   Import library    Dialogs
-   Pause execution
