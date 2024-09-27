@@ -1,43 +1,40 @@
-*** Settings *****************************************************************
+*** Settings ***
 
-Resource  plone/app/robotframework/keywords.robot
-Resource  plone/app/robotframework/saucelabs.robot
-Resource  plone/app/robotframework/selenium.robot
+Resource    plone/app/robotframework/browser.robot
+Resource    keywords.robot
 
-Library  Remote  ${PLONE_URL}/RobotRemote
+Library    Remote    ${PLONE_URL}/RobotRemote
 
-Resource  keywords.robot
-
-Test Setup  Run keywords  Plone Test Setup
-Test Teardown  Run keywords  Plone Test Teardown
+Test Setup    Run Keywords    Plone test setup
+Test Teardown    Run keywords     Plone test teardown
 
 
-*** Test Cases ***************************************************************
+*** Test Cases ***
 
 Scenario: Add redirect in the URL Management Control Panel
-  Given a logged-in site administrator
-    and the URL Management control panel
-  When I add a redirect to the test folder from alternative url  /old
-  Then I get redirected to the test folder when visiting  /old
+    Given a logged-in site administrator
+      and the URL Management control panel
+     When I add a redirect to the test folder from alternative url  /old
+     Then I get redirected to the test folder when visiting  /old
 
 
 Scenario: Remove redirect in the URL Management Control Panel
-  Given a logged-in site administrator
-    and the URL Management control panel
-  When I add a redirect to the test folder from alternative url  /old
-   and I remove the redirect from alternative url  /old
-  Then I do not get redirected when visiting  /old
+    Given a logged-in site administrator
+      and the URL Management control panel
+     When I add a redirect to the test folder from alternative url  /old
+      and I remove the redirect from alternative url  /old
+     Then I do not get redirected when visiting  /old
 
 
 Scenario: Remove filtered redirects in the URL Management Control Panel
-  Given a logged-in site administrator
-    and the URL Management control panel
-  When I add a redirect to the test folder from alternative url  /a
-   and I add a redirect to the test folder from alternative url  /b
-   and I filter the redirects with path  /a
-   and I remove the matching redirects
-  Then I do not get redirected when visiting  /a
-   and I get redirected to the test folder when visiting  /b
+    Given a logged-in site administrator
+      and the URL Management control panel
+     When I add a redirect to the test folder from alternative url  /a
+      and I add a redirect to the test folder from alternative url  /b
+      and I filter the redirects with path  /a
+      and I remove the matching redirects
+     Then I do not get redirected when visiting  /a
+      and I get redirected to the test folder when visiting  /b
 
 
 Scenario: Download all redirects in the URL Management Control Panel
@@ -48,58 +45,59 @@ Scenario: Download all redirects in the URL Management Control Panel
   Then I can download all redirects as CSV
 
 
-*** Keywords *****************************************************************
+*** Keywords ***
 
-# --- GIVEN ------------------------------------------------------------------
-
-a logged-in site administrator
-  Enable autologin as  Site Administrator
+# GIVEN
 
 the URL Management control panel
-  Go to  ${PLONE_URL}/@@redirection-controlpanel
+    Go to  ${PLONE_URL}/@@redirection-controlpanel
 
 
-# --- WHEN -------------------------------------------------------------------
+# WHEN
 
 I add a redirect to the test folder from alternative url
-  [Documentation]  target path must exist in the site
-  [Arguments]  ${old}
-  Input Text  name=redirection  ${old}
-  Input Text  name=target_path  /test-folder
-  Click Button  Add
+    [Documentation]  target path must exist in the site
+    [Arguments]    ${old}
+    Type Text    //input[@name="redirection"]    ${old}
+    Type Text    //input[@name="target_path"]    /test-folder
+    Click    //button[@name="form.button.Add"]
 
 
 I remove the redirect from alternative url
-  [Arguments]  ${old}
-  Select Checkbox  xpath=//input[@value='/plone${old}']
-  Click Button  Remove selected
-
+    [Arguments]  ${old}
+    Check Checkbox    //input[@value="/plone${old}"]
+    Click    //button[@name="form.button.Remove"]
 
 I filter the redirects with path
-  [Arguments]  ${old}
-  Input Text  name=q  ${old}
-  Click Button  Filter
+    [Arguments]    ${old}
+    Type Text    //input[@name="q"]    ${old}
+    Click    //button[@name="form.button.filter"]
 
 I remove the matching redirects
-  Click Button  Remove all that match filter
+    Click    //button[@name="form.button.MatchRemove"]
 
 
-# --- THEN -------------------------------------------------------------------
+# THEN
 
 I get redirected to the test folder when visiting
-  [Arguments]  ${old}
-  Go to  ${PLONE_URL}/${old}
-  Location Should Be  ${PLONE_URL}/test-folder
+    [Arguments]    ${old}
+    Go to    ${PLONE_URL}/${old}
+    Get Url    should be    ${PLONE_URL}/test-folder
 
 
 I do not get redirected when visiting
-  [Arguments]  ${old}
-  Go to  ${PLONE_URL}/${old}
-  Location Should Be  ${PLONE_URL}/${old}
-  Wait Until Page Contains  This page does not seem to exist
+    [Arguments]    ${old}
+    Go to    ${PLONE_URL}/${old}
+    Get Url    should be    ${PLONE_URL}/${old}
+    Get Text    //body    contains    This page does not seem to exist
 
 
 I can download all redirects as CSV
-  [Documentation]  I don't know how to get the contents of the downloaded file
-  Click Button  Download all as CSV
-  Page Should Not Contain  there seems to be an error
+    [Documentation]  Test the download of CSV file
+
+    Import library    OperatingSystem
+
+    ${dl_promise}    Promise To Wait For Download    saveAs=/tmp/redirections.csv
+    Click    //button[@name="form.button.Download"]
+    ${file_obj}=    Wait For    ${dl_promise}
+    File Should Exist      ${file_obj}[saveAs]
