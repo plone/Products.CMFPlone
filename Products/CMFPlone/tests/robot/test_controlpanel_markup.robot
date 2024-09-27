@@ -20,7 +20,7 @@ Scenario: Change Default Markup Types in the Markup Control Panel
     #Then I do not see the standard editor when I create a document
 
 Scenario: Set Default Markup to be Restructured Text
-    Given a logged-in administrator
+    Given a logged-in manager
       and the markup control panel
      When I set the default type to    text/restructured
 

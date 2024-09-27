@@ -14,40 +14,40 @@ Test Teardown    Run keywords     Plone test teardown
 # hint: the `Sleep` Statement is needed for the `Disable autologin` and the commit in the DB, it takes a while
 
 Scenario: Modify an existing action in Actions Control Panel
-    Given a logged-in administrator
+    Given a logged-in manager
       and the actions control panel
      When I modify an action title
       and Sleep    1
      Then anonymous users can see the new action title
 
 Scenario: Reorder in Actions Control Panel
-    Given a logged-in administrator
+    Given a logged-in manager
       and the actions control panel
      When I change the actions order
       and Sleep    1
      Then anonymous users can see the actions new ordering
 
 Scenario: Create a new action in Actions Control Panel
-    Given a logged-in administrator
+    Given a logged-in manager
       and the actions control panel
      When I add a new action
       and Sleep    1
      Then logged-in users can see the new action
 
 Scenario: Hide/show an action in Actions Control Panel
-    Given a logged-in administrator
+    Given a logged-in manager
       and the actions control panel
     When I hide an action
       and Sleep  1
     Then anonymous users cannot see the action anymore
-    Given a logged-in administrator
+    Given a logged-in manager
       and the actions control panel
     When I unhide the action
       and Sleep  1
     Then anonymous users can see the action again
 
 Scenario: Delete an action in Actions Control Panel
-    Given a logged-in administrator
+    Given a logged-in manager
       and the actions control panel
      When I delete an action
       and Sleep  1
