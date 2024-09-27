@@ -1,50 +1,50 @@
-*** Settings *****************************************************************
+*** Settings ***
 
-Resource  plone/app/robotframework/keywords.robot
-Resource  plone/app/robotframework/saucelabs.robot
-Resource  plone/app/robotframework/selenium.robot
+Resource    plone/app/robotframework/browser.robot
+Resource    keywords.robot
 
-Library  Remote  ${PLONE_URL}/RobotRemote
+Library    Remote    ${PLONE_URL}/RobotRemote
 
-Resource  keywords.robot
-
-Test Setup  Run keywords  Plone Test Setup
-Test Teardown  Run keywords  Plone Test Teardown
+Test Setup    Run Keywords    Plone test setup
+Test Teardown    Run keywords     Plone test teardown
 
 
-*** Test Cases ***************************************************************
+*** Test Cases ***
 Scenario: Change default workflow
-  Given a logged-in site administrator
-    and the types control panel
-   When I select 'Single State Workflow' workflow
-   Then Wait until page contains  Content Settings
-   When I add new Link 'my_link'
-    Then Link 'my_link' should have Single State Workflow enabled
+    Given a logged-in site administrator
+      and the types control panel
+     When I select 'Single State Workflow' workflow
+      and I add new Link 'my_link'
+     Then Link 'my_link' should have Single State Workflow enabled
 
 
-*** Keywords *****************************************************************
+*** Keywords ***
 
-# --- GIVEN ------------------------------------------------------------------
+# GIVEN
 the types control panel
-  Go to  ${PLONE_URL}/@@content-controlpanel
-  Wait until page contains  Content Settings
+    Go to    ${PLONE_URL}/@@content-controlpanel
+    Get Text    //body    contains    Content Settings
 
 
-# --- WHEN -------------------------------------------------------------------
+# WHEN
 I select '${workflow}' workflow
-  Select from list by label  name=new_workflow  ${workflow}
-  Click Button  Save
+    Select Options By    //select[@name="new_workflow"]    label    ${workflow}
+    Click    //button[@name="form.button.Save"]
+    Wait For Condition    Text    //body    contains   Content Settings
+
 
 I add new Link '${id}'
-  Go to  ${PLONE_URL}
-  Wait until page contains  Plone site
-  Create content  type=Link  id=${id}  title=${id}  remoteUrl=http://www.starzel.de
+    Go to    ${PLONE_URL}
+    Create content
+    ...    type=Link
+    ...    id=${id}
+    ...    title=${id}
+    ...    remoteUrl=https://www.plone.org
 
 
-# --- THEN -------------------------------------------------------------------
+# THEN
 
 Link '${id}' should have Single State Workflow enabled
-  Go to  ${PLONE_URL}/${id}
-  Wait until page contains  ${id}
-  # We check that single state worklow is used, publish button is not present
-  Page should not contain element  xpath=//a[@id="workflow-transition-publish"]
+    Go to    ${PLONE_URL}/${id}
+    # We check that single state worklow is used, publish button is not present
+    Get Element Count    //a[@id="workflow-transition-publish"]    should be    0
