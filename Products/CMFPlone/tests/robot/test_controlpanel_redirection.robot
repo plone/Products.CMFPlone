@@ -100,4 +100,4 @@ I can download all redirects as CSV
     ${dl_promise}    Promise To Wait For Download    saveAs=/tmp/redirections.csv
     Click    //button[@name="form.button.Download"]
     ${file_obj}=    Wait For    ${dl_promise}
-    File Should Exist      ${file_obj}[saveAs]
+    File Should Exist    ${file_obj}[saveAs]
