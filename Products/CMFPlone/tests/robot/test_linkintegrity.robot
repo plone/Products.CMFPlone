@@ -1,147 +1,132 @@
-# ============================================================================
-# Tests for the Plone Link Integrity Support
-# ============================================================================
-#
-# $ bin/robot-server --reload-path src/Products.CMFPlone/Products/CMFPlone/ Products.CMFPlone.testing.PRODUCTS_CMFPLONE_ROBOT_TESTING
-#
-# $ bin/robot src/Products.CMFPlone/Products/CMFPlone/tests/robot/test_linkintegrity.robot
-#
-# ============================================================================
+*** Settings ***
 
-*** Settings *****************************************************************
+Resource    plone/app/robotframework/browser.robot
+Resource    keywords.robot
 
-Resource  plone/app/robotframework/keywords.robot
-Resource  plone/app/robotframework/saucelabs.robot
-Resource  plone/app/robotframework/selenium.robot
+Library    Remote    ${PLONE_URL}/RobotRemote
 
-Library  Remote  ${PLONE_URL}/RobotRemote
-
-Resource  keywords.robot
-
-Test Setup  Run keywords  Plone Test Setup
-Test Teardown  Run keywords  Plone Test Teardown
-
-*** Variables ****************************************************************
-
-${SELENIUM_RUN_ON_FAILURE}  Capture page screenshot and log source
+Test Setup    Run Keywords    Plone test setup
+Test Teardown    Run keywords     Plone test teardown
 
 
-*** Test Cases ***************************************************************
+*** Test Cases ***
 
 Scenario: When page is linked show warning
   Given a logged-in site administrator
     and a page to link to
     and a page to edit
-    and a link in rich text
-    should show warning when deleting page
-
+   When I add a link in rich text
+   Then I should see a warning when deleting page
 
 Scenario: After you fix linked page no longer show warning
   Given a logged-in site administrator
-  a page to link to
+    and a page to link to
     and a page to edit
-    and a link in rich text
-  should show warning when deleting page
-    remove link to page
-  should not show warning when deleting page
+   When I add a link in rich text
+   Then I should see a warning when deleting page
 
+   When I remove link to page
+   Then I should not see a warning when deleting page
 
 Scenario: Show warning when deleting linked item from folder_contents
-  Given a logged-in site administrator
-  a page to link to
-    and a page to edit
-    and a link in rich text
-  should show warning when deleting page from folder_contents
-    remove link to page
-  should not show warning when deleting page from folder_contents
+    Given a logged-in site administrator
+      and a page to link to
+      and a page to edit
+     When I add a link in rich text
+     Then I should see a warning when deleting page from folder_contents
 
+     When I remove link to page
+     Then I should not see a warning when deleting page from folder_contents
 
-*** Keywords *****************************************************************
+*** Keywords ***
 
-# --- GIVEN ------------------------------------------------------------------
-
-a logged-in site administrator
-  Enable autologin as  Site Administrator
-
+# GIVEN
 
 a page to link to
-  Create content  type=Document  id=foo  title=Foo
+    Create content
+    ...    type=Document
+    ...    id=foo
+    ...    title=Foo
 
 a page to edit
-  Create content  type=Document  id=bar  title=Bar
+    Create content
+    ...    type=Document
+    ...    id=bar
+    ...    title=Bar
+
+# When
+I add a link in rich text
+    Go To    ${PLONE_URL}/bar/edit
+    Fill text to tinymce editor    form.widgets.IRichTextBehavior.text    foo
+    Mark text foo in tinymce editor
+    Click    //button[@aria-label="Insert/edit link"]
+    Click    //div[contains(@class,"linkModal")]//div[contains(@class,"content-browser-selected-items-wrapper")]//button[contains(@class,"btn-primary")]
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[3]
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Click    //div[contains(@class,"modal-footer")]//input[@name="insert"]
+    Click    //button[@name="form.buttons.save"]
+    Get Text    //body    contains    Changes saved
+
+I remove link to page
+    Go To    ${PLONE_URL}/bar
+    Click    //*[@id="contentview-edit"]//a
+    Fill text to tinymce editor    form.widgets.IRichTextBehavior.text    foo
+    Mark text foo in tinymce editor
+    Click    //button[@aria-label="Remove link"]
+    Click    //button[@name="form.buttons.save"]
+    Get Text    //body    contains    Changes saved
+
+# Then
+
+I should see a warning when deleting page
+    Go To  ${PLONE_URL}/foo
+    Click    //*[@id="plone-contentmenu-actions"]/a
+    Click    //*[@id="plone-contentmenu-actions-delete"]
+    Get Element Count    //*[contains(@class,"breach-container")]//*[contains(@class,"breach-item")]    greater than    0
+
+I should not see a warning when deleting page
+    Go To  ${PLONE_URL}/foo
+    Click    //*[@id="plone-contentmenu-actions"]/a
+    Click    //*[@id="plone-contentmenu-actions-delete"]
+    Get Element Count    //*[contains(@class,"breach-container")]//*[contains(@class,"breach-item")]    should be    0
 
 
-a link in rich text
-  Go To  ${PLONE_URL}/bar/edit
-  Wait until element is visible  css=.tox-edit-area iframe
-  Select Frame  css=.tox-edit-area iframe
-  Input text  css=.mce-content-body  foo
-  Execute Javascript    function selectElementContents(el) {var range = document.createRange(); range.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);} var el = document.getElementById("tinymce"); selectElementContents(el);
-  UnSelect Frame
-
-  Click Button  css=button[aria-label="Insert/edit link"]
-  Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
-  Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[3]
-  Wait For Then Click Element  xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
-  Wait Until Element Is Not Visible    xpath=//div[contains(@class,"content-browser-position-wrapper")]
-  Wait For Then Click Element  css=.modal-footer input[name="insert"]
-  Select Frame  css=.tox-edit-area iframe
-  Execute Javascript  window.getSelection().removeAllRanges()
-  UnSelect Frame
-  Wait Until Element Is Not Visible  css=.modal-footer input[name="insert"]
-  Wait For Then Click Element  css=#form-buttons-save
+I should see a warning when deleting page from folder_contents
+    Go To  ${PLONE_URL}/folder_contents
+    Check Checkbox    //tr[@data-id="foo"]//input
+    Get Checkbox State      //tr[@data-id="foo"]//input    ==    checked
+    Get Element Count    //*[@id="btngroup-mainbuttons"]//a[@id="btn-delete" and contains(@class,"disabled")]    should be    0
+    Click    //*[@id="btngroup-mainbuttons"]//a[@id="btn-delete"]
+    Get Element Count    //*[contains(@class,"breach-container")]//*[contains(@class,"breach-item")]    greater than    0
+    Get Checkbox State      //tr[@data-id="foo"]//input    ==    checked
 
 
-should show warning when deleting page
+I should not see a warning when deleting page from folder_contents
+    Go To  ${PLONE_URL}/folder_contents
+    Check Checkbox    //tr[@data-id="foo"]//input
+    Get Checkbox State      //tr[@data-id="foo"]//input    ==    checked
+    Get Element Count    //*[@id="btngroup-mainbuttons"]//a[@id="btn-delete" and contains(@class,"disabled")]    should be    0
+    Click    //*[@id="btngroup-mainbuttons"]//a[@id="btn-delete"]
+    Get Element States    //*[@id="popover-delete"]//*[contains(@class,"popover-content")]    contains    visible
+    Get Element Count    //*[contains(@class,"breach-container")]//*[contains(@class,"breach-item")]    should be    0
+    Click    //*[contains(@class,"popover-content")]//button[contains(@class,"applyBtn")]
+    Get Text    //body    contains    Successfully delete items
+    Get Element Count      //tr[@data-id="foo"]//input    should be    0
 
-  Go To  ${PLONE_URL}/foo
-  Wait For Then Click Element  css=#plone-contentmenu-actions > a
-  Wait For Then Click Element  css=#plone-contentmenu-actions-delete
-  Wait until page contains element  css=.breach-container .breach-item
+# DRY
 
+Mark text foo in tinymce editor
 
-should show warning when deleting page from folder_contents
-  Go To  ${PLONE_URL}/folder_contents
-  Given folder contents pattern loaded
-  Wait For Then Click Element  css=tr[data-id="foo"] input
-  Checkbox Should Be Selected  css=tr[data-id="foo"] input
-  Wait until keyword succeeds  30  1  Page should not contain element  css=#btn-delete.disabled
-
-  Wait For Then Click Element  css=#btngroup-mainbuttons #btn-delete
-  Wait until page contains element  css=.popover-content .btn-danger
-  Page should contain element  css=.breach-container .breach-item
-  Wait For Then Click Element  css=#popover-delete .closeBtn
-  Checkbox Should Be Selected  css=tr[data-id="foo"] input
-
-
-should not show warning when deleting page from folder_contents
-  Go To  ${PLONE_URL}/folder_contents
-  Given folder contents pattern loaded
-  Wait For Then Click Element  css=tr[data-id="foo"] input
-  Checkbox Should Be Selected  css=tr[data-id="foo"] input
-  Wait until keyword succeeds  30  1  Page should not contain element  css=#btn-delete.disabled
-  Wait For Then Click Element  css=#btngroup-mainbuttons #btn-delete
-  Wait until page contains element  css=.popover-content .btn-danger
-  Page should not contain element  css=.breach-container .breach-item
-  Wait For Then Click Element  css=#popover-delete .applyBtn
-  Wait until page contains  Successfully delete items
-  Wait until keyword succeeds  30  1  Page should not contain Element  css=tr[data-id="foo"] input
-
-
-should not show warning when deleting page
-  Go To  ${PLONE_URL}/foo
-  Wait For Then Click Element  css=#plone-contentmenu-actions > a
-  Wait For Then Click Element  css=#plone-contentmenu-actions-delete
-  Page should not contain element  css=.breach-container .breach-item
-
-
-remove link to page
-  Go To  ${PLONE_URL}/bar
-  Wait For Then Click Element  css=#contentview-edit a
-  Wait For Element  css=.tox-edit-area iframe
-  Select Frame  css=.tox-edit-area iframe
-  Input text  css=.mce-content-body  foo
-  Execute Javascript    function selectElementContents(el) {var range = document.createRange(); range.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);} var el = document.getElementById("tinymce"); selectElementContents(el);
-  UnSelect Frame
-  Click Button  css=button[aria-label="Remove link"]
-  Wait For Then Click Element  css=#form-buttons-save
+    # select the text `heading` via javascript
+    Evaluate JavaScript    ${None}
+    ...    () => {
+    ...        let iframe_document = document.querySelector(".tox-edit-area iframe").contentDocument;
+    ...        let body = iframe_document.body;
+    ...        let p = body.firstChild;
+    ...        let range = new Range();
+    ...        range.setStart(p.firstChild, 0);
+    ...        range.setEnd(p.firstChild, 3);
+    ...        iframe_document.getSelection().removeAllRanges();
+    ...        iframe_document.getSelection().addRange(range);
+    ...    }
+    ...    all_elements=False
