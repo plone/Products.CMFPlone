@@ -197,7 +197,7 @@ I upload an image via contentbrowser
     Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
     Click item in column    2    1
-    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]/button[contains(@class,"upload")]
+    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//button[contains(@class,"upload")]
     Choose File    //div[contains(@class,"pat-upload")]//input[@class="dz-hidden-input"]    ${PATH_TO_TEST_FILES}/plone-logo.png
     Wait For Then Click Element  //div[contains(@class,"pat-upload")]//button[contains(@class,"upload-all")]
     Click item in column    3    3
