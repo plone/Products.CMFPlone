@@ -13,6 +13,10 @@ a logged-in manager
     Enable autologin as
     ...    Manager
 
+a logged-in member
+    Enable autologin as
+    ...    Member
+
 a logged-in site administrator
     Enable autologin as
     ...    Site Administrator
@@ -87,3 +91,8 @@ Fill text to tinymce editor
     ...    all_elements=False
 
     Should not be empty    ${check}
+
+
+Pause
+   Import library    Dialogs
+   Pause execution
