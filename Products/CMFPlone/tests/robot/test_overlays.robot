@@ -1,22 +1,18 @@
 *** Settings ***
 
-Documentation  These tests are just testing the overlay behavior not the
-...            functionality of each form. This is supposed to be tested in
-...            functional tests somewhere. At some point in the future the
-...            functional tests can be transferred to robot tests into each
-...            scenario test case.
+Resource    plone/app/robotframework/browser.robot
+Resource    keywords.robot
 
-Resource  plone/app/robotframework/keywords.robot
-Resource  plone/app/robotframework/saucelabs.robot
-Resource  plone/app/robotframework/selenium.robot
+Library    Remote    ${PLONE_URL}/RobotRemote
 
-Library  Remote  ${PLONE_URL}/RobotRemote
+Variables    variables.py
 
-Resource  common.robot
+Test Setup    Run Keywords    Plone test setup
+Test Teardown    Run keywords     Plone test teardown
 
-Test Setup  Run Keywords  Plone test setup
-Test Teardown  Run keywords  Plone test teardown
+*** Variables ***
 
+${TEST_FOLDER}  test-folder
 
 *** Test cases ***
 
@@ -25,78 +21,65 @@ Scenario: Contact form overlay opens
      When I click the 'Contact' link
      Then overlay should open
 
+
 Scenario: Contact form overlay closes
-    Go to  ${PLONE_URL}/logout
-    Given the 'Contact' overlay
+    Given the site root logged out
+      and the 'Contact' overlay
      When I close the overlay
      Then overlay should close
 
 Scenario: Log in form overlay opens
-    Go to  ${PLONE_URL}/logout
-    Given the site root
+    Given the site root logged out
+      and the site root
      When I click the 'Log in' link
      Then overlay should open
 
 Scenario: Log in form overlay closes
-    Go to  ${PLONE_URL}/logout
-    Given the site root
-    Given the 'Log in' overlay
+    Given the site root logged out
+      and the site root
+      and the 'Log in' overlay
      When I close the overlay
      Then overlay should close
 
 Scenario: Log in form overlay remains on wrong credentials
-    Go to  ${PLONE_URL}/logout
-    Given the site root
-    Given the 'Log in' overlay
+    Given the site root logged out
+      and the site root
+      and the 'Log in' overlay
      When I enter wrong credentials
      Then overlay should remain open
-      And login overlay shows an error
+      and login overlay shows an error
 
 Scenario: Log in form overlay closes on valid credentials
-    Go to  ${PLONE_URL}/logout
-    Given the site root
-    Given the 'Log in' overlay
+    Given the site root logged out
+      and the site root
+      and the 'Log in' overlay
      When I enter valid credentials
      Then overlay should close
 
 Scenario: Set default content item of a folder overlay opens
     Given a logged-in site administrator
-      And a document 'doc' in the test folder
+      and a document 'doc' in the test folder
      When I set the default content view of the test folder
      Then overlay should open
 
-# XXX Next 2 tests are commented out. After hours of messing around,
-# I still can not pinpoint why this is happening.
-# The error originates from this change https://github.com/plone/mockup/commit/ccec87028bc22e082d6d9a95874d8a961f91b707
-# which provides at least some error reporting(window.alert) to users when modals
-# experience issues. We need this change in modals...
-#
-# However, in these 2 cases, it is triggering the window.alert
-# and causing the tests to fail in certain cases.
-# It ONLY happens when running automatically by the robot framework
-# runner. If you try to use Import library  DebugLibrary and
-# run the commands manually, of course it works fine. So yes,
-# there is no way to really figure out this AFAIK.
-# Also, of course, this doesn't happen in real user testing.
-#
-#Scenario: Change default content item of a folder overlay opens
-#    Given a logged-in site administrator
-#      And a document as the default view of the test folder
-#     When I change the default content view of the test folder
-#     Then overlay should open
+Scenario: Change default content item of a folder overlay opens
+   Given a logged-in site administrator
+     and a document as the default view of the test folder
+    When I change the default content view of the test folder
+    Then overlay should open
 
-#Scenario: Change default content item of a folder overlay closes
-#    Given a logged-in site administrator
-#      And a document as the default view of the test folder
-#     When I change the default content view of the test folder
-#      And I 'Cancel' the form
-#     Then overlay should close
-#     When I change the default content view of the test folder
-#      And I 'Save' the form
-#     Then overlay should close
-#     When I change the default content view of the test folder
-#      And I close the overlay
-#     Then overlay should close
+Scenario: Change default content item of a folder overlay closes
+   Given a logged-in site administrator
+     And a document as the default view of the test folder
+    When I change the default content view of the test folder
+     And I 'Cancel' the form
+    Then overlay should close
+    When I change the default content view of the test folder
+     And I 'Save' the form
+    Then overlay should close
+    When I change the default content view of the test folder
+     And I close the overlay
+    Then overlay should close
 
 Scenario: Delete content action overlay opens
     Given a logged-in site administrator
@@ -132,7 +115,7 @@ Scenario: Rename content action overlay closes
 Scenario: Register user overlay opens
     Given the mail setup configured
       And the self registration enabled
-      Go to  ${PLONE_URL}/logout
+      and the site root logged out
       And the site root
      When I click the 'Register' link
      Then overlay should open
@@ -140,7 +123,7 @@ Scenario: Register user overlay opens
 Scenario: Register user overlay closes
     Given the mail setup configured
       And the self registration enabled
-      Go to  ${PLONE_URL}/logout
+      and the site root logged out
       And the site root
       And the 'Register' overlay
      When I close the overlay
@@ -149,24 +132,22 @@ Scenario: Register user overlay closes
 Scenario: Register user overlay remains on wrong data
     Given the mail setup configured
       And the self registration enabled
-      Go to  ${PLONE_URL}/logout
+      and the site root logged out
       And the site root
       And the 'Register' overlay
      When I send the register form
      Then overlay should remain open
       And overlay shows an error
 
-# Note: For this one we need to fake the mail server, as it tries to send the
-# mail right away. Or change the somehow confusing message that shows when this
-# happens.
-#Scenario: Register user overlay closes on valid data
-#    Given the mail setup configured
-#      And the self registration enabled
-#      And the site root
-#      And the 'Register' overlay
-#     When I enter valid register user data
-#      And I send the register form
-#     Then overlay should close
+# Tests based on MockupMailServer, this should be a valid tests
+Scenario: Register user overlay closes on valid data
+   Given the mail setup configured
+     And the self registration enabled
+     And the site root
+     And the 'Register' overlay
+    When I enter valid register user data
+     And I send the register form
+    Then overlay should close
 
 Scenario: New user overlay opens
     Given a logged-in site administrator
@@ -190,144 +171,137 @@ Scenario: New user overlay closes on valid data
       And I send the register form
      Then overlay should close
 
-# There is no more history overlay
-# Scenario: History overlay opens
-#     Given a logged-in site administrator
-#       And the test folder
-#      When I click the 'Content Info' link
-#       And I click the 'History' link
-#      Then overlay should open
-#
-# Scenario: History overlay closes
-#     Given a logged-in site administrator
-#       And the test folder
-#       When I click the 'Content Info' link
-#       And I click the 'History' link
-#      When I close the overlay
-#      Then overlay should close
-#
+
 *** Keywords ***
 
-Background
-    Given a logged-in site administrator
-      and a test folder
-    Disable autologin
-    Go to homepage
+# GIVEN
+the site root logged out
+    Go to    ${PLONE_URL}/logout
 
-a logged-in site administrator
-  Enable autologin as  Site Administrator
+the site root
+    Go to    ${PLONE_URL}
 
-the users and groups configlet
-    Go to  ${PLONE_URL}/@@usergroup-userprefs
-    Wait until page contains  User Search
-
-I click the '${link_name}' link
-    Wait until page contains  ${link_name}
-    Element should be visible  xpath=//a[descendant-or-self::*[contains(text(), '${link_name}')]]
-    Click Link  xpath=//a[descendant-or-self::*[contains(text(), '${link_name}')]]
 
 the '${link_name}' overlay
-    Wait until page contains  ${link_name}
-    Click Link  xpath=//a[descendant-or-self::*[contains(text(), '${link_name}')]]
-    Wait until keyword succeeds  30  1  Page should contain element  css=div.modal-dialog
+    Click    //a[descendant-or-self::*[contains(text(), "${link_name}")]]
+    Get Element Count    //div[contains(@class,"modal-dialog")]    greater than    0
 
-overlay should open
-    Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.modal-dialog
-
-overlay should remain open
-    Wait until page contains element  css=div.modal-wrapper
-    Wait until element is visible  css=div.modal-wrapper
-
-I close the overlay
-    Click Element  css=div.modal-header button.modal-close
-
-overlay should close
-    Wait until keyword succeeds  40  1  Page should not contain element  css=div.modal-dialog
-
-login overlay shows an error
-    Wait Until Page Contains  Error
-
-overlay shows an error
-    Wait Until Page Contains  There were errors
-
-overlay requires to compile a field
-    Wait Until Page Contains  Required input is missing
-
-I '${action}' the form
-    Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.modal-footer button[name="form.buttons.${action}"]
-    Click Element  css=div.modal-footer button[name="form.buttons.${action}"]
-
-I enter wrong credentials
-    Input text  __ac_name  wrong
-    Input text  __ac_password  user
-    Wait For Then Click Element  css=div.modal-footer button
-
-I enter valid credentials
-    Wait until page contains element  name=__ac_name
-    Input text for sure  __ac_name  ${SITE_OWNER_NAME}
-    Input text for sure  __ac_password  ${SITE_OWNER_PASSWORD}
-    Wait For Then Click Element  css=div.modal-footer button
-
-I enter valid user data
-    Wait until page contains element  name=form.widgets.password_ctl
-    Input text for sure  form.widgets.username       myuser
-    Input text for sure  form.widgets.email          my@email.eu
-    Input text for sure  form.widgets.password       newpassword
-    Input text for sure  form.widgets.password_ctl   newpassword
-
-I enter valid register user data
-    Wait until page contains element  name=form.widgets.username
-    Input text  form.widgets.username       myuser
-    Input text  form.widgets.email          my@email.eu
-
-I send the register form
-    Wait until page contains element  css=div.modal-footer #form-buttons-register
-    Click Element  css=div.modal-footer #form-buttons-register
-
-I trigger the add a new user action
-    Click Element  id=add-user
 
 a document '${title}' in the test folder
-    Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Document
-    Wait For Condition  return window.jQuery('.autotoc-nav .active:visible').length > 0
-    Execute Javascript  $('#form-widgets-IDublinCore-title').val('${title}'); return 0;
-    Click Button  Save
+    Go to    ${PLONE_URL}/${TEST_FOLDER}/++add++Document
+    Type Text    //input[@id="form-widgets-IDublinCore-title"]    ${title}
+    Click    //button[@name="form.buttons.save"]
 
-I set the default content view of the test folder
-    Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Given patterns are loaded
-    Click link  xpath=//li[@id='plone-contentmenu-display']/a
-    Click link  id=contextSetDefaultPage
 
 a document as the default view of the test folder
     a document 'doc' in the test folder
-    Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Given patterns are loaded
-    Click link  xpath=//li[@id='plone-contentmenu-display']/a
-    Wait until element is visible  id=contextSetDefaultPage
-    Click link  id=contextSetDefaultPage
-    Click element  id=doc
-    Click element  css=div.modal-footer button[name="form.buttons.Save"]
+    Go to    ${PLONE_URL}/${TEST_FOLDER}
+    Click    //li[@id='plone-contentmenu-display']/a
+    Click    //a[@id="contextSetDefaultPage"]
+    Click    //input[@id="doc"]
+    Click    //div[contains(@class,"modal-footer")]//button[@name="form.buttons.Save"]
+    Get Text    //body//h1    contains    doc
+
+
+the users and groups configlet
+    Go to    ${PLONE_URL}/@@usergroup-userprefs
+    Get Text    //body    contains    User Search
+
+# WHEN
+
+I click the '${link_name}' link
+    Get Element Count    //a[descendant-or-self::*[contains(text(), "${link_name}")]]    greater than    0
+    Click    //a[descendant-or-self::*[contains(text(), "${link_name}")]]
+
+
+I close the overlay
+    Click    //div[contains(@class,"modal-header")]//button[contains(@class,"modal-close")]
+
+
+I enter wrong credentials
+    I enter credentials    wrong    user
+
+
+I enter valid credentials
+    I enter credentials    ${SITE_OWNER_NAME}    ${SITE_OWNER_PASSWORD}
+
+
+I set the default content view of the test folder
+    Go to    ${PLONE_URL}/${TEST_FOLDER}
+    Click    //li[@id='plone-contentmenu-display']/a
+    Click    //a[@id="contextSetDefaultPage"]
+
 
 I change the default content view of the test folder
-    Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Given patterns are loaded
-    Click link  xpath=//li[@id='plone-contentmenu-display']/a
-    Wait until element is visible  id=folderChangeDefaultPage
-    Click link  id=folderChangeDefaultPage
+    Go to    ${PLONE_URL}/${TEST_FOLDER}
+    Click    //li[@id='plone-contentmenu-display']/a
+    Click    //a[@id="folderChangeDefaultPage"]
+
+
+I '${action}' the form
+    Click    //div[contains(@class,"modal-footer")]//button[@name="form.buttons.${action}"]
+
 
 I trigger the '${action}' action menu item of the test folder
-    Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Given patterns are loaded
-    Element should be visible  xpath=//li[@id='plone-contentmenu-actions']/a
-    Click link  xpath=//li[@id='plone-contentmenu-actions']/a
-    Wait until element is visible  id=plone-contentmenu-actions-${action}
-    Click link  id=plone-contentmenu-actions-${action}
-    Wait until page contains Element  css=div.modal-dialog
+    Go to    ${PLONE_URL}/${TEST_FOLDER}
+    Click    //li[@id="plone-contentmenu-actions"]/a
+    Click    //a[@id="plone-contentmenu-actions-${action}"]
+
 
 I confirm deletion of the content
-    # Note: The 'delete' button has no standard z3c.form name attribute
-    Wait until keyword succeeds  2  2  Click Element  css=div.modal-footer button#form-buttons-Delete
+    Click    //div[contains(@class,"modal-footer")]//button[@name="form.buttons.Delete"]
 
-modals loaded
-    Wait For Condition  return window.jQuery('.modal-wrapper').size() > 0
+
+I send the register form
+    Click    //div[contains(@class,"modal-footer")]//button[@name="form.buttons.register"]
+
+
+I enter valid register user data
+    Type Text    //input[@name="form.widgets.username"]    myuser
+    Type Text    //input[@name="form.widgets.email"]    myuser@plone.org
+
+
+I trigger the add a new user action
+    Click    //a[@id="add-user"]
+
+
+I enter valid user data
+    Type Text    //input[@name="form.widgets.username"]    myuser
+    Type Text    //input[@name="form.widgets.email"]    myuser@plone.org
+    Type Text    //input[@name="form.widgets.password"]    newpassword
+    Type Text    //input[@name="form.widgets.password_ctl"]    newpassword
+
+
+
+# THEN
+
+overlay should open
+    Get Element States    //div[contains(@class,"modal-dialog")]    contains    visible
+
+
+overlay should close
+    Get Element Count    //div[contains(@class,"modal-dialog")]    should be    0
+
+
+overlay should remain open
+    Get Element States    //div[contains(@class,"modal-wrapper")]    contains    visible
+
+
+login overlay shows an error
+    Get Text    //div[contains(@class,"modal-wrapper")]    contains    Error
+
+
+overlay shows an error
+    Get Text    //div[contains(@class,"modal-wrapper")]    contains    There were errors
+
+
+overlay requires to compile a field
+    Get Text    //div[contains(@class,"modal-wrapper")]    contains    Required input is missing
+
+
+# DRY
+I enter credentials
+    [Arguments]    ${username}    ${password}
+    Type Text    //input[@name="__ac_name"]    ${username}
+    Type Text    //input[@name="__ac_password"]    ${password}
+    Click    //div[contains(@class,"modal-footer")]//button
