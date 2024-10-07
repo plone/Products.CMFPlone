@@ -2,6 +2,7 @@ from AccessControl import getSecurityManager
 from AccessControl.Permissions import view as View
 from collections import OrderedDict
 from functools import cached_property
+from importlib import import_module
 from importlib.metadata import distribution
 from importlib.metadata import PackageNotFoundError
 from OFS.interfaces import IApplication
@@ -300,7 +301,12 @@ class Upgrade(BrowserView):
             try:
                 distribution(package)
             except PackageNotFoundError:
-                missing.append(package)
+                try:
+                    # profiles can live in submodules of packages.
+                    # check if we can import the module namespace
+                    import_module(package)
+                except ModuleNotFoundError:
+                    missing.append(package)
         return missing
 
     def versions(self):
