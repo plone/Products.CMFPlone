@@ -1,56 +1,89 @@
-*** Settings *****************************************************************
+*** Settings ***
 
-Resource  plone/app/robotframework/keywords.robot
-Resource  plone/app/robotframework/saucelabs.robot
-Resource  plone/app/robotframework/selenium.robot
+Resource    plone/app/robotframework/browser.robot
+Resource    keywords.robot
 
-Library  Remote  ${PLONE_URL}/RobotRemote
+Library    Remote    ${PLONE_URL}/RobotRemote
 
-Resource  keywords.robot
+Variables    variables.py
 
-Test Setup  Run keywords  Plone Test Setup
-Test Teardown  Run keywords  Plone Test Teardown
+Test Setup    Run Keywords    Plone test setup
+Test Teardown    Run keywords     Plone test teardown
 
 
-*** Test cases ***************************************************************
+*** Test cases ***
 
-Scenario: Add Login Portlet
+Scenario: Add Login Portlet to left column
     Given a logged-in site administrator
       and a manage portlets view
      When I add a 'Login' portlet to the left column
+      and I go to portal root
      Then I should see a 'Login' portlet in the left column
 
+Scenario: Add Login Portlet to right column
+    Given a logged-in site administrator
+      and a manage portlets view
+     When I add a 'Login' portlet to the right column
+      and I go to portal root
+     Then I should see a 'Login' portlet in the right column
 
-*** Keywords *****************************************************************
+Scenario: Delete Login Portlet from left column
+    Given a logged-in site administrator
+      and a manage portlets view
+     When I add a 'Login' portlet to the left column
+      and I delete a 'Login' portlet from the left column
+      and I go to portal root
+     Then I should not see a 'Login' portlet in the left column
+
+Scenario: Delete Login Portlet from right column
+    Given a logged-in site administrator
+      and a manage portlets view
+     When I add a 'Login' portlet to the right column
+      and I delete a 'Login' portlet from the right column
+      and I go to portal root
+     Then I should not see a 'Login' portlet in the right column
+
+# TODO: Move Portlets Up and Down
+*** Keywords ***
+
+# Given
 
 a manage portlets view
-    Go to   ${PLONE_URL}/@@manage-portlets
-    Wait until page contains  Manage portlets
+    Go to    ${PLONE_URL}/@@manage-portlets
+    Get Text    //body    contains    Manage portlets
+
+# When
 
 I add a '${portletname}' portlet to the left column
-    Select from list by label  xpath=//div[@id="portletmanager-plone-leftcolumn"]//select  ${portletname}
+    Select Options By    //div[@id="portletmanager-plone-leftcolumn"]//select[contains(@class,"add-portlet")]    label    ${portletname}
+    Get Text    //body    contains    Portlet added
 
 I add a '${portletname}' portlet to the right column
-    Select from list by label  xpath=//div[@id="portletmanager-plone-rightcolumn"]//select  ${portletname}
+    Select Options By    //div[@id="portletmanager-plone-rightcolumn"]//select[contains(@class,"add-portlet")]    label    ${portletname}
+    Get Text    //body    contains    Portlet added
 
-I delete a '${portlet}'' portlet from the left column
-    Click Link  xpath=//div[@id="portal-column-one"]//div[@class="portletHeader" and contains(.,"${portlet}")]//a[@class="delete"]  don't wait
-    Wait until keyword succeeds  1s  10s  Flex Element Should not exist  xpath=//div[@id="portal-column-one"]//div[@class="portletHeader" and contains(.,"${portlet}")]
+I go to portal root
+    Disable autologin
+    Go to    ${PLONE_URL}
 
-when I delete the '${portlet}' portlet from the right column
-    Click Link  xpath=//div[@id="portal-column-two"]//div[@class="portletHeader" and contains(.,"${portlet}")]//a[@class="delete"]  don't wait
-    Wait until keyword succeeds  1s  10s  Flex Element Should not exist  xpath=//div[@id="portal-column-two"]//div[@class="portletHeader" and contains(.,"${portlet}")]
+I delete a '${portlet}' portlet from the left column
+    Click    //*[@id="portletmanager-plone-leftcolumn"]/div[2]/div[2]/div[2]/form[3]/button
+    Get Element Count    //*[@id="portletmanager-plone-leftcolumn"]//div[@class="portletAssignment"]    <=    1
 
+I delete a '${portlet}' portlet from the right column
+    Click    //*[@id="portletmanager-plone-rightcolumn"]/div[2]/div[2]/div[2]/form[3]/button
+    Get Element Count    //*[@id="portletmanager-plone-rightcolumn"]//div[@class="portletAssignment"]    <=    1
+
+
+# Then
 I should see a '${portletname}' portlet in the left column
-    Wait until page contains  ${portletname}
-    Element should contain  portal-column-one  ${portletname}
+    Get Element Count    //*[@id="portal-column-one"]//div[contains(@class,"portlet${portletname}")]    should be    1
 
 I should see a '${portletname}' portlet in the right column
-    Wait until page contains  ${portletname}
-    Element should contain  portal-column-two  ${portletname}
+    Get Element Count    //*[@id="portal-column-two"]//div[contains(@class,"portlet${portletname}")]    should be    1
 
-I should not see '${text}' in the left column
-    Flex Element should not exist  xpath=//div[@id="portal-column-one" and contains(.,"${text}")]
+I should not see a '${text}' portlet in the left column
+    Get Element Count    //*[@id="portal-column-one"]//div[contains(@class,"portlet${text}")]    should be    0
 
-I should not see '${text}' in the right column
-    Flex Element should not exist  xpath=//div[@id="portal-column-two" and contains(.,"${text}")]
+I should not see a '${text}' portlet in the right column
+    Get Element Count    //*[@id="portal-column-two"]//div[contains(@class,"portlet${text}")]    should be    0
