@@ -1,4 +1,5 @@
 from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.factory import addPloneSite
