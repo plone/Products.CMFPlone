@@ -8,7 +8,6 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from ComputedAttribute import ComputedAttribute
 from DateTime import DateTime
-from email.utils import getaddresses
 from OFS.ObjectManager import bad_id
 from OFS.SimpleItem import SimpleItem
 from plone.base.defaultpage import check_default_page_via_view
@@ -55,6 +54,7 @@ from zope.event import notify
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectModifiedEvent
 
+import email.utils
 import re
 import sys
 import transaction
@@ -93,6 +93,15 @@ METADATA_DCNAME = {
     "Rights": "DC.rights",
 }
 METADATA_DC_AUTHORFIELDS = ("Creator", "Contributors", "Publisher")
+
+
+# use old non-strict parsing behavior
+# see https://docs.python.org/3.11/whatsnew/3.11.html#email
+# and https://docs.python.org/3.12/whatsnew/3.12.html#id11
+def getaddresses(fieldvalues):
+    if getattr(email.utils, "supports_strict_parsing", False):
+        return email.utils.getaddresses(fieldvalues, strict=False)
+    return email.utils.getaddresses(fieldvalues)
 
 
 @implementer(IPloneTool)
