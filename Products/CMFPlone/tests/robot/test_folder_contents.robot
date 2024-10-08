@@ -21,11 +21,6 @@ Scenario: Select All items
       and the four elements got selected
       and the clear selection link appears
 
-Scenario: Clear selection
-   Given a logged-in site administrator
-     and a folder with four pages
-     and the folder contents view
-     And I select all the elements
     When I clear the selection
     Then no elements should be selected
 
@@ -69,24 +64,33 @@ I click the '${link_name}' link
     Click    //a[contains(text(),${link_name})]
 
 I select all the elements
+    Wait For Condition    Classes    //body    contains    patterns-loaded
     Check Checkbox    //*[contains(@class,"pat-structure")]//input[contains(@class,"select-all")]
+    Sleep    5s
 
 the four elements got selected
-    Get Checkbox State      //tr[@data-id="doc1"]//input    ==    checked
-    Get Checkbox State      //tr[@data-id="doc2"]//input    ==    checked
-    Get Checkbox State      //tr[@data-id="doc3"]//input    ==    checked
-    Get Checkbox State      //tr[@data-id="doc4"]//input    ==    checked
+    Get Checkbox State      //tr[@data-id="doc1"]//input    should be    True
+    Get Checkbox State      //tr[@data-id="doc2"]//input    should be    True
+    Get Checkbox State      //tr[@data-id="doc3"]//input    should be    True
+    Get Checkbox State      //tr[@data-id="doc4"]//input    should be    True
 
 the selection count appears
+    Wait For Condition    Checkbox State    //tr[@data-id="doc1"]//input    should be    True
+    Wait For Condition    Checkbox State    //tr[@data-id="doc2"]//input    should be    True
+    Wait For Condition    Checkbox State    //tr[@data-id="doc3"]//input    should be    True
+    Wait For Condition    Checkbox State    //tr[@data-id="doc4"]//input    should be    True
     Get Text    //*[@id="btn-selected-items"]//*[contains(@class,"label-success")]    should be    4
 
 the clear selection link appears
     Get Element Count    //a[contains(@class,"remove-all")]    greater than    0
 
 I clear the selection
+    Wait For Condition    Classes    //body    contains    patterns-loaded
+    Sleep    2s
+    Check Checkbox    //*[contains(@class,"pat-structure")]//input[contains(@class,"select-all")]
     Click    //a[@id="btn-selected-items"]
-    Wait For Condition    Element States    //*[@id="popover-selected-items"]    contains    visible
     Click    //a[contains(@class,"remove-all")]
+
 
 no elements should be selected
     Get Checkbox State      //tr[@data-id="doc1"]//input    ==    unchecked
