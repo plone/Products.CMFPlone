@@ -10,6 +10,8 @@ from zope.event import notify
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectCreatedEvent
 
+import warnings
+
 
 _TOOL_ID = "portal_setup"
 _DEFAULT_PROFILE = "Products.CMFPlone:plone"
@@ -130,14 +132,53 @@ def addPloneSite(
     title="Plone site",
     description="",
     profile_id=_DEFAULT_PROFILE,
-    content_profile_id=None,
     snapshot=False,
+    content_profile_id=None,
     extension_ids=(),
-    setup_content=True,
+    setup_content=None,
     default_language="en",
     portal_timezone="UTC",
+    distribution_name=None,
+    **kwargs,
 ):
     """Add a PloneSite to the context."""
+    if distribution_name:
+        from plone.distribution.api import site as site_api
+
+        # Pass all arguments and keyword arguments in the answers,
+        # But the 'distribution_name' is not needed there.
+        answers = {
+            "site_id": site_id,
+            "title": title,
+            "description": description,
+            "profile_id": profile_id,
+            "snapshot": snapshot,
+            "content_profile_id": content_profile_id,
+            "extension_ids": extension_ids,
+            "setup_content": setup_content,
+            "default_language": default_language,
+            "portal_timezone": portal_timezone,
+        }
+        answers.update(kwargs)
+        site = site_api._create_site(
+            context=context, distribution_name=distribution_name, answers=answers
+        )
+        setSite(site)
+        return site
+
+    if content_profile_id is not None:
+        warnings.warn(
+            "addPloneSite ignores the content_profile_id keyword argument "
+            "since Plone 6.1. In Plone 7 it will be removed.",
+            DeprecationWarning,
+        )
+    if setup_content is not None:
+        warnings.warn(
+            "addPloneSite ignores the setup_content keyword argument "
+            "since Plone 6.1, treating it as always False. "
+            "In Plone 7 it will be removed.",
+            DeprecationWarning,
+        )
 
     site = PloneSite(site_id)
     notify(ObjectCreatedEvent(site))
@@ -168,24 +209,6 @@ def addPloneSite(
         reg["plone.default_language"] = default_language
         reg["plone.available_languages"] = [default_language]
         reg["plone.site_title"] = title
-
-        # Install default content types profile if user do not select "example content"
-        # during site creation.
-        if setup_content:
-            if content_profile_id:
-                content_profiles = [content_profile_id]
-            elif "plone.volto:default" in extension_ids:
-                content_profiles = [
-                    _TYPES_PROFILE,
-                    "plone.volto:default-homepage",
-                ]
-            else:
-                content_profiles = [_CONTENT_PROFILE]
-        else:
-            content_profiles = [_TYPES_PROFILE]
-
-        for profile_id in content_profiles:
-            setup_tool.runAllImportStepsFromProfile(f"profile-{profile_id}")
 
         props = dict(
             title=title,

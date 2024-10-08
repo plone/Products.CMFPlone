@@ -31,12 +31,7 @@
     </header>
     <form action="#"
     method="post"
-    tal:attributes="action string:${context/absolute_url}/@@plone-addsite"
-    tal:define="profiles view/profiles;
-                base_profiles profiles/base;
-                default_profile profiles/default;
-                extension_profiles profiles/extensions;
-                advanced request/advanced|nothing;">
+    tal:attributes="action string:${context/absolute_url}/@@plone-addsite">
       <article class="row">
         <div class="col-md-12">
           <h1><span i18n:translate="">Create a Plone site</span></h1>
@@ -120,92 +115,6 @@
             </div>
           </div>
 
-          <div class="col-md-12 mb-3"
-               tal:condition="advanced">
-            <div class="form-check">
-              <input class="form-check-input"
-                    id="example-content"
-                    type="checkbox"
-                    name="setup_content:boolean"
-                    checked="checked" />
-              <label class="form-check-label"
-                    for="example-content"
-                    i18n:translate="">Example content</label>
-              <div class="form-text" i18n:translate="">
-                Should the default example content be added to the site?
-              </div>
-            </div>
-          </div>
-
-          <input tal:condition="not:advanced"
-                  type="hidden" name="setup_content:boolean" value="true" />
-
-          <div class="col-md-12"
-               tal:condition="python: len(base_profiles) > 1">
-            <div class="mb-3">
-              <p class="lead" i18n:translate="">Base configuration</p>
-
-              <div tal:repeat="info base_profiles"
-                  class="form-check mb-3">
-                <input type="radio"
-                      name="profile_id:string"
-                      value="profile"
-                      class="form-check-input"
-                      tal:attributes="id info/id;
-                                      value info/id;
-                                      checked python: default_profile==info['id'] and 'checked' or nothing" />
-                <label class="form-check-label" tal:attributes="for info/id">${info/title}</label>
-                <div class="form-text" tal:content="info/description">${info/description}</div>
-              </div>
-
-              <div class="form-text" i18n:translate="">
-                You normally don't need to change anything here unless you have specific reasons and know what you are doing.
-              </div>
-
-            </div>
-          </div>
-
-
-          <div class="col-md-12 mt-3"
-               tal:define="has_selected python:[p for p in extension_profiles if p.get('selected', None)]"
-               tal:condition="python: extension_profiles or advanced"
-               tal:omit-tag="python: has_selected and not advanced">
-            <tal:block condition="python: advanced">
-              <h2 i18n:translate="">Add-ons</h2>
-
-              <div class="lead"
-                   i18n:translate="" >
-                Select any add-ons you want to activate immediately.
-                You can also activate add-ons after the site has been created using the Add-ons control panel.
-              </div>
-            </tal:block>
-
-            <tal:loop tal:repeat="info extension_profiles">
-              <tal:set tal:define="selected info/selected|nothing">
-                <tal:normal tal:condition="python: not selected or advanced">
-                  <div class="form-check mb-3"
-                      tal:condition="python: advanced">
-                    <input type="checkbox"
-                          name="extension_ids:list"
-                          value="${info/id}"
-                          id="${info/id}"
-                          class="form-check-input"
-                          tal:attributes="checked info/selected|nothing;" />
-                    <label class="form-check-label" for="${info/id}" >${info/title}</label>
-                    <div class="form-text"
-                        tal:condition="python: advanced and info['description']">
-                      ${info/description}
-                    </div>
-                  </div>
-                </tal:normal>
-                <tal:hidden tal:condition="python: selected and not advanced">
-                  <input type="hidden"
-                        name="extension_ids:list"
-                        value="${info/id}" />
-                </tal:hidden>
-              </tal:set>
-            </tal:loop>
-          </div>
           <div class="col-md-12 mt-3">
             <input type="hidden" name="form.submitted:boolean" value="True" />
             <button class="btn btn-success mt-3" type="submit" name="submit" i18n:translate="">Create Plone Site</button>
