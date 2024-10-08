@@ -1,0 +1,3 @@
+Use "non-strict" parsing in `email.utils.getaddresses` newest versions.
+See https://docs.python.org/3.12/whatsnew/3.12.html#id11
+[petschki]
