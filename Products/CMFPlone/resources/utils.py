@@ -69,7 +69,10 @@ def get_resource(context, path):
     if hasattr(aq_base(resource), "GET"):
         # for FileResource
         result = resource.GET()
-    else:
+    elif resource.__module__ == "OFS.Image" and resource.__class__.__name__ == "File":
+        # A regular File object
+        result = resource.data
+    elif callable(resource):
         # any BrowserView
         result = resource()
     context.REQUEST.response = response_before
