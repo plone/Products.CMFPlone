@@ -61,7 +61,7 @@ class PloneSite(Container, SkinnableObjectManager):
 
     def __setattr__(self, name, obj):
         # handle re setting an item as an attribute
-        if self._tree is not None and name in self:
+        if not name.startswith("_") and self._tree is not None and name in self:
             del self[name]
             self[name] = obj
         else:
