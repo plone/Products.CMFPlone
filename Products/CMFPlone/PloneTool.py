@@ -142,6 +142,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             # Address contains two newlines (possible spammer relay attack)
             return False
 
+        # address can be empty if getaddresses has parsing errors (returns [("", "")])
+        if address == "":
+            return False
+
         # sub is an empty string if the address is valid
         sub = EMAIL_RE.sub("", address)
         if sub == "":
