@@ -76,6 +76,9 @@ def get_resource(context, path):
     elif callable(resource):
         # any BrowserView
         result = resource()
+    else:
+        logger.info("Cannot get data from resource %r", resource)
+        result = b""
     context.REQUEST.response = response_before
     return result
 
