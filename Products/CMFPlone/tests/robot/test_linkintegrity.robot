@@ -95,6 +95,7 @@ a link in rich text
 should show warning when deleting page
 
   Go To  ${PLONE_URL}/foo
+  Wait Until Element Contains  xpath=//h1  Foo  10s
   Wait For Then Click Element  css=#plone-contentmenu-actions > a
   Wait For Then Click Element  css=#plone-contentmenu-actions-delete
   Wait until page contains element  css=.breach-container .breach-item
