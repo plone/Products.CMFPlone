@@ -180,6 +180,29 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         # bundle should be skipped when rendering
         self.assertNotIn("http://foo.bar/foobar.js", results)
 
+    def test_resource_browser_static_resource(self):
+        from Products.CMFPlone.resources.webresource import PloneScriptResource
+        resource = PloneScriptResource(self.portal, resource="++resource++plone-admin-ui.js")
+        self.assertIn(
+            b"window.onload", resource.file_data,
+        )
+
+    def test_resource_ofs_file(self):
+        from OFS.Image import File
+        from Products.CMFPlone.resources.webresource import PloneScriptResource
+        self.portal["foo.js"] = File("foo.js", "Title", b'console.log()')
+        resource = PloneScriptResource(self.portal, resource="foo.js")
+        self.assertEqual(
+            resource.file_data, b'console.log()',
+        )
+
+    def test_resource_view(self):
+        from Products.CMFPlone.resources.webresource import PloneScriptResource
+        resource = PloneScriptResource(self.portal, resource="@@ok")
+        self.assertEqual(
+            resource.file_data, b'OK',
+        )
+
 
 class TestStylesViewlet(PloneTestCase.PloneTestCase):
     def test_styles_viewlet(self):

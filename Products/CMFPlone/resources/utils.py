@@ -1,6 +1,7 @@
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from OFS.Image import File
 from plone.base.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
 from plone.resource.file import FilesystemFile
 from plone.resource.interfaces import IResourceDirectory
@@ -69,8 +70,8 @@ def get_resource(context, path):
     if hasattr(aq_base(resource), "GET"):
         # for FileResource
         result = resource.GET()
-    elif resource.__module__ == "OFS.Image" and resource.__class__.__name__ == "File":
-        # A regular File object
+    elif isinstance(resource, File):
+        # An OFS.Image.File object
         result = resource.data
     elif callable(resource):
         # any BrowserView
