@@ -67,4 +67,9 @@
     <role name="Manager" />
   </permission>
 
+  <permission
+      id="plone.app.controlpanel.Aliases"
+      title="Plone Site Setup: Aliases"
+      />
+
 </configure>
