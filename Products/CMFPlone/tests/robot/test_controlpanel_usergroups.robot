@@ -1,123 +1,103 @@
-# ============================================================================
-# Tests for the Plone Usergroups Control Panel
-# ============================================================================
-#
-# $ bin/robot-server --reload-path src/Products.CMFPlone/Products/CMFPlone/ Products.CMFPlone.testing.PRODUCTS_CMFPLONE_ROBOT_TESTING
-#
-# $ bin/robot src/Products.CMFPlone/Products/CMFPlone/tests/robot/test_controlpanel_usergroups.robot
-#
-# ============================================================================
+*** Settings ***
 
-*** Settings *****************************************************************
+Resource    plone/app/robotframework/browser.robot
+Resource    keywords.robot
 
-Resource  plone/app/robotframework/keywords.robot
-Resource  plone/app/robotframework/saucelabs.robot
-Resource  plone/app/robotframework/selenium.robot
+Library    Remote    ${PLONE_URL}/RobotRemote
 
-Library  Remote  ${PLONE_URL}/RobotRemote
-
-Resource  keywords.robot
-
-Test Setup  Run keywords  Plone Test Setup
-Test Teardown  Run keywords  Plone Test Teardown
+Test Setup    Run Keywords    Plone test setup
+Test Teardown    Run keywords     Plone test teardown
 
 
-*** Test Cases ***************************************************************
+*** Test Cases ***
 
 Scenario: Show all users in users control panel
-  Given a logged-in site administrator
-    and the users control panel
-   When I click show all users
-   Then all users should be shown
+    Given a logged-in site administrator
+      and the users control panel
+     When I click show all users
+     Then all users should be shown
 
 Scenario: Show all groups in groups control panel
-  Given a logged-in site administrator
-    and the groups control panel
-   When I click show all groups
-   Then all groups should be shown
+    Given a logged-in site administrator
+      and the groups control panel
+     When I click show all groups
+     Then all groups should be shown
 
 Scenario: Create new group
-  Given a logged-in site administrator
-    and the groups control panel
-   When I create new group
-   Then new group should show under all groups
+    Given a logged-in site administrator
+      and the groups control panel
+     When I create new group
+      and I click show all groups
+     Then new group should show under all groups
 
 Scenario: Enable many groups and many users settings in usergroups control panel
-  Given a logged-in site administrator
-    and the user group settings control panel
-   When I enable many groups and many users settings
-   Then showing all users is disabled
-    and showing all groups is disabled
+    Given a logged-in site administrator
+      and the user group settings control panel
+     When I enable many groups and many users settings
+     Then showing all users is disabled
+      and showing all groups is disabled
 
 
-*** Keywords *****************************************************************
+*** Keywords ***
 
-# --- GIVEN ------------------------------------------------------------------
-
-a logged-in site administrator
-  Enable autologin as  Site Administrator
+# GIVEN
 
 the users control panel
-  Go to  ${PLONE_URL}/@@usergroup-userprefs
-  Wait until page contains  User Search
+    Go to    ${PLONE_URL}/@@usergroup-userprefs
+    Get Text    //body    contains    User Search
 
 the groups control panel
-  Go to  ${PLONE_URL}/@@usergroup-groupprefs
-  Wait until page contains  Group Search
+    Go to    ${PLONE_URL}/@@usergroup-groupprefs
+    Get Text    //body    contains    Group Search
 
 the user group settings control panel
-  Go to  ${PLONE_URL}/@@usergroup-controlpanel
-  Wait until page contains  User and Groups Settings
+    Go to    ${PLONE_URL}/@@usergroup-controlpanel
+    Get Text    //body    contains    User and Groups Settings
 
 
-# --- WHEN -------------------------------------------------------------------
+# WHEN
 
 I click show all users
-  Click button  Show all
-  Wait until page contains  User Search
+    Click    //button[@name="form.button.FindAll"]
+    Get Text    //body    contains    User Search
 
 I click show all groups
-  Click button  Show all
-  Wait until page contains  Group Search
+    Click    //button[@name="form.button.FindAll"]
+    Get Text    //body    contains    Group Search
 
 I create new group
-  Click link  Add New Group
-  Wait until page contains element  name=addname
-  patterns are loaded
-  Input Text  name=addname  my-new-group
-  Input Text  name=title:string  My New Group
-  Input Text  name=description:text  This is my new group
-  Input Text  name=email:string  my-group@plone.org
-  Submit Form  id=createGroup
-#  "Click button  Save" does not work for modals. See https://stackoverflow.com/questions/17602334/element-is-not-currently-visible-and-so-may-not-be-interacted-with-but-another for details.
-  I click show all groups
-  Page should contain  my-new-group
+    Click    //a[@id="add-group"]
+    Type Text    //input[@name="addname"]    my-new-group
+    Type Text    //input[@name="title:string"]    My New Group
+    Type Text    //textarea[@name="description:text"]    This is my new group
+    Type Text    //input[@name="email:string"]    my-group@plone.org
+    Click    //form[@id="createGroup"]//button[@name="form.button.Save"]
 
 I enable many groups and many users settings
-  Select Checkbox  name=form.widgets.many_groups:list
-  Select Checkbox  name=form.widgets.many_users:list
-  Click button  Save
-  Wait until page contains  Data successfully updated.
+    Check Checkbox    //input[@name="form.widgets.many_groups:list"]
+    Check Checkbox    //input[@name="form.widgets.many_users:list"]
+    Click    //button[@name="form.buttons.save"]
+    Get Text    //body    contains    Data successfully updated.
 
-# --- THEN -------------------------------------------------------------------
+# THEN
 
 all users should be shown
-  Page should contain  test-user
-  Page should contain  admin
+    Get Text    //body    contains    test-user
+    Get Text    //body    contains    admin
 
 all groups should be shown
-  Page should contain  Administrators
-  Page should contain  Authenticated Users (Virtual Group) (AuthenticatedUsers)
-  Page should contain  Reviewers
-  Page should contain  Site Administrators
+    Get Text    //body    contains    Administrators
+    Get Text    //body    contains    Authenticated Users (Virtual Group) (AuthenticatedUsers)
+    Get Text    //body    contains    Reviewers
+    Get Text    //body    contains    Site Administrators
 
 showing all users is disabled
-  the users control panel
-  Page should not contain  Show all
+    the users control panel
+    Get Text    //body    not contains    Show all
 
 showing all groups is disabled
-  the users control panel
-  Page should not contain  Show all
+    the groups control panel
+    Get Text    //body    not contains    Show all
 
 new group should show under all groups
-  Page should contain  my-new-group
+    Get Text    //body    contains    my-new-group

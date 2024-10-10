@@ -1,70 +1,67 @@
-Documentation
-...            $ bin/robot-server Products.CMFPlone.testing.PRODUCTS_CMFPLONE_ROBOT_TESTING
-...            $ bin/robot test_controlpanel_markup.robot
+*** Settings ***
 
-*** Settings *****************************************************************
+Resource    plone/app/robotframework/browser.robot
+Resource    keywords.robot
 
-Resource  plone/app/robotframework/keywords.robot
-Resource  plone/app/robotframework/saucelabs.robot
-Resource  plone/app/robotframework/selenium.robot
+Library    Remote    ${PLONE_URL}/RobotRemote
 
-Library  Remote  ${PLONE_URL}/RobotRemote
-
-Resource  keywords.robot
-
-Test Setup  Run keywords  Plone Test Setup
-Test Teardown  Run keywords  Plone Test Teardown
+Test Setup    Run Keywords    Plone test setup
+Test Teardown    Run keywords     Plone test teardown
 
 
-*** Test Cases ***************************************************************
+*** Test Cases ***
 
 Scenario: Change Default Markup Types in the Markup Control Panel
-  Given a logged-in site administrator
-    and the markup control panel
-   When I set allowed types to "text/restructured"
-#TODO: Waiting on richtext pattern to support this
-#   Then I do not see the standard editor when I create a document
+    Given a logged-in site administrator
+      and the markup control panel
+     When I set allowed types to    text/restructured
+
+    #TODO: Waiting on richtext pattern to support this
+    #Then I do not see the standard editor when I create a document
 
 Scenario: Set Default Markup to be Restructured Text
-  Given a logged-in site administrator
-    and the markup control panel
-   When I set the default type to "text/restructured"
-#TODO: Waiting on richtext pattern to support this
-#   Then I do not see the standard editor when I create a document
+    Given a logged-in manager
+      and the markup control panel
+     When I set the default type to    text/restructured
 
-*** Keywords *****************************************************************
+    #TODO: Waiting on richtext pattern to support this
+    #Then I do not see the standard editor when I create a document
 
-# --- GIVEN ------------------------------------------------------------------
+*** Keywords ***
 
-a document '${title}'
-  Create content  type=Document  id=doc  title=${title}
+# GIVEN
 
 the markup control panel
-  Go to  ${PLONE_URL}/@@markup-controlpanel
-  Wait until page contains  Markup Settings
+    Go to    ${PLONE_URL}/@@markup-controlpanel
+    Get Text    //body    contains    Markup Settings
 
 
 # --- WHEN -------------------------------------------------------------------
 
-I set allowed types to "${type}"
-  with the label  ${type}   Select Checkbox
-  with the label  text/html  UnSelect Checkbox
-  with the label  text/x-web-textile  UnSelect Checkbox
-  Click Button  Save
-  Wait until page contains  Changes saved
-  Checkbox Should Be Selected  ${type}
-  Checkbox Should Not Be Selected  text/html
-  Checkbox Should Not Be Selected  text/x-web-textile
+I set allowed types to
+    [Arguments]    ${type}
 
-I set the default type to "${type}"
-  Select from list by label  name=form.widgets.default_type:list  ${type}
-  Click Button  Save
-  Wait until page contains  Changes saved
+    Check Checkbox    //input[@name="form.widgets.allowed_types:list" and @value="${type}"]
+    Uncheck Checkbox    //input[@name="form.widgets.allowed_types:list" and @value="text/html"]
+    Uncheck Checkbox    //input[@name="form.widgets.allowed_types:list" and @value="text/x-web-textile"]
+    Click    //button[@name="form.buttons.save"]
+    Get Text    //body    contains    Changes saved.
 
-I disable the standard editor
-  Select from list by label  name=form.widgets.default_editor:list  None
-  Click Button  Save
-  Wait until page contains  Changes saved
+    Get Element States    //input[@name="form.widgets.allowed_types:list" and @value="${type}"]    contains    checked
+    Get Element States    //input[@name="form.widgets.allowed_types:list" and @value="text/html"]    not contains    checked
+    Get Element States    //input[@name="form.widgets.allowed_types:list" and @value="text/x-web-textile"]    not contains    checked
+
+I set the default type to
+    [Arguments]    ${type}
+
+    Select Options By    //select[@name="form.widgets.default_type:list"]    value    ${type}
+    Click    //button[@name="form.buttons.save"]
+    Get Text    //body    contains    Changes saved.
+
+# I disable the standard editor
+#   Select from list by label  name=form.widgets.default_editor:list  None
+#   Click Button  Save
+#   Wait until page contains  Changes saved
 
 
 # --- THEN -------------------------------------------------------------------
@@ -80,22 +77,7 @@ Then I can see only "${type}" when creating a document
   Wait until page contains  Item created
   Location should be  ${PLONE_URL}/this-is-my-custom-short-name/view
 
-I do not see the standard editor when I create a document
-  Go To  ${PLONE_URL}/++add++Document
-  Wait until page contains  Add Page
-  Page should not contain element  css=.mce-tinymce
-
-# --- Helpers -----------------------------------------------------------------
-
-With the label
-    [arguments]  ${title}    ${extra_keyword}   @{list}
-    ${for}=  label "${title}"
-    Run Keyword     ${extra_keyword}  id=${for}   @{list}
-
-label "${title}"
-    [Return]  ${for}
-    ${for}=  Get Element Attribute  xpath=//label[contains(., "${title}")]  for
-
-label2 "${title}"
-    [Return]  ${for}
-    ${for}=  Get Element Attribute  xpath=//label[contains(., "${title}")]//input
+# I do not see the standard editor when I create a document
+#     Go To  ${PLONE_URL}/++add++Document
+#     Pause
+#     Page should not contain element  css=.mce-tinymce
