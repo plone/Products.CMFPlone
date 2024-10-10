@@ -1,0 +1,2 @@
+Update for strict parsing in `email.utils.getaddresses` newest versions.
+[petschki]

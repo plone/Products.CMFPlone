@@ -137,6 +137,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not isinstance(address, str):
             return False
 
+        address = address.strip()
+
+        # address can be empty if getaddresses has parsing errors (returns [("", "")])
+        if address == "":
+            return False
+
         sub = EMAIL_CUTOFF_RE.match(address)
         if sub is not None:
             # Address contains two newlines (possible spammer relay attack)
