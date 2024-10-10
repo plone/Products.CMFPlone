@@ -32,7 +32,7 @@ Scenario: Location query Custom
     and a bunch of folders
     and the querystring pattern
     When I activate the operator Custom in the criteria Location
-    and I search in B subfolder in the related items widget
+    and I search in B subfolder in the contentbrowser widget
     Then we expect 5 hits
 
 Scenario: Location query Advanced
@@ -279,13 +279,11 @@ I delete my selection
     Sleep  0.1
     Wait For Then Click Element  jquery=a.select2-search-choice-close:visible
 
-I search in ${NAME} subfolder in the related items widget
+I search in ${NAME} subfolder in the contentbrowser widget
     mark results
-    Wait For Then Click Element  jquery=.pat-relateditems-container ul.select2-choices:visible
-    Wait Until Page Contains  ${NAME}
-    # I have seen this fail sometimes, where the screen shot showed the NAME just fine.
-    Sleep  0.1
-    Click Element  //a[contains(concat(' ', normalize-space(@class), ' '), ' pat-relateditems-result-select ')]//span[contains(text(),'${NAME}')]
+    Wait For Then Click Element  css=.querystring-criteria-value .content-browser-selected-items-wrapper button
+    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumn")]//div[contains(@class, "item-title")][text()[contains(.,'${NAME}')]]
+    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelToolbar")]/button
 
 I expect to be in Advanced mode
     open the select box titled operator
