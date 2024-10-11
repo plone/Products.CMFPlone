@@ -89,4 +89,29 @@ PRODUCTS_CMFPLONE_ROBOT_TESTING = FunctionalTesting(
     name="CMFPloneLayer:Acceptance",
 )
 
+
+class ProductsCMFPloneDistributionsLayer(ProductsCMFPloneLayer):
+    defaultBases = (PRODUCTS_CMFPLONE_FIXTURE,)
+
+    def setUpZope(self, app, configurationContext):
+        import Products.CMFPlone
+
+        xmlconfig.file(
+            "configure-distributions.zcml",
+            Products.CMFPlone.tests,
+            context=configurationContext,
+        )
+
+    def setUpPloneSite(self, portal):
+        # ProductsCMFPloneLayer already does enough setup.
+        pass
+
+
+PRODUCTS_CMFPLONE_DISTRIBUTIONS_FIXTURE = ProductsCMFPloneDistributionsLayer()
+
+PRODUCTS_CMFPLONE_DISTRIBUTIONS_INTEGRATION_TESTING = IntegrationTesting(
+    bases=(PRODUCTS_CMFPLONE_DISTRIBUTIONS_FIXTURE,),
+    name="CMFPloneLayer:DistributionsIntegration",
+)
+
 optionflags = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE
