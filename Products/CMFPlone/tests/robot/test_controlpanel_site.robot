@@ -94,8 +94,13 @@ then I can see a sitemap
 
     Import library    OperatingSystem
 
-    Download    ${PLONE_URL}/sitemap.xml.gz    saveAs=/tmp/sitemap.xml.gz
-    File Should Exist    /tmp/sitemap.xml.gz
+    # this is for robotframework browser > 17
+    # Download    ${PLONE_URL}/sitemap.xml.gz    saveAs=/tmp/sitemap.xml.gz
+    # File Should Exist    /tmp/sitemap.xml.gz
+
+    # this is for robotframework browser < 18.0
+    ${file_object}=    Download    ${PLONE_URL}/sitemap.xml.gz
+    File Should Exist    ${file_object.saveAs}
 
 the dublin core metadata shows up on the site
     Go to    ${PLONE_URL}
