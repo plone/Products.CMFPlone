@@ -67,4 +67,26 @@
     <role name="Manager" />
   </permission>
 
+  <permission
+    id="plone.app.controlpanel.Imaging"
+    title="Plone Site Setup: Imaging"
+    />
+
+  <permission
+      id="plone.app.controlpanel.TinyMCE"
+      title="Plone Site Setup: TinyMCE"
+      >
+    <role name="Manager" />
+  </permission>
+
+  <permission
+    id="Products.CMFPlone.ManagePortalAliases"
+    title="Manage Portal Aliases"
+    />
+
+  <permission
+      id="Products.CMFPlone.ManageContextAliases"
+      title="Manage Context Aliases"
+      />
+
 </configure>
