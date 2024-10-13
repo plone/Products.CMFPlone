@@ -200,7 +200,7 @@ a document as the default view of the test folder
     Click    //a[@id="contextSetDefaultPage"]
     Click    //input[@id="doc"]
     Click    //div[contains(@class,"modal-footer")]//button[@name="form.buttons.Save"]
-    Get Text    //body//h1    contains    doc
+    Wait For Condition    Text    //body//h1    contains    doc
 
 
 the users and groups configlet
