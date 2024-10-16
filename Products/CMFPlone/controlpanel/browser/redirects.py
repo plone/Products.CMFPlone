@@ -164,6 +164,10 @@ class RedirectsView(BrowserView):
 
 
 class RedirectionSet:
+    # Marker so that plone.restapi can detect if this is
+    # a version that supports the start and end parameters
+    supports_date_range_filtering = True
+
     def __init__(self, query="", created="", manual="", start="", end=""):
         self.storage = getUtility(IRedirectionStorage)
 
