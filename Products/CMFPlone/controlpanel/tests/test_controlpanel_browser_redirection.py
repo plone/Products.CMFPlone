@@ -241,6 +241,9 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         # this should return one and not two (we need excludemax=True)
         redirects = RedirectionSet(query="/foo1/777")
         self.assertEqual(len(redirects), 1)
+        # query without an initial slash matches any substring
+        redirects = RedirectionSet(query="999")
+        self.assertEqual(len(redirects), 2)
 
         request = self.layer["request"].clone()
         request.form["q"] = "/foo"
