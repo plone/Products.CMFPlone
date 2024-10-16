@@ -172,7 +172,7 @@ class RedirectionSet:
         self.portal_path_len = len(self.portal_path)
 
         # noinspection PyProtectedMember
-        if query:
+        if query and query.startswith("/"):
             # with query path /Plone/news:
             # min_k is /Plone/news and
             # max_k is /Plone/newt
@@ -180,6 +180,8 @@ class RedirectionSet:
             min_k = "{:s}/{:s}".format(self.portal_path, query.strip("/"))
             max_k = min_k[:-1] + chr(ord(min_k[-1]) + 1)
             self.data = self.storage._paths.keys(min=min_k, max=max_k, excludemax=True)
+        elif query:
+            self.data = [path for path in self.storage._paths.keys() if query in path]
         else:
             self.data = self.storage._paths.keys()
         if manual:
