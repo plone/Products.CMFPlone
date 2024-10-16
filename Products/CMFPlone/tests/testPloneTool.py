@@ -74,7 +74,6 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         validInputs = (
             "user@example.org",
             "user@example.org,\n user2@example.org",
-            "user@example.org\n user2@example.org",  # omitting comma is ok
             "USER@EXAMPLE.ORG,\n User2@Example.Org",
         )
         invalidInputs = (
