@@ -1,24 +1,21 @@
-*** Settings *****************************************************************
+*** Settings ***
 
-Resource  plone/app/robotframework/keywords.robot
-Resource  plone/app/robotframework/saucelabs.robot
-Resource  plone/app/robotframework/selenium.robot
-
-Library  Remote  ${PLONE_URL}/RobotRemote
-
-Resource  keywords.robot
-
-Test Setup  Run keywords  Plone Test Setup
-Test Teardown  Run keywords  Plone Test Teardown
+Resource    plone/app/robotframework/browser.robot
+Resource    keywords.robot
 
 
-*** Variables ****************************************************************
+Library    Remote    ${PLONE_URL}/RobotRemote
 
-${TITLE}  An actionsmenu page
-${PAGE_ID}  an-actionsmenu-page
+Test Setup    Run Keywords    Plone test setup
+Test Teardown    Run keywords     Plone test teardown
+
+*** Variables ***
+
+${TITLE}    An actionsmenu page
+${PAGE_ID}    an-actionsmenu-page
 
 
-*** Test cases ***************************************************************
+*** Test Cases ***
 
 # ---
 # Basic Contentactions menu
@@ -41,13 +38,13 @@ Scenario: Clicking again collapses action menu
       and an actionsmenu page
      When menu link is clicked
       and menu link is clicked
+     Then actions menu should not be visible
 
 # ---
 # Switching Contentactions menu by MouseOver
 # ---
 
-Scenario: Hovering mouse from expanded menu on other menu shows that menu
-    Pass Execution  This functionality needs to be fixed for Plone 5, but let's not make it break the build for now.
+Scenario: Click from expanded menu on other menu shows that menu
     Given a logged-in site administrator
       and an actionsmenu page
      When first menu link is clicked
@@ -88,95 +85,78 @@ Scenario:
      Then I should see 'Item(s) pasted.' in the page
 
 
-*** Keywords *****************************************************************
+*** Keywords ***
 
-# --- GIVEN ------------------------------------------------------------------
+# GIVEN
 
 an actionsmenu page
-    Create content  type=Document  title=${TITLE}
-    Go to  ${PLONE_URL}/${PAGE_ID}
-    Wait until page contains  An actionsmenu page
+    Create content    type=Document    title=${TITLE}
+    Go To    ${PLONE_URL}/${PAGE_ID}
+    Get Text    //body    contains    An actionsmenu page
 
-# --- WHEN -------------------------------------------------------------------
+# WHEN
+
+first menu link is clicked
+    Click    xpath=//li[@id='plone-contentmenu-workflow']/a
 
 mouse moves to second menu
-    Click Link  xpath=(//div[@class="contentActions"]//a[contains(@class, 'actionMenuHeader')])[2]
+    Click    xpath=//li[@id='plone-contentmenu-actions']/a
 
 I click outside of menu
-    Click Element  xpath=//h1
+    Click    xpath=//h1
 
 workflow link is clicked
     # store current state
-    ${OLD_STATE} =  Get Text  xpath=(//span[contains(@class,'state-')])
-    Set Suite Variable  ${OLD_STATE}  ${OLD_STATE}
-    Given patterns are loaded
-    Click Link  xpath=//li[@id='plone-contentmenu-workflow']/a
-    Click Link  xpath=(//li[@id='plone-contentmenu-workflow']/ul/li/a)[1]
-    Page Should Contain  Item state changed.
-
-Open Menu
-    [Arguments]  ${elementId}
-    Element Should Not Be Visible  css=#${elementId} ul.actionMenuContent
-    Click link  css=#${elementId} a.actionMenuHeader
-    Wait until keyword succeeds  5  1  Element Should Be Visible  css=#${elementId} .actionMenuContent
-
-Open Action Menu
-    Given patterns are loaded
-    Click link  xpath=//li[@id='plone-contentmenu-actions']/a
-    Wait until keyword succeeds  5  1  Element Should Be Visible  css=#plone-contentmenu-actions .dropdown-menu
+    ${OLD_STATE}=    Get Text    xpath=(//span[contains(@class,'state-')])
+    Set Suite Variable    ${OLD_STATE}    ${OLD_STATE}
+    Click    xpath=//li[@id='plone-contentmenu-workflow']/a
+    Click    xpath=(//li[@id='plone-contentmenu-workflow']/ul/li/a)[1]
+    Get Text    //body    contains    Item state changed.
 
 I copy the page
     Open Action Menu
-    Click Link  css=#plone-contentmenu-actions .actionicon-object_buttons-copy
-    Page should contain  copied
+    Click    xpath=//li[@id='plone-contentmenu-actions']//a[contains(@class,'actionicon-object_buttons-copy')]
+    Get Text    //body    contains    copied
 
 I paste
     Go to  ${PLONE_URL}
     Open Action Menu
-    Click Link  css=#plone-contentmenu-actions .actionicon-object_buttons-paste
+    Click    xpath=//li[@id='plone-contentmenu-actions']//a[contains(@class,'actionicon-object_buttons-paste')]
 
 
-# --- THEN -------------------------------------------------------------------
+# THEN
 
 delete link exists
-     Page Should Contain Element  xpath=//a[@id='plone-contentmenu-actions-delete']
+    Get Element Count    xpath=//a[@id='plone-contentmenu-actions-delete']    should be    1
 
 delete link should not be visible
-     Element Should Not Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
+    Wait For Elements State    xpath=//li[@id='plone-contentmenu-actions']/a[@id='plone-contentmenu-actions-delete']    hidden
 
 menu link is clicked
-    Given patterns are loaded
-    Click link  xpath=//li[@id='plone-contentmenu-actions']/a
-
-delete link should be visible
-    Given patterns are loaded
-    Element Should Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
-
-actions menu should be visible
-    Given patterns are loaded
-    Element Should Be Visible  xpath=//li[@id='plone-contentmenu-actions']
-
-first menu link is clicked
-    Given patterns are loaded
-    Click Link  xpath=(//div[@class="contentActions"]//a[contains(@class, 'actionMenuHeader')])[1]
-
-I should see '${message}' in the page
-    Wait until page contains  ${message}
-    Page should contain  ${message}
-
-state should have changed
-    Wait until page contains  Item state changed
-    ${NEW_STATE} =  Get Text  xpath=(//span[contains(@class,'state-')])
-    # Should Not Be Equal  ${NEW_STATE}  ${OLD_STATE}
+    Click    xpath=//li[@id='plone-contentmenu-actions']/a
 
 second menu should be visible
-    Element Should Be Visible  xpath=(//li[contains(@class, 'actionMenu')])[2]
+    Get Element States    xpath=//li[@id='plone-contentmenu-actions']/ul[contains(@class,'dropdown-menu')]    contains    visible
 
 first menu should not be visible
-    Given patterns are loaded
-    Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=(//li[contains(@class, 'actionMenu')])[1]//li
+    Get Element States    xpath=//li[@id='plone-contentmenu-workflow']/ul[contains(@class,'dropdown-menu')]    contains    hidden
 
 actions menu should not be visible
-    Given patterns are loaded
-    Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=//li[@id='plone-contentmenu-actions-delete']
+    Get Element States    xpath=//li[@id='plone-contentmenu-actions']/ul[contains(@class,'dropdown-menu')]    contains    hidden
 
+actions menu should be visible
+    Get Element States    xpath=//li[@id='plone-contentmenu-actions']/ul[contains(@class,'dropdown-menu')]    contains    visible
+
+state should have changed
+    ${NEW_STATE}=    Get Text    xpath=(//span[contains(@class,'state-')])
+    Should Not Be Equal As Strings    ${NEW_STATE}    ${OLD_STATE}
+
+I should see '${message}' in the page
+    Get Text    //body    contains    ${message}
+
+
+# DRY
+
+Open Action Menu
+    Click    xpath=//li[@id='plone-contentmenu-actions']/a
+    actions menu should be visible

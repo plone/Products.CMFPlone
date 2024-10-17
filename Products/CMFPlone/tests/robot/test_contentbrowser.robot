@@ -1,8 +1,6 @@
 *** Settings *****************************************************************
 
-Resource  plone/app/robotframework/keywords.robot
-Resource  plone/app/robotframework/saucelabs.robot
-Resource  plone/app/robotframework/selenium.robot
+Resource  plone/app/robotframework/browser.robot
 Resource  keywords.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
@@ -114,121 +112,112 @@ a document
 I select a related item image via contentbrowser
    Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
    # Click the Categorization Tab
-   Wait For Then Click Element    //a[@id="autotoc-item-autotoc-2"]
+   Click    //a[@id="autotoc-item-autotoc-2"]
    # Click the select button
-   Wait For Then Click Element    //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//button
+   Click    //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//button
    # Click third element in first column, that is the "Assets" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[4]
+   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[4]
    # Click first element in second column, that is the "Mixed" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelItems")]/div[1]
+   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelItems")]/div[1]
    # Click fifth element in third column, that is the "Files" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelItems")]/div[5]
+   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelItems")]/div[5]
    # Click third element in fourth column, that is the "Images" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[4]/div[contains(@class, "levelItems")]/div[3]
+   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[4]/div[contains(@class, "levelItems")]/div[3]
    # Click second element in fifth column, that is the "Image2" Object
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[2]
+   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[2]
    # Click the select Button in the Toolbar of column 6
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[6]/div[contains(@class, "levelToolbar")]/button
+   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[6]/div[contains(@class, "levelToolbar")]/button
 
 
 I select two related item images via contentbrowser
    Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
    # Click the Categorization Tab
-   Wait For Then Click Element    //a[@id="autotoc-item-autotoc-2"]
+   Click    //a[@id="autotoc-item-autotoc-2"]
    # Click the select button
-   Wait For Then Click Element    //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//button
+   Click    //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//button
    # Click third element in first column, that is the "Assets" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[4]
+   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[4]
    # Click first element in second column, that is the "Mixed" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelItems")]/div[1]
+   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelItems")]/div[1]
    # Click fifth element in third column, that is the "Files" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelItems")]/div[5]
+   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelItems")]/div[5]
    # Click third element in fourth column, that is the "Images" folder
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[4]/div[contains(@class, "levelItems")]/div[3]
+   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[4]/div[contains(@class, "levelItems")]/div[3]
 
    # now we select two items in a colum via Shift+Click
    # Click first element in fifth column, that is the "Image1" Object
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[1]
+   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[1]
    # Click second element in fifth column with SHIFT, that is the "Image2" Object
-   Wait For Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[2]
-   Click Element        //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[2]    SHIFT
+   Click With Options    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[2]    left    Shift
    # Click the select Button in the Toolbar of column 6
-   Wait For Then Click Element    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[6]/div[contains(@class, "levelToolbar")]/button
+   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[6]/div[contains(@class, "levelToolbar")]/button
 
 
 I set an internal link via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
-    Fill text to tinymce editor    Susi Sorglos and John Doe
-    Execute Javascript    function selectText() {
-    ...    var iframe_document = document.querySelector(".tox-edit-area iframe").contentDocument;
-    ...    var body = iframe_document.body;
-    ...    var p = body.firstChild;
-    ...    var range = new Range();
-    ...    range.setStart(p.firstChild, 5);
-    ...    range.setEnd(p.firstChild, 12);
-    ...    iframe_document.getSelection().removeAllRanges();
-    ...    iframe_document.getSelection().addRange(range);
-    ...    }; selectText();
-    Click Button    //button[@aria-label='Insert/edit link']
-    Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
+    Fill text to tinymce editor    form.widgets.IRichTextBehavior.text    <p>Susi Sorglos and John Doe</p>
+    Evaluate JavaScript   //div[contains(@class, 'tox-edit-area')]//iframe
+    ...    (elem, args) => {
+    ...        const iframe_document = elem.contentDocument;
+    ...        const body = iframe_document.body;
+    ...        const p = body.firstChild;
+    ...        const range = new Range();
+    ...        range.setStart(p.firstChild, 5);
+    ...        range.setEnd(p.firstChild, 12);
+    ...        iframe_document.getSelection().removeAllRanges();
+    ...        iframe_document.getSelection().addRange(range);
+    ...    }
+    ...    all_elements=False
+    Click    //button[@aria-label='Insert/edit link']
+    Click    css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
-    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
-    Wait Until Element Is Not Visible    //div[contains(@class,"content-browser-position-wrapper")]
-    Wait For Then Click Element    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
-    Wait Until Element Is Not Visible  css=.modal-footer input[name="insert"]
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
 I set an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
-    Fill text to tinymce editor    Susi Sorglos and John Doe
-    Click Button    //button[@aria-label='Insert/edit image']
-    Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
+    Fill text to tinymce editor    form.widgets.IRichTextBehavior.text    <p>Susi Sorglos and John Doe</p>
+    Click    //button[@aria-label='Insert/edit image']
+    Click    css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
     Click item in column    2    1
     Click item in column    3    1
-    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
-    Wait Until Element Is Not Visible    //div[contains(@class,"content-browser-position-wrapper")]
-    Wait For Then Click Element    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
-    Wait Until Element Is Not Visible  css=.modal-footer input[name="insert"]
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
 I upload an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
-    Fill text to tinymce editor    Susi Sorglos and John Doe
-    Click Button  //button[@aria-label="Insert/edit image"]
-    Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
+    Fill text to tinymce editor    form.widgets.IRichTextBehavior.text    <p>Susi Sorglos and John Doe</p>
+    Click    //button[@aria-label="Insert/edit image"]
+    Click    css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
     Click item in column    2    1
-    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]/button[contains(@class,"upload")]
-    Choose File    //div[contains(@class,"pat-upload")]//input[@class="dz-hidden-input"]    ${PATH_TO_TEST_FILES}/plone-logo.png
-    Wait For Then Click Element  //div[contains(@class,"pat-upload")]//button[contains(@class,"upload-all")]
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//button[contains(@class,"upload")]
+    Upload File By Selector    //div[contains(@class,"pat-upload")]//input[@class="dz-hidden-input"]    ${PATH_TO_TEST_FILES}/plone-logo.png
+    Click    //div[contains(@class,"pat-upload")]//button[contains(@class,"upload-all")]
     Click item in column    3    3
-    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
-    Wait Until Element Is Not Visible    //div[contains(@class,"content-browser-position-wrapper")]
-    Wait For Then Click Element    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
-    Wait Until Element Is Not Visible  css=.modal-footer input[name="insert"]
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
 I search and select an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
-    Fill text to tinymce editor    Susi Sorglos and John Doe
-    Click Button  //button[@aria-label="Insert/edit image"]
-    Wait For Then Click Element  css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
+    Fill text to tinymce editor    form.widgets.IRichTextBehavior.text    <p>Susi Sorglos and John Doe</p>
+    Click    //button[@aria-label="Insert/edit image"]
+    Click    css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
     Click item in column    2    1
     Click item in column    3    2
     Click item in column    4    1
-    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]
-    Press Keys    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]    Anot
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]
+    Type Text    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]    Anot
     # here we need a timeout, because the search filter is not so fast like the testbrowser, it looks like a asynch operation
-    ${speed}    Get Selenium Speed
-    Set Selenium Speed    1 seconds
+    Sleep    1
     Click item in column    5    1
-    Set Selenium Speed    ${speed}
-    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
-    Wait Until Element Is Not Visible    //div[contains(@class,"content-browser-position-wrapper")]
-    Wait For Then Click Element    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
-    Wait Until Element Is Not Visible  css=.modal-footer input[name="insert"]
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
 I save the document
-    Click Button    //button[@id="form-buttons-save"]
+    Click    //button[@id="form-buttons-save"]
 
 
 
@@ -257,13 +246,6 @@ the document contain the uploaded image
 
 #--- Helper DRY -------------------------------------------------------------
 
-Fill text to tinymce editor
-    [arguments]    ${text}
-    Wait Until Element Is Visible    css=.tox-edit-area iframe
-    Select Frame    css=.tox-edit-area iframe
-    Input Text    //body[@id="tinymce"]    ${text}
-    UnSelect Frame
-
 image is releated item
     [arguments]    ${xpath}    ${imagepath}
     Element exists    ${xpath}    src    ${imagepath}
@@ -274,11 +256,8 @@ rendered textfield contain the image with title
 
 Element exists
     [arguments]  ${xpath}    ${attr}    ${value}
-    ${element}=    Set Variable    ${xpath}
-    Element Should Be Visible    ${element}
-    ${_attr}=  Get Element Attribute    ${element}    ${attr}
-    Should End With    ${_attr}    ${value}
+    Wait for condition    Attribute    ${xpath}    ${attr}    should end with    ${value}
 
 Click item in column
     [arguments]  ${colnumber}    ${itemposition}
-    Wait For Then Click Element  //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[${colnumber}]/div[contains(@class, "levelItems")]/div[${itemposition}]
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[${colnumber}]/div[contains(@class, "levelItems")]/div[${itemposition}]
