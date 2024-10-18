@@ -17,8 +17,8 @@ Scenario: Select All items
       and a folder with four pages
       and the folder contents view
      When I select all the elements
-     Then the selection count appears
       and the four elements got selected
+     Then the selection count appears
       and the clear selection link appears
 
     When I clear the selection
@@ -65,20 +65,15 @@ I click the '${link_name}' link
 
 I select all the elements
     Wait For Condition    Classes    //body    contains    patterns-loaded
-    Check Checkbox    //*[contains(@class,"pat-structure")]//input[contains(@class,"select-all")]
-    Sleep    5s
+    Check Checkbox    //input[@id="selectAllInputCheckbox"]
 
 the four elements got selected
-    Get Checkbox State      //tr[@data-id="doc1"]//input    should be    True
-    Get Checkbox State      //tr[@data-id="doc2"]//input    should be    True
-    Get Checkbox State      //tr[@data-id="doc3"]//input    should be    True
-    Get Checkbox State      //tr[@data-id="doc4"]//input    should be    True
+    Wait For Elements State    //tr[@data-id="doc1"]//input    checked    timeout=20s
+    Wait For Elements State    //tr[@data-id="doc2"]//input    checked    timeout=20s
+    Wait For Elements State    //tr[@data-id="doc3"]//input    checked    timeout=20s
+    Wait For Elements State    //tr[@data-id="doc4"]//input    checked    timeout=20s
 
 the selection count appears
-    Wait For Condition    Checkbox State    //tr[@data-id="doc1"]//input    should be    True
-    Wait For Condition    Checkbox State    //tr[@data-id="doc2"]//input    should be    True
-    Wait For Condition    Checkbox State    //tr[@data-id="doc3"]//input    should be    True
-    Wait For Condition    Checkbox State    //tr[@data-id="doc4"]//input    should be    True
     Get Text    //*[@id="btn-selected-items"]//*[contains(@class,"label-success")]    should be    4
 
 the clear selection link appears
