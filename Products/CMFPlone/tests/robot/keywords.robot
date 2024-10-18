@@ -82,7 +82,7 @@ Fill text to tinymce editor
     ...    }
     ...    all_elements=False
 
-    Sleep    0.5
+    Sleep    2s
 
     ${check}=    Evaluate JavaScript    //textarea[@name="${attr_name}"]
     ...    (elem) => {
