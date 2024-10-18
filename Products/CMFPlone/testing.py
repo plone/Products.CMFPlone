@@ -17,6 +17,13 @@ from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
 from zope.component import getSiteManager
 from zope.configuration import xmlconfig
+from plone.autoform.form import AutoExtensibleForm
+from plone.app.z3cform.widget import SelectWidget
+from plone.autoform import directives
+from z3c.form import form
+from zope.schema import Choice
+from zope.schema import List
+from zope.interface import Interface
 
 import doctest
 
@@ -115,3 +122,24 @@ PRODUCTS_CMFPLONE_DISTRIBUTIONS_INTEGRATION_TESTING = IntegrationTesting(
 )
 
 optionflags = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE
+
+
+class ITestSelectWidgetSchema(Interface):
+
+    directives.widget('select_field', SelectWidget)
+    select_field = Choice(
+        title=u'Select Widget',
+        values=['one', 'two', 'three', ]
+    )
+
+    directives.widget('list_field', SelectWidget)
+    list_field = List(
+        title=u'Select Multiple Widget',
+        value_type=Choice(values=['four', 'five', 'six', ]),
+    )
+
+
+class TestSelectWidgetForm(AutoExtensibleForm, form.EditForm):
+
+    schema = ITestSelectWidgetSchema
+    ignoreContext = True
