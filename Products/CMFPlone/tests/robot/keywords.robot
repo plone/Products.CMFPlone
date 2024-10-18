@@ -76,17 +76,12 @@ Fill text to tinymce editor
 
     Sleep    1
 
-    Evaluate JavaScript    //textarea[@name="${attr_name}"]
-    ...    (elem, text) => {
-    ...        elem["pattern-tinymce"].instance.tiny.setContent('${input}');
-    ...    }
-    ...    all_elements=False
-
-    Sleep    2s
-
     ${check}=    Evaluate JavaScript    //textarea[@name="${attr_name}"]
-    ...    (elem) => {
-    ...        return elem["pattern-tinymce"].instance.tiny.getContent();
+    ...    (elem, text) => {
+    ...        const tiny = window.tinymce.get(elem.getAttribute("id"));
+    ...        let input_text = "";
+    ...        tiny.setContent('${input}');
+    ...        return tiny.getContent();
     ...    }
     ...    all_elements=False
 

@@ -144,9 +144,9 @@ success message should contain information regarding caching
 Mark text heading as h1 in tinymce editor
 
     # select the text `heading` via javascript
-    Evaluate JavaScript    ${None}
-    ...    () => {
-    ...        let iframe_document = document.querySelector(".tox-edit-area iframe").contentDocument;
+    Evaluate JavaScript    //div[contains(@class, 'tox-edit-area')]//iframe
+    ...    (elem, args) => {
+    ...        let iframe_document = elem.contentDocument;
     ...        let body = iframe_document.body;
     ...        let p = body.firstChild;
     ...        let range = new Range();
