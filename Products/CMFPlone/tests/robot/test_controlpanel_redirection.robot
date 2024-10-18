@@ -97,7 +97,7 @@ I can download all redirects as CSV
 
     Import library    OperatingSystem
 
-    ${dl_promise}    Promise To Wait For Download    saveAs=/tmp/redirections.csv
+    ${dl_promise}    Promise To Wait For Download    saveAs=redirections.csv
     Click    //button[@name="form.button.Download"]
     ${file_obj}=    Wait For    ${dl_promise}
     File Should Exist    ${file_obj}[saveAs]
