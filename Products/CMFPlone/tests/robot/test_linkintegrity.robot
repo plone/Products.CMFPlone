@@ -57,7 +57,7 @@ a page to edit
 # When
 I add a link in rich text
     Go To    ${PLONE_URL}/bar/edit
-    Fill text to tinymce editor    form.widgets.IRichTextBehavior.text    foo
+    Fill text to tinymce editor    form.widgets.IRichTextBehavior.text    <p>foo</p>
     Mark text foo in tinymce editor
     Click    //button[@aria-label="Insert/edit link"]
     Click    //div[contains(@class,"linkModal")]//div[contains(@class,"content-browser-selected-items-wrapper")]//button[contains(@class,"btn-primary")]
