@@ -90,12 +90,14 @@ I edit the document
 
 I do not see the standard editor when I create a document
     Go To  ${PLONE_URL}/++add++Document
+    Wait For Condition    Classes    //body    contains    patterns-loaded
     Get Element Count    //*[@id="formfield-form-widgets-IRichTextBehavior-text"]/div[@role="application"]    should be    0
     Get Element States    //textarea[@name="form.widgets.IRichTextBehavior.text"]    contains    visible
 
 
 I see the standard editor when I create a document
     Go To  ${PLONE_URL}/++add++Document
+    Wait For Condition    Classes    //body    contains    patterns-loaded
     Get Element Count    //*[@id="formfield-form-widgets-IRichTextBehavior-text"]/div[@role="application"]    should be    1
     Get Element States    //textarea[@name="form.widgets.IRichTextBehavior.text"]    contains    hidden
 
