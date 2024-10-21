@@ -57,7 +57,7 @@ a page to edit
 # When
 I add a link in rich text
     Go To    ${PLONE_URL}/bar/edit
-    Fill text to tinymce editor    form.widgets.IRichTextBehavior.text    <p>foo</p>
+    Fill text to tinymce editor    foo
     Mark text foo in tinymce editor
     Click    //button[@aria-label="Insert/edit link"]
     Click    //div[contains(@class,"linkModal")]//div[contains(@class,"content-browser-selected-items-wrapper")]//button[contains(@class,"btn-primary")]
@@ -70,7 +70,7 @@ I add a link in rich text
 I remove link to page
     Go To    ${PLONE_URL}/bar
     Click    //*[@id="contentview-edit"]//a
-    Fill text to tinymce editor    form.widgets.IRichTextBehavior.text    foo
+    Fill text to tinymce editor    foo
     Mark text foo in tinymce editor
     Click    //button[@aria-label="Remove link"]
     Click    //button[@name="form.buttons.save"]

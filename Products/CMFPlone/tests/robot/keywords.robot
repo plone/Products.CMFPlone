@@ -70,20 +70,38 @@ Remove line from textarea
 
 
 Fill text to tinymce editor
-    [Arguments]    ${attr_name}    ${input}
+    [Arguments]    ${text}
 
-    Wait For Condition    Attribute    //body    class    contains    patterns-loaded
+    Wait For Condition    Classes    //body    contains    patterns-loaded
 
-    Sleep    1
+    ${old} =    Set Selector Prefix    //div[contains(@class, "tox-edit-area")]//iframe >>>
+    Wait for Condition    Element States    //body    contains    visible
+    Type Text    //body    ${text}
+    Wait for Condition    Text    //body   !=    ""
+    Set Selector Prefix    ${old}
 
-    Evaluate JavaScript    //textarea[@name="${attr_name}"]
-    ...    (elem, text) => {
-    ...        const tiny = window.tinymce.get(elem.getAttribute("id"));
-    ...        tiny.setContent('${input}');
-    ...    }
-    ...    all_elements=False
+Fill source code to tinymce editor
+    [Arguments]    ${source_code}
 
-    Wait for Condition    Text    //div[contains(@class, 'tox-edit-area')]//iframe >>> body   !=    ""
+    Wait For Condition    Classes    //body    contains    patterns-loaded
+    Wait For Condition    Element States    //div[contains(@class,"tox-tinymce") and @role="application"]    contains    visible
+    Wait for Condition    Element States    //div[contains(@class, "tox-edit-area")]//iframe >>> body    contains    visible
+
+    # Click the View menu button
+    Click    //span[contains(@class,"tox-mbtn__select-label") and contains(text(),"View")]/parent::button
+    Wait for Condition    Element States    //div[@class="tox-collection__group"]    contains    visible
+
+    # Click the Source code menu button
+    Click    //div[@class="tox-collection__item-label" and contains(text(),"Source code")]/parent::div
+
+    # Open dialog for source code insert
+    ${textarea}=    Get Element    //textarea[@class="tox-textarea"]
+    Wait for Condition    Element States    ${textarea}    contains    visible
+    Type Text    ${textarea}    ${source_code}
+    # Save
+    Click    //button[@class="tox-button" and contains(text(),"Save")]
+
+    Wait for Condition    Text    //div[contains(@class, "tox-edit-area")]//iframe >>> body   !=    ""
 
 
 Pause
