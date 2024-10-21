@@ -76,16 +76,14 @@ Fill text to tinymce editor
 
     Sleep    1
 
-    ${check}=    Evaluate JavaScript    //textarea[@name="${attr_name}"]
+    Evaluate JavaScript    //textarea[@name="${attr_name}"]
     ...    (elem, text) => {
     ...        const tiny = window.tinymce.get(elem.getAttribute("id"));
-    ...        let input_text = "";
     ...        tiny.setContent('${input}');
-    ...        return tiny.getContent();
     ...    }
     ...    all_elements=False
 
-    Should not be empty    ${check}
+    Wait for Condition    Text    //div[contains(@class, 'tox-edit-area')]//iframe >>> body   !=    ""
 
 
 Pause
