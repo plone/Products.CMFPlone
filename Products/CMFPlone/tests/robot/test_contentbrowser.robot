@@ -155,7 +155,7 @@ I select two related item images via contentbrowser
 
 I set an internal link via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
-    Fill text to tinymce editor    form.widgets.IRichTextBehavior.text    <p>Susi Sorglos and John Doe</p>
+    Fill text to tinymce editor    Susi Sorglos and John Doe
     Evaluate JavaScript   //div[contains(@class, 'tox-edit-area')]//iframe
     ...    (elem, args) => {
     ...        const iframe_document = elem.contentDocument;
@@ -176,7 +176,7 @@ I set an internal link via contentbrowser
 
 I set an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
-    Fill text to tinymce editor    form.widgets.IRichTextBehavior.text    <p>Susi Sorglos and John Doe</p>
+    Fill text to tinymce editor    Susi Sorglos and John Doe
     Click    //button[@aria-label='Insert/edit image']
     Click    css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
@@ -187,7 +187,7 @@ I set an image via contentbrowser
 
 I upload an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
-    Fill text to tinymce editor    form.widgets.IRichTextBehavior.text    <p>Susi Sorglos and John Doe</p>
+    Fill text to tinymce editor    Susi Sorglos and John Doe
     Click    //button[@aria-label="Insert/edit image"]
     Click    css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3
@@ -201,7 +201,7 @@ I upload an image via contentbrowser
 
 I search and select an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
-    Fill text to tinymce editor    form.widgets.IRichTextBehavior.text    <p>Susi Sorglos and John Doe</p>
+    Fill text to tinymce editor    Susi Sorglos and John Doe
     Click    //button[@aria-label="Insert/edit image"]
     Click    css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
     Click item in column    1    3

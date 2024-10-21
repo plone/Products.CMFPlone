@@ -43,7 +43,7 @@ an uploaded image
     Create content  type=Image  title=an-image
 
 text inserted into wysiwyg
-    Fill text to tinymce editor    form.widgets.IRichTextBehavior.text    <p>Susi Sorglos and John Doe</p>
+    Fill text to tinymce editor    Susi Sorglos and John Doe
 
 insert link
     Evaluate JavaScript   //div[contains(@class, 'tox-edit-area')]//iframe
