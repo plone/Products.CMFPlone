@@ -349,7 +349,6 @@ I activate the operator ${OPERATOR} in the criteria ${CRITERIA}
     mark results
     open the select box titled operator
     select index type ${OPERATOR}
-    Pause
 
 
 I search in ${NAME} subfolder in the related items widget
