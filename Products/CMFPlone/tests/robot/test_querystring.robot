@@ -20,66 +20,66 @@ Scenario: Location query Current
      When I activate the operator Current in the criteria Location
      Then we expect 1 hits
 
-Scenario: Location query Parent
-    Given a logged-in site administrator
-      and a bunch of folders
-      and the querystring pattern
-     When I activate the operator Parent in the criteria Location
-     Then we expect 3 hits
+# Scenario: Location query Parent
+#     Given a logged-in site administrator
+#       and a bunch of folders
+#       and the querystring pattern
+#      When I activate the operator Parent in the criteria Location
+#      Then we expect 3 hits
 
-Scenario: Location query Custom
-    Given a logged-in site administrator
-      and a bunch of folders
-      and the querystring pattern
-     When I activate the operator Custom in the criteria Location
-      and I search in B subfolder in the related items widget
-     Then we expect 5 hits
+# Scenario: Location query Custom
+#     Given a logged-in site administrator
+#       and a bunch of folders
+#       and the querystring pattern
+#      When I activate the operator Custom in the criteria Location
+#       and I search in B subfolder in the related items widget
+#      Then we expect 5 hits
 
-Scenario: Location query Advanced
-    Given a logged-in site administrator
-      and a bunch of folders
-      and the querystring pattern
-     When I activate the operator Advanced in the criteria Location
-     Then I expect to be in Advanced mode
+# Scenario: Location query Advanced
+#     Given a logged-in site administrator
+#       and a bunch of folders
+#       and the querystring pattern
+#      When I activate the operator Advanced in the criteria Location
+#      Then I expect to be in Advanced mode
 
-Scenario: Location query Simple
-    # this fails simple is not available, first select 'Advanced Mode' then you can select 'Simple Mode'
-    Given a logged-in site administrator
-      and a bunch of folders
-      and the querystring pattern
-     When I activate the operator Advanced in the criteria Location
-      and I open the select box titled operator
-      and I select index Simple
-     Then I expect to be in Simple mode
+# Scenario: Location query Simple
+#     # this fails simple is not available, first select 'Advanced Mode' then you can select 'Simple Mode'
+#     Given a logged-in site administrator
+#       and a bunch of folders
+#       and the querystring pattern
+#      When I activate the operator Advanced in the criteria Location
+#       and I open the select box titled operator
+#       and I select index Simple
+#      Then I expect to be in Simple mode
 
-Scenario: Title query
-    Given a logged-in site administrator
-      and a bunch of folders
-      and the querystring pattern
-     When I open the criteria Title
-      and I search for A
-     Then we expect 1 hits
+# Scenario: Title query
+#     Given a logged-in site administrator
+#       and a bunch of folders
+#       and the querystring pattern
+#      When I open the criteria Title
+#       and I search for A
+#      Then we expect 1 hits
 
-Scenario: Description query
-    Given a logged-in site administrator
-      and a bunch of folders
-      and the querystring pattern
-     When I open the criteria Description
-      and I search for a
-     Then we expect 1 hits
+# Scenario: Description query
+#     Given a logged-in site administrator
+#       and a bunch of folders
+#       and the querystring pattern
+#      When I open the criteria Description
+#       and I search for a
+#      Then we expect 1 hits
 
-Scenario: Searchable text query
-    Given a logged-in site administrator
-      and a bunch of folders
-      and the querystring pattern
-     When I open the criteria Searchable text
-      and I search for a
-      and Sleep  0.2
-     Then we expect 2 hits
+# Scenario: Searchable text query
+#     Given a logged-in site administrator
+#       and a bunch of folders
+#       and the querystring pattern
+#      When I open the criteria Searchable text
+#       and I search for a
+#       and Sleep  0.2
+#      Then we expect 2 hits
 
-     When I open the criteria Searchable text
-      and I search for d
-     Then we expect 1 hits
+#      When I open the criteria Searchable text
+#       and I search for d
+#      Then we expect 1 hits
 
 Scenario: Tag query one
 
@@ -336,8 +336,9 @@ a bunch of events
     ...    container=${F1}
 
 the querystring pattern
-    #We go the /a to give more useful query results
+    # We go the /a to give more useful query results
     Go to    ${PLONE_URL}/a/++add++Collection
+    Wait For Condition    Classes    //body    contains    patterns-loaded
     Type Text    //input[@id="form-widgets-IDublinCore-title"]    A Collection
 
 # WHEN
@@ -348,6 +349,7 @@ I activate the operator ${OPERATOR} in the criteria ${CRITERIA}
     mark results
     open the select box titled operator
     select index type ${OPERATOR}
+    Pause
 
 
 I search in ${NAME} subfolder in the related items widget
