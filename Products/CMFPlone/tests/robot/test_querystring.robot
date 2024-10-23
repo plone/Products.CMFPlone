@@ -336,8 +336,9 @@ a bunch of events
     ...    container=${F1}
 
 the querystring pattern
-    #We go the /a to give more useful query results
+    # We go the /a to give more useful query results
     Go to    ${PLONE_URL}/a/++add++Collection
+    Wait For Condition    Classes    //body    contains    patterns-loaded
     Type Text    //input[@id="form-widgets-IDublinCore-title"]    A Collection
 
 # WHEN
