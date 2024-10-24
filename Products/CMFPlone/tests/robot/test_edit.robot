@@ -110,20 +110,20 @@ I click the ${tab} tab
 
 I select a related item
     # Click the select button
-    Click    //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//button
+    Click    //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//a[contains(@class, "btn-primary")]
     # Click first element in first column
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[1]
+    Click item in contenbrowser column    1    1
     # Click the select Button in the Toolbar of column 2
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelToolbar")]/button
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelToolbar")]//button[contains(@class, "btn-primary")]
 
 I select a linked item
     # Click the select button
-    Click  //div[@id="formfield-form-widgets-remoteUrl"]//button
+    Click  //div[@id="formfield-form-widgets-remoteUrl"]//a[contains(@class, "btn-primary")]
     # Click first element in first column
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[1]
+    Click item in contenbrowser column    1    1
     # Click the select Button in the Toolbar of column 2
     # This selects the "test-folder"
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelToolbar")]/button
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelToolbar")]//button[contains(@class, "btn-primary")]
 
 I save the page
     Click    //button[@name="form.buttons.save"]
@@ -170,6 +170,7 @@ no other tab is shown
 
 at least one other item
     Go to    ${PLONE_URL}/++add++Document
+    Wait For Condition    Classes    //body    contains    patterns-loaded
     Type Text    //input[@id="form-widgets-IDublinCore-title"]    ${TITLE}
     Click    //button[@name="form.buttons.save"]
     Get Text    //body    contains    Item created

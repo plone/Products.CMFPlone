@@ -69,6 +69,12 @@ Remove line from textarea
     Type Text    //textarea[@name="${fieldName}"]    ${lines}
 
 
+Click item in contenbrowser column
+    [arguments]  ${colnumber}    ${itemposition}
+    Wait For Condition    Element States    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[${colnumber}]/div[contains(@class, "levelItems")]/div[${itemposition}]    contains    visible
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[${colnumber}]/div[contains(@class, "levelItems")]/div[${itemposition}]
+
+
 Fill text to tinymce editor
     [Arguments]    ${text}
 

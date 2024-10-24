@@ -114,17 +114,17 @@ I select a related item image via contentbrowser
    # Click the Categorization Tab
    Click    //a[@id="autotoc-item-autotoc-2"]
    # Click the select button
-   Click    //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//button
+   Click    //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//a[contains(@class, "btn-primary")]
    # Click third element in first column, that is the "Assets" folder
-   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[4]
+   Click item in contenbrowser column    1    4
    # Click first element in second column, that is the "Mixed" folder
-   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelItems")]/div[1]
+   Click item in contenbrowser column    2    1
    # Click fifth element in third column, that is the "Files" folder
-   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelItems")]/div[5]
+   Click item in contenbrowser column    3    5
    # Click third element in fourth column, that is the "Images" folder
-   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[4]/div[contains(@class, "levelItems")]/div[3]
+   Click item in contenbrowser column    4    3
    # Click second element in fifth column, that is the "Image2" Object
-   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[2]
+   Click item in contenbrowser column    5    2
    # Click the select Button in the Toolbar of column 6
    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[6]/div[contains(@class, "levelToolbar")]/button
 
@@ -134,19 +134,19 @@ I select two related item images via contentbrowser
    # Click the Categorization Tab
    Click    //a[@id="autotoc-item-autotoc-2"]
    # Click the select button
-   Click    //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//button
+   Click    //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//a[contains(@class, "btn-primary")]
    # Click third element in first column, that is the "Assets" folder
-   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[4]
+   Click item in contenbrowser column    1    4
    # Click first element in second column, that is the "Mixed" folder
-   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelItems")]/div[1]
+   Click item in contenbrowser column    2    1
    # Click fifth element in third column, that is the "Files" folder
-   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelItems")]/div[5]
+   Click item in contenbrowser column    3    5
    # Click third element in fourth column, that is the "Images" folder
-   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[4]/div[contains(@class, "levelItems")]/div[3]
+   Click item in contenbrowser column    4    3
 
    # now we select two items in a colum via Shift+Click
    # Click first element in fifth column, that is the "Image1" Object
-   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[1]
+   Click item in contenbrowser column    5    1
    # Click second element in fifth column with SHIFT, that is the "Image2" Object
    Click With Options    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[5]/div[contains(@class, "levelItems")]/div[2]    left    Shift
    # Click the select Button in the Toolbar of column 6
@@ -168,51 +168,47 @@ I set an internal link via contentbrowser
     ...        iframe_document.getSelection().addRange(range);
     ...    }
     ...    all_elements=False
-    Click    //button[@aria-label='Insert/edit link']
-    Click    css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
-    Click item in column    1    3
+    Click tiny button and open contentbrowser    Insert/edit link
+    Click item in contenbrowser column    1    3
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
     Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
 I set an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
     Fill text to tinymce editor    Susi Sorglos and John Doe
-    Click    //button[@aria-label='Insert/edit image']
-    Click    css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
-    Click item in column    1    3
-    Click item in column    2    1
-    Click item in column    3    1
+    Click tiny button and open contentbrowser    Insert/edit image
+    Click item in contenbrowser column    1    3
+    Click item in contenbrowser column    2    1
+    Click item in contenbrowser column    3    1
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
     Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
 I upload an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
     Fill text to tinymce editor    Susi Sorglos and John Doe
-    Click    //button[@aria-label="Insert/edit image"]
-    Click    css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
-    Click item in column    1    3
-    Click item in column    2    1
+    Click tiny button and open contentbrowser    Insert/edit image
+    Click item in contenbrowser column    1    3
+    Click item in contenbrowser column    2    1
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//button[contains(@class,"upload")]
     Upload File By Selector    //div[contains(@class,"pat-upload")]//input[@class="dz-hidden-input"]    ${PATH_TO_TEST_FILES}/plone-logo.png
     Click    //div[contains(@class,"pat-upload")]//button[contains(@class,"upload-all")]
-    Click item in column    3    3
+    Click item in contenbrowser column    3    3
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
     Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
 I search and select an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
     Fill text to tinymce editor    Susi Sorglos and John Doe
-    Click    //button[@aria-label="Insert/edit image"]
-    Click    css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
-    Click item in column    1    3
-    Click item in column    2    1
-    Click item in column    3    2
-    Click item in column    4    1
+    Click tiny button and open contentbrowser    Insert/edit image
+    Click item in contenbrowser column    1    3
+    Click item in contenbrowser column    2    1
+    Click item in contenbrowser column    3    2
+    Click item in contenbrowser column    4    1
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]
     Type Text    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]    Anot
     # here we need a timeout, because the search filter is not so fast like the testbrowser, it looks like a asynch operation
     Sleep    1
-    Click item in column    5    1
+    Click item in contenbrowser column    5    1
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
     Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
@@ -258,6 +254,8 @@ Element exists
     [arguments]  ${xpath}    ${attr}    ${value}
     Wait for condition    Attribute    ${xpath}    ${attr}    should end with    ${value}
 
-Click item in column
-    [arguments]  ${colnumber}    ${itemposition}
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[${colnumber}]/div[contains(@class, "levelItems")]/div[${itemposition}]
+Click tiny button and open contentbrowser
+    [arguments]  ${label}
+    Click    //button[@aria-label="${label}"]
+    Wait for Condition    Element States    //div[@class="linkModal"]    contains    visible
+    Click    //div[@class="linkModal"]//div[contains(@class, "content-browser-selected-items-wrapper")]//a[contains(@class, "btn-primary")]

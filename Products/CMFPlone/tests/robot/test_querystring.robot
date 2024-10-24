@@ -32,7 +32,7 @@ Scenario: Location query Custom
       and a bunch of folders
       and the querystring pattern
      When I activate the operator Custom in the criteria Location
-      and I search in B subfolder in the related items widget
+      and I search in B subfolder in the contentbrowser widget
      Then we expect 5 hits
 
 Scenario: Location query Advanced
@@ -351,12 +351,11 @@ I activate the operator ${OPERATOR} in the criteria ${CRITERIA}
     select index type ${OPERATOR}
 
 
-I search in ${NAME} subfolder in the related items widget
+I search in ${NAME} subfolder in the contentbrowser widget
     mark results
-    Click    //div[@class="pat-relateditems-container"]//ul[@class="select2-choices"]
-    # I have seen this fail sometimes, where the screen shot showed the NAME just fine.
-    Sleep    0.1
-    Click    //a[contains(concat(' ', normalize-space(@class), ' '), ' pat-relateditems-result-select ')]//span[contains(text(),'${NAME}')]
+    Click    //div[@class="querystring-criteria-value"]//div[contains(@class, "content-browser-selected-items-wrapper")]//a[contains(@class, "btn-primary")]
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumn")]//div[contains(@class, "item-title")][text()[contains(.,'${NAME}')]]
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelToolbar")]/button
 
 
 I open the select box titled operator

@@ -60,9 +60,9 @@ I add a link in rich text
     Fill text to tinymce editor    foo
     Mark text foo in tinymce editor
     Click    //button[@aria-label="Insert/edit link"]
-    Click    //div[contains(@class,"linkModal")]//div[contains(@class,"content-browser-selected-items-wrapper")]//button[contains(@class,"btn-primary")]
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[3]
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Click    //div[contains(@class,"linkModal")]//div[contains(@class,"content-browser-selected-items-wrapper")]//a[contains(@class,"btn-primary")]
+    Click item in contenbrowser column    1    3
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]//button[contains(@class, "btn-primary")]
     Click    //div[contains(@class,"modal-footer")]//input[@name="insert"]
     Click    //button[@name="form.buttons.save"]
     Get Text    //body    contains    Changes saved
