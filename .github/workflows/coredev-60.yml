@@ -1,0 +1,7 @@
+# This is a GitHub Action for testing a PR of the current package on buildout.coredev.
+# See https://github.com/plone/.github/blob/main/.github/workflows/coredev-60.yml
+name: Test PR on buildout.coredev 6.0
+on: pull_request
+jobs:
+  test-coredev:
+    uses: plone/.github/.github/workflows/coredev-60.yml@main
