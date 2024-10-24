@@ -124,7 +124,7 @@
             </div>
 
             <small class="formHelp form-text text-muted" i18n:translate="help_target_path">
-              Enter the absolute path of the target. The path must start with '/'.
+              Enter the absolute path of the target.
               Target must exist or be an existing alternative url path to the target.
             </small>
 

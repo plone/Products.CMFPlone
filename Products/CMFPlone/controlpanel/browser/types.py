@@ -169,12 +169,12 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
 
                 searchable = form.get("searchable", False)
                 site_settings = registry.forInterface(ISearchSchema, prefix="plone")
-                blacklisted = [i for i in site_settings.types_not_searched]
-                if searchable and type_id in blacklisted:
-                    blacklisted.remove(type_id)
-                elif not searchable and type_id not in blacklisted:
-                    blacklisted.append(type_id)
-                site_settings.types_not_searched = tuple(blacklisted)
+                denylisted = [i for i in site_settings.types_not_searched]
+                if searchable and type_id in denylisted:
+                    denylisted.remove(type_id)
+                elif not searchable and type_id not in denylisted:
+                    denylisted.append(type_id)
+                site_settings.types_not_searched = tuple(denylisted)
 
                 default_page_type = form.get("default_page_type", False)
                 types_settings = registry.forInterface(ITypesSchema, prefix="plone")
@@ -307,8 +307,8 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
     def is_searchable(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISearchSchema, prefix="plone")
-        blacklisted = settings.types_not_searched
-        return self.type_id not in blacklisted
+        denylisted = settings.types_not_searched
+        return self.type_id not in denylisted
 
     def is_default_page_type(self):
         registry = getUtility(IRegistry)

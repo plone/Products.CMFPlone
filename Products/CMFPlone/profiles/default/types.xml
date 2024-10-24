@@ -4,9 +4,6 @@
 >
   <property name="title">Controls the available content types in your portal</property>
   <object meta_type="Factory-based Type Information"
-          name="Discussion Item"
-  />
-  <object meta_type="Factory-based Type Information"
           name="TempFolder"
   />
   <object meta_type="Dexterity FTI"

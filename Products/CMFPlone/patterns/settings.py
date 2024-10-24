@@ -48,8 +48,8 @@ class PatternSettingsAdapter:
             data = {
                 "data-pat-structureupdater": json.dumps(
                     {
-                        "titleSelector": ".documentFirstHeading",
-                        "descriptionSelector": ".documentDescription",
+                        "titleSelector": "header > h1",
+                        "descriptionSelector": "p.lead",
                     }
                 )
             }

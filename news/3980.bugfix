@@ -1,0 +1,6 @@
+Update robot tests for new `pat-contentbrowser` pattern.
+[petschki]
+
+- Make tests more robust for new `pat-contentbrowser` pattern.
+- add more robot tests for `pat-contentbrowser` pattern.
+[1letter]

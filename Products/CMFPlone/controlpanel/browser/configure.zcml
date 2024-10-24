@@ -4,18 +4,6 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     >
 
-  <permission
-      id="plone.app.controlpanel.Imaging"
-      title="Plone Site Setup: Imaging"
-      />
-
-  <permission
-      id="plone.app.controlpanel.TinyMCE"
-      title="Plone Site Setup: TinyMCE"
-      >
-    <role name="Manager" />
-  </permission>
-
   <!-- Control Panel Main Template -->
   <browser:page
       name="prefs_main_template"
@@ -323,16 +311,6 @@
       for="plone.base.interfaces.IPloneSiteRoot"
       class=".actions.NewActionControlPanel"
       permission="cmf.ManagePortal"
-      />
-
-  <permission
-      id="Products.CMFPlone.ManagePortalAliases"
-      title="Manage Portal Aliases"
-      />
-
-  <permission
-      id="Products.CMFPlone.ManageContextAliases"
-      title="Manage Context Aliases"
       />
 
   <browser:page

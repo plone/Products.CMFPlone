@@ -1,8 +1,6 @@
 *** Settings *****************************************************************
 
-Resource  plone/app/robotframework/keywords.robot
-Resource  plone/app/robotframework/saucelabs.robot
-Resource  plone/app/robotframework/selenium.robot
+Resource  plone/app/robotframework/browser.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -28,8 +26,8 @@ Scenario: A page is opened to edit in TinyMCE
       and insert link
       and insert image
 
-    Wait For Then Click Element  css=#form-buttons-save
-    Wait until page contains  Changes saved
+    Click    //*[@id="form-buttons-save"]
+    Get Text    //body    contains    Changes saved
 
 
 *** Keywords *****************************************************************
@@ -39,39 +37,38 @@ Scenario: A page is opened to edit in TinyMCE
 an edited page
     Create content  type=Document  title=${TITLE}
     Go to  ${PLONE_URL}/${PAGE_ID}/edit
-    Wait until page contains  Edit Page
+    Get Text    //body    contains    Edit Page
 
 an uploaded image
     Create content  type=Image  title=an-image
 
 text inserted into wysiwyg
-    Wait Until Element Is Visible  css=.tox-edit-area iframe
-    Select Frame  css=.tox-edit-area iframe
-    Input text  css=.mce-content-body  foobar
-    UnSelect Frame
+    Fill text to tinymce editor    Susi Sorglos and John Doe
 
 insert link
-    Select Frame  css=.tox-edit-area iframe
-    Execute Javascript    function selectElementContents(el) {var range = document.createRange(); range.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);} var el = document.getElementById("tinymce"); selectElementContents(el);
-    UnSelect Frame
-    Click Button  css=button[aria-label="Insert/edit link"]
-    Click Button  css=.pat-relateditems-container button.favorites
-    Click Link  css=.pat-relateditems-container .favorites a.fav[href='/']
-    Wait Until Element Is Visible  css=.pat-relateditems-result-select.selectable
-    Click Link  css=.pat-relateditems-result-select.selectable
-    Click Button  css=.modal-footer input[name="insert"]
-    Select Frame  css=.tox-edit-area iframe
-    Execute Javascript  window.getSelection().removeAllRanges()
-    UnSelect Frame
-    Wait Until Element Is Not Visible  css=.modal-footer input[name="insert"]
+    Evaluate JavaScript   //div[contains(@class, 'tox-edit-area')]//iframe
+    ...    (elem, args) => {
+    ...        const iframe_document = elem.contentDocument;
+    ...        const body = iframe_document.body;
+    ...        const p = body.firstChild;
+    ...        const range = new Range();
+    ...        range.setStart(p.firstChild, 5);
+    ...        range.setEnd(p.firstChild, 12);
+    ...        iframe_document.getSelection().removeAllRanges();
+    ...        iframe_document.getSelection().addRange(range);
+    ...    }
+    ...    all_elements=False
+    Click    //button[@aria-label='Insert/edit link']
+    Click    css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
+    Click    xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[3]
+    Click    xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
 insert image
-    Click Button  css=button[aria-label="Insert/edit image"]
-    Click Button  css=.pat-relateditems-container button.favorites
-    Click Link  css=.pat-relateditems-container .favorites a.fav[href='/']
-    Wait Until Element Is Visible  css=.pat-relateditems-result-select.selectable
-    Click Link  css=.pat-relateditems-result-select.selectable
-    Input Text  css=.modal-body [name="title"]  SomeTitle
-    Input Text  css=.modal-body [name="alt"]  SomeAlt
-    Click Button  css=.modal-footer input[name="insert"]
-    Wait Until Element Is Not Visible  css=.modal-footer input[name="insert"]
+    Click    //button[@aria-label="Insert/edit image"]
+    Click    css=.linkModal .content-browser-selected-items-wrapper button.btn-primary
+    Click    xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[3]
+    Click    xpath=//div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Type Text    //div[contains(@class, 'modal-body')]//input[@name="title"]    SomeTitle
+    Type Text    //div[contains(@class, 'modal-body')]//input[@name="alt"]    SomeAlt
+    Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]

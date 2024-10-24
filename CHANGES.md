@@ -15,6 +15,33 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.0a5 (2024-09-05)
+
+
+### Breaking changes:
+
+- Use `Products.isurlinportal` directly, instead of relying on it patching our `URLTool`.
+  This solves a cyclic dependency.
+  [maurits] #12
+- Turn plone.app.discussion in a core-addon.
+  [@jensens] #3782
+
+
+### Bug fixes:
+
+- Sort portal types in search filter according to `ReallyUserFriendlyTypes` using `unidecode` in `plone.app.vocabularies`. @rohnsha0 #3860
+- Do not use deprecated `base_hasattr` in `utils.py`.
+  [maurits] #3998
+- Use `five.registerPackage` so an editable install with `pip` works.
+  [maurits] #4002
+- Fix help text for redirect target path. @davisagli #4007
+
+
+### Internal:
+
+- Updated metadata version to 6104.
+  [maurits] #6104
+
 ## 6.1.0a4 (2024-08-01)
 
 
