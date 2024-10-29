@@ -77,8 +77,8 @@ def get_resource(context, path):
         # for FileResource
         result = resource.GET()
     elif isinstance(resource, File):
-        # An OFS.Image.File object
-        result = resource.data
+        # An OFS.Image.File object. use bytes() to resolve possible Pdata objects
+        return bytes(resource.data)
     elif callable(resource):
         # any BrowserView
         result = resource()
