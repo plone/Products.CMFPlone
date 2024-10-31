@@ -15,6 +15,72 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.0b1 (2024-10-31)
+
+
+### Breaking changes:
+
+- Only register the add site form and root Zope overview if `plone.distribution` is not available.
+  [maurits] #3961
+- Remove advanced options from Add Plone Site form.
+  If you need more options, you should add a Plone Distribution to your packages.
+  The main ones are `plone.volto` and `plone.classicui`.
+  We now only create a basic Plone site without default example content.
+  [maurits] #3961
+- `factory.addPloneSite`: remove `setup_content` and `content_profile_id` keyword arguments.
+  We no longer load default content. Use a Plone Distribution if you need this.
+  Or pass an extra profile id in the `extension_ids` keyword argument.
+  [maurits] #3961
+
+
+### New features:
+
+- make robot tests more robust
+  [1letter] #3813
+- Port robot tests to playwright based tests, use robotframework browser library
+
+  Remove obsolete robodocs
+  [1letter, petschki] #3813
+- You can pass a `distribution_name` to `factory.addPloneSite`.
+  We then pass all other arguments and keyword arguments to the `plone.distribution` site api.
+  [maurits] #3961
+- Redirection control panel: Added support for start and end filters. @Faakhir30 #4009
+- URL Management control panel: Find substring matches when querying aliases. @davisagli #4031
+
+
+### Bug fixes:
+
+- No longer hide plone.app.caching from Add-ons control panel.
+  It is a core add-on, so you should be able to activate it if you add the package later.
+  [maurits] #139
+- Update robot tests for new `pat-contentbrowser` pattern.
+  [petschki]
+
+  - Make tests more robust for new `pat-contentbrowser` pattern.
+  - add more robot tests for `pat-contentbrowser` pattern.
+  [1letter] #3980
+- Update `pat-structureupdater` selectors.
+  [petschki] #4011
+- Do not warn about missing profiles when they are registered in submodules of packages.
+  [petschki] #4015
+- Update for strict parsing in `email.utils.getaddresses` newest versions.
+  [petschki] #4020
+- Resource registry: Support OFS.Image.File objects.
+  [ale-rt, thet] #4022
+- Avoid POSKeyError when commit occurs and we have savepoint that involves Plone Site. @wesleybl #4026
+- move all permission definitions for controlpanels to unifed file from controlpanel directory
+  [jackahl] #4028
+- Robottest fixes for latest `pat-contentbrowser` updates.
+  [petschki] #4037
+- Fix uploading themes with large resources in theming control panel.
+  [petschki] #4038
+
+
+### Internal:
+
+- Updated metadata version to 6105.
+  [maurits] #6105
+
 ## 6.1.0a5 (2024-09-05)
 
 
