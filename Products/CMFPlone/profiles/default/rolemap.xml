@@ -16,6 +16,8 @@
     <permission acquire="True"
                 name="Access inactive portal content"
     >
+      <role name="Contributor" />
+      <role name="Editor" />
       <role name="Owner" />
       <role name="Site Administrator" />
     </permission>
