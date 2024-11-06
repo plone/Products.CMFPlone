@@ -276,27 +276,27 @@ I enter valid user data
 # THEN
 
 overlay should open
-    Get Element States    //div[contains(@class,"modal-dialog")]    contains    visible
+    Wait For Condition    Element States    //div[contains(@class,"modal-dialog")]    contains    visible
 
 
 overlay should close
-    Get Element Count    //div[contains(@class,"modal-dialog")]    should be    0
+    Wait For Condition    Element Count    //div[contains(@class,"modal-dialog")]    should be    0
 
 
 overlay should remain open
-    Get Element States    //div[contains(@class,"modal-wrapper")]    contains    visible
+    Wait For Condition    Element States    //div[contains(@class,"modal-wrapper")]    contains    visible
 
 
 login overlay shows an error
-    Get Text    //div[contains(@class,"modal-wrapper")]    contains    Error
+    Wait For Condition    Text    //div[contains(@class,"modal-wrapper")]    contains    Error
 
 
 overlay shows an error
-    Get Text    //div[contains(@class,"modal-wrapper")]    contains    There were errors
+    Wait For Condition    Text    //div[contains(@class,"modal-wrapper")]    contains    There were errors
 
 
 overlay requires to compile a field
-    Get Text    //div[contains(@class,"modal-wrapper")]    contains    Required input is missing
+    Wait For Condition    Text    //div[contains(@class,"modal-wrapper")]    contains    Required input is missing
 
 
 # DRY
