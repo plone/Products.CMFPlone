@@ -64,7 +64,8 @@
              data-pat-plone-modal='{
                 "actionOptions": {
                   "redirectOnResponse": true,
-                  "redirectToUrl": "${portal_url}/@@usergroup-userprefs"
+                  "redirectToUrl": "${portal_url}/@@usergroup-userprefs",
+                  "disableAjaxFormSubmit": true
                 }
               }'
              tal:attributes="href string:${portal_url}/@@new-user"
