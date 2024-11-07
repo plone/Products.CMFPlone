@@ -65,27 +65,27 @@ the actions control panel
 
 I modify an action title
     Click    //*[@id="content-core"]/section[2]/section/ol/li[1]/form/a
-    Get Text    //body    contains    Action Settings
+    Wait For Condition    Text    //body    contains    Action Settings
     Type Text    //input[@name="form.widgets.title"]    A new site map
     Click    //div[contains(@class,'pattern-modal-buttons')]/button
 
 
 I change the actions order
     Click    //*[@id="content-core"]/section[2]/section/ol/li[1]/form/a
-    Get Text    //body    contains    Action Settings
+    Wait For Condition    Text    //body    contains    Action Settings
     Type Text    //input[@name="form.widgets.position"]    3
     Click    //div[contains(@class,'pattern-modal-buttons')]/button
 
 
 I add a new action
     Click    //*[@id="content-core"]/p[@class="addAction"]/a
-    Get Text    //body    contains    New action
+    Wait For Condition    Text    //body    contains    New action
     Select Options By    //select[@name="form.widgets.category:list"]    label    User actions
     Type Text    //input[@name="form.widgets.id"]    favorites
     Click    //div[contains(@class,'pattern-modal-buttons')]/button
-    Get Text    //body    contains    favorites
+    Wait For Condition    Text    //body    contains    favorites
     Click    //*[@id="content-core"]/section[6]/section/ol/li[8]/form/a
-    Get Text    //body    contains    Action Settings
+    Wait For Condition    Text    //body    contains    Action Settings
     Type Text    //input[@name="form.widgets.title"]    My favorites
     Type Text    //input[@name="form.widgets.url_expr"]    string:\${globals_view/navigationRootUrl}/favorites
     Click    //div[contains(@class,'pattern-modal-buttons')]/button
