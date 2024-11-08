@@ -25,6 +25,13 @@ GRACEFUL_DEPENDENCY_REWRITE = {
 }
 
 
+def is_external_url(resource):
+    # we check if the resource string starts with http and //
+    # according to relative URI definition in
+    # https://www.ietf.org/rfc/rfc3986.txt chapter 4.2
+    return resource.startswith("http") or resource.startswith("//")
+
+
 class ResourceBase:
     """Information for script rendering.
 
@@ -138,7 +145,7 @@ class ResourceBase:
                 depends = check_dependencies(name, record.depends, js_names)
                 if depends == "__broken__":
                     continue
-                external = record.jscompilation.startswith("http")
+                external = is_external_url(record.jscompilation)
                 PloneScriptResource(
                     context=self.context,
                     name=name,
@@ -160,7 +167,7 @@ class ResourceBase:
                 depends = check_dependencies(name, record.depends, css_names)
                 if depends == "__broken__":
                     continue
-                external = record.csscompilation.startswith("http")
+                external = is_external_url(record.csscompilation)
                 PloneStyleResource(
                     context=self.context,
                     name=name,
@@ -187,7 +194,7 @@ class ResourceBase:
         # add Theme JS
         if themedata["production_js"]:
             # we ignore development_js for external detection
-            external = themedata["production_js"].startswith("http")
+            external = is_external_url(themedata["production_js"])
             PloneScriptResource(
                 context=self.context,
                 name="theme",
@@ -210,7 +217,7 @@ class ResourceBase:
         # add Theme CSS
         if themedata["production_css"]:
             # we ignore development_css for external detection
-            external = themedata["production_css"].startswith("http")
+            external = is_external_url(themedata["production_css"])
             PloneStyleResource(
                 context=self.context,
                 name="theme",
