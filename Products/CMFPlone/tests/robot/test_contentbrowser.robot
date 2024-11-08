@@ -16,6 +16,8 @@ Test Teardown  Run keywords  Plone Test Teardown
 
 ${ASSET_FOLDER}    asset-folder
 ${DOCUMENT_ID}    doc
+${LINK_ID}    internal-anchor
+
 
 *** Test cases ***************************************************************
 
@@ -66,6 +68,12 @@ Scenario: search and select an image via contentbrowser
       and I save the document
      Then the document contain the image by search
 
+Scenario: add contenttype Link with an internal target
+    Given a logged-in site administrator
+      and a Link
+     When I edit the Link
+     Then the internal target is added
+
 
 *** Keywords *****************************************************************
 
@@ -106,6 +114,9 @@ a nested asset folder
 
 a document
     Create content  type=Document  id=${DOCUMENT_ID}    title=My Page
+
+a Link
+    Create content  type=Link  id=${LINK_ID}    title=My Link
 
 # --- WHEN ------------------------------------------------------------------
 
@@ -215,7 +226,13 @@ I search and select an image via contentbrowser
 I save the document
     Click    //button[@id="form-buttons-save"]
 
-
+I edit the Link
+    Go to  ${PLONE_URL}/${LINK_ID}/edit
+    Click  //div[contains(@class, "content-browser-selected-items")]/a
+    # Click first element in first column, that is a folder
+    Click item in contenbrowser column    1    1
+    # Click the select Button in the Toolbar of column 2
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelToolbar")]/button
 
 # --- THEN ------------------------------------------------------------------
 
@@ -239,6 +256,8 @@ the document contain the image by search
 the document contain the uploaded image
     rendered textfield contain the image with title    plone-logo.png
 
+the internal target is added
+    Get Text    //div[contains(@class, "content-browser-selected-items")]//span[@class="item-title"]    should be    Test Folder
 
 #--- Helper DRY -------------------------------------------------------------
 
