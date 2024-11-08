@@ -1,0 +1,2 @@
+Fix more unstable robottests with "Wait For Condition" when rendering tinymce editor.
+[1letter]
