@@ -91,19 +91,19 @@ I edit the document
 I do not see the standard editor when I create a document
     Go To  ${PLONE_URL}/++add++Document
     Wait For Condition    Classes    //body    contains    patterns-loaded
-    Get Element Count    //*[@id="formfield-form-widgets-IRichTextBehavior-text"]/div[@role="application"]    should be    0
-    Get Element States    //textarea[@name="form.widgets.IRichTextBehavior.text"]    contains    visible
+    Wait For Condition    Element Count    //*[@id="formfield-form-widgets-IRichTextBehavior-text"]/div[@role="application"]    should be    0
+    Wait For Condition    Element States    //textarea[@name="form.widgets.IRichTextBehavior.text"]    contains    visible
 
 
 I see the standard editor when I create a document
     Go To  ${PLONE_URL}/++add++Document
     Wait For Condition    Classes    //body    contains    patterns-loaded
-    Get Element Count    //*[@id="formfield-form-widgets-IRichTextBehavior-text"]/div[@role="application"]    should be    1
-    Get Element States    //textarea[@name="form.widgets.IRichTextBehavior.text"]    contains    hidden
+    Wait For Condition    Element Count    //*[@id="formfield-form-widgets-IRichTextBehavior-text"]/div[@role="application"]    should be    1
+    Wait For Condition    Element States    //textarea[@name="form.widgets.IRichTextBehavior.text"]    contains    hidden
 
 I will see a warning if a document is edited by another user
     Disable autologin
     Enable autologin as   Contributor    Reviewer    Manager
     New Page    ${PLONE_URL}/${PAGE_ID}
-    Get Text    //body    contains    Lock
-    Get Element Count    //input[@value="Unlock"]    should be    1
+    Wait For Condition    Text    //body    contains    Lock
+    Wait For Condition    Element Count    //input[@value="Unlock"]    should be    1
