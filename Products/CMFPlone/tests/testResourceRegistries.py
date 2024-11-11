@@ -207,6 +207,15 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
             resource.file_data, b'I_do_not_exist',
         )
 
+    def test_relative_uri_resource(self):
+        bundle = self._make_test_bundle()
+        bundle.jscompilation = "//foo.bar/foobar.js"
+        view = ScriptsView(self.app, self.app.REQUEST, None, None)
+        view.update()
+        results = view.render()
+        self.assertIn('src="//foo.bar/foobar.js"', results)
+
+
 class TestStylesViewlet(PloneTestCase.PloneTestCase):
     def test_styles_viewlet(self):
         styles = StylesView(self.layer["portal"], self.layer["request"], None)
