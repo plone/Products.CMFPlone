@@ -1,0 +1,3 @@
+Update `pat-tinymce` options: implement reduced `extended_valid_elements` option instead of a full `valid_elements` matrix.
+This reduces page download size significantly when loading forms with TinyMCE.
+[petschki]
