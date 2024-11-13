@@ -1,3 +1,4 @@
+from lxml import html
 from plone.app.theming.utils import theming_policy
 from plone.base.interfaces import IFilterSchema
 from plone.base.interfaces import ITinyMCESchema
@@ -174,13 +175,23 @@ class TinyMCESettingsGenerator:
 
         # add safe_html settings, which are used in backend for filtering:
         if not self.filter_settings.disable_filtering:
-            # we just enable the general html5 filtering set from TinyMCE
+            # we enable the general html5 filtering set from TinyMCE as a basis
             # (See https://www.tiny.cloud/docs/tinymce/latest/content-filtering/#schema)
-            # and add the "nasty_tags" as "invalid_elements"
             tiny_config["schema"] = "html5"
-            # filter out invalid elements early
-            nasty_tags = self.filter_settings.nasty_tags
-            tiny_config["invalid_elements"] = ",".join(nasty_tags)
+
+            # generate valid_tags[custom_attributes] mapping
+            custom_attributes = "|".join(self.filter_settings.custom_attributes)
+            valid_tags = ",".join([
+                f"{tag}[{custom_attributes}]" for tag in self.filter_settings.valid_tags
+            ])
+
+            # nasty_tags are removed by portal_transforms when saving
+            # so we simply allow them in tinymce options without attributes
+            deferred_nasty_tags = ",".join(self.filter_settings.nasty_tags)
+
+            # save the mappings in "extended_valid_elements", so they get added
+            # to the html5 base schema above
+            tiny_config["extended_valid_elements"] = f"{valid_tags},{deferred_nasty_tags}"
 
         if settings.other_settings:
             try:
