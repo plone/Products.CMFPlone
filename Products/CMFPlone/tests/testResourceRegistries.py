@@ -1,3 +1,4 @@
+from lxml import etree
 from OFS.Image import File
 from plone.app.testing import logout
 from plone.app.testing import setRoles
@@ -167,6 +168,47 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         results = view.render()
         self.assertIn("http://foo.bar/foobar.js", results)
 
+    def test_js_bundle_depends_all(self):
+        # Create a test bundle, which has unspecified dependencies and is
+        # rendered in order as defined.
+        _make_test_bundle(name="a")
+
+        # Create a test bundle, which depends on "all" other and thus rendered
+        # last.
+        _make_test_bundle(name="last", depends="all")
+
+        # Create a test bundle, which has unspecified dependencies and is
+        # rendered in order as defined.
+        _make_test_bundle(name="b")
+
+        view = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        view.update()
+        results = view.render()
+
+        parser = etree.HTMLParser()
+        parsed = etree.fromstring(results, parser)
+        scripts = parsed.xpath("//script")
+
+        # The last element is our JS, depending on "all".
+        self.assertEqual(
+            "http://foo.bar/last.js",
+            scripts[-1].attrib["src"],
+        )
+
+        # The first resource is our JS, which was defined with unspecified
+        # dependency first.
+        self.assertEqual(
+            "http://foo.bar/a.js",
+            scripts[0].attrib["src"],
+        )
+
+        # The second resource is our JS, which was defined with unspecified
+        # dependency last.
+        self.assertEqual(
+            "http://foo.bar/b.js",
+            scripts[1].attrib["src"],
+        )
+
     def test_bundle_depends_on_multiple(self):
         bundle = _make_test_bundle()
         bundle.depends = "plone,eventedit"
@@ -219,6 +261,19 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
 
 
 class TestStylesViewlet(PloneTestCase.PloneTestCase):
+    def _make_test_bundle(self):
+        registry = getUtility(IRegistry)
+
+        bundles = registry.collectionOfInterface(
+            IBundleRegistry, prefix="plone.bundles"
+        )
+        bundle = bundles.add("foobar")
+        bundle.name = "foobar"
+        bundle.jscompilation = "http://foo.bar/foobar.js"
+        bundle.csscompilation = "http://foo.bar/foobar.css"
+        bundle.resources = ["foobar"]
+        return bundle
+
     def test_styles_viewlet(self):
         styles = StylesView(self.layer["portal"], self.layer["request"], None)
         styles.update()
@@ -324,6 +379,86 @@ class TestStylesViewlet(PloneTestCase.PloneTestCase):
         scripts.update()
         result = scripts.render()
         self.assertNotIn("http://test.foo/test.min.js", result)
+
+    def test_css_bundle_depends_all(self):
+        # Create a test bundle, which has unspecified dependencies and is
+        # rendered in order as defined.
+        _make_test_bundle(name="a")
+
+        # Create a test bundle, which depends on "all" other and thus rendered
+        # last.
+        _make_test_bundle(name="last", depends="all")
+
+        # Create a test bundle, which has unspecified dependencies and is
+        # rendered in order as defined.
+        _make_test_bundle(name="b")
+
+        view = StylesView(self.layer["portal"], self.layer["request"], None)
+        view.update()
+        results = view.render()
+
+        parser = etree.HTMLParser()
+        parsed = etree.fromstring(results, parser)
+        styles = parsed.xpath("//link")
+
+        # The last element is our CSS, depending on "all".
+        self.assertEqual(
+            "http://foo.bar/last.css",
+            styles[-1].attrib["href"],
+        )
+
+        # The second last element is the theme barceloneta theme CSS.
+        self.assertTrue(
+            "++theme++barceloneta/css/barceloneta.min.css" in styles[-2].attrib["href"],
+        )
+
+        # The first resource is our CSS, which was defined with unspecified
+        # dependency.
+        self.assertEqual(
+            "http://foo.bar/a.css",
+            styles[0].attrib["href"],
+        )
+
+        # The second resource is our CSS, which was defined with unspecified
+        # dependency first.
+        self.assertEqual(
+            "http://foo.bar/b.css",
+            styles[1].attrib["href"],
+        )
+
+    def test_css_bundle_depends_all_but_custom(self):
+        registry = getUtility(IRegistry)
+
+        custom_key = "plone.app.theming.interfaces.IThemeSettings.custom_css"
+        registry[custom_key] = "html { background-color: red; }"
+
+        # Create a test bundle, which depends on "all" other and thus rendered
+        # after all except the custom styles.
+        _make_test_bundle(name="almost-last", depends="all")
+
+        view = StylesView(self.layer["portal"], self.layer["request"], None)
+        view.update()
+        results = view.render()
+
+        parser = etree.HTMLParser()
+        parsed = etree.fromstring(results, parser)
+        styles = parsed.xpath("//link")
+
+        # The last element is are the custom styles.
+        self.assertTrue(
+            "@@custom.css" in styles[-1].attrib["href"],
+        )
+
+        # The second last element is now our CSS, depending on "all".
+        self.assertEqual(
+            "http://foo.bar/almost-last.css",
+            styles[-2].attrib["href"],
+        )
+
+        # The third last element is the theme barceloneta theme CSS.
+        self.assertTrue(
+            "++theme++barceloneta/css/barceloneta.min.css" in styles[-3].attrib["href"],
+        )
 
 
 class TestExpressions(PloneTestCase.PloneTestCase):

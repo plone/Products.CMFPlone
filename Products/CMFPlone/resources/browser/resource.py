@@ -107,7 +107,9 @@ class ResourceBase:
             valid_dependencies = []
 
             for name in depend_names:
-                if name in bundles:
+                if name in bundles or name == "all":
+                    # A valid dependency or special dependency "all", which
+                    # specifies that the bundle should be rendered last.
                     valid_dependencies.append(name)
                     continue
                 if name in all_names:
@@ -133,7 +135,13 @@ class ResourceBase:
 
             return valid_dependencies
 
-        # register
+        # Helper vars for the `all` dependency.
+        last_js_bundle = None
+        last_css_bundle = None
+        depends_all_js = []
+        depends_all_css = []
+
+        # Register resources
         for name, record in records.items():
             include = record.enabled
             include = include or name in theme_enabled_bundles
@@ -146,7 +154,7 @@ class ResourceBase:
                 if depends == "__broken__":
                     continue
                 external = self.is_external_url(record.jscompilation)
-                PloneScriptResource(
+                resource = PloneScriptResource(
                     context=self.context,
                     name=name,
                     depends=depends,
@@ -163,12 +171,19 @@ class ResourceBase:
                     integrity=not external,
                     **{"data-bundle": name},
                 )
+                if "all" in depends:
+                    # Remember the JS bundles that should be rendered last
+                    depends_all_js.append(resource)
+                else:
+                    # Remember the last JS bundle that was added and not be
+                    # rendered last.
+                    last_js_bundle = name
             if record.csscompilation:
                 depends = check_dependencies(name, record.depends, css_names)
                 if depends == "__broken__":
                     continue
                 external = self.is_external_url(record.csscompilation)
-                PloneStyleResource(
+                resource = PloneStyleResource(
                     context=self.context,
                     name=name,
                     depends=depends,
@@ -183,6 +198,13 @@ class ResourceBase:
                     rel="stylesheet",
                     **{"data-bundle": name},
                 )
+                if "all" in depends:
+                    # Remember the JS bundles that should be rendered last
+                    depends_all_css.append(resource)
+                else:
+                    # Remember the last JS bundle that was added and not be
+                    # rendered last.
+                    last_css_bundle = name
 
         # Collect theme data
         themedata = {}
@@ -213,6 +235,7 @@ class ResourceBase:
                 integrity=not external,
                 **{"data-bundle": "diazo"},
             )
+            last_js_bundle = "theme"
 
         # add Theme CSS
         if themedata["production_css"]:
@@ -236,8 +259,29 @@ class ResourceBase:
                 rel="stylesheet",
                 **{"data-bundle": "diazo"},
             )
+            last_css_bundle = "theme"
 
-        # add Custom CSS
+        # Fix "all" dependencies to be rendered after the last known non-all resource.
+        for resource in depends_all_js:
+            # Change all "all" to last known JS resource
+            dependencies = map(
+                lambda dep: dep if dep != "all" else last_js_bundle, resource.depends
+            )
+            # Remove None values, e.g. if no known JS resource was found
+            dependencies = filter(lambda dep: dep is not None, dependencies)
+            resource.depends = list(dependencies)
+
+        for resource in depends_all_css:
+            # Change all "all" to last known JS resource
+            dependencies = map(
+                lambda dep: dep if dep != "all" else last_css_bundle, resource.depends
+            )
+            # Remove None values, e.g. if no known JS resource was found
+            dependencies = filter(lambda dep: dep is not None, dependencies)
+            resource.depends = list(dependencies)
+
+        # Add Custom CSS
+        # This one is always rendered last.
         registry = getUtility(IRegistry)
         theme_settings = registry.forInterface(IThemeSettings, False)
         if theme_settings.custom_css:
