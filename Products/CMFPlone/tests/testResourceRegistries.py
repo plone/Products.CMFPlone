@@ -19,22 +19,24 @@ from Products.CMFPlone.tests import PloneTestCase
 from zope.component import getUtility
 
 
+def _make_test_bundle(
+    name="foobar",
+    depends="",
+):
+    registry = getUtility(IRegistry)
+
+    bundles = registry.collectionOfInterface(IBundleRegistry, prefix="plone.bundles")
+    bundle = bundles.add(name)
+    bundle.name = name
+    bundle.jscompilation = f"http://foo.bar/{name}.js"
+    bundle.csscompilation = f"http://foo.bar/{name}.css"
+    bundle.depends = depends
+    return bundle
+
+
 class TestScriptsViewlet(PloneTestCase.PloneTestCase):
-    def _make_test_bundle(self):
-        registry = getUtility(IRegistry)
-
-        bundles = registry.collectionOfInterface(
-            IBundleRegistry, prefix="plone.bundles"
-        )
-        bundle = bundles.add("foobar")
-        bundle.name = "foobar"
-        bundle.jscompilation = "http://foo.bar/foobar.js"
-        bundle.csscompilation = "http://foo.bar/foobar.css"
-        bundle.resources = ["foobar"]
-        return bundle
-
     def test_bundle_defernot_asyncnot(self):
-        self._make_test_bundle()
+        _make_test_bundle()
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
         view.update()
         rendered = view.render()
@@ -42,7 +44,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         self.assertTrue("defer=" not in rendered)
 
     def test_bundle_defer_asyncnot(self):
-        bundle = self._make_test_bundle()
+        bundle = _make_test_bundle()
         bundle.load_async = False
         bundle.load_defer = True
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
@@ -52,7 +54,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         self.assertTrue("defer=" in rendered)
 
     def test_bundle_defernot_async(self):
-        bundle = self._make_test_bundle()
+        bundle = _make_test_bundle()
         bundle.load_async = True
         bundle.load_defer = False
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
@@ -62,7 +64,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         self.assertTrue("defer=" not in rendered)
 
     def test_bundle_defer_async(self):
-        bundle = self._make_test_bundle()
+        bundle = _make_test_bundle()
         bundle.load_async = True
         bundle.load_defer = True
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
@@ -80,7 +82,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
 
     def test_scripts_data_bundle_attr(self):
         scripts = ScriptsView(self.layer["portal"], self.layer["request"], None)
-        self._make_test_bundle()
+        _make_test_bundle()
         scripts.update()
         result = scripts.render()
         self.assertIn('data-bundle="foobar"', result)
@@ -111,7 +113,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         scripts = ScriptsView(self.layer["portal"], subreq, None)
 
         # add some bundle to test with
-        bundle = self._make_test_bundle()
+        bundle = _make_test_bundle()
         bundle.enabled = False
         scripts.update()
         result = scripts.render()
@@ -131,7 +133,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         scripts = ScriptsView(self.layer["portal"], subreq, None)
 
         # add some bundle to test with
-        bundle = self._make_test_bundle()
+        bundle = _make_test_bundle()
         bundle.enabled = False
         scripts.update()
         result = scripts.render()
@@ -151,14 +153,14 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         scripts = ScriptsView(self.layer["portal"], subreq, None)
 
         # add some bundle to test with
-        bundle = self._make_test_bundle()
+        bundle = _make_test_bundle()
         bundle.enabled = True
         scripts.update()
         result = scripts.render()
         self.assertNotIn("http://test.foo/test.css", result)
 
     def test_bundle_depends(self):
-        bundle = self._make_test_bundle()
+        bundle = _make_test_bundle()
         bundle.depends = "plone"
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
         view.update()
@@ -166,7 +168,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         self.assertIn("http://foo.bar/foobar.js", results)
 
     def test_bundle_depends_on_multiple(self):
-        bundle = self._make_test_bundle()
+        bundle = _make_test_bundle()
         bundle.depends = "plone,eventedit"
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
         view.update()
@@ -174,7 +176,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         self.assertIn("http://foo.bar/foobar.js", results)
 
     def test_bundle_depends_on_missing(self):
-        bundle = self._make_test_bundle()
+        bundle = _make_test_bundle()
         bundle.depends = "nonexistsinbundle"
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
         view.update()
@@ -208,7 +210,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         )
 
     def test_relative_uri_resource(self):
-        bundle = self._make_test_bundle()
+        bundle = _make_test_bundle()
         bundle.jscompilation = "//foo.bar/foobar.js"
         view = ScriptsView(self.app, self.app.REQUEST, None, None)
         view.update()
