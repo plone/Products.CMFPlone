@@ -79,8 +79,14 @@ class ResourceBase:
         registry_group_js = webresource.ResourceGroup(
             name="registry_js", group=root_group_js
         )
+        registry_group_js_deferred = webresource.ResourceGroup(
+            name="registry_js_deferred",
+        )
         registry_group_css = webresource.ResourceGroup(
             name="registry_css", group=root_group_css
+        )
+        registry_group_css_deferred = webresource.ResourceGroup(
+            name="registry_css_deferred",
         )
         records = self.registry.collectionOfInterface(
             IBundleRegistry, prefix="plone.bundles", check=False
@@ -107,7 +113,7 @@ class ResourceBase:
             valid_dependencies = []
 
             for name in depend_names:
-                if name in bundles:
+                if name in bundles or name == "all":
                     valid_dependencies.append(name)
                     continue
                 if name in all_names:
@@ -146,6 +152,11 @@ class ResourceBase:
                 if depends == "__broken__":
                     continue
                 external = self.is_external_url(record.jscompilation)
+                r_group = registry_group_js
+                if "all" in depends:
+                    # move to a separate group which is rendered at last
+                    r_group = registry_group_js_deferred
+                    depends = None
                 PloneScriptResource(
                     context=self.context,
                     name=name,
@@ -155,7 +166,7 @@ class ResourceBase:
                     include=include,
                     expression=record.expression,
                     unique=unique,
-                    group=registry_group_js,
+                    group=r_group,
                     url=record.jscompilation if external else None,
                     crossorigin="anonymous" if external else None,
                     async_=record.load_async or None,
@@ -168,6 +179,11 @@ class ResourceBase:
                 if depends == "__broken__":
                     continue
                 external = self.is_external_url(record.csscompilation)
+                r_group = registry_group_css
+                if "all" in depends:
+                    # move to a separate group which is rendered at last
+                    r_group = registry_group_css_deferred
+                    depends = None
                 PloneStyleResource(
                     context=self.context,
                     name=name,
@@ -177,7 +193,7 @@ class ResourceBase:
                     include=include,
                     expression=record.expression,
                     unique=unique,
-                    group=registry_group_css,
+                    group=r_group,
                     url=record.csscompilation if external else None,
                     media="all",
                     rel="stylesheet",
@@ -237,7 +253,11 @@ class ResourceBase:
                 **{"data-bundle": "diazo"},
             )
 
-        # add Custom CSS
+        # add "deferred" groups at this point
+        root_group_js.add(registry_group_js_deferred)
+        root_group_css.add(registry_group_css_deferred)
+
+        # add Custom CSS always after everything
         registry = getUtility(IRegistry)
         theme_settings = registry.forInterface(IThemeSettings, False)
         if theme_settings.custom_css:
