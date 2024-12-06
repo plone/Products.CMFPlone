@@ -1,4 +1,4 @@
-Allow bundles to be rendered after all other.
+Allow bundles to be rendered after all others.
 
 JS and CSS resources can now be rendered after all other resources in their
 resource group including the theme (e.g. the Barceloneta theme CSS).
