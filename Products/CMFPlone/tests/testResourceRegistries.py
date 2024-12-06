@@ -215,9 +215,10 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
             scripts[1].attrib["src"],
         )
 
-        # When a second bundle depends on "all" it is ordered alphabetically
-        # with the other bundles
+        # When more bundles depend on "all", they are ordered alphabetically
+        # at the end.
         self._make_test_bundle(name="x-very-last", depends="all")
+        self._make_test_bundle(name="a-last", depends="all")
 
         # make sure cache purged
         setattr(self.layer["request"], REQUEST_CACHE_KEY, None)
@@ -228,16 +229,18 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         parsed = etree.fromstring(results, parser)
         scripts = parsed.xpath("//script")
 
-        # our new bundle ist last
+        # All the "all" depending bundles are sorted alphabetically at the end.
         self.assertEqual(
             "http://foo.bar/x-very-last.js",
             scripts[-1].attrib["src"],
         )
-
-        # The previously last element is now second last
         self.assertEqual(
             "http://foo.bar/last.js",
             scripts[-2].attrib["src"],
+        )
+        self.assertEqual(
+            "http://foo.bar/a-last.js",
+            scripts[-3].attrib["src"],
         )
 
     def test_bundle_depends_on_missing(self):
