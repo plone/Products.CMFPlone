@@ -7,7 +7,7 @@ There is an exception for custom CSS which can be defined in the theming
 controlpanel. This one is always rendered as last style resource.
 
 To render resources after all others, give them the "depends" value of "all".
-indicates that the resource depends on all other being rendered before. The
+For each of these resources, "all" indicates that the resource depends on all other resources, making it render after its dependencies.
 resource is then rendered as last resource of it's resource group.
 
 This allows to override a theme with custom CSS from a bundle instead of having
