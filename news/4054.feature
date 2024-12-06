@@ -3,7 +3,7 @@ Allow bundles to be rendered after all others.
 JS and CSS resources can now be rendered after all other resources in their
 resource group including the theme (e.g. the Barceloneta theme CSS).
 
-There is a exception for custom CSS which can be defined in the theming
+There is an exception for custom CSS which can be defined in the theming
 controlpanel. This one is always rendered as last style resource.
 
 To render a resource after all other give it the "depends" value of "all". This
