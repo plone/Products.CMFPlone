@@ -8,7 +8,7 @@ controlpanel. This one is always rendered as last style resource.
 
 To render resources after all others, give them the "depends" value of "all".
 For each of these resources, "all" indicates that the resource depends on all other resources, making it render after its dependencies.
-resource is then rendered as last resource of it's resource group.
+If you set multiple resources with "all", then they will render alphabetically after all other.
 
 This allows to override a theme with custom CSS from a bundle instead of having
 to add the CSS customizations to the registry via the "custom_css" settings.
