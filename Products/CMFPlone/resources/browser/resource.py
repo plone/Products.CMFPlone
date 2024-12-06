@@ -154,7 +154,7 @@ class ResourceBase:
                 external = self.is_external_url(record.jscompilation)
                 r_group = registry_group_js
                 if "all" in depends:
-                    # move to a separate group which is rendered at last
+                    # move to a separate group which is rendered after all others
                     r_group = registry_group_js_deferred
                     depends = None
                 PloneScriptResource(
