@@ -257,7 +257,7 @@ class ResourceBase:
         root_group_js.add(registry_group_js_deferred)
         root_group_css.add(registry_group_css_deferred)
 
-        # add Custom CSS always after everything
+        # add Custom CSS always after everything else
         registry = getUtility(IRegistry)
         theme_settings = registry.forInterface(IThemeSettings, False)
         if theme_settings.custom_css:
