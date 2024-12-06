@@ -181,7 +181,7 @@ class ResourceBase:
                 external = self.is_external_url(record.csscompilation)
                 r_group = registry_group_css
                 if "all" in depends:
-                    # move to a separate group which is rendered at last
+                    # move to a separate group which is rendered after all others
                     r_group = registry_group_css_deferred
                     depends = None
                 PloneStyleResource(
