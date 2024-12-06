@@ -6,7 +6,7 @@ resource group including the theme (e.g. the Barceloneta theme CSS).
 There is an exception for custom CSS which can be defined in the theming
 controlpanel. This one is always rendered as last style resource.
 
-To render a resource after all other give it the "depends" value of "all". This
+To render resources after all others, give them the "depends" value of "all".
 indicates that the resource depends on all other being rendered before. The
 resource is then rendered as last resource of it's resource group.
 
