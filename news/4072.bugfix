@@ -1,0 +1,3 @@
+Grant permission plone.ModifyConstrainTypes (Modify constrain types) to Manager, Site Administrator and Owner.
+The change applies to new sites but is not applied automatically to upgraded sites.
+[pbauer]

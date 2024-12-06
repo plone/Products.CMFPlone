@@ -371,5 +371,12 @@
       <role name="Manager" />
       <role name="Site Administrator" />
     </permission>
+    <permission acquire="True"
+                name="Modify constrain types"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
+    </permission>
   </permissions>
 </rolemap>
