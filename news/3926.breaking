@@ -1,0 +1,4 @@
+Officially drop support for Python 3.8 and 3.9.
+This was always the case for Plone 6.1, but we did not yet say this in the changelog.
+See [PLIP 3926](https://github.com/plone/Products.CMFPlone/issues/3926).
+[maurits]
