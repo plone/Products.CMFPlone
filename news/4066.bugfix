@@ -1,2 +1,2 @@
-Fix removed `unittest.makeSuite` in python 3.13
-[petschki]
+Fix removed `unittest.makeSuite` in Python 3.13.
+[petschki, maurits]
