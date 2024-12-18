@@ -86,10 +86,9 @@ class PropertiesToolXMLAdapterTests(BodyAdapterTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
+    import unittest
 
-    suite = TestSuite()
-    suite.addTest(makeSuite(PropertySheetXMLAdapterTests))
-    suite.addTest(makeSuite(PropertiesToolXMLAdapterTests))
-    return suite
+    return unittest.TestSuite((
+        unittest.defaultTestLoader.loadTestsFromTestCase(PropertySheetXMLAdapterTests),
+        unittest.defaultTestLoader.loadTestsFromTestCase(PropertiesToolXMLAdapterTests),
+    ))

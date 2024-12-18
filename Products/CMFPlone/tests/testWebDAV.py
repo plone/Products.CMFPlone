@@ -486,13 +486,15 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
+    import unittest
 
-    suite = TestSuite()
     if bbb.HAS_ZSERVER:
-        suite.addTest(makeSuite(TestDAVProperties))
-        suite.addTest(makeSuite(TestPUTObjects))
-        suite.addTest(makeSuite(TestPUTIndexHtml))
-        suite.addTest(makeSuite(TestDAVOperations))
-    return suite
+        return unittest.TestSuite((
+            unittest.defaultTestLoader.loadTestsFromTestCase(TestDAVProperties),
+            unittest.defaultTestLoader.loadTestsFromTestCase(TestPUTObjects),
+            unittest.defaultTestLoader.loadTestsFromTestCase(TestPUTIndexHtml),
+            unittest.defaultTestLoader.loadTestsFromTestCase(TestDAVOperations),
+        ))
+
+    # return empty suite
+    return unittest.TestSuite()
