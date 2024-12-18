@@ -3,9 +3,7 @@ from plone.app.theming.utils import theming_policy
 from plone.base.interfaces import IFilterSchema
 from plone.base.interfaces import ITinyMCESchema
 from plone.base.navigationroot import get_navigation_root_object
-from plone.base.utils import safe_text
 from plone.registry.interfaces import IRegistry
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import get_portal
 from zope.component import getUtility
 
@@ -177,22 +175,23 @@ class TinyMCESettingsGenerator:
 
         # add safe_html settings, which are used in backend for filtering:
         if not self.filter_settings.disable_filtering:
-            valid_tags = self.filter_settings.valid_tags
-            nasty_tags = self.filter_settings.nasty_tags
-            custom_attributes = self.filter_settings.custom_attributes
-            safe_attributes = [safe_text(attr) for attr in html.defs.safe_attrs]
-            valid_attributes = safe_attributes + custom_attributes
-            # valid_elements : 'a[href|target=_blank],strong/b,div[align],br'
-            tiny_valid_elements = []
-            for tag in valid_tags:
-                tag_str = "{}[{}]".format(tag, "|".join(valid_attributes))
-                tiny_valid_elements.append(tag_str)
-            # We want to remove the nasty tag including the content in the
-            # backend, so TinyMCE should allow them here.
-            for tag in nasty_tags:
-                tag_str = "{}[{}]".format(tag, "|".join(valid_attributes))
-                tiny_valid_elements.append(tag_str)
-            tiny_config["valid_elements"] = ",".join(tiny_valid_elements)
+            # we enable the general html5 filtering set from TinyMCE as a basis
+            # (See https://www.tiny.cloud/docs/tinymce/latest/content-filtering/#schema)
+            tiny_config["schema"] = "html5"
+
+            # generate valid_tags[custom_attributes] mapping
+            custom_attributes = "|".join(self.filter_settings.custom_attributes)
+            valid_tags = ",".join([
+                f"{tag}[{custom_attributes}]" for tag in self.filter_settings.valid_tags
+            ])
+
+            # nasty_tags are removed by portal_transforms when saving
+            # so we simply allow them in tinymce options without attributes
+            deferred_nasty_tags = ",".join(self.filter_settings.nasty_tags)
+
+            # save the mappings in "extended_valid_elements", so they get added
+            # to the html5 base schema above
+            tiny_config["extended_valid_elements"] = f"{valid_tags},{deferred_nasty_tags}"
 
         if settings.other_settings:
             try:
