@@ -1,1 +1,0 @@
-Avoid POSKeyError when commit occurs and we have savepoint that involves Plone Site. @wesleybl

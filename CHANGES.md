@@ -15,6 +15,57 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.14 (2024-12-19)
+
+
+### New features:
+
+- Redirection control panel: Added support for start and end filters. @Faakhir30 #4009
+- URL Management control panel: Find substring matches when querying aliases. @davisagli #4031
+- Allow bundles to be rendered after all others.
+
+  JS and CSS resources can now be rendered after all other resources in their
+  resource group including the theme (e.g. the Barceloneta theme CSS).
+
+  There is an exception for custom CSS which can be defined in the theming
+  controlpanel. This one is always rendered as last style resource.
+
+  To render resources after all others, give them the "depends" value of "all".
+  For each of these resources, "all" indicates that the resource depends on all other resources, making it render after its dependencies.
+  If you set multiple resources with "all", then they will render alphabetically after all other.
+
+  This lets you override a theme with custom CSS from a bundle instead of having
+  to add the CSS customizations to the registry via the "custom_css" settings.
+  As a consequence, theme customization can now be done in the filesystem in
+  ordinary CSS files instead of being bound to a time consuming workflow which
+  involves upgrading the custom_css registry after every change.
+  [thet, petschki] #4054
+
+
+### Bug fixes:
+
+- Update for strict parsing in `email.utils.getaddresses` newest versions.
+  [petschki] #4020
+- Resource registry: Support OFS.Image.File objects.
+  [ale-rt, thet] #4022
+- Avoid POSKeyError when commit occurs and we have savepoint that involves Plone Site. @wesleybl #4043
+- Fix resources with relative URI in registry.
+  [petschki] #4049
+- Fix removed `unittest.makeSuite` in Python 3.13.
+  [petschki, maurits] #4066
+
+
+### Internal:
+
+- Added upgrade to 6025, Plone 6.0.14.
+  [maurits] #6025
+
+
+### Tests
+
+- refactoring all robot tests to playwright based browser library tests
+  [1letter] #4056
+
 ## 6.0.13 (2024-09-05)
 
 
