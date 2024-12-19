@@ -15,6 +15,69 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.0b2 (2024-12-19)
+
+
+### Breaking changes:
+
+- Officially drop support for Python 3.8 and 3.9.
+  This was always the case for Plone 6.1, but we did not yet say this in the changelog.
+  See [PLIP 3926](https://github.com/plone/Products.CMFPlone/issues/3926).
+  [maurits] #3926
+
+
+### New features:
+
+- Support Python 3.13.  You need at least Python 3.13.1.
+  [maurits] #313
+- Allow bundles to be rendered after all others.
+
+  JS and CSS resources can now be rendered after all other resources in their
+  resource group including the theme (e.g. the Barceloneta theme CSS).
+
+  There is an exception for custom CSS which can be defined in the theming
+  controlpanel. This one is always rendered as last style resource.
+
+  To render resources after all others, give them the "depends" value of "all".
+  For each of these resources, "all" indicates that the resource depends on all other resources, making it render after its dependencies.
+  If you set multiple resources with "all", then they will render alphabetically after all other.
+
+  This lets you override a theme with custom CSS from a bundle instead of having
+  to add the CSS customizations to the registry via the "custom_css" settings.
+  As a consequence, theme customization can now be done in the filesystem in
+  ordinary CSS files instead of being bound to a time consuming workflow which
+  involves upgrading the custom_css registry after every change.
+  [thet, petschki] #4054
+
+
+### Bug fixes:
+
+- Fix more unstable robottests with "Wait For Condition" when clicking modal links.
+  [petschki] #4045
+- Fix resources with relative URI in registry.
+  [petschki] #4049
+- Fix removed `unittest.makeSuite` in python 3.13
+  [petschki] #4066
+- Grant permission plone.ModifyConstrainTypes (Modify constrain types) to Manager, Site Administrator and Owner.
+  The change applies to new sites but is not applied automatically to upgraded sites.
+  [pbauer] #4072
+
+
+### Internal:
+
+- Updated metadata version to 6106.
+  [maurits] #6106
+
+
+### Tests
+
+- add robot test scenario for contentbrowser widget
+  [1letter] #4043
+- Fix more unstable robottests with "Wait For Condition" when rendering tinymce editor.
+  [1letter] #4052
+- Update for `pat-contentbrowser` with new component registry.
+  [petschki] #4082
+
 ## 6.1.0b1 (2024-10-31)
 
 
