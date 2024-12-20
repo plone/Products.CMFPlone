@@ -469,7 +469,7 @@
 
 ### Bug fixes:
 
-- Remove unused template send_feedback_confirm.pt. 
+- Remove unused template send_feedback_confirm.pt.
   [jensens] #3122
 - Moved the assignment of Plone Site Setup permissions from zcml to GenericSetup
   rolemap.xml. This assigns the permissions on site creation instead of Zope root
