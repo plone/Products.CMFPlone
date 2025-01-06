@@ -26,7 +26,7 @@ setup(
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
     ],
-    python_requires=">=3.8",
+    python_requires=">=3.10",
     keywords="Plone CMF Python Zope CMS Webapplication",
     author="Plone Foundation",
     author_email="releasemanager@plone.org",
