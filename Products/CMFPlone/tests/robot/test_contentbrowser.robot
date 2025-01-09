@@ -237,12 +237,12 @@ I edit the Link
 # --- THEN ------------------------------------------------------------------
 
 a image is selected as related item
-    image is releated item    //div[contains(@class, "content-browser-selected-items")]/div[1]/img    /asset-folder/mixed/files/images/image-2/@@images/image/mini
+    image is releated item    //div[contains(@class, "content-browser-selected-items")]/div[1]/div/img    /asset-folder/mixed/files/images/image-2/@@images/image/mini
 
 
 two images are selected as related item
-    image is releated item    //div[contains(@class, "content-browser-selected-items")]/div[1]/img    /asset-folder/mixed/files/images/image-1/@@images/image/mini
-    image is releated item    //div[contains(@class, "content-browser-selected-items")]/div[2]/img    /asset-folder/mixed/files/images/image-2/@@images/image/mini
+    image is releated item    //div[contains(@class, "content-browser-selected-items")]/div[1]/div/img    /asset-folder/mixed/files/images/image-1/@@images/image/mini
+    image is releated item    //div[contains(@class, "content-browser-selected-items")]/div[2]/div/img    /asset-folder/mixed/files/images/image-2/@@images/image/mini
 
 the document contain the internal link
     Element exists    //div[@id="parent-fieldname-text"]//a    href    /plone/doc
