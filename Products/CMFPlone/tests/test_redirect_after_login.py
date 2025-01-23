@@ -210,7 +210,7 @@ class TestRedirectAfterLogin(unittest.TestCase):
         # An initial login adapter should be active.
         # And the redirect after login adapter too.
         from plone.registry.interfaces import IRegistry
-        from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+        from plone.base.interfaces import IMailSchema
         from zope.component import getGlobalSiteManager
         from zope.component import getUtility
 
