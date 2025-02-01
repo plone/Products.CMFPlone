@@ -115,19 +115,42 @@ class LoginForm(form.EditForm):
         self.widgets["came_from"].value = self.get_came_from()
 
     def get_came_from(self):
+        """Get and validate the came_from parameter for redirect after login."""
         came_from = self.request.get("came_from", None)
         if not came_from:
             came_from = self.request.get("HTTP_REFERER", None)
             if not came_from:
-                return
+                return None
+                
         url_tool = getToolByName(self.context, "portal_url")
+        
+        # First check if URL is in portal
         if not url_tool.isURLInPortal(came_from):
-            return
-        came_from_path = parse.urlparse(came_from)[2].split("/")
-        for login_template_id in LOGIN_TEMPLATE_IDS:
-            if login_template_id in came_from_path:
-                return
-        return came_from
+            return None
+            
+        try:
+            # Parse the URL and get the path
+            parsed_url = parse.urlparse(came_from)
+            came_from_path = parsed_url.path.split("/")
+            
+            # Check if it's a login-related page
+            for login_template_id in LOGIN_TEMPLATE_IDS:
+                if login_template_id in came_from_path:
+                    return None
+                    
+            # Verify the URL actually exists in the portal
+            # Use unrestrictedTraverse to check if path exists
+            path = came_from_path[1:] if came_from_path[0] == '' else came_from_path
+            try:
+                self.context.unrestrictedTraverse(path)
+                return came_from
+            except (KeyError, AttributeError):
+                # Path doesn't exist (404) - return None
+                return None
+                
+        except Exception as e:
+            logger.warning(f"Error processing came_from URL: {str(e)}")
+            return None
 
     def updateActions(self):
         super().updateActions()
