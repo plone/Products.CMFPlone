@@ -15,6 +15,24 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.0rc1 (2025-01-31)
+
+
+### Bug fixes:
+
+- Remove deferred import for `INavigationRoot`.
+  We said we would remove this in Plone 5.0 because it was moved to `plone.app.layout`.
+  Meanwhile it has been moved to `plone.base`.
+  Should be fine to remove: a Plone Site that still has this location as a persistent marker interface, needs to be migrated to Plone 5.2 and then go through `zodbupdate` for Python 3, so the persistent interface location will be updated.
+  @mauritsvanrees #4090
+- Fix DeprecationWarnings. [maurits] #4090
+
+
+### Internal:
+
+- Updated metadata version to 6107.
+  [maurits] #6107
+
 ## 6.1.0b2 (2024-12-19)
 
 

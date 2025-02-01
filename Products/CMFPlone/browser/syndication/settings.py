@@ -1,4 +1,4 @@
-from persistent.dict import PersistentDict
+from persistent.mapping import PersistentMapping
 from plone.base.interfaces.syndication import IFeedSettings
 from plone.base.interfaces.syndication import ISiteSyndicationSettings
 from plone.base.interfaces.syndication import ISyndicatable
@@ -22,7 +22,7 @@ class FeedSettings:
 
         self._metadata = self.annotations.get(FEED_SETTINGS_KEY, None)
         if self._metadata is None:
-            self._metadata = PersistentDict()
+            self._metadata = PersistentMapping()
             self.needs_saving = True
 
         registry = getUtility(IRegistry)

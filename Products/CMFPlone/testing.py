@@ -18,7 +18,7 @@ from Products.MailHost.interfaces import IMailHost
 from zope.component import getSiteManager
 from zope.configuration import xmlconfig
 from plone.autoform.form import AutoExtensibleForm
-from plone.app.z3cform.widget import SelectWidget
+from plone.app.z3cform.widgets.select import Select2Widget
 from plone.autoform import directives
 from z3c.form import form
 from zope.schema import Choice
@@ -126,13 +126,13 @@ optionflags = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE
 
 class ITestSelectWidgetSchema(Interface):
 
-    directives.widget('select_field', SelectWidget)
+    directives.widget('select_field', Select2Widget)
     select_field = Choice(
         title=u'Select Widget',
         values=['one', 'two', 'three', ]
     )
 
-    directives.widget('list_field', SelectWidget)
+    directives.widget('list_field', Select2Widget)
     list_field = List(
         title=u'Select Multiple Widget',
         value_type=Choice(values=['four', 'five', 'six', ]),

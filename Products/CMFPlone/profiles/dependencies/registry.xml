@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <registry>
-  <records interface="Products.CMFPlone.interfaces.IEditingSchema"
+  <records interface="plone.base.interfaces.IEditingSchema"
            prefix="plone"
   />
   <records interface="plone.i18n.interfaces.ILanguageSchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.IFilterSchema"
+  <records interface="plone.base.interfaces.IFilterSchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.IMaintenanceSchema"
+  <records interface="plone.base.interfaces.IMaintenanceSchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.IMailSchema"
+  <records interface="plone.base.interfaces.IMailSchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.INavigationSchema"
+  <records interface="plone.base.interfaces.INavigationSchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.ISearchSchema"
+  <records interface="plone.base.interfaces.ISearchSchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.ISecuritySchema"
+  <records interface="plone.base.interfaces.ISecuritySchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.ISiteSchema"
+  <records interface="plone.base.interfaces.ISiteSchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.ITinyMCESchema"
+  <records interface="plone.base.interfaces.ITinyMCESchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.IDateAndTimeSchema"
+  <records interface="plone.base.interfaces.IDateAndTimeSchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.IMarkupSchema"
+  <records interface="plone.base.interfaces.IMarkupSchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.IUserGroupsSettingsSchema"
+  <records interface="plone.base.interfaces.IUserGroupsSettingsSchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.ISocialMediaSchema"
+  <records interface="plone.base.interfaces.ISocialMediaSchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.ITypesSchema"
+  <records interface="plone.base.interfaces.ITypesSchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.IImagingSchema"
+  <records interface="plone.base.interfaces.IImagingSchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.ILoginSchema"
+  <records interface="plone.base.interfaces.ILoginSchema"
            prefix="plone"
   />
-  <records interface="Products.CMFPlone.interfaces.ILinkSchema"
+  <records interface="plone.base.interfaces.ILinkSchema"
            prefix="plone"
   />
   <record name="Products.CMFPlone.i18nl10n.override_dateformat.Enabled">

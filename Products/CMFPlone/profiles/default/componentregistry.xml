@@ -80,10 +80,10 @@
     <utility interface="Products.CMFDiffTool.interfaces.IDiffTool"
              object="portal_diff"
     />
-    <utility interface="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    <utility interface="plone.base.interfaces.IPloneSiteRoot"
              object=""
     />
-    <utility interface="Products.CMFPlone.interfaces.IMigrationTool"
+    <utility interface="plone.base.interfaces.IMigrationTool"
              object="portal_migration"
     />
     <utility interface="Products.MailHost.interfaces.IMailHost"
