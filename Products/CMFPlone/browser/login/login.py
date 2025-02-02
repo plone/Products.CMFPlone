@@ -129,7 +129,6 @@ class LoginForm(form.EditForm):
                 return
         return came_from
 
-
     def updateActions(self):
         super().updateActions()
         self.actions["login"].addClass("btn-primary")
@@ -210,24 +209,21 @@ class LoginForm(form.EditForm):
         adapter = queryMultiAdapter((self.context, self.request), IRedirectAfterLogin)
         if adapter:
             came_from = adapter(came_from, is_initial_login)
-        
+
         if came_from:
-            parsed_url = parse.urlparse(came_from)
-            path = parsed_url.path.split("/")
-            path = path[1:] if path[0] == '' else path
-           
-            # Verify the URL exists in the portal
+            came_from_path = parse.urlparse(came_from).path
+
+            # Verify that the Path exists in the portal
             try:
-                self.context.unrestrictedTraverse(path)
+                self.context.unrestrictedTraverse(came_from_path)
             except (KeyError, AttributeError):
-                # Path doesn't exist (404) - fallback to portal root
+                # fallback to portal root
                 came_from = None
-        
+
         if not came_from:
             came_from = self.context.absolute_url()
 
         self.request.response.redirect(came_from)
-
 
     def self_registration_enabled(self):
         registry = queryUtility(IRegistry)
