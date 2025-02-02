@@ -138,19 +138,12 @@ class LoginForm(form.EditForm):
                 if login_template_id in came_from_path:
                     return None
                     
-            # Verify the URL actually exists in the portal
-            # Use unrestrictedTraverse to check if path exists
-            path = came_from_path[1:] if came_from_path[0] == '' else came_from_path
-            try:
-                self.context.unrestrictedTraverse(path)
-                return came_from
-            except (KeyError, AttributeError):
-                # Path doesn't exist (404) - return None
-                return None
-                
+            return came_from
+                    
         except Exception as e:
             logger.warning(f"Error processing came_from URL: {str(e)}")
             return None
+
 
     def updateActions(self):
         super().updateActions()
@@ -228,9 +221,28 @@ class LoginForm(form.EditForm):
             handler()
 
     def redirect_after_login(self, came_from=None, is_initial_login=False):
+        """Handle redirect after successful login."""
         adapter = queryMultiAdapter((self.context, self.request), IRedirectAfterLogin)
         if adapter:
             came_from = adapter(came_from, is_initial_login)
+        
+        if came_from:
+            try:
+                # Parse URL and get path for existence check
+                parsed_url = parse.urlparse(came_from)
+                path = parsed_url.path.split("/")
+                path = path[1:] if path[0] == '' else path
+                
+                # Verify the URL exists in the portal
+                try:
+                    self.context.unrestrictedTraverse(path)
+                except (KeyError, AttributeError):
+                    # Path doesn't exist (404) - fallback to portal root
+                    came_from = None
+            except Exception as e:
+                logger.warning(f"Error checking existence of redirect URL: {str(e)}")
+                came_from = None
+        
         if not came_from:
             came_from = self.context.absolute_url()
 
