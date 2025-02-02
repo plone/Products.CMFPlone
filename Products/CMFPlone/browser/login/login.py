@@ -115,34 +115,19 @@ class LoginForm(form.EditForm):
         self.widgets["came_from"].value = self.get_came_from()
 
     def get_came_from(self):
-        """Get and validate the came_from parameter for redirect after login."""
         came_from = self.request.get("came_from", None)
         if not came_from:
             came_from = self.request.get("HTTP_REFERER", None)
             if not came_from:
-                return None
-                
+                return
         url_tool = getToolByName(self.context, "portal_url")
-        
-        # First check if URL is in portal
         if not url_tool.isURLInPortal(came_from):
-            return None
-            
-        try:
-            # Parse the URL and get the path
-            parsed_url = parse.urlparse(came_from)
-            came_from_path = parsed_url.path.split("/")
-            
-            # Check if it's a login-related page
-            for login_template_id in LOGIN_TEMPLATE_IDS:
-                if login_template_id in came_from_path:
-                    return None
-                    
-            return came_from
-                    
-        except Exception as e:
-            logger.warning(f"Error processing came_from URL: {str(e)}")
-            return None
+            return
+        came_from_path = parse.urlparse(came_from)[2].split("/")
+        for login_template_id in LOGIN_TEMPLATE_IDS:
+            if login_template_id in came_from_path:
+                return
+        return came_from
 
 
     def updateActions(self):
@@ -227,26 +212,22 @@ class LoginForm(form.EditForm):
             came_from = adapter(came_from, is_initial_login)
         
         if came_from:
+            parsed_url = parse.urlparse(came_from)
+            path = parsed_url.path.split("/")
+            path = path[1:] if path[0] == '' else path
+           
+            # Verify the URL exists in the portal
             try:
-                # Parse URL and get path for existence check
-                parsed_url = parse.urlparse(came_from)
-                path = parsed_url.path.split("/")
-                path = path[1:] if path[0] == '' else path
-                
-                # Verify the URL exists in the portal
-                try:
-                    self.context.unrestrictedTraverse(path)
-                except (KeyError, AttributeError):
-                    # Path doesn't exist (404) - fallback to portal root
-                    came_from = None
-            except Exception as e:
-                logger.warning(f"Error checking existence of redirect URL: {str(e)}")
+                self.context.unrestrictedTraverse(path)
+            except (KeyError, AttributeError):
+                # Path doesn't exist (404) - fallback to portal root
                 came_from = None
         
         if not came_from:
             came_from = self.context.absolute_url()
 
         self.request.response.redirect(came_from)
+
 
     def self_registration_enabled(self):
         registry = queryUtility(IRegistry)
