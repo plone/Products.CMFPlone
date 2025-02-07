@@ -171,6 +171,26 @@ class TestRedirectAfterLogin(unittest.TestCase):
             "Logout status message not displayed.",
         )
 
+    def test_redirect_to_portal_when_came_from_not_found(self):
+        self.browser.open("http://nohost/plone")
+        self.browser.getLink("Log in").click()
+        self.assertEqual(self.browser.url, "http://nohost/plone/login")
+
+        self.browser.getControl("Login Name").value = TEST_USER_NAME
+        self.browser.getControl("Password").value = TEST_USER_PASSWORD
+        self.browser.getControl(
+            name="came_from"
+        ).value = "http://nohost/plone/404-not-found"
+
+        self.browser.getControl("Log in").click()
+
+        self.assertIn("You are now logged in.", self.browser.contents)
+        self.assertEqual(
+            self.browser.url,
+            "http://nohost/plone",
+            "Successful login did not redirect to the came_from.",
+        )
+
     def test_initiallogin_adapter(self):
         # Register our redirect adapter
         from zope.component import getGlobalSiteManager
