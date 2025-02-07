@@ -63,6 +63,7 @@
           <a class="pat-plone-modal me-3 btn btn-success " id="add-user"
              data-pat-plone-modal='{
                 "content": "#content-core",
+                "displayInModal": false,
                 "actionOptions": {
                   "disableAjaxFormSubmit": true
                 }
