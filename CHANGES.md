@@ -15,6 +15,14 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.0 (2025-02-07)
+
+
+### Bug fixes:
+
+- fixes modal behaviour after form submission in 404 page
+  [rohnsha0] #1636
+
 ## 6.1.0rc1 (2025-01-31)
 
 
