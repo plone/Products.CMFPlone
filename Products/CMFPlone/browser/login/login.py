@@ -205,9 +205,21 @@ class LoginForm(form.EditForm):
             handler()
 
     def redirect_after_login(self, came_from=None, is_initial_login=False):
+        """Handle redirect after successful login."""
         adapter = queryMultiAdapter((self.context, self.request), IRedirectAfterLogin)
         if adapter:
             came_from = adapter(came_from, is_initial_login)
+
+        if came_from:
+            came_from_path = parse.urlparse(came_from).path
+
+            # Verify that the Path exists in the portal
+            try:
+                self.context.unrestrictedTraverse(came_from_path)
+            except (KeyError, AttributeError):
+                # fallback to portal root
+                came_from = None
+
         if not came_from:
             came_from = self.context.absolute_url()
 
