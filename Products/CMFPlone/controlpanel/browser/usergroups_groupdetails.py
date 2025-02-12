@@ -16,7 +16,7 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
         plone_utils = getToolByName(self.context, "plone_utils")
 
         for email in emails:
-            if not plone_utils.validateEmailAddresses(email):
+            if not plone_utils.validateSingleEmailAddress(email):
                 invalid_emails.append(email)
         
         return invalid_emails
