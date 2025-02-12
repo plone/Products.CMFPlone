@@ -55,7 +55,7 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
             emails = self.request.form.get("email", "")
             
             # Validate emails before proceeding
-            invalid_emails = self.validate_group_emails(emails)
+            invalid_emails = self.extract_invalid_emails(emails)
             if invalid_emails:
                 msg = _(
                     "Invalid email address(es): ${emails}. Please correct them before proceeding.",
