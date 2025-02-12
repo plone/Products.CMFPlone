@@ -22,10 +22,15 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
         return invalid_emails
 
     def get_group_property(self, prop_id):
+        """Retrieve group property, prioritizing request data if it's a POST request."""
+
+        if self.request.method == "POST":
+            return self.request.form.get(prop_id, None)
+        
         try:
             return self.group.getProperty(prop_id, None)
         except AttributeError:
-            pass
+            return None
 
     def __call__(self):
         context = aq_inner(self.context)
