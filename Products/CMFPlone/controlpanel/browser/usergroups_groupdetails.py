@@ -3,7 +3,6 @@ from plone.base import PloneMessageFactory as _
 from plone.protect import CheckAuthenticator
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.controlpanel.browser.usergroups import UsersGroupsControlPanelView
-from Products.CMFPlone.PloneTool import PloneTool
 from Products.statusmessages.interfaces import IStatusMessage
 
 class GroupDetailsControlPanel(UsersGroupsControlPanelView):
@@ -13,8 +12,11 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
             emails = [e.strip() for e in emails.split('\n') if e.strip()]
         
         invalid_emails = []
+
+        plone_utils = getToolByName(self.context, "plone_utils")
+
         for email in emails:
-            if not PloneTool.validateEmailAddresses(email):
+            if not plone_utils.validateEmailAddresses(email):
                 invalid_emails.append(email)
         
         return invalid_emails
@@ -45,7 +47,6 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
             CheckAuthenticator(self.request)
 
             msg = _("No changes made.")
-            self.group = None
 
             title = self.request.form.get("title", None)
             description = self.request.form.get("description", None)
@@ -110,7 +111,7 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
                 value = self.request.get(id, None)
                 # Additional validation for email properties
                 if id.lower().endswith('email') and value:
-                    invalid_emails = self.validate_group_emails(value)
+                    invalid_emails = self.extract_invalid_emails(value)
                     if invalid_emails:
                         msg = _(
                             "Invalid email address(es) in ${field}: ${emails}",
