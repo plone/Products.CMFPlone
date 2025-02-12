@@ -3,23 +3,18 @@ from plone.base import PloneMessageFactory as _
 from plone.protect import CheckAuthenticator
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.controlpanel.browser.usergroups import UsersGroupsControlPanelView
+from Products.CMFPlone.PloneTool import PloneTool
 from Products.statusmessages.interfaces import IStatusMessage
-import re
 
 class GroupDetailsControlPanel(UsersGroupsControlPanelView):
-    def validate_email(self, email):
-        """Validate email format using regex pattern."""
-        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-        return re.match(pattern, email) is not None
-
-    def validate_group_emails(self, emails):
+    def extract_invalid_emails(self, emails):
         """Validate a list of email addresses."""
         if isinstance(emails, str):
             emails = [e.strip() for e in emails.split('\n') if e.strip()]
         
         invalid_emails = []
         for email in emails:
-            if not self.validate_email(email):
+            if not PloneTool.validateEmailAddresses(email):
                 invalid_emails.append(email)
         
         return invalid_emails
