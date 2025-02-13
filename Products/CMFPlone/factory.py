@@ -27,6 +27,7 @@ _IMREALLYPLONE5 = True
 PLONE52MARKER = True
 PLONE60MARKER = True
 PLONE61MARKER = True
+PLONE62MARKER = True
 
 logger = getLogger("Plone")
 
