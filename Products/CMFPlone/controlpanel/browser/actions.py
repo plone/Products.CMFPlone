@@ -86,10 +86,25 @@ class ActionControlPanelAdapter:
         return self.current_category.id
 
     def set_category(self, value):
+        if value == self.current_category.id:
+            return
+            
         portal_actions = getToolByName(self.context, "portal_actions")
         new_category = portal_actions.get(value)
+        
+        # Store the current position before moving
+        try:
+            self.current_position = self.current_category.objectIds().index(self.context.id)
+        except ValueError:
+            self.current_position = 0
+            
+        # Perform the move
         cookie = self.current_category.manage_cutObjects(ids=[self.context.id])
         new_category.manage_pasteObjects(cookie)
+        
+        # Update the current_category reference
+        self.current_category = new_category
+
 
     category = property(get_category, set_category)
 
@@ -150,18 +165,27 @@ class ActionControlPanelAdapter:
     visible = property(get_visible, set_visible)
 
     def get_position(self):
-        position = self.current_category.objectIds().index(self.context.id)
-        return position + 1
+        try:
+            position = self.current_category.objectIds().index(self.context.id)
+            return position + 1
+        except ValueError:
+            # Return a default position if the action isn't found
+            # (which might happen during category transitions)
+            return 1
 
     def set_position(self, value):
-        current_position = self.current_category.objectIds().index(self.context.id)
-        all_actions = list(self.current_category._objects)
-        current_action = all_actions.pop(current_position)
-        new_position = value - 1
-        all_actions = (
-            all_actions[0:new_position] + [current_action] + all_actions[new_position:]
-        )
-        self.current_category._objects = tuple(all_actions)
+        try:
+            current_position = self.current_category.objectIds().index(self.context.id)
+            all_actions = list(self.current_category._objects)
+            current_action = all_actions.pop(current_position)
+            new_position = value - 1
+            all_actions = (
+                all_actions[0:new_position] + [current_action] + all_actions[new_position:]
+            )
+            self.current_category._objects = tuple(all_actions)
+        except ValueError:
+            # Skip position setting if the action isn't in the category yet
+            pass
 
     position = property(get_position, set_position)
 
