@@ -1,4 +1,5 @@
 from Acquisition import aq_inner
+from email.utils import getaddresses
 from plone.base import PloneMessageFactory as _
 from plone.protect import CheckAuthenticator
 from Products.CMFCore.utils import getToolByName
@@ -6,8 +7,6 @@ from Products.CMFPlone.controlpanel.browser.usergroups import (
     UsersGroupsControlPanelView,
 )
 from Products.statusmessages.interfaces import IStatusMessage
-
-from email.utils import getaddresses
 
 class GroupDetailsControlPanel(UsersGroupsControlPanelView):
     def extract_invalid_emails(self, emails):
@@ -65,7 +64,7 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
         try:
             return self.group.getProperty(prop_id, None)
         except AttributeError:
-            return None
+            pass
 
     def __call__(self):
         context = aq_inner(self.context)
