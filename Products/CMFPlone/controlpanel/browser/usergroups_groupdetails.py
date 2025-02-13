@@ -2,28 +2,63 @@ from Acquisition import aq_inner
 from plone.base import PloneMessageFactory as _
 from plone.protect import CheckAuthenticator
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.controlpanel.browser.usergroups import UsersGroupsControlPanelView
+from Products.CMFPlone.controlpanel.browser.usergroups import (
+    UsersGroupsControlPanelView,
+)
 from Products.statusmessages.interfaces import IStatusMessage
+
+from email.utils import getaddresses
 
 class GroupDetailsControlPanel(UsersGroupsControlPanelView):
     def extract_invalid_emails(self, emails):
-        """Validate a list of email addresses."""
-        if isinstance(emails, str):
-            emails = [e.strip() for e in emails.split('\n') if e.strip()]
+        """Validate a list of email addresses.
         
-        invalid_emails = []
+        Supports:
+        - Multiple email addresses separated by commas
+        - Email addresses with display names
+        - Single email address strings
+        - Lists of email addresses (from newline-separated input)
+        
+        Args:
+            emails: String of comma/newline-separated emails or list of email strings
+            
+        Returns:
+            list: List of invalid email addresses found
+        """
+        if not emails:
+            return []
+            
+        # Convert input to list of email addresses
+        if isinstance(emails, str):
+            # Check if it's newline-separated
+            if '\n' in emails:
+                email_list = [email.strip() for email in emails.split('\n') if email.strip()]
+            else:
+                # Parse comma-separated emails with potential display names
+                email_list = [emails]
+        else:
+            email_list = emails
 
+        invalid_emails = []
         plone_utils = getToolByName(self.context, "plone_utils")
 
-        for email in emails:
-            if not plone_utils.validateSingleEmailAddress(email):
-                invalid_emails.append(email)
-        
+        # Process each email or group of emails
+        for email_entry in email_list:
+            # Parse addresses including display names
+            parsed_addresses = getaddresses([email_entry])
+            
+            for name, addr in parsed_addresses:
+                if not addr or not plone_utils.validateSingleEmailAddress(addr):
+                    # If there was a display name, include it in the error message
+                    if name:
+                        invalid_emails.append(f"{name} <{addr}>" if addr else name)
+                    else:
+                        invalid_emails.append(addr if addr else email_entry)
+
         return invalid_emails
 
     def get_group_property(self, prop_id):
         """Retrieve group property, prioritizing request data if it's a POST request."""
-
         if self.request.method == "POST":
             return self.request.form.get(prop_id, None)
         
@@ -114,7 +149,7 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
             processed = {}
             for id, property in self.gdtool.propertyItems():
                 value = self.request.get(id, None)
-                # Additional validation for email properties
+                # Additional validation for any email properties
                 if id.lower().endswith('email') and value:
                     invalid_emails = self.extract_invalid_emails(value)
                     if invalid_emails:
