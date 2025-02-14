@@ -355,7 +355,8 @@ I search in ${NAME} subfolder in the contentbrowser widget
     mark results
     Click    //div[@class="querystring-criteria-value"]//div[contains(@class, "content-browser-selected-items-wrapper")]//a[contains(@class, "btn-primary")]
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumn")]//div[contains(@class, "item-title")][text()[contains(.,'${NAME}')]]
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelToolbar")]/button
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]//div[contains(@class, "levelToolbar")]//button[@title="select B"]
+
 
 
 I open the select box titled operator
