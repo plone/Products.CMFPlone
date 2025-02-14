@@ -136,8 +136,8 @@ I select a related item image via contentbrowser
    Click item in contenbrowser column    4    3
    # Click second element in fifth column, that is the "Image2" Object
    Click item in contenbrowser column    5    2
-   # Click the select Button in the Toolbar of column 6
-   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[6]/div[contains(@class, "levelToolbar")]/button
+   # Click the select Button in the Toolbar of column 6   
+   Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[6]/div[contains(@class, "levelToolbar")]/div[contains(@class,"selectLevel")]/button
 
 
 I select two related item images via contentbrowser
@@ -181,7 +181,7 @@ I set an internal link via contentbrowser
     ...    all_elements=False
     Click tiny button and open contentbrowser    Insert/edit link
     Click item in contenbrowser column    1    3
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/div[contains(@class,"selectLevel")]/button
     Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
 I set an image via contentbrowser
@@ -191,7 +191,7 @@ I set an image via contentbrowser
     Click item in contenbrowser column    1    3
     Click item in contenbrowser column    2    1
     Click item in contenbrowser column    3    1
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/div[contains(@class,"selectLevel")]/button
     Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
 I upload an image via contentbrowser
@@ -204,7 +204,7 @@ I upload an image via contentbrowser
     Upload File By Selector    //div[contains(@class,"pat-upload")]//input[@class="dz-hidden-input"]    ${PATH_TO_TEST_FILES}/plone-logo.png
     Click    //div[contains(@class,"pat-upload")]//button[contains(@class,"upload-all")]
     Click item in contenbrowser column    3    3
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/div[contains(@class,"selectLevel")]/button
     Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
 I search and select an image via contentbrowser
@@ -219,8 +219,8 @@ I search and select an image via contentbrowser
     Type Text    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]    Anot
     # here we need a timeout, because the search filter is not so fast like the testbrowser, it looks like a asynch operation
     Sleep    1
-    Click item in contenbrowser column    5    1
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/button
+    Click item in contenbrowser column    1    1
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/div[contains(@class,"selectLevel")]/button
     Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
 I save the document
