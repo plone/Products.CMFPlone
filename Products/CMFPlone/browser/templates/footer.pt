@@ -29,7 +29,7 @@
       <span i18n:translate="description_license" tal:omit-tag="">
       Distributed under the
            <span i18n:name="license" tal:omit-tag="">
-                <a href="http://creativecommons.org/licenses/GPL/2.0/" i18n:translate="label_gnu_gpl_licence">GNU GPL license</a></span>.
+                <a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.html" i18n:translate="label_gnu_gpl_licence">GNU GPL license</a></span>.
       </span>
     </div>
 
