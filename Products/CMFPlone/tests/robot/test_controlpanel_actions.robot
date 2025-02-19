@@ -53,6 +53,13 @@ Scenario: Delete an action in Actions Control Panel
       and Sleep  1
      Then anonymous users cannot see the action anymore
 
+Scenario: Move an action to new category in Actions Control Panel
+    Given a logged-in manager
+      and the actions control panel
+     When I change category of an action
+      and Sleep  1
+     Then logged in users can see action in new category
+
 *** Keywords ***
 
 # GIVEN
@@ -103,6 +110,11 @@ I delete an action
     Handle Future Dialogs    action=accept
     Click    //*[@id="content-core"]/section[2]/section/ol/li[1]/form/button[@name="delete"]
 
+I change category of an action
+    Click    //*[@id="content-core"]/section[6]/section/ol/li[7]/form/a
+    Wait For Condition    Text    //body    contains    Action Settings
+    Select Options By    //select[@name="form.widgets.category:list"]    value    portal_tabs
+    Click    //div[contains(@class,'pattern-modal-buttons')]/button
 
 # THEN
 
@@ -137,3 +149,6 @@ anonymous users can see the action again
     Disable autologin
     Go to  ${PLONE_URL}
     Get Text    //body    contains    Site Map
+
+logged in users can see action in new category
+    Get Text    //*[@id="portal-globalnav"]    contains    Log out
