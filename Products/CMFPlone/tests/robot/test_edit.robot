@@ -114,7 +114,7 @@ I select a related item
     # Click first element in first column
     Click item in contenbrowser column    1    1
     # Click the select Button in the Toolbar of column 2
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelToolbar")]//button[contains(@class, "btn-primary")]
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelToolbar")]//button[contains(@class, "btn-outline-primary")]
 
 I select a linked item
     # Click the select button
@@ -123,7 +123,7 @@ I select a linked item
     Click item in contenbrowser column    1    1
     # Click the select Button in the Toolbar of column 2
     # This selects the "test-folder"
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelToolbar")]//button[contains(@class, "btn-primary")]
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelToolbar")]//button[contains(@class, "btn-outline-primary")]
 
 I save the page
     Click    //button[@name="form.buttons.save"]
