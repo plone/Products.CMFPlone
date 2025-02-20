@@ -1,4 +1,5 @@
 from AccessControl import Unauthorized
+from email import message_from_bytes
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.base.interfaces.controlpanel import IMailSchema
 from plone.base.interfaces.controlpanel import ISiteSchema
@@ -15,13 +16,6 @@ import unittest
 
 
 member_id = "new_member"
-
-try:
-    # Python 3
-    from email import message_from_bytes
-except ImportError:
-    # Python 2
-    from email import message_from_string as message_from_bytes
 
 
 class TestRegistrationTool(PloneTestCase.PloneTestCase):
