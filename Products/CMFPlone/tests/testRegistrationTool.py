@@ -1,5 +1,8 @@
 from AccessControl import Unauthorized
 from email import message_from_bytes
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.base.interfaces.controlpanel import IMailSchema
 from plone.base.interfaces.controlpanel import ISiteSchema
@@ -142,16 +145,31 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
 
     def testNewIdAllowed(self):
         self.assertEqual(self.registration.isMemberIdAllowed("newuser"), 1)
+        self.assertFalse(self.registration.principal_id_or_login_name_exists("newuser"))
 
     def testTakenUserId(self):
         self.assertEqual(self.registration.isMemberIdAllowed("userid"), 0)
+        self.assertTrue(self.registration.principal_id_or_login_name_exists("userid"))
 
-    def testTakenGroupd(self):
+    def testTakenGroupId(self):
         self.assertEqual(self.registration.isMemberIdAllowed("groupid"), 0)
+        self.assertTrue(self.registration.principal_id_or_login_name_exists("groupid"))
 
     def testIsMemberIdAllowedIfSubstringOfExisting(self):
         # http://dev.plone.org/plone/ticket/6396
         self.assertTrue(self.registration.isMemberIdAllowed("useri"))
+        self.assertFalse(self.registration.principal_id_or_login_name_exists("useri"))
+
+    def test_principal_id_or_login_name_exists_default_users(self):
+        self.assertTrue(
+            self.registration.principal_id_or_login_name_exists(SITE_OWNER_NAME)
+        )
+        self.assertTrue(
+            self.registration.principal_id_or_login_name_exists(TEST_USER_ID)
+        )
+        self.assertTrue(
+            self.registration.principal_id_or_login_name_exists(TEST_USER_NAME)
+        )
 
     def testRegisteredNotify(self):
         # tests email sending on registration
