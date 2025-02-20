@@ -31,7 +31,8 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
         memship = self.portal.portal_membership
         memship.addMember("maurits", TEST_USER_PASSWORD, [], [])
         member = memship.getMemberById("maurits")
-        self.assertRaises(Unauthorized, set_own_login_name, member, "vanrees")
+        with self.assertRaises(Unauthorized):
+            set_own_login_name(member, "vanrees")
         # The admin *should* be able to change the login name of
         # another user.  See http://dev.plone.org/plone/ticket/11255
         self.loginAsPortalOwner()
@@ -46,16 +47,14 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
         # We are not allowed to change a user at the root zope level.
         # A KeyError is raised, or possibly in later Plone versions a
         # ValueError, so we simply go for an Exception.
-        self.assertRaises(Exception, set_own_login_name, member, "vanrees")
+        with self.assertRaises(Exception):
+            set_own_login_name(member, "vanrees")
 
     def testNormalMemberIdsAllowed(self):
         pattern = self.portal.portal_registration._ALLOWED_MEMBER_ID_PATTERN
         self.assertTrue(pattern.match("maurits"))
         self.assertTrue(pattern.match("Maur1ts"))
-        # PLIP9214: the next test actually passes with the original
-        # pattern but fails with the new one as email addresses cannot
-        # end in a number:
-        # self.assertTrue(pattern.match('maurits76'))
+        self.assertTrue(pattern.match("maurits76"))
         self.assertTrue(pattern.match("MAURITS"))
 
     def testEmailMemberIdsAllowed(self):
