@@ -1,0 +1,52 @@
+# Generated from:
+# https://github.com/plone/meta/tree/main/src/plone/meta/default
+# See the inline comments on how to expand/tweak this configuration file
+name: tests
+
+on:
+  push:
+
+jobs:
+  build:
+    permissions:
+      contents: read
+      pull-requests: write
+    strategy:
+      # We want to see all failures:
+      fail-fast: false
+      matrix:
+        os:
+        - ["ubuntu", "ubuntu-latest"]
+        config:
+        # [Python version, visual name, tox env]
+        - ["3.13", "6.1 on py3.13", "py313-plone61"]
+        - ["3.10", "6.1 on py3.10", "py310-plone61"]
+        - ["3.13", "6.0 on py3.13", "py313-plone60"]
+        - ["3.9", "6.0 on py3.9", "py39-plone60"]
+
+    runs-on: ${{ matrix.os[1] }}
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    name: ${{ matrix.config[1] }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.config[0] }}
+        allow-prereleases: true
+    - name: Pip cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ matrix.config[0] }}-${{ hashFiles('setup.*', 'tox.ini') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-${{ matrix.config[0] }}-
+          ${{ runner.os }}-pip-
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox
+    - name: Test
+      run: tox -e ${{ matrix.config[2] }}
