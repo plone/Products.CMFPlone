@@ -68,9 +68,9 @@
   </permission>
 
   <permission
-    id="plone.app.controlpanel.Imaging"
-    title="Plone Site Setup: Imaging"
-    />
+      id="plone.app.controlpanel.Imaging"
+      title="Plone Site Setup: Imaging"
+      />
 
   <permission
       id="plone.app.controlpanel.TinyMCE"
@@ -80,9 +80,9 @@
   </permission>
 
   <permission
-    id="Products.CMFPlone.ManagePortalAliases"
-    title="Manage Portal Aliases"
-    />
+      id="Products.CMFPlone.ManagePortalAliases"
+      title="Manage Portal Aliases"
+      />
 
   <permission
       id="Products.CMFPlone.ManageContextAliases"
