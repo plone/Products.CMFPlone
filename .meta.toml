@@ -15,3 +15,8 @@ per-file-ignores =
     Products/CMFPlone/utils.py: F821
     Products/CMFPlone/patches/speed.py: E402
 """
+
+[pre_commit]
+zpretty_extra_lines = """
+        exclude: .pt
+"""

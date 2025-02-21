@@ -23,6 +23,7 @@ repos:
     rev: 3.1.0
     hooks:
     -   id: zpretty
+        exclude: .pt
 
 ##
 # Add extra configuration options in .meta.toml:
