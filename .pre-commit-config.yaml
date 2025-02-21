@@ -75,6 +75,7 @@ repos:
     rev: "6.2.1"
     hooks:
     -   id: i18ndude
+        pass_filenames: false
 
 
 ##

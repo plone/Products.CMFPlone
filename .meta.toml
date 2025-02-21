@@ -21,5 +21,9 @@ zpretty_extra_lines = """
         exclude: .pt
 """
 
+i18ndude_extra_lines = """
+        pass_filenames: false
+"""
+
 [pyproject]
 codespell_ignores = "checkin,worl,unter,newslines,aci"
