@@ -1,11 +1,12 @@
-from plone import api
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from Products.CMFPlone.relationhelper import get_relations_stats
 from Products.CMFPlone.relationhelper import rebuild_relations
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+from z3c.relationfield import RelationValue
 from zope.component import getUtility
 from zope.intid.interfaces import IIntIds
+from zope.lifecycleevent import modified
 
 import unittest
 
@@ -19,18 +20,26 @@ class TestRelationhelper(unittest.TestCase):
         setRoles(self.portal, TEST_USER_ID, ("Manager",))
 
     def test_relations_stats(self):
-        doc1 = api.content.create(type="Document", title="doc1", container=self.portal)
-        doc2 = api.content.create(type="Document", title="doc2", container=self.portal)
-        api.relation.create(doc1, doc2, "relatedItems")
+        doc1 = self._create_content(
+            type="Document", title="doc1", container=self.portal
+        )
+        doc2 = self._create_content(
+            type="Document", title="doc2", container=self.portal
+        )
+        self._create_relation(doc1, doc2, "relatedItems")
 
         stats, broken = get_relations_stats()
         self.assertEqual(dict(stats), {"relatedItems": 1})
         self.assertEqual(dict(broken), {})
 
     def test_relations_stats_broken(self):
-        doc1 = api.content.create(type="Document", title="doc1", container=self.portal)
-        doc2 = api.content.create(type="Document", title="doc2", container=self.portal)
-        api.relation.create(doc1, doc2, "relatedItems")
+        doc1 = self._create_content(
+            type="Document", title="doc1", container=self.portal
+        )
+        doc2 = self._create_content(
+            type="Document", title="doc2", container=self.portal
+        )
+        self._create_relation(doc1, doc2, "relatedItems")
         self.portal._delObject("doc2")
 
         stats, broken = get_relations_stats()
@@ -38,16 +47,22 @@ class TestRelationhelper(unittest.TestCase):
         self.assertEqual(dict(broken), {"relatedItems": 1})
 
     def test_rebuild_relations(self):
-        doc1 = api.content.create(type="Document", title="doc1", container=self.portal)
-        doc2 = api.content.create(type="Document", title="doc2", container=self.portal)
-        doc3 = api.content.create(type="Document", title="doc3", container=self.portal)
+        doc1 = self._create_content(
+            type="Document", title="doc1", container=self.portal
+        )
+        doc2 = self._create_content(
+            type="Document", title="doc2", container=self.portal
+        )
+        doc3 = self._create_content(
+            type="Document", title="doc3", container=self.portal
+        )
         intids = getUtility(IIntIds)
         doc1_intid = intids.getId(doc1)
         doc2_intid = intids.getId(doc2)
         doc3_intid = intids.getId(doc3)
 
-        api.relation.create(doc1, doc2, "relatedItems")
-        api.relation.create(doc1, doc3, "relatedItems")
+        self._create_relation(doc1, doc2, "relatedItems")
+        self._create_relation(doc1, doc3, "relatedItems")
 
         stats, broken = get_relations_stats()
         self.assertEqual(dict(stats), {"relatedItems": 2})
@@ -90,16 +105,22 @@ class TestRelationhelper(unittest.TestCase):
         self.assertEqual(dict(broken), {})
 
     def test_rebuild_relations_with_intid_flush(self):
-        doc1 = api.content.create(type="Document", title="doc1", container=self.portal)
-        doc2 = api.content.create(type="Document", title="doc2", container=self.portal)
-        doc3 = api.content.create(type="Document", title="doc3", container=self.portal)
+        doc1 = self._create_content(
+            type="Document", title="doc1", container=self.portal
+        )
+        doc2 = self._create_content(
+            type="Document", title="doc2", container=self.portal
+        )
+        doc3 = self._create_content(
+            type="Document", title="doc3", container=self.portal
+        )
         intids = getUtility(IIntIds)
         doc1_intid = intids.getId(doc1)
         doc2_intid = intids.getId(doc2)
         doc3_intid = intids.getId(doc3)
 
-        api.relation.create(doc1, doc2, "relatedItems")
-        api.relation.create(doc1, doc3, "relatedItems")
+        self._create_relation(doc1, doc2, "relatedItems")
+        self._create_relation(doc1, doc3, "relatedItems")
 
         stats, broken = get_relations_stats()
         self.assertEqual(dict(stats), {"relatedItems": 2})
@@ -132,3 +153,20 @@ class TestRelationhelper(unittest.TestCase):
         stats, broken = get_relations_stats()
         self.assertEqual(dict(stats), {"relatedItems": 1})
         self.assertEqual(dict(broken), {})
+
+    def _create_content(self, type, title, container):
+        # Create a temporary id if the id is not given
+        content_id = title
+        container.invokeFactory(type, content_id)
+        content = container[content_id]
+        return content
+
+    def _create_relation(self, source, target, relationship):
+        intids = getUtility(IIntIds)
+        to_id = intids.getId(target)
+        from_attribute = relationship
+
+        existing_relations = getattr(source, from_attribute, None) or []
+        existing_relations.append(RelationValue(to_id))
+        setattr(source, from_attribute, existing_relations)
+        modified(source)

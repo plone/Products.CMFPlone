@@ -1,10 +1,11 @@
-from plone import api
+from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
 from Products.CMFPlone.browser.login.login_help import RequestResetPassword
 from Products.CMFPlone.browser.login.login_help import RequestUsername
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 
 import transaction
 import unittest
@@ -34,7 +35,8 @@ class TestLoginHelp(unittest.TestCase):
         self.assertTrue(request_username())
 
     def test_view_form_with_emaillogin(self):
-        api.portal.set_registry_record("plone.use_email_as_login", True)
+        registry = getUtility(IRegistry)
+        registry.records["plone.use_email_as_login"] = True
         form = getMultiAdapter((self.portal, self.request), name="login-help")
         self.assertEqual(form.subforms, [])
         form.update()
@@ -61,7 +63,8 @@ class TestLoginHelp(unittest.TestCase):
         # no mail was sent since the user does not exist
         self.request["form.widgets.reset_password"] = "test"
 
-        member = api.user.get("test_user_1_")
+        portal_membership = self.portal.get_tool("portal_membership")
+        member = portal_membership.getMemberById("test_user_1_")
         email = "foo@plone.org"
         member.setMemberProperties({"email": email})
         self.request["form.widgets.reset_password"] = "test_user_1_"
@@ -85,7 +88,8 @@ class TestLoginHelpFunctional(unittest.TestCase):
         self.browser.getLink("Get help").click()
         self.assertEqual(self.browser.url, "http://nohost/plone/@@login-help")
 
-        member = api.user.get("test_user_1_")
+        portal_membership = self.portal.get_tool("portal_membership")
+        member = portal_membership.getMemberById("test_user_1_")
         email = "foo@plone.org"
         member.setMemberProperties({"email": email})
         transaction.commit()
@@ -121,7 +125,8 @@ class TestLoginHelpFunctional(unittest.TestCase):
         self.browser.getLink("Get help").click()
         self.assertEqual(self.browser.url, "http://nohost/plone/@@login-help")
 
-        member = api.user.get("test_user_1_")
+        portal_membership = self.portal.get_tool("portal_membership")
+        member = portal_membership.getMemberById("test_user_1_")
         email = "foo@plone.org"
         member.setMemberProperties({"email": email})
         transaction.commit()
@@ -160,7 +165,7 @@ class TestLoginHelpFunctional(unittest.TestCase):
         )
         self.assertEqual(len(self.portal.MailHost.messages), 1)
 
-        api.user.create(
+        self._create_user(
             username="another_user_same_email",
             email="foo@plone.org",
             password="password1",
@@ -178,7 +183,7 @@ class TestLoginHelpFunctional(unittest.TestCase):
         )
         self.assertEqual(len(self.portal.MailHost.messages), 1)
 
-        api.user.create(
+        self._create_user(
             username="next_user_new_email",
             email="bar@plone.org",
             password="password1",
@@ -195,3 +200,20 @@ class TestLoginHelpFunctional(unittest.TestCase):
             self.browser.contents,
         )
         self.assertEqual(len(self.portal.MailHost.messages), 2)
+
+    def _create_user(self, username, email, password, roles):
+        properties = {
+            "username": username,
+            "email": email,
+        }
+        registration = self.portal.get_tool("portal_registration")
+        registration.addMember(
+            username,
+            password,
+            roles,
+            properties=properties,
+        )
+
+        portal_membership = self.portal.get_tool("portal_membership")
+        member = portal_membership.getMemberById(username)
+        return member
