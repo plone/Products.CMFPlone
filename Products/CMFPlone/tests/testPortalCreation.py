@@ -514,7 +514,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             self.assertFalse(
                 "index_html" not in url,
                 "Action wrongly applied to parent object %s" % url,
-            )  # noqa
+            )
 
     def testObjectButtonActionsPerformCorrectAction(self):
         # only a manager would have proper permissions

@@ -94,13 +94,13 @@ class TestLoginHelpFunctional(unittest.TestCase):
         self.assertEqual(self.browser.url, "http://nohost/plone/@@login-help")
 
         self.browser.getControl(name="form.widgets.reset_password").value = (
-            "nonexistinguser"  # noqa: E501
+            "nonexistinguser"
         )
         self.browser.getControl(name="form.buttons.reset").click()
         self.assertEqual(self.browser.url, "http://nohost/plone/@@login-help")
         # message appears even though no email was sent
         self.assertIn(
-            "An email has been sent with instructions on how to reset your password.",  # noqa: E501
+            "An email has been sent with instructions on how to reset your password.",
             self.browser.contents,
         )
         self.assertEqual(len(self.portal.MailHost.messages), 0)
@@ -110,7 +110,7 @@ class TestLoginHelpFunctional(unittest.TestCase):
         )
         self.browser.getControl(name="form.buttons.reset").click()
         self.assertIn(
-            "An email has been sent with instructions on how to reset your password.",  # noqa: E501
+            "An email has been sent with instructions on how to reset your password.",
             self.browser.contents,
         )
         # message was actually sent

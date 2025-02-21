@@ -92,7 +92,7 @@ class RequestResetPassword(form.Form):
                 "Error while trying to send a reset-password notice to user {}: {}".format(
                     data["reset_password"], e
                 )
-            )  # noqa: E501
+            )
             pass
 
         IStatusMessage(self.request).addStatusMessage(

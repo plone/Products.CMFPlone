@@ -151,14 +151,14 @@ def initialize(context):
     from Products.CMFPlone import ActionsTool
     from Products.CMFPlone import CatalogTool
     from Products.CMFPlone import MigrationTool
-    from Products.CMFPlone import patches  # noqa
+    from Products.CMFPlone import patches  # noqa: F401
     from Products.CMFPlone import PloneControlPanel
     from Products.CMFPlone import PloneTool
     from Products.CMFPlone import RegistrationTool
     from Products.CMFPlone import SkinsTool
     from Products.CMFPlone import TranslationServiceTool
     from Products.CMFPlone import TypesTool
-    from Products.CMFPlone import UnicodeSplitter  # noqa
+    from Products.CMFPlone import UnicodeSplitter  # noqa: F401
     from Products.CMFPlone import URLTool
     from Products.CMFPlone import WorkflowTool
 
@@ -209,4 +209,4 @@ def initialize(context):
 
 # Apply early monkey patches.  For these patches, it is too late if we do this
 # in the initialize method.
-from Products.CMFPlone import earlypatches  # noqa
+from Products.CMFPlone import earlypatches  # noqa: F401

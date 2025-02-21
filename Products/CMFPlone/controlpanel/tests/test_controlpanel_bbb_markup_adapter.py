@@ -29,7 +29,7 @@ class MarkupControlPanelAdapterTest(unittest.TestCase):
         )
 
     def test_set_default_type(self):
-        getAdapter(self.portal, IMarkupSchema).default_type = "text/plain"  # noqa
+        getAdapter(self.portal, IMarkupSchema).default_type = "text/plain"
         self.assertEqual(self.settings.default_type, "text/plain")
 
     def test_get_allowed_types(self):

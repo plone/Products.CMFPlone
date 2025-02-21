@@ -104,11 +104,11 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open("%s/@@navigation-controlpanel" % self.portal_url)
 
         self.browser.getControl("Filter on workflow state").selected = True
-        self.browser.getControl("Externally visible [external]").selected = True  # noqa
+        self.browser.getControl("Externally visible [external]").selected = True
         self.browser.getControl("Internal draft [internal]").selected = True
         self.browser.getControl(
             "Internally published [internally_published]"
-        ).selected = True  # noqa
+        ).selected = True
         self.browser.getControl("Pending review [pending]").selected = True
         self.browser.getControl("Private [private]").selected = True
         self.browser.getControl("Public draft [visible]").selected = True
@@ -122,9 +122,7 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertTrue("external" in settings.workflow_states_to_show)
         self.assertTrue("internal" in settings.workflow_states_to_show)
-        self.assertTrue(
-            "internally_published" in settings.workflow_states_to_show
-        )  # noqa
+        self.assertTrue("internally_published" in settings.workflow_states_to_show)
         self.assertTrue("pending" in settings.workflow_states_to_show)
         self.assertTrue("private" in settings.workflow_states_to_show)
         self.assertTrue("visible" in settings.workflow_states_to_show)
@@ -137,7 +135,7 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
 
         self.browser.getControl(
             "Show items normally excluded from navigation if viewing their children."
-        ).selected = False  # noqa
+        ).selected = False
         self.browser.getControl("Save").click()
 
         self.assertFalse(settings.show_excluded_items)

@@ -42,9 +42,7 @@ class DefaultPageTestCase(unittest.TestCase):
 
         # 2) a folder also provides an fti that implements
         #    IDynamicViewTypeInformation
-        from Products.CMFDynamicViewFTI.interfaces import (  # noqa
-            IDynamicViewTypeInformation,
-        )
+        from Products.CMFDynamicViewFTI.interfaces import IDynamicViewTypeInformation
 
         fti = self.folder.getTypeInfo()
         self.assertTrue(IDynamicViewTypeInformation.providedBy(fti))

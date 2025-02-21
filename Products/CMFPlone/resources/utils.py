@@ -62,7 +62,7 @@ def get_resource(context, path):
     except (NotFound, AttributeError, KeyError):
         logger.warning(
             f"Could not find resource {path}. You may have to create it first."
-        )  # noqa
+        )
         return
 
     if isinstance(resource, FilesystemFile):
