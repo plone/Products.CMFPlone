@@ -73,7 +73,7 @@ target-version = ["py38"]
 ##
 
 [tool.codespell]
-ignore-words-list = "discreet,assertin,thet,"
+ignore-words-list = "discreet,assertin,thet,checkin,worl,unter,newslines,aci"
 skip = "*.po,"
 ##
 # Add extra configuration options in .meta.toml:

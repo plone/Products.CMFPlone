@@ -20,3 +20,6 @@ per-file-ignores =
 zpretty_extra_lines = """
         exclude: .pt
 """
+
+[pyproject]
+codespell_ignores = "checkin,worl,unter,newslines,aci"
