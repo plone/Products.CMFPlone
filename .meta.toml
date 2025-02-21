@@ -27,3 +27,7 @@ i18ndude_extra_lines = """
 
 [pyproject]
 codespell_ignores = "checkin,worl,unter,newslines,aci"
+dependencies_ignores = "['robotframework-debuglibrary', 'plone.intelligenttext', 'five.customerize', 'Products.SiteErrorLog', 'Products.ExtendedPathIndex', 'plone.volto', 'plone.app.upgrade', 'plone.distribution', 'plone.app.multilingual', 'plone.app.discussion', 'plone.app.iterate', 'plone.app.event', '_imaging', 'Products.ZSQLMethods', 'Lifetime', 'Exception', 'Products.ExternalEditor']"
+dependencies_mappings = [
+  "'Products.ZCatalog' = ['Products.ZCTextIndex', 'Products.PluginIndexes']",
+]

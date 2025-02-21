@@ -122,6 +122,8 @@ Zope = [
 ]
 python-dateutil = ['dateutil']
 pytest-plone = ['pytest', 'zope.pytestlayer', 'plone.testing', 'plone.app.testing']
+ignore-packages = ['robotframework-debuglibrary', 'plone.intelligenttext', 'five.customerize', 'Products.SiteErrorLog', 'Products.ExtendedPathIndex', 'plone.volto', 'plone.app.upgrade', 'plone.distribution', 'plone.app.multilingual', 'plone.app.discussion', 'plone.app.iterate', 'plone.app.event', '_imaging', 'Products.ZSQLMethods', 'Lifetime', 'Exception', 'Products.ExternalEditor']
+'Products.ZCatalog' = ['Products.ZCTextIndex', 'Products.PluginIndexes']
 
 ##
 # Add extra configuration options in .meta.toml:
