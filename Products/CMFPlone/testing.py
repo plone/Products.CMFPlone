@@ -11,19 +11,19 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing.layers import FunctionalTesting
 from plone.app.testing.layers import IntegrationTesting
+from plone.app.z3cform.widgets.select import Select2Widget
+from plone.autoform import directives
+from plone.autoform.form import AutoExtensibleForm
 from plone.testing import zope
 from Products.CMFPlone.tests.robot.robot_setup import CMFPloneRemoteKeywords
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
+from z3c.form import form
 from zope.component import getSiteManager
 from zope.configuration import xmlconfig
-from plone.autoform.form import AutoExtensibleForm
-from plone.app.z3cform.widgets.select import Select2Widget
-from plone.autoform import directives
-from z3c.form import form
+from zope.interface import Interface
 from zope.schema import Choice
 from zope.schema import List
-from zope.interface import Interface
 
 import doctest
 

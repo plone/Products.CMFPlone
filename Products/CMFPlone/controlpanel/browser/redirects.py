@@ -1,5 +1,4 @@
 from csv import writer
-import warnings
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
 from io import StringIO
@@ -20,6 +19,7 @@ from zope.i18nmessageid import MessageFactory
 import csv
 import logging
 import tempfile
+import warnings
 
 
 try:

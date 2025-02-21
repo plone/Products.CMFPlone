@@ -229,8 +229,8 @@ class TestRedirectAfterLogin(unittest.TestCase):
         # By default, when you reset your password, you are directly logged in.
         # An initial login adapter should be active.
         # And the redirect after login adapter too.
-        from plone.registry.interfaces import IRegistry
         from plone.base.interfaces import IMailSchema
+        from plone.registry.interfaces import IRegistry
         from zope.component import getGlobalSiteManager
         from zope.component import getUtility
 
