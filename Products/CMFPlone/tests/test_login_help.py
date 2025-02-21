@@ -89,7 +89,7 @@ class TestLoginHelpFunctional(unittest.TestCase):
         email = "foo@plone.org"
         member.setMemberProperties({"email": email})
         transaction.commit()
-        # validaton error of empty required field
+        # validation error of empty required field
         self.browser.getControl(name="form.buttons.reset").click()
         self.assertEqual(self.browser.url, "http://nohost/plone/@@login-help")
 
@@ -126,7 +126,7 @@ class TestLoginHelpFunctional(unittest.TestCase):
         member.setMemberProperties({"email": email})
         transaction.commit()
 
-        # validaton error of empty required field
+        # validation error of empty required field
         self.browser.getControl(name="form.buttons.get_username").click()
         self.assertEqual(self.browser.url, "http://nohost/plone/@@login-help")
         self.assertIn("missing", self.browser.contents)

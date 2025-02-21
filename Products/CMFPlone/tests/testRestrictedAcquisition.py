@@ -5,7 +5,7 @@
 #
 # If an object with setDefaultAccess('deny') is used as the context for
 # a PythonScript, the script can no longer acquire tools from the portal
-# root. Rolling back the abovementioned checkin restores functionality.
+# root. Rolling back the above mentioned checkin restores functionality.
 #
 
 from AccessControl import ClassSecurityInfo
