@@ -478,12 +478,14 @@ def test_suite():
     import unittest
 
     if bbb.HAS_ZSERVER:
-        return unittest.TestSuite((
-            unittest.defaultTestLoader.loadTestsFromTestCase(TestDAVProperties),
-            unittest.defaultTestLoader.loadTestsFromTestCase(TestPUTObjects),
-            unittest.defaultTestLoader.loadTestsFromTestCase(TestPUTIndexHtml),
-            unittest.defaultTestLoader.loadTestsFromTestCase(TestDAVOperations),
-        ))
+        return unittest.TestSuite(
+            (
+                unittest.defaultTestLoader.loadTestsFromTestCase(TestDAVProperties),
+                unittest.defaultTestLoader.loadTestsFromTestCase(TestPUTObjects),
+                unittest.defaultTestLoader.loadTestsFromTestCase(TestPUTIndexHtml),
+                unittest.defaultTestLoader.loadTestsFromTestCase(TestDAVOperations),
+            )
+        )
 
     # return empty suite
     return unittest.TestSuite()

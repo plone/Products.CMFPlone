@@ -56,9 +56,9 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
 
     def test_disable_filtering(self):
         self.browser.open("%s/@@filter-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            name="form.widgets.disable_filtering:list"
-        ).value = "selected"
+        self.browser.getControl(name="form.widgets.disable_filtering:list").value = (
+            "selected"
+        )
         self.browser.getControl("Save").click()
 
         # test that the transform is disabled
@@ -79,9 +79,9 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
         valid_tags = self.browser.getControl(name="form.widgets.valid_tags").value
         self.assertTrue(valid_tags.startswith("a\nabbr\nacronym\naddress"))
         valid_tags = valid_tags.replace("a\n", "")
-        valid_tags = self.browser.getControl(
-            name="form.widgets.valid_tags"
-        ).value = valid_tags
+        valid_tags = self.browser.getControl(name="form.widgets.valid_tags").value = (
+            valid_tags
+        )
         self.browser.getControl("Save").click()
         self.assertEqual(self.settings.nasty_tags, ["div", "a"])
         self.assertNotIn("a", self.settings.valid_tags)

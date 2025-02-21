@@ -1540,7 +1540,7 @@ class TestIndexers(PloneTestCase):
         self.assertFalse(get_icon(self.folder))
         # Return False if item doesn't have an image
         self.assertFalse(get_icon(self.folder.image))
-        self.folder.image.image=NamedImage(dummy.Image())
+        self.folder.image.image = NamedImage(dummy.Image())
         # Item has a proper image, return True
         self.assertTrue(get_icon(self.folder.image))
 

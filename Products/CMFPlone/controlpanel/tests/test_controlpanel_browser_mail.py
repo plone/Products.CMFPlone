@@ -50,9 +50,9 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open("%s/@@mail-controlpanel" % self.portal_url)
         self.browser.getControl(name="form.widgets.smtp_host").value = "example.com"
         self.browser.getControl(name="form.widgets.email_from_name").value = "John"
-        self.browser.getControl(
-            name="form.widgets.email_from_address"
-        ).value = "john@example.com"
+        self.browser.getControl(name="form.widgets.email_from_address").value = (
+            "john@example.com"
+        )
         self.browser.getControl(name="form.buttons.save").click()
 
         registry = getUtility(IRegistry)
@@ -63,9 +63,9 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open("%s/@@mail-controlpanel" % self.portal_url)
         self.browser.getControl(name="form.widgets.smtp_port").value = "88"
         self.browser.getControl(name="form.widgets.email_from_name").value = "John"
-        self.browser.getControl(
-            name="form.widgets.email_from_address"
-        ).value = "john@example.com"
+        self.browser.getControl(name="form.widgets.email_from_address").value = (
+            "john@example.com"
+        )
         self.browser.getControl(name="form.buttons.save").click()
 
         registry = getUtility(IRegistry)
@@ -74,13 +74,13 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
 
     def test_mail_controlpanel_smtp_userid(self):
         self.browser.open("%s/@@mail-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            name="form.widgets.smtp_userid"
-        ).value = "john@example.com"
+        self.browser.getControl(name="form.widgets.smtp_userid").value = (
+            "john@example.com"
+        )
         self.browser.getControl(name="form.widgets.email_from_name").value = "John"
-        self.browser.getControl(
-            name="form.widgets.email_from_address"
-        ).value = "john@example.com"
+        self.browser.getControl(name="form.widgets.email_from_address").value = (
+            "john@example.com"
+        )
         self.browser.getControl(name="form.buttons.save").click()
 
         registry = getUtility(IRegistry)
@@ -91,9 +91,9 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open("%s/@@mail-controlpanel" % self.portal_url)
         self.browser.getControl(name="form.widgets.smtp_pass").value = "secret"
         self.browser.getControl(name="form.widgets.email_from_name").value = "John"
-        self.browser.getControl(
-            name="form.widgets.email_from_address"
-        ).value = "john@example.com"
+        self.browser.getControl(name="form.widgets.email_from_address").value = (
+            "john@example.com"
+        )
         self.browser.getControl(name="form.buttons.save").click()
 
         registry = getUtility(IRegistry)
@@ -102,14 +102,14 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
 
     def test_mail_controlpanel_smtp_pass_keep_on_saving(self):
         self.browser.open("%s/@@mail-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            name="form.widgets.smtp_userid"
-        ).value = "john@example.com"
+        self.browser.getControl(name="form.widgets.smtp_userid").value = (
+            "john@example.com"
+        )
         self.browser.getControl(name="form.widgets.smtp_pass").value = "secret"
         self.browser.getControl(name="form.widgets.email_from_name").value = "John"
-        self.browser.getControl(
-            name="form.widgets.email_from_address"
-        ).value = "john@example.com"
+        self.browser.getControl(name="form.widgets.email_from_address").value = (
+            "john@example.com"
+        )
         self.browser.getControl(name="form.buttons.save").click()
         self.browser.getControl(name="form.buttons.save").click()
 
@@ -120,9 +120,9 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
     def test_mail_controlpanel_email_from_name(self):
         self.browser.open("%s/@@mail-controlpanel" % self.portal_url)
         self.browser.getControl(name="form.widgets.email_from_name").value = "John"
-        self.browser.getControl(
-            name="form.widgets.email_from_address"
-        ).value = "john@example.com"
+        self.browser.getControl(name="form.widgets.email_from_address").value = (
+            "john@example.com"
+        )
         self.browser.getControl(name="form.buttons.save").click()
 
         registry = getUtility(IRegistry)
@@ -132,9 +132,9 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
     def test_mail_controlpanel_email_from_address(self):
         self.browser.open("%s/@@mail-controlpanel" % self.portal_url)
         self.browser.getControl(name="form.widgets.email_from_name").value = "John"
-        self.browser.getControl(
-            name="form.widgets.email_from_address"
-        ).value = "john@example.com"
+        self.browser.getControl(name="form.widgets.email_from_address").value = (
+            "john@example.com"
+        )
         self.browser.getControl(name="form.buttons.save").click()
 
         registry = getUtility(IRegistry)
@@ -144,9 +144,9 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
     def test_mail_controlpanel_contactinfo_page(self):
         self.browser.open("%s/@@mail-controlpanel" % self.portal_url)
         self.browser.getControl(name="form.widgets.email_from_name").value = "John"
-        self.browser.getControl(
-            name="form.widgets.email_from_address"
-        ).value = "john@example.com"
+        self.browser.getControl(name="form.widgets.email_from_address").value = (
+            "john@example.com"
+        )
         self.browser.getControl(name="form.buttons.save").click()
 
         self.browser.open("%s/contact-info" % self.portal_url)
@@ -158,9 +158,9 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
     def test_controlpanel_overview_shows_no_unconfigured_mailhost_warning(self):
         self.browser.open("%s/@@mail-controlpanel" % self.portal_url)
         self.browser.getControl(name="form.widgets.email_from_name").value = "John"
-        self.browser.getControl(
-            name="form.widgets.email_from_address"
-        ).value = "john@example.com"
+        self.browser.getControl(name="form.widgets.email_from_address").value = (
+            "john@example.com"
+        )
         self.browser.getControl(name="form.buttons.save").click()
 
         self.browser.open("%s/overview-controlpanel" % self.portal_url)

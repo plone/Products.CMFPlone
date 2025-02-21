@@ -62,9 +62,9 @@ if "_marker" not in utils.getToolByName.__globals__:
         "included already in Products.CMFPlone, please remove "
         "the hotfix"
     )
-utils.getToolByName.__globals__[
-    "rewrap_in_request_container"
-] = rewrap_in_request_container
+utils.getToolByName.__globals__["rewrap_in_request_container"] = (
+    rewrap_in_request_container
+)
 exec(code, utils.getToolByName.__globals__)
 utils._getToolByName.__code__ = utils.getToolByName.__code__
 utils.getToolByName.__code__ = utils.check_getToolByName.__code__

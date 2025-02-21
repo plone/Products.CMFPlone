@@ -74,14 +74,14 @@ class MarkupControlPanelFunctionalTest(unittest.TestCase):
             "markdown.extensions.fenced_code\nmarkdown.extensions.nl2br",
         )
 
-        self.browser.getControl(
-            name="form.widgets.markdown_extensions"
-        ).value = "\n".join(
-            [
-                "markdown.extensions.fenced_code",
-                "markdown.extensions.nl2br",
-                "markdown.extensions.extra",
-            ]
+        self.browser.getControl(name="form.widgets.markdown_extensions").value = (
+            "\n".join(
+                [
+                    "markdown.extensions.fenced_code",
+                    "markdown.extensions.nl2br",
+                    "markdown.extensions.extra",
+                ]
+            )
         )
         self.browser.getControl("Save").click()
 

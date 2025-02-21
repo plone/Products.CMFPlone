@@ -93,9 +93,9 @@ class TestLoginHelpFunctional(unittest.TestCase):
         self.browser.getControl(name="form.buttons.reset").click()
         self.assertEqual(self.browser.url, "http://nohost/plone/@@login-help")
 
-        self.browser.getControl(
-            name="form.widgets.reset_password"
-        ).value = "nonexistinguser"  # noqa: E501
+        self.browser.getControl(name="form.widgets.reset_password").value = (
+            "nonexistinguser"  # noqa: E501
+        )
         self.browser.getControl(name="form.buttons.reset").click()
         self.assertEqual(self.browser.url, "http://nohost/plone/@@login-help")
         # message appears even though no email was sent
@@ -105,9 +105,9 @@ class TestLoginHelpFunctional(unittest.TestCase):
         )
         self.assertEqual(len(self.portal.MailHost.messages), 0)
 
-        self.browser.getControl(
-            name="form.widgets.reset_password"
-        ).value = "test_user_1_"
+        self.browser.getControl(name="form.widgets.reset_password").value = (
+            "test_user_1_"
+        )
         self.browser.getControl(name="form.buttons.reset").click()
         self.assertIn(
             "An email has been sent with instructions on how to reset your password.",  # noqa: E501
@@ -131,9 +131,9 @@ class TestLoginHelpFunctional(unittest.TestCase):
         self.assertEqual(self.browser.url, "http://nohost/plone/@@login-help")
         self.assertIn("missing", self.browser.contents)
 
-        self.browser.getControl(
-            name="form.widgets.recover_username"
-        ).value = "foo@plone.org"
+        self.browser.getControl(name="form.widgets.recover_username").value = (
+            "foo@plone.org"
+        )
         self.browser.getControl(name="form.buttons.get_username").click()
         self.assertEqual(self.browser.url, "http://nohost/plone/@@login-help")
         # email was sent
@@ -149,9 +149,9 @@ class TestLoginHelpFunctional(unittest.TestCase):
         # no new message was sent
         self.assertEqual(len(self.portal.MailHost.messages), 1)
 
-        self.browser.getControl(
-            name="form.widgets.recover_username"
-        ).value = "bar@plone.org"
+        self.browser.getControl(name="form.widgets.recover_username").value = (
+            "bar@plone.org"
+        )
         self.browser.getControl(name="form.buttons.get_username").click()
         # no new message was sent
         self.assertIn(
@@ -167,9 +167,9 @@ class TestLoginHelpFunctional(unittest.TestCase):
             roles=("Member",),
         )
         transaction.commit()
-        self.browser.getControl(
-            name="form.widgets.recover_username"
-        ).value = "foo@plone.org"
+        self.browser.getControl(name="form.widgets.recover_username").value = (
+            "foo@plone.org"
+        )
         self.browser.getControl(name="form.buttons.get_username").click()
         # no new message was sent
         self.assertIn(
@@ -185,9 +185,9 @@ class TestLoginHelpFunctional(unittest.TestCase):
             roles=("Member",),
         )
         transaction.commit()
-        self.browser.getControl(
-            name="form.widgets.recover_username"
-        ).value = "bar@plone.org"
+        self.browser.getControl(name="form.widgets.recover_username").value = (
+            "bar@plone.org"
+        )
         self.browser.getControl(name="form.buttons.get_username").click()
         # a message was sent
         self.assertIn(

@@ -51,7 +51,7 @@ except ImportError:  # pragma: no cover
     DISCUSSION_ANNOTATION_KEY = None
 
 
-logger = logging.getLogger('Plone')
+logger = logging.getLogger("Plone")
 
 _marker = object()
 
@@ -476,7 +476,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
                     if (
                         DISCUSSION_ANNOTATION_KEY is not None
                         and DISCUSSION_ANNOTATION_KEY in annotions
-
                     ):
                         conversation = annotions[DISCUSSION_ANNOTATION_KEY]
                         conversation = conversation.__of__(obj)

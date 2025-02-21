@@ -39,9 +39,7 @@ class EditingControlPanelAdapterTest(unittest.TestCase):
 
     def test_set_enable_link_integrity_checks_setting(self):
         self.assertEqual(self.settings.enable_link_integrity_checks, True)
-        getAdapter(
-            self.portal, IEditingSchema
-        ).enable_link_integrity_checks = False  # noqa
+        getAdapter(self.portal, IEditingSchema).enable_link_integrity_checks = False
         self.assertEqual(self.settings.enable_link_integrity_checks, False)
 
     def test_get_ext_editor_setting(self):
