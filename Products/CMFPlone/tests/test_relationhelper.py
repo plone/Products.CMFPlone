@@ -2,10 +2,7 @@ from plone import api
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from Products.CMFPlone.relationhelper import get_relations_stats
-from Products.CMFPlone.relationhelper import purge_relations
 from Products.CMFPlone.relationhelper import rebuild_relations
-from Products.CMFPlone.relationhelper import restore_relations
-from Products.CMFPlone.relationhelper import store_relations
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zope.component import getUtility
 from zope.intid.interfaces import IIntIds

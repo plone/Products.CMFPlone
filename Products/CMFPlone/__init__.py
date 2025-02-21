@@ -209,4 +209,4 @@ def initialize(context):
 
 # Apply early monkey patches.  For these patches, it is too late if we do this
 # in the initialize method.
-from Products.CMFPlone import earlypatches  # noqa: F401
+from Products.CMFPlone import earlypatches  # noqa: F401,E402
