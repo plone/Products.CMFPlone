@@ -31,3 +31,6 @@ dependencies_ignores = "['robotframework-debuglibrary', 'plone.intelligenttext',
 dependencies_mappings = [
   "'Products.ZCatalog' = ['Products.ZCTextIndex', 'Products.PluginIndexes']",
 ]
+
+[tox]
+test_matrix = {"6.2" = ["3.13", "3.12", "3.11", "3.10"]}
