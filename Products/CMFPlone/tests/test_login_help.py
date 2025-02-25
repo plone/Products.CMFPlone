@@ -37,7 +37,7 @@ class TestLoginHelp(unittest.TestCase):
 
     def test_view_form_with_emaillogin(self):
         registry = getUtility(IRegistry)
-        registry.records["plone.use_email_as_login"] = True
+        registry.records["plone.use_email_as_login"].value = True
         form = getMultiAdapter((self.portal, self.request), name="login-help")
         self.assertEqual(form.subforms, [])
         form.update()
