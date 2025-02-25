@@ -1,5 +1,6 @@
 from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.login.login_help import RequestResetPassword
 from Products.CMFPlone.browser.login.login_help import RequestUsername
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
@@ -63,7 +64,7 @@ class TestLoginHelp(unittest.TestCase):
         # no mail was sent since the user does not exist
         self.request["form.widgets.reset_password"] = "test"
 
-        portal_membership = self.portal.get_tool("portal_membership")
+        portal_membership = getToolByName(self.portal, "portal_membership")
         member = portal_membership.getMemberById("test_user_1_")
         email = "foo@plone.org"
         member.setMemberProperties({"email": email})
@@ -88,7 +89,7 @@ class TestLoginHelpFunctional(unittest.TestCase):
         self.browser.getLink("Get help").click()
         self.assertEqual(self.browser.url, "http://nohost/plone/@@login-help")
 
-        portal_membership = self.portal.get_tool("portal_membership")
+        portal_membership = getToolByName(self.portal, "portal_membership")
         member = portal_membership.getMemberById("test_user_1_")
         email = "foo@plone.org"
         member.setMemberProperties({"email": email})
@@ -125,7 +126,7 @@ class TestLoginHelpFunctional(unittest.TestCase):
         self.browser.getLink("Get help").click()
         self.assertEqual(self.browser.url, "http://nohost/plone/@@login-help")
 
-        portal_membership = self.portal.get_tool("portal_membership")
+        portal_membership = getToolByName(self.portal, "portal_membership")
         member = portal_membership.getMemberById("test_user_1_")
         email = "foo@plone.org"
         member.setMemberProperties({"email": email})
@@ -206,7 +207,7 @@ class TestLoginHelpFunctional(unittest.TestCase):
             "username": username,
             "email": email,
         }
-        registration = self.portal.get_tool("portal_registration")
+        registration = getToolByName(self.portal, "portal_registration")
         registration.addMember(
             username,
             password,
@@ -214,6 +215,6 @@ class TestLoginHelpFunctional(unittest.TestCase):
             properties=properties,
         )
 
-        portal_membership = self.portal.get_tool("portal_membership")
+        portal_membership = getToolByName(self.portal, "portal_membership")
         member = portal_membership.getMemberById(username)
         return member
