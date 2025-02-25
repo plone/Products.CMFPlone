@@ -9,7 +9,6 @@ from Acquisition import aq_base
 from Acquisition import aq_chain
 from hashlib import md5
 from plone.base import PloneMessageFactory as _
-from plone.base.interfaces import ISecuritySchema
 from plone.base.permissions import ManagePortal
 from plone.protect import CheckAuthenticator
 from plone.protect import protect
@@ -284,43 +283,51 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
         return None
 
-    security.declareProtected(AddPortalMember, "isMemberIdAllowed")
+    @security.protected(AddPortalMember)
+    def principal_id_or_login_name_exists(self, name):
+        # Does a member or group with this id or login name exist?
 
+        pas = getToolByName(self, "acl_users")
+        if IPluggableAuthService.providedBy(pas):
+            if pas.searchPrincipals(id=name, exact_match=True):
+                return True
+            # When email addresses are used as logins, we need to check
+            # if there are any users with the requested login.
+            # Actually, it seems wise to always check this, even if in the normal
+            # case (no email as login) the user id and login name are expected
+            # to be the same.  You never know.
+            if pas.searchUsers(name=name, exact_match=True):
+                return True
+            # Plone has an acl_users, but Zope has its own acl_users.
+            # So we also search in parents.
+            for parent in aq_chain(self):
+                if hasattr(aq_base(parent), "acl_users"):
+                    parent = parent.acl_users
+                    if IPluggableAuthService.providedBy(parent):
+                        if parent.searchPrincipals(id=name, exact_match=True):
+                            return True
+                        if parent.searchUsers(name=name, exact_match=True):
+                            return True
+        else:
+            # I don't think we ever end up here, but let's keep this old code for now.
+            membership = getToolByName(self, "portal_membership")
+            if membership.getMemberById(name) is not None:
+                return True
+            groups = getToolByName(self, "portal_groups")
+            if groups.getGroupById(name) is not None:
+                return True
+
+        # No matching principal was found.
+        return False
+
+    @security.protected(AddPortalMember)
     def isMemberIdAllowed(self, id):
         if len(id) < 1 or id == "Anonymous User":
             return 0
         if not self._ALLOWED_MEMBER_ID_PATTERN.match(id):
             return 0
-
-        pas = getToolByName(self, "acl_users")
-        if IPluggableAuthService.providedBy(pas):
-            results = pas.searchPrincipals(id=id, exact_match=True)
-            if results:
-                return 0
-            else:
-                for parent in aq_chain(self):
-                    if hasattr(aq_base(parent), "acl_users"):
-                        parent = parent.acl_users
-                        if IPluggableAuthService.providedBy(parent):
-                            if parent.searchPrincipals(id=id, exact_match=True):
-                                return 0
-            # When email addresses are used as logins, we need to check
-            # if there are any users with the requested login.
-            registry = getUtility(IRegistry)
-            security_settings = registry.forInterface(ISecuritySchema, prefix="plone")
-
-            if security_settings.use_email_as_login:
-                results = pas.searchUsers(name=id, exact_match=True)
-                if results:
-                    return 0
-        else:
-            membership = getToolByName(self, "portal_membership")
-            if membership.getMemberById(id) is not None:
-                return 0
-            groups = getToolByName(self, "portal_groups")
-            if groups.getGroupById(id) is not None:
-                return 0
-
+        if self.principal_id_or_login_name_exists(id):
+            return 0
         return 1
 
     security.declarePublic("generatePassword")
