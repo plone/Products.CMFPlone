@@ -9,9 +9,16 @@ import zope.deferredimport
 
 __version__ = pkg_resources.require("Products.CMFPlone")[0].version
 
-if __version__ < '7':
+if __version__ < "7":
+    # This sets SKIP_PTA to skip the check for
+    # Publication through acquisition in Plone 6.
+    # Please remove this code block when can.
+    import Products.CMFCore.explicitacquisition
     from Products.CMFCore.explicitacquisition import PTA_ENV_KEY
-    os.environ[PTA_ENV_KEY] = os.environ.get(PTA_ENV_KEY, 'false')
+
+    os.environ[PTA_ENV_KEY] = os.environ.get(PTA_ENV_KEY, "false")
+    # Importing (from) the module sets SKIP_PTA. We need to override that too.
+    Products.CMFCore.explicitacquisition.SKIP_PTA = os.environ[PTA_ENV_KEY] == "false"
 
 cmfplone_globals = globals()
 this_module = sys.modules[__name__]
