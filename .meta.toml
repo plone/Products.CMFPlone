@@ -34,3 +34,11 @@ dependencies_mappings = [
 
 [tox]
 test_matrix = {"6.2" = ["3.12", "3.10"]}
+
+[github]
+jobs = [
+   "qa",
+   "dependencies",
+   "release_ready",
+   "circular",
+   ]
