@@ -11,6 +11,7 @@ from App.Dialogs import MessageDialog
 from App.ImageFile import ImageFile
 from DateTime import DateTime
 from html import escape
+from importlib.metadata import distribution
 from OFS.CopySupport import CopyError
 from os.path import abspath
 from os.path import join
@@ -40,7 +41,6 @@ from zope.deprecation import deprecated  # noqa
 from zope.interface import implementedBy
 
 import OFS
-import pkg_resources
 import re
 import sys
 import transaction
@@ -310,7 +310,7 @@ def versionTupleFromString(v_str):
 
 def getFSVersionTuple():
     """Returns Products.CMFPlone version tuple"""
-    version = pkg_resources.get_distribution("Products.CMFPlone").version
+    version = distribution("Products.CMFPlone").version
     return versionTupleFromString(version)
 
 
