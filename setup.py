@@ -54,6 +54,7 @@ setup(
         "five.customerize",
         "lxml",
         "plone.api >= 1.4.4",
+        "packaging",
         "plone.app.content",
         "plone.app.contentlisting",
         "plone.app.contentmenu >= 2.0.1",
