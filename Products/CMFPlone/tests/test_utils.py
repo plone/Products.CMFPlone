@@ -1,4 +1,4 @@
-""" Unit tests for utils module. """
+"""Unit tests for utils module."""
 
 from plone.base.interfaces import ISiteSchema
 from plone.registry.interfaces import IRegistry

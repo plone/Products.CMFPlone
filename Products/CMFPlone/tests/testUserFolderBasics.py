@@ -43,7 +43,7 @@ class TestUserFolder(unittest.TestCase):
         if "auto_group" in self.uf:
             self.uf.manage_delObjects(["auto_group"])
 
-        # Nuke Administators and Reviewers groups added in 2.1a2 migrations
+        # Nuke Administrators and Reviewers groups added in 2.1a2 migrations
         # (and any other migrated-in groups) to avoid test confusion
         self.portal.portal_groups.removeGroups(self.portal.portal_groups.listGroupIds())
 

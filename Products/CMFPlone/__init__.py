@@ -1,20 +1,21 @@
 from App.ImageFile import ImageFile
+from importlib.metadata import metadata
 
 import os
-import pkg_resources
 import sys
 import warnings
 import zope.deferredimport
 
 
-__version__ = pkg_resources.require("Products.CMFPlone")[0].version
+__version__ = metadata("Products.CMFPlone")["version"]
 
 if __version__ < "7":
     # This sets SKIP_PTA to skip the check for
     # Publication through acquisition in Plone 6.
     # Please remove this code block when can.
-    import Products.CMFCore.explicitacquisition
     from Products.CMFCore.explicitacquisition import PTA_ENV_KEY
+
+    import Products.CMFCore.explicitacquisition
 
     os.environ[PTA_ENV_KEY] = os.environ.get(PTA_ENV_KEY, "false")
     # Importing (from) the module sets SKIP_PTA. We need to override that too.
@@ -150,14 +151,14 @@ def initialize(context):
     from Products.CMFPlone import ActionsTool
     from Products.CMFPlone import CatalogTool
     from Products.CMFPlone import MigrationTool
-    from Products.CMFPlone import patches  # noqa
+    from Products.CMFPlone import patches  # noqa: F401
     from Products.CMFPlone import PloneControlPanel
     from Products.CMFPlone import PloneTool
     from Products.CMFPlone import RegistrationTool
     from Products.CMFPlone import SkinsTool
     from Products.CMFPlone import TranslationServiceTool
     from Products.CMFPlone import TypesTool
-    from Products.CMFPlone import UnicodeSplitter  # noqa
+    from Products.CMFPlone import UnicodeSplitter  # noqa: F401
     from Products.CMFPlone import URLTool
     from Products.CMFPlone import WorkflowTool
 
@@ -208,4 +209,4 @@ def initialize(context):
 
 # Apply early monkey patches.  For these patches, it is too late if we do this
 # in the initialize method.
-from Products.CMFPlone import earlypatches  # noqa
+from Products.CMFPlone import earlypatches  # noqa: F401,E402

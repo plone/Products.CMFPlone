@@ -112,9 +112,9 @@ class TestRedirectAfterLogin(unittest.TestCase):
 
         self.browser.getControl("Login Name").value = TEST_USER_NAME
         self.browser.getControl("Password").value = TEST_USER_PASSWORD
-        self.browser.getControl(
-            name="came_from"
-        ).value = "http://nohost/plone/contact-info"
+        self.browser.getControl(name="came_from").value = (
+            "http://nohost/plone/contact-info"
+        )
 
         self.browser.getControl("Log in").click()
 
@@ -147,9 +147,9 @@ class TestRedirectAfterLogin(unittest.TestCase):
 
         self.browser.getControl("Login Name").value = TEST_USER_NAME
         self.browser.getControl("Password").value = TEST_USER_PASSWORD
-        self.browser.getControl(
-            name="came_from"
-        ).value = "http://nohost/plone/contact-info"
+        self.browser.getControl(name="came_from").value = (
+            "http://nohost/plone/contact-info"
+        )
 
         self.browser.getControl("Log in").click()
 
@@ -178,9 +178,9 @@ class TestRedirectAfterLogin(unittest.TestCase):
 
         self.browser.getControl("Login Name").value = TEST_USER_NAME
         self.browser.getControl("Password").value = TEST_USER_PASSWORD
-        self.browser.getControl(
-            name="came_from"
-        ).value = "http://nohost/plone/404-not-found"
+        self.browser.getControl(name="came_from").value = (
+            "http://nohost/plone/404-not-found"
+        )
 
         self.browser.getControl("Log in").click()
 
@@ -204,9 +204,9 @@ class TestRedirectAfterLogin(unittest.TestCase):
 
         self.browser.getControl("Login Name").value = TEST_USER_NAME
         self.browser.getControl("Password").value = TEST_USER_PASSWORD
-        self.browser.getControl(
-            name="came_from"
-        ).value = "http://nohost/plone/contact-info"
+        self.browser.getControl(name="came_from").value = (
+            "http://nohost/plone/contact-info"
+        )
 
         self.browser.getControl("Log in").click()
 
@@ -229,8 +229,8 @@ class TestRedirectAfterLogin(unittest.TestCase):
         # By default, when you reset your password, you are directly logged in.
         # An initial login adapter should be active.
         # And the redirect after login adapter too.
-        from plone.registry.interfaces import IRegistry
         from plone.base.interfaces import IMailSchema
+        from plone.registry.interfaces import IRegistry
         from zope.component import getGlobalSiteManager
         from zope.component import getUtility
 

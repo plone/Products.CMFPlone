@@ -155,7 +155,7 @@ I select two related item images via contentbrowser
    # Click third element in fourth column, that is the "Images" folder
    Click item in contenbrowser column    4    3
 
-   # now we select two items in a colum via Shift+Click
+   # now we select two items in a column via Shift+Click
    # Click first element in fifth column, that is the "Image1" Object
    Click item in contenbrowser column    5    1
    # Click second element in fifth column with SHIFT, that is the "Image2" Object
@@ -237,12 +237,12 @@ I edit the Link
 # --- THEN ------------------------------------------------------------------
 
 a image is selected as related item
-    image is releated item    //div[contains(@class, "content-browser-selected-items")]/div[1]/div/img    /asset-folder/mixed/files/images/image-2/@@images/image/mini
+    image is related item    //div[contains(@class, "content-browser-selected-items")]/div[1]/div/img    /asset-folder/mixed/files/images/image-2/@@images/image/mini
 
 
 two images are selected as related item
-    image is releated item    //div[contains(@class, "content-browser-selected-items")]/div[1]/div/img    /asset-folder/mixed/files/images/image-1/@@images/image/mini
-    image is releated item    //div[contains(@class, "content-browser-selected-items")]/div[2]/div/img    /asset-folder/mixed/files/images/image-2/@@images/image/mini
+    image is related item    //div[contains(@class, "content-browser-selected-items")]/div[1]/div/img    /asset-folder/mixed/files/images/image-1/@@images/image/mini
+    image is related item    //div[contains(@class, "content-browser-selected-items")]/div[2]/div/img    /asset-folder/mixed/files/images/image-2/@@images/image/mini
 
 the document contain the internal link
     Element exists    //div[@id="parent-fieldname-text"]//a    href    /plone/doc
@@ -261,7 +261,7 @@ the internal target is added
 
 #--- Helper DRY -------------------------------------------------------------
 
-image is releated item
+image is related item
     [arguments]    ${xpath}    ${imagepath}
     Element exists    ${xpath}    src    ${imagepath}
 

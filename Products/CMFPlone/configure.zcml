@@ -8,7 +8,10 @@
     i18n_domain="plone"
     >
 
-  <five:registerPackage package="." initialize=".initialize" />
+  <five:registerPackage
+      package="."
+      initialize=".initialize"
+      />
   <!-- basic zope/cmf -->
   <include package="zope.app.locales" />
   <include package="Products.CMFCore" />

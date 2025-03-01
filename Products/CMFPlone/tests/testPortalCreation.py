@@ -182,7 +182,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testUnfriendlyTypesProperty(self):
         # We should have an types_not_searched property
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISearchSchema, prefix="plone")
         self.assertTrue("plone.types_not_searched" in registry)
 
     def testDefaultSortOrderProperty(self):
@@ -514,7 +513,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             self.assertFalse(
                 "index_html" not in url,
                 "Action wrongly applied to parent object %s" % url,
-            )  # noqa
+            )
 
     def testObjectButtonActionsPerformCorrectAction(self):
         # only a manager would have proper permissions

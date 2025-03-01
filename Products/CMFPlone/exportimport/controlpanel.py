@@ -10,7 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-""" Plone control panel tool node adapters.
+"""Plone control panel tool node adapters.
 
 $Id$
 """
@@ -24,7 +24,6 @@ from zope.i18nmessageid import Message
 
 
 class ControlPanelXMLAdapter(XMLAdapterBase):
-
     """
     XML im- and exporter for Plone control panel.  Most of this
     code is taken from the actions handler in CMFCore.

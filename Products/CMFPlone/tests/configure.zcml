@@ -13,11 +13,11 @@
       permission="zope2.View"
       />
 
-    <browser:page
-    for="*"
-    name="select-widget-view"
-    class="..testing.TestSelectWidgetForm"
-    permission="zope2.View"
-    />
+  <browser:page
+      name="select-widget-view"
+      for="*"
+      class="..testing.TestSelectWidgetForm"
+      permission="zope2.View"
+      />
 
 </configure>

@@ -8,9 +8,9 @@ from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.textfield import RichTextValue
 from plone.indexer.wrapper import IndexableObjectWrapper
+from plone.namedfile.file import NamedImage
 from plone.uuid.interfaces import IAttributeUUID
 from plone.uuid.interfaces import IUUID
-from plone.namedfile.file import NamedImage
 from Products.CMFCore.indexing import processQueue
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone.CatalogTool import CatalogTool
@@ -1540,7 +1540,7 @@ class TestIndexers(PloneTestCase):
         self.assertFalse(get_icon(self.folder))
         # Return False if item doesn't have an image
         self.assertFalse(get_icon(self.folder.image))
-        self.folder.image.image=NamedImage(dummy.Image())
+        self.folder.image.image = NamedImage(dummy.Image())
         # Item has a proper image, return True
         self.assertTrue(get_icon(self.folder.image))
 

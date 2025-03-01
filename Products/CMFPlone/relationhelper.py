@@ -317,7 +317,7 @@ def get_intid(obj):
     # check that the object has an intid, otherwise there's nothing to be done
     try:
         return intids.getId(obj)
-    except KeyError:  # noqa
+    except KeyError:
         # The object has not been added to the ZODB yet
         return
 

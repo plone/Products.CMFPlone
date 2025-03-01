@@ -117,7 +117,7 @@ class TestSplitter(unittest.TestCase):
             # If this test is failing, you probably just don't have
             # the latin1 locales generated.  On Ubuntu, this worked:
             #
-            # $ sudo locale-gen en_US en_US.ISO-8859-1 en_US.ISO8859-15 en_GB.ISO8859-15 de_DE@euro fr_FR@euro nl_NL@euro  # noqa: E501
+            # $ sudo locale-gen en_US en_US.ISO-8859-1 en_US.ISO8859-15 en_GB.ISO8859-15 de_DE@euro fr_FR@euro nl_NL@euro
             #
             self.assertEqual(self.process(b_input), b_output)
             self.assertEqual(self.processGlob(b_input), b_output)

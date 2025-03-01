@@ -1,5 +1,3 @@
-from plone.app.testing import login
-from plone.app.testing import TEST_USER_NAME
 from plone.base.interfaces import ITinyMCESchema
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.patterns.view import PatternsSettingsView

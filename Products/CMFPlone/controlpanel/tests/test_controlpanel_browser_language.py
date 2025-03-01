@@ -99,9 +99,9 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
             self.browser.getControl("Show country-specific language variants").selected,
             True,
         )
-        self.browser.getControl(
-            "Show country-specific language variants"
-        ).selected = False
+        self.browser.getControl("Show country-specific language variants").selected = (
+            False
+        )
 
         self._inject_available_languages_field("en")
         self.browser.getControl("Save").click()
