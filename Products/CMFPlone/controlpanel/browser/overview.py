@@ -1,6 +1,7 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from App.config import getConfiguration
+from importlib.metadata import distribution
 from plone.app.registry.browser import controlpanel
 from plone.base.interfaces.controlpanel import IMailSchema
 from plone.memoize.instance import memoize
@@ -11,7 +12,6 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from ZPublisher.HTTPRequest import WSGIRequest
 
-import pkg_resources
 import warnings
 
 
@@ -61,7 +61,7 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
             elif "/" in server_name:
                 server_name = server_name.split("/")[0]
             try:
-                server = pkg_resources.get_distribution(server_name)
+                server = distribution(server_name)
                 server_version = server.version
             except Exception:
                 warnings.warn(
