@@ -304,7 +304,7 @@ a bunch of folders
     ...    title=Link
     ...    remoteUrl=/front-page
     ...    container=${F3}
-    [Return]  ${F1}
+    RETURN  ${F1}
 
 
 a bunch of events
