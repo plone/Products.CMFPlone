@@ -62,9 +62,10 @@
         <div class="mb-3 input-group">
           <a class="pat-plone-modal me-3 btn btn-success " id="add-user"
              data-pat-plone-modal='{
+                "content": "#content-core",
+                "displayInModal": false,
                 "actionOptions": {
-                  "redirectOnResponse": true,
-                  "redirectToUrl": "${portal_url}/@@usergroup-userprefs"
+                  "disableAjaxFormSubmit": true
                 }
               }'
              tal:attributes="href string:${portal_url}/@@new-user"
