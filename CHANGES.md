@@ -15,6 +15,40 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.1rc1 (2025-03-14)
+
+
+### New features:
+
+- RegistrationTool: add method `principal_id_or_login_name_exists`.
+  This is factored out from the `isMemberIdAllowed` method, which now calls this after checking the allowed member id pattern.
+  [maurits] #4120
+
+
+### Bug fixes:
+
+- Fix moving portal actions between categories.
+  [petschki] #3029
+- In catalog queries, make sure `show_inactive=False` hides inactive items even for admins who have the `Access inactive portal content` permission. @gyst #4098
+- Update broken GNU GPLv2 license link in footer. @rohnsha0 #4108
+- Fix deprecated robottest keyword.
+  [petschki] #4132
+- Use contentbrowser options for TinyMCE image/link browser.
+  This also fixes the basePath calculation for uploading.
+  [petschki] #4133
+
+
+### Internal:
+
+- Updated metadata version to 6108.
+  [maurits] #6108
+
+
+### Tests
+
+- fix robottests for contentbrowser improvements
+  [1letter] #4112
+
 ## 6.1.0 (2025-02-07)
 
 
