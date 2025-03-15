@@ -1,3 +1,3 @@
-In the Site Setup warn that Plone 6.0 is out of maintenance support.
+In the Site Setup, warn that Plone 6.0 is out of maintenance support.
 Also check the Python version and warn when that is out of support.
 [maurits]

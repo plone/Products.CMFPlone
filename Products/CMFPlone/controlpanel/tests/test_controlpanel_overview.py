@@ -64,7 +64,7 @@ class TestControlPanel(unittest.TestCase):
 
     @mock.patch("sys.version_info", new=mock_python38)
     def test_python38_warning(self):
-        # Test the warnings that get shows when using Python 3.8.
+        # Test the warnings that get shown when using Python 3.8.
         # Python 3.8 is already end-of-life at the time of writing this test,
         # so we always warn.
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
@@ -77,7 +77,7 @@ class TestControlPanel(unittest.TestCase):
         new=MockDate(date(2025, 4, 1)),
     )
     def test_python39_warning_early(self):
-        # Test the warnings that get shows when using Python 3.9.
+        # Test the warnings that get shown when using Python 3.9.
         # This depends on the date.
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertFalse(view.python_warning())
@@ -88,7 +88,7 @@ class TestControlPanel(unittest.TestCase):
         new=MockDate(date(2025, 11, 1)),
     )
     def test_python39_warning_late(self):
-        # Test the warnings that get shows when using Python 3.9.
+        # Test the warnings that get shown when using Python 3.9.
         # This depends on the date.
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertTrue(view.python_warning())
@@ -100,7 +100,7 @@ class TestControlPanel(unittest.TestCase):
         new=MockDate(date(2025, 4, 1)),
     )
     def test_python310_warning_early(self):
-        # Test the warnings that get shows when using Python 3.10.
+        # Test the warnings that get shown when using Python 3.10.
         # This depends on the date.
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertFalse(view.python_warning())
@@ -111,7 +111,7 @@ class TestControlPanel(unittest.TestCase):
         new=MockDate(date(2026, 11, 1)),
     )
     def test_python310_warning_late(self):
-        # Test the warnings that get shows when using Python 3.10.
+        # Test the warnings that get shown when using Python 3.10.
         # This depends on the date.
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertTrue(view.python_warning())
@@ -123,7 +123,7 @@ class TestControlPanel(unittest.TestCase):
         new=MockDate(date(2025, 4, 1)),
     )
     def test_python311_warning_early(self):
-        # Test the warnings that get shows when using Python 3.11.
+        # Test the warnings that get shown when using Python 3.11.
         # This depends on the date.
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertFalse(view.python_warning())
@@ -134,7 +134,7 @@ class TestControlPanel(unittest.TestCase):
         new=MockDate(date(2027, 11, 1)),
     )
     def test_python311_warning_late(self):
-        # Test the warnings that get shows when using Python 3.11.
+        # Test the warnings that get shown when using Python 3.11.
         # This depends on the date.
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertTrue(view.python_warning())
@@ -146,7 +146,7 @@ class TestControlPanel(unittest.TestCase):
         new=MockDate(date(2025, 4, 1)),
     )
     def test_python312_warning_early(self):
-        # Test the warnings that get shows when using Python 3.12.
+        # Test the warnings that get shown when using Python 3.12.
         # This depends on the date.
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertFalse(view.python_warning())
@@ -157,7 +157,7 @@ class TestControlPanel(unittest.TestCase):
         new=MockDate(date(2028, 12, 1)),
     )
     def test_python312_warning_late(self):
-        # Test the warnings that get shows when using Python 3.12.
+        # Test the warnings that get shown when using Python 3.12.
         # This depends on the date.
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertTrue(view.python_warning())
@@ -169,7 +169,7 @@ class TestControlPanel(unittest.TestCase):
         new=MockDate(date(2025, 4, 1)),
     )
     def test_python313_warning_early(self):
-        # Test the warnings that get shows when using Python 3.13.
+        # Test the warnings that get shown when using Python 3.13.
         # This depends on the date.
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertFalse(view.python_warning())
@@ -180,7 +180,7 @@ class TestControlPanel(unittest.TestCase):
         new=MockDate(date(2029, 11, 1)),
     )
     def test_python313_warning_late(self):
-        # Test the warnings that get shows when using Python 3.13.
+        # Test the warnings that get shown when using Python 3.13.
         # This depends on the date.
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertTrue(view.python_warning())
@@ -188,7 +188,7 @@ class TestControlPanel(unittest.TestCase):
 
     @mock.patch("sys.version_info", new=mock_python314)
     def test_python314_warning(self):
-        # Test the warnings that get shows when using Python 3.14.
+        # Test the warnings that get shown when using Python 3.14.
         # 3.14 is too new, so we always warn.
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertTrue(view.python_warning())
