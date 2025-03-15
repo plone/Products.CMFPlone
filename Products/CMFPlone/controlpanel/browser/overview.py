@@ -1,6 +1,7 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from App.config import getConfiguration
+from datetime import date
 from plone.app.registry.browser import controlpanel
 from plone.base.interfaces.controlpanel import IMailSchema
 from plone.memoize.instance import memoize
@@ -12,6 +13,7 @@ from zope.component import getUtility
 from ZPublisher.HTTPRequest import WSGIRequest
 
 import pkg_resources
+import sys
 import warnings
 
 
@@ -22,6 +24,20 @@ try:
     HAS_PAE = True
 except ImportError:
     HAS_PAE = False
+
+
+# When is a Python 3 minor version out of support?
+# See https://devguide.python.org/versions/#versions
+_PYTHON_MINOR_OUT_OF_SUPPORT = {
+    9: date(2025, 10, 31),
+    10: date(2026, 10, 31),
+    11: date(2027, 10, 31),
+    12: date(2028, 10, 31),
+    13: date(2029, 10, 31),
+}
+# This date is specific to the current Plone major version.
+# See https://plone.org/download/release-schedule
+_PLONE_OUT_OF_SECURITY_SUPPORT = date(2027, 12, 31)
 
 
 class OverviewControlPanel(controlpanel.RegistryEditForm):
@@ -133,6 +149,29 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
         if portal_timezone:
             return False
         return True  # No portal_timezone found.
+
+    def python_warning(self):
+        minor_version = sys.version_info.minor
+        deadline = _PYTHON_MINOR_OUT_OF_SUPPORT.get(minor_version)
+        if not deadline:
+            # This Python version is not supported at all
+            return True
+        # Warn when today is after the deadline for this minor version.
+        return date.today() > deadline
+
+    def plone_maintenance_warning(self):
+        return True
+
+    def plone_security_warning(self):
+        return date.today() > _PLONE_OUT_OF_SECURITY_SUPPORT
+
+    def version_warning(self):
+        # Is there *any* version warning?
+        return (
+            self.python_warning()
+            or self.plone_maintenance_warning()
+            or self.plone_security_warning()
+        )
 
     def categories(self):
         return self.cptool().getGroups()
