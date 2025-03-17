@@ -1,3 +1,0 @@
-Require 3.9 as minimum Python version.
-We already officially dropped 3.8 support in 6.0.14, but now Zope requires 3.9 as minimum, so we stop pretending you can get Plone running on this no longer security supported Python version.
-[maurits]

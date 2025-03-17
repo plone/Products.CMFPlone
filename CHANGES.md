@@ -15,6 +15,37 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.15rc1 (2025-03-17)
+
+
+### Breaking changes:
+
+- Require 3.9 as minimum Python version.
+  We already officially dropped 3.8 support in 6.0.14, but now Zope requires 3.9 as minimum, so we stop pretending you can get Plone running on this no longer security supported Python version.
+  [maurits] #38
+
+
+### New features:
+
+- RegistrationTool: add method `principal_id_or_login_name_exists`.
+  This is factored out from the `isMemberIdAllowed` method, which now calls this after checking the allowed member id pattern.
+  [maurits] #4120
+
+
+### Bug fixes:
+
+- In the Site Setup, warn that Plone 6.0 is out of maintenance support.
+  Also check the Python version and warn when that is out of support.
+  [maurits] #60
+- Update Python version support in package metadata. @davisagli #4089
+- Update broken GNU GPLv2 license link in footer. @rohnsha0 #4108
+
+
+### Internal:
+
+- Updated metadata version to 6026.
+  [maurits] #6026
+
 ## 6.0.14 (2024-12-19)
 
 
