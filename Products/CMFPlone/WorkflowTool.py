@@ -2,8 +2,8 @@ from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
 from AccessControl.class_init import InitializeClass
 from Acquisition import aq_base
-from importlib.metadata import distribution
 from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as dist_version
 from plone.base.interfaces import IWorkflowChain
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
@@ -15,7 +15,7 @@ from zope.component import getMultiAdapter
 
 
 try:
-    multilingual_version = distribution("plone.app.multilingual").version
+    multilingual_version = dist_version("plone.app.multilingual")
 except PackageNotFoundError:
     has_new_lang_bypass = False
 else:

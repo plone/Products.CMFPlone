@@ -1,6 +1,6 @@
-from importlib.metadata import distribution
 from importlib.metadata import PackageNotFoundError
-from packaging import version
+from importlib.metadata import version as dist_version
+from packaging.version import parse as parse_version
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import INonInstallable
 from plone.memoize import view
@@ -209,8 +209,7 @@ class InstallerView(BrowserView):
     def get_product_version(self, product_id):
         """Return the version of the product (package)."""
         try:
-            dist = distribution(product_id)
-            return dist.version
+            return dist_version(product_id)
         except PackageNotFoundError:
             if "." in product_id:
                 return ""
@@ -228,7 +227,7 @@ class InstallerView(BrowserView):
             available = self.ps.listUpgrades(profile_id, True)
             if available:  # could return empty sequence
                 latest = available[-1]
-                profile_version = max(latest["dest"], key=version.parse)
+                profile_version = max(latest["dest"], key=parse_version)
         except Exception:
             pass
         return profile_version

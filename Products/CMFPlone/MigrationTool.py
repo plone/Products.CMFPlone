@@ -2,8 +2,8 @@ from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from AccessControl.requestmethod import postonly
 from App.config import getConfiguration
-from importlib.metadata import distribution
 from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as dist_version
 from io import StringIO
 from OFS.SimpleItem import SimpleItem
 from plone.base.interfaces import IMigrationTool
@@ -102,7 +102,10 @@ ADDON_LIST = AddonList(
         Addon(profile_id="plone.app.discussion:default"),
         Addon(profile_id="plone.app.event:default"),
         Addon(profile_id="plone.app.iterate:default", check_module="plone.app.iterate"),
-        Addon(profile_id="plone.app.multilingual:default", check_module="plone.app.multilingual"),
+        Addon(
+            profile_id="plone.app.multilingual:default",
+            check_module="plone.app.multilingual",
+        ),
         Addon(profile_id="plone.app.querystring:default"),
         Addon(profile_id="plone.app.theming:default"),
         Addon(profile_id="plone.app.users:default"),
@@ -183,8 +186,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     def getSoftwareVersion(self):
         # The software version.
-        dist = distribution("Products.CMFPlone")
-        return dist.version
+        return dist_version("Products.CMFPlone")
 
     security.declareProtected(ManagePortal, "needUpgrading")
 
@@ -197,22 +199,22 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     def coreVersions(self):
         # Useful core information.
         vars = {}
-        vars["Zope"] = distribution("Zope").version
+        vars["Zope"] = dist_version("Zope")
         vars["Python"] = sys.version
         vars["Platform"] = sys.platform
-        vars["Plone"] = distribution("Products.CMFPlone").version
+        vars["Plone"] = dist_version("Products.CMFPlone")
         vars["Plone Instance"] = self.getInstanceVersion()
         vars["Plone File System"] = self.getFileSystemVersion()
-        vars["CMF"] = distribution("Products.CMFCore").version
+        vars["CMF"] = dist_version("Products.CMFCore")
         vars["Debug mode"] = getConfiguration().debug_mode and "Yes" or "No"
         try:
-            vars["PIL"] = distribution("PIL").version
+            vars["PIL"] = dist_version("PIL")
         except PackageNotFoundError:
             try:
-                vars["PIL"] = distribution("PILwoTK").version
+                vars["PIL"] = dist_version("PILwoTK")
             except PackageNotFoundError:
                 try:
-                    vars["PIL"] = "%s (Pillow)" % distribution("Pillow").version
+                    vars["PIL"] = "%s (Pillow)" % dist_version("Pillow")
                 except PackageNotFoundError:
                     try:
                         import _imaging
