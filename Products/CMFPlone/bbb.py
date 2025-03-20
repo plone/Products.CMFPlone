@@ -1,10 +1,11 @@
-import pkg_resources
+from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError
 
 
 HAS_ZSERVER = True
 try:
-    dist = pkg_resources.get_distribution("ZServer")
-except pkg_resources.DistributionNotFound:
+    dist = distribution("ZServer")
+except PackageNotFoundError:
     HAS_ZSERVER = False
 
 NullResource = None

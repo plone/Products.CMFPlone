@@ -2,6 +2,8 @@ from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
 from AccessControl.class_init import InitializeClass
 from Acquisition import aq_base
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as dist_version
 from plone.base.interfaces import IWorkflowChain
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
@@ -11,22 +13,13 @@ from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION
 from ZODB.POSException import ConflictError
 from zope.component import getMultiAdapter
 
-import pkg_resources
-
 
 try:
-    pkg_resources.get_distribution("plone.app.multilingual")
-except pkg_resources.DistributionNotFound:
+    multilingual_version = dist_version("plone.app.multilingual")
+except PackageNotFoundError:
     has_new_lang_bypass = False
 else:
-    has_new_lang_bypass = (
-        int(
-            pkg_resources.get_distribution("plone.app.multilingual").version.split(".")[
-                0
-            ]
-        )
-        > 1
-    )
+    has_new_lang_bypass = int(multilingual_version.split(".")[0]) > 1
 
 
 class WorkflowTool(PloneBaseTool, BaseTool):
