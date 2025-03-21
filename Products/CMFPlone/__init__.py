@@ -1,13 +1,14 @@
 from App.ImageFile import ImageFile
+from importlib.metadata import version as dist_version
+from importlib.metadata import PackageNotFoundError
 
 import os
-import pkg_resources
 import sys
 import warnings
 import zope.deferredimport
 
 
-__version__ = pkg_resources.require("Products.CMFPlone")[0].version
+__version__ = dist_version("Products.CMFPlone")
 
 if __version__ < "7":
     # This sets SKIP_PTA to skip the check for
