@@ -1,5 +1,8 @@
 # Generated from:
 # https://github.com/plone/meta/tree/master/config/default
+[build-system]
+requires = ["setuptools>=68.2,<77"]
+
 [tool.towncrier]
 filename = "CHANGES.md"
 directory = "news/"
