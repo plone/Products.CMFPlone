@@ -1,6 +1,5 @@
 from App.ImageFile import ImageFile
 from importlib.metadata import version as dist_version
-from importlib.metadata import PackageNotFoundError
 
 import os
 import sys
