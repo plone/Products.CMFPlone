@@ -15,6 +15,14 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.1 (2025-03-25)
+
+
+### Bug fixes:
+
+- Remove `pkg_resources` from `__init__.py`.
+  [maurits] #4126
+
 ## 6.1.1rc2 (2025-03-21)
 
 
