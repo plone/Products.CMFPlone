@@ -15,6 +15,14 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.15 (2025-03-27)
+
+
+### Internal:
+
+- Prepare release.
+  [maurits] #6015
+
 ## 6.0.15rc2 (2025-03-26)
 
 
