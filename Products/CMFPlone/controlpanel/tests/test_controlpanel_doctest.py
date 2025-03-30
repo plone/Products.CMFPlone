@@ -1,5 +1,5 @@
-"""Functional Doctests for control panel.
-"""
+"""Functional Doctests for control panel."""
+
 from plone.testing import layered
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 

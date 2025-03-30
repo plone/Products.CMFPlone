@@ -22,9 +22,9 @@
       file="overrides.zcml"
       />
   <include
-      zcml:condition="installed plone.app.multilingual"     
       package="plone.app.multilingual"
       file="overrides.zcml"
+      zcml:condition="installed plone.app.multilingual"
       />
   <include
       package="plone.app.dexterity"

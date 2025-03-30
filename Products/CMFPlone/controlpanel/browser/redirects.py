@@ -1,5 +1,4 @@
 from csv import writer
-import warnings
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
 from io import StringIO
@@ -20,6 +19,7 @@ from zope.i18nmessageid import MessageFactory
 import csv
 import logging
 import tempfile
+import warnings
 
 
 try:
@@ -180,7 +180,7 @@ class RedirectionSet:
             # with query path /Plone/news:
             # min_k is /Plone/news and
             # max_k is /Plone/newt
-            # Apparently that is the way to minize the keys we ask.
+            # Apparently that is the way to minimize the keys we ask.
             min_k = "{:s}/{:s}".format(self.portal_path, query.strip("/"))
             max_k = min_k[:-1] + chr(ord(min_k[-1]) + 1)
             self.data = self.storage._paths.keys(min=min_k, max=max_k, excludemax=True)

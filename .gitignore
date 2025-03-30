@@ -1,33 +1,58 @@
-/develop-eggs
-/eggs
-/fake-eggs
-/bin
-/parts
-/downloads
-/var
-/build
-/dist
-/local.cfg
-/*.egg-info
-/.installed.cfg
+# Generated from:
+# https://github.com/plone/meta/tree/main/src/plone/meta/default
+# See the inline comments on how to expand/tweak this configuration file
+# python related
+*.egg-info
 *.pyc
-/.Python
-/include
-/lib
-/.project
-.ropeproject
-/.pydevproject
-.ropeproject
-/.mr.developer.cfg
-/src/*
+*.pyo
+
+# translation related
 *.mo
-docs/Makefile
-docs/make.bat
-docs/doctrees
-docs/html
-/Products/CMFPlone/controlpanel/.ropeproject/config.py
-/Products/CMFPlone/controlpanel/.ropeproject/globalnames
-/Products/CMFPlone/controlpanel/.ropeproject/history
-/Products/CMFPlone/controlpanel/.ropeproject/objectdb
-/Products/CMFPlone/static/.fontello
-/Products/CMFPlone/tests/robot/robodoc/_robot
+
+# tools related
+build/
+.coverage
+.*project
+coverage.xml
+dist/
+docs/_build
+__pycache__/
+.tox
+.vscode/
+node_modules/
+forest.dot
+forest.json
+
+# venv / buildout related
+bin/
+develop-eggs/
+eggs/
+.eggs/
+etc/
+.installed.cfg
+include/
+lib/
+lib64
+.mr.developer.cfg
+parts/
+pyvenv.cfg
+var/
+local.cfg
+
+# mxdev
+/instance/
+/.make-sentinels/
+/*-mxdev.txt
+/reports/
+/sources/
+/venv/
+.installed.txt
+
+
+##
+# Add extra configuration options in .meta.toml:
+#  [gitignore]
+#  extra_lines = """
+#  _your own configuration lines_
+#  """
+##

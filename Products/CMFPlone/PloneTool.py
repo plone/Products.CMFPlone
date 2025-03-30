@@ -71,7 +71,7 @@ BAD_CHARS = bad_id.__self__.findall
 EMAIL_RE = re.compile(
     r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,63}|([0-9]{1,3}\.){3}[0-9]{1,3})$",
     re.IGNORECASE,
-)  # noqa
+)
 # used to find double new line (in any variant)
 EMAIL_CUTOFF_RE = re.compile(r".*[\n\r][\n\r]")
 
@@ -587,7 +587,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # long as they are processed before the portal_message macro is
         # called by the main template. Example:
 
-        #   <tal:block tal:define="temp python:context.plone_utils.addPortalMessage('A random info message')" />  # noqa
+        #   <tal:block tal:define="temp python:context.plone_utils.addPortalMessage('A random info message')" />
         if request is None:
             request = self.REQUEST
         IStatusMessage(request).add(message, type=type)

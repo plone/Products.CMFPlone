@@ -157,7 +157,7 @@
 - Resource registry: Support OFS.Image.File objects.
   [ale-rt, thet] #4022
 - Avoid POSKeyError when commit occurs and we have savepoint that involves Plone Site. @wesleybl #4026
-- move all permission definitions for controlpanels to unifed file from controlpanel directory
+- move all permission definitions for controlpanels to unified file from controlpanel directory
   [jackahl] #4028
 - Robottest fixes for latest `pat-contentbrowser` updates.
   [petschki] #4037

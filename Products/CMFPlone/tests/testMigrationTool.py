@@ -210,9 +210,7 @@ class TestAddonList(PloneTestCase.PloneTestCase):
         )
         # We had set pae to unknown, so it will not have been
         # upgraded:
-        self.assertEqual(
-            setup.getLastVersionForProfile(pae.profile_id), "unknown"
-        )
+        self.assertEqual(setup.getLastVersionForProfile(pae.profile_id), "unknown")
         # We had given dexterity a failing check_module, so it will
         # not have been upgraded:
         self.assertEqual(

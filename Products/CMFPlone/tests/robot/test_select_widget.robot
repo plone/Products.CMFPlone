@@ -100,7 +100,7 @@ the input fields have the mockup class
 
 the widget shows the element
     [Arguments]    ${text}
-    Get Text    css=.select2-chosen    should be    ${text}    messsage=${text} seems to not be selected
+    Get Text    css=.select2-chosen    should be    ${text}    message=${text} seems to not be selected
 
 
 the widget shows two elements
@@ -115,6 +115,6 @@ the widget shows one element
 # dry
 
 Open Dropdown
-    [Arguments]    ${locator}    ${validaton}
+    [Arguments]    ${locator}    ${validation}
     Click    ${locator}
-    Wait For Elements State    ${validaton}    visible    timeout=2 s    message=The dropdown did not show up at location ${validaton}
+    Wait For Elements State    ${validation}    visible    timeout=2 s    message=The dropdown did not show up at location ${validation}

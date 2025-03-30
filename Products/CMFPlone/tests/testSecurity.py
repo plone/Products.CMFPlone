@@ -81,7 +81,8 @@ class TestAttackVectorsFunctional(PloneTestCase):
 
     def test_widget_traversal_2(self):
         res = self.publish(
-            "/plone/@@mail-controlpanel/++widget++email_from_address/terms/field/interface/setTaggedValue?tag=cake&value=lovely")
+            "/plone/@@mail-controlpanel/++widget++email_from_address/terms/field/interface/setTaggedValue?tag=cake&value=lovely"
+        )
         self.assertEqual(404, res.status)
         # self.assertTrue(res.headers['location'].startswith(
         #     'http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))

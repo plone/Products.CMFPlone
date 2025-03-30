@@ -147,7 +147,7 @@ Scenario Event end date query
      When I activate the default operator in the criteria Event end date
       and Evaluate Javascript    //div[contains(@class,"querystring-criteria-value")]//input[@type="date"]
  ...    (element) => {
- ...        # fire the event for the browser build-in date input field
+ ...        # fire the event for the browser built-in date input field
  ...        element.value="2018-07-01";
  ...        element.dispatchEvent(new Event("change", { bubbles: true }));
  ...    }
@@ -164,7 +164,7 @@ Scenario Event end date query
 
     #      When Evaluate Javascript    //div[contains(@class,"querystring-criteria-value")]//input[@type="date"]
     #  ...    (element) => {
-    #  ...        # fire the event for the browser build-in date input field
+    #  ...        # fire the event for the browser built-in date input field
     #  ...        element.value="2018-08-06";
     #  ...        element.dispatchEvent(new Event("change", { bubbles: true }));
     #  ...    }
@@ -175,14 +175,14 @@ Scenario Event end date query
     #      When I activate the operator Between dates in the criteria Event end date
     #       and Evaluate Javascript    //div[contains(@class,"querystring-criteria-value")]//input[@type="date" and contains(@class,"querystring-criteria-value-DateRangeWidget-start")]
     #  ...    (element) => {
-    #  ...        # fire the event for the browser build-in date input field
+    #  ...        # fire the event for the browser built-in date input field
     #  ...        element.value="2018-08-01";
     #  ...        element.dispatchEvent(new Event("change", { bubbles: true }));
     #  ...    }
     #  ...    all_elements=False
     #       and Evaluate Javascript    //div[contains(@class,"querystring-criteria-value")]//input[@type="date" and contains(@class,"querystring-criteria-value-DateRangeWidget-end")]
     #  ...    (element) => {
-    #  ...        # fire the event for the browser build-in date input field
+    #  ...        # fire the event for the browser built-in date input field
     #  ...        element.value="2018-08-07";
     #  ...        element.dispatchEvent(new Event("change", { bubbles: true }));
     #  ...    }
@@ -193,14 +193,14 @@ Scenario Event end date query
     #      When I activate the operator Between dates in the criteria Event end date
     #       and Evaluate Javascript    //div[contains(@class,"querystring-criteria-value")]//input[@type="date" and contains(@class,"querystring-criteria-value-DateRangeWidget-start")]
     #  ...    (element) => {
-    #  ...        # fire the event for the browser build-in date input field
+    #  ...        # fire the event for the browser built-in date input field
     #  ...        element.value="2018-08-06";
     #  ...        element.dispatchEvent(new Event("change", { bubbles: true }));
     #  ...    }
     #  ...    all_elements=False
     #       and Evaluate Javascript    //div[contains(@class,"querystring-criteria-value")]//input[@type="date" and contains(@class,"querystring-criteria-value-DateRangeWidget-end")]
     #  ...    (element) => {
-    #  ...        # fire the event for the browser build-in date input field
+    #  ...        # fire the event for the browser built-in date input field
     #  ...        element.value="2018-08-06";
     #  ...        element.dispatchEvent(new Event("change", { bubbles: true }));
     #  ...    }
@@ -355,7 +355,8 @@ I search in ${NAME} subfolder in the contentbrowser widget
     mark results
     Click    //div[@class="querystring-criteria-value"]//div[contains(@class, "content-browser-selected-items-wrapper")]//a[contains(@class, "btn-primary")]
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumn")]//div[contains(@class, "item-title")][text()[contains(.,'${NAME}')]]
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[3]/div[contains(@class, "levelToolbar")]/button
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]//div[contains(@class, "levelToolbar")]//button[@title="select B"]
+
 
 
 I open the select box titled operator

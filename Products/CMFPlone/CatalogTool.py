@@ -51,7 +51,7 @@ except ImportError:  # pragma: no cover
     DISCUSSION_ANNOTATION_KEY = None
 
 
-logger = logging.getLogger('Plone')
+logger = logging.getLogger("Plone")
 
 _marker = object()
 
@@ -472,13 +472,12 @@ class CatalogTool(PloneBaseTool, BaseTool):
                 try:
                     self.reindexObject(obj, idxs=idxs)
                     # index conversations from plone.app.discussion
-                    annotions = IAnnotations(obj)
+                    annotations = IAnnotations(obj)
                     if (
                         DISCUSSION_ANNOTATION_KEY is not None
-                        and DISCUSSION_ANNOTATION_KEY in annotions
-
+                        and DISCUSSION_ANNOTATION_KEY in annotations
                     ):
-                        conversation = annotions[DISCUSSION_ANNOTATION_KEY]
+                        conversation = annotations[DISCUSSION_ANNOTATION_KEY]
                         conversation = conversation.__of__(obj)
                         for comment in conversation.getComments():
                             try:

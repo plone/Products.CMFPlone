@@ -3,7 +3,7 @@ from Acquisition import aq_parent
 from borg.localrole.interfaces import IFactoryTempFolder
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.z3cform.utils import call_callables
-from plone.app.z3cform.widgets.relateditems import get_relateditems_options
+from plone.app.z3cform.widgets.contentbrowser import get_contentbrowser_options
 from plone.base.interfaces import IImagingSchema
 from plone.base.interfaces import ILinkSchema
 from plone.base.interfaces import IPatternsSettings
@@ -137,7 +137,7 @@ class PatternSettingsAdapter:
         server_url = self.request.get("SERVER_URL", "")
         site_path = portal_url[len(server_url) :]
 
-        related_items_config = get_relateditems_options(
+        contentbrowser_config = get_contentbrowser_options(
             context=self.context,
             value=None,
             separator=";",
@@ -145,7 +145,7 @@ class PatternSettingsAdapter:
             vocabulary_view="@@getVocabulary",
             field_name=None,
         )
-        related_items_config = call_callables(related_items_config, self.context)
+        contentbrowser_config = call_callables(contentbrowser_config, self.context)
 
         configuration = {
             "base_url": self.context.absolute_url(),
@@ -156,7 +156,7 @@ class PatternSettingsAdapter:
             "pictureVariants": self.picture_variants,
             "imageCaptioningEnabled": self.image_captioning,
             "linkAttribute": "UID",
-            "relatedItems": related_items_config,
+            "relatedItems": contentbrowser_config,
             "prependToScalePart": "/@@images/image/",
             "prependToUrl": "{}/resolveuid/".format(site_path.rstrip("/")),
             "inline": settings.inline,

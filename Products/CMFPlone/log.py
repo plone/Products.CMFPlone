@@ -2,6 +2,7 @@
 This module resolves an import order dependency.
 Don't import from here, import from utils.
 """
+
 from zope.deprecation import deprecate
 
 import logging

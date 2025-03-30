@@ -11,6 +11,7 @@ from App.Dialogs import MessageDialog
 from App.ImageFile import ImageFile
 from DateTime import DateTime
 from html import escape
+from importlib.metadata import distribution
 from OFS.CopySupport import CopyError
 from os.path import abspath
 from os.path import join
@@ -25,9 +26,9 @@ from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFPlone import bbb
-from Products.CMFPlone.log import log  # noqa - for python scripts
-from Products.CMFPlone.log import log_deprecated  # noqa - for python scripts
-from Products.CMFPlone.log import log_exc  # noqa - for python scripts
+from Products.CMFPlone.log import log  # noqa: F401 - for python scripts
+from Products.CMFPlone.log import log_deprecated  # noqa: F401 - for python scripts
+from Products.CMFPlone.log import log_exc  # noqa: F401 - for python scripts
 from ZODB.POSException import ConflictError
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -36,11 +37,10 @@ from zope.component import queryUtility
 from zope.component.hooks import getSite
 from zope.deferredimport import deprecated as deprecated_import
 from zope.deprecation import deprecate
-from zope.deprecation import deprecated  # noqa
+from zope.deprecation import deprecated  # noqa: F401
 from zope.interface import implementedBy
 
 import OFS
-import pkg_resources
 import re
 import sys
 import transaction
@@ -291,7 +291,9 @@ def versionTupleFromString(v_str):
     >>> versionTupleFromString('foo') is None
     True
     """
-    regex_str = r"(^\d+)[.]?(\d*)[.]?(\d*)[- ]?(alpha|beta|candidate|final|a|b|rc)?(\d*)"  # noqa
+    regex_str = (
+        r"(^\d+)[.]?(\d*)[.]?(\d*)[- ]?(alpha|beta|candidate|final|a|b|rc)?(\d*)"
+    )
     v_regex = re.compile(regex_str)
     match = v_regex.match(v_str)
     if match is None:
@@ -310,7 +312,7 @@ def versionTupleFromString(v_str):
 
 def getFSVersionTuple():
     """Returns Products.CMFPlone version tuple"""
-    version = pkg_resources.get_distribution("Products.CMFPlone").version
+    version = distribution("Products.CMFPlone").version
     return versionTupleFromString(version)
 
 

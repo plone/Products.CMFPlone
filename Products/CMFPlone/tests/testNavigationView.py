@@ -441,9 +441,11 @@ class TestPhysicalBreadCrumbs(TestBaseBreadCrumbs):
 def test_suite():
     import unittest
 
-    return unittest.TestSuite((
-        unittest.defaultTestLoader.loadTestsFromTestCase(TestCatalogPortalTabs),
-        unittest.defaultTestLoader.loadTestsFromTestCase(TestSiteMap),
-        unittest.defaultTestLoader.loadTestsFromTestCase(TestCatalogBreadCrumbs),
-        unittest.defaultTestLoader.loadTestsFromTestCase(TestPhysicalBreadCrumbs),
-    ))
+    return unittest.TestSuite(
+        (
+            unittest.defaultTestLoader.loadTestsFromTestCase(TestCatalogPortalTabs),
+            unittest.defaultTestLoader.loadTestsFromTestCase(TestSiteMap),
+            unittest.defaultTestLoader.loadTestsFromTestCase(TestCatalogBreadCrumbs),
+            unittest.defaultTestLoader.loadTestsFromTestCase(TestPhysicalBreadCrumbs),
+        )
+    )

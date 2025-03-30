@@ -106,7 +106,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
 
         portal_types = self.portal.portal_types
         doc_type = portal_types.Document
-        self.assertTrue("plone.versioning" not in doc_type.behaviors)  # noqa
+        self.assertTrue("plone.versioning" not in doc_type.behaviors)
 
     def test_enable_versioning_behavior_on_document(self):
         self.browser.open(self.types_url)
@@ -117,7 +117,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
 
         portal_types = self.portal.portal_types
         doc_type = portal_types.Document
-        self.assertTrue("plone.versioning" not in doc_type.behaviors)  # noqa
+        self.assertTrue("plone.versioning" not in doc_type.behaviors)
 
         self.browser.getControl(name="versionpolicy").value = ["manual"]
         self.browser.getControl(name="form.button.Save").click()
@@ -135,8 +135,8 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         file_type = portal_types.File
 
         # File has no Versioning and no Locking on default, but needs it
-        self.assertTrue("plone.versioning" not in file_type.behaviors)  # noqa
-        self.assertTrue("plone.locking" not in file_type.behaviors)  # noqa
+        self.assertTrue("plone.versioning" not in file_type.behaviors)
+        self.assertTrue("plone.locking" not in file_type.behaviors)
 
         self.browser.getControl(name="versionpolicy").value = ["manual"]
         self.browser.getControl("Save").click()
