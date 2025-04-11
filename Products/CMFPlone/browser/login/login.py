@@ -16,6 +16,7 @@ from z3c.form import button
 from z3c.form import field
 from z3c.form import form
 from z3c.form.interfaces import HIDDEN_MODE
+from zExceptions import NotFound
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
@@ -211,12 +212,18 @@ class LoginForm(form.EditForm):
             came_from = adapter(came_from, is_initial_login)
 
         if came_from:
-            came_from_path = parse.urlparse(came_from).path
+            # since this view is bound to INavigationRoot
+            # we strip the navroot path and the leading "/" from came_from
+            # to make traversing also in VHM environments work correctly
+            cpath = "/".join(self.context.getPhysicalPath())
+            came_from = came_from.lstrip(cpath)
+            path = parse.urlparse(came_from).path.split("/")
+            path = path[1:] if path[0] == "" else path
 
             # Verify that the Path exists in the portal
             try:
-                self.context.unrestrictedTraverse(came_from_path)
-            except (KeyError, AttributeError):
+                self.context.unrestrictedTraverse(path)
+            except (KeyError, AttributeError, NotFound):
                 # fallback to portal root
                 came_from = None
 

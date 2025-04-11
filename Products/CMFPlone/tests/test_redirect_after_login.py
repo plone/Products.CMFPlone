@@ -1,3 +1,4 @@
+from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
@@ -7,6 +8,7 @@ from plone.testing.zope import Browser
 from Products.CMFPlone.browser.login.login import LoginForm
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+from urllib.parse import urlencode
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.publisher.interfaces import IRequest
@@ -75,7 +77,8 @@ class TestRedirectAfterLogin(unittest.TestCase):
     layer = PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 
     def setUp(self):
-        self.browser = Browser(self.layer["app"])
+        self.app = self.layer["app"]
+        self.browser = Browser(self.app)
         self.browser.handleErrors = False
         self.portal = self.layer["portal"]
 
@@ -189,6 +192,54 @@ class TestRedirectAfterLogin(unittest.TestCase):
             self.browser.url,
             "http://nohost/plone",
             "Successful login did not redirect to the came_from.",
+        )
+
+    def test_redirect_to_restricted_content(self):
+        # create private content to check redirect after login
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
+        self.portal.invokeFactory("Document", "document", title="Private Document")
+        transaction.commit()
+
+        # tell the browser to handle "Unauthorized" redirect
+        self.browser.handleErrors = True
+        self.browser.open("http://nohost/plone/document")
+
+        self.assertEqual(self.browser.url, "http://nohost/plone/login?came_from=/plone/document")
+        self.assertEqual(
+            self.browser.getControl(name="came_from").value,
+            "/plone/document",
+        )
+
+        self.browser.getControl("Login Name").value = TEST_USER_NAME
+        self.browser.getControl("Password").value = TEST_USER_PASSWORD
+        self.browser.getControl("Log in").click()
+
+        self.assertIn("You are now logged in.", self.browser.contents)
+        self.assertIn("Private Document", self.browser.contents)
+        self.assertEqual(
+            self.browser.url,
+            "http://nohost/plone/document",
+            "Successful login did redirect to the restricted document.",
+        )
+
+        # logout
+        self.browser.getLink("Log out").click()
+
+        if "virtual_hosting" not in self.app:
+            # check came_from with VHM installed
+            from Products.SiteAccess.VirtualHostMonster import (
+                manage_addVirtualHostMonster,
+            )
+
+            manage_addVirtualHostMonster(self.app, "virtual_hosting")
+            transaction.commit()
+
+        # check came_from value with VHM installed
+        self.browser.open("http://nohost/VirtualHostBase/http/plone.org:80/plone/VirtualHostRoot/login?came_from=/document")
+
+        self.assertEqual(
+            self.browser.getControl(name="came_from").value,
+            "/document",
         )
 
     def test_initiallogin_adapter(self):
