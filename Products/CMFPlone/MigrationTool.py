@@ -167,7 +167,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     def getInstanceVersion(self):
         # The version this instance of plone is on.
         setup = getToolByName(self, "portal_setup")
-        profile = setup.getBaseProfile()
+        profile = self.getBaseProfile()
         version = setup.getLastVersionForProfile(profile)
         if isinstance(version, tuple):
             version = ".".join(version)
