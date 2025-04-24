@@ -1,0 +1,1 @@
+Added support for custom base profiles without subclassing @rohnsha0 
