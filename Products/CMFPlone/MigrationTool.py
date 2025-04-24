@@ -126,7 +126,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     meta_type = "Plone Migration Tool"
     toolicon = "skins/plone_images/site_icon.png"
 
-    _profile= _DEFAULT_PROFILE
+    _profile = _DEFAULT_PROFILE
     _package_name = "Products.CMFPlone"
 
     manage_options = (
@@ -141,21 +141,25 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, "getInstanceVersion")
 
     security.declareProtected(ManagePortal, "getBaseProfile")
+
     def getBaseProfile(self):
         """Get the base profile used for migrations"""
         return getattr(self, "_profile", _DEFAULT_PROFILE)
-    
+
     security.declareProtected(ManagePortal, "setBaseProfile")
+
     def setBaseProfile(self, profile):
         """Set the base profile used for migrations"""
         self._profile = profile
-    
+
     security.declareProtected(ManagePortal, "getPackageName")
+
     def getPackageName(self):
         """Get the package name used for migrations"""
         return getattr(self, "_package_name", "Products.CMFPlone")
-    
+
     security.declareProtected(ManagePortal, "setPackageName")
+
     def setPackageName(self, package_name):
         """Set the package name used for migrations"""
         self._package_name = package_name
@@ -163,7 +167,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     def getInstanceVersion(self):
         # The version this instance of plone is on.
         setup = getToolByName(self, "portal_setup")
-        profile= setup.getBaseProfile()
+        profile = setup.getBaseProfile()
         version = setup.getLastVersionForProfile(profile)
         if isinstance(version, tuple):
             version = ".".join(version)
