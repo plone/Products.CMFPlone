@@ -1,4 +1,5 @@
 from .utils import has_logged_in
+from functools import cached_property
 from plone.app.users.browser.passwordpanel import PasswordPanel
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import IForcePasswordChange
@@ -16,6 +17,7 @@ from z3c.form import button
 from z3c.form import field
 from z3c.form import form
 from z3c.form.interfaces import HIDDEN_MODE
+from zExceptions import NotFound
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
@@ -204,6 +206,11 @@ class LoginForm(form.EditForm):
         if handler:
             handler()
 
+    @cached_property
+    def portal_state(self):
+        """Return the portal state."""
+        return getMultiAdapter((self.context, self.request), name="plone_portal_state")
+
     def redirect_after_login(self, came_from=None, is_initial_login=False):
         """Handle redirect after successful login."""
         adapter = queryMultiAdapter((self.context, self.request), IRedirectAfterLogin)
@@ -211,13 +218,21 @@ class LoginForm(form.EditForm):
             came_from = adapter(came_from, is_initial_login)
 
         if came_from:
-            came_from_path = parse.urlparse(came_from).path
+            came_from_path = self.request.physicalPathFromURL(came_from)
 
-            # Verify that the Path exists in the portal
-            try:
-                self.context.unrestrictedTraverse(came_from_path)
-            except (KeyError, AttributeError):
-                # fallback to portal root
+            nav_root_path = self.portal_state.navigation_root_path().split("/")
+
+            if came_from_path[: len(nav_root_path)] == nav_root_path:
+                relative_path = came_from_path[len(nav_root_path) :]
+
+                # Verify that the Path exists in the portal
+                try:
+                    nav_root = self.portal_state.navigation_root()
+                    nav_root.unrestrictedTraverse(relative_path)
+                except (KeyError, AttributeError, NotFound):
+                    # fallback to portal root
+                    came_from = None
+            else:
                 came_from = None
 
         if not came_from:
