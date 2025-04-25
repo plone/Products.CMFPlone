@@ -708,3 +708,124 @@ class TestRRControlPanel(PloneTestCase.PloneTestCase):
             '<h2 class="accordion-header fs-5 fw-bold">new-resource-name</h2>',
             self.browser.contents,
         )
+
+
+class TestBrokenResourceRegistry(PloneTestCase.PloneTestCase):
+    def _make_test_bundle(self, name="foobar", depends="", enabled=True):
+        registry = getUtility(IRegistry)
+
+        bundles = registry.collectionOfInterface(
+            IBundleRegistry, prefix="plone.bundles"
+        )
+        bundle = bundles.add(name)
+        bundle.name = name
+        bundle.jscompilation = f"http://foo.bar/{name}.js"
+        bundle.csscompilation = f"http://foo.bar/{name}.css"
+        bundle.depends = depends
+        bundle.enabled = enabled
+        return bundle
+
+    def test_resource_registry_missing_dependency_disabled(self):
+        """Test the statusmessage warning if a bundle has a dependency on a
+        deactivated bundle."""
+        import lxml
+
+        self._make_test_bundle(name="bundle_1", enabled=False)
+        self._make_test_bundle(name="bundle_2", depends="bundle_1")
+
+        self.loginAsPortalOwner()
+
+        rendered = None
+        rendered = self.portal()
+
+        parsed = lxml.html.fromstring(rendered)
+        els_statusmessage = parsed.cssselect(".statusmessage-error")
+
+        # Admins should see the error badge.
+        self.assertIn(
+            "Bundle 'bundle_2' has a nonexistent dependency on 'bundle_1'.",
+            els_statusmessage[0].text_content(),
+        )
+
+    def test_resource_registry_missing_dependency_inexistent(self):
+        """Test the statusmessage warning if a bundle is not defined at all."""
+        import lxml
+
+        self._make_test_bundle(name="bundle", depends="brundle")
+
+        self.loginAsPortalOwner()
+
+        rendered = None
+        rendered = self.portal()
+
+        parsed = lxml.html.fromstring(rendered)
+        els_statusmessage = parsed.cssselect(".statusmessage-error")
+
+        # There should be one error message.
+        self.assertEqual(len(els_statusmessage), 1)
+
+        # Admins should see the error badge.
+        self.assertIn(
+            "Bundle 'bundle' has a nonexistent dependency on 'brundle'.",
+            els_statusmessage[0].text_content(),
+        )
+
+    def test_resource_registry_circular_dependency__user(self):
+        """Circular dependency errors are detected and handled by webresource.
+        We catch the error and ignore it for users or show it to admins.
+        """
+        import webresource
+
+        self._make_test_bundle(depends="foobar")
+
+        rendered = None
+        try:
+            rendered = self.portal()
+        except webresource.ResourceCircularDependencyError:  # pragma: nocover
+            self.fail("Test should not raise ResourceCircularDependencyError")
+
+        # Don't show the error message in case the site breaks
+        self.assertNotIn(
+            "error while rendering plone.resourceregistries.scripts",
+            rendered,
+        )
+        self.assertNotIn(
+            "error while rendering plone.resourceregistries.styles",
+            rendered,
+        )
+
+        # Don't show the error badge to anonymous users as admins see them.
+        self.assertNotIn(
+            "Resources define circular dependencies",
+            rendered,
+        )
+
+    def test_resource_registry_circular_dependency__admin(self):
+        """Circular dependency errors are detected and handled by webresource.
+        We catch the error and ignore it for users or show it to admins.
+        """
+        import lxml
+        import webresource
+
+        self._make_test_bundle(depends="foobar")
+
+        self.loginAsPortalOwner()
+
+        rendered = None
+        try:
+            rendered = self.portal()
+        except webresource.ResourceCircularDependencyError:  # pragma: nocover
+            self.fail("Test should not raise ResourceCircularDependencyError")
+
+        parsed = lxml.html.fromstring(rendered)
+        els_statusmessage = parsed.cssselect(".statusmessage-error")
+
+        # Admins should see the error badge.
+        self.assertIn(
+            "Error rendering JavaScript resources.",
+            els_statusmessage[0].text_content(),
+        )
+        self.assertIn(
+            "Error rendering CSS resources.",
+            els_statusmessage[1].text_content(),
+        )
