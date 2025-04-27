@@ -1,0 +1,71 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:main fill-slot="main">
+    <h1 class="documentFirstHeading" i18n:translate="">Recycle Bin</h1>
+    
+    <div class="documentDescription" i18n:translate="">
+        Items deleted from this site are stored here and can be restored or permanently deleted.
+    </div>
+    
+    <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin"
+          tal:define="items view/get_items">
+        <input type="hidden" name="form.submitted" value="1" />
+        
+        <div class="pat-autotoc autotabs">
+            <nav class="autotoc-nav">
+                <a id="autotoc-item-autotoc-0" href="#all-items" class="active autotoc-level-1" data-autotoc-target="#all-items">All Items</a>
+            </nav>
+            
+            <div id="all-items">
+                <table class="listing">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" name="select_all" id="select_all" /></th>
+                            <th i18n:translate="">Title</th>
+                            <th i18n:translate="">Type</th>
+                            <th i18n:translate="">Original Path</th>
+                            <th i18n:translate="">Deletion Date</th>
+                            <th i18n:translate="">Size</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr tal:condition="not:items">
+                            <td colspan="6" i18n:translate="">No items in recycle bin</td>
+                        </tr>
+                        <tr tal:repeat="item items">
+                            <td>
+                                <input type="checkbox" name="selected_items:list" 
+                                       tal:attributes="value item/recycle_id" />
+                            </td>
+                            <td>
+                                <a tal:attributes="href string:${context/absolute_url}/@@recyclebin/item/${item/recycle_id}"
+                                   tal:content="item/title">Title</a>
+                            </td>
+                            <td tal:content="item/type">Content type</td>
+                            <td tal:content="item/path">Original path</td>
+                            <td tal:content="python:view.format_date(item['deletion_date'])">Deletion date</td>
+                            <td tal:content="python:view.format_size(item.get('size', 0))">Size</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="formControls" tal:condition="items">
+                    <input class="context" type="submit" name="form.button.Restore" value="Restore Selected" i18n:attributes="value" />
+                    <input class="destructive" type="submit" name="form.button.Delete" value="Delete Selected" i18n:attributes="value" />
+                    <input class="destructive" type="submit" name="form.button.Empty" value="Empty Recycle Bin" 
+                           onclick="return confirm('Are you sure you want to permanently delete all items in the recycle bin?');"
+                           i18n:attributes="value" />
+                </div>
+            </div>
+        </div>
+    </form>
+</metal:main>
+
+</body>
+</html>
