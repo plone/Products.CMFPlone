@@ -126,5 +126,10 @@
       <element key="plone-modal">{"actionOptions": {"displayInModal": false}}</element>
     </value>
   </record>
+  <records interface="Products.CMFPlone.controlpanel.browser.recyclerbin.IRecyleBinControlPanelSettings" prefix="plone-recyclebin">
+    <value key="recycling_enabled">True</value>
+    <value key="retention_period">30</value>
+    <value key="maximum_size">100</value>
+</records>
 
 </registry>
