@@ -1,0 +1,85 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:main fill-slot="main">
+    <tal:item define="item view/get_item">
+        <div tal:condition="not:item">
+            <h1 class="documentFirstHeading" i18n:translate="">Item Not Found</h1>
+            <p i18n:translate="">
+                The requested item was not found in the recycle bin. It may have been already restored or deleted.
+            </p>
+            <p>
+                <a tal:attributes="href string:${context/absolute_url}/@@recyclebin" 
+                   i18n:translate="">Return to recycle bin</a>
+            </p>
+        </div>
+        
+        <div tal:condition="item">
+            <h1 class="documentFirstHeading">
+                <span tal:content="item/title">Title</span>
+                <span class="discreet"> (<span tal:content="item/type">Content Type</span>)</span>
+            </h1>
+            
+            <div class="documentDescription" i18n:translate="">
+                Deleted item information
+            </div>
+            
+            <table class="listing">
+                <tbody>
+                    <tr>
+                        <th i18n:translate="">Original ID</th>
+                        <td tal:content="item/id">ID</td>
+                    </tr>
+                    <tr>
+                        <th i18n:translate="">Original Path</th>
+                        <td tal:content="item/path">Path</td>
+                    </tr>
+                    <tr>
+                        <th i18n:translate="">Parent Path</th>
+                        <td tal:content="item/parent_path">Parent</td>
+                    </tr>
+                    <tr>
+                        <th i18n:translate="">Deletion Date</th>
+                        <td tal:content="python:view.format_date(item['deletion_date'])">Date</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <form method="post" 
+                  tal:attributes="action string:${context/absolute_url}/@@recyclebin/item/${view/item_id}">
+                <input type="hidden" name="form.submitted" value="1" />
+                
+                <div class="field">
+                    <label i18n:translate="">Custom Restore Location (optional)</label>
+                    <div class="formHelp" i18n:translate="">
+                        Leave blank to restore to the original location. If the original location no longer exists,
+                        the item will be restored to the site root.
+                    </div>
+                    <input type="text" name="target_container" size="50" />
+                </div>
+                
+                <div class="formControls">
+                    <input class="context" type="submit" name="form.button.Restore" value="Restore Item" i18n:attributes="value" />
+                    <input class="destructive" type="submit" name="form.button.Delete" value="Permanently Delete"
+                           onclick="return confirm('Are you sure you want to permanently delete this item?');" 
+                           i18n:attributes="value" />
+                </div>
+            </form>
+            
+            <div class="visualClear"><!-- --></div>
+            
+            <p>
+                <a tal:attributes="href string:${context/absolute_url}/@@recyclebin" 
+                   i18n:translate="">Return to recycle bin</a>
+            </p>
+        </div>
+    </tal:item>
+</metal:main>
+
+</body>
+</html>
