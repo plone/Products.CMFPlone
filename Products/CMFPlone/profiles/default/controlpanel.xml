@@ -352,4 +352,17 @@
   >
     <permission>Inspect Relations</permission>
   </configlet>
+
+  <!-- profiles/default/controlpanel.xml -->
+<configlet
+    title="Recycler Settings"
+    action_id="plone-recyclebin"
+    appId="plone-recyclebin"
+    category="plone-general"
+    condition_expr=""
+    icon_expr="string:puzzle"
+    url_expr="string:${portal_url}/@@plone-recyclebin"
+    visible="True">
+    <permission>Manage portal</permission>
+</configlet>
 </object>
