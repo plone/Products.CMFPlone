@@ -56,9 +56,9 @@
                 </table>
                 
                 <div class="formControls" tal:condition="items">
-                    <input class="context" type="submit" name="form.button.Restore" value="Restore Selected" i18n:attributes="value" />
-                    <input class="destructive" type="submit" name="form.button.Delete" value="Delete Selected" i18n:attributes="value" />
-                    <input class="destructive" type="submit" name="form.button.Empty" value="Empty Recycle Bin" 
+                    <input class="btn btn-primary" type="submit" name="form.button.Restore" value="Restore Selected" i18n:attributes="value" />
+                    <input class="btn btn-danger" type="submit" name="form.button.Delete" value="Delete Selected" i18n:attributes="value" />
+                    <input class="btn btn-danger" type="submit" name="form.button.Empty" value="Empty Recycle Bin" 
                            onclick="return confirm('Are you sure you want to permanently delete all items in the recycle bin?');"
                            i18n:attributes="value" />
                 </div>
