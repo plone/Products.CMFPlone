@@ -18,12 +18,9 @@
         <input type="hidden" name="form.submitted" value="1" />
         
         <div class="pat-autotoc autotabs">
-            <nav class="autotoc-nav">
-                <a id="autotoc-item-autotoc-0" href="#all-items" class="active autotoc-level-1" data-autotoc-target="#all-items">All Items</a>
-            </nav>
             
             <div id="all-items">
-                <table class="listing">
+                <table class="table table-striped listing">
                     <thead>
                         <tr>
                             <th><input type="checkbox" name="select_all" id="select_all" /></th>
