@@ -97,6 +97,12 @@
   <include file="profiles.zcml" />
   <include file="catalog.zcml" />
 
+  <!-- Addon List -->
+  <utility
+      factory=".MigrationTool.LocalAddonList"
+      name="Products.CMFPlone"
+      />
+
   <!-- images scales poc -->
   <include package=".image_scales" />
 
