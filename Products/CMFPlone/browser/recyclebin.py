@@ -7,6 +7,7 @@ from zExceptions import NotFound
 from zope.component import getUtility
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
+from Products.CMFCore.utils import getToolByName
 
 
 class RecycleBinView(BrowserView):
@@ -38,9 +39,11 @@ class RecycleBinView(BrowserView):
 
     def format_date(self, date):
         """Format date for display"""
-        if isinstance(date, datetime):
-            return date.strftime("%Y-%m-%d %H:%M")
-        return str(date)
+        if date is None:
+            return ""
+        portal = getToolByName(self.context, 'portal_url').getPortalObject()
+        # Use long_format=True to include hours, minutes and seconds
+        return portal.restrictedTraverse('@@plone').toLocalizedTime(date, long_format=True)
 
     def format_size(self, size_bytes):
         """Format size in bytes to human-readable format"""
