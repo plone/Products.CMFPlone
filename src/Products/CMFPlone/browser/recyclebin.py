@@ -74,7 +74,7 @@ class RecycleBinView(BrowserView):
             if recycle_bin.restore_item(item_id):
                 restored_count += 1
 
-        message = f"{restored_count} item(s) restored successfully."
+        message = f"{restored_count} item{'s' if deleted_count != 1} restored successfully."
         IStatusMessage(self.request).addStatusMessage(message, type="info")
 
     def delete_items(self):
@@ -97,7 +97,7 @@ class RecycleBinView(BrowserView):
             if recycle_bin.purge_item(item_id):
                 deleted_count += 1
 
-        message = f"{deleted_count} item(s) permanently deleted."
+        message = f"{deleted_count} item{'s' if deleted_count != 1} permanently deleted."
         IStatusMessage(self.request).addStatusMessage(message, type="info")
 
     def empty_bin(self):
@@ -111,7 +111,7 @@ class RecycleBinView(BrowserView):
             if recycle_bin.purge_item(item_id):
                 deleted_count += 1
 
-        message = f"Recycle bin emptied. {deleted_count} item(s) permanently deleted."
+        message = f"Recycle bin emptied. {deleted_count} item{'s' if deleted_count != 1} permanently deleted."
         IStatusMessage(self.request).addStatusMessage(message, type="info")
 
 
