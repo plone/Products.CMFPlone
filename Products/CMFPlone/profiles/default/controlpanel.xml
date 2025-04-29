@@ -355,7 +355,7 @@
 
   <!-- profiles/default/controlpanel.xml -->
 <configlet
-    title="Recycler Settings"
+    title="Recycle bin settings"
     action_id="plone-recyclebin"
     appId="plone-recyclebin"
     category="plone-general"
