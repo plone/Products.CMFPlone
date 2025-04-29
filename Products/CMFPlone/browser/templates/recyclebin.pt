@@ -53,9 +53,9 @@
                 </table>
                 
                 <div class="formControls" tal:condition="items">
-                    <input class="btn btn-primary" type="submit" name="form.button.Restore" value="Restore Selected" i18n:attributes="value" />
-                    <input class="btn btn-danger" type="submit" name="form.button.Delete" value="Delete Selected" i18n:attributes="value" />
-                    <input class="btn btn-danger" type="submit" name="form.button.Empty" value="Empty Recycle Bin" 
+                    <input class="btn btn-primary" type="submit" name="form.buttons.restore" value="Restore Selected" i18n:attributes="value" />
+                    <input class="btn btn-danger" type="submit" name="form.buttons.delete" value="Delete Selected" i18n:attributes="value" />
+                    <input class="btn btn-danger" type="submit" name="form.buttons.empty" value="Empty Recycle Bin" 
                            onclick="return confirm('Are you sure you want to permanently delete all items in the recycle bin?');"
                            i18n:attributes="value" />
                 </div>
@@ -63,6 +63,22 @@
         </div>
     </form>
 </metal:main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const selectAllCheckbox = document.getElementById('select_all');
+    const itemCheckboxes = document.querySelectorAll('input[name="selected_items:list"]');
+    
+    if (selectAllCheckbox) {
+      selectAllCheckbox.addEventListener('change', function() {
+        const isChecked = this.checked;
+        itemCheckboxes.forEach(checkbox => {
+          checkbox.checked = isChecked;
+        });
+      });
+    }
+  });
+</script>
 
 </body>
 </html>
