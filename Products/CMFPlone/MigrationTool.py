@@ -42,7 +42,8 @@ def _pil_version() -> str:
             version = dist_version("PILwoTK")
         except PackageNotFoundError:
             try:
-                vars["PIL"] = "%s (Pillow)" % dist_version("Pillow")
+                pillow_version = dist_version("Pillow")
+                version = f"{pillow_version} (Pillow)"
             except PackageNotFoundError:
                 try:
                     import _imaging
