@@ -162,14 +162,16 @@
   <!-- Recycle Bin utility -->
   <utility
       factory=".recyclebin.RecycleBin"
-      provides=".interfaces.recyclebin.IRecycleBin" />
-      
+      provides=".interfaces.recyclebin.IRecycleBin"
+      />
+
   <!-- Event handlers -->
   <subscriber
       for="Products.CMFCore.interfaces.IContentish
            zope.lifecycleevent.interfaces.IObjectRemovedEvent"
-      handler=".events.handle_content_removal" />
-      
+      handler=".events.handle_content_removal"
+      />
+
   <!-- Browser views -->
   <browser:page
       name="recyclebin"
@@ -177,7 +179,7 @@
       class=".browser.recyclebin.RecycleBinView"
       permission="cmf.ManagePortal"
       />
-      
+
   <browser:page
       name="recyclebin/item"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"

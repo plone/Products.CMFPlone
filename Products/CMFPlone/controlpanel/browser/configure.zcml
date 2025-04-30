@@ -351,9 +351,10 @@
   <!-- RecycleBin -->
 
   <browser:page
-    name="plone-recyclebin"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class="Products.CMFPlone.controlpanel.browser.recyclerbin.RecyclebinControlPanelView"
-    permission="cmf.ManagePortal" />
+      name="plone-recyclebin"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class="Products.CMFPlone.controlpanel.browser.recyclerbin.RecyclebinControlPanelView"
+      permission="cmf.ManagePortal"
+      />
 
 </configure>
