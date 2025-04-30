@@ -43,9 +43,19 @@
                             <td>
                                 <a tal:attributes="href string:${context/absolute_url}/@@recyclebin/item/${item/recycle_id}"
                                    tal:content="item/title">Title</a>
+                                <div tal:condition="python:item.get('type') == 'Discussion Item' and item.get('content_title')"
+                                     class="discreet">
+                                    <small>Comment on: <span tal:content="item/content_title">Content Title</span></small>
+                                </div>
                             </td>
                             <td tal:content="item/type">Content type</td>
-                            <td tal:content="item/path">Original path</td>
+                            <td>
+                                <span tal:content="item/path">Original path</span>
+                                <div tal:condition="python:item.get('type') == 'Discussion Item' and item.get('content_path')"
+                                     class="discreet">
+                                    <small>Content: <span tal:content="item/content_path">Content Path</span></small>
+                                </div>
+                            </td>
                             <td tal:content="python:view.format_date(item['deletion_date'])">Deletion date</td>
                             <td tal:content="python:view.format_size(item.get('size', 0))">Size</td>
                         </tr>
