@@ -353,7 +353,7 @@
   <browser:page
       name="plone-recyclebin"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class="Products.CMFPlone.controlpanel.browser.recyclerbin.RecyclebinControlPanelView"
+      class="Products.CMFPlone.controlpanel.browser.recyclebin.RecyclebinControlPanelView"
       permission="cmf.ManagePortal"
       />
 
