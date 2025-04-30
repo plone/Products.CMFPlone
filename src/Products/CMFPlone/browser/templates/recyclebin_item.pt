@@ -26,7 +26,24 @@
                 <span class="discreet"> (<span tal:content="item/type">Content Type</span>)</span>
             </h1>
             
-            <!-- Extra information for comments -->
+            <!-- Extra information for comment trees -->
+            <div class="documentDescription"
+                 tal:condition="python:item.get('type') == 'CommentTree'">
+                <p i18n:translate="">
+                    Comment thread deleted from 
+                    <strong tal:condition="python:context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
+                        <a tal:attributes="href item/parent_path" 
+                           tal:content="python:context.unrestrictedTraverse(item['parent_path'].split('/'), default='Content Object').Title()">
+                           Content title
+                        </a>
+                    </strong>
+                    <strong tal:condition="python:not context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
+                        content that no longer exists
+                    </strong>
+                </p>
+            </div>
+            
+            <!-- Extra information for individual comments -->
             <div class="documentDescription"
                  tal:condition="python:item.get('type') == 'Discussion Item'">
                 <p i18n:translate="">
@@ -44,7 +61,7 @@
             </div>
             
             <div class="documentDescription" 
-                 tal:condition="python:item.get('type') != 'Discussion Item'"
+                 tal:condition="python:item.get('type') not in ('Discussion Item', 'CommentTree')"
                  i18n:translate="">
                 Deleted item information
             </div>
