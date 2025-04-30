@@ -354,15 +354,15 @@
   </configlet>
 
   <!-- profiles/default/controlpanel.xml -->
-<configlet
-    title="Recycle bin settings"
-    action_id="plone-recyclebin"
-    appId="plone-recyclebin"
-    category="plone-general"
-    condition_expr=""
-    icon_expr="string:puzzle"
-    url_expr="string:${portal_url}/@@plone-recyclebin"
-    visible="True">
+  <configlet action_id="plone-recyclebin"
+             appId="plone-recyclebin"
+             category="plone-general"
+             condition_expr=""
+             icon_expr="string:puzzle"
+             title="Recycle bin settings"
+             url_expr="string:${portal_url}/@@plone-recyclebin"
+             visible="True"
+  >
     <permission>Manage portal</permission>
-</configlet>
+  </configlet>
 </object>
