@@ -26,7 +26,26 @@
                 <span class="discreet"> (<span tal:content="item/type">Content Type</span>)</span>
             </h1>
             
-            <div class="documentDescription" i18n:translate="">
+            <!-- Extra information for comments -->
+            <div class="documentDescription"
+                 tal:condition="python:item.get('type') == 'Discussion Item'">
+                <p i18n:translate="">
+                    Comment deleted from 
+                    <strong tal:condition="python:context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
+                        <a tal:attributes="href item/parent_path" 
+                           tal:content="python:context.unrestrictedTraverse(item['parent_path'].split('/'), default='Content Object').Title()">
+                           Content title
+                        </a>
+                    </strong>
+                    <strong tal:condition="python:not context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
+                        content that no longer exists
+                    </strong>
+                </p>
+            </div>
+            
+            <div class="documentDescription" 
+                 tal:condition="python:item.get('type') != 'Discussion Item'"
+                 i18n:translate="">
                 Deleted item information
             </div>
             
@@ -47,6 +66,16 @@
                     <tr>
                         <th i18n:translate="">Deletion Date</th>
                         <td tal:content="python:view.format_date(item['deletion_date'])">Date</td>
+                    </tr>
+                    <!-- Show comment text for comments -->
+                    <tr tal:condition="python:item.get('type') == 'Discussion Item' and getattr(item['object'], 'text', None)">
+                        <th i18n:translate="">Comment Text</th>
+                        <td tal:content="structure python:item['object'].getText()">Comment text</td>
+                    </tr>
+                    <!-- Show comment author for comments -->
+                    <tr tal:condition="python:item.get('type') == 'Discussion Item' and (getattr(item['object'], 'author_name', None) or getattr(item['object'], 'author_username', None))">
+                        <th i18n:translate="">Comment Author</th>
+                        <td tal:content="python:item['object'].author_name or item['object'].author_username">Author</td>
                     </tr>
                 </tbody>
             </table>

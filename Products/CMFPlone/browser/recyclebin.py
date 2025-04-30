@@ -124,7 +124,30 @@ class RecycleBinView(BrowserView):
     def get_items(self):
         """Get all items in the recycle bin"""
         recycle_bin = self.get_recycle_bin()
-        return recycle_bin.get_items()
+        items = recycle_bin.get_items()
+        
+        # For comments, add extra information about the content they belong to
+        for item in items:
+            if item.get('type') == 'Discussion Item':
+                # Extract content path from comment path
+                path = item.get('path', '')
+                # The conversation part is usually ++conversation++default
+                parts = path.split('++conversation++')
+                if len(parts) > 1:
+                    content_path = parts[0]
+                    # Remove trailing slash if present
+                    if content_path.endswith('/'):
+                        content_path = content_path[:-1]
+                    item['content_path'] = content_path
+                    
+                    # Try to get the content title
+                    try:
+                        content = self.context.unrestrictedTraverse(content_path)
+                        item['content_title'] = content.Title()
+                    except (KeyError, AttributeError):
+                        item['content_title'] = 'Content no longer exists'
+        
+        return items
 
     def format_date(self, date):
         """Format date for display"""
