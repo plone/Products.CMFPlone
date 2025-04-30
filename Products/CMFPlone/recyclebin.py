@@ -78,10 +78,43 @@ class RecycleBin:
         # Generate a unique ID for the recycled item
         item_id = str(uuid.uuid4())
 
+        # Generate a meaningful title
+        item_title = "Unknown"
+        if item_type == "CommentTree":
+            # For comment trees, generate a title including the number of comments
+            comment_count = len(obj.get('comments', []))
+            root_comment = None
+            
+            # Try to find the root comment to get its text
+            for comment, _ in obj.get('comments', []):
+                if getattr(comment, 'comment_id', None) == obj.get('root_comment_id'):
+                    root_comment = comment
+                    break
+            
+            # If we found the root comment, get a preview of its text
+            comment_preview = ""
+            if root_comment and hasattr(root_comment, 'text'):
+                # Take the first 30 characters of the text as a preview
+                text = getattr(root_comment, 'text', '')
+                if text:
+                    if len(text) > 30:
+                        comment_preview = text[:30] + "..."
+                    else:
+                        comment_preview = text
+            
+            # Create a meaningful title
+            if comment_preview:
+                item_title = f"Comment thread: \"{comment_preview}\" ({comment_count} comments)"
+            else:
+                item_title = f"Comment thread ({comment_count} comments)"
+        else:
+            # For regular items, use Title() if available
+            item_title = obj.Title() if hasattr(obj, "Title") else getattr(obj, "title", "Unknown")
+
         # Store metadata about the deletion
         self.storage[item_id] = {
             "id": obj.getId() if hasattr(obj, "getId") else getattr(obj, "id", "unknown"),
-            "title": obj.Title() if hasattr(obj, "Title") else getattr(obj, "title", "Unknown"),
+            "title": item_title,
             "type": item_type or getattr(obj, "portal_type", "Unknown"),
             "path": original_path,
             "parent_path": "/".join(original_container.getPhysicalPath()),
