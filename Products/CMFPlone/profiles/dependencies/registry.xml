@@ -126,7 +126,7 @@
       <element key="plone-modal">{"actionOptions": {"displayInModal": false}}</element>
     </value>
   </record>
-  <records interface="Products.CMFPlone.controlpanel.browser.recyclerbin.IRecycleBinControlPanelSettings"
+  <records interface="Products.CMFPlone.controlpanel.browser.recyclebin.IRecycleBinControlPanelSettings"
            prefix="plone-recyclebin"
   >
     <value key="recycling_enabled">True</value>

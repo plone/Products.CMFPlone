@@ -2,7 +2,7 @@ from datetime import datetime
 from datetime import timedelta
 from persistent.mapping import PersistentMapping
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.controlpanel.browser.recyclerbin import (
+from Products.CMFPlone.controlpanel.browser.recyclebin import (
     IRecycleBinControlPanelSettings,
 )
 from Products.CMFPlone.interfaces.recyclebin import IRecycleBin
