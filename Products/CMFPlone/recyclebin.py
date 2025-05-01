@@ -1,7 +1,7 @@
-from datetime import datetime
-from datetime import timedelta
 from BTrees.OOBTree import OOBTree
 from BTrees.OOBTree import OOTreeSet
+from datetime import datetime
+from datetime import timedelta
 from persistent import Persistent
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.controlpanel.browser.recyclebin import (
@@ -30,10 +30,10 @@ class RecycleBinStorage(Persistent):
         # Add a sorted index that stores (deletion_date, item_id) tuples
         # This will automatically maintain items sorted by date
         self._sorted_index = OOTreeSet()
-    
+
     def __getitem__(self, key):
         return self.items[key]
-    
+
     def __setitem__(self, key, value):
         # When adding or updating an item, update the sorted index
         if key in self.items:
@@ -48,10 +48,10 @@ class RecycleBinStorage(Persistent):
                 except (KeyError, TypeError):
                     # Ignore errors if the entry doesn't exist or date is not comparable
                     pass
-        
+
         # Add the item to main storage
         self.items[key] = value
-        
+
         # Add to sorted index if it has a deletion_date
         if "deletion_date" in value:
             try:
@@ -59,8 +59,10 @@ class RecycleBinStorage(Persistent):
                 self._sorted_index.add((value["deletion_date"], key))
             except TypeError:
                 # Skip if the date is not comparable
-                logger.warning(f"Could not index item {key} by date: {value.get('deletion_date')}")
-    
+                logger.warning(
+                    f"Could not index item {key} by date: {value.get('deletion_date')}"
+                )
+
     def __delitem__(self, key):
         # When deleting an item, also remove it from the sorted index
         if key in self.items:
@@ -73,46 +75,46 @@ class RecycleBinStorage(Persistent):
                 except (KeyError, TypeError):
                     # Ignore errors if the entry doesn't exist or date is not comparable
                     pass
-        
+
         # Remove from main storage
         del self.items[key]
-    
+
     def __contains__(self, key):
         return key in self.items
-    
+
     def __len__(self):
         return len(self.items)
-    
+
     def get(self, key, default=None):
         return self.items.get(key, default)
-    
+
     def keys(self):
         return self.items.keys()
-    
+
     def values(self):
         return self.items.values()
-    
+
     def get_items(self):
         """Return all items as key-value pairs"""
         return self.items.items()
-    
+
     def get_items_sorted_by_date(self, reverse=True):
         """Return items sorted by deletion date
-        
+
         Args:
             reverse: If True, return newest items first (default),
                     if False, return oldest items first
-        
+
         Returns:
             Generator yielding (item_id, item_data) tuples
         """
         # OOTreeSet is not reversible, so we need to handle ordering differently
         sorted_keys = list(self._sorted_index)
-        
+
         # If we want newest first (reverse=True), reverse the list
         if reverse:
             sorted_keys.reverse()
-        
+
         # Yield items in the requested order
         for date, item_id in sorted_keys:
             if item_id in self.items:  # Double check item still exists
@@ -125,7 +127,7 @@ class RecycleBin:
 
     def __init__(self):
         """Initialize the recycle bin utility
-        
+
         It will get the context (Plone site) on demand using getSite()
         """
         pass
@@ -174,12 +176,12 @@ class RecycleBin:
 
         # Generate a meaningful title
         item_title = "Unknown"
-        
+
         # Handle folders and collections specially
-        if hasattr(obj, 'objectIds') or item_type == "Collection":
+        if hasattr(obj, "objectIds") or item_type == "Collection":
             # Store child objects if this is a folder or collection
             children = {}
-            if hasattr(obj, 'objectIds'):
+            if hasattr(obj, "objectIds"):
                 # Process all children recursively
                 def process_folder(folder_obj, folder_path):
                     folder_children = {}
@@ -189,7 +191,11 @@ class RecycleBin:
                         # Store basic data for this child
                         child_data = {
                             "id": child_id,
-                            "title": child.Title() if hasattr(child, "Title") else getattr(child, "title", "Unknown"),
+                            "title": (
+                                child.Title()
+                                if hasattr(child, "Title")
+                                else getattr(child, "title", "Unknown")
+                            ),
                             "type": getattr(child, "portal_type", "Unknown"),
                             "path": child_path,
                             "parent_path": folder_path,
@@ -197,17 +203,17 @@ class RecycleBin:
                             "size": getattr(child, "get_size", lambda: 0)(),
                             "object": child,
                         }
-                        
+
                         # If this child is also a folder, process its children
-                        if hasattr(child, 'objectIds') and child.objectIds():
+                        if hasattr(child, "objectIds") and child.objectIds():
                             nested_children = process_folder(child, child_path)
                             if nested_children:
                                 child_data["children"] = nested_children
                                 child_data["children_count"] = len(nested_children)
-                                
+
                         folder_children[child_id] = child_data
                     return folder_children
-                    
+
                 # Start the recursive processing from the top-level folder
                 children = process_folder(obj, original_path)
 
@@ -256,8 +262,12 @@ class RecycleBin:
             )
 
         # Store metadata about the deletion
-        parent_path = "/".join(original_container.getPhysicalPath()) if original_container else "/".join(original_path.split("/")[:-1])
-        
+        parent_path = (
+            "/".join(original_container.getPhysicalPath())
+            if original_container
+            else "/".join(original_path.split("/")[:-1])
+        )
+
         storage_data = {
             "id": (
                 obj.getId() if hasattr(obj, "getId") else getattr(obj, "id", "unknown")
@@ -272,7 +282,7 @@ class RecycleBin:
         }
 
         # Add children data if this was a folder/collection
-        if locals().get('children'):
+        if locals().get("children"):
             storage_data["children"] = children
             storage_data["children_count"] = len(children)
 
@@ -346,35 +356,43 @@ class RecycleBin:
 
         # Add object to the target container
         target_container[obj_id] = obj
-        
+
         # Remove from recycle bin
         del self.storage[item_id]
 
         # If this was a folder/collection with children tracked in the recycle bin,
-        # we need to remove those child references as well to prevent them from 
+        # we need to remove those child references as well to prevent them from
         # showing up in the RecycleBin view after the parent is restored
         if "children" in item_data and isinstance(item_data["children"], dict):
             # Clean up any child items associated with this parent
-            logger.info(f"Cleaning up {len(item_data['children'])} child items from recyclebin")
-            
+            logger.info(
+                f"Cleaning up {len(item_data['children'])} child items from recyclebin"
+            )
+
             # Define a function to recursively process nested folders
             def cleanup_children(children_dict):
                 for child_id, child_data in children_dict.items():
                     # Clean up any entries that might match this child
                     child_path = child_data.get("path")
                     child_orig_id = child_data.get("id")
-                    
+
                     for storage_id, storage_data in list(self.storage.get_items()):
-                        if (storage_data.get("path") == child_path or 
-                            storage_data.get("id") == child_orig_id):
-                            logger.info(f"Removing child item {child_orig_id} from recyclebin")
+                        if (
+                            storage_data.get("path") == child_path
+                            or storage_data.get("id") == child_orig_id
+                        ):
+                            logger.info(
+                                f"Removing child item {child_orig_id} from recyclebin"
+                            )
                             if storage_id in self.storage:
                                 del self.storage[storage_id]
-                    
+
                     # If this child is also a folder, recursively process its children
-                    if "children" in child_data and isinstance(child_data["children"], dict):
+                    if "children" in child_data and isinstance(
+                        child_data["children"], dict
+                    ):
                         cleanup_children(child_data["children"])
-            
+
             # Start the recursive cleanup
             cleanup_children(item_data["children"])
 
@@ -721,7 +739,7 @@ class RecycleBin:
         """Purge items that exceed the retention period"""
         settings = self._get_settings()
         retention_days = settings.retention_period
-        
+
         # If retention_period is 0, auto-purging is disabled
         if retention_days <= 0:
             return 0

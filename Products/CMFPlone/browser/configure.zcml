@@ -306,10 +306,10 @@
       />
 
   <browser:page
-        name="recyclebin-enabled"
-        for="plone.base.interfaces.INavigationRoot"
-        class=".recyclebin.RecycleBinEnabled"
-        permission="zope2.View"
+      name="recyclebin-enabled"
+      for="plone.base.interfaces.INavigationRoot"
+      class=".recyclebin.RecycleBinEnabled"
+      permission="zope2.View"
       />
 
 </configure>
