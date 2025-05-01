@@ -10,7 +10,7 @@ class IRecycleBinControlPanelSettings(Interface):
     recycling_enabled = schema.Bool(
         title="Enable the Recycle Bin",
         description="Enable or disable the Recycle Bin feature.",
-        default=True,
+        default=False,
     )
 
     retention_period = schema.Int(
