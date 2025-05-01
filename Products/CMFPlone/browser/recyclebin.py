@@ -12,9 +12,13 @@ from zope.component import getUtility
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.publisher.interfaces import IPublishTraverse
+
 import logging
+import uuid
+
 
 logger = logging.getLogger(__name__)
+
 
 class IRecycleBinForm(Interface):
     """Schema for the Recycle Bin form"""
@@ -130,15 +134,15 @@ class RecycleBinView(BrowserView):
         child_items_to_exclude = []
         for item in items:
             # If this item is a parent with children, add its children to exclusion list
-            if 'children' in item:
-                for child_id in item.get('children', {}):
+            if "children" in item:
+                for child_id in item.get("children", {}):
                     child_items_to_exclude.append(child_id)
 
         logger.debug(f"Child items to exclude: {child_items_to_exclude}")
         print(f"Child items to exclude: {child_items_to_exclude}")
 
         # Only include items that are not children of other recycled items
-        items = [item for item in items if item.get('id') not in child_items_to_exclude]
+        items = [item for item in items if item.get("id") not in child_items_to_exclude]
         print(f"Filtered items: {items}")
 
         # For comments, add extra information about the content they belong to
@@ -296,39 +300,51 @@ class RecycleBinItemView(BrowserView):
         if "restore.child" in self.request.form:
             child_id = self.request.form.get("child_id")
             target_path = self.request.form.get("target_path")
-            
+
             if child_id and target_path:
                 try:
                     # Get item data
                     recycle_bin = getUtility(IRecycleBin)
                     item_data = recycle_bin.get_item(self.item_id)
-                    
+
                     if item_data and "children" in item_data:
                         child_data = item_data["children"].get(child_id)
                         if child_data:
                             # Try to get target container
                             try:
-                                target_container = self.context.unrestrictedTraverse(target_path)
-                                
+                                target_container = self.context.unrestrictedTraverse(
+                                    target_path
+                                )
+
                                 # Create a temporary storage entry for the child
                                 temp_id = str(uuid.uuid4())
                                 recycle_bin.storage[temp_id] = child_data
-                                
+
                                 # Restore the child
-                                restored_obj = recycle_bin.restore_item(temp_id, target_container)
-                                
+                                restored_obj = recycle_bin.restore_item(
+                                    temp_id, target_container
+                                )
+
                                 if restored_obj:
                                     # Remove child from parent's children dict
                                     del item_data["children"][child_id]
-                                    item_data["children_count"] = len(item_data["children"])
-                                    
+                                    item_data["children_count"] = len(
+                                        item_data["children"]
+                                    )
+
                                     message = f"Child item '{child_data['title']}' successfully restored."
-                                    IStatusMessage(self.request).addStatusMessage(message, type="info")
-                                    self.request.response.redirect(restored_obj.absolute_url())
+                                    IStatusMessage(self.request).addStatusMessage(
+                                        message, type="info"
+                                    )
+                                    self.request.response.redirect(
+                                        restored_obj.absolute_url()
+                                    )
                                     return
                             except (KeyError, AttributeError):
                                 message = f"Target location not found: {target_path}"
-                                IStatusMessage(self.request).addStatusMessage(message, type="error")
+                                IStatusMessage(self.request).addStatusMessage(
+                                    message, type="error"
+                                )
                 except Exception as e:
                     logger.error(f"Error restoring child item: {e}")
                     message = "Failed to restore child item."
@@ -341,7 +357,9 @@ class RecycleBinItemView(BrowserView):
         # Get the item before rendering template
         item = self.get_item()
         if item is None:
-            logger.warning(f"No item found with ID: {self.item_id}, redirecting to main recyclebin view")
+            logger.warning(
+                f"No item found with ID: {self.item_id}, redirecting to main recyclebin view"
+            )
             self.request.response.redirect(
                 f"{self.context.absolute_url()}/@@recyclebin"
             )
@@ -362,7 +380,9 @@ class RecycleBinItemView(BrowserView):
         if item is None:
             logger.warning(f"No item found in recycle bin with ID: {self.item_id}")
         else:
-            logger.info(f"Found item: {item.get('title', 'Unknown')} of type {item.get('type', 'Unknown')}")
+            logger.info(
+                f"Found item: {item.get('title', 'Unknown')} of type {item.get('type', 'Unknown')}"
+            )
         return item
 
     def get_children(self):
@@ -397,6 +417,7 @@ class RecycleBinItemView(BrowserView):
             return f"{size_bytes / 1024:.1f} KB"
         else:
             return f"{size_bytes / (1024 * 1024):.1f} MB"
+
 
 class RecycleBinEnabled(BrowserView):
     """Check if the recycle bin is enabled"""
