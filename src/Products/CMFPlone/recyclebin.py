@@ -1,6 +1,7 @@
 from datetime import datetime
 from datetime import timedelta
 from BTrees.OOBTree import OOBTree
+from BTrees.OOBTree import OOTreeSet
 from persistent import Persistent
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.controlpanel.browser.recyclebin import (
@@ -26,14 +27,54 @@ class RecycleBinStorage(Persistent):
 
     def __init__(self):
         self.items = OOBTree()
+        # Add a sorted index that stores (deletion_date, item_id) tuples
+        # This will automatically maintain items sorted by date
+        self._sorted_index = OOTreeSet()
     
     def __getitem__(self, key):
         return self.items[key]
     
     def __setitem__(self, key, value):
+        # When adding or updating an item, update the sorted index
+        if key in self.items:
+            # If updating an existing item, remove old index entry first
+            old_value = self.items[key]
+            if "deletion_date" in old_value:
+                try:
+                    # Create a sortable key (date, id)
+                    old_key = (old_value["deletion_date"], key)
+                    if old_key in self._sorted_index:
+                        self._sorted_index.remove(old_key)
+                except (KeyError, TypeError):
+                    # Ignore errors if the entry doesn't exist or date is not comparable
+                    pass
+        
+        # Add the item to main storage
         self.items[key] = value
+        
+        # Add to sorted index if it has a deletion_date
+        if "deletion_date" in value:
+            try:
+                # Store as (date, id) for automatic sorting
+                self._sorted_index.add((value["deletion_date"], key))
+            except TypeError:
+                # Skip if the date is not comparable
+                logger.warning(f"Could not index item {key} by date: {value.get('deletion_date')}")
     
     def __delitem__(self, key):
+        # When deleting an item, also remove it from the sorted index
+        if key in self.items:
+            item = self.items[key]
+            if "deletion_date" in item:
+                try:
+                    sort_key = (item["deletion_date"], key)
+                    if sort_key in self._sorted_index:
+                        self._sorted_index.remove(sort_key)
+                except (KeyError, TypeError):
+                    # Ignore errors if the entry doesn't exist or date is not comparable
+                    pass
+        
+        # Remove from main storage
         del self.items[key]
     
     def __contains__(self, key):
@@ -54,6 +95,28 @@ class RecycleBinStorage(Persistent):
     def get_items(self):
         """Return all items as key-value pairs"""
         return self.items.items()
+    
+    def get_items_sorted_by_date(self, reverse=True):
+        """Return items sorted by deletion date
+        
+        Args:
+            reverse: If True, return newest items first (default),
+                    if False, return oldest items first
+        
+        Returns:
+            Generator yielding (item_id, item_data) tuples
+        """
+        # OOTreeSet is not reversible, so we need to handle ordering differently
+        sorted_keys = list(self._sorted_index)
+        
+        # If we want newest first (reverse=True), reverse the list
+        if reverse:
+            sorted_keys.reverse()
+        
+        # Yield items in the requested order
+        for date, item_id in sorted_keys:
+            if item_id in self.items:  # Double check item still exists
+                yield (item_id, self.items[item_id])
 
 
 @implementer(IRecycleBin)
@@ -170,7 +233,8 @@ class RecycleBin:
     def get_items(self):
         """Return all items in recycle bin"""
         items = []
-        for item_id, data in self.storage.get_items():
+        # Use the pre-sorted index to get items by date (newest first)
+        for item_id, data in self.storage.get_items_sorted_by_date(reverse=True):
             item_data = data.copy()
             item_data["recycle_id"] = item_id
             # Don't include the actual object in the listing
@@ -178,8 +242,7 @@ class RecycleBin:
                 del item_data["object"]
             items.append(item_data)
 
-        # Sort by deletion date (newest first)
-        return sorted(items, key=lambda x: x["deletion_date"], reverse=True)
+        return items
 
     def get_item(self, item_id):
         """Get a specific deleted item by ID"""
