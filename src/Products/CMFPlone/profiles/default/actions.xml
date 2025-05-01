@@ -506,7 +506,7 @@
       />
       <property name="url_expr">string:${portal_url}/@@recyclebin</property>
       <property name="icon_expr">string:plone-delete</property>
-      <property name="available_expr" >portal/@@recyclebin-enabled|nothing</property>
+      <property name="available_expr">portal/@@recyclebin-enabled|nothing</property>
       <property name="permissions">
         <element value="Manage portal" />
       </property>
