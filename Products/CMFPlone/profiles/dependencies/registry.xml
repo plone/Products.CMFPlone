@@ -132,8 +132,6 @@
     <value key="recycling_enabled">True</value>
     <value key="retention_period">30</value>
     <value key="maximum_size">100</value>
-    <value key="auto_purge">True</value>
-
   </records>
 
 </registry>
