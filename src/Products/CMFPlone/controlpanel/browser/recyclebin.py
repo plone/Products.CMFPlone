@@ -15,9 +15,9 @@ class IRecycleBinControlPanelSettings(Interface):
 
     retention_period = schema.Int(
         title="Retention Period",
-        description="Number of days to keep deleted items in the Recycle Bin.",
+        description="Number of days to keep deleted items in the Recycle Bin. Set to 0 to disable automatic purging.",
         default=30,
-        min=1,
+        min=0,
     )
 
     maximum_size = schema.Int(
@@ -25,12 +25,6 @@ class IRecycleBinControlPanelSettings(Interface):
         description="Maximum size of the Recycle Bin in MB.",
         default=100,
         min=10,
-    )
-
-    auto_purge = schema.Bool(
-        title="Auto Purge",
-        description="Automatically purge items older than the retention period.",
-        default=True,
     )
 
 
