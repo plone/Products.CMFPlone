@@ -126,6 +126,21 @@ class RecycleBinView(BrowserView):
         recycle_bin = self.get_recycle_bin()
         items = recycle_bin.get_items()
 
+        # Create a list of all items that are children of a parent in the recycle bin
+        child_items_to_exclude = []
+        for item in items:
+            # If this item is a parent with children, add its children to exclusion list
+            if 'children' in item:
+                for child_id in item.get('children', {}):
+                    child_items_to_exclude.append(child_id)
+
+        logger.debug(f"Child items to exclude: {child_items_to_exclude}")
+        print(f"Child items to exclude: {child_items_to_exclude}")
+
+        # Only include items that are not children of other recycled items
+        items = [item for item in items if item.get('id') not in child_items_to_exclude]
+        print(f"Filtered items: {items}")
+
         # For comments, add extra information about the content they belong to
         for item in items:
             if item.get("type") == "Discussion Item":
@@ -277,6 +292,48 @@ class RecycleBinItemView(BrowserView):
             )
             return ""
 
+        # Handle restoration of children
+        if "restore.child" in self.request.form:
+            child_id = self.request.form.get("child_id")
+            target_path = self.request.form.get("target_path")
+            
+            if child_id and target_path:
+                try:
+                    # Get item data
+                    recycle_bin = getUtility(IRecycleBin)
+                    item_data = recycle_bin.get_item(self.item_id)
+                    
+                    if item_data and "children" in item_data:
+                        child_data = item_data["children"].get(child_id)
+                        if child_data:
+                            # Try to get target container
+                            try:
+                                target_container = self.context.unrestrictedTraverse(target_path)
+                                
+                                # Create a temporary storage entry for the child
+                                temp_id = str(uuid.uuid4())
+                                recycle_bin.storage[temp_id] = child_data
+                                
+                                # Restore the child
+                                restored_obj = recycle_bin.restore_item(temp_id, target_container)
+                                
+                                if restored_obj:
+                                    # Remove child from parent's children dict
+                                    del item_data["children"][child_id]
+                                    item_data["children_count"] = len(item_data["children"])
+                                    
+                                    message = f"Child item '{child_data['title']}' successfully restored."
+                                    IStatusMessage(self.request).addStatusMessage(message, type="info")
+                                    self.request.response.redirect(restored_obj.absolute_url())
+                                    return
+                            except (KeyError, AttributeError):
+                                message = f"Target location not found: {target_path}"
+                                IStatusMessage(self.request).addStatusMessage(message, type="error")
+                except Exception as e:
+                    logger.error(f"Error restoring child item: {e}")
+                    message = "Failed to restore child item."
+                    IStatusMessage(self.request).addStatusMessage(message, type="error")
+
         # Initialize and update the form
         form = RecycleBinItemForm(self.context, self.request, self.item_id)
         form.update()
@@ -308,6 +365,20 @@ class RecycleBinItemView(BrowserView):
             logger.info(f"Found item: {item.get('title', 'Unknown')} of type {item.get('type', 'Unknown')}")
         return item
 
+    def get_children(self):
+        """Get the children of this item if it's a folder/collection"""
+        item = self.get_item()
+        if item and "children" in item:
+            children = []
+            for child_id, child_data in item["children"].items():
+                # Don't include the actual object in the listing
+                child_info = child_data.copy()
+                if "object" in child_info:
+                    del child_info["object"]
+                children.append(child_info)
+            return children
+        return []
+
     def format_date(self, date):
         """Format date for display"""
         if date is None:
@@ -317,6 +388,15 @@ class RecycleBinItemView(BrowserView):
         return portal.restrictedTraverse("@@plone").toLocalizedTime(
             date, long_format=True
         )
+
+    def format_size(self, size_bytes):
+        """Format size in bytes to human-readable format"""
+        if size_bytes < 1024:
+            return f"{size_bytes} B"
+        elif size_bytes < 1024 * 1024:
+            return f"{size_bytes / 1024:.1f} KB"
+        else:
+            return f"{size_bytes / (1024 * 1024):.1f} MB"
 
 class RecycleBinEnabled(BrowserView):
     """Check if the recycle bin is enabled"""
