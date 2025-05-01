@@ -24,20 +24,16 @@ ANNOTATION_KEY = "Products.CMFPlone.RecycleBin"
 class RecycleBin:
     """Stores deleted content items"""
 
-    def __init__(self, context=None):
-        """Initialize the recycle bin for a site
-
-        Args:
-            context: The Plone site object (optional when used as a utility)
+    def __init__(self):
+        """Initialize the recycle bin utility
+        
+        It will get the context (Plone site) on demand using getSite()
         """
-        self.context = context
-        # When used as a utility without context, we'll get the context on demand
+        pass
 
     def _get_context(self):
-        """Get the context (Plone site) if not already available"""
-        if self.context is None:
-            self.context = getSite()
-        return self.context
+        """Get the context (Plone site)"""
+        return getSite()
 
     def _get_storage(self):
         """Get the storage for recycled items"""
