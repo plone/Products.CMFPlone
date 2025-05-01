@@ -290,3 +290,11 @@ class RecycleBinItemView(BrowserView):
         return portal.restrictedTraverse("@@plone").toLocalizedTime(
             date, long_format=True
         )
+
+class RecycleBinEnabled(BrowserView):
+    """Check if the recycle bin is enabled"""
+
+    def __call__(self):
+        """Return True if recycle bin is enabled, else False"""
+        recycle_bin = getUtility(IRecycleBin)
+        return recycle_bin.is_enabled()
