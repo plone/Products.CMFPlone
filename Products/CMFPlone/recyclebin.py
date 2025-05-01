@@ -720,10 +720,12 @@ class RecycleBin:
     def purge_expired_items(self):
         """Purge items that exceed the retention period"""
         settings = self._get_settings()
-        if not settings.auto_purge:
+        retention_days = settings.retention_period
+        
+        # If retention_period is 0, auto-purging is disabled
+        if retention_days <= 0:
             return 0
 
-        retention_days = settings.retention_period
         cutoff_date = datetime.now() - timedelta(days=retention_days)
 
         items_to_purge = []
