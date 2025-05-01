@@ -212,6 +212,8 @@ class RecycleBin:
             )
 
         # Store metadata about the deletion
+        parent_path = "/".join(original_container.getPhysicalPath()) if original_container else "/".join(original_path.split("/")[:-1])
+        
         self.storage[item_id] = {
             "id": (
                 obj.getId() if hasattr(obj, "getId") else getattr(obj, "id", "unknown")
@@ -219,7 +221,7 @@ class RecycleBin:
             "title": item_title,
             "type": item_type or getattr(obj, "portal_type", "Unknown"),
             "path": original_path,
-            "parent_path": "/".join(original_container.getPhysicalPath()),
+            "parent_path": parent_path,
             "deletion_date": datetime.now(),
             "size": getattr(obj, "get_size", lambda: 0)(),
             "object": obj,  # Store the actual object
@@ -275,8 +277,11 @@ class RecycleBin:
             try:
                 target_container = site.unrestrictedTraverse(parent_path)
             except (KeyError, AttributeError):
-                # If original parent doesn't exist, restore to site root
-                target_container = site
+                # We need an explicit target container if original parent is gone
+                raise ValueError(
+                    f"Original parent container at {parent_path} no longer exists. "
+                    "You must specify a target_container to restore this item."
+                )
 
         # Make sure we don't overwrite existing content
         if obj_id in target_container:

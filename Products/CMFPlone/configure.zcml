@@ -181,7 +181,7 @@
       />
 
   <browser:page
-      name="recyclebin/item"
+      name="recyclebin-item"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".browser.recyclebin.RecycleBinItemView"
       permission="cmf.ManagePortal"
