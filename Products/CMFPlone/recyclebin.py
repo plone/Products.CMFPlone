@@ -1,6 +1,7 @@
 from datetime import datetime
 from datetime import timedelta
-from persistent.mapping import PersistentMapping
+from BTrees.OOBTree import OOBTree
+from persistent import Persistent
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.controlpanel.browser.recyclebin import (
     IRecycleBinControlPanelSettings,
@@ -18,6 +19,41 @@ import uuid
 logger = logging.getLogger("Products.CMFPlone.RecycleBin")
 
 ANNOTATION_KEY = "Products.CMFPlone.RecycleBin"
+
+
+class RecycleBinStorage(Persistent):
+    """Storage class for RecycleBin using BTrees for better performance"""
+
+    def __init__(self):
+        self.items = OOBTree()
+    
+    def __getitem__(self, key):
+        return self.items[key]
+    
+    def __setitem__(self, key, value):
+        self.items[key] = value
+    
+    def __delitem__(self, key):
+        del self.items[key]
+    
+    def __contains__(self, key):
+        return key in self.items
+    
+    def __len__(self):
+        return len(self.items)
+    
+    def get(self, key, default=None):
+        return self.items.get(key, default)
+    
+    def keys(self):
+        return self.items.keys()
+    
+    def values(self):
+        return self.items.values()
+    
+    def get_items(self):
+        """Return all items as key-value pairs"""
+        return self.items.items()
 
 
 @implementer(IRecycleBin)
@@ -41,7 +77,7 @@ class RecycleBin:
         annotations = IAnnotations(context)
 
         if ANNOTATION_KEY not in annotations:
-            annotations[ANNOTATION_KEY] = PersistentMapping()
+            annotations[ANNOTATION_KEY] = RecycleBinStorage()
 
         return annotations[ANNOTATION_KEY]
 
@@ -134,7 +170,7 @@ class RecycleBin:
     def get_items(self):
         """Return all items in recycle bin"""
         items = []
-        for item_id, data in self.storage.items():
+        for item_id, data in self.storage.get_items():
             item_data = data.copy()
             item_data["recycle_id"] = item_id
             # Don't include the actual object in the listing
@@ -544,7 +580,7 @@ class RecycleBin:
         cutoff_date = datetime.now() - timedelta(days=retention_days)
 
         items_to_purge = []
-        for item_id, data in self.storage.items():
+        for item_id, data in self.storage.get_items():
             if data["deletion_date"] < cutoff_date:
                 items_to_purge.append(item_id)
 
@@ -564,7 +600,7 @@ class RecycleBin:
         items_by_date = []
 
         # Calculate total size and prepare sorted list
-        for item_id, data in self.storage.items():
+        for item_id, data in self.storage.get_items():
             size = data.get("size", 0)
             total_size += size
             items_by_date.append((item_id, data["deletion_date"], size))
