@@ -345,7 +345,7 @@ class RecycleBin:
             obj.id = obj_id
 
         # Add object to the target container
-        target_container._setObject(obj_id, obj)
+        target_container[obj_id] = obj
         
         # Remove from recycle bin
         del self.storage[item_id]
