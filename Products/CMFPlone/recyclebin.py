@@ -174,7 +174,51 @@ class RecycleBin:
 
         # Generate a meaningful title
         item_title = "Unknown"
-        if item_type == "CommentTree":
+        
+        # Handle folders and collections specially
+        if hasattr(obj, 'objectIds') or item_type == "Collection":
+            # Store child objects if this is a folder or collection
+            children = {}
+            if hasattr(obj, 'objectIds'):
+                # Process all children recursively
+                def process_folder(folder_obj, folder_path):
+                    folder_children = {}
+                    for child_id in folder_obj.objectIds():
+                        child = folder_obj[child_id]
+                        child_path = f"{folder_path}/{child_id}"
+                        # Store basic data for this child
+                        child_data = {
+                            "id": child_id,
+                            "title": child.Title() if hasattr(child, "Title") else getattr(child, "title", "Unknown"),
+                            "type": getattr(child, "portal_type", "Unknown"),
+                            "path": child_path,
+                            "parent_path": folder_path,
+                            "deletion_date": datetime.now(),
+                            "size": getattr(child, "get_size", lambda: 0)(),
+                            "object": child,
+                        }
+                        
+                        # If this child is also a folder, process its children
+                        if hasattr(child, 'objectIds') and child.objectIds():
+                            nested_children = process_folder(child, child_path)
+                            if nested_children:
+                                child_data["children"] = nested_children
+                                child_data["children_count"] = len(nested_children)
+                                
+                        folder_children[child_id] = child_data
+                    return folder_children
+                    
+                # Start the recursive processing from the top-level folder
+                children = process_folder(obj, original_path)
+
+            # Get folder title
+            item_title = (
+                obj.Title()
+                if hasattr(obj, "Title")
+                else getattr(obj, "title", "Unknown")
+            )
+
+        elif item_type == "CommentTree":
             # For comment trees, generate a title including the number of comments
             comment_count = len(obj.get("comments", []))
             root_comment = None
@@ -214,7 +258,7 @@ class RecycleBin:
         # Store metadata about the deletion
         parent_path = "/".join(original_container.getPhysicalPath()) if original_container else "/".join(original_path.split("/")[:-1])
         
-        self.storage[item_id] = {
+        storage_data = {
             "id": (
                 obj.getId() if hasattr(obj, "getId") else getattr(obj, "id", "unknown")
             ),
@@ -226,6 +270,13 @@ class RecycleBin:
             "size": getattr(obj, "get_size", lambda: 0)(),
             "object": obj,  # Store the actual object
         }
+
+        # Add children data if this was a folder/collection
+        if locals().get('children'):
+            storage_data["children"] = children
+            storage_data["children_count"] = len(children)
+
+        self.storage[item_id] = storage_data
 
         # Check if we need to clean up old items
         self._check_size_limits()
@@ -295,9 +346,37 @@ class RecycleBin:
 
         # Add object to the target container
         target_container._setObject(obj_id, obj)
-
+        
         # Remove from recycle bin
         del self.storage[item_id]
+
+        # If this was a folder/collection with children tracked in the recycle bin,
+        # we need to remove those child references as well to prevent them from 
+        # showing up in the RecycleBin view after the parent is restored
+        if "children" in item_data and isinstance(item_data["children"], dict):
+            # Clean up any child items associated with this parent
+            logger.info(f"Cleaning up {len(item_data['children'])} child items from recyclebin")
+            
+            # Define a function to recursively process nested folders
+            def cleanup_children(children_dict):
+                for child_id, child_data in children_dict.items():
+                    # Clean up any entries that might match this child
+                    child_path = child_data.get("path")
+                    child_orig_id = child_data.get("id")
+                    
+                    for storage_id, storage_data in list(self.storage.get_items()):
+                        if (storage_data.get("path") == child_path or 
+                            storage_data.get("id") == child_orig_id):
+                            logger.info(f"Removing child item {child_orig_id} from recyclebin")
+                            if storage_id in self.storage:
+                                del self.storage[storage_id]
+                    
+                    # If this child is also a folder, recursively process its children
+                    if "children" in child_data and isinstance(child_data["children"], dict):
+                        cleanup_children(child_data["children"])
+            
+            # Start the recursive cleanup
+            cleanup_children(item_data["children"])
 
         restored_obj = target_container[obj_id]
         return restored_obj

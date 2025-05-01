@@ -94,8 +94,60 @@
                         <th i18n:translate="">Comment Author</th>
                         <td tal:content="python:item['object'].author_name or item['object'].author_username">Author</td>
                     </tr>
+                    <!-- Show folder/collection children -->
+                    <tr tal:condition="python:'children_count' in item">
+                        <th i18n:translate="">Number of Items</th>
+                        <td tal:content="item/children_count">Count</td>
+                    </tr>
                 </tbody>
             </table>
+            
+            <!-- Display folder contents if this is a folder/collection -->
+            <div tal:define="children view/get_children" 
+                 tal:condition="children"
+                 class="folder-contents pat-autotoc autotabs">
+                <h2 i18n:translate="">Folder Contents</h2>
+                <p class="discreet" i18n:translate="">
+                    These items were contained in this folder when it was deleted. 
+                    You can restore them individually to any location.
+                </p>
+                
+                <table class="table table-striped listing">
+                    <thead>
+                        <tr>
+                            <th i18n:translate="">Title</th>
+                            <th i18n:translate="">Type</th>
+                            <th i18n:translate="">Original Path</th>
+                            <th i18n:translate="">Size</th>
+                            <th i18n:translate="">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr tal:repeat="child children">
+                            <td tal:content="child/title">Title</td>
+                            <td tal:content="child/type">Type</td>
+                            <td tal:content="child/path">Path</td>
+                            <td tal:content="python:view.format_size(child.get('size', 0))">Size</td>
+                            <td>
+                                <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}"
+                                      class="child-restore-form">
+                                    <input type="hidden" name="child_id" tal:attributes="value child/id" />
+                                    <div class="field">
+                                        <input type="text" name="target_path" 
+                                               tal:attributes="placeholder child/parent_path"
+                                               title="Enter target path or leave empty to restore to original location"
+                                               i18n:attributes="title;placeholder"
+                                               class="text-widget textline-field" />
+                                    </div>
+                                    <input type="submit" name="restore.child" value="Restore Item" 
+                                           class="context btn btn-primary"
+                                           i18n:attributes="value" />
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             
             <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}">
                 <div class="field">
@@ -125,6 +177,20 @@
         </div>
     </tal:item>
 </metal:main>
+
+<style>
+.child-restore-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+.child-restore-form .field {
+    margin: 0;
+}
+.child-restore-form input[type="text"] {
+    width: 300px;
+}
+</style>
 
 </body>
 </html>
