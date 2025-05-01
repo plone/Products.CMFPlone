@@ -97,12 +97,13 @@
                 </tbody>
             </table>
             
-            <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin/item/${view/item_id}">
+            <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}">
                 <div class="field">
-                    <label for="target_container" i18n:translate="">Custom Restore Location (optional)</label>
+                    <label for="target_container" i18n:translate="">Custom Restore Location</label>
                     <div class="formHelp" i18n:translate="">
-                        Leave blank to restore to the original location. If the original location no longer exists,
-                        the item will be restored to the site root.
+                        Specify where to restore this item. You must provide a location if the original parent 
+                        (<span tal:replace="item/parent_path" />) no longer exists. Leave blank to restore to 
+                        the original location if it still exists.
                     </div>
                     <input type="text" name="form.widgets.target_container" id="form-widgets-target_container" size="50" />
                 </div>

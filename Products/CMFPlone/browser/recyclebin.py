@@ -12,7 +12,9 @@ from zope.component import getUtility
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.publisher.interfaces import IPublishTraverse
+import logging
 
+logger = logging.getLogger(__name__)
 
 class IRecycleBinForm(Interface):
     """Schema for the Recycle Bin form"""
@@ -257,14 +259,19 @@ class RecycleBinItemView(BrowserView):
 
     def publishTraverse(self, request, name):
         """Handle URLs like /recyclebin/item/[item_id]"""
+        logger.info(f"RecycleBinItemView.publishTraverse called with name: {name}")
         if self.item_id is None:  # First traversal
             self.item_id = name
+            logger.info(f"Set item_id to: {self.item_id}")
             return self
+        logger.warning(f"Additional traversal attempted with name: {name}")
         raise NotFound(self, name, request)
 
     def __call__(self):
         """Handle item operations"""
+        logger.info(f"RecycleBinItemView.__call__ started with item_id: {self.item_id}")
         if self.item_id is None:
+            logger.warning("No item_id set, redirecting to main recyclebin view")
             self.request.response.redirect(
                 f"{self.context.absolute_url()}/@@recyclebin"
             )
@@ -274,12 +281,32 @@ class RecycleBinItemView(BrowserView):
         form = RecycleBinItemForm(self.context, self.request, self.item_id)
         form.update()
 
+        # Get the item before rendering template
+        item = self.get_item()
+        if item is None:
+            logger.warning(f"No item found with ID: {self.item_id}, redirecting to main recyclebin view")
+            self.request.response.redirect(
+                f"{self.context.absolute_url()}/@@recyclebin"
+            )
+            return ""
+
+        logger.info(f"Found item with title: {item.get('title', 'Unknown')}")
         return self.template()
 
     def get_item(self):
         """Get the specific recycled item"""
+        logger.info(f"RecycleBinItemView.get_item called for ID: {self.item_id}")
+        if not self.item_id:
+            logger.warning("get_item called with no item_id")
+            return None
+
         recycle_bin = getUtility(IRecycleBin)
-        return recycle_bin.get_item(self.item_id)
+        item = recycle_bin.get_item(self.item_id)
+        if item is None:
+            logger.warning(f"No item found in recycle bin with ID: {self.item_id}")
+        else:
+            logger.info(f"Found item: {item.get('title', 'Unknown')} of type {item.get('type', 'Unknown')}")
+        return item
 
     def format_date(self, date):
         """Format date for display"""

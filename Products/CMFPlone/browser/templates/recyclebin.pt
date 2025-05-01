@@ -41,7 +41,7 @@
                                        tal:attributes="value item/recycle_id" />
                             </td>
                             <td>
-                                <a tal:attributes="href string:${context/absolute_url}/@@recyclebin/item/${item/recycle_id}"
+                                <a tal:attributes="href string:${context/absolute_url}/@@recyclebin-item/${item/recycle_id}"
                                    tal:content="item/title">Title</a>
                                 <div tal:condition="python:item.get('type') == 'Discussion Item' and item.get('content_title')"
                                      class="discreet">
