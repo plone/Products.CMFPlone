@@ -68,12 +68,5 @@ def handle_content_removal(obj, event):
     original_container = event.oldParent
     original_path = "/".join(obj.getPhysicalPath())
 
-    # Add to recycle bin
-    try:
-        recycle_bin.add_item(obj, original_container, original_path)
-    except Exception as e:
-        # Log but don't prevent deletion if recycle bin fails
-        import logging
-
-        logger = logging.getLogger("Products.CMFPlone.RecycleBin")
-        logger.exception(f"Error adding item to recycle bin: {e}")
+    # Add to recycle bin - let any exceptions propagate to make problems visible
+    recycle_bin.add_item(obj, original_container, original_path)
