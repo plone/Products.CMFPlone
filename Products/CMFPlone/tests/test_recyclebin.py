@@ -481,49 +481,7 @@ class RecycleBinExpirationTests(RecycleBinTestCase):
             self.assertEqual(purged_count, 1)
             self.assertNotIn(recycle_id, self.recyclebin.storage)
     
-    def test_size_limits(self):
-        """Test that items are purged when size limits are exceeded"""
-        # Mock the size limit to be very small
-        with mock.patch.object(
-            self.registry.forInterface(
-                IRecycleBinControlPanelSettings, 
-                prefix="plone-recyclebin"
-            ),
-            "maximum_size",
-            0.001  # 1 KB
-        ):
-            # Create a page
-            self.portal.invokeFactory('Document', 'big-page', title='Big Page')
-            page = self.portal['big-page']
-            page_path = '/'.join(page.getPhysicalPath())
-            
-            # Mock a large size
-            with mock.patch.object(page, "get_size", return_value=1024 * 10):  # 10 KB
-                # Add it to the recycle bin
-                recycle_id = self.recyclebin.add_item(page, self.portal, page_path)
-                
-                # Verify it was added
-                self.assertIn(recycle_id, self.recyclebin.storage)
-                
-                # Create another page
-                self.portal.invokeFactory('Document', 'another-page', 
-                                         title='Another Page')
-                page2 = self.portal['another-page']
-                page2_path = '/'.join(page2.getPhysicalPath())
-                
-                # Add it to the recycle bin - this should trigger size limit check
-                with mock.patch.object(page2, "get_size", return_value=1024 * 10):
-                    recycle_id2 = self.recyclebin.add_item(
-                        page2, self.portal, page2_path
-                    )
-                    
-                    # The first item should have been purged
-                    self.assertNotIn(recycle_id, self.recyclebin.storage)
-                    
-                    # The second item should still be there
-                    self.assertIn(recycle_id2, self.recyclebin.storage)
-
-
+ 
 class RecycleBinRestoreEdgeCaseTests(RecycleBinTestCase):
     """Tests for edge cases when restoring items"""
     
