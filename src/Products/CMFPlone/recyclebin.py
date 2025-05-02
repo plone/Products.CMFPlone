@@ -347,12 +347,14 @@ class RecycleBin:
         # Make sure we don't overwrite existing content
         if obj_id in target_container:
             # Instead of automatically generating a new ID, we'll check if there's an explicit
-            # request to restore. If this method is being called directly rather than through 
+            # request to restore. If this method is being called directly rather than through
             # collision detection, we'll raise an exception.
-            if getattr(obj, '_v_restoring_from_recyclebin', False):
+            if getattr(obj, "_v_restoring_from_recyclebin", False):
                 # We were explicitly asked to restore this item, so we'll use the original ID
                 # We need to delete the existing item first
-                logger.info(f"Removing existing object {obj_id} to restore recycled version")
+                logger.info(
+                    f"Removing existing object {obj_id} to restore recycled version"
+                )
                 target_container._delObject(obj_id)
             else:
                 # Raise a meaningful exception instead of generating a new ID
