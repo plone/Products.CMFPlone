@@ -715,20 +715,21 @@ def _check_for_collision(contained_by, id, **kwargs):
     try:
         from Products.CMFPlone.interfaces.recyclebin import IRecycleBin
         from zope.component import queryUtility
+
         import logging
-        
+
         logger = logging.getLogger("Products.CMFPlone.utils")
         recycle_bin = queryUtility(IRecycleBin)
         if recycle_bin is not None and recycle_bin.is_enabled():
             # Get all items in the recycle bin
             recycled_items = recycle_bin.get_items()
-            
+
             # Get the current container path
             container_path = "/".join(contained_by.getPhysicalPath())
-            
+
             # Check if any recycled item with this ID existed in the same container
             for item in recycled_items:
-                if item.get('id') == id and item.get('parent_path') == container_path:
+                if item.get("id") == id and item.get("parent_path") == container_path:
                     # Instead of automatically restoring or simply warning, we provide a clear
                     # error message that indicates the ID conflict with recycled content
                     return _(
