@@ -3,6 +3,7 @@ from Products.CMFPlone.interfaces.recyclebin import IRecycleBin
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
+from datetime import datetime
 from z3c.form import button
 from z3c.form import field
 from z3c.form import form
@@ -147,6 +148,23 @@ class RecycleBinView(BrowserView):
     def get_search_query(self):
         """Get the search query from the request"""
         return self.request.form.get('search_query', '')
+        
+    def get_sort_option(self):
+        """Get the current sort option from the request"""
+        return self.request.form.get('sort_by', 'date_desc')
+        
+    def get_filter_type(self):
+        """Get the content type filter from the request"""
+        return self.request.form.get('filter_type', '')
+        
+    def get_available_types(self, items):
+        """Get a list of all content types present in the recycle bin"""
+        types = set()
+        for item in items:
+            item_type = item.get('type')
+            if item_type:
+                types.add(item_type)
+        return sorted(list(types))
 
     def get_items(self):
         """Get all items in the recycle bin"""
@@ -186,6 +204,11 @@ class RecycleBinView(BrowserView):
                         item["content_title"] = content.Title()
                     except (KeyError, AttributeError):
                         item["content_title"] = "Content no longer exists"
+
+        # Apply content type filtering if specified
+        filter_type = self.get_filter_type()
+        if filter_type:
+            items = [item for item in items if item.get('type') == filter_type]
 
         # Filter items based on search query
         search_query = self.get_search_query().lower()
@@ -254,9 +277,32 @@ class RecycleBinView(BrowserView):
             
             # Combine direct matches with items that have matching children
             # Direct matches come first
-            search_results = filtered_items + items_with_matching_children
-            return search_results
-            
+            items = filtered_items + items_with_matching_children
+        
+        # Apply sorting
+        sort_option = self.get_sort_option()
+        if sort_option == 'title_asc':
+            items.sort(key=lambda x: x.get('title', '').lower())
+        elif sort_option == 'title_desc':
+            items.sort(key=lambda x: x.get('title', '').lower(), reverse=True)
+        elif sort_option == 'type_asc':
+            items.sort(key=lambda x: x.get('type', '').lower())
+        elif sort_option == 'type_desc':
+            items.sort(key=lambda x: x.get('type', '').lower(), reverse=True)
+        elif sort_option == 'path_asc':
+            items.sort(key=lambda x: x.get('path', '').lower())
+        elif sort_option == 'path_desc':
+            items.sort(key=lambda x: x.get('path', '').lower(), reverse=True)
+        elif sort_option == 'size_asc':
+            items.sort(key=lambda x: x.get('size', 0))
+        elif sort_option == 'size_desc':
+            items.sort(key=lambda x: x.get('size', 0), reverse=True)
+        elif sort_option == 'date_asc':
+            items.sort(key=lambda x: x.get('deletion_date', datetime.now()))
+        # Default: date_desc
+        else:
+            items.sort(key=lambda x: x.get('deletion_date', datetime.now()), reverse=True)
+        
         return items
 
     def format_date(self, date):
