@@ -18,77 +18,107 @@
         <input type="hidden" name="form.submitted" value="1" />
         
         <div class="pat-autotoc autotabs">
+            <table class="table table-striped listing">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" name="select_all" id="select_all" 
+                                  aria-label="Select all items" title="Select all items"
+                                  i18n:attributes="title;aria-label" />
+                        </th>
+                        <th i18n:translate="">Title</th>
+                        <th i18n:translate="">Type</th>
+                        <th i18n:translate="">Original Path</th>
+                        <th i18n:translate="">Deletion Date</th>
+                        <th i18n:translate="">Size</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr tal:condition="not:items">
+                        <td colspan="6" i18n:translate="">No items in recycle bin</td>
+                    </tr>
+                    <tr tal:repeat="item items">
+                        <td>
+                            <input type="checkbox" name="selected_items:list" 
+                                   class="item-checkbox"
+                                   tal:attributes="value item/recycle_id" />
+                        </td>
+                        <td>
+                            <a tal:attributes="href string:${context/absolute_url}/@@recyclebin-item/${item/recycle_id}"
+                               tal:content="item/title">Title</a>
+                            <div tal:condition="python:item.get('type') == 'Discussion Item' and item.get('content_title')"
+                                 class="discreet">
+                                <small>Comment on: <span tal:content="item/content_title">Content Title</span></small>
+                            </div>
+                        </td>
+                        <td tal:content="item/type">Content type</td>
+                        <td>
+                            <span tal:content="item/path">Original path</span>
+                            <div tal:condition="python:item.get('type') == 'Discussion Item' and item.get('content_path')"
+                                 class="discreet">
+                                <small>Content: <span tal:content="item/content_path">Content Path</span></small>
+                            </div>
+                        </td>
+                        <td tal:content="python:view.format_date(item['deletion_date'])">Deletion date</td>
+                        <td tal:content="python:view.format_size(item.get('size', 0))">Size</td>
+                    </tr>
+                </tbody>
+            </table>
             
-            <div id="all-items">
-                <table class="table table-striped listing">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" name="select_all" id="select_all" /></th>
-                            <th i18n:translate="">Title</th>
-                            <th i18n:translate="">Type</th>
-                            <th i18n:translate="">Original Path</th>
-                            <th i18n:translate="">Deletion Date</th>
-                            <th i18n:translate="">Size</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr tal:condition="not:items">
-                            <td colspan="6" i18n:translate="">No items in recycle bin</td>
-                        </tr>
-                        <tr tal:repeat="item items">
-                            <td>
-                                <input type="checkbox" name="selected_items:list" 
-                                       tal:attributes="value item/recycle_id" />
-                            </td>
-                            <td>
-                                <a tal:attributes="href string:${context/absolute_url}/@@recyclebin-item/${item/recycle_id}"
-                                   tal:content="item/title">Title</a>
-                                <div tal:condition="python:item.get('type') == 'Discussion Item' and item.get('content_title')"
-                                     class="discreet">
-                                    <small>Comment on: <span tal:content="item/content_title">Content Title</span></small>
-                                </div>
-                            </td>
-                            <td tal:content="item/type">Content type</td>
-                            <td>
-                                <span tal:content="item/path">Original path</span>
-                                <div tal:condition="python:item.get('type') == 'Discussion Item' and item.get('content_path')"
-                                     class="discreet">
-                                    <small>Content: <span tal:content="item/content_path">Content Path</span></small>
-                                </div>
-                            </td>
-                            <td tal:content="python:view.format_date(item['deletion_date'])">Deletion date</td>
-                            <td tal:content="python:view.format_size(item.get('size', 0))">Size</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <div class="formControls" tal:condition="items">
-                    <input class="btn btn-primary" type="submit" name="form.buttons.restore" value="Restore Selected" i18n:attributes="value" />
-                    <input class="btn btn-danger" type="submit" name="form.buttons.delete" value="Delete Selected" i18n:attributes="value" />
-                    <input class="btn btn-danger" type="submit" name="form.buttons.empty" value="Empty Recycle Bin" 
-                           onclick="return confirm('Are you sure you want to permanently delete all items in the recycle bin?');"
-                           i18n:attributes="value" />
-                </div>
+            <div class="formControls" tal:condition="items">
+                <input class="btn btn-primary" type="submit" name="form.buttons.restore" value="Restore Selected" i18n:attributes="value" />
+                <input class="btn btn-danger" type="submit" name="form.buttons.delete" value="Delete Selected" i18n:attributes="value" />
+                <input class="btn btn-danger" type="submit" name="form.buttons.empty" value="Empty Recycle Bin" 
+                       onclick="return confirm(recyclebinEmptyMessage);"
+                       i18n:attributes="value" />
             </div>
         </div>
     </form>
 </metal:main>
 
+<metal:js fill-slot="javascript_head_slot">
 <script>
+  // Confirmation message when emptying recycle bin
+  const recyclebinEmptyMessage = 'Are you sure you want to permanently delete all items in the recycle bin?';
+
   document.addEventListener('DOMContentLoaded', function() {
+    // Select all checkbox functionality
     const selectAllCheckbox = document.getElementById('select_all');
-    const itemCheckboxes = document.querySelectorAll('input[name="selected_items:list"]');
     
     if (selectAllCheckbox) {
+      // Find all item checkboxes
+      const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+      
+      // Update select all checkbox when item checkboxes change
+      function updateSelectAllCheckbox() {
+        if (itemCheckboxes.length === 0) return;
+        
+        let allChecked = true;
+        for (const checkbox of itemCheckboxes) {
+          if (!checkbox.checked) {
+            allChecked = false;
+            break;
+          }
+        }
+        selectAllCheckbox.checked = allChecked;
+      }
+      
+      // Toggle all checkboxes when select all changes
       selectAllCheckbox.addEventListener('change', function() {
         const isChecked = this.checked;
         itemCheckboxes.forEach(checkbox => {
           checkbox.checked = isChecked;
         });
       });
+      
+      // Update select all when individual checkboxes change
+      itemCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateSelectAllCheckbox);
+      });
     }
   });
 </script>
+</metal:js>
 
 </body>
 </html>
