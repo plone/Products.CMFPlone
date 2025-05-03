@@ -1,9 +1,12 @@
 from BTrees.OOBTree import OOBTree
 from BTrees.OOBTree import OOTreeSet
+from AccessControl import getSecurityManager
 from datetime import datetime
 from datetime import timedelta
+from DateTime import DateTime
 from persistent import Persistent
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.controlpanel.browser.recyclebin import (
     IRecycleBinControlPanelSettings,
 )
@@ -173,6 +176,9 @@ class RecycleBin:
 
         # Generate a unique ID for the recycled item
         item_id = str(uuid.uuid4())
+
+        # Add a workflow history entry about the deletion if possible
+        self._update_workflow_history(obj, 'deletion')
 
         # Generate a meaningful title
         item_title = "Unknown"
@@ -370,6 +376,10 @@ class RecycleBin:
         # Add object to the target container
         target_container[obj_id] = obj
 
+        # Add a workflow history entry about the restoration
+        restored_obj = target_container[obj_id]
+        self._update_workflow_history(restored_obj, 'restoration', item_data)
+
         # Remove from recycle bin
         del self.storage[item_id]
 
@@ -409,9 +419,60 @@ class RecycleBin:
             # Start the recursive cleanup
             cleanup_children(item_data["children"])
 
-        restored_obj = target_container[obj_id]
         return restored_obj
 
+    def _update_workflow_history(self, obj, action_type, item_data=None):
+        """Add a workflow history entry about deletion or restoration
+        
+        Args:
+            obj: The content object
+            action_type: Either 'deletion' or 'restoration'
+            item_data: The recyclebin storage data (needed for restoration to show deletion date)
+        """
+        if not hasattr(obj, 'workflow_history'):
+            return
+            
+        workflow_tool = getToolByName(self._get_context(), 'portal_workflow')
+        chains = workflow_tool.getChainFor(obj)
+        
+        if not chains:
+            return
+            
+        workflow_id = chains[0]
+        history = obj.workflow_history.get(workflow_id, ())
+        
+        if not history:
+            return
+            
+        history = list(history)
+        current_state = history[-1].get('review_state', None) if history else None
+        user_id = getSecurityManager().getUser().getId() or 'System'
+        
+        if action_type == 'deletion':
+            # Add entry for deletion
+            entry = {
+                'action': 'Moved to recycle bin',
+                'actor': user_id,
+                'comments': 'Item was deleted and moved to recycle bin',
+                'time': DateTime(),
+                'review_state': current_state,
+            }
+        elif action_type == 'restoration':           
+            entry = {
+                'action': 'Restored from recycle bin',
+                'actor': user_id,
+                'comments': 'Restored from recycle bin after deletion',
+                'time': DateTime(),
+                'review_state': current_state,
+            }
+        else:
+            logger.warning(f"Unknown action_type: {action_type}")
+            return
+            
+        # Add the entry and update the history
+        history.append(entry)
+        obj.workflow_history[workflow_id] = tuple(history)
+        
     def _restore_comment(self, item_id, item_data, target_container=None):
         """Enhanced restoration method for comments that preserves reply relationships"""
         obj = item_data["object"]
