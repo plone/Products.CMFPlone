@@ -9,6 +9,7 @@
 <metal:main fill-slot="main">
     <tal:item define="item view/get_item;
                      form_context nocall:context">
+        <!-- Item not found message -->
         <div tal:condition="not:item">
             <h1 class="documentFirstHeading" i18n:translate="">Item Not Found</h1>
             <p i18n:translate="">
@@ -20,52 +21,41 @@
             </p>
         </div>
         
+        <!-- Item found - display details -->
         <div tal:condition="item">
             <h1 class="documentFirstHeading">
                 <span tal:content="item/title">Title</span>
                 <span class="discreet"> (<span tal:content="item/type">Content Type</span>)</span>
             </h1>
             
-            <!-- Extra information for comment trees -->
-            <div class="documentDescription"
-                 tal:condition="python:item.get('type') == 'CommentTree'">
-                <p i18n:translate="">
-                    Comment thread deleted from 
-                    <strong tal:condition="python:context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
-                        <a tal:attributes="href item/parent_path" 
-                           tal:content="python:context.unrestrictedTraverse(item['parent_path'].split('/'), default='Content Object').Title()">
-                           Content title
-                        </a>
-                    </strong>
-                    <strong tal:condition="python:not context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
-                        content that no longer exists
-                    </strong>
-                </p>
-            </div>
+            <!-- Comment-specific information -->
+            <tal:comment-info condition="python:item.get('type') in ('CommentTree', 'Discussion Item')">
+                <div class="documentDescription">
+                    <p i18n:translate="">
+                        <span tal:condition="python:item.get('type') == 'CommentTree'">Comment thread</span>
+                        <span tal:condition="python:item.get('type') == 'Discussion Item'">Comment</span>
+                        deleted from 
+                        <strong tal:condition="python:context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
+                            <a tal:attributes="href item/parent_path" 
+                               tal:content="python:context.unrestrictedTraverse(item['parent_path'].split('/'), default='Content Object').Title()">
+                               Content title
+                            </a>
+                        </strong>
+                        <strong tal:condition="python:not context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
+                            content that no longer exists
+                        </strong>
+                    </p>
+                </div>
+            </tal:comment-info>
             
-            <!-- Extra information for individual comments -->
-            <div class="documentDescription"
-                 tal:condition="python:item.get('type') == 'Discussion Item'">
-                <p i18n:translate="">
-                    Comment deleted from 
-                    <strong tal:condition="python:context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
-                        <a tal:attributes="href item/parent_path" 
-                           tal:content="python:context.unrestrictedTraverse(item['parent_path'].split('/'), default='Content Object').Title()">
-                           Content title
-                        </a>
-                    </strong>
-                    <strong tal:condition="python:not context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
-                        content that no longer exists
-                    </strong>
-                </p>
-            </div>
-            
+            <!-- Regular content information -->
             <div class="documentDescription" 
                  tal:condition="python:item.get('type') not in ('Discussion Item', 'CommentTree')"
                  i18n:translate="">
                 Deleted item information
             </div>
             
+            <!-- Item metadata -->
             <table class="listing">
                 <tbody>
                     <tr>
@@ -84,17 +74,20 @@
                         <th i18n:translate="">Deletion Date</th>
                         <td tal:content="python:view.format_date(item['deletion_date'])">Date</td>
                     </tr>
-                    <!-- Show comment text for comments -->
-                    <tr tal:condition="python:item.get('type') == 'Discussion Item' and getattr(item['object'], 'text', None)">
-                        <th i18n:translate="">Comment Text</th>
-                        <td tal:content="structure python:item['object'].getText()">Comment text</td>
-                    </tr>
-                    <!-- Show comment author for comments -->
-                    <tr tal:condition="python:item.get('type') == 'Discussion Item' and (getattr(item['object'], 'author_name', None) or getattr(item['object'], 'author_username', None))">
-                        <th i18n:translate="">Comment Author</th>
-                        <td tal:content="python:item['object'].author_name or item['object'].author_username">Author</td>
-                    </tr>
-                    <!-- Show folder/collection children -->
+                    
+                    <!-- Comment-specific fields -->
+                    <tal:comment-fields condition="python:item.get('type') == 'Discussion Item'">
+                        <tr tal:condition="python:getattr(item['object'], 'text', None)">
+                            <th i18n:translate="">Comment Text</th>
+                            <td tal:content="structure python:item['object'].getText()">Comment text</td>
+                        </tr>
+                        <tr tal:condition="python:getattr(item['object'], 'author_name', None) or getattr(item['object'], 'author_username', None)">
+                            <th i18n:translate="">Comment Author</th>
+                            <td tal:content="python:item['object'].author_name or item['object'].author_username">Author</td>
+                        </tr>
+                    </tal:comment-fields>
+                    
+                    <!-- Collection/folder children count -->
                     <tr tal:condition="python:'children_count' in item">
                         <th i18n:translate="">Number of Items</th>
                         <td tal:content="item/children_count">Count</td>
@@ -102,53 +95,54 @@
                 </tbody>
             </table>
             
-            <!-- Display folder contents if this is a folder/collection -->
-            <div tal:define="children view/get_children" 
-                 tal:condition="children"
-                 class="folder-contents pat-autotoc autotabs">
-                <h2 i18n:translate="">Folder Contents</h2>
-                <p class="discreet" i18n:translate="">
-                    These items were contained in this folder when it was deleted. 
-                    You can restore them individually to any location.
-                </p>
-                
-                <table class="table table-striped listing">
-                    <thead>
-                        <tr>
-                            <th i18n:translate="">Title</th>
-                            <th i18n:translate="">Type</th>
-                            <th i18n:translate="">Original Path</th>
-                            <th i18n:translate="">Size</th>
-                            <th i18n:translate="">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr tal:repeat="child children">
-                            <td tal:content="child/title">Title</td>
-                            <td tal:content="child/type">Type</td>
-                            <td tal:content="child/path">Path</td>
-                            <td tal:content="python:view.format_size(child.get('size', 0))">Size</td>
-                            <td>
-                                <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}"
-                                      class="child-restore-form">
-                                    <input type="hidden" name="child_id" tal:attributes="value child/id" />
-                                    <div class="field">
-                                        <input type="text" name="target_path" 
-                                               tal:attributes="placeholder child/parent_path"
-                                               title="Enter target path or leave empty to restore to original location"
-                                               i18n:attributes="title;placeholder"
-                                               class="text-widget textline-field" />
-                                    </div>
-                                    <input type="submit" name="restore.child" value="Restore Item" 
-                                           class="context btn btn-primary"
-                                           i18n:attributes="value" />
-                                </form>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <!-- Folder contents section -->
+            <tal:folder-contents define="children view/get_children" condition="children">
+                <div class="folder-contents pat-autotoc autotabs">
+                    <h2 i18n:translate="">Folder Contents</h2>
+                    <p class="discreet" i18n:translate="">
+                        These items were contained in this folder when it was deleted. 
+                        You can restore them individually to any location.
+                    </p>
+                    
+                    <table class="table table-striped listing">
+                        <thead>
+                            <tr>
+                                <th i18n:translate="">Title</th>
+                                <th i18n:translate="">Type</th>
+                                <th i18n:translate="">Original Path</th>
+                                <th i18n:translate="">Size</th>
+                                <th i18n:translate="">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr tal:repeat="child children">
+                                <td tal:content="child/title">Title</td>
+                                <td tal:content="child/type">Type</td>
+                                <td tal:content="child/path">Path</td>
+                                <td tal:content="python:view.format_size(child.get('size', 0))">Size</td>
+                                <td>
+                                    <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}"
+                                          class="child-restore-form">
+                                        <input type="hidden" name="child_id" tal:attributes="value child/id" />
+                                        <div class="field">
+                                            <input type="text" name="target_path" 
+                                                   tal:attributes="placeholder child/parent_path"
+                                                   title="Enter target path or leave empty to restore to original location"
+                                                   i18n:attributes="title;placeholder"
+                                                   class="text-widget textline-field" />
+                                        </div>
+                                        <input type="submit" name="restore.child" value="Restore Item" 
+                                               class="context btn btn-primary"
+                                               i18n:attributes="value" />
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </tal:folder-contents>
             
+            <!-- Item restore/delete form -->
             <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}">
                 <div class="field">
                     <label for="target_container" i18n:translate="">Custom Restore Location</label>

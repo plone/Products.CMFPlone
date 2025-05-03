@@ -20,6 +20,25 @@ import uuid
 logger = logging.getLogger(__name__)
 
 
+# Utility functions to avoid code duplication
+def format_date(context, date):
+    """Format date for display"""
+    if date is None:
+        return ""
+    portal = getToolByName(context, "portal_url").getPortalObject()
+    return portal.restrictedTraverse("@@plone").toLocalizedTime(date, long_format=True)
+
+
+def format_size(size_bytes):
+    """Format size in bytes to human-readable format"""
+    if size_bytes < 1024:
+        return f"{size_bytes} B"
+    elif size_bytes < 1024 * 1024:
+        return f"{size_bytes / 1024:.1f} KB"
+    else:
+        return f"{size_bytes / (1024 * 1024):.1f} MB"
+
+
 class IRecycleBinForm(Interface):
     """Schema for the Recycle Bin form"""
 
@@ -139,11 +158,9 @@ class RecycleBinView(BrowserView):
                     child_items_to_exclude.append(child_id)
 
         logger.debug(f"Child items to exclude: {child_items_to_exclude}")
-        print(f"Child items to exclude: {child_items_to_exclude}")
 
         # Only include items that are not children of other recycled items
         items = [item for item in items if item.get("id") not in child_items_to_exclude]
-        print(f"Filtered items: {items}")
 
         # For comments, add extra information about the content they belong to
         for item in items:
@@ -170,22 +187,11 @@ class RecycleBinView(BrowserView):
 
     def format_date(self, date):
         """Format date for display"""
-        if date is None:
-            return ""
-        portal = getToolByName(self.context, "portal_url").getPortalObject()
-        # Use long_format=True to include hours, minutes and seconds
-        return portal.restrictedTraverse("@@plone").toLocalizedTime(
-            date, long_format=True
-        )
+        return format_date(self.context, date)
 
     def format_size(self, size_bytes):
         """Format size in bytes to human-readable format"""
-        if size_bytes < 1024:
-            return f"{size_bytes} B"
-        elif size_bytes < 1024 * 1024:
-            return f"{size_bytes / 1024:.1f} KB"
-        else:
-            return f"{size_bytes / (1024 * 1024):.1f} MB"
+        return format_size(size_bytes)
 
 
 class IRecycleBinItemForm(Interface):
@@ -298,57 +304,7 @@ class RecycleBinItemView(BrowserView):
 
         # Handle restoration of children
         if "restore.child" in self.request.form:
-            child_id = self.request.form.get("child_id")
-            target_path = self.request.form.get("target_path")
-
-            if child_id and target_path:
-                try:
-                    # Get item data
-                    recycle_bin = getUtility(IRecycleBin)
-                    item_data = recycle_bin.get_item(self.item_id)
-
-                    if item_data and "children" in item_data:
-                        child_data = item_data["children"].get(child_id)
-                        if child_data:
-                            # Try to get target container
-                            try:
-                                target_container = self.context.unrestrictedTraverse(
-                                    target_path
-                                )
-
-                                # Create a temporary storage entry for the child
-                                temp_id = str(uuid.uuid4())
-                                recycle_bin.storage[temp_id] = child_data
-
-                                # Restore the child
-                                restored_obj = recycle_bin.restore_item(
-                                    temp_id, target_container
-                                )
-
-                                if restored_obj:
-                                    # Remove child from parent's children dict
-                                    del item_data["children"][child_id]
-                                    item_data["children_count"] = len(
-                                        item_data["children"]
-                                    )
-
-                                    message = f"Child item '{child_data['title']}' successfully restored."
-                                    IStatusMessage(self.request).addStatusMessage(
-                                        message, type="info"
-                                    )
-                                    self.request.response.redirect(
-                                        restored_obj.absolute_url()
-                                    )
-                                    return
-                            except (KeyError, AttributeError):
-                                message = f"Target location not found: {target_path}"
-                                IStatusMessage(self.request).addStatusMessage(
-                                    message, type="error"
-                                )
-                except Exception as e:
-                    logger.error(f"Error restoring child item: {e}")
-                    message = "Failed to restore child item."
-                    IStatusMessage(self.request).addStatusMessage(message, type="error")
+            self._handle_child_restoration()
 
         # Initialize and update the form
         form = RecycleBinItemForm(self.context, self.request, self.item_id)
@@ -367,6 +323,60 @@ class RecycleBinItemView(BrowserView):
 
         logger.info(f"Found item with title: {item.get('title', 'Unknown')}")
         return self.template()
+    
+    def _handle_child_restoration(self):
+        """Extract child restoration logic to separate method for clarity"""
+        child_id = self.request.form.get("child_id")
+        target_path = self.request.form.get("target_path")
+
+        if child_id and target_path:
+            try:
+                # Get item data
+                recycle_bin = getUtility(IRecycleBin)
+                item_data = recycle_bin.get_item(self.item_id)
+
+                if item_data and "children" in item_data:
+                    child_data = item_data["children"].get(child_id)
+                    if child_data:
+                        # Try to get target container
+                        try:
+                            target_container = self.context.unrestrictedTraverse(
+                                target_path
+                            )
+
+                            # Create a temporary storage entry for the child
+                            temp_id = str(uuid.uuid4())
+                            recycle_bin.storage[temp_id] = child_data
+
+                            # Restore the child
+                            restored_obj = recycle_bin.restore_item(
+                                temp_id, target_container
+                            )
+
+                            if restored_obj:
+                                # Remove child from parent's children dict
+                                del item_data["children"][child_id]
+                                item_data["children_count"] = len(
+                                    item_data["children"]
+                                )
+
+                                message = f"Child item '{child_data['title']}' successfully restored."
+                                IStatusMessage(self.request).addStatusMessage(
+                                    message, type="info"
+                                )
+                                self.request.response.redirect(
+                                    restored_obj.absolute_url()
+                                )
+                                return
+                        except (KeyError, AttributeError):
+                            message = f"Target location not found: {target_path}"
+                            IStatusMessage(self.request).addStatusMessage(
+                                message, type="error"
+                            )
+            except Exception as e:
+                logger.error(f"Error restoring child item: {e}")
+                message = "Failed to restore child item."
+                IStatusMessage(self.request).addStatusMessage(message, type="error")
 
     def get_item(self):
         """Get the specific recycled item"""
@@ -401,22 +411,11 @@ class RecycleBinItemView(BrowserView):
 
     def format_date(self, date):
         """Format date for display"""
-        if date is None:
-            return ""
-        portal = getToolByName(self.context, "portal_url").getPortalObject()
-        # Use long_format=True to include hours, minutes and seconds
-        return portal.restrictedTraverse("@@plone").toLocalizedTime(
-            date, long_format=True
-        )
+        return format_date(self.context, date)
 
     def format_size(self, size_bytes):
         """Format size in bytes to human-readable format"""
-        if size_bytes < 1024:
-            return f"{size_bytes} B"
-        elif size_bytes < 1024 * 1024:
-            return f"{size_bytes / 1024:.1f} KB"
-        else:
-            return f"{size_bytes / (1024 * 1024):.1f} MB"
+        return format_size(size_bytes)
 
 
 class RecycleBinEnabled(BrowserView):

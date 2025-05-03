@@ -711,37 +711,6 @@ def _check_for_collision(contained_by, id, **kwargs):
                 if id in aliases.keys():
                     return _("${name} is reserved.", mapping={"name": id})
 
-    # Check for collisions with items in the recycle bin
-    try:
-        from Products.CMFPlone.interfaces.recyclebin import IRecycleBin
-        from zope.component import queryUtility
-
-        import logging
-
-        logger = logging.getLogger("Products.CMFPlone.utils")
-        recycle_bin = queryUtility(IRecycleBin)
-        if recycle_bin is not None and recycle_bin.is_enabled():
-            # Get all items in the recycle bin
-            recycled_items = recycle_bin.get_items()
-
-            # Get the current container path
-            container_path = "/".join(contained_by.getPhysicalPath())
-
-            # Check if any recycled item with this ID existed in the same container
-            for item in recycled_items:
-                if item.get("id") == id and item.get("parent_path") == container_path:
-                    # Instead of automatically restoring or simply warning, we provide a clear
-                    # error message that indicates the ID conflict with recycled content
-                    return _(
-                        "There is an item named ${name} in the recycle bin. "
-                        "You can restore it from the recycle bin or choose a different name.",
-                        mapping={"name": id},
-                    )
-    except (ImportError, AttributeError) as e:
-        # If recycle bin isn't available or enabled, just continue
-        logger.debug(f"Recycle bin check skipped: {e}")
-        pass
-
     # Lastly, we want to disallow the id of any of the tools in the portal
     # root, as well as any object that can be acquired via portal_skins.
     # However, we do want to allow overriding of *content* in the object's
