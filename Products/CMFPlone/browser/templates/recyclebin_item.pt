@@ -122,17 +122,17 @@
                                 <td tal:content="python:view.format_size(child.get('size', 0))">Size</td>
                                 <td>
                                     <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}"
-                                          class="child-restore-form">
+                                          class="d-flex align-items-center">
                                         <input type="hidden" name="child_id" tal:attributes="value child/id" />
-                                        <div class="field">
+                                        <div class="me-2 mb-0">
                                             <input type="text" name="target_path" 
                                                    tal:attributes="placeholder child/parent_path"
                                                    title="Enter target path or leave empty to restore to original location"
                                                    i18n:attributes="title;placeholder"
-                                                   class="text-widget textline-field" />
+                                                   class="form-control" style="width: 300px;" />
                                         </div>
                                         <input type="submit" name="restore.child" value="Restore Item" 
-                                               class="context btn btn-primary"
+                                               class="btn btn-primary"
                                                i18n:attributes="value" />
                                     </form>
                                 </td>
@@ -143,48 +143,35 @@
             </tal:folder-contents>
             
             <!-- Item restore/delete form -->
-            <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}">
-                <div class="field">
-                    <label for="target_container" i18n:translate="">Custom Restore Location</label>
-                    <div class="formHelp" i18n:translate="">
+            <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}"
+                  class="mb-4">
+                <div class="mb-3">
+                    <label for="target_container" class="form-label" i18n:translate="">Custom Restore Location</label>
+                    <div class="form-text mb-2" i18n:translate="">
                         Specify where to restore this item. You must provide a location if the original parent 
                         (<span tal:replace="item/parent_path" />) no longer exists. Leave blank to restore to 
                         the original location if it still exists.
                     </div>
-                    <input type="text" name="form.widgets.target_container" id="form-widgets-target_container" size="50" />
+                    <input type="text" name="form.widgets.target_container" id="form-widgets-target_container" 
+                           class="form-control" style="max-width: 500px;" />
                 </div>
                 
-                <div class="formControls">
-                    <input class="context btn btn-primary" type="submit" name="form.buttons.restore" value="Restore Item" i18n:attributes="value" />
-                    <input class="destructive btn btn-danger" type="submit" name="form.buttons.delete" value="Permanently Delete"
+                <div class="d-flex gap-2">
+                    <input class="btn btn-primary" type="submit" name="form.buttons.restore" value="Restore Item" i18n:attributes="value" />
+                    <input class="btn btn-danger" type="submit" name="form.buttons.delete" value="Permanently Delete"
                            onclick="return confirm('Are you sure you want to permanently delete this item?');" 
                            i18n:attributes="value" />
                 </div>
             </form>
             
-            <div class="visualClear"><!-- --></div>
-            
-            <p>
+            <p class="mt-4">
                 <a tal:attributes="href string:${context/absolute_url}/@@recyclebin" 
+                   class="btn btn-secondary btn-sm"
                    i18n:translate="">Return to recycle bin</a>
             </p>
         </div>
     </tal:item>
 </metal:main>
-
-<style>
-.child-restore-form {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-}
-.child-restore-form .field {
-    margin: 0;
-}
-.child-restore-form input[type="text"] {
-    width: 300px;
-}
-</style>
 
 </body>
 </html>
