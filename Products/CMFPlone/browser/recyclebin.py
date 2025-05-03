@@ -144,6 +144,10 @@ class RecycleBinView(BrowserView):
         """Get the recycle bin utility"""
         return getUtility(IRecycleBin)
 
+    def get_search_query(self):
+        """Get the search query from the request"""
+        return self.request.form.get('search_query', '')
+
     def get_items(self):
         """Get all items in the recycle bin"""
         recycle_bin = self.get_recycle_bin()
@@ -183,6 +187,38 @@ class RecycleBinView(BrowserView):
                     except (KeyError, AttributeError):
                         item["content_title"] = "Content no longer exists"
 
+        # Filter items based on search query
+        search_query = self.get_search_query().lower()
+        if search_query:
+            filtered_items = []
+            for item in items:
+                # Search in title
+                if search_query in item.get("title", "").lower():
+                    filtered_items.append(item)
+                    continue
+                
+                # Search in path
+                if search_query in item.get("path", "").lower():
+                    filtered_items.append(item)
+                    continue
+                    
+                # Search in parent path
+                if search_query in item.get("parent_path", "").lower():
+                    filtered_items.append(item)
+                    continue
+                    
+                # Search in ID
+                if search_query in item.get("id", "").lower():
+                    filtered_items.append(item)
+                    continue
+                    
+                # Search in type
+                if search_query in item.get("type", "").lower():
+                    filtered_items.append(item)
+                    continue
+                
+            return filtered_items
+            
         return items
 
     def format_date(self, date):
