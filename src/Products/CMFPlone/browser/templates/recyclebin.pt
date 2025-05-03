@@ -13,6 +13,32 @@
         Items deleted from this site are stored here and can be restored or permanently deleted.
     </div>
     
+    <!-- Search form -->
+    <div class="search-form pat-autotoc autotabs">
+        <form method="get" tal:attributes="action string:${context/absolute_url}/@@recyclebin"
+              class="search-box" style="margin-bottom: 1em;">
+            <div class="input-group">
+                <input type="text" name="search_query" id="search-query" 
+                       tal:attributes="value request/search_query|nothing"
+                       class="form-control" 
+                       placeholder="Search by title or path..." 
+                       i18n:attributes="placeholder" />
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit" i18n:translate="">Search</button>
+                    <a tal:condition="request/search_query|nothing" 
+                       tal:attributes="href string:${context/absolute_url}/@@recyclebin" 
+                       class="btn btn-secondary" 
+                       i18n:translate="">Clear</a>
+                </span>
+            </div>
+        </form>
+    </div>
+
+    <!-- Display search query if present -->
+    <div tal:condition="view/get_search_query" class="search-results-info alert alert-info">
+        <span i18n:translate="">Search results for</span>: <strong tal:content="view/get_search_query">query</strong>
+    </div>
+    
     <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin"
           tal:define="items view/get_items">
         <input type="hidden" name="form.submitted" value="1" />
@@ -35,7 +61,10 @@
                 </thead>
                 <tbody>
                     <tr tal:condition="not:items">
-                        <td colspan="6" i18n:translate="">No items in recycle bin</td>
+                        <td colspan="6" i18n:translate="">
+                            <span tal:condition="view/get_search_query">No items match your search criteria</span>
+                            <span tal:condition="not:view/get_search_query">No items in recycle bin</span>
+                        </td>
                     </tr>
                     <tr tal:repeat="item items">
                         <td>
