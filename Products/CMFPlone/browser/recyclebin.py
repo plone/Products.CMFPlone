@@ -191,6 +191,8 @@ class RecycleBinView(BrowserView):
         search_query = self.get_search_query().lower()
         if search_query:
             filtered_items = []
+            items_with_matching_children = []
+            
             for item in items:
                 # Search in title
                 if search_query in item.get("title", "").lower():
@@ -217,7 +219,43 @@ class RecycleBinView(BrowserView):
                     filtered_items.append(item)
                     continue
                 
-            return filtered_items
+                # Search in children if this item has children
+                if "children" in item and isinstance(item["children"], dict):
+                    child_matches = []
+                    
+                    for child_id, child_data in item["children"].items():
+                        # Check each child for matches
+                        child_matches_query = False
+                        
+                        # Check in title
+                        if search_query in child_data.get("title", "").lower():
+                            child_matches_query = True
+                        # Check in path
+                        elif search_query in child_data.get("path", "").lower():
+                            child_matches_query = True
+                        # Check in ID
+                        elif search_query in child_data.get("id", "").lower():
+                            child_matches_query = True
+                        # Check in type
+                        elif search_query in child_data.get("type", "").lower():
+                            child_matches_query = True
+                        
+                        # Add to matches if found
+                        if child_matches_query:
+                            child_matches.append(child_data)
+                            
+                    # If any children match, mark the parent item
+                    if child_matches:
+                        # Make a copy of the item so we don't modify the original
+                        parent_item = item.copy()
+                        parent_item["matching_children"] = child_matches
+                        parent_item["matching_children_count"] = len(child_matches)
+                        items_with_matching_children.append(parent_item)
+            
+            # Combine direct matches with items that have matching children
+            # Direct matches come first
+            search_results = filtered_items + items_with_matching_children
+            return search_results
             
         return items
 
