@@ -323,7 +323,7 @@ class RecycleBinItemView(BrowserView):
 
         logger.info(f"Found item with title: {item.get('title', 'Unknown')}")
         return self.template()
-    
+
     def _handle_child_restoration(self):
         """Extract child restoration logic to separate method for clarity"""
         child_id = self.request.form.get("child_id")
@@ -356,9 +356,7 @@ class RecycleBinItemView(BrowserView):
                             if restored_obj:
                                 # Remove child from parent's children dict
                                 del item_data["children"][child_id]
-                                item_data["children_count"] = len(
-                                    item_data["children"]
-                                )
+                                item_data["children_count"] = len(item_data["children"])
 
                                 message = f"Child item '{child_data['title']}' successfully restored."
                                 IStatusMessage(self.request).addStatusMessage(

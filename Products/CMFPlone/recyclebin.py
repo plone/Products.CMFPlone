@@ -1,6 +1,6 @@
+from AccessControl import getSecurityManager
 from BTrees.OOBTree import OOBTree
 from BTrees.OOBTree import OOTreeSet
-from AccessControl import getSecurityManager
 from datetime import datetime
 from datetime import timedelta
 from DateTime import DateTime
@@ -246,10 +246,14 @@ class RecycleBin:
             return None
 
         # Get the original id but if not found then generate a unique ID for the recycled item
-        item_id = obj.getId() if hasattr(obj, "getId") else getattr(obj, "id", str(uuid.uuid4()))
+        item_id = (
+            obj.getId()
+            if hasattr(obj, "getId")
+            else getattr(obj, "id", str(uuid.uuid4()))
+        )
 
         # Add a workflow history entry about the deletion if possible
-        self._update_workflow_history(obj, 'deletion')
+        self._update_workflow_history(obj, "deletion")
 
         # Generate a meaningful title
         item_title = self._get_item_title(obj, item_type)
@@ -310,14 +314,14 @@ class RecycleBin:
                 "deletion_date": data.get("deletion_date"),
                 "size": data.get("size", 0),
             }
-            
+
             # Copy any other metadata but not the actual object
             for key, value in data.items():
                 if key != "object" and key not in item_data:
                     item_data[key] = value
-                    
+
             items.append(item_data)
-    
+
         return items
 
     def get_item(self, item_id):
@@ -326,39 +330,47 @@ class RecycleBin:
 
     def _update_workflow_history(self, obj, action_type, item_data=None):
         """Add a workflow history entry about deletion or restoration
-        
+
         Args:
             obj: The content object
             action_type: Either 'deletion' or 'restoration'
             item_data: The recyclebin storage data (needed for restoration to show deletion date)
         """
-        if not hasattr(obj, 'workflow_history'):
+        if not hasattr(obj, "workflow_history"):
             return
-            
-        workflow_tool = getToolByName(self._get_context(), 'portal_workflow')
+
+        workflow_tool = getToolByName(self._get_context(), "portal_workflow")
         chains = workflow_tool.getChainFor(obj)
-        
+
         if not chains:
             return
-            
+
         workflow_id = chains[0]
         history = obj.workflow_history.get(workflow_id, ())
-        
+
         if not history:
             return
-            
+
         history = list(history)
-        current_state = history[-1].get('review_state', None) if history else None
-        user_id = getSecurityManager().getUser().getId() or 'System'
-        
+        current_state = history[-1].get("review_state", None) if history else None
+        user_id = getSecurityManager().getUser().getId() or "System"
+
         entry = {
-            'action': 'Moved to recycle bin' if action_type == 'deletion' else 'Restored from recycle bin',
-            'actor': user_id,
-            'comments': 'Item was deleted and moved to recycle bin' if action_type == 'deletion' else 'Restored from recycle bin after deletion',
-            'time': DateTime(),
-            'review_state': current_state,
+            "action": (
+                "Moved to recycle bin"
+                if action_type == "deletion"
+                else "Restored from recycle bin"
+            ),
+            "actor": user_id,
+            "comments": (
+                "Item was deleted and moved to recycle bin"
+                if action_type == "deletion"
+                else "Restored from recycle bin after deletion"
+            ),
+            "time": DateTime(),
+            "review_state": current_state,
         }
-            
+
         # Add the entry and update the history
         history.append(entry)
         obj.workflow_history[workflow_id] = tuple(history)
@@ -449,8 +461,10 @@ class RecycleBin:
 
         # Regular content object restoration
         # Find the container to restore to
-        target_container = self._find_target_container(target_container, item_data["parent_path"])
-        
+        target_container = self._find_target_container(
+            target_container, item_data["parent_path"]
+        )
+
         # Make sure we don't overwrite existing content
         self._handle_existing_object(obj_id, target_container, obj)
 
@@ -463,37 +477,41 @@ class RecycleBin:
 
         # Add a workflow history entry about the restoration
         restored_obj = target_container[obj_id]
-        self._update_workflow_history(restored_obj, 'restoration', item_data)
+        self._update_workflow_history(restored_obj, "restoration", item_data)
 
         # Remove from recycle bin
         del self.storage[item_id]
 
-        # Clean up any child items 
+        # Clean up any child items
         self._cleanup_child_references(item_data)
 
         return restored_obj
 
-    def _find_parent_comment(self, comment, original_in_reply_to, conversation, id_mapping=None):
+    def _find_parent_comment(
+        self, comment, original_in_reply_to, conversation, id_mapping=None
+    ):
         """Helper method to find parent comment during restoration"""
         id_mapping = id_mapping or {}
         if original_in_reply_to is None or original_in_reply_to == 0:
             return False, None
-        
+
         # First check if parent exists directly (not previously deleted)
         if original_in_reply_to in conversation:
             return True, original_in_reply_to
-            
+
         # Then check if it was restored with a different ID using mapping
         if str(original_in_reply_to) in id_mapping:
             # Use the ID mapping to find the new ID
             new_parent_id = id_mapping[str(original_in_reply_to)]
             return True, new_parent_id
-            
+
         # Look through all comments for original_id matching our in_reply_to
         for comment_id in conversation.keys():
             comment_obj = conversation[comment_id]
             comment_original_id = getattr(comment_obj, "original_id", None)
-            if comment_original_id is not None and str(comment_original_id) == str(original_in_reply_to):
+            if comment_original_id is not None and str(comment_original_id) == str(
+                original_in_reply_to
+            ):
                 # Found the parent with a new ID
                 return True, comment_id
 
@@ -666,7 +684,7 @@ class RecycleBin:
         parent_found, new_parent_id = self._find_parent_comment(
             root_comment, original_in_reply_to, conversation
         )
-        
+
         if parent_found:
             root_comment.in_reply_to = new_parent_id
         else:
@@ -721,7 +739,7 @@ class RecycleBin:
                 if parent_found:
                     # We found the parent, update reference and restore
                     comment_obj.in_reply_to = new_parent_id
-                    
+
                     # Store original ID for future reference
                     if not hasattr(comment_obj, "original_id"):
                         comment_obj.original_id = comment_id
@@ -743,23 +761,25 @@ class RecycleBin:
                     try:
                         comment_obj = comment_data["comment"]
                         comment_obj.in_reply_to = None  # Make it a top-level comment
-                        
+
                         # Store original ID for future reference
                         if not hasattr(comment_obj, "original_id"):
                             comment_obj.original_id = comment_id
-                        
+
                         new_id = conversation.addComment(comment_obj)
                         id_mapping[comment_id] = new_id
                         del remaining_comments[comment_id]
                         restored_in_pass += 1
                     except Exception as e:
-                        logger.error(f"Error forcing comment {comment_id} as top-level: {e}")
-                
+                        logger.error(
+                            f"Error forcing comment {comment_id} as top-level: {e}"
+                        )
+
                 # Break out of the loop since we've tried our best
                 break
 
             restored_count += restored_in_pass
-            
+
             # If all comments were restored, exit the loop
             if not remaining_comments:
                 break
@@ -767,35 +787,39 @@ class RecycleBin:
         # Clean up and return
         del self.storage[item_id]
         logger.info(f"Restored {restored_count} comments from comment tree {item_id}")
-        
+
         # Return the root comment as the result
         return conversation.get(new_root_id) if new_root_id in conversation else None
 
     def purge_item(self, item_id):
         """Permanently delete an item from the recycle bin
-        
+
         Args:
             item_id: The ID of the item in the recycle bin
-            
+
         Returns:
             Boolean indicating success
         """
         if item_id not in self.storage:
             logger.warning(f"Cannot purge item {item_id}: not found in recycle bin")
             return False
-            
+
         try:
             # Purge any nested children first if this is a folder
             item_data = self.storage[item_id]
             if "children" in item_data and isinstance(item_data["children"], dict):
+
                 def purge_children(children_dict):
                     for child_id, child_data in list(children_dict.items()):
                         # If this child has children, recursively purge them first
-                        if "children" in child_data and isinstance(child_data["children"], dict):
+                        if "children" in child_data and isinstance(
+                            child_data["children"], dict
+                        ):
                             purge_children(child_data["children"])
+
                 # Start the recursive purge of children
                 purge_children(item_data["children"])
-                
+
             # Simply remove from storage - the object will be garbage collected
             del self.storage[item_id]
             logger.info(f"Item {item_id} purged from recycle bin")
@@ -806,35 +830,39 @@ class RecycleBin:
 
     def _purge_expired_items(self):
         """Purge items that exceed the retention period
-        
+
         Returns:
             Number of items purged
         """
         try:
             settings = self._get_settings()
             retention_days = settings.retention_period
-            
+
             # If retention_period is 0, auto-purging is disabled
             if retention_days <= 0:
                 logger.debug("Auto-purging is disabled (retention_period = 0)")
                 return 0
-                
+
             cutoff_date = datetime.now() - timedelta(days=retention_days)
             purge_count = 0
-            
+
             # Use the sorted index for efficient date-based queries
             # Iterate through items from oldest to newest
-            for item_id, data in list(self.storage.get_items_sorted_by_date(reverse=False)):
+            for item_id, data in list(
+                self.storage.get_items_sorted_by_date(reverse=False)
+            ):
                 deletion_date = data.get("deletion_date")
                 if deletion_date and deletion_date < cutoff_date:
                     if self.purge_item(item_id):
                         purge_count += 1
-                        logger.info(f"Item {item_id} purged due to retention policy (deleted on {deletion_date})")
+                        logger.info(
+                            f"Item {item_id} purged due to retention policy (deleted on {deletion_date})"
+                        )
                 else:
-                    # Since items are sorted by date, once we find one that's 
+                    # Since items are sorted by date, once we find one that's
                     # newer than the cutoff date, we can stop checking
                     break
-                    
+
             return purge_count
         except Exception as e:
             logger.error(f"Error purging expired items: {str(e)}")
@@ -845,31 +873,33 @@ class RecycleBin:
         try:
             settings = self._get_settings()
             max_size_bytes = settings.maximum_size * 1024 * 1024  # Convert MB to bytes
-            
+
             # If max_size is 0, size limiting is disabled
             if max_size_bytes <= 0:
                 return
-                
+
             total_size = 0
             items_by_date = []
-            
+
             # Calculate total size using items sorted by date (oldest first)
             for item_id, data in self.storage.get_items_sorted_by_date(reverse=False):
                 size = data.get("size", 0)
                 total_size += size
                 items_by_date.append((item_id, size))
-                
+
             # If we're under the limit, nothing to do
             if total_size <= max_size_bytes:
                 return
-                
-            logger.info(f"Recycle bin size ({total_size / (1024 * 1024):.2f} MB) exceeds limit ({max_size_bytes / (1024 * 1024):.2f} MB)")
-            
+
+            logger.info(
+                f"Recycle bin size ({total_size / (1024 * 1024):.2f} MB) exceeds limit ({max_size_bytes / (1024 * 1024):.2f} MB)"
+            )
+
             # Remove oldest items if size limit is exceeded
             for item_id, size in items_by_date:
                 if total_size <= max_size_bytes:
                     break
-                    
+
                 if self.purge_item(item_id):
                     total_size -= size
                     logger.info(f"Purged item {item_id} due to size constraints")
