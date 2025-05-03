@@ -79,6 +79,30 @@
                                  class="discreet">
                                 <small>Comment on: <span tal:content="item/content_title">Content Title</span></small>
                             </div>
+                            
+                            <!-- Show matching child items when search found results in folder contents -->
+                            <div tal:condition="python:item.get('matching_children')" 
+                                 class="matching-children alert alert-light" style="margin-top: 0.5em; padding: 0.5em;">
+                                <small>
+                                    <strong i18n:translate="">Found matches in contents:</strong> 
+                                    <span tal:content="python:item.get('matching_children_count')">3</span> 
+                                    <span i18n:translate="">items match your search</span>
+                                </small>
+                                <ul class="matching-children-list">
+                                    <li tal:repeat="child python:item.get('matching_children')[:3]">
+                                        <span tal:content="child/title">Child Title</span>
+                                        <span class="discreet">
+                                            (<span tal:content="child/type">Type</span>)
+                                        </span>
+                                    </li>
+                                    <li tal:condition="python:len(item.get('matching_children', [])) > 3" 
+                                        class="discreet">
+                                        <span i18n:translate="">and</span>
+                                        <span tal:content="python:len(item.get('matching_children', [])) - 3"></span>
+                                        <span i18n:translate="">more...</span>
+                                    </li>
+                                </ul>
+                            </div>
                         </td>
                         <td tal:content="item/type">Content type</td>
                         <td>
@@ -148,6 +172,17 @@
   });
 </script>
 </metal:js>
+
+<style>
+.matching-children-list {
+    margin: 0.25em 0 0 0.5em;
+    padding-left: 1em;
+    line-height: 1.3;
+}
+.matching-children-list li {
+    font-size: 0.9em;
+}
+</style>
 
 </body>
 </html>
