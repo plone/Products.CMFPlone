@@ -13,30 +13,132 @@
         Items deleted from this site are stored here and can be restored or permanently deleted.
     </div>
     
-    <!-- Search form -->
+    <!-- Search and filter form -->
     <div class="search-form pat-autotoc autotabs">
         <form method="get" tal:attributes="action string:${context/absolute_url}/@@recyclebin"
               class="search-box" style="margin-bottom: 1em;">
-            <div class="input-group">
-                <input type="text" name="search_query" id="search-query" 
-                       tal:attributes="value request/search_query|nothing"
-                       class="form-control" 
-                       placeholder="Search by title or path..." 
-                       i18n:attributes="placeholder" />
-                <span class="input-group-btn">
-                    <button class="btn btn-primary" type="submit" i18n:translate="">Search</button>
-                    <a tal:condition="request/search_query|nothing" 
-                       tal:attributes="href string:${context/absolute_url}/@@recyclebin" 
-                       class="btn btn-secondary" 
-                       i18n:translate="">Clear</a>
-                </span>
+            <div class="row">
+                <!-- Search field -->
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" name="search_query" id="search-query" 
+                               tal:attributes="value request/search_query|nothing"
+                               class="form-control" 
+                               placeholder="Search by title or path..." 
+                               i18n:attributes="placeholder" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit" i18n:translate="">Search</button>
+                            <a tal:condition="request/search_query|nothing" 
+                               tal:attributes="href string:${context/absolute_url}/@@recyclebin" 
+                               class="btn btn-secondary" 
+                               i18n:translate="">Clear</a>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="filter-controls" style="display: flex; gap: 0.5em; justify-content: flex-end;">
+                        <!-- Type Filter -->
+                        <div tal:define="all_types python:view.get_available_types(view.get_items());
+                                         current_filter request/filter_type|nothing">
+                            <select name="filter_type" class="form-control" onchange="this.form.submit()"
+                                    style="max-width: 200px;">
+                                <option value="" i18n:translate="">All Content Types</option>
+                                <option tal:repeat="type_name all_types"
+                                        tal:attributes="value type_name;
+                                                        selected python:current_filter == type_name"
+                                        tal:content="type_name">Document</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Sort Order -->
+                        <div tal:define="current_sort request/sort_by|string:date_desc">
+                            <select name="sort_by" class="form-control" onchange="this.form.submit()"
+                                    style="max-width: 200px;">
+                                <option value="date_desc" 
+                                        tal:attributes="selected python:current_sort == 'date_desc'"
+                                        i18n:translate="">Newest First</option>
+                                <option value="date_asc" 
+                                        tal:attributes="selected python:current_sort == 'date_asc'"
+                                        i18n:translate="">Oldest First</option>
+                                <option value="title_asc" 
+                                        tal:attributes="selected python:current_sort == 'title_asc'"
+                                        i18n:translate="">Title (A-Z)</option>
+                                <option value="title_desc" 
+                                        tal:attributes="selected python:current_sort == 'title_desc'"
+                                        i18n:translate="">Title (Z-A)</option>
+                                <option value="type_asc" 
+                                        tal:attributes="selected python:current_sort == 'type_asc'"
+                                        i18n:translate="">Type (A-Z)</option>
+                                <option value="type_desc" 
+                                        tal:attributes="selected python:current_sort == 'type_desc'"
+                                        i18n:translate="">Type (Z-A)</option>
+                                <option value="size_asc" 
+                                        tal:attributes="selected python:current_sort == 'size_asc'"
+                                        i18n:translate="">Size (Smallest First)</option>
+                                <option value="size_desc" 
+                                        tal:attributes="selected python:current_sort == 'size_desc'"
+                                        i18n:translate="">Size (Largest First)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
 
-    <!-- Display search query if present -->
-    <div tal:condition="view/get_search_query" class="search-results-info alert alert-info">
-        <span i18n:translate="">Search results for</span>: <strong tal:content="view/get_search_query">query</strong>
+    <!-- Combined notification for search, filter and sort -->
+    <div tal:define="search_query view/get_search_query;
+                     filter_type view/get_filter_type;
+                     sort_option view/get_sort_option;
+                     sort_labels python:{'date_desc': 'Newest First (default)', 
+                                        'date_asc': 'Oldest First',
+                                        'title_asc': 'Title (A-Z)',
+                                        'title_desc': 'Title (Z-A)',
+                                        'type_asc': 'Type (A-Z)',
+                                        'type_desc': 'Type (Z-A)',
+                                        'path_asc': 'Path (A-Z)',
+                                        'path_desc': 'Path (Z-A)',
+                                        'size_asc': 'Size (Smallest First)', 
+                                        'size_desc': 'Size (Largest First)'};
+                     has_active_filters python:search_query or filter_type or (sort_option != 'date_desc')"
+         tal:condition="has_active_filters"
+         class="active-filters alert alert-info" 
+         style="display: flex; align-items: center; justify-content: space-between;">
+         
+        <div>
+            <span i18n:translate="">Active filters</span>:
+            
+            <span tal:condition="search_query" style="margin-right: 10px;">
+                <strong i18n:translate="">Search</strong>: 
+                <span tal:content="search_query">query</span>
+                <a href="#" tal:attributes="href python:context.absolute_url() + '/@@recyclebin?' + 
+                                                     (filter_type and 'filter_type=' + filter_type or '') +
+                                                     (sort_option != 'date_desc' and '&sort_by=' + sort_option or '')"
+                   class="btn btn-sm btn-outline-secondary" style="margin-left: 5px;" title="Clear search">×</a>
+            </span>
+            
+            <span tal:condition="filter_type" style="margin-right: 10px;">
+                <strong i18n:translate="">Type</strong>: 
+                <span tal:content="filter_type">Document</span>
+                <a href="#" tal:attributes="href python:context.absolute_url() + '/@@recyclebin?' + 
+                                                     (search_query and 'search_query=' + search_query or '') +
+                                                     (sort_option != 'date_desc' and '&sort_by=' + sort_option or '')"
+                   class="btn btn-sm btn-outline-secondary" style="margin-left: 5px;" title="Clear filter">×</a>
+            </span>
+            
+            <span tal:condition="python:sort_option != 'date_desc'" style="margin-right: 10px;">
+                <strong i18n:translate="">Sort</strong>: 
+                <span tal:content="python:sort_labels.get(sort_option, sort_option)">Sort option</span>
+                <a href="#" tal:attributes="href python:context.absolute_url() + '/@@recyclebin?' + 
+                                                     (search_query and 'search_query=' + search_query or '') +
+                                                     (filter_type and (search_query and '&' or '') + 'filter_type=' + filter_type or '')"
+                   class="btn btn-sm btn-outline-secondary" style="margin-left: 5px;" title="Reset sort">×</a>
+            </span>
+        </div>
+        
+        <a tal:attributes="href string:${context/absolute_url}/@@recyclebin"
+           class="btn btn-sm btn-secondary" i18n:translate="">Clear All</a>
     </div>
     
     <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin"
@@ -62,8 +164,8 @@
                 <tbody>
                     <tr tal:condition="not:items">
                         <td colspan="6" i18n:translate="">
-                            <span tal:condition="view/get_search_query">No items match your search criteria</span>
-                            <span tal:condition="not:view/get_search_query">No items in recycle bin</span>
+                            <span tal:condition="python:view.get_search_query() or view.get_filter_type()">No items match your search criteria</span>
+                            <span tal:condition="python:not view.get_search_query() and not view.get_filter_type()">No items in recycle bin</span>
                         </td>
                     </tr>
                     <tr tal:repeat="item items">
