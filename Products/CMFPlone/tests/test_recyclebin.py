@@ -450,8 +450,8 @@ class RecycleBinExpirationTests(RecycleBinTestCase):
             self.recyclebin.storage[recycle_id],
             {"deletion_date": datetime.now() - timedelta(days=31)},
         ):
-            # Call purge_expired_items
-            purged_count = self.recyclebin.purge_expired_items()
+            # Call _purge_expired_items
+            purged_count = self.recyclebin._purge_expired_items()
 
             # Verify the item was purged
             self.assertEqual(purged_count, 1)
