@@ -1,9 +1,9 @@
+from datetime import datetime
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces.recyclebin import IRecycleBin
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
-from datetime import datetime
 from z3c.form import button
 from z3c.form import field
 from z3c.form import form
@@ -147,21 +147,66 @@ class RecycleBinView(BrowserView):
 
     def get_search_query(self):
         """Get the search query from the request"""
-        return self.request.form.get('search_query', '')
-        
+        return self.request.form.get("search_query", "")
+
     def get_sort_option(self):
         """Get the current sort option from the request"""
-        return self.request.form.get('sort_by', 'date_desc')
-        
+        return self.request.form.get("sort_by", "date_desc")
+
     def get_filter_type(self):
         """Get the content type filter from the request"""
-        return self.request.form.get('filter_type', '')
-        
+        return self.request.form.get("filter_type", "")
+
+    def get_sort_labels(self):
+        """Get a dictionary of human-readable sort option labels"""
+        return {
+            "date_desc": "Newest First (default)",
+            "date_asc": "Oldest First",
+            "title_asc": "Title (A-Z)",
+            "title_desc": "Title (Z-A)",
+            "type_asc": "Type (A-Z)",
+            "type_desc": "Type (Z-A)",
+            "path_asc": "Path (A-Z)",
+            "path_desc": "Path (Z-A)",
+            "size_asc": "Size (Smallest First)",
+            "size_desc": "Size (Largest First)",
+        }
+
+    def get_clear_url(self, param_to_remove):
+        """Generate a URL that clears a specific filter parameter while preserving others
+
+        Args:
+            param_to_remove: The parameter name to remove from the URL
+
+        Returns:
+            URL string with the specified parameter removed
+        """
+        base_url = f"{self.context.absolute_url()}/@@recyclebin"
+        params = []
+
+        # Add search query if it exists and is not being removed
+        if param_to_remove != "search_query" and self.get_search_query():
+            params.append(f"search_query={self.get_search_query()}")
+
+        # Add filter type if it exists and is not being removed
+        if param_to_remove != "filter_type" and self.get_filter_type():
+            params.append(f"filter_type={self.get_filter_type()}")
+
+        # Add sort option if it exists, is not default, and is not being removed
+        sort_option = self.get_sort_option()
+        if param_to_remove != "sort_by" and sort_option != "date_desc":
+            params.append(f"sort_by={sort_option}")
+
+        # Construct final URL
+        if params:
+            return f"{base_url}?{'&'.join(params)}"
+        return base_url
+
     def get_available_types(self, items):
         """Get a list of all content types present in the recycle bin"""
         types = set()
         for item in items:
-            item_type = item.get('type')
+            item_type = item.get("type")
             if item_type:
                 types.add(item_type)
         return sorted(list(types))
@@ -208,48 +253,48 @@ class RecycleBinView(BrowserView):
         # Apply content type filtering if specified
         filter_type = self.get_filter_type()
         if filter_type:
-            items = [item for item in items if item.get('type') == filter_type]
+            items = [item for item in items if item.get("type") == filter_type]
 
         # Filter items based on search query
         search_query = self.get_search_query().lower()
         if search_query:
             filtered_items = []
             items_with_matching_children = []
-            
+
             for item in items:
                 # Search in title
                 if search_query in item.get("title", "").lower():
                     filtered_items.append(item)
                     continue
-                
+
                 # Search in path
                 if search_query in item.get("path", "").lower():
                     filtered_items.append(item)
                     continue
-                    
+
                 # Search in parent path
                 if search_query in item.get("parent_path", "").lower():
                     filtered_items.append(item)
                     continue
-                    
+
                 # Search in ID
                 if search_query in item.get("id", "").lower():
                     filtered_items.append(item)
                     continue
-                    
+
                 # Search in type
                 if search_query in item.get("type", "").lower():
                     filtered_items.append(item)
                     continue
-                
+
                 # Search in children if this item has children
                 if "children" in item and isinstance(item["children"], dict):
                     child_matches = []
-                    
+
                     for child_id, child_data in item["children"].items():
                         # Check each child for matches
                         child_matches_query = False
-                        
+
                         # Check in title
                         if search_query in child_data.get("title", "").lower():
                             child_matches_query = True
@@ -262,11 +307,11 @@ class RecycleBinView(BrowserView):
                         # Check in type
                         elif search_query in child_data.get("type", "").lower():
                             child_matches_query = True
-                        
+
                         # Add to matches if found
                         if child_matches_query:
                             child_matches.append(child_data)
-                            
+
                     # If any children match, mark the parent item
                     if child_matches:
                         # Make a copy of the item so we don't modify the original
@@ -274,35 +319,37 @@ class RecycleBinView(BrowserView):
                         parent_item["matching_children"] = child_matches
                         parent_item["matching_children_count"] = len(child_matches)
                         items_with_matching_children.append(parent_item)
-            
+
             # Combine direct matches with items that have matching children
             # Direct matches come first
             items = filtered_items + items_with_matching_children
-        
+
         # Apply sorting
         sort_option = self.get_sort_option()
-        if sort_option == 'title_asc':
-            items.sort(key=lambda x: x.get('title', '').lower())
-        elif sort_option == 'title_desc':
-            items.sort(key=lambda x: x.get('title', '').lower(), reverse=True)
-        elif sort_option == 'type_asc':
-            items.sort(key=lambda x: x.get('type', '').lower())
-        elif sort_option == 'type_desc':
-            items.sort(key=lambda x: x.get('type', '').lower(), reverse=True)
-        elif sort_option == 'path_asc':
-            items.sort(key=lambda x: x.get('path', '').lower())
-        elif sort_option == 'path_desc':
-            items.sort(key=lambda x: x.get('path', '').lower(), reverse=True)
-        elif sort_option == 'size_asc':
-            items.sort(key=lambda x: x.get('size', 0))
-        elif sort_option == 'size_desc':
-            items.sort(key=lambda x: x.get('size', 0), reverse=True)
-        elif sort_option == 'date_asc':
-            items.sort(key=lambda x: x.get('deletion_date', datetime.now()))
+        if sort_option == "title_asc":
+            items.sort(key=lambda x: x.get("title", "").lower())
+        elif sort_option == "title_desc":
+            items.sort(key=lambda x: x.get("title", "").lower(), reverse=True)
+        elif sort_option == "type_asc":
+            items.sort(key=lambda x: x.get("type", "").lower())
+        elif sort_option == "type_desc":
+            items.sort(key=lambda x: x.get("type", "").lower(), reverse=True)
+        elif sort_option == "path_asc":
+            items.sort(key=lambda x: x.get("path", "").lower())
+        elif sort_option == "path_desc":
+            items.sort(key=lambda x: x.get("path", "").lower(), reverse=True)
+        elif sort_option == "size_asc":
+            items.sort(key=lambda x: x.get("size", 0))
+        elif sort_option == "size_desc":
+            items.sort(key=lambda x: x.get("size", 0), reverse=True)
+        elif sort_option == "date_asc":
+            items.sort(key=lambda x: x.get("deletion_date", datetime.now()))
         # Default: date_desc
         else:
-            items.sort(key=lambda x: x.get('deletion_date', datetime.now()), reverse=True)
-        
+            items.sort(
+                key=lambda x: x.get("deletion_date", datetime.now()), reverse=True
+            )
+
         return items
 
     def format_date(self, date):
