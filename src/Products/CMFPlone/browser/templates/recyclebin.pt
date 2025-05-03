@@ -16,10 +16,10 @@
     <!-- Search and filter form -->
     <div class="search-form pat-autotoc autotabs">
         <form method="get" tal:attributes="action string:${context/absolute_url}/@@recyclebin"
-              class="search-box" style="margin-bottom: 1em;">
-            <div class="row">
-                <!-- Search field -->
-                <div class="col-md-6">
+              class="search-box mb-3">
+            <div class="d-flex align-items-center flex-wrap">
+                <!-- Search field - takes remaining space -->
+                <div class="flex-grow-1 me-2 mb-2">
                     <div class="input-group">
                         <input type="text" name="search_query" id="search-query" 
                                tal:attributes="value request/search_query|nothing"
@@ -28,59 +28,55 @@
                                i18n:attributes="placeholder" />
                         <span class="input-group-btn">
                             <button class="btn btn-primary" type="submit" i18n:translate="">Search</button>
-                            <a tal:condition="request/search_query|nothing" 
-                               tal:attributes="href string:${context/absolute_url}/@@recyclebin" 
-                               class="btn btn-secondary" 
-                               i18n:translate="">Clear</a>
                         </span>
                     </div>
                 </div>
                 
-                <div class="col-md-6">
-                    <div class="filter-controls" style="display: flex; gap: 0.5em; justify-content: flex-end;">
-                        <!-- Type Filter -->
-                        <div tal:define="all_types python:view.get_available_types(view.get_items());
-                                         current_filter request/filter_type|nothing">
-                            <select name="filter_type" class="form-control" onchange="this.form.submit()"
-                                    style="max-width: 200px;">
-                                <option value="" i18n:translate="">All Content Types</option>
-                                <option tal:repeat="type_name all_types"
-                                        tal:attributes="value type_name;
-                                                        selected python:current_filter == type_name"
-                                        tal:content="type_name">Document</option>
-                            </select>
-                        </div>
-                        
-                        <!-- Sort Order -->
-                        <div tal:define="current_sort request/sort_by|string:date_desc">
-                            <select name="sort_by" class="form-control" onchange="this.form.submit()"
-                                    style="max-width: 200px;">
-                                <option value="date_desc" 
-                                        tal:attributes="selected python:current_sort == 'date_desc'"
-                                        i18n:translate="">Newest First</option>
-                                <option value="date_asc" 
-                                        tal:attributes="selected python:current_sort == 'date_asc'"
-                                        i18n:translate="">Oldest First</option>
-                                <option value="title_asc" 
-                                        tal:attributes="selected python:current_sort == 'title_asc'"
-                                        i18n:translate="">Title (A-Z)</option>
-                                <option value="title_desc" 
-                                        tal:attributes="selected python:current_sort == 'title_desc'"
-                                        i18n:translate="">Title (Z-A)</option>
-                                <option value="type_asc" 
-                                        tal:attributes="selected python:current_sort == 'type_asc'"
-                                        i18n:translate="">Type (A-Z)</option>
-                                <option value="type_desc" 
-                                        tal:attributes="selected python:current_sort == 'type_desc'"
-                                        i18n:translate="">Type (Z-A)</option>
-                                <option value="size_asc" 
-                                        tal:attributes="selected python:current_sort == 'size_asc'"
-                                        i18n:translate="">Size (Smallest First)</option>
-                                <option value="size_desc" 
-                                        tal:attributes="selected python:current_sort == 'size_desc'"
-                                        i18n:translate="">Size (Largest First)</option>
-                            </select>
-                        </div>
+                <!-- Type Filter and Sort Order - fixed width -->
+                <div class="d-flex flex-wrap mb-2">
+                    <!-- Type Filter -->
+                    <div tal:define="all_types python:view.get_available_types(view.get_items());
+                                     current_filter request/filter_type|nothing"
+                         class="me-2">
+                        <select name="filter_type" class="form-control" onchange="this.form.submit()"
+                                style="width: 180px;">
+                            <option value="" i18n:translate="">All Content Types</option>
+                            <option tal:repeat="type_name all_types"
+                                    tal:attributes="value type_name;
+                                                    selected python:current_filter == type_name"
+                                    tal:content="type_name">Document</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Sort Order -->
+                    <div tal:define="current_sort request/sort_by|string:date_desc">
+                        <select name="sort_by" class="form-control" onchange="this.form.submit()"
+                                style="width: 180px;">
+                            <option value="date_desc" 
+                                    tal:attributes="selected python:current_sort == 'date_desc'"
+                                    i18n:translate="">Newest First</option>
+                            <option value="date_asc" 
+                                    tal:attributes="selected python:current_sort == 'date_asc'"
+                                    i18n:translate="">Oldest First</option>
+                            <option value="title_asc" 
+                                    tal:attributes="selected python:current_sort == 'title_asc'"
+                                    i18n:translate="">Title (A-Z)</option>
+                            <option value="title_desc" 
+                                    tal:attributes="selected python:current_sort == 'title_desc'"
+                                    i18n:translate="">Title (Z-A)</option>
+                            <option value="type_asc" 
+                                    tal:attributes="selected python:current_sort == 'type_asc'"
+                                    i18n:translate="">Type (A-Z)</option>
+                            <option value="type_desc" 
+                                    tal:attributes="selected python:current_sort == 'type_desc'"
+                                    i18n:translate="">Type (Z-A)</option>
+                            <option value="size_asc" 
+                                    tal:attributes="selected python:current_sort == 'size_asc'"
+                                    i18n:translate="">Size (Smallest First)</option>
+                            <option value="size_desc" 
+                                    tal:attributes="selected python:current_sort == 'size_desc'"
+                                    i18n:translate="">Size (Largest First)</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -91,49 +87,33 @@
     <div tal:define="search_query view/get_search_query;
                      filter_type view/get_filter_type;
                      sort_option view/get_sort_option;
-                     sort_labels python:{'date_desc': 'Newest First (default)', 
-                                        'date_asc': 'Oldest First',
-                                        'title_asc': 'Title (A-Z)',
-                                        'title_desc': 'Title (Z-A)',
-                                        'type_asc': 'Type (A-Z)',
-                                        'type_desc': 'Type (Z-A)',
-                                        'path_asc': 'Path (A-Z)',
-                                        'path_desc': 'Path (Z-A)',
-                                        'size_asc': 'Size (Smallest First)', 
-                                        'size_desc': 'Size (Largest First)'};
+                     sort_labels python:view.get_sort_labels();
                      has_active_filters python:search_query or filter_type or (sort_option != 'date_desc')"
          tal:condition="has_active_filters"
-         class="active-filters alert alert-info" 
-         style="display: flex; align-items: center; justify-content: space-between;">
+         class="active-filters alert alert-info d-flex align-items-center justify-content-between flex-wrap">
          
-        <div>
+        <div class="d-flex flex-wrap align-items-center gap-2 me-2">
             <span i18n:translate="">Active filters</span>:
             
-            <span tal:condition="search_query" style="margin-right: 10px;">
-                <strong i18n:translate="">Search</strong>: 
-                <span tal:content="search_query">query</span>
-                <a href="#" tal:attributes="href python:context.absolute_url() + '/@@recyclebin?' + 
-                                                     (filter_type and 'filter_type=' + filter_type or '') +
-                                                     (sort_option != 'date_desc' and '&sort_by=' + sort_option or '')"
-                   class="btn btn-sm btn-outline-secondary" style="margin-left: 5px;" title="Clear search">×</a>
+            <span tal:condition="search_query" class="badge bg-light text-dark d-inline-flex align-items-center p-2">
+                <strong i18n:translate="" class="me-1">Search</strong>: 
+                <span tal:content="search_query" class="me-1">query</span>
+                <a href="#" tal:attributes="href python:view.get_clear_url('search_query')"
+                   class="btn btn-sm btn-outline-secondary p-0 px-1 ms-1" title="Clear search">×</a>
             </span>
             
-            <span tal:condition="filter_type" style="margin-right: 10px;">
-                <strong i18n:translate="">Type</strong>: 
-                <span tal:content="filter_type">Document</span>
-                <a href="#" tal:attributes="href python:context.absolute_url() + '/@@recyclebin?' + 
-                                                     (search_query and 'search_query=' + search_query or '') +
-                                                     (sort_option != 'date_desc' and '&sort_by=' + sort_option or '')"
-                   class="btn btn-sm btn-outline-secondary" style="margin-left: 5px;" title="Clear filter">×</a>
+            <span tal:condition="filter_type" class="badge bg-light text-dark d-inline-flex align-items-center p-2">
+                <strong i18n:translate="" class="me-1">Type</strong>: 
+                <span tal:content="filter_type" class="me-1">Document</span>
+                <a href="#" tal:attributes="href python:view.get_clear_url('filter_type')"
+                   class="btn btn-sm btn-outline-secondary p-0 px-1 ms-1" title="Clear filter">×</a>
             </span>
             
-            <span tal:condition="python:sort_option != 'date_desc'" style="margin-right: 10px;">
-                <strong i18n:translate="">Sort</strong>: 
-                <span tal:content="python:sort_labels.get(sort_option, sort_option)">Sort option</span>
-                <a href="#" tal:attributes="href python:context.absolute_url() + '/@@recyclebin?' + 
-                                                     (search_query and 'search_query=' + search_query or '') +
-                                                     (filter_type and (search_query and '&' or '') + 'filter_type=' + filter_type or '')"
-                   class="btn btn-sm btn-outline-secondary" style="margin-left: 5px;" title="Reset sort">×</a>
+            <span tal:condition="python:sort_option != 'date_desc'" class="badge bg-light text-dark d-inline-flex align-items-center p-2">
+                <strong i18n:translate="" class="me-1">Sort</strong>: 
+                <span tal:content="python:sort_labels.get(sort_option, sort_option)" class="me-1">Sort option</span>
+                <a href="#" tal:attributes="href python:view.get_clear_url('sort_by')"
+                   class="btn btn-sm btn-outline-secondary p-0 px-1 ms-1" title="Reset sort">×</a>
             </span>
         </div>
         
@@ -184,21 +164,21 @@
                             
                             <!-- Show matching child items when search found results in folder contents -->
                             <div tal:condition="python:item.get('matching_children')" 
-                                 class="matching-children alert alert-light" style="margin-top: 0.5em; padding: 0.5em;">
+                                 class="alert alert-light mt-2 p-2">
                                 <small>
                                     <strong i18n:translate="">Found matches in contents:</strong> 
                                     <span tal:content="python:item.get('matching_children_count')">3</span> 
                                     <span i18n:translate="">items match your search</span>
                                 </small>
-                                <ul class="matching-children-list">
+                                <ul class="ps-3 mt-1 mb-0" style="font-size: 0.9em; line-height: 1.3;">
                                     <li tal:repeat="child python:item.get('matching_children')[:3]">
                                         <span tal:content="child/title">Child Title</span>
-                                        <span class="discreet">
+                                        <span class="text-muted">
                                             (<span tal:content="child/type">Type</span>)
                                         </span>
                                     </li>
                                     <li tal:condition="python:len(item.get('matching_children', [])) > 3" 
-                                        class="discreet">
+                                        class="text-muted">
                                         <span i18n:translate="">and</span>
                                         <span tal:content="python:len(item.get('matching_children', [])) - 3"></span>
                                         <span i18n:translate="">more...</span>
@@ -274,17 +254,6 @@
   });
 </script>
 </metal:js>
-
-<style>
-.matching-children-list {
-    margin: 0.25em 0 0 0.5em;
-    padding-left: 1em;
-    line-height: 1.3;
-}
-.matching-children-list li {
-    font-size: 0.9em;
-}
-</style>
 
 </body>
 </html>
