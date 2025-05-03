@@ -7,170 +7,259 @@
 <body>
 
 <metal:main fill-slot="main">
-    <tal:item define="item view/get_item;
-                     form_context nocall:context">
-        <!-- Item not found message -->
-        <div tal:condition="not:item">
-            <h1 class="documentFirstHeading" i18n:translate="">Item Not Found</h1>
-            <p i18n:translate="">
-                The requested item was not found in the recycle bin. It may have been already restored or deleted.
-            </p>
-            <p>
-                <a tal:attributes="href string:${context/absolute_url}/@@recyclebin" 
-                   i18n:translate="">Return to recycle bin</a>
-            </p>
-        </div>
-        
-        <!-- Item found - display details -->
-        <div tal:condition="item">
-            <h1 class="documentFirstHeading">
-                <span tal:content="item/title">Title</span>
-                <span class="discreet"> (<span tal:content="item/type">Content Type</span>)</span>
-            </h1>
-            
-            <!-- Comment-specific information -->
-            <tal:comment-info condition="python:item.get('type') in ('CommentTree', 'Discussion Item')">
-                <div class="documentDescription">
-                    <p i18n:translate="">
-                        <span tal:condition="python:item.get('type') == 'CommentTree'">Comment thread</span>
-                        <span tal:condition="python:item.get('type') == 'Discussion Item'">Comment</span>
-                        deleted from 
-                        <strong tal:condition="python:context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
-                            <a tal:attributes="href item/parent_path" 
-                               tal:content="python:context.unrestrictedTraverse(item['parent_path'].split('/'), default='Content Object').Title()">
-                               Content title
-                            </a>
-                        </strong>
-                        <strong tal:condition="python:not context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
-                            content that no longer exists
-                        </strong>
-                    </p>
+    <div class="container-fluid px-0">
+        <tal:item define="item view/get_item;
+                         form_context nocall:context">
+            <!-- Item not found message -->
+            <div tal:condition="not:item" class="card shadow border-danger mb-4">
+                <div class="card-header bg-danger text-white">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <span i18n:translate="">Item Not Found</span>
                 </div>
-            </tal:comment-info>
-            
-            <!-- Regular content information -->
-            <div class="documentDescription" 
-                 tal:condition="python:item.get('type') not in ('Discussion Item', 'CommentTree')"
-                 i18n:translate="">
-                Deleted item information
+                <div class="card-body p-4 text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-search text-danger mb-3" style="font-size: 3rem;"></i>
+                        <h2 i18n:translate="">The requested item was not found</h2>
+                        <p class="text-muted" i18n:translate="">
+                            The requested item was not found in the recycle bin. It may have been already restored or deleted.
+                        </p>
+                    </div>
+                    <a tal:attributes="href string:${context/absolute_url}/@@recyclebin" 
+                       class="btn btn-primary" i18n:translate="">
+                        <i class="fas fa-arrow-left me-2"></i> Return to recycle bin
+                    </a>
+                </div>
             </div>
             
-            <!-- Item metadata -->
-            <table class="listing">
-                <tbody>
-                    <tr>
-                        <th i18n:translate="">Original ID</th>
-                        <td tal:content="item/id">ID</td>
-                    </tr>
-                    <tr>
-                        <th i18n:translate="">Original Path</th>
-                        <td tal:content="item/path">Path</td>
-                    </tr>
-                    <tr>
-                        <th i18n:translate="">Parent Path</th>
-                        <td tal:content="item/parent_path">Parent</td>
-                    </tr>
-                    <tr>
-                        <th i18n:translate="">Deletion Date</th>
-                        <td tal:content="python:view.format_date(item['deletion_date'])">Date</td>
-                    </tr>
-                    
-                    <!-- Comment-specific fields -->
-                    <tal:comment-fields condition="python:item.get('type') == 'Discussion Item'">
-                        <tr tal:condition="python:getattr(item['object'], 'text', None)">
-                            <th i18n:translate="">Comment Text</th>
-                            <td tal:content="structure python:item['object'].getText()">Comment text</td>
-                        </tr>
-                        <tr tal:condition="python:getattr(item['object'], 'author_name', None) or getattr(item['object'], 'author_username', None)">
-                            <th i18n:translate="">Comment Author</th>
-                            <td tal:content="python:item['object'].author_name or item['object'].author_username">Author</td>
-                        </tr>
-                    </tal:comment-fields>
-                    
-                    <!-- Collection/folder children count -->
-                    <tr tal:condition="python:'children_count' in item">
-                        <th i18n:translate="">Number of Items</th>
-                        <td tal:content="item/children_count">Count</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Folder contents section -->
-            <tal:folder-contents define="children view/get_children" condition="children">
-                <div class="folder-contents pat-autotoc autotabs">
-                    <h2 i18n:translate="">Folder Contents</h2>
-                    <p class="discreet" i18n:translate="">
-                        These items were contained in this folder when it was deleted. 
-                        You can restore them individually to any location.
-                    </p>
-                    
-                    <table class="table table-striped listing">
-                        <thead>
-                            <tr>
-                                <th i18n:translate="">Title</th>
-                                <th i18n:translate="">Type</th>
-                                <th i18n:translate="">Original Path</th>
-                                <th i18n:translate="">Size</th>
-                                <th i18n:translate="">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr tal:repeat="child children">
-                                <td tal:content="child/title">Title</td>
-                                <td tal:content="child/type">Type</td>
-                                <td tal:content="child/path">Path</td>
-                                <td tal:content="python:view.format_size(child.get('size', 0))">Size</td>
-                                <td>
-                                    <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}"
-                                          class="d-flex align-items-center">
-                                        <input type="hidden" name="child_id" tal:attributes="value child/id" />
-                                        <div class="me-2 mb-0">
-                                            <input type="text" name="target_path" 
-                                                   tal:attributes="placeholder child/parent_path"
-                                                   title="Enter target path or leave empty to restore to original location"
-                                                   i18n:attributes="title;placeholder"
-                                                   class="form-control" style="width: 300px;" />
-                                        </div>
-                                        <input type="submit" name="restore.child" value="Restore Item" 
-                                               class="btn btn-primary"
-                                               i18n:attributes="value" />
-                                    </form>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </tal:folder-contents>
-            
-            <!-- Item restore/delete form -->
-            <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}"
-                  class="mb-4">
-                <div class="mb-3">
-                    <label for="target_container" class="form-label" i18n:translate="">Custom Restore Location</label>
-                    <div class="form-text mb-2" i18n:translate="">
-                        Specify where to restore this item. You must provide a location if the original parent 
-                        (<span tal:replace="item/parent_path" />) no longer exists. Leave blank to restore to 
-                        the original location if it still exists.
+            <!-- Item found - display details -->
+            <div tal:condition="item">
+                <!-- Header with back button -->
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="d-flex align-items-center">
+                        <a tal:attributes="href string:${context/absolute_url}/@@recyclebin" 
+                           class="btn btn-sm btn-outline-secondary me-3">
+                            <i class="fas fa-arrow-left me-1"></i>
+                            <span i18n:translate="">Back to recycle bin</span>
+                        </a>
+                        <h1 class="documentFirstHeading mb-0">
+                            <span tal:content="item/title">Title</span>
+                            <span class="badge rounded-pill bg-light text-dark border ms-2" tal:content="item/type">Content Type</span>
+                        </h1>
                     </div>
-                    <input type="text" name="form.widgets.target_container" id="form-widgets-target_container" 
-                           class="form-control" style="max-width: 500px;" />
                 </div>
                 
-                <div class="d-flex gap-2">
-                    <input class="btn btn-primary" type="submit" name="form.buttons.restore" value="Restore Item" i18n:attributes="value" />
-                    <input class="btn btn-danger" type="submit" name="form.buttons.delete" value="Permanently Delete"
-                           onclick="return confirm('Are you sure you want to permanently delete this item?');" 
-                           i18n:attributes="value" />
+                <!-- Comment-specific information -->
+                <tal:comment-info condition="python:item.get('type') in ('CommentTree', 'Discussion Item')">
+                    <div class="alert alert-info mb-4">
+                        <i class="fas fa-comment me-2"></i>
+                        <span i18n:translate="">
+                            <span tal:condition="python:item.get('type') == 'CommentTree'">Comment thread</span>
+                            <span tal:condition="python:item.get('type') == 'Discussion Item'">Comment</span>
+                            deleted from 
+                            <strong tal:condition="python:context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
+                                <a tal:attributes="href item/parent_path" 
+                                   class="alert-link"
+                                   tal:content="python:context.unrestrictedTraverse(item['parent_path'].split('/'), default='Content Object').Title()">
+                                   Content title
+                                </a>
+                            </strong>
+                            <strong tal:condition="python:not context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
+                                content that no longer exists
+                            </strong>
+                        </span>
+                    </div>
+                </tal:comment-info>
+                
+                <div class="row">
+                    <!-- Left column: Item details -->
+                    <div class="col-md-8">
+                        <div class="card shadow mb-4">
+                            <div class="card-header bg-light">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <span i18n:translate="">Item Details</span>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <th class="bg-light" width="30%" i18n:translate="">Original ID</th>
+                                                <td class="text-monospace" tal:content="item/id">ID</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-light" i18n:translate="">Original Path</th>
+                                                <td>
+                                                    <i class="fas fa-folder me-1 text-muted"></i>
+                                                    <span class="text-monospace" tal:content="item/path">Path</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-light" i18n:translate="">Parent Path</th>
+                                                <td>
+                                                    <i class="fas fa-folder-open me-1 text-muted"></i>
+                                                    <span class="text-monospace" tal:content="item/parent_path">Parent</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-light" i18n:translate="">Deletion Date</th>
+                                                <td>
+                                                    <i class="far fa-calendar-alt me-1 text-muted"></i>
+                                                    <span tal:content="python:view.format_date(item['deletion_date'])">Date</span>
+                                                </td>
+                                            </tr>
+                                            
+                                            <!-- Comment-specific fields -->
+                                            <tal:comment-fields condition="python:item.get('type') == 'Discussion Item'">
+                                                <tr tal:condition="python:getattr(item['object'], 'text', None)">
+                                                    <th class="bg-light" i18n:translate="">Comment Text</th>
+                                                    <td>
+                                                        <div class="p-3 bg-light rounded">
+                                                            <div class="text-content" tal:content="structure python:item['object'].getText()">Comment text</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr tal:condition="python:getattr(item['object'], 'author_name', None) or getattr(item['object'], 'author_username', None)">
+                                                    <th class="bg-light" i18n:translate="">Comment Author</th>
+                                                    <td>
+                                                        <i class="fas fa-user me-1 text-muted"></i>
+                                                        <span tal:content="python:item['object'].author_name or item['object'].author_username">Author</span>
+                                                    </td>
+                                                </tr>
+                                            </tal:comment-fields>
+                                            
+                                            <!-- Collection/folder children count -->
+                                            <tr tal:condition="python:'children_count' in item">
+                                                <th class="bg-light" i18n:translate="">Number of Items</th>
+                                                <td>
+                                                    <span class="badge bg-secondary me-1" tal:content="item/children_count">Count</span>
+                                                    <span i18n:translate="">contained items</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right column: Actions -->
+                    <div class="col-md-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header bg-light">
+                                <i class="fas fa-undo me-2"></i>
+                                <span i18n:translate="">Restore Item</span>
+                            </div>
+                            <div class="card-body">
+                                <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}">
+                                    <div class="mb-3">
+                                        <label for="target_container" class="form-label fw-bold" i18n:translate="">Custom Restore Location</label>
+                                        <input type="text" name="form.widgets.target_container" id="form-widgets-target_container" 
+                                               class="form-control" />
+                                        <div class="form-text">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            <span i18n:translate="">Leave blank to restore to the original location if it still exists.</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-success" type="submit" name="form.buttons.restore" i18n:translate="">
+                                            <i class="fas fa-undo me-1"></i> Restore Item
+                                        </button>
+                                        <button class="btn btn-danger" type="submit" name="form.buttons.delete"
+                                               onclick="return confirm('Are you sure you want to permanently delete this item?');" 
+                                               i18n:translate="">
+                                            <i class="fas fa-trash-alt me-1"></i> Permanently Delete
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer bg-light text-center">
+                                <div class="text-muted">
+                                    <i class="fas fa-exclamation-circle me-1"></i>
+                                    <small i18n:translate="">Deleted on:</small>
+                                    <span tal:content="python:view.format_date(item['deletion_date'])">Date</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </form>
-            
-            <p class="mt-4">
-                <a tal:attributes="href string:${context/absolute_url}/@@recyclebin" 
-                   class="btn btn-secondary btn-sm"
-                   i18n:translate="">Return to recycle bin</a>
-            </p>
-        </div>
-    </tal:item>
+                
+                <!-- Folder contents section -->
+                <tal:folder-contents define="children view/get_children" condition="children">
+                    <div class="card shadow mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-folder-open me-2"></i>
+                                    <span i18n:translate="">Folder Contents</span>
+                                </div>
+                                <span class="badge bg-secondary" tal:content="python:len(children)">0</span>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="text-muted p-3 bg-light border-bottom">
+                                <i class="fas fa-info-circle me-1"></i>
+                                <span i18n:translate="">
+                                    These items were contained in this folder when it was deleted. 
+                                    You can restore them individually to any location.
+                                </span>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th i18n:translate="">Title</th>
+                                            <th i18n:translate="">Type</th>
+                                            <th i18n:translate="">Original Path</th>
+                                            <th i18n:translate="">Size</th>
+                                            <th i18n:translate="">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr tal:repeat="child children">
+                                            <td>
+                                                <span tal:content="child/title">Title</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge rounded-pill bg-light text-dark border" tal:content="child/type">Type</span>
+                                            </td>
+                                            <td class="text-monospace small">
+                                                <span tal:content="child/path">Path</span>
+                                            </td>
+                                            <td>
+                                                <span tal:content="python:view.format_size(child.get('size', 0))">Size</span>
+                                            </td>
+                                            <td>
+                                                <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}"
+                                                      class="row g-2">
+                                                    <input type="hidden" name="child_id" tal:attributes="value child/id" />
+                                                    <div class="col-8">
+                                                        <input type="text" name="target_path" 
+                                                               tal:attributes="placeholder child/parent_path"
+                                                               title="Enter target path or leave empty to restore to original location"
+                                                               i18n:attributes="title;placeholder"
+                                                               class="form-control form-control-sm" />
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <button type="submit" name="restore.child" 
+                                                                class="btn btn-sm btn-success w-100"
+                                                                i18n:translate="">
+                                                            <i class="fas fa-undo me-1"></i> Restore
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </tal:folder-contents>
+            </div>
+        </tal:item>
+    </div>
 </metal:main>
 
 </body>
