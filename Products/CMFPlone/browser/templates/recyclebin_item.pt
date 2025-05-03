@@ -11,7 +11,7 @@
         <tal:item define="item view/get_item;
                          form_context nocall:context">
             <!-- Item not found message -->
-            <div tal:condition="not:item" class="card shadow border-danger mb-4">
+            <div tal:condition="not:item" class="card border-danger mb-4">
                 <div class="card-header bg-danger text-white">
                     <i class="fas fa-exclamation-triangle me-2"></i>
                     <span i18n:translate="">Item Not Found</span>
@@ -73,7 +73,7 @@
                 <div class="row">
                     <!-- Left column: Item details -->
                     <div class="col-md-8">
-                        <div class="card shadow mb-4">
+                        <div class="card mb-4">
                             <div class="card-header bg-light">
                                 <i class="fas fa-info-circle me-2"></i>
                                 <span i18n:translate="">Item Details</span>
@@ -144,7 +144,7 @@
                     
                     <!-- Right column: Actions -->
                     <div class="col-md-4">
-                        <div class="card shadow mb-4">
+                        <div class="card mb-4">
                             <div class="card-header bg-light">
                                 <i class="fas fa-undo me-2"></i>
                                 <span i18n:translate="">Restore Item</span>
@@ -162,7 +162,7 @@
                                     </div>
                                     
                                     <div class="d-grid gap-2">
-                                        <button class="btn btn-success" type="submit" name="form.buttons.restore" i18n:translate="">
+                                        <button class="btn btn-primary" type="submit" name="form.buttons.restore" i18n:translate="">
                                             <i class="fas fa-undo me-1"></i> Restore Item
                                         </button>
                                         <button class="btn btn-danger" type="submit" name="form.buttons.delete"
@@ -186,7 +186,7 @@
                 
                 <!-- Folder contents section -->
                 <tal:folder-contents define="children view/get_children" condition="children">
-                    <div class="card shadow mb-4">
+                    <div class="card mb-4">
                         <div class="card-header bg-light">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
@@ -239,11 +239,13 @@
                                                                tal:attributes="placeholder child/parent_path"
                                                                title="Enter target path or leave empty to restore to original location"
                                                                i18n:attributes="title;placeholder"
-                                                               class="form-control form-control-sm" />
+                                                               class="form-control form-control-sm target-path-input"
+                                                               required="required" />
                                                     </div>
                                                     <div class="col-4">
                                                         <button type="submit" name="restore.child" 
-                                                                class="btn btn-sm btn-success w-100"
+                                                                class="btn btn-sm btn-success w-100 restore-child-button"
+                                                                disabled="disabled"
                                                                 i18n:translate="">
                                                             <i class="fas fa-undo me-1"></i> Restore
                                                         </button>
@@ -261,6 +263,34 @@
         </tal:item>
     </div>
 </metal:main>
+
+<metal:js fill-slot="javascript_head_slot">
+<script>
+  // Confirmation message when emptying recycle bin
+  const recyclebinEmptyMessage = 'Are you sure you want to permanently delete all items in the recycle bin?';
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add validation for child restore forms
+    const targetPathInputs = document.querySelectorAll('.target-path-input');
+    
+    targetPathInputs.forEach(function(input) {
+      // Get the corresponding restore button
+      const form = input.closest('form');
+      const restoreButton = form ? form.querySelector('.restore-child-button') : null;
+      
+      if (restoreButton) {
+        // Initial state - check if input has value
+        restoreButton.disabled = !input.value.trim();
+        
+        // Add input event listener to update button state
+        input.addEventListener('input', function() {
+          restoreButton.disabled = !input.value.trim();
+        });
+      }
+    });
+  });
+</script>
+</metal:js>
 
 </body>
 </html>
