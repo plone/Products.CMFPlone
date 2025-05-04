@@ -573,14 +573,14 @@ class RecycleBinItemView(BrowserView):
                 children.append(child_info)
             return children
         return []
-    
+
     def get_comment_children(self):
         """Get comments from a CommentTree item"""
         item = self.get_item()
         if item and item.get("type") == "CommentTree":
             comment_tree = item.get("object", {})
             comments = comment_tree.get("comments", [])
-            
+
             # Process comments to build a list for display
             comment_list = []
             for comment_obj, comment_path in comments:
@@ -588,16 +588,19 @@ class RecycleBinItemView(BrowserView):
                 comment_data = {
                     "id": getattr(comment_obj, "comment_id", ""),
                     "text": getattr(comment_obj, "text", ""),
-                    "author": getattr(comment_obj, "author_name", None) or getattr(comment_obj, "author_username", "Anonymous"),
+                    "author": getattr(comment_obj, "author_name", None)
+                    or getattr(comment_obj, "author_username", "Anonymous"),
                     "in_reply_to": getattr(comment_obj, "in_reply_to", None),
                     "path": comment_path,
                     "creation_date": getattr(comment_obj, "creation_date", None),
-                    "modification_date": getattr(comment_obj, "modification_date", None),
+                    "modification_date": getattr(
+                        comment_obj, "modification_date", None
+                    ),
                     "title": f"Comment by {getattr(comment_obj, 'author_name', None) or getattr(comment_obj, 'author_username', 'Anonymous')}",
                     "size": len(getattr(comment_obj, "text", "")),
                 }
                 comment_list.append(comment_data)
-                
+
             return comment_list
         return []
 
