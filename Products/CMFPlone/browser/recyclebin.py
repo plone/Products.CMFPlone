@@ -41,7 +41,7 @@ def format_size(size_bytes):
 
 
 class IRecycleBinForm(Interface):
-    """Schema for the Recycle Bin form"""
+    """Schema for the recycle bin form"""
 
     selected_items = schema.List(
         title="Selected Items",
@@ -85,7 +85,7 @@ class RecycleBinForm(form.Form):
         message = f"{restored_count} item{'s' if restored_count != 1 else ''} restored successfully."
         IStatusMessage(self.request).addStatusMessage(message, type="info")
 
-    @button.buttonAndHandler("Delete Selected", name="delete")
+    @button.buttonAndHandler("Delete selected", name="delete")
     def handle_delete(self, action):
         """Delete selected items handler"""
         data, errors = self.extractData()
@@ -160,16 +160,16 @@ class RecycleBinView(BrowserView):
     def get_sort_labels(self):
         """Get a dictionary of human-readable sort option labels"""
         return {
-            "date_desc": "Newest First (default)",
-            "date_asc": "Oldest First",
+            "date_desc": "Newest first (default)",
+            "date_asc": "Oldest first",
             "title_asc": "Title (A-Z)",
             "title_desc": "Title (Z-A)",
             "type_asc": "Type (A-Z)",
             "type_desc": "Type (Z-A)",
             "path_asc": "Path (A-Z)",
             "path_desc": "Path (Z-A)",
-            "size_asc": "Size (Smallest First)",
-            "size_desc": "Size (Largest First)",
+            "size_asc": "Size (smallest first)",
+            "size_desc": "Size (largest first)",
         }
 
     def get_clear_url(self, param_to_remove):
@@ -365,7 +365,7 @@ class IRecycleBinItemForm(Interface):
     """Schema for the recycle bin item form"""
 
     target_container = schema.TextLine(
-        title="Target Container",
+        title="Target container",
         description="Path to container where the item should be restored (optional)",
         required=False,
     )
@@ -385,7 +385,7 @@ class RecycleBinItemForm(form.Form):
         if self.item_id:
             self.item = self.recycle_bin.get_item(self.item_id)
 
-    @button.buttonAndHandler("Restore Item", name="restore")
+    @button.buttonAndHandler("Restore item", name="restore")
     def handle_restore(self, action):
         """Restore this item"""
         data, errors = self.extractData()
@@ -420,7 +420,7 @@ class RecycleBinItemForm(form.Form):
                 f"{self.context.absolute_url()}/@@recyclebin"
             )
 
-    @button.buttonAndHandler("Permanently Delete", name="delete")
+    @button.buttonAndHandler("Permanently delete", name="delete")
     def handle_delete(self, action):
         """Permanently delete this item"""
         data, errors = self.extractData()
@@ -481,7 +481,7 @@ class RecycleBinItemView(BrowserView):
         item = self.get_item()
         if item is None:
             logger.warning(
-                f"No item found with ID: {self.item_id}, redirecting to main recyclebin view"
+                f"No item found with ID: {self.item_id}, redirecting to main `recyclebin` view"
             )
             self.request.response.redirect(
                 f"{self.context.absolute_url()}/@@recyclebin"
@@ -561,7 +561,7 @@ class RecycleBinItemView(BrowserView):
         return item
 
     def get_children(self):
-        """Get the children of this item if it's a folder/collection"""
+        """Get the children of this item if it's a folder or collection"""
         item = self.get_item()
         if item and "children" in item:
             children = []

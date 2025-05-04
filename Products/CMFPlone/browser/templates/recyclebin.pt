@@ -14,9 +14,9 @@
                 <i class="fas fa-recycle text-success" style="font-size: 2rem;"></i>
             </div>
             <div>
-                <h1 class="documentFirstHeading mb-0" i18n:translate="">Recycle Bin</h1>
+                <h1 class="documentFirstHeading mb-0" i18n:translate="">Recycle bin</h1>
                 <div class="documentDescription text-muted" i18n:translate="">
-                    Items deleted from this site are stored here and can be restored or permanently deleted.
+                    Items deleted from this site are stored here, and can be restored or permanently deleted.
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
                     <div class="row g-3">
                         <!-- Search field -->
                         <div class="col-md-6">
-                            <label for="search-query" class="form-label" i18n:translate="">Search Items</label>
+                            <label for="search-query" class="form-label" i18n:translate="">Search items</label>
                             <div class="input-group">
                                 <input type="text" name="search_query" id="search-query" 
                                        tal:attributes="value request/search_query|nothing"
@@ -54,9 +54,9 @@
                                 <div class="col-sm-6" 
                                      tal:define="all_types python:view.get_available_types(view.get_items());
                                                 current_filter request/filter_type|nothing">
-                                    <label for="filter-type" class="form-label" i18n:translate="">Content Type</label>
+                                    <label for="filter-type" class="form-label" i18n:translate="">Content type</label>
                                     <select id="filter-type" name="filter_type" class="form-select" onchange="this.form.submit()">
-                                        <option value="" i18n:translate="">All Content Types</option>
+                                        <option value="" i18n:translate="">All content types</option>
                                         <option tal:repeat="type_name all_types"
                                                 tal:attributes="value type_name;
                                                                 selected python:current_filter == type_name"
@@ -66,14 +66,14 @@
                                 
                                 <!-- Sort Order -->
                                 <div class="col-sm-6" tal:define="current_sort request/sort_by|string:date_desc">
-                                    <label for="sort-by" class="form-label" i18n:translate="">Sort By</label>
+                                    <label for="sort-by" class="form-label" i18n:translate="">Sort by</label>
                                     <select id="sort-by" name="sort_by" class="form-select" onchange="this.form.submit()">
                                         <option value="date_desc" 
                                                 tal:attributes="selected python:current_sort == 'date_desc'"
-                                                i18n:translate="">Newest First</option>
+                                                i18n:translate="">Newest first</option>
                                         <option value="date_asc" 
                                                 tal:attributes="selected python:current_sort == 'date_asc'"
-                                                i18n:translate="">Oldest First</option>
+                                                i18n:translate="">Oldest first</option>
                                         <option value="title_asc" 
                                                 tal:attributes="selected python:current_sort == 'title_asc'"
                                                 i18n:translate="">Title (A-Z)</option>
@@ -88,10 +88,10 @@
                                                 i18n:translate="">Type (Z-A)</option>
                                         <option value="size_asc" 
                                                 tal:attributes="selected python:current_sort == 'size_asc'"
-                                                i18n:translate="">Size (Smallest First)</option>
+                                                i18n:translate="">Size (smallest first)</option>
                                         <option value="size_desc" 
                                                 tal:attributes="selected python:current_sort == 'size_desc'"
-                                                i18n:translate="">Size (Largest First)</option>
+                                                i18n:translate="">Size (largest first)</option>
                                     </select>
                                 </div>
                             </div>
@@ -145,7 +145,7 @@
             
             <a tal:attributes="href string:${context/absolute_url}/@@recyclebin"
                class="btn btn-sm btn-outline-secondary ms-auto" i18n:translate="">
-                <i class="fas fa-times me-1"></i> Clear All
+                <i class="fas fa-times me-1"></i> Clear all
             </a>
         </div>
         
@@ -153,7 +153,7 @@
         <div class="card mb-4">
             <div class="card-header bg-light">
                 <div class="d-flex align-items-center justify-content-between">
-                    <div><i class="fas fa-trash me-2"></i> <span i18n:translate="">Deleted Items</span></div>
+                    <div><i class="fas fa-trash me-2"></i> <span i18n:translate="">Deleted items</span></div>
                     <div tal:define="items view/get_items">
                         <span class="badge bg-secondary" tal:content="python:len(items)">0</span>
                         <span i18n:translate="">items</span>
@@ -180,8 +180,8 @@
                                     </th>
                                     <th i18n:translate="">Title</th>
                                     <th i18n:translate="">Type</th>
-                                    <th i18n:translate="">Original Path</th>
-                                    <th i18n:translate="">Deletion Date</th>
+                                    <th i18n:translate="">Original path</th>
+                                    <th i18n:translate="">Deletion date</th>
                                     <th i18n:translate="">Size</th>
                                 </tr>
                             </thead>
@@ -219,7 +219,7 @@
                                         <div tal:condition="python:item.get('type') == 'Discussion Item' and item.get('content_title')"
                                              class="text-muted small">
                                             <i class="fas fa-comment me-1"></i> Comment on: 
-                                            <span tal:content="item/content_title">Content Title</span>
+                                            <span tal:content="item/content_title">Content title</span>
                                         </div>
                                         
                                         <!-- Show matching child items when search found results in folder contents -->
@@ -234,7 +234,7 @@
                                             <ul class="list-unstyled ps-3 mt-1 mb-0" style="font-size: 0.85em; line-height: 1.4;">
                                                 <li tal:repeat="child python:item.get('matching_children')[:3]" class="text-truncate">
                                                     <i class="fas fa-file me-1"></i>
-                                                    <span tal:content="child/title">Child Title</span>
+                                                    <span tal:content="child/title">Child title</span>
                                                     <span class="text-muted">
                                                         (<span tal:content="child/type">Type</span>)
                                                     </span>
@@ -257,7 +257,7 @@
                                         <div tal:condition="python:item.get('type') == 'Discussion Item' and item.get('content_path')"
                                              class="text-muted smaller mt-1">
                                             <i class="fas fa-link me-1"></i> Content: 
-                                            <span tal:content="item/content_path">Content Path</span>
+                                            <span tal:content="item/content_path">Content path</span>
                                         </div>
                                     </td>
                                     <td>
@@ -278,15 +278,15 @@
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                         <div class="btn-group" role="group">
                             <button type="submit" name="form.buttons.restore" class="btn btn-primary" i18n:attributes="value">
-                                <i class="fas fa-undo me-1"></i> Restore Selected
+                                <i class="fas fa-undo me-1"></i> Restore selected
                             </button>
                             <button type="submit" name="form.buttons.delete" class="btn btn-danger" i18n:attributes="value">
-                                <i class="fas fa-trash-alt me-1"></i> Delete Selected
+                                <i class="fas fa-trash-alt me-1"></i> Delete selected
                             </button>
                         </div>
                         <button type="submit" name="form.buttons.empty" class="btn btn-outline-danger" 
                                 onclick="return confirm(recyclebinEmptyMessage);" i18n:attributes="value">
-                            <i class="fas fa-trash me-1"></i> Empty Recycle Bin
+                            <i class="fas fa-trash me-1"></i> Empty recycle bin
                         </button>
                     </div>
                 </div>
