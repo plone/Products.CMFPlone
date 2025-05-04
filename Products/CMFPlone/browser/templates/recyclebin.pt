@@ -6,6 +6,12 @@
       i18n:domain="plone">
 <body>
 
+<metal:override fill-slot="top_slot">
+  <tal:block define="dummy python:request.set('disable_border', 1);
+                     dummy python:request.set('disable_plone.leftcolumn', 1);
+                     dummy python:request.set('disable_plone.rightcolumn', 1)" />
+</metal:override>
+
 <metal:main fill-slot="main">
     <div class="container-fluid px-0">
         <!-- Header section with icon -->
