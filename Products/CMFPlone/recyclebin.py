@@ -903,7 +903,7 @@ class RecycleBin:
 
             if items_purged:
                 logger.info(
-                    f"Purged {items_purged} oldest items due to size constraints"
+                    f"Purged {items_purged} oldest item{'s' if items_purged != 1 else ''} due to size constraints"
                 )
 
         except Exception as e:

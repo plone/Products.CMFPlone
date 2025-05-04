@@ -274,7 +274,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
                                     <i class="fas fa-comments me-2"></i>
-                                    <span i18n:translate="">Comment Thread Contents</span>
+                                    <span i18n:translate="">Comment thread contents</span>
                                 </div>
                                 <span class="badge bg-secondary" tal:content="python:len(comments)">0</span>
                             </div>
@@ -293,8 +293,8 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th i18n:translate="">Author</th>
-                                            <th i18n:translate="">Comment Text</th>
-                                            <th i18n:translate="">In Reply To</th>
+                                            <th i18n:translate="">Comment text</th>
+                                            <th i18n:translate="">In reply to</th>
                                             <th i18n:translate="">Created</th>
                                         </tr>
                                     </thead>
