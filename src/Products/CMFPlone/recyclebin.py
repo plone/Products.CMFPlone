@@ -643,7 +643,9 @@ class RecycleBin:
                 f"Processing comment with ID: {original_id}, in_reply_to: {original_in_reply_to}"
             )
 
-            comment_obj.original_id = original_id  # Store original ID for future reference            
+            comment_obj.original_id = (
+                original_id  # Store original ID for future reference
+            )
 
             # Store in dictionary for quick access
             comment_dict[original_id] = {
@@ -755,23 +757,9 @@ class RecycleBin:
             # something is wrong with the parent references
             if restored_in_pass == 0 and remaining_comments:
                 # Make any remaining comments top-level comments
-                for comment_id, comment_data in list(remaining_comments.items()):
-                    try:
-                        comment_obj = comment_data["comment"]
-                        comment_obj.in_reply_to = None  # Make it a top-level comment
-
-                        # Store original ID for future reference
-                        if not hasattr(comment_obj, "original_id"):
-                            comment_obj.original_id = comment_id
-
-                        new_id = conversation.addComment(comment_obj)
-                        id_mapping[comment_id] = new_id
-                        del remaining_comments[comment_id]
-                        restored_in_pass += 1
-                    except Exception as e:
-                        logger.error(
-                            f"Error forcing comment {comment_id} as top-level: {e}"
-                        )
+                restored_in_pass += self._handle_orphaned_comments(
+                    remaining_comments, conversation, id_mapping
+                )
 
                 # Break out of the loop since we've tried our best
                 break
@@ -789,7 +777,7 @@ class RecycleBin:
         # Return the root comment as the result
         return conversation.get(new_root_id) if new_root_id in conversation else None
 
-    def purge_item(self, item_id):
+    def purge_item(self, item_id) -> bool:
         """Permanently delete an item from the recycle bin
 
         Args:
@@ -844,12 +832,13 @@ class RecycleBin:
             cutoff_date = datetime.now() - timedelta(days=retention_days)
             purge_count = 0
 
-            # Use the sorted index for efficient date-based queries
-            # Iterate through items from oldest to newest
+            # Use sorted index for efficient date-based removal (oldest first)
             for item_id, data in list(
                 self.storage.get_items_sorted_by_date(reverse=False)
             ):
                 deletion_date = data.get("deletion_date")
+
+                # If item is older than retention period, purge it
                 if deletion_date and deletion_date < cutoff_date:
                     if self.purge_item(item_id):
                         purge_count += 1
@@ -857,29 +846,36 @@ class RecycleBin:
                             f"Item {item_id} purged due to retention policy (deleted on {deletion_date})"
                         )
                 else:
-                    # Since items are sorted by date, once we find one that's
-                    # newer than the cutoff date, we can stop checking
+                    # Since items are sorted by date, once we find an item newer than
+                    # the cutoff date, we can stop checking
                     break
 
             return purge_count
+
         except Exception as e:
             logger.error(f"Error purging expired items: {str(e)}")
             return 0
 
     def _check_size_limits(self):
-        """Check if the recycle bin exceeds size limits and purge oldest items if needed"""
+        """Check if the recycle bin exceeds size limits and purge oldest items if needed
+
+        This method enforces the maximum size limit for the recycle bin by removing
+        the oldest items when the limit is exceeded.
+        """
         try:
             settings = self._get_settings()
-            max_size_bytes = settings.maximum_size * 1024 * 1024  # Convert MB to bytes
+            max_size_mb = settings.maximum_size
 
             # If max_size is 0, size limiting is disabled
-            if max_size_bytes <= 0:
+            if max_size_mb <= 0:
+                logger.debug("Size limiting is disabled (maximum_size = 0)")
                 return
 
+            max_size_bytes = max_size_mb * 1024 * 1024  # Convert MB to bytes
             total_size = 0
             items_by_date = []
 
-            # Calculate total size using items sorted by date (oldest first)
+            # Get items sorted by date (oldest first) and calculate total size
             for item_id, data in self.storage.get_items_sorted_by_date(reverse=False):
                 size = data.get("size", 0)
                 total_size += size
@@ -889,17 +885,60 @@ class RecycleBin:
             if total_size <= max_size_bytes:
                 return
 
+            # Log the size excess
             logger.info(
-                f"Recycle bin size ({total_size / (1024 * 1024):.2f} MB) exceeds limit ({max_size_bytes / (1024 * 1024):.2f} MB)"
+                f"Recycle bin size ({total_size / (1024 * 1024):.2f} MB) exceeds limit ({max_size_mb} MB)"
             )
 
-            # Remove oldest items if size limit is exceeded
+            # Remove oldest items until we're under the limit
+            items_purged = 0
             for item_id, size in items_by_date:
+                # Stop once we're under the limit
                 if total_size <= max_size_bytes:
                     break
 
                 if self.purge_item(item_id):
                     total_size -= size
-                    logger.info(f"Purged item {item_id} due to size constraints")
+                    items_purged += 1
+
+            if items_purged:
+                logger.info(
+                    f"Purged {items_purged} oldest items due to size constraints"
+                )
+
         except Exception as e:
-            logger.error(f"Error checking size limits: {str(e)}")
+            logger.error(f"Error enforcing size limits: {str(e)}")
+
+    def _handle_orphaned_comments(self, remaining_comments, conversation, id_mapping):
+        """Handle comments whose parents cannot be found
+
+        Makes orphaned comments top-level comments rather than losing them.
+
+        Args:
+            remaining_comments: Dictionary of remaining comments to process
+            conversation: The conversation container
+            id_mapping: Mapping of original IDs to new IDs
+        """
+        orphaned_count = 0
+        for comment_id, comment_data in list(remaining_comments.items()):
+            try:
+                comment_obj = comment_data["comment"]
+                # Make it a top-level comment
+                comment_obj.in_reply_to = None
+
+                # Ensure original_id is preserved
+                if not hasattr(comment_obj, "original_id"):
+                    comment_obj.original_id = comment_id
+
+                # Add to conversation
+                new_id = conversation.addComment(comment_obj)
+                id_mapping[comment_id] = new_id
+                del remaining_comments[comment_id]
+                orphaned_count += 1
+                logger.info(
+                    f"Restored orphaned comment {comment_id} as top-level comment"
+                )
+            except Exception as e:
+                logger.error(f"Error restoring orphaned comment {comment_id}: {str(e)}")
+
+        return orphaned_count
