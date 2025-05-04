@@ -643,9 +643,7 @@ class RecycleBin:
                 f"Processing comment with ID: {original_id}, in_reply_to: {original_in_reply_to}"
             )
 
-            # Mark with original ID for future reference
-            if not hasattr(comment_obj, "original_id"):
-                comment_obj.original_id = original_id
+            comment_obj.original_id = original_id  # Store original ID for future reference            
 
             # Store in dictionary for quick access
             comment_dict[original_id] = {

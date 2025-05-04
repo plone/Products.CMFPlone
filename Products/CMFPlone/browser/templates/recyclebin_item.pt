@@ -259,6 +259,68 @@
                         </div>
                     </div>
                 </tal:folder-contents>
+                
+                <!-- Comments tree section -->
+                <tal:comments-tree define="comments view/get_comment_children" 
+                                   condition="python:item.get('type') == 'CommentTree' and comments">
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-comments me-2"></i>
+                                    <span i18n:translate="">Comment Thread Contents</span>
+                                </div>
+                                <span class="badge bg-secondary" tal:content="python:len(comments)">0</span>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="text-muted p-3 bg-light border-bottom">
+                                <i class="fas fa-info-circle me-1"></i>
+                                <span i18n:translate="">
+                                    This comment thread contains the following comments.
+                                    All comments will be restored together with their reply relationships.
+                                </span>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th i18n:translate="">Author</th>
+                                            <th i18n:translate="">Comment Text</th>
+                                            <th i18n:translate="">In Reply To</th>
+                                            <th i18n:translate="">Created</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr tal:repeat="comment comments">
+                                            <td>
+                                                <i class="fas fa-user me-1"></i>
+                                                <span tal:content="comment/author">Author</span>
+                                            </td>
+                                            <td>
+                                                <div class="text-truncate" style="max-width: 300px;" tal:content="comment/text">Comment text</div>
+                                            </td>
+                                            <td>
+                                                <span tal:condition="comment/in_reply_to">
+                                                    <i class="fas fa-reply me-1"></i>
+                                                    <span tal:content="comment/in_reply_to">1234</span>
+                                                </span>
+                                                <span tal:condition="not:comment/in_reply_to" class="text-muted">
+                                                    Top level comment
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <i class="far fa-clock me-1"></i>
+                                                <span tal:content="python:view.format_date(comment.get('creation_date'))">Date</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </tal:comments-tree>
             </div>
         </tal:item>
     </div>
