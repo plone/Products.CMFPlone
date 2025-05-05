@@ -19,20 +19,18 @@
             <!-- Item not found message -->
             <div tal:condition="not:item" class="card border-danger mb-4">
                 <div class="card-header bg-danger text-white">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    <span i18n:translate="">Item not found</span>
+                    <span class="ms-2" i18n:translate="">Item not found</span>
                 </div>
                 <div class="card-body p-4 text-center">
                     <div class="mb-4">
-                        <i class="fas fa-search text-danger mb-3" style="font-size: 3rem;"></i>
-                        <h2 i18n:translate="">The requested item was not found</h2>
+                        <h2 class="mt-3" i18n:translate="">The requested item was not found</h2>
                         <p class="text-muted" i18n:translate="">
                             The requested item was not found in the recycle bin. It may have been already restored or deleted.
                         </p>
                     </div>
                     <a tal:attributes="href string:${context/absolute_url}/@@recyclebin" 
                        class="btn btn-primary" i18n:translate="">
-                        <i class="fas fa-arrow-left me-2"></i> Return to recycle bin
+                        <span class="ms-1">Return to recycle bin</span>
                     </a>
                 </div>
             </div>
@@ -44,8 +42,7 @@
                     <div class="d-flex align-items-center">
                         <a tal:attributes="href string:${context/absolute_url}/@@recyclebin" 
                            class="btn btn-sm btn-outline-secondary me-3">
-                            <i class="fas fa-arrow-left me-1"></i>
-                            <span i18n:translate="">Back to recycle bin</span>
+                            <span class="ms-1" i18n:translate="">Back to recycle bin</span>
                         </a>
                         <h1 class="documentFirstHeading mb-0">
                             <span tal:content="item/title">Title</span>
@@ -57,8 +54,7 @@
                 <!-- Comment-specific information -->
                 <tal:comment-info condition="python:item.get('type') in ('CommentTree', 'Discussion Item')">
                     <div class="alert alert-info mb-4">
-                        <i class="fas fa-comment me-2"></i>
-                        <span i18n:translate="">
+                        <span class="ms-2" i18n:translate="">
                             <span tal:condition="python:item.get('type') == 'CommentTree'">Comment thread</span>
                             <span tal:condition="python:item.get('type') == 'Discussion Item'">Comment</span>
                             deleted from 
@@ -81,8 +77,7 @@
                     <div class="col-md-8">
                         <div class="card mb-4">
                             <div class="card-header bg-light">
-                                <i class="fas fa-info-circle me-2"></i>
-                                <span i18n:translate="">Item details</span>
+                                <span class="ms-2" i18n:translate="">Item details</span>
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
@@ -95,22 +90,19 @@
                                             <tr>
                                                 <th class="bg-light" i18n:translate="">Original path</th>
                                                 <td>
-                                                    <i class="fas fa-folder me-1 text-muted"></i>
-                                                    <span class="text-monospace" tal:content="item/path">Path</span>
+                                                    <span class="text-monospace ms-1" tal:content="item/path">Path</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th class="bg-light" i18n:translate="">Parent path</th>
                                                 <td>
-                                                    <i class="fas fa-folder-open me-1 text-muted"></i>
-                                                    <span class="text-monospace" tal:content="item/parent_path">Parent</span>
+                                                    <span class="text-monospace ms-1" tal:content="item/parent_path">Parent</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th class="bg-light" i18n:translate="">Deletion date</th>
                                                 <td>
-                                                    <i class="far fa-calendar-alt me-1 text-muted"></i>
-                                                    <span tal:content="python:view.format_date(item['deletion_date'])">Date</span>
+                                                    <span class="ms-1" tal:content="python:view.format_date(item['deletion_date'])">Date</span>
                                                 </td>
                                             </tr>
                                             
@@ -127,8 +119,7 @@
                                                 <tr tal:condition="python:getattr(item['object'], 'author_name', None) or getattr(item['object'], 'author_username', None)">
                                                     <th class="bg-light" i18n:translate="">Comment author</th>
                                                     <td>
-                                                        <i class="fas fa-user me-1 text-muted"></i>
-                                                        <span tal:content="python:item['object'].author_name or item['object'].author_username">Author</span>
+                                                        <span class="ms-1" tal:content="python:item['object'].author_name or item['object'].author_username">Author</span>
                                                     </td>
                                                 </tr>
                                             </tal:comment-fields>
@@ -152,8 +143,7 @@
                     <div class="col-md-4">
                         <div class="card mb-4">
                             <div class="card-header bg-light">
-                                <i class="fas fa-undo me-2"></i>
-                                <span i18n:translate="">Restore item</span>
+                                <span class="ms-2" i18n:translate="">Restore item</span>
                             </div>
                             <div class="card-body">
                                 <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}">
@@ -162,27 +152,25 @@
                                         <input type="text" name="form.widgets.target_container" id="form-widgets-target_container" 
                                                class="form-control" />
                                         <div class="form-text">
-                                            <i class="fas fa-info-circle me-1"></i>
-                                            <span i18n:translate="">Leave blank to restore to the original location if it still exists.</span>
+                                            <span class="ms-1" i18n:translate="">Leave blank to restore to the original location if it still exists.</span>
                                         </div>
                                     </div>
                                     
                                     <div class="d-grid gap-2">
                                         <button class="btn btn-primary" type="submit" name="form.buttons.restore" i18n:translate="">
-                                            <i class="fas fa-undo me-1"></i> Restore item
+                                            <span class="ms-1">Restore item</span>
                                         </button>
                                         <button class="btn btn-danger" type="submit" name="form.buttons.delete"
                                                onclick="return confirm('Are you sure you want to permanently delete this item?');" 
                                                i18n:translate="">
-                                            <i class="fas fa-trash-alt me-1"></i> Permanently delete
+                                            <span class="ms-1">Permanently delete</span>
                                         </button>
                                     </div>
                                 </form>
                             </div>
                             <div class="card-footer bg-light text-center">
                                 <div class="text-muted">
-                                    <i class="fas fa-exclamation-circle me-1"></i>
-                                    <small i18n:translate="">Deleted on:</small>
+                                    <small class="ms-1" i18n:translate="">Deleted on:</small>
                                     <span tal:content="python:view.format_date(item['deletion_date'])">date</span>
                                 </div>
                             </div>
@@ -196,16 +184,14 @@
                         <div class="card-header bg-light">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <i class="fas fa-folder-open me-2"></i>
-                                    <span i18n:translate="">Folder contents</span>
+                                    <span class="ms-2" i18n:translate="">Folder contents</span>
                                 </div>
                                 <span class="badge bg-secondary" tal:content="python:len(children)">0</span>
                             </div>
                         </div>
                         <div class="card-body p-0">
                             <div class="text-muted p-3 bg-light border-bottom">
-                                <i class="fas fa-info-circle me-1"></i>
-                                <span i18n:translate="">
+                                <span class="ms-1" i18n:translate="">
                                     These items were contained in this folder when it was deleted. 
                                     You can restore them individually to any location.
                                 </span>
@@ -253,7 +239,7 @@
                                                                 class="btn btn-sm btn-success w-100 restore-child-button"
                                                                 disabled="disabled"
                                                                 i18n:translate="">
-                                                            <i class="fas fa-undo me-1"></i> Restore
+                                                            <span class="ms-1">Restore</span>
                                                         </button>
                                                     </div>
                                                 </form>
@@ -273,16 +259,14 @@
                         <div class="card-header bg-light">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <i class="fas fa-comments me-2"></i>
-                                    <span i18n:translate="">Comment thread contents</span>
+                                    <span class="ms-2" i18n:translate="">Comment thread contents</span>
                                 </div>
                                 <span class="badge bg-secondary" tal:content="python:len(comments)">0</span>
                             </div>
                         </div>
                         <div class="card-body p-0">
                             <div class="text-muted p-3 bg-light border-bottom">
-                                <i class="fas fa-info-circle me-1"></i>
-                                <span i18n:translate="">
+                                <span class="ms-1" i18n:translate="">
                                     This comment thread contains the following comments.
                                     All comments will be restored together with their reply relationships.
                                 </span>
@@ -301,24 +285,21 @@
                                     <tbody>
                                         <tr tal:repeat="comment comments">
                                             <td>
-                                                <i class="fas fa-user me-1"></i>
-                                                <span tal:content="comment/author">Author</span>
+                                                <span class="ms-1" tal:content="comment/author">Author</span>
                                             </td>
                                             <td>
                                                 <div class="text-truncate" style="max-width: 300px;" tal:content="comment/text">Comment text</div>
                                             </td>
                                             <td>
                                                 <span tal:condition="comment/in_reply_to">
-                                                    <i class="fas fa-reply me-1"></i>
-                                                    <span tal:content="comment/in_reply_to">1234</span>
+                                                    <span class="ms-1" tal:content="comment/in_reply_to">1234</span>
                                                 </span>
                                                 <span tal:condition="not:comment/in_reply_to" class="text-muted">
                                                     Top level comment
                                                 </span>
                                             </td>
                                             <td>
-                                                <i class="far fa-clock me-1"></i>
-                                                <span tal:content="python:view.format_date(comment.get('creation_date'))">Date</span>
+                                                <span class="ms-1" tal:content="python:view.format_date(comment.get('creation_date'))">Date</span>
                                             </td>
                                         </tr>
                                     </tbody>
