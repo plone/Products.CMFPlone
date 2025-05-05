@@ -146,11 +146,17 @@
                                 <span class="ms-2" i18n:translate="">Restore item</span>
                             </div>
                             <div class="card-body">
-                                <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}">
+                                <form method="post" 
+                                      enctype="multipart/form-data"
+                                      class="pat-formunloadalert"
+                                      tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}">
+                                    
+                                    <input tal:replace="structure context/@@authenticator/authenticator" />
+                                    
                                     <div class="mb-3">
-                                        <label for="target_container" class="form-label fw-bold" i18n:translate="">Custom restore location</label>
+                                        <label for="form-widgets-target_container" class="form-label fw-bold" i18n:translate="">Custom restore location</label>
                                         <input type="text" name="form.widgets.target_container" id="form-widgets-target_container" 
-                                               class="form-control" />
+                                               class="form-control text-widget textline-field" />
                                         <div class="form-text">
                                             <span class="ms-1" i18n:translate="">Leave blank to restore to the original location if it still exists.</span>
                                         </div>
@@ -225,6 +231,7 @@
                                             <td>
                                                 <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}"
                                                       class="row g-2">
+                                                    <input tal:replace="structure context/@@authenticator/authenticator" />
                                                     <input type="hidden" name="child_id" tal:attributes="value child/id" />
                                                     <div class="col-8">
                                                         <input type="text" name="target_path" 
@@ -237,7 +244,6 @@
                                                     <div class="col-4">
                                                         <button type="submit" name="restore.child" 
                                                                 class="btn btn-sm btn-success w-100 restore-child-button"
-                                                                disabled="disabled"
                                                                 i18n:translate="">
                                                             <span class="ms-1">Restore</span>
                                                         </button>
@@ -315,8 +321,43 @@
 
 <metal:js fill-slot="javascript_head_slot">
 <script>
-  // Confirmation message when emptying recycle bin
-  const recyclebinEmptyMessage = 'Are you sure you want to permanently delete all items in the recycle bin?';
+  document.addEventListener('DOMContentLoaded', function() {
+    // Enable restore buttons when path inputs are filled in
+    const targetPathInputs = document.querySelectorAll('.target-path-input');
+    
+    targetPathInputs.forEach(input => {
+        const updateButtonState = () => {
+            const button = input.closest('form').querySelector('.restore-child-button');
+            if (input.value.trim() !== '') {
+                button.disabled = false;
+            } else {
+                button.disabled = true;
+            }
+        };
+        
+        // Initial state
+        updateButtonState();
+        
+        // Update on input changes
+        input.addEventListener('input', updateButtonState);
+        
+        // If the input has a placeholder, enable using the placeholder value
+        if (input.placeholder) {
+            const useDefaultBtn = document.createElement('button');
+            useDefaultBtn.type = 'button';
+            useDefaultBtn.className = 'btn btn-link btn-sm p-0 mt-1';
+            useDefaultBtn.textContent = 'Use original location';
+            useDefaultBtn.style.fontSize = '0.8em';
+            useDefaultBtn.onclick = function() {
+                input.value = input.placeholder;
+                updateButtonState();
+            };
+            
+            // Insert after the input
+            input.parentNode.appendChild(useDefaultBtn);
+        }
+    });
+  });
 </script>
 </metal:js>
 
