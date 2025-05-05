@@ -16,9 +16,6 @@
     <div class="container-fluid px-0">
         <!-- Header section with icon -->
         <div class="d-flex align-items-center mb-4">
-            <div class="flex-shrink-0 me-3">
-                <i class="fas fa-recycle text-success" style="font-size: 2rem;"></i>
-            </div>
             <div>
                 <h1 class="documentFirstHeading mb-0" i18n:translate="">Recycle bin</h1>
                 <div class="documentDescription text-muted" i18n:translate="">
@@ -30,7 +27,6 @@
         <!-- Search and filter form in a card -->
         <div class="card mb-4">
             <div class="card-header bg-light d-flex align-items-center">
-                <i class="fas fa-search me-2"></i>
                 <span i18n:translate="">Search and Filter</span>
             </div>
             <div class="card-body">
@@ -47,8 +43,7 @@
                                        placeholder="Search by title or path..." 
                                        i18n:attributes="placeholder" />
                                 <button class="btn btn-primary" type="submit">
-                                    <i class="fas fa-search"></i>
-                                    <span class="ms-1" i18n:translate="">Search</span>
+                                    <span i18n:translate="">Search</span>
                                 </button>
                             </div>
                         </div>
@@ -116,42 +111,37 @@
              tal:condition="has_active_filters"
              class="alert alert-info d-flex align-items-center mb-4">
              
-            <i class="fas fa-filter me-3"></i>
-             
-            <div class="d-flex flex-grow-1 flex-wrap align-items-center gap-2">
+            <div class="ms-3 d-flex flex-grow-1 flex-wrap align-items-center gap-2">
                 <span i18n:translate="" class="fw-bold me-2">Active filters:</span>
                 
                 <span tal:condition="search_query" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
-                    <i class="fas fa-search me-1"></i>
-                    <span tal:content="search_query" class="me-1">query</span>
+                    <span tal:content="search_query" class="ms-1 me-1">query</span>
                     <a href="#" tal:attributes="href python:view.get_clear_url('search_query')"
                        class="text-white ms-1" style="text-decoration: none;" title="Clear search">
-                       <i class="fas fa-times-circle"></i>
+                       ×
                     </a>
                 </span>
                 
                 <span tal:condition="filter_type" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
-                    <i class="fas fa-filter me-1"></i>
-                    <span tal:content="filter_type" class="me-1">Document</span>
+                    <span tal:content="filter_type" class="ms-1 me-1">Document</span>
                     <a href="#" tal:attributes="href python:view.get_clear_url('filter_type')"
                        class="text-white ms-1" style="text-decoration: none;" title="Clear filter">
-                       <i class="fas fa-times-circle"></i>
+                       ×
                     </a>
                 </span>
                 
                 <span tal:condition="python:sort_option != 'date_desc'" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
-                    <i class="fas fa-sort me-1"></i>
-                    <span tal:content="python:sort_labels.get(sort_option, sort_option)" class="me-1">Sort option</span>
+                    <span tal:content="python:sort_labels.get(sort_option, sort_option)" class="ms-1 me-1">Sort option</span>
                     <a href="#" tal:attributes="href python:view.get_clear_url('sort_by')"
                        class="text-white ms-1" style="text-decoration: none;" title="Reset sort">
-                       <i class="fas fa-times-circle"></i>
+                       ×
                     </a>
                 </span>
             </div>
             
             <a tal:attributes="href string:${context/absolute_url}/@@recyclebin"
                class="btn btn-sm btn-outline-secondary ms-auto" i18n:translate="">
-                <i class="fas fa-times me-1"></i> Clear all
+                Clear all
             </a>
         </div>
         
@@ -159,7 +149,9 @@
         <div class="card mb-4">
             <div class="card-header bg-light">
                 <div class="d-flex align-items-center justify-content-between">
-                    <div><i class="fas fa-trash me-2"></i> <span i18n:translate="">Deleted items</span></div>
+                    <div>
+                        <span class="ms-2" i18n:translate="">Deleted items</span>
+                    </div>
                     <div tal:define="items view/get_items">
                         <span class="badge bg-secondary" tal:content="python:len(items)">0</span>
                         <span i18n:translate="">items</span>
@@ -195,7 +187,6 @@
                                 <tr tal:condition="not:items">
                                     <td colspan="6" class="text-center p-4">
                                         <div class="py-5">
-                                            <i class="fas fa-info-circle text-muted mb-3" style="font-size: 2.5rem;"></i>
                                             <p class="fw-bold" tal:condition="python:view.get_search_query() or view.get_filter_type()" i18n:translate="">
                                                 No items match your search criteria
                                             </p>
@@ -224,23 +215,21 @@
                                            tal:content="item/title">Title</a>
                                         <div tal:condition="python:item.get('type') == 'Discussion Item' and item.get('content_title')"
                                              class="text-muted small">
-                                            <i class="fas fa-comment me-1"></i> Comment on: 
-                                            <span tal:content="item/content_title">Content title</span>
+                                             Comment on: 
+                                            <span class="ms-1" tal:content="item/content_title">Content title</span>
                                         </div>
                                         
                                         <!-- Show matching child items when search found results in folder contents -->
                                         <div tal:condition="python:item.get('matching_children')" 
                                              class="alert alert-light mt-2 p-2 border">
                                             <small>
-                                                <i class="fas fa-folder-open me-1"></i>
-                                                <strong i18n:translate="">Found matches in contents:</strong> 
+                                                <strong class="ms-1" i18n:translate="">Found matches in contents:</strong> 
                                                 <span tal:content="python:item.get('matching_children_count')">3</span> 
                                                 <span i18n:translate="">items match your search</span>
                                             </small>
                                             <ul class="list-unstyled ps-3 mt-1 mb-0" style="font-size: 0.85em; line-height: 1.4;">
                                                 <li tal:repeat="child python:item.get('matching_children')[:3]" class="text-truncate">
-                                                    <i class="fas fa-file me-1"></i>
-                                                    <span tal:content="child/title">Child title</span>
+                                                    <span class="ms-1" tal:content="child/title">Child title</span>
                                                     <span class="text-muted">
                                                         (<span tal:content="child/type">Type</span>)
                                                     </span>
@@ -258,20 +247,17 @@
                                         <span class="badge rounded-pill bg-light text-dark border" tal:content="item/type">Content type</span>
                                     </td>
                                     <td class="text-muted small">
-                                        <i class="fas fa-folder me-1"></i>
                                         <span tal:content="item/path">Original path</span>
                                         <div tal:condition="python:item.get('type') == 'Discussion Item' and item.get('content_path')"
                                              class="text-muted smaller mt-1">
-                                            <i class="fas fa-link me-1"></i> Content: 
-                                            <span tal:content="item/content_path">Content path</span>
+                                             Content: 
+                                            <span class="ms-1" tal:content="item/content_path">Content path</span>
                                         </div>
                                     </td>
                                     <td>
-                                        <i class="far fa-clock me-1"></i>
                                         <span tal:content="python:view.format_date(item['deletion_date'])">Deletion date</span>
                                     </td>
                                     <td>
-                                        <i class="fas fa-weight me-1"></i>
                                         <span tal:content="python:view.format_size(item.get('size', 0))">Size</span>
                                     </td>
                                 </tr>
@@ -280,19 +266,20 @@
                     </div>
                 </div>
                 
+                <!-- Button group for selected items actions -->
                 <div tal:condition="items" class="card-footer bg-light">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                         <div class="btn-group" role="group">
                             <button type="submit" name="form.buttons.restore" class="btn btn-primary" i18n:attributes="value">
-                                <i class="fas fa-undo me-1"></i> Restore selected
+                                <span class="ms-1">Restore selected</span>
                             </button>
                             <button type="submit" name="form.buttons.delete" class="btn btn-danger" i18n:attributes="value">
-                                <i class="fas fa-trash-alt me-1"></i> Delete selected
+                                <span class="ms-1">Delete selected</span>
                             </button>
                         </div>
                         <button type="submit" name="form.buttons.empty" class="btn btn-outline-danger" 
                                 onclick="return confirm(recyclebinEmptyMessage);" i18n:attributes="value">
-                            <i class="fas fa-trash me-1"></i> Empty recycle bin
+                            <span class="ms-1">Empty recycle bin</span>
                         </button>
                     </div>
                 </div>
