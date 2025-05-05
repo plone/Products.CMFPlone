@@ -102,7 +102,7 @@
                                             <tr>
                                                 <th class="bg-light" i18n:translate="">Deletion date</th>
                                                 <td>
-                                                    <span class="ms-1" tal:content="python:view.format_date(item['deletion_date'])">Date</span>
+                                                    <span class="ms-1" tal:content="python:context.restrictedTraverse('@@plone').toLocalizedTime(item['deletion_date'], long_format=True)">Date</span>
                                                 </td>
                                             </tr>
                                             
@@ -171,7 +171,7 @@
                             <div class="card-footer bg-light text-center">
                                 <div class="text-muted">
                                     <small class="ms-1" i18n:translate="">Deleted on:</small>
-                                    <span tal:content="python:view.format_date(item['deletion_date'])">date</span>
+                                    <span tal:content="python:context.restrictedTraverse('@@plone').toLocalizedTime(item['deletion_date'], long_format=True)">date</span>
                                 </div>
                             </div>
                         </div>
@@ -299,7 +299,7 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="ms-1" tal:content="python:view.format_date(comment.get('creation_date'))">Date</span>
+                                                <span class="ms-1" tal:content="python:context.restrictedTraverse('@@plone').toLocalizedTime(comment.get('creation_date'), long_format=True)">Date</span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -317,27 +317,6 @@
 <script>
   // Confirmation message when emptying recycle bin
   const recyclebinEmptyMessage = 'Are you sure you want to permanently delete all items in the recycle bin?';
-
-  document.addEventListener('DOMContentLoaded', function() {
-    // Add validation for child restore forms
-    const targetPathInputs = document.querySelectorAll('.target-path-input');
-    
-    targetPathInputs.forEach(function(input) {
-      // Get the corresponding restore button
-      const form = input.closest('form');
-      const restoreButton = form ? form.querySelector('.restore-child-button') : null;
-      
-      if (restoreButton) {
-        // Initial state - check if input has value
-        restoreButton.disabled = !input.value.trim();
-        
-        // Add input event listener to update button state
-        input.addEventListener('input', function() {
-          restoreButton.disabled = !input.value.trim();
-        });
-      }
-    });
-  });
 </script>
 </metal:js>
 

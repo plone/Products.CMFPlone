@@ -1,4 +1,5 @@
 from datetime import datetime
+from plone.base.utils import human_readable_size
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces.recyclebin import IRecycleBin
 from Products.Five.browser import BrowserView
@@ -19,25 +20,6 @@ import uuid
 
 
 logger = logging.getLogger(__name__)
-
-
-# Utility functions to avoid code duplication
-def format_date(context, date):
-    """Format date for display"""
-    if date is None:
-        return ""
-    portal = getToolByName(context, "portal_url").getPortalObject()
-    return portal.restrictedTraverse("@@plone").toLocalizedTime(date, long_format=True)
-
-
-def format_size(size_bytes):
-    """Format size in bytes to human-readable format"""
-    if size_bytes < 1024:
-        return f"{size_bytes} B"
-    elif size_bytes < 1024 * 1024:
-        return f"{size_bytes / 1024:.1f} KB"
-    else:
-        return f"{size_bytes / (1024 * 1024):.1f} MB"
 
 
 class IRecycleBinForm(Interface):
@@ -352,13 +334,9 @@ class RecycleBinView(BrowserView):
 
         return items
 
-    def format_date(self, date):
-        """Format date for display"""
-        return format_date(self.context, date)
-
     def format_size(self, size_bytes):
         """Format size in bytes to human-readable format"""
-        return format_size(size_bytes)
+        return human_readable_size(size_bytes)
 
 
 class IRecycleBinItemForm(Interface):
@@ -604,13 +582,9 @@ class RecycleBinItemView(BrowserView):
             return comment_list
         return []
 
-    def format_date(self, date):
-        """Format date for display"""
-        return format_date(self.context, date)
-
     def format_size(self, size_bytes):
         """Format size in bytes to human-readable format"""
-        return format_size(size_bytes)
+        return human_readable_size(size_bytes)
 
 
 class RecycleBinEnabled(BrowserView):

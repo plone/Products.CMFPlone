@@ -160,7 +160,8 @@
             </div>
             
             <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin"
-                  tal:define="items view/get_items">
+                  tal:define="items view/get_items"
+                  class="pat-checklist">
                 <input type="hidden" name="form.submitted" value="1" />
                 
                 <div class="card-body p-0">
@@ -255,7 +256,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <span tal:content="python:view.format_date(item['deletion_date'])">Deletion date</span>
+                                        <span tal:content="python:context.restrictedTraverse('@@plone').toLocalizedTime(item['deletion_date'], long_format=True)">Deletion date</span>
                                     </td>
                                     <td>
                                         <span tal:content="python:view.format_size(item.get('size', 0))">Size</span>
