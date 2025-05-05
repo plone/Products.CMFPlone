@@ -31,16 +31,33 @@ class IRecycleBinForm(Interface):
         value_type=schema.TextLine(),
         required=False,
     )
-
-
-class RecycleBinForm(form.Form):
-    """Form for the recycle bin operations"""
+class RecycleBinView(form.Form):
+    """Form view for recycle bin management"""
 
     ignoreContext = True
-    schema = IRecycleBinForm
+    template = ViewPageTemplateFile("templates/recyclebin.pt")
+    
+    # Add an ID for the form
+    id = "recyclebin-form"
+    
+    def __init__(self, context, request):
+        super().__init__(context, request)
+        self.recycle_bin = getUtility(IRecycleBin)
 
-    # Don't need fields as we'll just use the template's checkboxes
-    # and handle the extraction manually
+    def update(self):
+        super().update()
+        
+    def form(self):
+        """Return an empty string since form content is handled manually in template
+        """
+        return ""
+        
+    def render_form_widgets(self):
+        """Render any form widgets that need to be included in the template"""
+        # This implementation is empty because we're manually handling the
+        # checkbox selection of items in the template, rather than using
+        # z3c.form widgets for that part
+        return ""
 
     @button.buttonAndHandler("Restore Selected", name="restore")
     def handle_restore(self, action):
@@ -58,10 +75,9 @@ class RecycleBinForm(form.Form):
             )
             return
 
-        recycle_bin = getUtility(IRecycleBin)
         restored_count = 0
         for item_id in selected_items:
-            if recycle_bin.restore_item(item_id):
+            if self.recycle_bin.restore_item(item_id):
                 restored_count += 1
 
         message = f"{restored_count} item{'s' if restored_count != 1 else ''} restored successfully."
@@ -83,10 +99,9 @@ class RecycleBinForm(form.Form):
             )
             return
 
-        recycle_bin = getUtility(IRecycleBin)
         deleted_count = 0
         for item_id in selected_items:
-            if recycle_bin.purge_item(item_id):
+            if self.recycle_bin.purge_item(item_id):
                 deleted_count += 1
 
         message = f"{deleted_count} item{'s' if deleted_count != 1 else ''} permanently deleted."
@@ -97,35 +112,16 @@ class RecycleBinForm(form.Form):
         """Empty recycle bin handler"""
         data, errors = self.extractData()
 
-        recycle_bin = getUtility(IRecycleBin)
-        items = recycle_bin.get_items()
+        items = self.recycle_bin.get_items()
         deleted_count = 0
 
         for item in items:
             item_id = item["recycle_id"]
-            if recycle_bin.purge_item(item_id):
+            if self.recycle_bin.purge_item(item_id):
                 deleted_count += 1
 
         message = f"Recycle bin emptied. {deleted_count} item{'s' if deleted_count != 1 else ''} permanently deleted."
         IStatusMessage(self.request).addStatusMessage(message, type="info")
-
-
-class RecycleBinView(BrowserView):
-    """Browser view for recycle bin management"""
-
-    template = ViewPageTemplateFile("templates/recyclebin.pt")
-
-    def __call__(self):
-        # Initialize form
-        form = RecycleBinForm(self.context, self.request)
-        form.update()
-
-        # Check if form was submitted and return template
-        return self.template()
-
-    def get_recycle_bin(self):
-        """Get the recycle bin utility"""
-        return getUtility(IRecycleBin)
 
     def get_search_query(self):
         """Get the search query from the request"""
@@ -195,8 +191,7 @@ class RecycleBinView(BrowserView):
 
     def get_items(self):
         """Get all items in the recycle bin"""
-        recycle_bin = self.get_recycle_bin()
-        items = recycle_bin.get_items()
+        items = self.recycle_bin.get_items()
 
         # Create a list of all items that are children of a parent in the recycle bin
         child_items_to_exclude = []
@@ -421,11 +416,17 @@ class RecycleBinItemForm(form.Form):
 
 
 @implementer(IPublishTraverse)
-class RecycleBinItemView(BrowserView):
+class RecycleBinItemView(form.Form):
     """View for managing individual recycled items"""
 
+    ignoreContext = True
     template = ViewPageTemplateFile("templates/recyclebin_item.pt")
     item_id = None
+    fields = field.Fields(IRecycleBinItemForm)
+    
+    def __init__(self, context, request):
+        super().__init__(context, request)
+        self.recycle_bin = getUtility(IRecycleBin)
 
     def publishTraverse(self, request, name):
         """Handle URLs like /recyclebin/item/[item_id]"""
@@ -437,37 +438,86 @@ class RecycleBinItemView(BrowserView):
         logger.warning(f"Additional traversal attempted with name: {name}")
         raise NotFound(self, name, request)
 
-    def __call__(self):
-        """Handle item operations"""
-        logger.info(f"RecycleBinItemView.__call__ started with item_id: {self.item_id}")
+    def updateWidgets(self):
+        super().updateWidgets()
+
+    def update(self):
+        super().update()
+
+        # Check if we have a valid item before proceeding
         if self.item_id is None:
             logger.warning("No item_id set, redirecting to main recyclebin view")
-            self.request.response.redirect(
-                f"{self.context.absolute_url()}/@@recyclebin"
-            )
-            return ""
+            self.request.response.redirect(f"{self.context.absolute_url()}/@@recyclebin")
+            return
 
         # Handle restoration of children
         if "restore.child" in self.request.form:
             self._handle_child_restoration()
 
-        # Initialize and update the form
-        form = RecycleBinItemForm(self.context, self.request, self.item_id)
-        form.update()
+    def form(self):
+        """Return an empty string since form content is handled manually in template
+        """
+        return ""
 
-        # Get the item before rendering template
+    @button.buttonAndHandler("Restore item", name="restore")
+    def handle_restore(self, action):
+        """Restore this item"""
+        data, errors = self.extractData()
+        if errors:
+            return
+
+        # Get target container if specified
+        target_path = data.get("target_container", "")
+        target_container = None
+
+        if target_path:
+            try:
+                target_container = self.context.unrestrictedTraverse(target_path)
+            except (KeyError, AttributeError):
+                message = f"Target location not found: {target_path}"
+                IStatusMessage(self.request).addStatusMessage(message, type="error")
+                return
+
+        # Restore the item
         item = self.get_item()
-        if item is None:
-            logger.warning(
-                f"No item found with ID: {self.item_id}, redirecting to main `recyclebin` view"
-            )
-            self.request.response.redirect(
-                f"{self.context.absolute_url()}/@@recyclebin"
-            )
-            return ""
+        if not item:
+            message = "Item not found. It may have been already restored or deleted."
+            IStatusMessage(self.request).addStatusMessage(message, type="error")
+            self.request.response.redirect(f"{self.context.absolute_url()}/@@recyclebin")
+            return
 
-        logger.info(f"Found item with title: {item.get('title', 'Unknown')}")
-        return self.template()
+        restored_obj = self.recycle_bin.restore_item(self.item_id, target_container)
+
+        if restored_obj:
+            message = f"Item '{restored_obj.Title()}' successfully restored."
+            IStatusMessage(self.request).addStatusMessage(message, type="info")
+            self.request.response.redirect(restored_obj.absolute_url())
+        else:
+            message = "Failed to restore item. It may have been already restored or deleted."
+            IStatusMessage(self.request).addStatusMessage(message, type="error")
+            self.request.response.redirect(f"{self.context.absolute_url()}/@@recyclebin")
+
+    @button.buttonAndHandler("Permanently delete", name="delete")
+    def handle_delete(self, action):
+        """Permanently delete this item"""
+        data, errors = self.extractData()
+
+        # Get item info before deletion
+        item = self.get_item()
+        if item:
+            item_title = item.get("title", "Unknown")
+
+            if self.recycle_bin.purge_item(self.item_id):
+                message = f"Item '{item_title}' permanently deleted."
+                IStatusMessage(self.request).addStatusMessage(message, type="info")
+            else:
+                message = f"Failed to delete item '{item_title}'."
+                IStatusMessage(self.request).addStatusMessage(message, type="error")
+        else:
+            message = "Item not found. It may have been already deleted."
+            IStatusMessage(self.request).addStatusMessage(message, type="error")
+
+        self.request.response.redirect(f"{self.context.absolute_url()}/@@recyclebin")
 
     def _handle_child_restoration(self):
         """Extract child restoration logic to separate method for clarity"""
@@ -477,26 +527,21 @@ class RecycleBinItemView(BrowserView):
         if child_id and target_path:
             try:
                 # Get item data
-                recycle_bin = getUtility(IRecycleBin)
-                item_data = recycle_bin.get_item(self.item_id)
+                item_data = self.recycle_bin.get_item(self.item_id)
 
                 if item_data and "children" in item_data:
                     child_data = item_data["children"].get(child_id)
                     if child_data:
                         # Try to get target container
                         try:
-                            target_container = self.context.unrestrictedTraverse(
-                                target_path
-                            )
+                            target_container = self.context.unrestrictedTraverse(target_path)
 
                             # Create a temporary storage entry for the child
                             temp_id = str(uuid.uuid4())
-                            recycle_bin.storage[temp_id] = child_data
+                            self.recycle_bin.storage[temp_id] = child_data
 
                             # Restore the child
-                            restored_obj = recycle_bin.restore_item(
-                                temp_id, target_container
-                            )
+                            restored_obj = self.recycle_bin.restore_item(temp_id, target_container)
 
                             if restored_obj:
                                 # Remove child from parent's children dict
@@ -504,18 +549,12 @@ class RecycleBinItemView(BrowserView):
                                 item_data["children_count"] = len(item_data["children"])
 
                                 message = f"Child item '{child_data['title']}' successfully restored."
-                                IStatusMessage(self.request).addStatusMessage(
-                                    message, type="info"
-                                )
-                                self.request.response.redirect(
-                                    restored_obj.absolute_url()
-                                )
+                                IStatusMessage(self.request).addStatusMessage(message, type="info")
+                                self.request.response.redirect(restored_obj.absolute_url())
                                 return
                         except (KeyError, AttributeError):
                             message = f"Target location not found: {target_path}"
-                            IStatusMessage(self.request).addStatusMessage(
-                                message, type="error"
-                            )
+                            IStatusMessage(self.request).addStatusMessage(message, type="error")
             except Exception as e:
                 logger.error(f"Error restoring child item: {e}")
                 message = "Failed to restore child item."
@@ -528,14 +567,11 @@ class RecycleBinItemView(BrowserView):
             logger.warning("get_item called with no item_id")
             return None
 
-        recycle_bin = getUtility(IRecycleBin)
-        item = recycle_bin.get_item(self.item_id)
+        item = self.recycle_bin.get_item(self.item_id)
         if item is None:
             logger.warning(f"No item found in recycle bin with ID: {self.item_id}")
         else:
-            logger.info(
-                f"Found item: {item.get('title', 'Unknown')} of type {item.get('type', 'Unknown')}"
-            )
+            logger.info(f"Found item: {item.get('title', 'Unknown')} of type {item.get('type', 'Unknown')}")
         return item
 
     def get_children(self):
@@ -566,14 +602,11 @@ class RecycleBinItemView(BrowserView):
                 comment_data = {
                     "id": getattr(comment_obj, "comment_id", ""),
                     "text": getattr(comment_obj, "text", ""),
-                    "author": getattr(comment_obj, "author_name", None)
-                    or getattr(comment_obj, "author_username", "Anonymous"),
+                    "author": getattr(comment_obj, "author_name", None) or getattr(comment_obj, "author_username", "Anonymous"),
                     "in_reply_to": getattr(comment_obj, "in_reply_to", None),
                     "path": comment_path,
                     "creation_date": getattr(comment_obj, "creation_date", None),
-                    "modification_date": getattr(
-                        comment_obj, "modification_date", None
-                    ),
+                    "modification_date": getattr(comment_obj, "modification_date", None),
                     "title": f"Comment by {getattr(comment_obj, 'author_name', None) or getattr(comment_obj, 'author_username', 'Anonymous')}",
                     "size": len(getattr(comment_obj, "text", "")),
                 }
