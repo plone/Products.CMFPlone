@@ -159,7 +159,7 @@
   <!-- Recycle Bin utility -->
   <utility
       factory=".recyclebin.RecycleBin"
-      provides=".interfaces.recyclebin.IRecycleBin"
+      provides="plone.base.interfaces.recyclebin.IRecycleBin"
       />
 
   <!-- Event handlers -->

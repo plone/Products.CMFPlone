@@ -5,12 +5,10 @@ from datetime import datetime
 from datetime import timedelta
 from DateTime import DateTime
 from persistent import Persistent
+from plone.base.interfaces.recyclebin import IRecycleBin
+from plone.base.interfaces.recyclebin import IRecycleBinControlPanelSettings
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.controlpanel.browser.recyclebin import (
-    IRecycleBinControlPanelSettings,
-)
-from Products.CMFPlone.interfaces.recyclebin import IRecycleBin
 from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
 from zope.component.hooks import getSite

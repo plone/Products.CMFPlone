@@ -2,7 +2,7 @@ from plone.base.interfaces import IReorderedEvent
 from plone.base.interfaces import ISiteManagerCreatedEvent
 from plone.base.utils import get_installer
 from Products.CMFCore.interfaces import IContentish
-from Products.CMFPlone.interfaces.recyclebin import IRecycleBin
+from plone.base.interfaces.recyclebin import IRecycleBin
 from zope.component import adapter
 from zope.component import queryUtility
 from zope.interface import implementer
