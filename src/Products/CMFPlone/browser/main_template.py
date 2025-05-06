@@ -1,3 +1,4 @@
+from plone.base.utils import is_truthy
 from Products.CMFPlone.browser.interfaces import IMainTemplate
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -14,7 +15,8 @@ class MainTemplate(BrowserView):
 
     @property
     def template(self):
-        if self.request.form.get("ajax_load"):
+        # Directly query the request object, which includes the form.
+        if is_truthy(self.request.get("ajax_load")):
             return self.ajax_template
         else:
             return self.main_template
