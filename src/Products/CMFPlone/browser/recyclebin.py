@@ -468,12 +468,14 @@ class RecycleBinItemView(form.Form):
             IStatusMessage(self.request).addStatusMessage(message, type="info")
 
             redirect_url = restored_obj.absolute_url()
-                
+
             # For File and Image types, add /view to the URL
-            portal_type = getattr(restored_obj, 'portal_type', '')
-            if portal_type in ('File', 'Image'):
+            portal_type = getattr(restored_obj, "portal_type", "")
+            if portal_type in ("File", "Image"):
                 redirect_url = f"{redirect_url}/view"
-                logger.debug(f"Adding /view to redirect URL for {portal_type}: {redirect_url}")
+                logger.debug(
+                    f"Adding /view to redirect URL for {portal_type}: {redirect_url}"
+                )
 
             self.request.response.redirect(redirect_url)
         else:
