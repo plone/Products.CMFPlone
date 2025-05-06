@@ -1,8 +1,8 @@
 from datetime import datetime
 from plone.base import PloneMessageFactory as _
-from plone.base.interfaces.recyclebin import IRecycleBin, IRecycleBinItemForm
+from plone.base.interfaces.recyclebin import IRecycleBin
+from plone.base.interfaces.recyclebin import IRecycleBinItemForm
 from plone.base.utils import human_readable_size
-from plone.z3cform import layout
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
@@ -21,15 +21,16 @@ import uuid
 
 logger = logging.getLogger(__name__)
 
+
 class RecycleBinView(form.Form):
     """Form view for recycle bin management"""
 
     ignoreContext = True
     template = ViewPageTemplateFile("templates/recyclebin.pt")
-    
+
     # Add an ID for the form
     id = "recyclebin-form"
-    
+
     def __init__(self, context, request):
         super().__init__(context, request)
         self.recycle_bin = getUtility(IRecycleBin)
@@ -48,10 +49,8 @@ class RecycleBinView(form.Form):
             selected_items = [selected_items]
 
         if not selected_items:
-            # Improved translation handling
             message = translate(
-                _("No items selected for restoration."),
-                context=self.request
+                _("No items selected for restoration."), context=self.request
             )
             IStatusMessage(self.request).addStatusMessage(message, type="info")
             return
@@ -61,11 +60,12 @@ class RecycleBinView(form.Form):
             if self.recycle_bin.restore_item(item_id):
                 restored_count += 1
 
-        # Improved translation handling with variable mapping
         message = translate(
-            _("${count} item(s) restored successfully.", 
-              mapping={"count": restored_count}),
-            context=self.request
+            _(
+                "${count} item(s) restored successfully.",
+                mapping={"count": restored_count},
+            ),
+            context=self.request,
         )
         IStatusMessage(self.request).addStatusMessage(message, type="info")
 
@@ -80,10 +80,8 @@ class RecycleBinView(form.Form):
             selected_items = [selected_items]
 
         if not selected_items:
-            # Improved translation handling
             message = translate(
-                _("No items selected for deletion."),
-                context=self.request
+                _("No items selected for deletion."), context=self.request
             )
             IStatusMessage(self.request).addStatusMessage(message, type="info")
             return
@@ -93,11 +91,12 @@ class RecycleBinView(form.Form):
             if self.recycle_bin.purge_item(item_id):
                 deleted_count += 1
 
-        # Improved translation handling with variable mapping
         message = translate(
-            _("${count} item(s) permanently deleted.", 
-              mapping={"count": deleted_count}),
-            context=self.request
+            _(
+                "${count} item(s) permanently deleted.",
+                mapping={"count": deleted_count},
+            ),
+            context=self.request,
         )
         IStatusMessage(self.request).addStatusMessage(message, type="info")
 
@@ -114,11 +113,12 @@ class RecycleBinView(form.Form):
             if self.recycle_bin.purge_item(item_id):
                 deleted_count += 1
 
-        # Improved translation handling with variable mapping
         message = translate(
-            _("Recycle bin emptied. ${count} item(s) permanently deleted.", 
-              mapping={"count": deleted_count}),
-            context=self.request
+            _(
+                "Recycle bin emptied. ${count} item(s) permanently deleted.",
+                mapping={"count": deleted_count},
+            ),
+            context=self.request,
         )
         IStatusMessage(self.request).addStatusMessage(message, type="info")
 
@@ -224,10 +224,8 @@ class RecycleBinView(form.Form):
                         content = self.context.unrestrictedTraverse(content_path)
                         item["content_title"] = content.Title()
                     except (KeyError, AttributeError):
-                        # Use translation for missing content
                         item["content_title"] = translate(
-                            _("Content no longer exists"), 
-                            context=self.request
+                            _("Content no longer exists"), context=self.request
                         )
 
         # Apply content type filtering if specified
@@ -345,7 +343,7 @@ class RecycleBinItemView(form.Form):
     template = ViewPageTemplateFile("templates/recyclebin_item.pt")
     item_id = None
     fields = field.Fields(IRecycleBinItemForm)
-    
+
     def __init__(self, context, request):
         super().__init__(context, request)
         self.recycle_bin = getUtility(IRecycleBin)
@@ -369,7 +367,9 @@ class RecycleBinItemView(form.Form):
         # Check if we have a valid item before proceeding
         if self.item_id is None:
             logger.warning("No item_id set, redirecting to main recyclebin view")
-            self.request.response.redirect(f"{self.context.absolute_url()}/@@recyclebin")
+            self.request.response.redirect(
+                f"{self.context.absolute_url()}/@@recyclebin"
+            )
             return
 
         # Handle restoration of children
@@ -391,11 +391,13 @@ class RecycleBinItemView(form.Form):
             try:
                 target_container = self.context.unrestrictedTraverse(target_path)
             except (KeyError, AttributeError):
-                # Using the improved translation pattern
+
                 message = translate(
-                    _("Target location not found: ${path}", 
-                      mapping={"path": target_path}),
-                    context=self.request
+                    _(
+                        "Target location not found: ${path}",
+                        mapping={"path": target_path},
+                    ),
+                    context=self.request,
                 )
                 IStatusMessage(self.request).addStatusMessage(message, type="error")
                 return
@@ -403,34 +405,41 @@ class RecycleBinItemView(form.Form):
         # Restore the item
         item = self.get_item()
         if not item:
-            # Using the improved translation pattern
             message = translate(
                 _("Item not found. It may have been already restored or deleted."),
-                context=self.request
+                context=self.request,
             )
             IStatusMessage(self.request).addStatusMessage(message, type="error")
-            self.request.response.redirect(f"{self.context.absolute_url()}/@@recyclebin")
+            self.request.response.redirect(
+                f"{self.context.absolute_url()}/@@recyclebin"
+            )
             return
 
         restored_obj = self.recycle_bin.restore_item(self.item_id, target_container)
 
         if restored_obj:
-            # Using the improved translation pattern
+
             message = translate(
-                _("Item '${title}' successfully restored.", 
-                  mapping={"title": restored_obj.Title()}),
-                context=self.request
+                _(
+                    "Item '${title}' successfully restored.",
+                    mapping={"title": restored_obj.Title()},
+                ),
+                context=self.request,
             )
             IStatusMessage(self.request).addStatusMessage(message, type="info")
             self.request.response.redirect(restored_obj.absolute_url())
         else:
-            # Using the improved translation pattern
+
             message = translate(
-                _("Failed to restore item. It may have been already restored or deleted."),
-                context=self.request
+                _(
+                    "Failed to restore item. It may have been already restored or deleted."
+                ),
+                context=self.request,
             )
             IStatusMessage(self.request).addStatusMessage(message, type="error")
-            self.request.response.redirect(f"{self.context.absolute_url()}/@@recyclebin")
+            self.request.response.redirect(
+                f"{self.context.absolute_url()}/@@recyclebin"
+            )
 
     @button.buttonAndHandler(_("Permanently delete"), name="delete")
     def handle_delete(self, action):
@@ -443,26 +452,30 @@ class RecycleBinItemView(form.Form):
             item_title = item.get("title", "Unknown")
 
             if self.recycle_bin.purge_item(self.item_id):
-                # Using the improved translation pattern
+
                 message = translate(
-                    _("Item '${title}' permanently deleted.", 
-                      mapping={"title": item_title}),
-                    context=self.request
+                    _(
+                        "Item '${title}' permanently deleted.",
+                        mapping={"title": item_title},
+                    ),
+                    context=self.request,
                 )
                 IStatusMessage(self.request).addStatusMessage(message, type="info")
             else:
-                # Using the improved translation pattern
+
                 message = translate(
-                    _("Failed to delete item '${title}'.", 
-                      mapping={"title": item_title}),
-                    context=self.request
+                    _(
+                        "Failed to delete item '${title}'.",
+                        mapping={"title": item_title},
+                    ),
+                    context=self.request,
                 )
                 IStatusMessage(self.request).addStatusMessage(message, type="error")
         else:
-            # Using the improved translation pattern
+
             message = translate(
                 _("Item not found. It may have been already deleted."),
-                context=self.request
+                context=self.request,
             )
             IStatusMessage(self.request).addStatusMessage(message, type="error")
 
@@ -483,43 +496,55 @@ class RecycleBinItemView(form.Form):
                     if child_data:
                         # Try to get target container
                         try:
-                            target_container = self.context.unrestrictedTraverse(target_path)
+                            target_container = self.context.unrestrictedTraverse(
+                                target_path
+                            )
 
                             # Create a temporary storage entry for the child
                             temp_id = str(uuid.uuid4())
                             self.recycle_bin.storage[temp_id] = child_data
 
                             # Restore the child
-                            restored_obj = self.recycle_bin.restore_item(temp_id, target_container)
+                            restored_obj = self.recycle_bin.restore_item(
+                                temp_id, target_container
+                            )
 
                             if restored_obj:
                                 # Remove child from parent's children dict
                                 del item_data["children"][child_id]
                                 item_data["children_count"] = len(item_data["children"])
 
-                                # Using the improved translation pattern
                                 message = translate(
-                                    _("Child item '${title}' successfully restored.", 
-                                      mapping={"title": child_data['title']}),
-                                    context=self.request
+                                    _(
+                                        "Child item '${title}' successfully restored.",
+                                        mapping={"title": child_data["title"]},
+                                    ),
+                                    context=self.request,
                                 )
-                                IStatusMessage(self.request).addStatusMessage(message, type="info")
-                                self.request.response.redirect(restored_obj.absolute_url())
+                                IStatusMessage(self.request).addStatusMessage(
+                                    message, type="info"
+                                )
+                                self.request.response.redirect(
+                                    restored_obj.absolute_url()
+                                )
                                 return
                         except (KeyError, AttributeError):
-                            # Using the improved translation pattern
+
                             message = translate(
-                                _("Target location not found: ${path}", 
-                                  mapping={"path": target_path}),
-                                context=self.request
+                                _(
+                                    "Target location not found: ${path}",
+                                    mapping={"path": target_path},
+                                ),
+                                context=self.request,
                             )
-                            IStatusMessage(self.request).addStatusMessage(message, type="error")
+                            IStatusMessage(self.request).addStatusMessage(
+                                message, type="error"
+                            )
             except Exception as e:
                 logger.error(f"Error restoring child item: {e}")
-                # Using the improved translation pattern
+
                 message = translate(
-                    _("Failed to restore child item."),
-                    context=self.request
+                    _("Failed to restore child item."), context=self.request
                 )
                 IStatusMessage(self.request).addStatusMessage(message, type="error")
 
@@ -534,7 +559,9 @@ class RecycleBinItemView(form.Form):
         if item is None:
             logger.warning(f"No item found in recycle bin with ID: {self.item_id}")
         else:
-            logger.info(f"Found item: {item.get('title', 'Unknown')} of type {item.get('type', 'Unknown')}")
+            logger.info(
+                f"Found item: {item.get('title', 'Unknown')} of type {item.get('type', 'Unknown')}"
+            )
         return item
 
     def get_children(self):
@@ -562,8 +589,10 @@ class RecycleBinItemView(form.Form):
             comment_list = []
             for comment_obj, comment_path in comments:
                 # Get author info
-                author = getattr(comment_obj, 'author_name', None) or getattr(comment_obj, 'author_username', 'Anonymous')
-                
+                author = getattr(comment_obj, "author_name", None) or getattr(
+                    comment_obj, "author_username", "Anonymous"
+                )
+
                 # Extract comment data
                 comment_data = {
                     "id": getattr(comment_obj, "comment_id", ""),
@@ -572,12 +601,12 @@ class RecycleBinItemView(form.Form):
                     "in_reply_to": getattr(comment_obj, "in_reply_to", None),
                     "path": comment_path,
                     "creation_date": getattr(comment_obj, "creation_date", None),
-                    "modification_date": getattr(comment_obj, "modification_date", None),
-                    # Using the improved translation pattern
+                    "modification_date": getattr(
+                        comment_obj, "modification_date", None
+                    ),
                     "title": translate(
-                        _("Comment by ${author}", 
-                          mapping={"author": author}),
-                        context=self.request
+                        _("Comment by ${author}", mapping={"author": author}),
+                        context=self.request,
                     ),
                     "size": len(getattr(comment_obj, "text", "")),
                 }
@@ -593,7 +622,7 @@ class RecycleBinItemView(form.Form):
 
 class RecycleBinEnabled(BrowserView):
     """View to check if the recycle bin is enabled"""
-    
+
     def __call__(self):
         """Return True if the recycle bin is enabled, False otherwise"""
         recycle_bin = getUtility(IRecycleBin)

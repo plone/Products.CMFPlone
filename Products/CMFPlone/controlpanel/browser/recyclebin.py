@@ -3,7 +3,6 @@ from plone.app.registry.browser.controlpanel import RegistryEditForm
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.recyclebin import IRecycleBinControlPanelSettings
 from plone.z3cform import layout
-from zope.i18n import translate
 
 
 class RecyclebinControlPanelForm(RegistryEditForm):
