@@ -72,3 +72,12 @@ def get_zope_page_template_engine(engine):
         return getEngine()
     if isinstance(engine, zpt_engine.TrustedZopeEngine):
         return getTrustedEngine()
+
+
+def set_ajax(obj, event):
+    """Set ajax_load, if applicable."""
+    request = event.request
+
+    # Set the ajax_load parameter depending on an AJAX request or not.
+    if request.getHeader("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
+        request.set("ajax_load", "1")
