@@ -1,4 +1,5 @@
 from datetime import datetime
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.recyclebin import IRecycleBin, IRecycleBinItemForm
 from plone.base.utils import human_readable_size
 from Products.Five.browser import BrowserView
@@ -9,6 +10,7 @@ from z3c.form import field
 from z3c.form import form
 from zExceptions import NotFound
 from zope.component import getUtility
+from zope.i18n import translate
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
 
@@ -46,7 +48,7 @@ class RecycleBinView(form.Form):
         # z3c.form widgets for that part
         return ""
 
-    @button.buttonAndHandler("Restore Selected", name="restore")
+    @button.buttonAndHandler(_("Restore Selected"), name="restore")
     def handle_restore(self, action):
         """Restore selected items handler"""
         data, errors = self.extractData()
@@ -57,9 +59,12 @@ class RecycleBinView(form.Form):
             selected_items = [selected_items]
 
         if not selected_items:
-            IStatusMessage(self.request).addStatusMessage(
-                "No items selected for restoration.", type="info"
+            # Improved translation handling
+            message = translate(
+                _("No items selected for restoration."),
+                context=self.request
             )
+            IStatusMessage(self.request).addStatusMessage(message, type="info")
             return
 
         restored_count = 0
@@ -67,10 +72,15 @@ class RecycleBinView(form.Form):
             if self.recycle_bin.restore_item(item_id):
                 restored_count += 1
 
-        message = f"{restored_count} item{'s' if restored_count != 1 else ''} restored successfully."
+        # Improved translation handling with variable mapping
+        message = translate(
+            _("${count} item(s) restored successfully.", 
+              mapping={"count": restored_count}),
+            context=self.request
+        )
         IStatusMessage(self.request).addStatusMessage(message, type="info")
 
-    @button.buttonAndHandler("Delete selected", name="delete")
+    @button.buttonAndHandler(_("Delete selected"), name="delete")
     def handle_delete(self, action):
         """Delete selected items handler"""
         data, errors = self.extractData()
@@ -81,9 +91,12 @@ class RecycleBinView(form.Form):
             selected_items = [selected_items]
 
         if not selected_items:
-            IStatusMessage(self.request).addStatusMessage(
-                "No items selected for deletion.", type="info"
+            # Improved translation handling
+            message = translate(
+                _("No items selected for deletion."),
+                context=self.request
             )
+            IStatusMessage(self.request).addStatusMessage(message, type="info")
             return
 
         deleted_count = 0
@@ -91,10 +104,15 @@ class RecycleBinView(form.Form):
             if self.recycle_bin.purge_item(item_id):
                 deleted_count += 1
 
-        message = f"{deleted_count} item{'s' if deleted_count != 1 else ''} permanently deleted."
+        # Improved translation handling with variable mapping
+        message = translate(
+            _("${count} item(s) permanently deleted.", 
+              mapping={"count": deleted_count}),
+            context=self.request
+        )
         IStatusMessage(self.request).addStatusMessage(message, type="info")
 
-    @button.buttonAndHandler("Empty Recycle Bin", name="empty")
+    @button.buttonAndHandler(_("Empty Recycle Bin"), name="empty")
     def handle_empty(self, action):
         """Empty recycle bin handler"""
         data, errors = self.extractData()
@@ -107,7 +125,12 @@ class RecycleBinView(form.Form):
             if self.recycle_bin.purge_item(item_id):
                 deleted_count += 1
 
-        message = f"Recycle bin emptied. {deleted_count} item{'s' if deleted_count != 1 else ''} permanently deleted."
+        # Improved translation handling with variable mapping
+        message = translate(
+            _("Recycle bin emptied. ${count} item(s) permanently deleted.", 
+              mapping={"count": deleted_count}),
+            context=self.request
+        )
         IStatusMessage(self.request).addStatusMessage(message, type="info")
 
     def get_search_query(self):
@@ -125,16 +148,16 @@ class RecycleBinView(form.Form):
     def get_sort_labels(self):
         """Get a dictionary of human-readable sort option labels"""
         return {
-            "date_desc": "Newest first (default)",
-            "date_asc": "Oldest first",
-            "title_asc": "Title (A-Z)",
-            "title_desc": "Title (Z-A)",
-            "type_asc": "Type (A-Z)",
-            "type_desc": "Type (Z-A)",
-            "path_asc": "Path (A-Z)",
-            "path_desc": "Path (Z-A)",
-            "size_asc": "Size (smallest first)",
-            "size_desc": "Size (largest first)",
+            "date_desc": _("Newest first (default)"),
+            "date_asc": _("Oldest first"),
+            "title_asc": _("Title (A-Z)"),
+            "title_desc": _("Title (Z-A)"),
+            "type_asc": _("Type (A-Z)"),
+            "type_desc": _("Type (Z-A)"),
+            "path_asc": _("Path (A-Z)"),
+            "path_desc": _("Path (Z-A)"),
+            "size_asc": _("Size (smallest first)"),
+            "size_desc": _("Size (largest first)"),
         }
 
     def get_clear_url(self, param_to_remove):
@@ -212,7 +235,11 @@ class RecycleBinView(form.Form):
                         content = self.context.unrestrictedTraverse(content_path)
                         item["content_title"] = content.Title()
                     except (KeyError, AttributeError):
-                        item["content_title"] = "Content no longer exists"
+                        # Use translation for missing content
+                        item["content_title"] = translate(
+                            _("Content no longer exists"), 
+                            context=self.request
+                        )
 
         # Apply content type filtering if specified
         filter_type = self.get_filter_type()
@@ -335,7 +362,7 @@ class RecycleBinItemForm(form.Form):
         if self.item_id:
             self.item = self.recycle_bin.get_item(self.item_id)
 
-    @button.buttonAndHandler("Restore item", name="restore")
+    @button.buttonAndHandler(_("Restore item"), name="restore")
     def handle_restore(self, action):
         """Restore this item"""
         data, errors = self.extractData()
@@ -350,7 +377,7 @@ class RecycleBinItemForm(form.Form):
             try:
                 target_container = self.context.unrestrictedTraverse(target_path)
             except (KeyError, AttributeError):
-                message = f"Target location not found: {target_path}"
+                message = _("Target location not found: ${path}", mapping={"path": target_path})
                 IStatusMessage(self.request).addStatusMessage(message, type="error")
                 return
 
@@ -358,19 +385,17 @@ class RecycleBinItemForm(form.Form):
         restored_obj = self.recycle_bin.restore_item(self.item_id, target_container)
 
         if restored_obj:
-            message = f"Item '{restored_obj.Title()}' successfully restored."
+            message = _("Item '${title}' successfully restored.", mapping={"title": restored_obj.Title()})
             IStatusMessage(self.request).addStatusMessage(message, type="info")
             self.request.response.redirect(restored_obj.absolute_url())
         else:
-            message = (
-                "Failed to restore item. It may have been already restored or deleted."
-            )
+            message = _("Failed to restore item. It may have been already restored or deleted.")
             IStatusMessage(self.request).addStatusMessage(message, type="error")
             self.request.response.redirect(
                 f"{self.context.absolute_url()}/@@recyclebin"
             )
 
-    @button.buttonAndHandler("Permanently delete", name="delete")
+    @button.buttonAndHandler(_("Permanently delete"), name="delete")
     def handle_delete(self, action):
         """Permanently delete this item"""
         data, errors = self.extractData()
@@ -380,13 +405,13 @@ class RecycleBinItemForm(form.Form):
             item_title = self.item.get("title", "Unknown")
 
             if self.recycle_bin.purge_item(self.item_id):
-                message = f"Item '{item_title}' permanently deleted."
+                message = _("Item '${title}' permanently deleted.", mapping={"title": item_title})
                 IStatusMessage(self.request).addStatusMessage(message, type="info")
             else:
-                message = f"Failed to delete item '{item_title}'."
+                message = _("Failed to delete item '${title}'.", mapping={"title": item_title})
                 IStatusMessage(self.request).addStatusMessage(message, type="error")
         else:
-            message = "Item not found. It may have been already deleted."
+            message = _("Item not found. It may have been already deleted.")
             IStatusMessage(self.request).addStatusMessage(message, type="error")
 
         self.request.response.redirect(f"{self.context.absolute_url()}/@@recyclebin")
@@ -436,7 +461,7 @@ class RecycleBinItemView(form.Form):
         """
         return ""
 
-    @button.buttonAndHandler("Restore item", name="restore")
+    @button.buttonAndHandler(_("Restore item"), name="restore")
     def handle_restore(self, action):
         """Restore this item"""
         data, errors = self.extractData()
@@ -451,14 +476,23 @@ class RecycleBinItemView(form.Form):
             try:
                 target_container = self.context.unrestrictedTraverse(target_path)
             except (KeyError, AttributeError):
-                message = f"Target location not found: {target_path}"
+                # Using the improved translation pattern
+                message = translate(
+                    _("Target location not found: ${path}", 
+                      mapping={"path": target_path}),
+                    context=self.request
+                )
                 IStatusMessage(self.request).addStatusMessage(message, type="error")
                 return
 
         # Restore the item
         item = self.get_item()
         if not item:
-            message = "Item not found. It may have been already restored or deleted."
+            # Using the improved translation pattern
+            message = translate(
+                _("Item not found. It may have been already restored or deleted."),
+                context=self.request
+            )
             IStatusMessage(self.request).addStatusMessage(message, type="error")
             self.request.response.redirect(f"{self.context.absolute_url()}/@@recyclebin")
             return
@@ -466,15 +500,24 @@ class RecycleBinItemView(form.Form):
         restored_obj = self.recycle_bin.restore_item(self.item_id, target_container)
 
         if restored_obj:
-            message = f"Item '{restored_obj.Title()}' successfully restored."
+            # Using the improved translation pattern
+            message = translate(
+                _("Item '${title}' successfully restored.", 
+                  mapping={"title": restored_obj.Title()}),
+                context=self.request
+            )
             IStatusMessage(self.request).addStatusMessage(message, type="info")
             self.request.response.redirect(restored_obj.absolute_url())
         else:
-            message = "Failed to restore item. It may have been already restored or deleted."
+            # Using the improved translation pattern
+            message = translate(
+                _("Failed to restore item. It may have been already restored or deleted."),
+                context=self.request
+            )
             IStatusMessage(self.request).addStatusMessage(message, type="error")
             self.request.response.redirect(f"{self.context.absolute_url()}/@@recyclebin")
 
-    @button.buttonAndHandler("Permanently delete", name="delete")
+    @button.buttonAndHandler(_("Permanently delete"), name="delete")
     def handle_delete(self, action):
         """Permanently delete this item"""
         data, errors = self.extractData()
@@ -485,13 +528,27 @@ class RecycleBinItemView(form.Form):
             item_title = item.get("title", "Unknown")
 
             if self.recycle_bin.purge_item(self.item_id):
-                message = f"Item '{item_title}' permanently deleted."
+                # Using the improved translation pattern
+                message = translate(
+                    _("Item '${title}' permanently deleted.", 
+                      mapping={"title": item_title}),
+                    context=self.request
+                )
                 IStatusMessage(self.request).addStatusMessage(message, type="info")
             else:
-                message = f"Failed to delete item '{item_title}'."
+                # Using the improved translation pattern
+                message = translate(
+                    _("Failed to delete item '${title}'.", 
+                      mapping={"title": item_title}),
+                    context=self.request
+                )
                 IStatusMessage(self.request).addStatusMessage(message, type="error")
         else:
-            message = "Item not found. It may have been already deleted."
+            # Using the improved translation pattern
+            message = translate(
+                _("Item not found. It may have been already deleted."),
+                context=self.request
+            )
             IStatusMessage(self.request).addStatusMessage(message, type="error")
 
         self.request.response.redirect(f"{self.context.absolute_url()}/@@recyclebin")
@@ -525,16 +582,30 @@ class RecycleBinItemView(form.Form):
                                 del item_data["children"][child_id]
                                 item_data["children_count"] = len(item_data["children"])
 
-                                message = f"Child item '{child_data['title']}' successfully restored."
+                                # Using the improved translation pattern
+                                message = translate(
+                                    _("Child item '${title}' successfully restored.", 
+                                      mapping={"title": child_data['title']}),
+                                    context=self.request
+                                )
                                 IStatusMessage(self.request).addStatusMessage(message, type="info")
                                 self.request.response.redirect(restored_obj.absolute_url())
                                 return
                         except (KeyError, AttributeError):
-                            message = f"Target location not found: {target_path}"
+                            # Using the improved translation pattern
+                            message = translate(
+                                _("Target location not found: ${path}", 
+                                  mapping={"path": target_path}),
+                                context=self.request
+                            )
                             IStatusMessage(self.request).addStatusMessage(message, type="error")
             except Exception as e:
                 logger.error(f"Error restoring child item: {e}")
-                message = "Failed to restore child item."
+                # Using the improved translation pattern
+                message = translate(
+                    _("Failed to restore child item."),
+                    context=self.request
+                )
                 IStatusMessage(self.request).addStatusMessage(message, type="error")
 
     def get_item(self):
@@ -575,16 +646,24 @@ class RecycleBinItemView(form.Form):
             # Process comments to build a list for display
             comment_list = []
             for comment_obj, comment_path in comments:
+                # Get author info
+                author = getattr(comment_obj, 'author_name', None) or getattr(comment_obj, 'author_username', 'Anonymous')
+                
                 # Extract comment data
                 comment_data = {
                     "id": getattr(comment_obj, "comment_id", ""),
                     "text": getattr(comment_obj, "text", ""),
-                    "author": getattr(comment_obj, "author_name", None) or getattr(comment_obj, "author_username", "Anonymous"),
+                    "author": author,
                     "in_reply_to": getattr(comment_obj, "in_reply_to", None),
                     "path": comment_path,
                     "creation_date": getattr(comment_obj, "creation_date", None),
                     "modification_date": getattr(comment_obj, "modification_date", None),
-                    "title": f"Comment by {getattr(comment_obj, 'author_name', None) or getattr(comment_obj, 'author_username', 'Anonymous')}",
+                    # Using the improved translation pattern
+                    "title": translate(
+                        _("Comment by ${author}", 
+                          mapping={"author": author}),
+                        context=self.request
+                    ),
                     "size": len(getattr(comment_obj, "text", "")),
                 }
                 comment_list.append(comment_data)

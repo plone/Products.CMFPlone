@@ -117,7 +117,8 @@
                 <span tal:condition="search_query" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
                     <span tal:content="search_query" class="ms-1 me-1">query</span>
                     <a href="#" tal:attributes="href python:view.get_clear_url('search_query')"
-                       class="text-white ms-1" style="text-decoration: none;" title="Clear search">
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear search" i18n:attributes="title">
                        ×
                     </a>
                 </span>
@@ -125,7 +126,8 @@
                 <span tal:condition="filter_type" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
                     <span tal:content="filter_type" class="ms-1 me-1">Document</span>
                     <a href="#" tal:attributes="href python:view.get_clear_url('filter_type')"
-                       class="text-white ms-1" style="text-decoration: none;" title="Clear filter">
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear filter" i18n:attributes="title">
                        ×
                     </a>
                 </span>
@@ -133,7 +135,8 @@
                 <span tal:condition="python:sort_option != 'date_desc'" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
                     <span tal:content="python:sort_labels.get(sort_option, sort_option)" class="ms-1 me-1">Sort option</span>
                     <a href="#" tal:attributes="href python:view.get_clear_url('sort_by')"
-                       class="text-white ms-1" style="text-decoration: none;" title="Reset sort">
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Reset sort" i18n:attributes="title">
                        ×
                     </a>
                 </span>
@@ -225,7 +228,7 @@
                                            tal:content="item/title">Title</a>
                                         <div tal:condition="python:item.get('type') == 'Discussion Item' and item.get('content_title')"
                                              class="text-muted small">
-                                             Comment on: 
+                                             <span i18n:translate="">Comment on:</span>
                                             <span class="ms-1" tal:content="item/content_title">Content title</span>
                                         </div>
                                         
@@ -260,7 +263,7 @@
                                         <span tal:content="item/path">Original path</span>
                                         <div tal:condition="python:item.get('type') == 'Discussion Item' and item.get('content_path')"
                                              class="text-muted smaller mt-1">
-                                             Content: 
+                                             <span i18n:translate="">Content:</span> 
                                             <span class="ms-1" tal:content="item/content_path">Content path</span>
                                         </div>
                                     </td>

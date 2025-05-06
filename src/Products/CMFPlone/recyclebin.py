@@ -5,6 +5,7 @@ from datetime import datetime
 from datetime import timedelta
 from DateTime import DateTime
 from persistent import Persistent
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.recyclebin import IRecycleBin
 from plone.base.interfaces.recyclebin import IRecycleBinControlPanelSettings
 from plone.registry.interfaces import IRegistry
@@ -12,6 +13,7 @@ from Products.CMFCore.utils import getToolByName
 from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
 from zope.component.hooks import getSite
+from zope.i18n import translate
 from zope.interface import implementer
 
 import logging
