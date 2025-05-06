@@ -14,7 +14,8 @@ class MainTemplate(BrowserView):
 
     @property
     def template_name(self):
-        if self.request.form.get("ajax_load"):
+        # Directly query the request object, which includes the form.
+        if self.request.get("ajax_load"):
             return self.ajax_template_name
         else:
             return self.main_template_name
