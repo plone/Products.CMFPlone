@@ -1,7 +1,6 @@
 from datetime import datetime
+from plone.base.interfaces.recyclebin import IRecycleBin, IRecycleBinItemForm
 from plone.base.utils import human_readable_size
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces.recyclebin import IRecycleBin
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
@@ -9,10 +8,8 @@ from z3c.form import button
 from z3c.form import field
 from z3c.form import form
 from zExceptions import NotFound
-from zope import schema
 from zope.component import getUtility
 from zope.interface import implementer
-from zope.interface import Interface
 from zope.publisher.interfaces import IPublishTraverse
 
 import logging
@@ -21,16 +18,6 @@ import uuid
 
 logger = logging.getLogger(__name__)
 
-
-class IRecycleBinForm(Interface):
-    """Schema for the recycle bin form"""
-
-    selected_items = schema.List(
-        title="Selected Items",
-        description="Selected items for operations",
-        value_type=schema.TextLine(),
-        required=False,
-    )
 class RecycleBinView(form.Form):
     """Form view for recycle bin management"""
 
@@ -332,16 +319,6 @@ class RecycleBinView(form.Form):
     def format_size(self, size_bytes):
         """Format size in bytes to human-readable format"""
         return human_readable_size(size_bytes)
-
-
-class IRecycleBinItemForm(Interface):
-    """Schema for the recycle bin item form"""
-
-    target_container = schema.TextLine(
-        title="Target container",
-        description="Path to container where the item should be restored (optional)",
-        required=False,
-    )
 
 
 class RecycleBinItemForm(form.Form):
