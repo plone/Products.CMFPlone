@@ -10,7 +10,7 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.controlpanel.browser.recyclebin import (
     IRecycleBinControlPanelSettings,
 )
-from Products.CMFPlone.interfaces.recyclebin import IRecycleBin
+from plone.base.interfaces.recyclebin import IRecycleBin
 from Products.CMFPlone.recyclebin import ANNOTATION_KEY
 from unittest import mock
 from zope.annotation.interfaces import IAnnotations
