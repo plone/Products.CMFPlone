@@ -55,9 +55,9 @@
                 <tal:comment-info condition="python:item.get('type') in ('CommentTree', 'Discussion Item')">
                     <div class="alert alert-info mb-4">
                         <span class="ms-2" i18n:translate="">
-                            <span tal:condition="python:item.get('type') == 'CommentTree'">Comment thread</span>
-                            <span tal:condition="python:item.get('type') == 'Discussion Item'">Comment</span>
-                            deleted from 
+                            <span tal:condition="python:item.get('type') == 'CommentTree'" i18n:translate="">Comment thread</span>
+                            <span tal:condition="python:item.get('type') == 'Discussion Item'" i18n:translate="">Comment</span>
+                            <span i18n:translate="">deleted from</span>
                             <strong tal:condition="python:context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
                                 <a tal:attributes="href item/parent_path" 
                                    class="alert-link"
@@ -65,7 +65,7 @@
                                    Content title
                                 </a>
                             </strong>
-                            <strong tal:condition="python:not context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
+                            <strong tal:condition="python:not context.unrestrictedTraverse(item['parent_path'].split('/'), None)" i18n:translate="">
                                 content that no longer exists
                             </strong>
                         </span>
@@ -167,7 +167,7 @@
                                             <span class="ms-1">Restore item</span>
                                         </button>
                                         <button class="btn btn-danger" type="submit" name="form.buttons.delete"
-                                               onclick="return confirm('Are you sure you want to permanently delete this item?');" 
+                                               onclick="return confirm(translate('Are you sure you want to permanently delete this item?'));" 
                                                i18n:translate="">
                                             <span class="ms-1">Permanently delete</span>
                                         </button>
@@ -300,7 +300,7 @@
                                                 <span tal:condition="comment/in_reply_to">
                                                     <span class="ms-1" tal:content="comment/in_reply_to">1234</span>
                                                 </span>
-                                                <span tal:condition="not:comment/in_reply_to" class="text-muted">
+                                                <span tal:condition="not:comment/in_reply_to" class="text-muted" i18n:translate="">
                                                     Top level comment
                                                 </span>
                                             </td>
@@ -346,7 +346,7 @@
             const useDefaultBtn = document.createElement('button');
             useDefaultBtn.type = 'button';
             useDefaultBtn.className = 'btn btn-link btn-sm p-0 mt-1';
-            useDefaultBtn.textContent = 'Use original location';
+            useDefaultBtn.textContent = translate('Use original location');
             useDefaultBtn.style.fontSize = '0.8em';
             useDefaultBtn.onclick = function() {
                 input.value = input.placeholder;
@@ -358,6 +358,13 @@
         }
     });
   });
+  
+  // Simple translation function
+  function translate(text) {
+    // This could be expanded later to use a proper i18n solution
+    // For now, it just returns the text as-is
+    return text;
+  }
 </script>
 </metal:js>
 
