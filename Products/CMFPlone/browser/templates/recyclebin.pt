@@ -162,17 +162,13 @@
                 </div>
             </div>
             
-            <tal:form replace="structure view/form">
-                <!-- The entire form is rendered by z3c.form -->
-            </tal:form>
-            
-            <form class="pat-checklist"
+            <!-- Main form - using z3c.form pattern -->
+            <form id="recyclebin-form"
                   method="post"
                   tal:define="items view/get_items"
                   tal:condition="items"
                   enctype="multipart/form-data"
-                  tal:attributes="action request/URL;
-                                 id string:recyclebin-form">
+                  tal:attributes="action request/URL;">
 
                 <input tal:replace="structure context/@@authenticator/authenticator" />
                 
@@ -279,7 +275,7 @@
                     </div>
                 </div>
                 
-                <!-- Button group for selected items actions -->
+                <!-- Button group for selected items actions - z3c.form buttons -->
                 <div tal:condition="items" class="card-footer bg-light">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                         <div class="btn-group" role="group">
@@ -290,7 +286,8 @@
                                 <span class="ms-1">Delete Selected</span>
                             </button>
                             <button type="submit" name="form.buttons.empty" 
-                                    class="btn btn-outline-danger" 
+                                    class="btn btn-outline-danger"
+                                    onclick="return confirm(recyclebinEmptyMessage);" 
                                     i18n:translate="">
                                 <span class="ms-1">Empty Recycle Bin</span>
                             </button>

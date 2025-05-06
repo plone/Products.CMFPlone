@@ -2,6 +2,7 @@ from datetime import datetime
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.recyclebin import IRecycleBin, IRecycleBinItemForm
 from plone.base.utils import human_readable_size
+from plone.z3cform import layout
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
@@ -35,18 +36,6 @@ class RecycleBinView(form.Form):
 
     def update(self):
         super().update()
-        
-    def form(self):
-        """Return an empty string since form content is handled manually in template
-        """
-        return ""
-        
-    def render_form_widgets(self):
-        """Render any form widgets that need to be included in the template"""
-        # This implementation is empty because we're manually handling the
-        # checkbox selection of items in the template, rather than using
-        # z3c.form widgets for that part
-        return ""
 
     @button.buttonAndHandler(_("Restore Selected"), name="restore")
     def handle_restore(self, action):
@@ -348,75 +337,6 @@ class RecycleBinView(form.Form):
         return human_readable_size(size_bytes)
 
 
-class RecycleBinItemForm(form.Form):
-    """Form for managing individual recycled items"""
-
-    ignoreContext = True
-    fields = field.Fields(IRecycleBinItemForm)
-
-    def __init__(self, context, request, item_id=None):
-        super().__init__(context, request)
-        self.item_id = item_id
-        self.recycle_bin = getUtility(IRecycleBin)
-        self.item = None
-        if self.item_id:
-            self.item = self.recycle_bin.get_item(self.item_id)
-
-    @button.buttonAndHandler(_("Restore item"), name="restore")
-    def handle_restore(self, action):
-        """Restore this item"""
-        data, errors = self.extractData()
-        if errors:
-            return
-
-        # Get target container if specified
-        target_path = data.get("target_container", "")
-        target_container = None
-
-        if target_path:
-            try:
-                target_container = self.context.unrestrictedTraverse(target_path)
-            except (KeyError, AttributeError):
-                message = _("Target location not found: ${path}", mapping={"path": target_path})
-                IStatusMessage(self.request).addStatusMessage(message, type="error")
-                return
-
-        # Restore the item
-        restored_obj = self.recycle_bin.restore_item(self.item_id, target_container)
-
-        if restored_obj:
-            message = _("Item '${title}' successfully restored.", mapping={"title": restored_obj.Title()})
-            IStatusMessage(self.request).addStatusMessage(message, type="info")
-            self.request.response.redirect(restored_obj.absolute_url())
-        else:
-            message = _("Failed to restore item. It may have been already restored or deleted.")
-            IStatusMessage(self.request).addStatusMessage(message, type="error")
-            self.request.response.redirect(
-                f"{self.context.absolute_url()}/@@recyclebin"
-            )
-
-    @button.buttonAndHandler(_("Permanently delete"), name="delete")
-    def handle_delete(self, action):
-        """Permanently delete this item"""
-        data, errors = self.extractData()
-
-        # Get item info before deletion
-        if self.item:
-            item_title = self.item.get("title", "Unknown")
-
-            if self.recycle_bin.purge_item(self.item_id):
-                message = _("Item '${title}' permanently deleted.", mapping={"title": item_title})
-                IStatusMessage(self.request).addStatusMessage(message, type="info")
-            else:
-                message = _("Failed to delete item '${title}'.", mapping={"title": item_title})
-                IStatusMessage(self.request).addStatusMessage(message, type="error")
-        else:
-            message = _("Item not found. It may have been already deleted.")
-            IStatusMessage(self.request).addStatusMessage(message, type="error")
-
-        self.request.response.redirect(f"{self.context.absolute_url()}/@@recyclebin")
-
-
 @implementer(IPublishTraverse)
 class RecycleBinItemView(form.Form):
     """View for managing individual recycled items"""
@@ -431,7 +351,7 @@ class RecycleBinItemView(form.Form):
         self.recycle_bin = getUtility(IRecycleBin)
 
     def publishTraverse(self, request, name):
-        """Handle URLs like /recyclebin/item/[item_id]"""
+        """Handle URLs like /recyclebin-item/[item_id]"""
         logger.info(f"RecycleBinItemView.publishTraverse called with name: {name}")
         if self.item_id is None:  # First traversal
             self.item_id = name
@@ -455,11 +375,6 @@ class RecycleBinItemView(form.Form):
         # Handle restoration of children
         if "restore.child" in self.request.form:
             self._handle_child_restoration()
-
-    def form(self):
-        """Return an empty string since form content is handled manually in template
-        """
-        return ""
 
     @button.buttonAndHandler(_("Restore item"), name="restore")
     def handle_restore(self, action):
@@ -677,9 +592,9 @@ class RecycleBinItemView(form.Form):
 
 
 class RecycleBinEnabled(BrowserView):
-    """Check if the recycle bin is enabled"""
-
+    """View to check if the recycle bin is enabled"""
+    
     def __call__(self):
-        """Return True if recycle bin is enabled, else False"""
+        """Return True if the recycle bin is enabled, False otherwise"""
         recycle_bin = getUtility(IRecycleBin)
         return recycle_bin.is_enabled()

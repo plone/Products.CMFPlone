@@ -139,7 +139,7 @@
                         </div>
                     </div>
                     
-                    <!-- Right column: Actions -->
+                    <!-- Right column: Restore form using z3c.form pattern -->
                     <div class="col-md-4">
                         <div class="card mb-4">
                             <div class="card-header bg-light">
@@ -154,23 +154,15 @@
                                     <input tal:replace="structure context/@@authenticator/authenticator" />
                                     
                                     <div class="mb-3">
-                                        <label for="form-widgets-target_container" class="form-label fw-bold" i18n:translate="">Custom restore location</label>
-                                        <input type="text" name="form.widgets.target_container" id="form-widgets-target_container" 
-                                               class="form-control text-widget textline-field" />
+                                        <tal:widget tal:replace="structure view/widgets/target_container/@@ploneform-render-widget" />
                                         <div class="form-text">
                                             <span class="ms-1" i18n:translate="">Leave blank to restore to the original location if it still exists.</span>
                                         </div>
                                     </div>
                                     
                                     <div class="d-grid gap-2">
-                                        <button class="btn btn-primary" type="submit" name="form.buttons.restore" i18n:translate="">
-                                            <span class="ms-1">Restore item</span>
-                                        </button>
-                                        <button class="btn btn-danger" type="submit" name="form.buttons.delete"
-                                               onclick="return confirm(translate('Are you sure you want to permanently delete this item?'));" 
-                                               i18n:translate="">
-                                            <span class="ms-1">Permanently delete</span>
-                                        </button>
+                                        <tal:button tal:replace="structure view/actions/restore/render" />
+                                        <tal:button tal:replace="structure view/actions/delete/render" />
                                     </div>
                                 </form>
                             </div>
@@ -356,6 +348,18 @@
             // Insert after the input
             input.parentNode.appendChild(useDefaultBtn);
         }
+    });
+    
+    // Initialize any z3c.form buttons with proper classes
+    const primaryButtons = document.querySelectorAll('button.submit-widget.button-field.btn.btn-primary');
+    primaryButtons.forEach(button => {
+        button.classList.add('btn-primary');
+    });
+    
+    const dangerButtons = document.querySelectorAll('button[name="form.buttons.delete"]');
+    dangerButtons.forEach(button => {
+        button.classList.add('btn-danger');
+        button.setAttribute('onclick', "return confirm(translate('Are you sure you want to permanently delete this item?'));");
     });
   });
   
