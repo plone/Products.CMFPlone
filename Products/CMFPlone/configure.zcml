@@ -172,19 +172,4 @@
       handler=".events.handle_content_removal"
       />
 
-  <!-- Browser views -->
-  <browser:page
-      name="recyclebin"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".browser.recyclebin.RecycleBinView"
-      permission="cmf.ManagePortal"
-      />
-
-  <browser:page
-      name="recyclebin-item"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".browser.recyclebin.RecycleBinItemView"
-      permission="cmf.ManagePortal"
-      />
-
 </configure>

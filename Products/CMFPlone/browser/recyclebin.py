@@ -188,122 +188,103 @@ class RecycleBinView(form.Form):
                 types.add(item_type)
         return sorted(list(types))
 
-    def get_items(self):
-        """Get all items in the recycle bin"""
-        items = self.recycle_bin.get_items()
+    def _check_item_matches_search(self, item, search_query):
+        """Check if an item matches the search query.
 
-        # Create a list of all items that are children of a parent in the recycle bin
-        child_items_to_exclude = []
-        for item in items:
-            # If this item is a parent with children, add its children to exclusion list
-            if "children" in item:
-                for child_id in item.get("children", {}):
-                    child_items_to_exclude.append(child_id)
+        Args:
+            item: The item to check
+            search_query: The search query string (lowercase)
 
-        logger.debug(f"Child items to exclude: {child_items_to_exclude}")
+        Returns:
+            Boolean indicating if the item matches
+        """
+        # Search in title
+        if search_query in item.get("title", "").lower():
+            return True
 
-        # Only include items that are not children of other recycled items
-        items = [item for item in items if item.get("id") not in child_items_to_exclude]
+        # Search in path
+        if search_query in item.get("path", "").lower():
+            return True
 
-        # For comments, add extra information about the content they belong to
-        for item in items:
-            if item.get("type") == "Discussion Item":
-                # Extract content path from comment path
-                path = item.get("path", "")
-                # The conversation part is usually ++conversation++default
-                parts = path.split("++conversation++")
-                if len(parts) > 1:
-                    content_path = parts[0]
-                    # Remove trailing slash if present
-                    if content_path.endswith("/"):
-                        content_path = content_path[:-1]
-                    item["content_path"] = content_path
+        # Search in parent path
+        if search_query in item.get("parent_path", "").lower():
+            return True
 
-                    # Try to get the content title
-                    try:
-                        content = self.context.unrestrictedTraverse(content_path)
-                        item["content_title"] = content.Title()
-                    except (KeyError, AttributeError):
-                        item["content_title"] = translate(
-                            _("Content no longer exists"), context=self.request
-                        )
+        # Search in ID
+        if search_query in item.get("id", "").lower():
+            return True
 
-        # Apply content type filtering if specified
-        filter_type = self.get_filter_type()
-        if filter_type:
-            items = [item for item in items if item.get("type") == filter_type]
+        # Search in type
+        if search_query in item.get("type", "").lower():
+            return True
 
-        # Filter items based on search query
-        search_query = self.get_search_query().lower()
-        if search_query:
-            filtered_items = []
-            items_with_matching_children = []
+        return False
 
-            for item in items:
-                # Search in title
-                if search_query in item.get("title", "").lower():
-                    filtered_items.append(item)
-                    continue
+    def _find_matching_children(self, item, search_query):
+        """Find children of an item that match the search query.
 
-                # Search in path
-                if search_query in item.get("path", "").lower():
-                    filtered_items.append(item)
-                    continue
+        Args:
+            item: The parent item to check children of
+            search_query: The search query string (lowercase)
 
-                # Search in parent path
-                if search_query in item.get("parent_path", "").lower():
-                    filtered_items.append(item)
-                    continue
+        Returns:
+            List of matching children or None if no matches
+        """
+        if "children" in item and isinstance(item["children"], dict):
+            child_matches = []
 
-                # Search in ID
-                if search_query in item.get("id", "").lower():
-                    filtered_items.append(item)
-                    continue
+            for child_id, child_data in item["children"].items():
+                # Check each child for matches
+                if (
+                    search_query in child_data.get("title", "").lower()
+                    or search_query in child_data.get("path", "").lower()
+                    or search_query in child_data.get("id", "").lower()
+                    or search_query in child_data.get("type", "").lower()
+                ):
+                    child_matches.append(child_data)
 
-                # Search in type
-                if search_query in item.get("type", "").lower():
-                    filtered_items.append(item)
-                    continue
+            if child_matches:
+                return child_matches
 
-                # Search in children if this item has children
-                if "children" in item and isinstance(item["children"], dict):
-                    child_matches = []
+        return None
 
-                    for child_id, child_data in item["children"].items():
-                        # Check each child for matches
-                        child_matches_query = False
+    def _process_comment_item(self, item):
+        """Add extra information to comment items.
 
-                        # Check in title
-                        if search_query in child_data.get("title", "").lower():
-                            child_matches_query = True
-                        # Check in path
-                        elif search_query in child_data.get("path", "").lower():
-                            child_matches_query = True
-                        # Check in ID
-                        elif search_query in child_data.get("id", "").lower():
-                            child_matches_query = True
-                        # Check in type
-                        elif search_query in child_data.get("type", "").lower():
-                            child_matches_query = True
+        Args:
+            item: The comment item to process
+        """
+        if item.get("type") == "Discussion Item":
+            # Extract content path from comment path
+            path = item.get("path", "")
+            # The conversation part is usually ++conversation++default
+            parts = path.split("++conversation++")
+            if len(parts) > 1:
+                content_path = parts[0]
+                # Remove trailing slash if present
+                if content_path.endswith("/"):
+                    content_path = content_path[:-1]
+                item["content_path"] = content_path
 
-                        # Add to matches if found
-                        if child_matches_query:
-                            child_matches.append(child_data)
+                # Try to get the content title
+                try:
+                    content = self.context.unrestrictedTraverse(content_path)
+                    item["content_title"] = content.Title()
+                except (KeyError, AttributeError):
+                    item["content_title"] = translate(
+                        _("Content no longer exists"), context=self.request
+                    )
 
-                    # If any children match, mark the parent item
-                    if child_matches:
-                        # Make a copy of the item so we don't modify the original
-                        parent_item = item.copy()
-                        parent_item["matching_children"] = child_matches
-                        parent_item["matching_children_count"] = len(child_matches)
-                        items_with_matching_children.append(parent_item)
+    def _apply_sorting(self, items, sort_option):
+        """Apply sorting to the items list.
 
-            # Combine direct matches with items that have matching children
-            # Direct matches come first
-            items = filtered_items + items_with_matching_children
+        Args:
+            items: List of items to sort
+            sort_option: The sort option to apply
 
-        # Apply sorting
-        sort_option = self.get_sort_option()
+        Returns:
+            Sorted list of items
+        """
         if sort_option == "title_asc":
             items.sort(key=lambda x: x.get("title", "").lower())
         elif sort_option == "title_desc":
@@ -327,8 +308,66 @@ class RecycleBinView(form.Form):
             items.sort(
                 key=lambda x: x.get("deletion_date", datetime.now()), reverse=True
             )
-
         return items
+
+    def get_items(self):
+        """Get all items in the recycle bin"""
+        items = self.recycle_bin.get_items()
+
+        # Get filters early to avoid multiple lookups during the loop
+        filter_type = self.get_filter_type()
+        search_query = self.get_search_query().lower()
+
+        # Create a list of all items that are children of a parent in the recycle bin
+        child_items_to_exclude = []
+        for item in items:
+            # If this item is a parent with children, add its children to exclusion list
+            if "children" in item:
+                for child_id in item.get("children", {}):
+                    child_items_to_exclude.append(child_id)
+
+        logger.debug(f"Child items to exclude: {child_items_to_exclude}")
+
+        # Process items with direct matches
+        filtered_items = []
+        items_with_matching_children = []
+
+        for item in items:
+            if item.get("id") not in child_items_to_exclude:
+                # Apply type filtering
+                if filter_type and item.get("type") != filter_type:
+                    continue
+
+                # Add comment-specific information
+                self._process_comment_item(item)
+
+                # Apply search query filtering
+                if search_query:
+                    # Check for direct matches
+                    if self._check_item_matches_search(item, search_query):
+                        filtered_items.append(item)
+                        continue
+
+                    # Check for matches in children
+                    matching_children = self._find_matching_children(item, search_query)
+                    if matching_children:
+                        # Make a copy of the item so we don't modify the original
+                        parent_item = item.copy()
+                        parent_item["matching_children"] = matching_children
+                        parent_item["matching_children_count"] = len(matching_children)
+                        items_with_matching_children.append(parent_item)
+                else:
+                    # No search query, include all items
+                    filtered_items.append(item)
+
+        # Combine results based on whether we're searching or not
+        if search_query:
+            items = filtered_items + items_with_matching_children
+        else:
+            items = filtered_items
+
+        # Apply sorting
+        return self._apply_sorting(items, self.get_sort_option())
 
     def format_size(self, size_bytes):
         """Format size in bytes to human-readable format"""
@@ -350,12 +389,12 @@ class RecycleBinItemView(form.Form):
 
     def publishTraverse(self, request, name):
         """Handle URLs like /recyclebin-item/[item_id]"""
-        logger.info(f"RecycleBinItemView.publishTraverse called with name: {name}")
+        logger.debug(f"RecycleBinItemView.publishTraverse called with name: {name}")
         if self.item_id is None:  # First traversal
             self.item_id = name
-            logger.info(f"Set item_id to: {self.item_id}")
+            logger.debug(f"Set item_id to: {self.item_id}")
             return self
-        logger.warning(f"Additional traversal attempted with name: {name}")
+        logger.debug(f"Additional traversal attempted with name: {name}")
         raise NotFound(self, name, request)
 
     def updateWidgets(self):
@@ -366,7 +405,7 @@ class RecycleBinItemView(form.Form):
 
         # Check if we have a valid item before proceeding
         if self.item_id is None:
-            logger.warning("No item_id set, redirecting to main recyclebin view")
+            logger.debug("No item_id set, redirecting to main recyclebin view")
             self.request.response.redirect(
                 f"{self.context.absolute_url()}/@@recyclebin"
             )
@@ -550,16 +589,16 @@ class RecycleBinItemView(form.Form):
 
     def get_item(self):
         """Get the specific recycled item"""
-        logger.info(f"RecycleBinItemView.get_item called for ID: {self.item_id}")
+        logger.debug(f"RecycleBinItemView.get_item called for ID: {self.item_id}")
         if not self.item_id:
-            logger.warning("get_item called with no item_id")
+            logger.debug("get_item called with no item_id")
             return None
 
         item = self.recycle_bin.get_item(self.item_id)
         if item is None:
-            logger.warning(f"No item found in recycle bin with ID: {self.item_id}")
+            logger.debug(f"No item found in recycle bin with ID: {self.item_id}")
         else:
-            logger.info(
+            logger.debug(
                 f"Found item: {item.get('title', 'Unknown')} of type {item.get('type', 'Unknown')}"
             )
         return item
