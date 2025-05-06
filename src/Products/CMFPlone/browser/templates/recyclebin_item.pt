@@ -338,7 +338,7 @@
             const useDefaultBtn = document.createElement('button');
             useDefaultBtn.type = 'button';
             useDefaultBtn.className = 'btn btn-link btn-sm p-0 mt-1';
-            useDefaultBtn.textContent = translate('Use original location');
+            useDefaultBtn.textContent = 'Use original location';
             useDefaultBtn.style.fontSize = '0.8em';
             useDefaultBtn.onclick = function() {
                 input.value = input.placeholder;
@@ -359,16 +359,10 @@
     const dangerButtons = document.querySelectorAll('button[name="form.buttons.delete"]');
     dangerButtons.forEach(button => {
         button.classList.add('btn-danger');
-        button.setAttribute('onclick', "return confirm(translate('Are you sure you want to permanently delete this item?'));");
+        button.setAttribute('onclick', "return confirm('Are you sure you want to permanently delete this item?');");
     });
   });
-  
-  // Simple translation function
-  function translate(text) {
-    // This could be expanded later to use a proper i18n solution
-    // For now, it just returns the text as-is
-    return text;
-  }
+
 </script>
 </metal:js>
 
