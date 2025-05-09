@@ -238,7 +238,14 @@ class RecycleBin:
             folder_children[child_id] = child_data
         return folder_children
 
-    def add_item(self, obj, original_container, original_path, item_type=None, process_children=True):
+    def add_item(
+        self,
+        obj,
+        original_container,
+        original_path,
+        item_type=None,
+        process_children=True,
+    ):
         """Add deleted item to recycle bin"""
         if not self.is_enabled():
             return None
@@ -258,7 +265,9 @@ class RecycleBin:
 
         # Handle folders and collections specially
         children = {}
-        if process_children and (hasattr(obj, "objectIds") or item_type == "Collection"):
+        if process_children and (
+            hasattr(obj, "objectIds") or item_type == "Collection"
+        ):
             if hasattr(obj, "objectIds"):
                 # Process all children recursively
                 children = self._process_folder_children(obj, original_path)
