@@ -433,7 +433,7 @@ class RecycleBinItemView(form.Form):
 
                 message = translate(
                     _(
-                        "Target location not found: ${path}",
+                        "The folder '${path}' where you are trying to restore this item cannot be found. It may have been moved or deleted. Please choose a different location.",
                         mapping={"path": target_path},
                     ),
                     context=self.request,
