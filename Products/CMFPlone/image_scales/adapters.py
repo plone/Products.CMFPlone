@@ -27,7 +27,12 @@ class ImageScales:
                     (field, obj, self.request), IImageScalesFieldAdapter
                 )
                 if serializer:
-                    scales = serializer()
-                    if scales:
-                        res[name] = scales
+                    try:
+                        scales = serializer()
+                        if scales:
+                            res[name] = scales
+                    except TypeError:
+                        # This can happen if the field points to a non-existent object
+                        # (e.g. a relation to a deleted image)
+                        continue
         return res
