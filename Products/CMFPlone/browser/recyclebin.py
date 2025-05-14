@@ -567,8 +567,39 @@ class RecycleBinItemView(form.Form):
             )
             IStatusMessage(self.request).addStatusMessage(message, type="info")
 
-            redirect_url = f"{restored_obj.absolute_url()}/view"
-
+            # First try to use the restored object's URL
+            redirect_url = None
+            try:
+                object_url = f"{restored_obj.absolute_url()}/view"
+                
+                # Verify the URL is valid by checking if the path exists
+                site = getSite()
+                path = object_url.replace(site.absolute_url(), "").lstrip("/")
+                
+                try:
+                    # Try to traverse to the path to verify it exists
+                    site.unrestrictedTraverse(path)
+                    redirect_url = object_url
+                except (KeyError, AttributeError):
+                    # Path doesn't exist, don't set redirect_url yet
+                    pass
+            except (AttributeError, TypeError):
+                # If absolute_url fails, don't set redirect_url yet
+                pass
+                
+            # If the object URL doesn't work, try target container URL
+            if not redirect_url and target_container:
+                try:
+                    target_url = f"{target_container.absolute_url()}"
+                    redirect_url = target_url
+                except (AttributeError, TypeError):
+                    # If target container URL fails, don't set redirect_url yet
+                    pass
+                    
+            # If neither worked, fall back to recycle bin view
+            if not redirect_url:
+                redirect_url = f"{self.context.absolute_url()}/@@recyclebin"
+            
             self.request.response.redirect(redirect_url)
         else:
 
