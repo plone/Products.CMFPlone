@@ -378,5 +378,11 @@
       <role name="Site Administrator" />
       <role name="Owner" />
     </permission>
+    <permission acquire="True"
+                name="Manage Recycle Bin"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
   </permissions>
 </rolemap>

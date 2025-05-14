@@ -89,4 +89,9 @@
       title="Manage Context Aliases"
       />
 
+  <permission
+      id="Products.CMFPlone.ManageRecycleBin"
+      title="Manage Recycle Bin"
+      />
+
 </configure>
