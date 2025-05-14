@@ -14,12 +14,25 @@ from zope.component import getUtility
 from zope.i18n import translate
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
+from zope.component.hooks import getSite
 
 import logging
 import uuid
 
 
 logger = logging.getLogger(__name__)
+
+
+def _is_error_result(result):
+    """Helper method to check if a result is an error dictionary
+    
+    Args:
+        result: The result to check
+        
+    Returns:
+        Boolean indicating if the result is an error dictionary
+    """
+    return isinstance(result, dict) and not result.get("success", True)
 
 
 class RecycleBinView(form.Form):
@@ -34,10 +47,7 @@ class RecycleBinView(form.Form):
     def __init__(self, context, request):
         super().__init__(context, request)
         self.recycle_bin = getUtility(IRecycleBin)
-
-    def update(self):
-        super().update()
-
+    
     @button.buttonAndHandler(_("Restore Selected"), name="restore")
     def handle_restore(self, action):
         """Restore selected items handler"""
@@ -56,18 +66,69 @@ class RecycleBinView(form.Form):
             return
 
         restored_count = 0
+        missing_parents_count = 0
+        missing_parent_items = []
+
         for item_id in selected_items:
-            if self.recycle_bin.restore_item(item_id):
+            result = self.recycle_bin.restore_item(item_id)
+            
+            # Handle different types of return values
+            if _is_error_result(result):
+                # This is a failed restoration with an error message
+                missing_parents_count += 1
+                # Get the item title for better user feedback
+                item_data = self.recycle_bin.get_item(item_id)
+                if item_data:
+                    missing_parent_items.append({
+                        "id": item_id,
+                        "title": item_data.get("title", "Unknown"),
+                        "parent_path": item_data.get("parent_path", "Unknown"),
+                        "error": result.get("error", "Unknown error")
+                    })
+            elif result:
+                # Successful restoration
                 restored_count += 1
 
-        message = translate(
-            _(
-                "${count} item(s) restored successfully.",
-                mapping={"count": restored_count},
-            ),
-            context=self.request,
-        )
-        IStatusMessage(self.request).addStatusMessage(message, type="info")
+        # Success message for restored items
+        if restored_count > 0:
+            message = translate(
+                _(
+                    "${count} item(s) restored successfully.",
+                    mapping={"count": restored_count},
+                ),
+                context=self.request,
+            )
+            IStatusMessage(self.request).addStatusMessage(message, type="info")
+            
+        # Error message for items with missing parents
+        if missing_parents_count > 0:
+            if len(missing_parent_items) == 1:
+                # Single item message
+                item = missing_parent_items[0]
+                message = translate(
+                    _(
+                        "The item '${title}' could not be restored because its original location no longer exists. "
+                        "Please choose a different location.",
+                        mapping={"title": item["title"]},
+                    ),
+                    context=self.request,
+                )
+                # Redirect to the item's detail page if only one item had this issue
+                self.request.response.redirect(
+                    f"{self.context.absolute_url()}/@@recyclebin-item/{item['id']}"
+                )
+            else:
+                # Multiple items message
+                message = translate(
+                    _(
+                        "${count} items could not be restored because their original locations no longer exist. "
+                        "Please visit each item's detail page to specify a new location.",
+                        mapping={"count": missing_parents_count},
+                    ),
+                    context=self.request,
+                )
+            
+            IStatusMessage(self.request).addStatusMessage(message, type="error")
 
     @button.buttonAndHandler(_("Delete selected"), name="delete")
     def handle_delete(self, action):
@@ -310,6 +371,27 @@ class RecycleBinView(form.Form):
             )
         return items
 
+    def _check_parent_exists(self, item):
+        """Check if the parent container of an item exists
+        
+        Args:
+            item: The item to check
+            
+        Returns:
+            Boolean indicating if the parent container exists
+        """
+        site = getSite()
+        parent_path = item.get("parent_path", "")
+        
+        if not parent_path:
+            return False
+            
+        try:
+            parent = site.unrestrictedTraverse(parent_path)
+            return parent is not None
+        except (KeyError, AttributeError):
+            return False
+            
     def get_items(self):
         """Get all items in the recycle bin"""
         items = self.recycle_bin.get_items()
@@ -337,6 +419,13 @@ class RecycleBinView(form.Form):
                 # Apply type filtering
                 if filter_type and item.get("type") != filter_type:
                     continue
+                    
+                # Check if parent container exists and add flag to the item
+                # Don't check for comments and comment trees which have special handling
+                if item.get("type") not in ("CommentTree", "Discussion Item"):
+                    item["parent_exists"] = self._check_parent_exists(item)
+                else:
+                    item["parent_exists"] = True  # Comments have special handling
 
                 # Add comment-specific information
                 self._process_comment_item(item)
@@ -397,9 +486,6 @@ class RecycleBinItemView(form.Form):
         logger.debug(f"Additional traversal attempted with name: {name}")
         raise NotFound(self, name, request)
 
-    def updateWidgets(self):
-        super().updateWidgets()
-
     def update(self):
         super().update()
 
@@ -454,8 +540,22 @@ class RecycleBinItemView(form.Form):
             )
             return
 
-        restored_obj = self.recycle_bin.restore_item(self.item_id, target_container)
-
+        result = self.recycle_bin.restore_item(self.item_id, target_container)
+        
+        # Check if we got an error dictionary using helper method
+        if _is_error_result(result):
+            # Show the error message
+            error_message = result.get("error", "Unknown error occurred during restoration")
+            IStatusMessage(self.request).addStatusMessage(error_message, type="error")
+            
+            # Redirect back to the item view to allow selecting a different target
+            self.request.response.redirect(
+                f"{self.context.absolute_url()}/@@recyclebin-item/{self.item_id}"
+            )
+            return
+            
+        restored_obj = result
+        
         if restored_obj:
 
             message = translate(
@@ -467,15 +567,7 @@ class RecycleBinItemView(form.Form):
             )
             IStatusMessage(self.request).addStatusMessage(message, type="info")
 
-            redirect_url = restored_obj.absolute_url()
-
-            # For File and Image types, add /view to the URL
-            portal_type = getattr(restored_obj, "portal_type", "")
-            if portal_type in ("File", "Image"):
-                redirect_url = f"{redirect_url}/view"
-                logger.debug(
-                    f"Adding /view to redirect URL for {portal_type}: {redirect_url}"
-                )
+            redirect_url = f"{restored_obj.absolute_url()}/view"
 
             self.request.response.redirect(redirect_url)
         else:
@@ -555,9 +647,17 @@ class RecycleBinItemView(form.Form):
                             self.recycle_bin.storage[temp_id] = child_data
 
                             # Restore the child
-                            restored_obj = self.recycle_bin.restore_item(
+                            result = self.recycle_bin.restore_item(
                                 temp_id, target_container
                             )
+                            
+                            # Check if we got an error dictionary
+                            if _is_error_result(result):
+                                error_message = result.get("error", "Unknown error during child restoration")
+                                IStatusMessage(self.request).addStatusMessage(error_message, type="error")
+                                return
+                                
+                            restored_obj = result
 
                             if restored_obj:
                                 # Remove child from parent's children dict
