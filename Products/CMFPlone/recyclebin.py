@@ -384,7 +384,7 @@ class RecycleBin:
 
     def _find_target_container(self, target_container, parent_path):
         """Helper to find the target container for restoration
-        
+
         Returns a tuple (success, container, error_message) where:
             - success: Boolean indicating if the container was found
             - container: The container object (None if not found)
@@ -479,7 +479,7 @@ class RecycleBin:
         success, target_container, error_message = self._find_target_container(
             target_container, item_data["parent_path"]
         )
-        
+
         # If we couldn't find the target container, return the error message
         if not success:
             return {"success": False, "error": error_message}
