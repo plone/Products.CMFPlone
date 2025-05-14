@@ -1,4 +1,3 @@
-from AccessControl import getSecurityManager
 from datetime import datetime
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.recyclebin import IRecycleBin
@@ -35,11 +34,11 @@ class RecycleBinView(form.Form):
     def __init__(self, context, request):
         super().__init__(context, request)
         self.recycle_bin = getUtility(IRecycleBin)
-    
+
     def _get_context(self):
         """Get the context (Plone site)"""
         return self.context
-        
+
     def update(self):
         super().update()
 
@@ -322,7 +321,7 @@ class RecycleBinView(form.Form):
         # Get filters early to avoid multiple lookups during the loop
         filter_type = self.get_filter_type()
         search_query = self.get_search_query().lower()
-        
+
         # Check if the user has full access to the recycle bin
         # (includes permissions check and Manager/Site Administrator roles)
         has_full_access = self.recycle_bin.check_permission(check_roles=True)
@@ -347,7 +346,7 @@ class RecycleBinView(form.Form):
                 if not has_full_access:
                     if not self.recycle_bin.can_restore(item["recycle_id"]):
                         continue
-            
+
                 # Apply type filtering
                 if filter_type and item.get("type") != filter_type:
                     continue
@@ -424,7 +423,7 @@ class RecycleBinItemView(form.Form):
                 f"{self.context.absolute_url()}/@@recyclebin"
             )
             return
-            
+
         # Check if the user has permission to access this item
         if not self.recycle_bin.can_restore(self.item_id):
             logger.debug(f"User does not have permission to view item {self.item_id}")

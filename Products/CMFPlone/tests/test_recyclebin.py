@@ -89,6 +89,50 @@ class RecycleBinSetupTests(RecycleBinTestCase):
         self.assertEqual(settings.retention_period, 30)
         self.assertEqual(settings.maximum_size, 100)
 
+    def test_recyclebin_permission(self):
+        """Test permission checks for the recycle bin"""
+        # As Manager role, should have access
+        self.assertTrue(self.recyclebin.check_permission())
+
+        # Create a test user with limited permissions
+        from AccessControl import getSecurityManager
+        from AccessControl.SecurityManagement import newSecurityManager
+        from AccessControl.SecurityManagement import setSecurityManager
+
+        # Store the current security manager
+        old_security_manager = getSecurityManager()
+
+        try:
+            # Create a regular Member user
+            self.portal.acl_users._doAddUser("testuser", "password", ["Member"], [])
+
+            # Log in as the test user
+            user = self.portal.acl_users.getUser("testuser")
+            user = user.__of__(self.portal.acl_users)
+            newSecurityManager(None, user)
+
+            # Check permission - should be False for a regular member
+            self.assertFalse(self.recyclebin.check_permission())
+
+            # Grant the permission to the Member role
+            from Products.CMFCore.permissions import setDefaultRoles
+
+            setDefaultRoles(
+                "Products.CMFPlone.ManageRecycleBin",
+                (
+                    "Manager",
+                    "Site Administrator",
+                    "Member",
+                ),
+            )
+
+            # Now the test user should have permission
+            self.assertTrue(self.recyclebin.check_permission())
+
+        finally:
+            # Restore the security manager
+            setSecurityManager(old_security_manager)
+
 
 class RecycleBinContentTests(RecycleBinTestCase):
     """Tests for deleting and restoring basic content items"""
@@ -514,43 +558,3 @@ class RecycleBinRestoreEdgeCaseTests(RecycleBinTestCase):
         with self.assertRaises(ValueError):
             # Restore the item
             self.recyclebin.restore_item(recycle_id)
-
-
-class RecycleBinPermissionTests(RecycleBinTestCase):
-    """Tests for RecycleBin permission checks"""
-
-    def test_recyclebin_permission(self):
-        """Test permission checks for the recycle bin"""
-        # As Manager role, should have access
-        self.assertTrue(self.recyclebin.check_permission())
-        
-        # Create a test user with limited permissions
-        from AccessControl import getSecurityManager
-        from AccessControl.SecurityManagement import newSecurityManager
-        from AccessControl.SecurityManagement import setSecurityManager
-        
-        # Store the current security manager
-        old_security_manager = getSecurityManager()
-        
-        try:
-            # Create a regular Member user
-            self.portal.acl_users._doAddUser('testuser', 'password', ['Member'], [])
-            
-            # Log in as the test user
-            user = self.portal.acl_users.getUser('testuser')
-            user = user.__of__(self.portal.acl_users)
-            newSecurityManager(None, user)
-            
-            # Check permission - should be False for a regular member
-            self.assertFalse(self.recyclebin.check_permission())
-            
-            # Grant the permission to the Member role
-            from Products.CMFCore.permissions import setDefaultRoles
-            setDefaultRoles('Products.CMFPlone.ManageRecycleBin', ('Manager', 'Site Administrator', 'Member',))
-            
-            # Now the test user should have permission
-            self.assertTrue(self.recyclebin.check_permission())
-            
-        finally:
-            # Restore the security manager
-            setSecurityManager(old_security_manager)

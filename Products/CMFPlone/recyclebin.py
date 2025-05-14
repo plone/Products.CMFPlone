@@ -168,67 +168,67 @@ class RecycleBin:
             return settings.recycling_enabled
         except (KeyError, AttributeError):
             return False
-            
+
     def check_permission(self, check_roles=True):
         """Check if the current user has permission to manage the recycle bin
-        
+
         Args:
             check_roles: If True, also check for Manager or Site Administrator roles
-        
+
         Returns:
             Boolean indicating permission
         """
         context = self._get_context()
         sm = getSecurityManager()
-        
+
         # Check for explicit permission first
         has_permission = sm.checkPermission(self.MANAGE_RECYCLEBIN, context)
         if has_permission:
             return True
-            
+
         # If no explicit permission and we're not checking roles, return False
         if not check_roles:
             return False
-            
+
         # Additional check for Manager or Site Administrator roles
         user = sm.getUser()
         user_roles = user.getRolesInContext(context)
-        return 'Manager' in user_roles or 'Site Administrator' in user_roles
-            
+        return "Manager" in user_roles or "Site Administrator" in user_roles
+
     def can_restore(self, item_id):
         """Check if the current user can restore an item
-        
+
         A user can restore an item if:
-        1. They have the ManageRecycleBin permission, or 
+        1. They have the ManageRecycleBin permission, or
         2. They are a Manager or Site Administrator, or
         3. They are the owner of the item, or
         4. They deleted the item
-        
+
         Args:
             item_id: The ID of the item in the recycle bin
-            
+
         Returns:
             Boolean indicating if the user can restore the item
         """
         # Managers and Site Administrators can always restore items
         if self.check_permission(check_roles=True):
             return True
-            
+
         # Check if user is the owner of the item
         item_data = self.get_item(item_id)
         if not item_data:
             return False
-            
+
         # Get the object
         obj = item_data.get("object")
         if not obj:
             return False
-            
+
         # Get the current user ID
         current_user_id = getSecurityManager().getUser().getId()
         if not current_user_id:
             return False
-        
+
         # Check if current user is the content owner
         try:
             if hasattr(obj, "getOwnerTuple"):
@@ -242,29 +242,29 @@ class RecycleBin:
         except Exception:
             # If there's an error getting the owner, fall back to checking workflow history
             pass
-            
+
         # If not owner, check workflow history to see who deleted the item
         if not hasattr(obj, "workflow_history"):
             return False
-            
+
         workflow_tool = getToolByName(self._get_context(), "portal_workflow")
         chains = workflow_tool.getChainFor(obj)
-        
+
         if not chains:
             return False
-            
+
         workflow_id = chains[0]
         history = obj.workflow_history.get(workflow_id, ())
-        
+
         if not history:
             return False
-            
+
         # Look for the deletion entry
         for entry in reversed(history):
             if entry.get("action") == "Moved to recycle bin":
                 # If the current user is the one who deleted it, they can restore it
                 return entry.get("actor") == current_user_id
-                
+
         return False
 
     def _get_item_title(self, obj, item_type=None):
