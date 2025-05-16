@@ -5,6 +5,8 @@ from plone.app.theming.interfaces import IThemeSettings
 from plone.app.theming.utils import theming_policy
 from plone.base.interfaces import IBundleRegistry
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
+from Products.statusmessages.interfaces import IStatusMessage
 from time import time
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -277,13 +279,27 @@ class ResourceBase:
         self.rendered = {}
         setattr(self.request, REQUEST_CACHE_KEY, self.rendered)
         resolver_js = webresource.ResourceResolver(root_group_js)
-        self.rendered["js"] = webresource.ResourceRenderer(
+        self.rendered["js"] = webresource.GracefulResourceRenderer(
             resolver_js, base_url=self.portal_state.portal_url()
-        ).render()
+        ).render(error_callback=self.status_message_factory)
         resolver_css = webresource.ResourceResolver(root_group_css)
-        self.rendered["css"] = webresource.ResourceRenderer(
+        self.rendered["css"] = webresource.GracefulResourceRenderer(
             resolver_css, base_url=self.portal_state.portal_url()
-        ).render()
+        ).render(error_callback=self.status_message_factory)
+
+    def status_message_factory(self, msg):
+        """Create a status message in an resource rendering error case for
+        website admins, so that they can react to it.
+
+        Don't show the error to regular users.
+        """
+        mtool = getToolByName(self.context, "portal_membership")
+        member = mtool.getAuthenticatedMember()
+        if not member.has_permission("Plone Site Setup: Site", self.context):
+            # don't show the error to regular users
+            return
+
+        IStatusMessage(self.request).addStatusMessage(msg, type="error")
 
 
 class ResourceView(ResourceBase, ViewletBase):
