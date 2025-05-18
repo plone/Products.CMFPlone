@@ -91,7 +91,7 @@
 
   <permission
       id="Products.CMFPlone.ManageRecycleBin"
-      title="Manage Recycle Bin"
+      title="Manage recycle bin"
       />
 
 </configure>

@@ -1,0 +1,1 @@
+Introduces custom permission to manage recycle bin. @rohnsha0

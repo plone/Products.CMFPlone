@@ -379,7 +379,7 @@
       <role name="Owner" />
     </permission>
     <permission acquire="True"
-                name="Manage Recycle Bin"
+                name="Manage recycle bin"
     >
       <role name="Manager" />
       <role name="Site Administrator" />
