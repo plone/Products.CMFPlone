@@ -93,6 +93,12 @@ class TinyMCESettingsGenerator:
 
     def get_tiny_config(self):
         settings = self.settings
+
+        # NOTE: The `importcss_file_filter` is used to filter the CSS files
+        # from `content_css` which should be used to automatically create the
+        # styles dropdown.
+        # Also see:
+        # https://www.tiny.cloud/docs/tinymce/latest/importcss/#importcss_file_filter
         importcss_file_filter = "tinymce-formats.css"
 
         theme = self.get_theme()
