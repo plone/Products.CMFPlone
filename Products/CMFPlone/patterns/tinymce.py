@@ -98,7 +98,7 @@ class TinyMCESettingsGenerator:
         # from `content_css` which should be used to automatically create the
         # styles dropdown.
         # Also see:
-        # https://www.tiny.cloud/docs/tinymce/latest/importcss/#importcss_file_filter
+        # https://6.docs.plone.org/classic-ui/tinymce-customization.html#inject-formats-with-files-named-tinymce-formats-css
         importcss_file_filter = "tinymce-formats.css"
 
         theme = self.get_theme()
