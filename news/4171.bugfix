@@ -1,2 +1,0 @@
-- Handle ValueError gracefully while restoring child item while parent being deleted @rohnsha0
-- Fix redirection to site-root after parent being deleted @rohnsha0
