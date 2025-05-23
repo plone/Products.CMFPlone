@@ -35,10 +35,6 @@ class RecycleBinView(form.Form):
         super().__init__(context, request)
         self.recycle_bin = getUtility(IRecycleBin)
 
-    def _get_context(self):
-        """Get the context (Plone site)"""
-        return self.context
-
     def update(self):
         super().update()
 
@@ -344,7 +340,7 @@ class RecycleBinView(form.Form):
             if item.get("id") not in child_items_to_exclude:
                 # If user doesn't have full access, show only items they can restore
                 if not has_full_access:
-                    if not self.recycle_bin.can_restore(item["recycle_id"]):
+                    if not self.recycle_bin.check_permission():
                         continue
 
                 # Apply type filtering
@@ -425,7 +421,7 @@ class RecycleBinItemView(form.Form):
             return
 
         # Check if the user has permission to access this item
-        if not self.recycle_bin.can_restore(self.item_id):
+        if not self.recycle_bin.check_permission():
             logger.debug(f"User does not have permission to view item {self.item_id}")
             message = translate(
                 _("You don't have permission to access this item in the recycle bin."),
