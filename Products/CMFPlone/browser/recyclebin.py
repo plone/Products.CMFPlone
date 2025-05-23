@@ -382,6 +382,10 @@ class RecycleBinView(form.Form):
         Returns:
             Boolean indicating if the parent container exists
         """
+        # Comments and comment trees have special handling
+        if item.get("type") in ("CommentTree", "Discussion Item"):
+            return True
+
         site = getSite()
         parent_path = item.get("parent_path", "")
 
@@ -423,11 +427,7 @@ class RecycleBinView(form.Form):
                     continue
 
                 # Check if parent container exists and add flag to the item
-                # Don't check for comments and comment trees which have special handling
-                if item.get("type") not in ("CommentTree", "Discussion Item"):
-                    item["parent_exists"] = self._check_parent_exists(item)
-                else:
-                    item["parent_exists"] = True  # Comments have special handling
+                item["parent_exists"] = self._check_parent_exists(item)
 
                 # Add comment-specific information
                 self._process_comment_item(item)
