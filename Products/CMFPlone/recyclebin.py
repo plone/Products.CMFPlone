@@ -163,7 +163,10 @@ class RecycleBin:
         try:
             settings = self._get_settings()
             return settings.recycling_enabled
-        except (KeyError, AttributeError):
+        except Exception as e:
+            logger.error(
+                f"Error checking recycle bin settings: {str(e)}. Recycling is disabled."
+            )
             return False
 
     def _get_item_title(self, obj, item_type=None):
