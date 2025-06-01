@@ -5,6 +5,8 @@ from plone.app.theming.interfaces import IThemeSettings
 from plone.app.theming.utils import theming_policy
 from plone.base.interfaces import IBundleRegistry
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
+from Products.statusmessages.interfaces import IStatusMessage
 from time import time
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -98,12 +100,11 @@ class ResourceBase:
         request_enabled_bundles, request_disabled_bundles = self._request_bundles()
 
         # collect names
-        js_names = [name for name, rec in records.items() if rec.jscompilation]
-        css_names = [name for name, rec in records.items() if rec.csscompilation]
-        all_names = [
-            name
-            for name, rec in records.items()
-            if rec.jscompilation or rec.csscompilation
+        js_names = [
+            name for name, rec in records.items() if rec.jscompilation and rec.enabled
+        ]
+        css_names = [
+            name for name, rec in records.items() if rec.csscompilation and rec.enabled
         ]
 
         def check_dependencies(bundle_name, depends, bundles):
@@ -116,25 +117,30 @@ class ResourceBase:
                 if name in bundles or name == "all":
                     valid_dependencies.append(name)
                     continue
-                if name in all_names:
+                if name in js_names + css_names:
                     # ignore dependency on bundle outside "bundles"
                     continue
 
-                msg = f"Bundle '{bundle_name}' has a non existing dependency on '{name}'. "
+                msg = (
+                    f"Bundle '{bundle_name}' has a nonexistent dependency on '{name}'."
+                )
 
                 if name in GRACEFUL_DEPENDENCY_REWRITE:
                     # gracefully rewrite old bundle names
                     graceful_depends = GRACEFUL_DEPENDENCY_REWRITE[name]
                     logger.error(
-                        msg
-                        + f"Bundle dependency graceful rewritten to '{graceful_depends}' "
-                        + "Fallback will be removed in Plone 7."
+                        "%r Bundle dependency rewritten to %r."
+                        " This fallback will be removed in Plone 7.",
+                        msg,
+                        graceful_depends,
                     )
                     valid_dependencies.append(graceful_depends)
                     continue
 
                 # if the dependency does not exist, skip the bundle
-                logger.error(msg + "Bundle ignored - This may break your site!")
+                msg = f"{msg} The bundle is not included and may break the site!"
+                self.status_message_factory(msg)
+                logger.error(msg)
                 return "__broken__"
 
             return valid_dependencies
@@ -276,14 +282,39 @@ class ResourceBase:
 
         self.rendered = {}
         setattr(self.request, REQUEST_CACHE_KEY, self.rendered)
+
+        self.rendered["js"] = ""
         resolver_js = webresource.ResourceResolver(root_group_js)
-        self.rendered["js"] = webresource.ResourceRenderer(
-            resolver_js, base_url=self.portal_state.portal_url()
-        ).render()
+        try:
+            self.rendered["js"] = webresource.ResourceRenderer(
+                resolver_js, base_url=self.portal_state.portal_url()
+            ).render()
+        except (webresource.ResourceError, FileNotFoundError) as e:
+            self.status_message_factory(f"Error rendering JavaScript resources. {e}")
+
+        self.rendered["css"] = ""
         resolver_css = webresource.ResourceResolver(root_group_css)
-        self.rendered["css"] = webresource.ResourceRenderer(
-            resolver_css, base_url=self.portal_state.portal_url()
-        ).render()
+        try:
+            self.rendered["css"] = webresource.ResourceRenderer(
+                resolver_css, base_url=self.portal_state.portal_url()
+            ).render()
+        except (webresource.ResourceError, FileNotFoundError) as e:
+            self.status_message_factory(f"Error rendering CSS resources. {e}")
+
+    def status_message_factory(self, status_message, status_type="error"):
+        """Create a status message in a resource rendering error case for
+        website admins, so that they can react to it.
+
+        Don't show the error to regular users.
+        """
+        mtool = getToolByName(self.context, "portal_membership")
+        member = mtool.getAuthenticatedMember()
+        if not member.has_permission("Plone Site Setup: Site", self.context):
+            # don't show the error to regular users
+            return
+
+        # show the error to site admins
+        IStatusMessage(self.request).addStatusMessage(status_message, type=status_type)
 
 
 class ResourceView(ResourceBase, ViewletBase):
