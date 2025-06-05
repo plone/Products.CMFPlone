@@ -131,6 +131,12 @@
       name="plone"
       />
 
+  <subscriber
+      for="*
+           zope.traversing.interfaces.IBeforeTraverseEvent"
+      handler=".traversal.set_ajax"
+      />
+
   <!-- Adapter for default workflow lookup -->
   <adapter
       factory=".workflow.ToolWorkflowChain"
