@@ -10,9 +10,6 @@ from zope.interface import implementer
 from zope.pagetemplate import engine as zpt_engine
 
 
-MARKER = object()
-
-
 class PloneBundlesTraverser(ResourceTraverser):
     # the name is misleading - it is used not only for bundles.
     # in fact in Plone 6 bundles are no longer used, despite that the traverser
@@ -85,7 +82,7 @@ def set_ajax(obj, event):
     # it again.
     if (
         request.getHeader("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
-        and not request.get("ajax_load", MARKER) is not MARKER
+        and "ajax_load" not in request
     ):
         # Directly set on the request object
         request.set("ajax_load", True)
