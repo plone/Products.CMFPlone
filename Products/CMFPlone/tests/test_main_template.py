@@ -13,6 +13,17 @@ class TestMainTemplate(unittest.TestCase):
         self.portal = self.layer["portal"]
         self.request = self.layer["request"]
 
+    def test_request_containment(self):
+        """Very basic test to show that the following works:
+        `"ajax_load" in request`
+        instead of:
+        `request.get("ajax_load", MARKER) is not MARKER1`
+        """
+        request = self.request.clone()
+        request.form["ajax_load"] = True
+        self.assertTrue("ajax_load" in request.form)
+        self.assertTrue("ajax_load" in request)
+
     def test_main_template_standard(self):
         view = getMultiAdapter((self.portal, self.request), name="main_template")
         self.assertEqual(view.template_name, "templates/main_template.pt")
