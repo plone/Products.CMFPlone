@@ -362,6 +362,6 @@
              url_expr="string:${portal_url}/@@plone-recyclebin"
              visible="True"
   >
-    <permission>Manage portal</permission>
+    <permission>Manage recycle bin</permission>
   </configlet>
 </object>

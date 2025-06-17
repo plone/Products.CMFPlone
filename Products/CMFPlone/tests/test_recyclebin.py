@@ -89,6 +89,19 @@ class RecycleBinSetupTests(RecycleBinTestCase):
         self.assertEqual(settings.retention_period, 30)
         self.assertEqual(settings.maximum_size, 100)
 
+    def test_recyclebin_permission(self):
+        """Test permission checks for the recycle bin"""
+        # As Manager role, should have access
+        self.assertTrue(self.recyclebin.check_permission())
+
+        self.portal.acl_users._doAddUser("testuser", "password", ["Member"], [])
+
+        # Log in as the test user using plone.app.testing login function
+        login(self.portal, "testuser")
+
+        # Check permission - should be False for a regular member
+        self.assertFalse(self.recyclebin.check_permission())
+
 
 class RecycleBinContentTests(RecycleBinTestCase):
     """Tests for deleting and restoring basic content items"""

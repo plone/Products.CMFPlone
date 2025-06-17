@@ -126,6 +126,9 @@ class RecycleBinStorage(Persistent):
 class RecycleBin:
     """Stores deleted content items"""
 
+    # Permission for managing recycle bin
+    MANAGE_RECYCLEBIN = "Manage recycle bin"
+
     def __init__(self):
         """Initialize the recycle bin utility
 
@@ -169,6 +172,15 @@ class RecycleBin:
                 f"Error checking recycle bin settings: {str(e)}. Recycling is disabled."
             )
             return False
+
+    def check_permission(self):
+        """Check if the current user has permission to manage the recycle bin
+
+        Returns:
+            Boolean indicating permission
+        """
+        context = self._get_context()
+        return getSecurityManager().checkPermission(self.MANAGE_RECYCLEBIN, context)
 
     def _get_item_title(self, obj, item_type=None):
         """Helper method to get a meaningful title for an item"""
