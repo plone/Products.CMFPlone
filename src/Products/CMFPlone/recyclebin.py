@@ -1,4 +1,5 @@
 from AccessControl import getSecurityManager
+from Acquisition import aq_base
 from BTrees.OOBTree import OOBTree
 from BTrees.OOBTree import OOTreeSet
 from datetime import datetime
@@ -290,7 +291,7 @@ class RecycleBin:
             "parent_path": parent_path,
             "deletion_date": datetime.now(),
             "size": getattr(obj, "get_size", lambda: 0)(),
-            "object": obj,  # Store the actual object
+            "object": aq_base(obj),  # Store the actual object with no acquisition chain
         }
 
         # Add children data if this was a folder/collection
