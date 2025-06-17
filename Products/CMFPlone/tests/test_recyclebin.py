@@ -517,9 +517,13 @@ class RecycleBinRestoreEdgeCaseTests(RecycleBinTestCase):
         # Delete the folder to simulate parent container being gone
         del self.portal["temp-folder"]
 
-        # Trying to restore without a target container should raise an error
-        with self.assertRaises(ValueError):
-            self.recyclebin.restore_item(recycle_id)
+        # Trying to restore without a target container should return an error dictionary
+        result = self.recyclebin.restore_item(recycle_id)
+        self.assertIsInstance(result, dict)
+        self.assertFalse(
+            result.get("success", True)
+        )  # Should be marked as unsuccessful
+        self.assertIn("error", result)  # Should contain an error message
 
         # Now restore with an explicit target container
         restored_page = self.recyclebin.restore_item(
@@ -555,3 +559,36 @@ class RecycleBinRestoreEdgeCaseTests(RecycleBinTestCase):
         with self.assertRaises(ValueError):
             # Restore the item
             self.recyclebin.restore_item(recycle_id)
+
+    def test_restore_with_parent_gone_to_target(self):
+        """Test restoring an item when its parent container is gone, should restore to target container"""
+        # Create a folder and a document inside it
+        self.portal.invokeFactory("Folder", "parent-folder", title="Parent Folder")
+        folder = self.portal["parent-folder"]
+        folder.invokeFactory("Document", "child-page", title="Child Page")
+        page = folder["child-page"]
+        page_path = "/".join(page.getPhysicalPath())
+
+        # Add the page to the recycle bin
+        recycle_id = self.recyclebin.add_item(page, folder, page_path)
+
+        # Delete the folder to simulate parent container being gone
+        del self.portal["parent-folder"]
+
+        # Create a new target folder
+        self.portal.invokeFactory("Folder", "target-folder", title="Target Folder")
+        target_folder = self.portal["target-folder"]
+
+        # Now restore with the target folder as container
+        restored_page = self.recyclebin.restore_item(
+            recycle_id, target_container=target_folder
+        )
+
+        # Verify the page was restored to the target folder
+        self.assertIsNotNone(restored_page)
+        self.assertEqual(restored_page.getId(), "child-page")
+        self.assertIn("child-page", target_folder)
+        self.assertEqual(target_folder["child-page"].Title(), "Child Page")
+
+        # Verify the item was removed from the recycle bin
+        self.assertNotIn(recycle_id, self.recyclebin.storage)
