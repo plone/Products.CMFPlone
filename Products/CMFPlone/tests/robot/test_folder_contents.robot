@@ -74,7 +74,7 @@ I select all the elements
     Wait For Elements State     //tr[@data-id="doc4"]//input[@type="checkbox"]    checked    timeout=10s
 
 the selection count appears
-    Get Text    //*[@id="btn-selected-items"]//*[contains(@class,"label-success")]    should be    4
+    Get Text    //a[@id="btn-change-selection"]    should be    4 of 4 selected
 
 the clear selection link appears
     Get Element Count    //a[contains(@class,"remove-all")]    greater than    0
@@ -82,8 +82,8 @@ the clear selection link appears
 I clear the selection
     Wait For Condition    Classes    //body    contains    patterns-loaded
     Sleep    2s
-    Check Checkbox    //*[contains(@class,"pat-structure")]//input[contains(@class,"select-all")]
-    Click    //a[@id="btn-selected-items"]
+    Check Checkbox    //input[@id="selectAllInputCheckbox"]
+    Click    //a[@id="btn-change-selection"]
     Click    //a[contains(@class,"remove-all")]
 
 
