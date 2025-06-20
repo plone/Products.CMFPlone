@@ -1,0 +1,1 @@
+Drop workaround for #2666 - a bug in Python (bugs.python.org/issue46110) which was fixed in 3.9.10. Plone 6.2 version. @pbauer
