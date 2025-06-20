@@ -15,6 +15,36 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.2 (2025-06-20)
+
+
+### Bug fixes:
+
+- Make resource registry more robust against broken resources.
+
+  Don't break the resource registry when a resource error happens (missing
+  dependency, circular dependency, file not found, etc). Admins will see a
+  warning badge and can fix the problem in the resource registry user interface.
+  Previously such errors broke the rendering of the whole site, making fixes very
+  fiddly.
+  [thet] dont-break-resource-registry
+- Fix `redirect_after_login` in VHM environments. @ale-rt, @petschki #4151
+- Harden condition of external editor action to not fail when the `externalEditorEnabled` script is not available.
+  [maurits] #4179
+- Add login to the list of button names that show submit button. @erral #4180
+- Fix robottest for update markup in `pat-contentbrowser`. @petschki 
+
+
+### Internal:
+
+- Updated metadata version to 6109.
+  [maurits] #6109
+
+
+### Tests
+
+- fix robot test "folder_contents" with the new multiselection @1letter 
+
 ## 6.1.1 (2025-03-25)
 
 
