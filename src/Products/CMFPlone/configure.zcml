@@ -131,12 +131,6 @@
       name="plone"
       />
 
-  <subscriber
-      for="*
-           zope.traversing.interfaces.IBeforeTraverseEvent"
-      handler=".traversal.set_ajax"
-      />
-
   <!-- Adapter for default workflow lookup -->
   <adapter
       factory=".workflow.ToolWorkflowChain"
@@ -158,6 +152,11 @@
   <subscriber
       for="ZPublisher.interfaces.IPubAfterTraversal"
       handler=".events.removeBase"
+      />
+
+  <subscriber
+      for="ZPublisher.interfaces.IPubStart"
+      handler=".events.set_ajax"
       />
 
   <adapter
