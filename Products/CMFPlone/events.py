@@ -37,3 +37,17 @@ def removeBase(event):
     https://dev.plone.org/ticket/13705
     """
     event.request.response.base = None
+
+
+def set_ajax(event):
+    """Set the ajax_load parameter automatically for AJAX requests."""
+    request = event.request
+
+    # If ajax_load was already set to a true-ish or false-ish value, don't set
+    # it again.
+    if (
+        request.getHeader("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
+        and "ajax_load" not in request
+    ):
+        # Directly set on the request object
+        request.set("ajax_load", True)
