@@ -1,7 +1,7 @@
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zope.component import getMultiAdapter
 from zope.event import notify
-from ZPublisher.pubevents import PubStart
+from ZPublisher.pubevents import PubAfterTraversal
 
 import unittest
 
@@ -51,8 +51,8 @@ class TestMainTemplate(unittest.TestCase):
         """Test an AJAX request leads to the ajax_main_template.pt."""
         request = self.request.clone()
         request.environ["HTTP_X_REQUESTED_WITH"] = "XMLHttpRequest"
-        # Manually trigger the PubStart event to set the ajax_load parameter
-        notify(PubStart(request))
+        # Manually trigger the PubAfterTraversal event to set the ajax_load parameter
+        notify(PubAfterTraversal(request))
         view = getMultiAdapter((self.portal, request), name="main_template")
         self.assertIn("/ajax_main_template.pt", view.template.filename)
 
@@ -63,8 +63,8 @@ class TestMainTemplate(unittest.TestCase):
         request = self.request.clone()
         request.form["ajax_load"] = "False"
         request.environ["HTTP_X_REQUESTED_WITH"] = "XMLHttpRequest"
-        # Manually trigger the PubStart event to set the ajax_load parameter
-        notify(PubStart(request))
+        # Manually trigger the PubAfterTraversal event to set the ajax_load parameter
+        notify(PubAfterTraversal(request))
         view = getMultiAdapter((self.portal, request), name="main_template")
         self.assertIn("/main_template.pt", view.template.filename)
 

@@ -155,7 +155,7 @@
       />
 
   <subscriber
-      for="ZPublisher.interfaces.IPubStart"
+      for="ZPublisher.interfaces.IPubAfterTraversal"
       handler=".events.set_ajax"
       />
 
