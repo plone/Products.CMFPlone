@@ -98,12 +98,15 @@ an edited link item
 # WHEN
 
 I have the title input field
-    Get Element States    //fieldset[@id='fieldset-default']    contains    visible
+    Get Element States    //fieldset[@id='autotoc-item-autotoc-0']//input[@name='form.widgets.IDublinCore.title']    contains    visible
 
 I can only see the default tab
-    Get Element States    //fieldset[@id='fieldset-default']    contains    visible
-    Get Element States    //fieldset[@id='fieldset-dates']    not contains    visible
-    Get Element States    //fieldset[@id='fieldset-categorization']   not contains    visible
+    # the default fieldset with properties
+    Get Element States    //fieldset[@id='autotoc-item-autotoc-0']    contains    visible
+    # the fieldset with dates
+    Get Element States    //fieldset[@data-fieldset='dates']    not contains    visible
+    # the fieldset with categorisation
+    Get Element States    //fieldset[@data-fieldset='categorization']   not contains    visible
 
 I click the ${tab} tab
     Click    //a[contains(text(),${tab})]
@@ -161,12 +164,12 @@ an overlay pops up
     Get Element Count    //div[contains(@class, 'overlay')]//input[@class='insertreference']    should be    1
 
 the categorization tab is shown
-    Get Element States    //fieldset[@id='fieldset-categorization']    contains    visible
+    Get Element States    //fieldset[@data-fieldset='categorization']    contains    visible
 
 no other tab is shown
-    Get Element States    //fieldset[@id='fieldset-dates']    not contains    visible
-    Get Element States    //fieldset[@id='fieldset-default']    not contains    visible
-    Get Element States    //fieldset[@id='fieldset-settings']    not contains    visible
+    Get Element States    //fieldset[@data-fieldset='dates']    not contains    visible
+    Get Element States    //fieldset[@id='autotoc-item-autotoc-0']    not contains    visible
+    Get Element States    //fieldset[@data-fieldset='settings']    not contains    visible
 
 at least one other item
     Go to    ${PLONE_URL}/++add++Document
