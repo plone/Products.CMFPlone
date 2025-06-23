@@ -1,6 +1,7 @@
 from Acquisition import aq_inner
 from plone.base import PloneMessageFactory as _
 from plone.protect import CheckAuthenticator
+from plone.schema.email import _isemail
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.controlpanel.browser.usergroups import (
     UsersGroupsControlPanelView,
@@ -10,6 +11,11 @@ from Products.statusmessages.interfaces import IStatusMessage
 
 class GroupDetailsControlPanel(UsersGroupsControlPanelView):
     def get_group_property(self, prop_id):
+        """Retrieve group property, prioritizing request data if it's a POST request."""
+
+        if self.request.method == "POST":
+            return self.request.form.get(prop_id, None)
+
         try:
             return self.group.getProperty(prop_id, None)
         except AttributeError:
@@ -35,11 +41,20 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
             CheckAuthenticator(self.request)
 
             msg = _("No changes made.")
-            self.group = None
 
             title = self.request.form.get("title", None)
             description = self.request.form.get("description", None)
             addname = self.request.form.get("addname", None)
+
+            email = self.request.form.get("email", "")
+            isEmailValid = _isemail(email)
+            if email and not isEmailValid:
+                msg = _(
+                    "Invalid email address: ${email}. Please correct it before proceeding.",
+                    mapping={"email": email},
+                )
+                IStatusMessage(self.request).add(msg, "error")
+                return self.index()
 
             if addname:
                 if not self.regtool.isMemberIdAllowed(addname):
@@ -84,11 +99,9 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
 
             processed = {}
             for id, property in self.gdtool.propertyItems():
-                processed[id] = self.request.get(id, None)
+                processed[id] = self.request.form.get(id, None)
 
             if self.group:
-                # for what reason ever, the very first group created does not
-                # exist
                 self.group.setGroupProperties(processed)
 
             IStatusMessage(self.request).add(msg, type=self.group and "info" or "error")
