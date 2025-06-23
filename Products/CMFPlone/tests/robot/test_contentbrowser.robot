@@ -123,7 +123,7 @@ a Link
 I select a related item image via contentbrowser
    Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
    # Click the Categorization Tab
-   Click    //a[@id="autotoc-item-autotoc-2"]
+   Click    //a[@id="autotoc-item-autotoc-2-tab"]
    # Click the select button
    Click    //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//a[contains(@class, "btn-primary")]
    # Click third element in first column, that is the "Assets" folder
@@ -136,14 +136,14 @@ I select a related item image via contentbrowser
    Click item in contenbrowser column    4    3
    # Click second element in fifth column, that is the "Image2" Object
    Click item in contenbrowser column    5    2
-   # Click the select Button in the Toolbar of column 6   
+   # Click the select Button in the Toolbar of column 6
    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[6]/div[contains(@class, "levelToolbar")]/div[contains(@class,"selectLevel")]/button
 
 
 I select two related item images via contentbrowser
    Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
    # Click the Categorization Tab
-   Click    //a[@id="autotoc-item-autotoc-2"]
+   Click    //a[@id="autotoc-item-autotoc-2-tab"]
    # Click the select button
    Click    //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//a[contains(@class, "btn-primary")]
    # Click third element in first column, that is the "Assets" folder
