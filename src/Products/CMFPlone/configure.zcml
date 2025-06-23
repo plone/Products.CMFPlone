@@ -154,11 +154,6 @@
       handler=".events.removeBase"
       />
 
-  <subscriber
-      for="ZPublisher.interfaces.IPubAfterTraversal"
-      handler=".events.set_ajax"
-      />
-
   <adapter
       factory=".traversal.get_zope_page_template_engine"
       for="zope.pagetemplate.engine.ZopeBaseEngine"
