@@ -1,6 +1,8 @@
 from plone.base.interfaces import IReorderedEvent
 from plone.base.interfaces import ISiteManagerCreatedEvent
 from plone.base.utils import get_installer
+from plone.registry.interfaces import IRegistry
+from zope.component import queryUtility
 from zope.interface import implementer
 from zope.interface.interfaces import ObjectEvent
 
@@ -41,6 +43,15 @@ def removeBase(event):
 
 def set_ajax(event):
     """Set the ajax_load parameter automatically for AJAX requests."""
+
+    registry = queryUtility(IRegistry)
+    if registry is None:
+        return
+
+    if not registry.get("plone.ajax_marker"):
+        # Autmatic ajax_load request marking disabled.
+        return
+
     request = event.request
 
     # If ajax_load was already set to a true-ish or false-ish value, don't set
