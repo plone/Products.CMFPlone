@@ -143,7 +143,7 @@ I select a related item image via contentbrowser
 I select two related item images via contentbrowser
    Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
    # Click the Categorization Tab
-   Click    //a[@id="autotoc-item-autotoc-2-tab"]
+   Click    //nav[@aria-label="Tab Navigation"]//a[text()="Categorization"]
    # Click the select button
    Click    //div[@id="formfield-form-widgets-IRelatedItems-relatedItems"]//a[contains(@class, "btn-primary")]
    # Click third element in first column, that is the "Assets" folder
