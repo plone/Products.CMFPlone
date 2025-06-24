@@ -10,6 +10,7 @@ from z3c.form import button
 from z3c.form import field
 from z3c.form import form
 from zExceptions import NotFound
+from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.i18n import translate
@@ -572,9 +573,10 @@ class RecycleBinItemView(form.Form):
             IStatusMessage(self.request).addStatusMessage(message, type="info")
 
             # Determine the appropriate URL to redirect to after restoration
-            redirect_url = self._get_redirect_url_after_restoration(
-                restored_obj, target_container
+            context_state = getMultiAdapter(
+                (restored_obj, self.request), name="plone_context_state"
             )
+            redirect_url = context_state.view_url()
 
             self.request.response.redirect(redirect_url)
         else:
@@ -779,57 +781,6 @@ class RecycleBinItemView(form.Form):
     def format_size(self, size_bytes):
         """Format size in bytes to human-readable format"""
         return human_readable_size(size_bytes)
-
-    def _get_redirect_url_after_restoration(self, restored_obj, target_container=None):
-        """Determine the appropriate URL to redirect to after item restoration.
-
-        This method implements a fallback strategy:
-        1. Try restored object's view URL first
-        2. If that fails, try target container URL
-        3. If that fails, use the recycle bin URL
-
-        Args:
-            restored_obj: The object that was restored
-            target_container: The container where the object was restored (if specified)
-
-        Returns:
-            String URL to redirect to
-        """
-        redirect_url = None
-
-        # First try to use the restored object's URL
-        try:
-            object_url = f"{restored_obj.absolute_url()}/view"
-
-            # Verify the URL is valid by checking if the path exists
-            site = getSite()
-            path = object_url.replace(site.absolute_url(), "").lstrip("/")
-
-            try:
-                # Try to traverse to the path to verify it exists
-                site.unrestrictedTraverse(path)
-                redirect_url = object_url
-            except (KeyError, AttributeError):
-                # Path doesn't exist, don't set redirect_url yet
-                pass
-        except (AttributeError, TypeError):
-            # If absolute_url fails, don't set redirect_url yet
-            pass
-
-        # If the object URL doesn't work, try target container URL
-        if not redirect_url and target_container:
-            try:
-                target_url = f"{target_container.absolute_url()}/view"
-                redirect_url = target_url
-            except (AttributeError, TypeError):
-                # If target container URL fails, don't set redirect_url yet
-                pass
-
-        # If neither worked, fall back to recycle bin view
-        if not redirect_url:
-            redirect_url = f"{self.context.absolute_url()}/@@recyclebin"
-
-        return redirect_url
 
 
 class RecycleBinEnabled(BrowserView):
