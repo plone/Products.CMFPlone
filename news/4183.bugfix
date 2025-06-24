@@ -1,0 +1,1 @@
+Fix RichText widget crash when form is None during request handling.
