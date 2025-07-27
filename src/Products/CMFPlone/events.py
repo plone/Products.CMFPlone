@@ -1,8 +1,6 @@
 from plone.base.interfaces import IReorderedEvent
 from plone.base.interfaces import ISiteManagerCreatedEvent
 from plone.base.utils import get_installer
-from plone.registry.interfaces import IRegistry
-from zope.component import queryUtility
 from zope.interface import implementer
 from zope.interface.interfaces import ObjectEvent
 
