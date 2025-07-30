@@ -1,6 +1,8 @@
+from plone.memoize.view import memoize
 from Products.CMFPlone.browser.interfaces import IMainTemplate
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getMultiAdapter
 from zope.interface import implementer
 
 
@@ -13,8 +15,13 @@ class MainTemplate(BrowserView):
         return self.template()
 
     @property
+    @memoize
+    def plone_layout(self):
+        return getMultiAdapter((self.context, self.request), name="plone_layout")
+
+    @property
     def template(self):
-        if self.request.form.get("ajax_load"):
+        if self.plone_layout.use_ajax():
             return self.ajax_template
         else:
             return self.main_template
