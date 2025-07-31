@@ -67,9 +67,14 @@ def munge_search_term(query):
             continue
         r.append(f'"{clean_qp}"')
 
-    r += map(quote, query.strip().split())
+    # Add wildcards to individual terms, not just at the end
+    if not original_query.endswith('"'):
+        individual_terms = [quote(term) + "*" for term in query.strip().split()]
+    else:
+        individual_terms = [quote(term) for term in query.strip().split()]
+
+    r += individual_terms
     r = " AND ".join(r)
-    r = r + ("*" if r and not original_query.endswith('"') else "")
     return r
 
 
