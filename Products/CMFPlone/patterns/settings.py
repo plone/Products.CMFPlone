@@ -133,6 +133,7 @@ class PatternSettingsAdapter:
         current_path = folder.absolute_url()[len(portal_url) :]
 
         image_types = settings.image_objects or []
+        folder_types = settings.contains_objects or []
 
         server_url = self.request.get("SERVER_URL", "")
         site_path = portal_url[len(server_url) :]
@@ -146,6 +147,8 @@ class PatternSettingsAdapter:
             field_name=None,
         )
         related_items_config = call_callables(related_items_config, self.context)
+
+        related_items_config["folderTypes"] = folder_types
 
         configuration = {
             "base_url": self.context.absolute_url(),
