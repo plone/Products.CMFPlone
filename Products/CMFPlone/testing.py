@@ -11,12 +11,19 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing.layers import FunctionalTesting
 from plone.app.testing.layers import IntegrationTesting
+from plone.app.z3cform.widgets.select import Select2Widget
+from plone.autoform import directives
+from plone.autoform.form import AutoExtensibleForm
 from plone.testing import zope
 from Products.CMFPlone.tests.robot.robot_setup import CMFPloneRemoteKeywords
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
+from z3c.form import form
 from zope.component import getSiteManager
 from zope.configuration import xmlconfig
+from zope.interface import Interface
+from zope.schema import Choice
+from zope.schema import List
 
 import doctest
 
@@ -89,4 +96,60 @@ PRODUCTS_CMFPLONE_ROBOT_TESTING = FunctionalTesting(
     name="CMFPloneLayer:Acceptance",
 )
 
+
+class ProductsCMFPloneDistributionsLayer(ProductsCMFPloneLayer):
+    defaultBases = (PRODUCTS_CMFPLONE_FIXTURE,)
+
+    def setUpZope(self, app, configurationContext):
+        import Products.CMFPlone
+
+        xmlconfig.file(
+            "configure-distributions.zcml",
+            Products.CMFPlone.tests,
+            context=configurationContext,
+        )
+
+    def setUpPloneSite(self, portal):
+        # ProductsCMFPloneLayer already does enough setup.
+        pass
+
+
+PRODUCTS_CMFPLONE_DISTRIBUTIONS_FIXTURE = ProductsCMFPloneDistributionsLayer()
+
+PRODUCTS_CMFPLONE_DISTRIBUTIONS_INTEGRATION_TESTING = IntegrationTesting(
+    bases=(PRODUCTS_CMFPLONE_DISTRIBUTIONS_FIXTURE,),
+    name="CMFPloneLayer:DistributionsIntegration",
+)
+
 optionflags = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE
+
+
+class ITestSelectWidgetSchema(Interface):
+
+    directives.widget("select_field", Select2Widget)
+    select_field = Choice(
+        title="Select Widget",
+        values=[
+            "one",
+            "two",
+            "three",
+        ],
+    )
+
+    directives.widget("list_field", Select2Widget)
+    list_field = List(
+        title="Select Multiple Widget",
+        value_type=Choice(
+            values=[
+                "four",
+                "five",
+                "six",
+            ]
+        ),
+    )
+
+
+class TestSelectWidgetForm(AutoExtensibleForm, form.EditForm):
+
+    schema = ITestSelectWidgetSchema
+    ignoreContext = True

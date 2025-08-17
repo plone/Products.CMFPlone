@@ -31,7 +31,7 @@ class TestCookieAuth(unittest.TestCase):
         self.assertIn("200", self.browser.headers["status"])
         self.assertEqual(
             self.browser.url,
-            "http://nohost/plone/login?came_from=/plone/test-folder",  # noqa: E501
+            "http://nohost/plone/login?came_from=/plone/test-folder",
         )
 
     def testInsufficientPrivileges(self):
@@ -42,7 +42,7 @@ class TestCookieAuth(unittest.TestCase):
         self.assertIn("200", self.browser.headers["status"])
         self.assertEqual(
             self.browser.url,
-            "http://nohost/plone/login?came_from=/plone/test-folder",  # noqa: E501
+            "http://nohost/plone/login?came_from=/plone/test-folder",
         )
 
     def testSetSessionCookie(self):

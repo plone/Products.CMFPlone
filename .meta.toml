@@ -1,5 +1,44 @@
 # Generated from:
-# https://github.com/plone/meta/tree/master/config/default
+# https://github.com/plone/meta/tree/main/src/plone/meta/default
+# See the inline comments on how to expand/tweak this configuration file
 [meta]
 template = "default"
-commit-id = "2a5f5557"
+commit-id = "2.0.1.dev0"
+
+[flake8]
+extra_lines = """
+per-file-ignores =
+    Products/CMFPlone/patches/__init__.py: F401,E402
+    Products/CMFPlone/skins/plone_scripts/*.py: E265,E266,F401,F821,F706
+    Products/CMFPlone/earlypatches/security.py: E402
+    Products/CMFPlone/UnicodeSplitter/__init__.py: F401,F403
+    Products/CMFPlone/utils.py: F821
+    Products/CMFPlone/patches/speed.py: E402
+"""
+
+[pre_commit]
+zpretty_extra_lines = """
+        exclude: .pt
+"""
+
+i18ndude_extra_lines = """
+        pass_filenames: false
+"""
+
+[pyproject]
+codespell_ignores = "checkin,worl,unter,newslines,aci"
+dependencies_ignores = "['robotframework-debuglibrary', 'plone.intelligenttext', 'five.customerize', 'Products.SiteErrorLog', 'Products.ExtendedPathIndex', 'plone.volto', 'plone.app.upgrade', 'plone.distribution', 'plone.app.multilingual', 'plone.app.discussion', 'plone.app.iterate', 'plone.app.event', '_imaging', 'Products.ZSQLMethods', 'Lifetime', 'Exception', 'Products.ExternalEditor']"
+dependencies_mappings = [
+  "'Products.ZCatalog' = ['Products.ZCTextIndex', 'Products.PluginIndexes']",
+]
+
+[tox]
+test_matrix = {"6.2" = ["3.12", "3.10"]}
+
+[github]
+jobs = [
+   "qa",
+   "dependencies",
+   "release_ready",
+   "circular",
+   ]

@@ -4,7 +4,7 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
       i18n:domain="plone"
-      metal:use-macro="here/main_template/macros/master"
+      metal:use-macro="context/@@main_template/macros/master"
 >
 <body>
   <metal:main fill-slot="main">

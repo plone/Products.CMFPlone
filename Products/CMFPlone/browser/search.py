@@ -1,12 +1,12 @@
 from DateTime import DateTime
 from plone.app.contentlisting.interfaces import IContentListing
-from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.base.batch import Batch
+from plone.base.interfaces import INavigationRoot
 from plone.base.interfaces import ISearchSchema
 from plone.base.interfaces.siteroot import IPloneSiteRoot
+from plone.base.navigationroot import get_navigation_root
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.ZCTextIndex.ParseTree import ParseError
 from zope.cachedescriptors.property import Lazy as lazy_property
 from zope.component import getMultiAdapter
@@ -14,6 +14,7 @@ from zope.component import getUtility
 from zope.component import queryUtility
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
+from zope.schema.interfaces import IVocabularyFactory
 from ZTUtils import make_query
 
 import json
@@ -147,7 +148,7 @@ class Search(BrowserView):
         query["show_inactive"] = False
         # respect navigation root if we're not at the site root.
         if "path" not in query and not IPloneSiteRoot.providedBy(self.context):
-            query["path"] = getNavigationRoot(self.context)
+            query["path"] = get_navigation_root(self.context)
 
         if "sort_order" in query and not query["sort_order"]:
             del query["sort_order"]
@@ -183,7 +184,30 @@ class Search(BrowserView):
         plone_utils = getToolByName(self.context, "plone_utils")
         if not isinstance(types, list):
             types = [types]
-        return plone_utils.getUserFriendlyTypes(types)
+
+        # We want to have the configured types to be exposed in the search sorted for humans (by translated Title).
+        # Those are stored in the Plone registry. They are called here UserFriendlyTypes.
+        #
+        # Confusingly, on the other hand we have the ReallyUserFriendlyTypes vocabulary from
+        # plone.app.vocabularies, which is already sorted accordingly and contain all possible types,
+        # except "Temp Folder", "Plone Site" and deprecated types.
+
+        # fetch the sorted ReallyUserFriendlyTypes vocabulary
+        vocab_factory = queryUtility(
+            IVocabularyFactory, "plone.app.vocabularies.ReallyUserFriendlyTypes"
+        )
+        vocab = vocab_factory(self.context)
+
+        # get the configured values from the registry and pass the input types to be reduced to possible values
+        user_friendly_types = plone_utils.getUserFriendlyTypes(types)
+
+        # Filter the sorted ReallyUserFriendlyTypes down to the configured values from the registry,
+        #  but keep the order.
+        sorted_types = [
+            term.value for term in vocab if term.value in user_friendly_types
+        ]
+
+        return sorted_types
 
     def types_list(self):
         # only show those types that have any content

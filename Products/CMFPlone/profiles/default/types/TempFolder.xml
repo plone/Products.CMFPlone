@@ -18,7 +18,6 @@
   <property name="global_allow">False</property>
   <property name="filter_content_types">False</property>
   <property name="allowed_content_types">
-    <element value="Discussion Item" />
     <element value="Document" />
     <element value="Event" />
     <element value="File" />

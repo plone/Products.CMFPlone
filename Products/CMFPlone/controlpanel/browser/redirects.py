@@ -19,6 +19,7 @@ from zope.i18nmessageid import MessageFactory
 import csv
 import logging
 import tempfile
+import warnings
 
 
 try:
@@ -163,7 +164,11 @@ class RedirectsView(BrowserView):
 
 
 class RedirectionSet:
-    def __init__(self, query="", created="", manual=""):
+    # Marker so that plone.restapi can detect if this is
+    # a version that supports the start and end parameters
+    supports_date_range_filtering = True
+
+    def __init__(self, query="", created="", manual="", start="", end=""):
         self.storage = getUtility(IRedirectionStorage)
 
         portal = getSite()
@@ -171,14 +176,16 @@ class RedirectionSet:
         self.portal_path_len = len(self.portal_path)
 
         # noinspection PyProtectedMember
-        if query:
+        if query and query.startswith("/"):
             # with query path /Plone/news:
             # min_k is /Plone/news and
             # max_k is /Plone/newt
-            # Apparently that is the way to minize the keys we ask.
+            # Apparently that is the way to minimize the keys we ask.
             min_k = "{:s}/{:s}".format(self.portal_path, query.strip("/"))
             max_k = min_k[:-1] + chr(ord(min_k[-1]) + 1)
             self.data = self.storage._paths.keys(min=min_k, max=max_k, excludemax=True)
+        elif query:
+            self.data = [path for path in self.storage._paths.keys() if query in path]
         else:
             self.data = self.storage._paths.keys()
         if manual:
@@ -190,20 +197,35 @@ class RedirectionSet:
             else:
                 manual = ""
         if created:
+            end = created
+            warnings.warn(
+                "The 'created' parameter is deprecated. Use 'end' parameter instead.",
+                DeprecationWarning,
+            )
+        if start:
             try:
-                created = DateTime(created)
+                start = DateTime(start)
             except DateTimeError:
-                logger.warning("Failed to parse as DateTime: %s", created)
-                created = ""
-        if created or manual != "":
+                logger.warning("Failed to parse as DateTime: %s", start)
+                start = ""
+        if end:
+            try:
+                end = DateTime(end)
+            except DateTimeError:
+                logger.warning("Failed to parse as DateTime: %s", end)
+                end = ""
+        if start or end or manual != "":
             chosen = []
             for redirect in self.data:
                 info = self.storage.get_full(redirect)
                 if manual != "":
                     if info[2] != manual:
                         continue
-                if created and info[1]:
-                    if info[1] >= created:
+                if start and info[1]:
+                    if info[1] < start:
+                        continue
+                if end and info[1]:
+                    if info[1] >= end:
                         continue
                 chosen.append(redirect)
             self.data = chosen
@@ -256,6 +278,8 @@ class RedirectsControlPanel(BrowserView):
             RedirectionSet(
                 query=self.request.form.get("q", ""),
                 created=self.request.form.get("datetime", ""),
+                start=self.request.form.get("start", ""),
+                end=self.request.form.get("end", ""),
                 manual=self.request.form.get("manual", ""),
             ),
             int(self.request.form.get("b_size", "15")),
@@ -280,9 +304,17 @@ class RedirectsControlPanel(BrowserView):
             else:
                 query = self.request.form.get("q", "")
                 created = self.request.form.get("datetime", "")
+                start = self.request.form.get("start", "")
+                end = self.request.form.get("end", "")
                 manual = self.request.form.get("manual", "")
-                if created or manual or (query and query != "/"):
-                    rset = RedirectionSet(query=query, created=created, manual=manual)
+                if created or start or end or manual or (query and query != "/"):
+                    rset = RedirectionSet(
+                        query=query,
+                        created=created,
+                        manual=manual,
+                        start=start,
+                        end=end,
+                    )
                     redirects = list(rset.data)
                 else:
                     redirects = []

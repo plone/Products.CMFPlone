@@ -7,14 +7,14 @@ from Acquisition import aq_inner
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.navtree import NavtreeStrategyBase
-from plone.app.layout.navigation.root import getNavigationRoot
 from plone.base.interfaces import INavigationSchema
+from plone.base.navigationroot import get_navigation_root
+from plone.base.utils import pretty_title_or_id
+from plone.base.utils import safe_callable
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import utils
 from zope.component import getUtility
-from zope.component import queryUtility
 from zope.interface import implementer
 
 
@@ -32,19 +32,21 @@ class NavtreeQueryBuilder:
     """Build a navtree query based on the settings in navtree_properties"""
 
     def __init__(self, context):
-        registry = getUtility(IRegistry)
-        navigation_settings = registry.forInterface(INavigationSchema, prefix="plone")
+        self.registry = getUtility(IRegistry)
+        navigation_settings = self.registry.forInterface(
+            INavigationSchema, prefix="plone"
+        )
 
         # Acquire a custom nav query if available
         customQuery = getattr(context, "getCustomNavQuery", None)
-        if customQuery is not None and utils.safe_callable(customQuery):
+        if customQuery is not None and safe_callable(customQuery):
             query = customQuery()
         else:
             query = {}
 
         # Construct the path query
 
-        rootPath = getNavigationRoot(context)
+        rootPath = get_navigation_root(context)
         currentPath = "/".join(context.getPhysicalPath())
 
         # If we are above the navigation root, a navtree query would return
@@ -62,7 +64,7 @@ class NavtreeQueryBuilder:
         # seem to work with EPI.
 
         # Only list the applicable types
-        query["portal_type"] = utils.typesToList(context)
+        query["portal_type"] = self.registry.get("plone.displayed_types", ())
 
         # Apply the desired sort
         sortAttribute = navigation_settings.sort_tabs_on
@@ -87,10 +89,9 @@ class SitemapQueryBuilder(NavtreeQueryBuilder):
     """Build a folder tree query suitable for a sitemap"""
 
     def __init__(self, context):
-        NavtreeQueryBuilder.__init__(self, context)
+        super().__init__(context)
         portal_url = getToolByName(context, "portal_url")
-        registry = getUtility(IRegistry)
-        sitemap_depth = registry.get("plone.sitemap_depth", 3)
+        sitemap_depth = self.registry.get("plone.sitemap_depth", 3)
         self.query["path"] = {
             "query": portal_url.getPortalPath(),
             "depth": sitemap_depth,
@@ -115,7 +116,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         )
 
         self.showAllParents = True
-        self.rootPath = getNavigationRoot(context)
+        self.rootPath = get_navigation_root(context)
 
         membership = getToolByName(context, "portal_membership")
         self.memberId = membership.getAuthenticatedMember().getId()
@@ -149,7 +150,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         if isFolderish and (portalType is None or portalType not in self.parentTypesNQ):
             showChildren = True
 
-        newNode["Title"] = utils.pretty_title_or_id(context, item)
+        newNode["Title"] = pretty_title_or_id(context, item)
         newNode["id"] = item.getId
         newNode["UID"] = item.UID
         newNode["absolute_url"] = itemUrl
@@ -169,7 +170,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
             newNode["getRemoteUrl"] and newNode["Creator"] != self.memberId
         )
 
-        idnormalizer = queryUtility(IIDNormalizer)
+        idnormalizer = getUtility(IIDNormalizer)
         newNode["normalized_portal_type"] = idnormalizer.normalize(portalType)
         newNode["normalized_review_state"] = idnormalizer.normalize(
             newNode["review_state"]
@@ -196,7 +197,7 @@ class DefaultNavtreeStrategy(SitemapNavtreeStrategy):
         if view is not None:
             self.rootPath = view.navigationTreeRootPath()
         else:
-            self.rootPath = getNavigationRoot(context)
+            self.rootPath = get_navigation_root(context)
 
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)

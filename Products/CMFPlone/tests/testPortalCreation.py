@@ -1,4 +1,6 @@
 from Acquisition import aq_base
+from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError
 from plone.base.interfaces import IFilterSchema
 from plone.base.interfaces import INavigationSchema
 from plone.base.interfaces import ISearchSchema
@@ -34,6 +36,15 @@ from zope.interface.interfaces import IComponentLookup
 from zope.interface.interfaces import IComponentRegistry
 from zope.location.interfaces import ISite
 
+import unittest
+
+
+try:
+    distribution("plone.distribution")
+    HAS_DISTRIBUTION = True
+except PackageNotFoundError:
+    HAS_DISTRIBUTION = False
+
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
@@ -42,7 +53,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.types = self.portal.portal_types
         self.cp = self.portal.portal_controlpanel
         self.actions = self.portal.portal_actions
-        self.properties = self.portal.portal_properties
         self.memberdata = self.portal.portal_memberdata
         self.catalog = self.portal.portal_catalog
         self.groups = self.portal.portal_groups
@@ -146,35 +156,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # portal_navigation should have been removed
         self.assertFalse("portal_navigation" in self.portal)
 
-    def testNoFormProperties(self):
-        # form_properties should have been removed
-        self.assertFalse("form_properties" in self.properties)
-
-    def testNoNavigationProperties(self):
-        # navigation_properties should have been removed
-        self.assertFalse("navigation_properties" in self.properties)
-
     def testFormToolTipsProperty(self):
         # formtooltips should have been removed
         self.assertFalse(self.memberdata.hasProperty("formtooltips"))
 
     def testNavTreeProperties(self):
-        # navtree_properties should contain the new properties
-        self.assertFalse(
-            self.properties.navtree_properties.hasProperty("parentMetaTypesNotToQuery")
-        )
-        self.assertFalse(self.properties.navtree_properties.hasProperty("sitemapDepth"))
-        self.assertFalse(
-            self.properties.navtree_properties.hasProperty("showAllParents")
-        )
-        self.assertFalse(
-            self.properties.navtree_properties.hasProperty("metaTypesNotToList")
-        )  # noqa
-        self.assertFalse(
-            self.properties.navtree_properties.hasProperty("sortAttribute")
-        )
-        self.assertFalse(self.properties.navtree_properties.hasProperty("sortOrder"))
-
         registry = getUtility(IRegistry)
         self.assertTrue("plone.workflow_states_to_show" in registry)
         self.assertTrue("plone.filter_on_workflow" in registry)
@@ -196,9 +182,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testUnfriendlyTypesProperty(self):
         # We should have an types_not_searched property
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISearchSchema, prefix="plone")
         self.assertTrue("plone.types_not_searched" in registry)
-        self.assertTrue("Plone Site" in settings.types_not_searched)
 
     def testDefaultSortOrderProperty(self):
         # We should have an sort_on property
@@ -529,7 +513,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             self.assertFalse(
                 "index_html" not in url,
                 "Action wrongly applied to parent object %s" % url,
-            )  # noqa
+            )
 
     def testObjectButtonActionsPerformCorrectAction(self):
         # only a manager would have proper permissions
@@ -607,13 +591,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             if p["name"] == "View Groups"
         ][0]
         self.assertTrue(member_has_permission["selected"])
-
-    def testDiscussionItemWorkflow(self):
-        # By default the discussion item has the comment_one_state_workflow
-        self.assertEqual(
-            self.workflow.getChainForPortalType("Discussion Item"),
-            ("comment_one_state_workflow",),
-        )
 
     def testFolderHasFolderListingView(self):
         # Folder type should allow 'folder_listing'
@@ -947,15 +924,16 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
 
 
 class TestManagementPageCharset(PloneTestCase.PloneTestCase):
-    def afterSetUp(self):
-        self.properties = self.portal.portal_properties
-
     def testManagementPageCharset(self):
         manage_charset = getattr(self.portal, "management_page_charset", None)
         self.assertTrue(manage_charset)
         self.assertEqual(manage_charset, "utf-8")
 
 
+@unittest.skipIf(
+    HAS_DISTRIBUTION,
+    "@@plone-addsite is not available because plone.distribution is used.",
+)
 class TestAddPloneSite(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.request = self.app.REQUEST
@@ -966,7 +944,6 @@ class TestAddPloneSite(PloneTestCase.PloneTestCase):
         form = self.request.form
         form["form.submitted"] = 1
         form["site_id"] = "plonesite1"
-        form["setup_content"] = 1
         self.request["_authenticator"] = createToken()
         addsite = self.app.restrictedTraverse("@@plone-addsite")
         addsite()
@@ -982,6 +959,6 @@ class TestAddPloneSite(PloneTestCase.PloneTestCase):
         # because translations are not available in the tests.
         self.assertIn("Learn more about Plone", plonesite.text.raw)
 
-        # XXX maybe it is better to reset the sire in the @@plone-addsite view
+        # XXX maybe it is better to reset the site in the @@plone-addsite view
         # or somewhere else?
         setSite(None)

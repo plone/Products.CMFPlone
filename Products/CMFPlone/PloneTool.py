@@ -71,7 +71,7 @@ BAD_CHARS = bad_id.__self__.findall
 EMAIL_RE = re.compile(
     r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,63}|([0-9]{1,3}\.){3}[0-9]{1,3})$",
     re.IGNORECASE,
-)  # noqa
+)
 # used to find double new line (in any variant)
 EMAIL_CUTOFF_RE = re.compile(r".*[\n\r][\n\r]")
 
@@ -135,6 +135,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Lower-level function to validate a single normalized email address,
         # see validateEmailAddress.
         if not isinstance(address, str):
+            return False
+
+        address = address.strip()
+
+        # address can be empty if getaddresses has parsing errors (returns [("", "")])
+        if address == "":
             return False
 
         sub = EMAIL_CUTOFF_RE.match(address)
@@ -581,7 +587,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # long as they are processed before the portal_message macro is
         # called by the main template. Example:
 
-        #   <tal:block tal:define="temp python:context.plone_utils.addPortalMessage('A random info message')" />  # noqa
+        #   <tal:block tal:define="temp python:context.plone_utils.addPortalMessage('A random info message')" />
         if request is None:
             request = self.REQUEST
         IStatusMessage(request).add(message, type=type)
@@ -623,9 +629,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # 3. If the object has a property default_page set and this gives a list
         #     of, or single, object id, and that object is is found in the
         #     folder or is the name of a skin template, return that id
-        # 4. If the property default_page is set in site_properties and that
-        #     property contains a list of ids of which one id is found in the
-        #     folder, return that id
+        # 4. Look up the property plone.default_page in the registry for
+        #     magic ids and test these.
         # 5. If the object implements IBrowserDefault, try to get the selected
         #     layout.
         # 6. If the type has a 'folderlisting' action and no default page is
@@ -758,7 +763,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # If status is 1, allow acquisition of local roles (regular
         # behaviour).
         # If it's 0, prohibit it (it will allow some kind of local role
-        # blacklisting).
+        # denylisting).
         mt = getToolByName(self, "portal_membership")
         if not mt.checkPermission(ModifyPortalContent, obj):
             raise Unauthorized
@@ -928,7 +933,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # and selection purposes.
         #
         # This is the list of types available in the portal, minus those
-        # defined in the types_not_searched property in site_properties, if it
+        # defined in the types_not_searched property in the registry, if it
         # exists.
         #
         # If typesList is given, this is used as the base list; else all types
@@ -937,7 +942,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             typesList = []
         registry = getUtility(IRegistry)
         search_settings = registry.forInterface(ISearchSchema, prefix="plone")
-        blacklistedTypes = search_settings.types_not_searched
+        denylistedTypes = search_settings.types_not_searched
 
         ttool = getToolByName(self, "portal_types")
         tool_types = ttool.keys()
@@ -946,7 +951,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         else:
             types = tool_types
 
-        friendlyTypes = set(types) - set(blacklistedTypes)
+        friendlyTypes = set(types) - set(denylistedTypes)
         return list(friendlyTypes)
 
     @security.public

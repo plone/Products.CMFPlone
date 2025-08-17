@@ -2,6 +2,8 @@ from collections import Counter
 from collections import defaultdict
 from collections import OrderedDict
 from five.intid.intid import addIntIdSubscriber
+from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError
 from plone.app.linkintegrity.handlers import modifiedContent
 from plone.app.linkintegrity.utils import referencedRelationship
 from plone.app.relationfield.event import update_behavior_relations
@@ -24,13 +26,12 @@ from zope.intid.interfaces import IIntIds
 from zope.intid.interfaces import ObjectMissingError
 
 import logging
-import pkg_resources
 
 
 try:
     # "iterate" is not a dependency of CMFPlone, but a consumer of it
-    pkg_resources.get_distribution("plone.app.iterate")
-except pkg_resources.DistributionNotFound:
+    distribution("plone.app.iterate")
+except PackageNotFoundError:
     HAS_ITERATE = False
 else:
     HAS_ITERATE = True
@@ -317,7 +318,7 @@ def get_intid(obj):
     # check that the object has an intid, otherwise there's nothing to be done
     try:
         return intids.getId(obj)
-    except KeyError:  # noqa
+    except KeyError:
         # The object has not been added to the ZODB yet
         return
 

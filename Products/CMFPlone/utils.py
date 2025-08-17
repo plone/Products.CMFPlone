@@ -11,6 +11,7 @@ from App.Dialogs import MessageDialog
 from App.ImageFile import ImageFile
 from DateTime import DateTime
 from html import escape
+from importlib.metadata import distribution
 from OFS.CopySupport import CopyError
 from os.path import abspath
 from os.path import join
@@ -25,9 +26,9 @@ from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFPlone import bbb
-from Products.CMFPlone.log import log  # noqa - for python scripts
-from Products.CMFPlone.log import log_deprecated  # noqa - for python scripts
-from Products.CMFPlone.log import log_exc  # noqa - for python scripts
+from Products.CMFPlone.log import log  # noqa: F401 - for python scripts
+from Products.CMFPlone.log import log_deprecated  # noqa: F401 - for python scripts
+from Products.CMFPlone.log import log_exc  # noqa: F401 - for python scripts
 from ZODB.POSException import ConflictError
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -36,11 +37,10 @@ from zope.component import queryUtility
 from zope.component.hooks import getSite
 from zope.deferredimport import deprecated as deprecated_import
 from zope.deprecation import deprecate
-from zope.deprecation import deprecated  # noqa
+from zope.deprecation import deprecated  # noqa: F401
 from zope.interface import implementedBy
 
 import OFS
-import pkg_resources
 import re
 import sys
 import transaction
@@ -163,11 +163,11 @@ def isExpired(content):
     # convert to a DateTime
 
     # Try DC accessor first
-    if base_hasattr(content, "ExpirationDate"):
+    if base_utils.base_hasattr(content, "ExpirationDate"):
         expiry = content.ExpirationDate
 
     # Try the direct way
-    if not expiry and base_hasattr(content, "expires"):
+    if not expiry and base_utils.base_hasattr(content, "expires"):
         expiry = content.expires
 
     # See if we have a callable
@@ -291,7 +291,9 @@ def versionTupleFromString(v_str):
     >>> versionTupleFromString('foo') is None
     True
     """
-    regex_str = r"(^\d+)[.]?(\d*)[.]?(\d*)[- ]?(alpha|beta|candidate|final|a|b|rc)?(\d*)"  # noqa
+    regex_str = (
+        r"(^\d+)[.]?(\d*)[.]?(\d*)[- ]?(alpha|beta|candidate|final|a|b|rc)?(\d*)"
+    )
     v_regex = re.compile(regex_str)
     match = v_regex.match(v_str)
     if match is None:
@@ -310,7 +312,7 @@ def versionTupleFromString(v_str):
 
 def getFSVersionTuple():
     """Returns Products.CMFPlone version tuple"""
-    version = pkg_resources.get_distribution("Products.CMFPlone").version
+    version = distribution("Products.CMFPlone").version
     return versionTupleFromString(version)
 
 
@@ -675,13 +677,13 @@ def _check_for_collision(contained_by, id, **kwargs):
     # Check for an existing object.
     if id in contained_by:
         existing_obj = getattr(contained_by, id, None)
-        if base_hasattr(existing_obj, "portal_type"):
+        if base_utils.base_hasattr(existing_obj, "portal_type"):
             return _(
                 "There is already an item named ${name} in this folder.",
                 mapping={"name": id},
             )
 
-    if base_hasattr(contained_by, "checkIdAvailable"):
+    if base_utils.base_hasattr(contained_by, "checkIdAvailable"):
         # This used to be called from the check_id skin script,
         # which would check the permission automatically,
         # and the code would catch the Unauthorized exception.
@@ -690,7 +692,7 @@ def _check_for_collision(contained_by, id, **kwargs):
                 return _("${name} is reserved.", mapping={"name": id})
 
     # containers may implement this hook to further restrict ids
-    if base_hasattr(contained_by, "checkValidId"):
+    if base_utils.base_hasattr(contained_by, "checkValidId"):
         try:
             contained_by.checkValidId(id)
         except ConflictError:

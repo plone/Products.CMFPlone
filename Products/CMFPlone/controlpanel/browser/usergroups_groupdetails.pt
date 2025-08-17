@@ -17,7 +17,7 @@
 
 
   <!-- When no group is specified, this gets used as the add group page page -->
-  <article id="content" tal:condition="not:view/group">
+  <tal:not_group tal:condition="not:view/group">
       <metal:block metal:use-macro="template/macros/props">
           <metal:title metal:fill-slot="content-title">
               <h1 class="documentFirstHeading"
@@ -39,9 +39,9 @@
               </div>
           </metal:name>
       </metal:block>
-  </article>
+  </tal:not_group>
 
-  <article id="content" tal:condition="view/group | nothing">
+  <tal:group tal:condition="view/group | nothing">
     <metal:block define-macro="props">
 
       <a href="${portal_url}/@@usergroup-groupprefs"
@@ -211,7 +211,7 @@
         </div>
       </div>
     </metal:block>
-  </article>
+  </tal:group>
 
 </metal:main>
 

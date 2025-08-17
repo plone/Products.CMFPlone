@@ -42,9 +42,7 @@ class DefaultPageTestCase(unittest.TestCase):
 
         # 2) a folder also provides an fti that implements
         #    IDynamicViewTypeInformation
-        from Products.CMFDynamicViewFTI.interfaces import (  # noqa
-            IDynamicViewTypeInformation,
-        )
+        from Products.CMFDynamicViewFTI.interfaces import IDynamicViewTypeInformation
 
         fti = self.folder.getTypeInfo()
         self.assertTrue(IDynamicViewTypeInformation.providedBy(fti))
@@ -106,8 +104,8 @@ class DefaultPageTestCase(unittest.TestCase):
         self.assertEqual("d1", get_default_page(self.folder))
 
     def test_get_default_page_step_4(self):
-        # 4. Else, look up the property default_page in site_properties for
-        #   magic ids and test these
+        # 4. Else, look up the property plone.default_page in the registry for
+        #    magic ids and test these
         registry = getUtility(IRegistry)
         registry["plone.default_page"] = ["d1"]
         self.folder.invokeFactory("Document", "d1", title="Doc 1")

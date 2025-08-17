@@ -2,6 +2,8 @@ from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from AccessControl.requestmethod import postonly
 from App.config import getConfiguration
+from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError
 from io import StringIO
 from OFS.SimpleItem import SimpleItem
 from plone.base.interfaces import IMigrationTool
@@ -15,7 +17,6 @@ from ZODB.POSException import ConflictError
 from zope.interface import implementer
 
 import logging
-import pkg_resources
 import sys
 import transaction
 
@@ -101,7 +102,10 @@ ADDON_LIST = AddonList(
         Addon(profile_id="plone.app.discussion:default"),
         Addon(profile_id="plone.app.event:default"),
         Addon(profile_id="plone.app.iterate:default", check_module="plone.app.iterate"),
-        Addon(profile_id="plone.app.multilingual:default", check_module="plone.app.multilingual"),
+        Addon(
+            profile_id="plone.app.multilingual:default",
+            check_module="plone.app.multilingual",
+        ),
         Addon(profile_id="plone.app.querystring:default"),
         Addon(profile_id="plone.app.theming:default"),
         Addon(profile_id="plone.app.users:default"),
@@ -146,7 +150,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         if version == "unknown":
             if _version:
-                # Instance version was not pkg_resources compatible...
+                # Instance version was not standard...
                 _version = _version.replace("devel (svn/unreleased)", "dev")
                 _version = _version.rstrip("-final")
                 _version = _version.rstrip("final")
@@ -182,7 +186,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     def getSoftwareVersion(self):
         # The software version.
-        dist = pkg_resources.get_distribution("Products.CMFPlone")
+        dist = distribution("Products.CMFPlone")
         return dist.version
 
     security.declareProtected(ManagePortal, "needUpgrading")
@@ -196,24 +200,23 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     def coreVersions(self):
         # Useful core information.
         vars = {}
-        get_dist = pkg_resources.get_distribution
-        vars["Zope"] = get_dist("Zope").version
+        vars["Zope"] = distribution("Zope").version
         vars["Python"] = sys.version
         vars["Platform"] = sys.platform
-        vars["Plone"] = get_dist("Products.CMFPlone").version
+        vars["Plone"] = distribution("Products.CMFPlone").version
         vars["Plone Instance"] = self.getInstanceVersion()
         vars["Plone File System"] = self.getFileSystemVersion()
-        vars["CMF"] = get_dist("Products.CMFCore").version
+        vars["CMF"] = distribution("Products.CMFCore").version
         vars["Debug mode"] = getConfiguration().debug_mode and "Yes" or "No"
         try:
-            vars["PIL"] = get_dist("PIL").version
-        except pkg_resources.DistributionNotFound:
+            vars["PIL"] = distribution("PIL").version
+        except PackageNotFoundError:
             try:
-                vars["PIL"] = get_dist("PILwoTK").version
-            except pkg_resources.DistributionNotFound:
+                vars["PIL"] = distribution("PILwoTK").version
+            except PackageNotFoundError:
                 try:
-                    vars["PIL"] = "%s (Pillow)" % get_dist("Pillow").version
-                except pkg_resources.DistributionNotFound:
+                    vars["PIL"] = "%s (Pillow)" % distribution("Pillow").version
+                except PackageNotFoundError:
                     try:
                         import _imaging
 

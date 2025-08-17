@@ -78,7 +78,7 @@ class TestLoginLogout(unittest.TestCase):
 
     def test_insufficient_privileges_returned_when_logged_in_but_not_authorized(
         self,
-    ):  # noqa
+    ):
         setRoles(self.layer["portal"], TEST_USER_ID, [])
         transaction.commit()
         self.browser.open("http://nohost/plone/login")

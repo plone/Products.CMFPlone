@@ -8,9 +8,9 @@ from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.textfield import RichTextValue
 from plone.indexer.wrapper import IndexableObjectWrapper
+from plone.namedfile.file import NamedImage
 from plone.uuid.interfaces import IAttributeUUID
 from plone.uuid.interfaces import IUUID
-from plone.namedfile.file import NamedImage
 from Products.CMFCore.indexing import processQueue
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone.CatalogTool import CatalogTool
@@ -1155,6 +1155,40 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         res = self.catalog()
         self.assertResults(res, base_content)
 
+    def testSearchResultsExpiredWithPermissionWithExpiredEnabled(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        self.login(user2)
+        self.setPermissions([AccessInactivePortalContent])
+        res = self.catalog.searchResults(show_inactive=False)
+        self.assertResults(res, base_content[:-1])
+
+    def testCallExpiredWithPermissionWithExpiredEnabled(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        self.setPermissions([AccessInactivePortalContent])
+        res = self.catalog(show_inactive=False)
+        self.assertResults(res, base_content[:-1])
+
+    def testSearchResultsExpiredWithPermissionWithExpiredDisabled(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        self.login(user2)
+        self.setPermissions([AccessInactivePortalContent])
+        res = self.catalog.searchResults(show_inactive=True)
+        self.assertResults(res, base_content)
+
+    def testCallExpiredWithPermissionWithExpiredDisabled(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+        self.setPermissions([AccessInactivePortalContent])
+        res = self.catalog(show_inactive=True)
+        self.assertResults(res, base_content)
+
     def testPathWithPrivateMidLevel(self):
         # This test was added to test issue where allow_inactive-check raised
         # Unauthorized-exception with the search conditions of this test.
@@ -1244,6 +1278,86 @@ class TestCatalogExpirationFiltering(PloneTestCase):
                 ]
             }
         }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+    def testExpiredWithPermissionOnSubpathWithExpiredDisabled(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+
+        # Login as unprivileged user
+        self.login(user2)
+
+        self.folder.manage_role("Member", [AccessInactivePortalContent])
+
+        expected_result = ["doc", "test_user_1_"]
+        query = {"show_inactive": True}
+
+        query.update({"path": "/".join(self.folder.getPhysicalPath())})
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+        query.update({"path": {"query": "/".join(self.folder.getPhysicalPath())}})
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+        query.update(
+            {
+                "path": {
+                    "query": [
+                        "/".join(self.folder.getPhysicalPath()),
+                        "/".join(self.folder.doc.getPhysicalPath()),
+                    ]
+                }
+            }
+        )
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+    def testExpiredWithPermissionOnSubpathWithExpiredEnabled(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+
+        # Login as unprivileged user
+        self.login(user2)
+
+        self.folder.manage_role("Member", [AccessInactivePortalContent])
+
+        expected_result = ["test_user_1_"]
+        query = {"show_inactive": False}
+
+        query.update({"path": "/".join(self.folder.getPhysicalPath())})
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+        query.update({"path": {"query": "/".join(self.folder.getPhysicalPath())}})
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+        query.update(
+            {
+                "path": {
+                    "query": [
+                        "/".join(self.folder.getPhysicalPath()),
+                        "/".join(self.folder.doc.getPhysicalPath()),
+                    ]
+                }
+            }
+        )
         res = self.catalog.searchResults(**query)
         self.assertResults(res, expected_result)
         res = self.catalog(**query)
@@ -1426,7 +1540,7 @@ class TestIndexers(PloneTestCase):
         self.assertFalse(get_icon(self.folder))
         # Return False if item doesn't have an image
         self.assertFalse(get_icon(self.folder.image))
-        self.folder.image.image=NamedImage(dummy.Image())
+        self.folder.image.image = NamedImage(dummy.Image())
         # Item has a proper image, return True
         self.assertTrue(get_icon(self.folder.image))
 

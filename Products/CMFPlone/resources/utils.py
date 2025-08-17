@@ -1,6 +1,7 @@
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from OFS.Image import File
 from plone.base.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
 from plone.resource.file import FilesystemFile
 from plone.resource.interfaces import IResourceDirectory
@@ -61,7 +62,7 @@ def get_resource(context, path):
     except (NotFound, AttributeError, KeyError):
         logger.warning(
             f"Could not find resource {path}. You may have to create it first."
-        )  # noqa
+        )
         return
 
     if isinstance(resource, FilesystemFile):
@@ -75,9 +76,15 @@ def get_resource(context, path):
     if hasattr(aq_base(resource), "GET"):
         # for FileResource
         result = resource.GET()
-    else:
+    elif isinstance(resource, File):
+        # An OFS.Image.File object. use bytes() to resolve possible Pdata objects
+        return bytes(resource.data)
+    elif callable(resource):
         # any BrowserView
         result = resource()
+    else:
+        logger.info("Cannot get data from resource %r", resource)
+        result = b""
     context.REQUEST.response = response_before
     return result
 

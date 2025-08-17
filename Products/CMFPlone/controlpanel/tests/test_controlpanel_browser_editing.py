@@ -90,9 +90,9 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
 
     def test_lock_on_ttw_edit(self):
         self.browser.open("%s/@@editing-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            "Enable locking for through-the-web edits"
-        ).selected = True
+        self.browser.getControl("Enable locking for through-the-web edits").selected = (
+            True
+        )
         self.browser.getControl("Save").click()
 
         self.assertEqual(self.settings.lock_on_ttw_edit, True)

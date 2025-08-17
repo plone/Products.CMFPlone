@@ -31,7 +31,7 @@
                  batch python:Batch(view.searchResults, b_size, int(b_start));
                  batchformkeys python:['searchstring','_authenticator', 'userid'];">
 
-  <article id="content" tal:define="many_groups view/many_groups">
+  <tal:many_groups tal:define="many_groups view/many_groups">
 
     <a href=""
        class="link-parent"
@@ -206,7 +206,7 @@
 
       </div>
     </div>
-  </article>
+  </tal:many_groups>
 
 </metal:main>
 

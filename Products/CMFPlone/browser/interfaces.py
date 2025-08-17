@@ -4,17 +4,6 @@ from zope import schema
 from zope.interface import Attribute
 from zope.interface import Interface
 
-import zope.deferredimport
-
-
-# This is used as a persistent marker interface, we need to provide an upgrade
-# step to update the class reference before removing it.
-zope.deferredimport.deprecated(
-    "It has been moved to plone.app.layout.navigation.interfaces. "
-    "This alias will be removed in Plone 5.0",
-    INavigationRoot="plone.app.layout.navigation.interfaces:INavigationRoot",
-)
-
 
 class INavigationBreadcrumbs(Interface):
     def breadcrumbs():

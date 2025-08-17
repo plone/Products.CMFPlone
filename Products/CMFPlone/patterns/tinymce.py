@@ -5,7 +5,6 @@ from plone.base.interfaces import ITinyMCESchema
 from plone.base.navigationroot import get_navigation_root_object
 from plone.base.utils import safe_text
 from plone.registry.interfaces import IRegistry
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import get_portal
 from zope.component import getUtility
 
@@ -94,6 +93,12 @@ class TinyMCESettingsGenerator:
 
     def get_tiny_config(self):
         settings = self.settings
+
+        # NOTE: The `importcss_file_filter` is used to filter the CSS files
+        # from `content_css` which should be used to automatically create the
+        # styles dropdown.
+        # Also see:
+        # https://6.docs.plone.org/classic-ui/tinymce-customization.html#inject-formats-with-files-named-tinymce-formats-css
         importcss_file_filter = "tinymce-formats.css"
 
         theme = self.get_theme()
@@ -138,31 +143,6 @@ class TinyMCESettingsGenerator:
             tiny_config["contextmenu"] = (
                 "plonelink ploneimage inserttable |" " cell row column deletetable"
             )
-
-        if settings.libraries_spellchecker_choice == "AtD":
-            mtool = getToolByName(self.context, "portal_membership")
-            member = mtool.getAuthenticatedMember()
-            member_id = member.getId()
-            if member_id:
-                if "compat3x" not in tiny_config["plugins"]:
-                    tiny_config["plugins"].append("compat3x")
-                tiny_config["external_plugins"][
-                    "AtD"
-                ] = "{}/++plone++static/tinymce-AtD-plugin/" "editor_plugin.js".format(
-                    self.nav_root_url
-                )
-                # None when Anonymous User
-                tiny_config["atd_rpc_id"] = "plone-" + member_id
-                tiny_config["atd_rpc_url"] = self.nav_root_url
-                tiny_config["atd_show_types"] = ",".join(
-                    settings.libraries_atd_show_types
-                )
-                tiny_config["atd_ignore_strings"] = ",".join(
-                    settings.libraries_atd_ignore_strings
-                )
-                toolbar_additions.append("AtD")
-        elif settings.libraries_spellchecker_choice == "AtD":
-            tiny_config["browser_spellcheck"] = True
 
         if toolbar_additions:
             tiny_config["toolbar"] += " | {}".format(" ".join(toolbar_additions))

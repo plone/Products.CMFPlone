@@ -64,9 +64,9 @@ class SecurityControlPanelFunctionalTest(unittest.TestCase):
 
     def test_allow_anon_views_about(self):
         self.browser.open("%s/@@security-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            "Allow anyone to view 'about' information"
-        ).selected = True
+        self.browser.getControl("Allow anyone to view 'about' information").selected = (
+            True
+        )
         self.browser.getControl("Save").click()
 
         self.assertEqual(self.settings.allow_anon_views_about, True)

@@ -15,6 +15,257 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.0 (2025-02-07)
+
+
+### Bug fixes:
+
+- fixes modal behaviour after form submission in 404 page
+  [rohnsha0] #1636
+
+## 6.1.0rc1 (2025-01-31)
+
+
+### Bug fixes:
+
+- Remove deferred import for `INavigationRoot`.
+  We said we would remove this in Plone 5.0 because it was moved to `plone.app.layout`.
+  Meanwhile it has been moved to `plone.base`.
+  Should be fine to remove: a Plone Site that still has this location as a persistent marker interface, needs to be migrated to Plone 5.2 and then go through `zodbupdate` for Python 3, so the persistent interface location will be updated.
+  @mauritsvanrees #4090
+- Fix DeprecationWarnings. [maurits] #4090
+
+
+### Internal:
+
+- Updated metadata version to 6107.
+  [maurits] #6107
+
+## 6.1.0b2 (2024-12-19)
+
+
+### Breaking changes:
+
+- Officially drop support for Python 3.8 and 3.9.
+  This was always the case for Plone 6.1, but we did not yet say this in the changelog.
+  See [PLIP 3926](https://github.com/plone/Products.CMFPlone/issues/3926).
+  [maurits] #3926
+
+
+### New features:
+
+- Support Python 3.13.  You need at least Python 3.13.1.
+  [maurits] #313
+- Allow bundles to be rendered after all others.
+
+  JS and CSS resources can now be rendered after all other resources in their
+  resource group including the theme (e.g. the Barceloneta theme CSS).
+
+  There is an exception for custom CSS which can be defined in the theming
+  controlpanel. This one is always rendered as last style resource.
+
+  To render resources after all others, give them the "depends" value of "all".
+  For each of these resources, "all" indicates that the resource depends on all other resources, making it render after its dependencies.
+  If you set multiple resources with "all", then they will render alphabetically after all other.
+
+  This lets you override a theme with custom CSS from a bundle instead of having
+  to add the CSS customizations to the registry via the "custom_css" settings.
+  As a consequence, theme customization can now be done in the filesystem in
+  ordinary CSS files instead of being bound to a time consuming workflow which
+  involves upgrading the custom_css registry after every change.
+  [thet, petschki] #4054
+
+
+### Bug fixes:
+
+- Fix more unstable robottests with "Wait For Condition" when clicking modal links.
+  [petschki] #4045
+- Fix resources with relative URI in registry.
+  [petschki] #4049
+- Fix removed `unittest.makeSuite` in python 3.13
+  [petschki] #4066
+- Grant permission plone.ModifyConstrainTypes (Modify constrain types) to Manager, Site Administrator and Owner.
+  The change applies to new sites but is not applied automatically to upgraded sites.
+  [pbauer] #4072
+
+
+### Internal:
+
+- Updated metadata version to 6106.
+  [maurits] #6106
+
+
+### Tests
+
+- add robot test scenario for contentbrowser widget
+  [1letter] #4043
+- Fix more unstable robottests with "Wait For Condition" when rendering tinymce editor.
+  [1letter] #4052
+- Update for `pat-contentbrowser` with new component registry.
+  [petschki] #4082
+
+## 6.1.0b1 (2024-10-31)
+
+
+### Breaking changes:
+
+- Only register the add site form and root Zope overview if `plone.distribution` is not available.
+  [maurits] #3961
+- Remove advanced options from Add Plone Site form.
+  If you need more options, you should add a Plone Distribution to your packages.
+  The main ones are `plone.volto` and `plone.classicui`.
+  We now only create a basic Plone site without default example content.
+  [maurits] #3961
+- `factory.addPloneSite`: remove `setup_content` and `content_profile_id` keyword arguments.
+  We no longer load default content. Use a Plone Distribution if you need this.
+  Or pass an extra profile id in the `extension_ids` keyword argument.
+  [maurits] #3961
+
+
+### New features:
+
+- make robot tests more robust
+  [1letter] #3813
+- Port robot tests to playwright based tests, use robotframework browser library
+
+  Remove obsolete robodocs
+  [1letter, petschki] #3813
+- You can pass a `distribution_name` to `factory.addPloneSite`.
+  We then pass all other arguments and keyword arguments to the `plone.distribution` site api.
+  [maurits] #3961
+- Redirection control panel: Added support for start and end filters. @Faakhir30 #4009
+- URL Management control panel: Find substring matches when querying aliases. @davisagli #4031
+
+
+### Bug fixes:
+
+- No longer hide plone.app.caching from Add-ons control panel.
+  It is a core add-on, so you should be able to activate it if you add the package later.
+  [maurits] #139
+- Update robot tests for new `pat-contentbrowser` pattern.
+  [petschki]
+
+  - Make tests more robust for new `pat-contentbrowser` pattern.
+  - add more robot tests for `pat-contentbrowser` pattern.
+  [1letter] #3980
+- Update `pat-structureupdater` selectors.
+  [petschki] #4011
+- Do not warn about missing profiles when they are registered in submodules of packages.
+  [petschki] #4015
+- Update for strict parsing in `email.utils.getaddresses` newest versions.
+  [petschki] #4020
+- Resource registry: Support OFS.Image.File objects.
+  [ale-rt, thet] #4022
+- Avoid POSKeyError when commit occurs and we have savepoint that involves Plone Site. @wesleybl #4026
+- move all permission definitions for controlpanels to unified file from controlpanel directory
+  [jackahl] #4028
+- Robottest fixes for latest `pat-contentbrowser` updates.
+  [petschki] #4037
+- Fix uploading themes with large resources in theming control panel.
+  [petschki] #4038
+
+
+### Internal:
+
+- Updated metadata version to 6105.
+  [maurits] #6105
+
+## 6.1.0a5 (2024-09-05)
+
+
+### Breaking changes:
+
+- Use `Products.isurlinportal` directly, instead of relying on it patching our `URLTool`.
+  This solves a cyclic dependency.
+  [maurits] #12
+- Turn plone.app.discussion in a core-addon.
+  [@jensens] #3782
+
+
+### Bug fixes:
+
+- Sort portal types in search filter according to `ReallyUserFriendlyTypes` using `unidecode` in `plone.app.vocabularies`. @rohnsha0 #3860
+- Do not use deprecated `base_hasattr` in `utils.py`.
+  [maurits] #3998
+- Use `five.registerPackage` so an editable install with `pip` works.
+  [maurits] #4002
+- Fix help text for redirect target path. @davisagli #4007
+
+
+### Internal:
+
+- Updated metadata version to 6104.
+  [maurits] #6104
+
+## 6.1.0a4 (2024-08-01)
+
+
+### Breaking changes:
+
+- Remove `propertiestool` import step and usage of `portal_properties`.
+  Remove `site_properties` from `main_template.pt` and ajax template.
+  Remove `PropertiesTool` module.
+  [maurits] #125
+
+
+### Internal:
+
+- Update the link to the PLIPs page for Plone 6 Documentation. @stevepiercy #3988
+
+## 6.1.0a4.dev0 (2024-07-08)
+
+
+### Bug fixes:
+
+- Mockup TinyMCE settings: Remove unused loadingBaseUrl option. 3765-1
+- Mockup TinyMCE settings: Remove deprecated AtD plugin settings. 3765-2
+- Mockup TinyMCE settings: Remove unused AtD related views. 3765-3
+- Mockup TinyMCE settings: Remove unused ITinyMCESpellCheckerSchema and ITinyMCESpellCheckerForm. 3765-4
+- Fix deprecation warnings in "navtree" code + some micro optimizations
+  [jensens] #3756
+- Use details element for collapsibles in the resource registry.
+  Makes it possible to toggle elements even with broken or missing javascript.
+  Also properly connect form labels with their inputs.
+  Fixes #3942
+- Import INavigationRoot from plone.base, removes DeprecationWarning.
+  [@jensens] #3945
+- Use `context` instead of `here` in templates.
+  Call `@@main_template` (with prefix `@@`) to optimize lookup.
+  [@jensens] #3946
+- Reduce DeprecationWarnings. [@jensens] #3949
+- Fix TypeError in getGroups sorting
+  [@rohnsha0] #3952
+- Remove queryCatalog and getFolderContents skins script.
+  This includes a refactoring in the search RSS and updates to soe tests
+  [@jensens] #3960
+- Products.CMFPlone  must not depend on plone.api [@jensens] #3962
+- Removes duplicate `<article id="content">` in controlpanel templates
+  [@szakitibi] #3964
+- Do not test types_not_searched for a element that is not part of the underlying vocabulary.
+  [@jensens] #3965
+- Remove unused leftover reference to the Zope2 package from test. [@jensens] #3966
+- Fix: Traceback in maintenance control panel on shutdown if feature is not available.
+  Hide button if action is not possible.
+  [@jensens] #3967
+- Fixed RegistrationTool to take user email with `__+__@abc.com`.
+  [@rohnsha0] #3968
+- Plone upgrade page: show error when upgrade is needed but no upgrades are available.
+  Especially show a note when the `plone.app.upgrade` package is not available.
+  [maurits] #3975
+- Plone upgrade page: show list of previously installed packages that are currently missing.
+  For example: `plone.app.discussion` may be missing in Plone 6.1, unless you explicitly add it, or depend on the `Plone` package.
+  [maurits] #3975
+
+
+### Internal:
+
+- Resourceregistry controlpanel: zprettify template.
+  [thet] #3942
+- Automatically set the label to `03 type: feature (plip)` for PLIPs. @stevepiercy #3982
+- Automatically add a PLIP issue to the PLIP project board. @stevepiercy #3984
+- Updated metadata version to 6103.
+  [maurits] #6103
+
 ## 6.1.0a3 (2024-04-26)
 
 
@@ -244,7 +495,7 @@
 
 ### Bug fixes:
 
-- Remove unused template send_feedback_confirm.pt. 
+- Remove unused template send_feedback_confirm.pt.
   [jensens] #3122
 - Moved the assignment of Plone Site Setup permissions from zcml to GenericSetup
   rolemap.xml. This assigns the permissions on site creation instead of Zope root

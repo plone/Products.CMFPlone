@@ -5,7 +5,6 @@ from plone.base.interfaces import ISecuritySchema
 from plone.base.interfaces.controlpanel import IMailSchema
 from plone.base.utils import pretty_title_or_id
 from plone.registry.interfaces import IRegistry
-from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 from Products.MailHost.interfaces import IMailHost
@@ -20,6 +19,7 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
+from ZTUtils import make_query
 
 import logging
 
@@ -137,6 +137,9 @@ class AuthorView(BrowserView):
         self.username = name
         return self
 
+    def makeQuery(self, **kw):
+        return make_query(**kw)
+
     @property
     def is_anonymous(self):
         return self.portal_state.anonymous()
@@ -197,11 +200,7 @@ class AuthorView(BrowserView):
         return self.membership_tool.getHomeFolder(id=username)
 
     def __call__(self):
-        self.portal_properties = getUtility(IPropertiesTool)
-
         self.portal_catalog = getToolByName(self.context, "portal_catalog")
-
-        # XXX: getUtility call does not work.
         self.membership_tool = getToolByName(self.context, "portal_membership")
 
         self.portal_state = getMultiAdapter(

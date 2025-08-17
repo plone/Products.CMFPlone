@@ -47,9 +47,9 @@ class AddonsControlPanelFunctionalTest(unittest.TestCase):
 
     def test_addons_controlpanel_installable(self):
         self.browser.open("%s/prefs_install_products_form" % self.portal_url)
+
         # We expect a few standard add-ons.
         self.assertIn("Workflow Policy Support", self.browser.contents)
-        self.assertIn("Multilingual Support", self.browser.contents)
         self.assertIn("plone.session", self.browser.contents)
 
     def test_addons_controlpanel_not_installable(self):

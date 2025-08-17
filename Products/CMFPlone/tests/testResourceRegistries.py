@@ -1,3 +1,5 @@
+from lxml import etree
+from OFS.Image import File
 from plone.app.testing import logout
 from plone.app.testing import setRoles
 from plone.app.testing import SITE_OWNER_NAME
@@ -13,22 +15,23 @@ from Products.CMFPlone.resources import remove_bundle_on_request
 from Products.CMFPlone.resources.browser.resource import REQUEST_CACHE_KEY
 from Products.CMFPlone.resources.browser.resource import ScriptsView
 from Products.CMFPlone.resources.browser.resource import StylesView
+from Products.CMFPlone.resources.webresource import PloneScriptResource
 from Products.CMFPlone.tests import PloneTestCase
 from zope.component import getUtility
 
 
 class TestScriptsViewlet(PloneTestCase.PloneTestCase):
-    def _make_test_bundle(self):
+    def _make_test_bundle(self, name="foobar", depends=""):
         registry = getUtility(IRegistry)
 
         bundles = registry.collectionOfInterface(
             IBundleRegistry, prefix="plone.bundles"
         )
-        bundle = bundles.add("foobar")
-        bundle.name = "foobar"
-        bundle.jscompilation = "http://foo.bar/foobar.js"
-        bundle.csscompilation = "http://foo.bar/foobar.css"
-        bundle.resources = ["foobar"]
+        bundle = bundles.add(name)
+        bundle.name = name
+        bundle.jscompilation = f"http://foo.bar/{name}.js"
+        bundle.csscompilation = f"http://foo.bar/{name}.css"
+        bundle.depends = depends
         return bundle
 
     def test_bundle_defernot_asyncnot(self):
@@ -171,6 +174,75 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         results = view.render()
         self.assertIn("http://foo.bar/foobar.js", results)
 
+    def test_js_bundle_depends_all(self):
+        # Create a test bundle, which has unspecified dependencies and is
+        # rendered in order as defined.
+        self._make_test_bundle(name="a")
+
+        # Create a test bundle, which depends on "all" other and thus rendered
+        # last.
+        self._make_test_bundle(name="last", depends="all")
+
+        # Create a test bundle, which has unspecified dependencies and is
+        # rendered in order as defined.
+        self._make_test_bundle(name="b")
+
+        view = ScriptsView(self.layer["portal"], self.layer["request"], None)
+        view.update()
+        results = view.render()
+
+        parser = etree.HTMLParser()
+        parsed = etree.fromstring(results, parser)
+        scripts = parsed.xpath("//script")
+
+        # The last element is our JS, depending on "all".
+        self.assertEqual(
+            "http://foo.bar/last.js",
+            scripts[-1].attrib["src"],
+        )
+
+        # The first resource is our JS, which was defined with unspecified
+        # dependency first.
+        self.assertEqual(
+            "http://foo.bar/a.js",
+            scripts[0].attrib["src"],
+        )
+
+        # The second resource is our JS, which was defined with unspecified
+        # dependency last.
+        self.assertEqual(
+            "http://foo.bar/b.js",
+            scripts[1].attrib["src"],
+        )
+
+        # When more bundles depend on "all", they are ordered alphabetically
+        # at the end.
+        self._make_test_bundle(name="x-very-last", depends="all")
+        self._make_test_bundle(name="a-last", depends="all")
+
+        # make sure cache purged
+        setattr(self.layer["request"], REQUEST_CACHE_KEY, None)
+
+        view.update()
+        results = view.render()
+
+        parsed = etree.fromstring(results, parser)
+        scripts = parsed.xpath("//script")
+
+        # All the "all" depending bundles are sorted alphabetically at the end.
+        self.assertEqual(
+            "http://foo.bar/x-very-last.js",
+            scripts[-1].attrib["src"],
+        )
+        self.assertEqual(
+            "http://foo.bar/last.js",
+            scripts[-2].attrib["src"],
+        )
+        self.assertEqual(
+            "http://foo.bar/a-last.js",
+            scripts[-3].attrib["src"],
+        )
+
     def test_bundle_depends_on_missing(self):
         bundle = self._make_test_bundle()
         bundle.depends = "nonexistsinbundle"
@@ -180,8 +252,60 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         # bundle should be skipped when rendering
         self.assertNotIn("http://foo.bar/foobar.js", results)
 
+    def test_resource_browser_static_resource(self):
+        resource = PloneScriptResource(
+            self.portal, resource="++resource++plone-admin-ui.js"
+        )
+        self.assertIn(
+            b"window.onload",
+            resource.file_data,
+        )
+
+    def test_resource_ofs_file(self):
+        self.portal["foo.js"] = File("foo.js", "Title", b"console.log()")
+        resource = PloneScriptResource(self.portal, resource="foo.js")
+        self.assertEqual(
+            resource.file_data,
+            b"console.log()",
+        )
+
+    def test_resource_view(self):
+        resource = PloneScriptResource(self.portal, resource="@@ok")
+        self.assertEqual(
+            resource.file_data,
+            b"OK",
+        )
+
+    def test_resource_bogus(self):
+        resource = PloneScriptResource(self.portal, resource="I_do_not_exist")
+        self.assertEqual(
+            resource.file_data,
+            b"I_do_not_exist",
+        )
+
+    def test_relative_uri_resource(self):
+        bundle = self._make_test_bundle()
+        bundle.jscompilation = "//foo.bar/foobar.js"
+        view = ScriptsView(self.app, self.app.REQUEST, None, None)
+        view.update()
+        results = view.render()
+        self.assertIn('src="//foo.bar/foobar.js"', results)
+
 
 class TestStylesViewlet(PloneTestCase.PloneTestCase):
+    def _make_test_bundle(self, name="foobar", depends=""):
+        registry = getUtility(IRegistry)
+
+        bundles = registry.collectionOfInterface(
+            IBundleRegistry, prefix="plone.bundles"
+        )
+        bundle = bundles.add(name)
+        bundle.name = name
+        bundle.jscompilation = f"http://foo.bar/{name}.js"
+        bundle.csscompilation = f"http://foo.bar/{name}.css"
+        bundle.depends = depends
+        return bundle
+
     def test_styles_viewlet(self):
         styles = StylesView(self.layer["portal"], self.layer["request"], None)
         styles.update()
@@ -287,6 +411,86 @@ class TestStylesViewlet(PloneTestCase.PloneTestCase):
         scripts.update()
         result = scripts.render()
         self.assertNotIn("http://test.foo/test.min.js", result)
+
+    def test_css_bundle_depends_all(self):
+        # Create a test bundle, which has unspecified dependencies and is
+        # rendered in order as defined.
+        self._make_test_bundle(name="a")
+
+        # Create a test bundle, which depends on "all" other and thus rendered
+        # last.
+        self._make_test_bundle(name="last", depends="all")
+
+        # Create a test bundle, which has unspecified dependencies and is
+        # rendered in order as defined.
+        self._make_test_bundle(name="b")
+
+        view = StylesView(self.layer["portal"], self.layer["request"], None)
+        view.update()
+        results = view.render()
+
+        parser = etree.HTMLParser()
+        parsed = etree.fromstring(results, parser)
+        styles = parsed.xpath("//link")
+
+        # The last element is our CSS, depending on "all".
+        self.assertEqual(
+            "http://foo.bar/last.css",
+            styles[-1].attrib["href"],
+        )
+
+        # The second last element is the theme barceloneta theme CSS.
+        self.assertTrue(
+            "++theme++barceloneta/css/barceloneta.min.css" in styles[-2].attrib["href"],
+        )
+
+        # The first resource is our CSS, which was defined with unspecified
+        # dependency.
+        self.assertEqual(
+            "http://foo.bar/a.css",
+            styles[0].attrib["href"],
+        )
+
+        # The second resource is our CSS, which was defined with unspecified
+        # dependency first.
+        self.assertEqual(
+            "http://foo.bar/b.css",
+            styles[1].attrib["href"],
+        )
+
+    def test_css_bundle_depends_all_but_custom(self):
+        registry = getUtility(IRegistry)
+
+        custom_key = "plone.app.theming.interfaces.IThemeSettings.custom_css"
+        registry[custom_key] = "html { background-color: red; }"
+
+        # Create a test bundle, which depends on "all" other and thus rendered
+        # after all except the custom styles.
+        self._make_test_bundle(name="almost-last", depends="all")
+
+        view = StylesView(self.layer["portal"], self.layer["request"], None)
+        view.update()
+        results = view.render()
+
+        parser = etree.HTMLParser()
+        parsed = etree.fromstring(results, parser)
+        styles = parsed.xpath("//link")
+
+        # The last element is are the custom styles.
+        self.assertTrue(
+            "@@custom.css" in styles[-1].attrib["href"],
+        )
+
+        # The second last element is now our CSS, depending on "all".
+        self.assertEqual(
+            "http://foo.bar/almost-last.css",
+            styles[-2].attrib["href"],
+        )
+
+        # The third last element is the theme barceloneta theme CSS.
+        self.assertTrue(
+            "++theme++barceloneta/css/barceloneta.min.css" in styles[-3].attrib["href"],
+        )
 
 
 class TestExpressions(PloneTestCase.PloneTestCase):
@@ -489,7 +693,7 @@ class TestRRControlPanel(PloneTestCase.PloneTestCase):
         add_form.getControl("add").click()
 
         self.assertIn(
-            '<h2 class="accordion-header" id="heading-my-resource">',
+            '<h2 class="accordion-header fs-5 fw-bold">my-resource</h2>',
             self.browser.contents,
         )
 
@@ -507,6 +711,127 @@ class TestRRControlPanel(PloneTestCase.PloneTestCase):
         form.getControl("update").click()
 
         self.assertIn(
-            '<h2 class="accordion-header" id="heading-new-resource-name">',
+            '<h2 class="accordion-header fs-5 fw-bold">new-resource-name</h2>',
             self.browser.contents,
+        )
+
+
+class TestBrokenResourceRegistry(PloneTestCase.PloneTestCase):
+    def _make_test_bundle(self, name="foobar", depends="", enabled=True):
+        registry = getUtility(IRegistry)
+
+        bundles = registry.collectionOfInterface(
+            IBundleRegistry, prefix="plone.bundles"
+        )
+        bundle = bundles.add(name)
+        bundle.name = name
+        bundle.jscompilation = f"http://foo.bar/{name}.js"
+        bundle.csscompilation = f"http://foo.bar/{name}.css"
+        bundle.depends = depends
+        bundle.enabled = enabled
+        return bundle
+
+    def test_resource_registry_missing_dependency_disabled(self):
+        """Test the statusmessage warning if a bundle has a dependency on a
+        deactivated bundle."""
+        import lxml
+
+        self._make_test_bundle(name="bundle_1", enabled=False)
+        self._make_test_bundle(name="bundle_2", depends="bundle_1")
+
+        self.loginAsPortalOwner()
+
+        rendered = None
+        rendered = self.portal()
+
+        parsed = lxml.html.fromstring(rendered)
+        els_statusmessage = parsed.cssselect(".statusmessage-error")
+
+        # Admins should see the error badge.
+        self.assertIn(
+            "Bundle 'bundle_2' has a nonexistent dependency on 'bundle_1'.",
+            els_statusmessage[0].text_content(),
+        )
+
+    def test_resource_registry_missing_dependency_inexistent(self):
+        """Test the statusmessage warning if a bundle is not defined at all."""
+        import lxml
+
+        self._make_test_bundle(name="bundle", depends="brundle")
+
+        self.loginAsPortalOwner()
+
+        rendered = None
+        rendered = self.portal()
+
+        parsed = lxml.html.fromstring(rendered)
+        els_statusmessage = parsed.cssselect(".statusmessage-error")
+
+        # There should be one error message.
+        self.assertEqual(len(els_statusmessage), 1)
+
+        # Admins should see the error badge.
+        self.assertIn(
+            "Bundle 'bundle' has a nonexistent dependency on 'brundle'.",
+            els_statusmessage[0].text_content(),
+        )
+
+    def test_resource_registry_circular_dependency__user(self):
+        """Circular dependency errors are detected and handled by webresource.
+        We catch the error and ignore it for users or show it to admins.
+        """
+        import webresource
+
+        self._make_test_bundle(depends="foobar")
+
+        rendered = None
+        try:
+            rendered = self.portal()
+        except webresource.ResourceCircularDependencyError:  # pragma: nocover
+            self.fail("Test should not raise ResourceCircularDependencyError")
+
+        # Don't show the error message in case the site breaks
+        self.assertNotIn(
+            "error while rendering plone.resourceregistries.scripts",
+            rendered,
+        )
+        self.assertNotIn(
+            "error while rendering plone.resourceregistries.styles",
+            rendered,
+        )
+
+        # Don't show the error badge to anonymous users as admins see them.
+        self.assertNotIn(
+            "Resources define circular dependencies",
+            rendered,
+        )
+
+    def test_resource_registry_circular_dependency__admin(self):
+        """Circular dependency errors are detected and handled by webresource.
+        We catch the error and ignore it for users or show it to admins.
+        """
+        import lxml
+        import webresource
+
+        self._make_test_bundle(depends="foobar")
+
+        self.loginAsPortalOwner()
+
+        rendered = None
+        try:
+            rendered = self.portal()
+        except webresource.ResourceCircularDependencyError:  # pragma: nocover
+            self.fail("Test should not raise ResourceCircularDependencyError")
+
+        parsed = lxml.html.fromstring(rendered)
+        els_statusmessage = parsed.cssselect(".statusmessage-error")
+
+        # Admins should see the error badge.
+        self.assertIn(
+            "Error rendering JavaScript resources.",
+            els_statusmessage[0].text_content(),
+        )
+        self.assertIn(
+            "Error rendering CSS resources.",
+            els_statusmessage[1].text_content(),
         )

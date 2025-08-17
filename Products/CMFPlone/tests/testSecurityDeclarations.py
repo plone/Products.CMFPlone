@@ -468,6 +468,3 @@ class TestNavtreeSecurity(PloneTestCase.PloneTestCase, RestrictedPythonTest):
             "n=SitemapQueryBuilder(context);"
             "n();"
         )
-
-    def testGetNavigationRoot(self):
-        self.check("from Products.CMFPlone.browser.navtree import getNavigationRoot")

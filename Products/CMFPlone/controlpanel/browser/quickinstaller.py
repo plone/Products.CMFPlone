@@ -1,3 +1,6 @@
+from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError
+from packaging import version
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import INonInstallable
 from plone.memoize import view
@@ -10,7 +13,6 @@ from zope.component import getAllUtilitiesRegisteredFor
 from zope.i18n import translate
 
 import logging
-import pkg_resources
 import transaction
 
 
@@ -207,9 +209,9 @@ class InstallerView(BrowserView):
     def get_product_version(self, product_id):
         """Return the version of the product (package)."""
         try:
-            dist = pkg_resources.get_distribution(product_id)
+            dist = distribution(product_id)
             return dist.version
-        except pkg_resources.DistributionNotFound:
+        except PackageNotFoundError:
             if "." in product_id:
                 return ""
         # For CMFPlacefulWorkflow we need to try Products.CMFPlacefulWorkflow.
@@ -226,7 +228,7 @@ class InstallerView(BrowserView):
             available = self.ps.listUpgrades(profile_id, True)
             if available:  # could return empty sequence
                 latest = available[-1]
-                profile_version = max(latest["dest"], key=pkg_resources.parse_version)
+                profile_version = max(latest["dest"], key=version.parse)
         except Exception:
             pass
         return profile_version

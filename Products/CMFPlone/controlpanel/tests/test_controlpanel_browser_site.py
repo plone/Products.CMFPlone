@@ -147,9 +147,9 @@ class SiteControlPanelFunctionalTest(unittest.TestCase):
     def test_webstats_js(self):
         self.browser.open("%s/@@site-controlpanel" % self.portal_url)
         self.browser.getControl("Site title").value = "Plone Site"
-        self.browser.getControl(
-            name="form.widgets.webstats_js"
-        ).value = "<script>a=1</script>"
+        self.browser.getControl(name="form.widgets.webstats_js").value = (
+            "<script>a=1</script>"
+        )
         self.browser.getControl("Save").click()
 
         registry = getUtility(IRegistry)
@@ -159,9 +159,9 @@ class SiteControlPanelFunctionalTest(unittest.TestCase):
     def test_webstat_js_shows_up_on_site(self):
         self.browser.open("%s/@@site-controlpanel" % self.portal_url)
         self.browser.getControl("Site title").value = "Plone Site"
-        self.browser.getControl(
-            name="form.widgets.webstats_js"
-        ).value = "<script>a=1</script>"
+        self.browser.getControl(name="form.widgets.webstats_js").value = (
+            "<script>a=1</script>"
+        )
         self.browser.getControl("Save").click()
 
         registry = getUtility(IRegistry)

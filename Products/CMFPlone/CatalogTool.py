@@ -10,7 +10,6 @@ from App.special_dtml import DTMLFile
 from BTrees.Length import Length
 from DateTime import DateTime
 from OFS.interfaces import IOrderedContainer
-from plone.app.discussion.interfaces import DISCUSSION_ANNOTATION_KEY
 from plone.base.interfaces import INonStructuralFolder
 from plone.base.interfaces import IPloneCatalogTool
 from plone.base.utils import base_hasattr
@@ -43,6 +42,13 @@ import logging
 import re
 import time
 import urllib
+
+
+logger = logging.getLogger("Plone")
+try:
+    from plone.app.discussion.interfaces import DISCUSSION_ANNOTATION_KEY
+except ImportError:  # pragma: no cover
+    DISCUSSION_ANNOTATION_KEY = None
 
 
 logger = logging.getLogger("Plone")
@@ -392,19 +398,29 @@ class CatalogTool(PloneBaseTool, BaseTool):
         # It also accepts a keyword argument show_inactive to disable
         # effectiveRange checking entirely even for those without portal
         # wide AccessInactivePortalContent permission.
+        #
+        # By default, this shows inactive content to users with the required
+        # permission, while hiding it from users without AccessInactivePortalContent.
+        # - To show inactive content to users without the portal wide
+        #   AccessInactivePortalContent permission, pass show_inactive=True
+        #   as either a keyword or query parameter.
+        # - To suppress inactive content for admins, pass show_inactive=False
+        #   as either a keyword or query parameter
 
         # Make sure any pending index tasks have been processed
         processQueue()
 
         kw = kw.copy()
-        show_inactive = kw.get("show_inactive", False)
-        if isinstance(query, dict) and not show_inactive:
-            show_inactive = "show_inactive" in query
+        show_inactive = kw.get("show_inactive", None)
+        if show_inactive is None and isinstance(query, dict):
+            show_inactive = query.get("show_inactive", None)
+        if show_inactive is None:
+            show_inactive = self.allow_inactive(kw)
 
         user = _getAuthenticatedUser(self)
         kw["allowedRolesAndUsers"] = self._listAllowedRolesAndUsers(user)
 
-        if not show_inactive and not self.allow_inactive(kw):
+        if not show_inactive:
             kw["effectiveRange"] = DateTime()
 
         # filter out invalid sort_on indexes
@@ -455,10 +471,13 @@ class CatalogTool(PloneBaseTool, BaseTool):
             ):
                 try:
                     self.reindexObject(obj, idxs=idxs)
-                    # index conversions from plone.app.discussion
-                    annotions = IAnnotations(obj)
-                    if DISCUSSION_ANNOTATION_KEY in annotions:
-                        conversation = annotions[DISCUSSION_ANNOTATION_KEY]
+                    # index conversations from plone.app.discussion
+                    annotations = IAnnotations(obj)
+                    if (
+                        DISCUSSION_ANNOTATION_KEY is not None
+                        and DISCUSSION_ANNOTATION_KEY in annotations
+                    ):
+                        conversation = annotations[DISCUSSION_ANNOTATION_KEY]
                         conversation = conversation.__of__(obj)
                         for comment in conversation.getComments():
                             try:

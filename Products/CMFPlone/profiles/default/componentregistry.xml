@@ -68,9 +68,6 @@
     <utility factory="plone.app.viewletmanager.storage.ViewletSettingsStorage"
              interface="plone.app.viewletmanager.interfaces.IViewletSettingsStorage"
     />
-    <utility interface="Products.CMFCore.interfaces.IPropertiesTool"
-             object="portal_properties"
-    />
     <utility interface="Products.CMFCore.interfaces.ISiteRoot"
              object=""
     />
@@ -83,10 +80,10 @@
     <utility interface="Products.CMFDiffTool.interfaces.IDiffTool"
              object="portal_diff"
     />
-    <utility interface="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    <utility interface="plone.base.interfaces.IPloneSiteRoot"
              object=""
     />
-    <utility interface="Products.CMFPlone.interfaces.IMigrationTool"
+    <utility interface="plone.base.interfaces.IMigrationTool"
              object="portal_migration"
     />
     <utility interface="Products.MailHost.interfaces.IMailHost"

@@ -36,7 +36,7 @@ Bug fixes:
 - Redirection view: refactor our navigation root editing to a separate method ``edit_for_navigation_root``.
   Since Plone 5.2 the redirectiontool respects INavigationroot:
   with a manual redirect you cannot enter a path starting with ``/`` which 'escapes' the NavigationRoot to the SiteRoot to link to another part of the Plone instance.
-  This refactor makes it possible to override this method to return the redirection unchanged, brining back the pre Plone 5.2 behavior of the ``Products.RedirectionTool`` add-on.
+  This refactor makes it possible to override this method to return the redirection unchanged, bringing back the pre Plone 5.2 behavior of the ``Products.RedirectionTool`` add-on.
   [maurits] (#3153)
 - Control panel configlets: first check visibility, then check condition.
   Visibility is cheaper to check.
@@ -946,7 +946,7 @@ Breaking changes:
 
 - Add helper method to get all catalog entries from a given catalog: ``Products.CMFPlone.CatalogTool.catalog_get_all``.
   In Products.ZCatalog before 4.0 a catalog call without a query returned all catalog brains.
-  This can be used as a replacement where it is needed, for exampe in tests.
+  This can be used as a replacement where it is needed, for example in tests.
   [thet, gogobd]
 
 - Remove ``query_request`` from CatalogTool's search method, as it isn't supported in Products.ZCatalog 4 anymore.
@@ -1459,7 +1459,7 @@ New:
 - added invisible-grid table styles
   [agitator]
 
-- Control panel to mange portal actions
+- Control panel to manage portal actions
   [ebrehault]
 
 - new less variable to configure the width of the toolbars submenu called ``plone-toolbar-submenu-width``.
@@ -1506,7 +1506,7 @@ Fixes:
 - Fixed test error in ``test_controlpanel_site.py`` failed with random error.
   [jensens]
 
-- Do not break background images relative urls in CSS when concatening bundles
+- Do not break background images relative urls in CSS when concatenating bundles
   [ebrehault]
 
 - Fixed html validation: element nav does not need a role attribute.
@@ -9585,7 +9585,7 @@ Beta 1 - released March 31, 2006
   well as the new name (of the navtree portlet) and root (of site
   navigation) properties, and added the Sprout navtree preference panel to
   let users manage these settings. Factored the navtree code out to
-  .browser.navtree, which is TTW importable and contains a re-usable
+  .browser.navtree, which is TTW importable and contains a reusable
   buildFolderTree() function that can be used to build navtree-like
   structures in custom code. See the docstrings in that module for more
   details.
@@ -14163,7 +14163,7 @@ Alpha 1 - released January 29, 2006
   folder. Implemented via browserDefault. The way it works is:
 
   * if there's a property 'default_page' (must be lines) on
-    the folder will use that (normal acquistion applies)
+    the folder will use that (normal acquisition applies)
 
   * if not found, use site_properties
 
@@ -14258,7 +14258,7 @@ Alpha 1 - released January 29, 2006
   Note: **Requires**
   "GroupUserFolder from Collective":http://sf.net/projects/collective
 
-- PloneTool.editMetadata made a really bad asssumption.  We now use
+- PloneTool.editMetadata made a really bad assumption.  We now use
   interface packages to assert that a object implements the interfaces
   before attempting to set DublinCore attributes *or* Discussable
   attributes.
@@ -14492,7 +14492,7 @@ Alpha 1 - released January 29, 2006
 - added CMFDefault variables to main_template.pt and moving to use a lot of
   the variables declared in main_template else where in PageTemplates
 
-- items listed in folder_contents generatd urls pointing to immediate_view
+- items listed in folder_contents generated urls pointing to immediate_view
   (type information)
 
 - not addable portal types are returned by the getNotAddableTypes
@@ -14776,7 +14776,7 @@ Alpha 1 - released January 29, 2006
 - tiny feature.. the filename will remain if your validation fails (not in IE)
   Issue 597
 
-- folder_publish now applied effective/expiration dates and will do so recurssively.
+- folder_publish now applied effective/expiration dates and will do so recursively.
   Fixes Issue 605.
 
 - Added site_properties into beta2-beta3 migration script. Thanks interra Issue #659
@@ -14819,7 +14819,7 @@ Alpha 1 - released January 29, 2006
 
 - the Portal object needs to be 'publicized'.  fixes Issue 569
 
-- if form validaton fails for content_status_history keep dates and comments
+- if form validation fails for content_status_history keep dates and comments
 
 - since CMFCalendar/Event.py uses a different set of Permissions, 'Change portal events'
   we need to add this permission to the Workflow definitions and set the permissions
@@ -14978,7 +14978,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 
 - Bugs fixed 373, 383, 316, 433, 329, 441
 
-- metadate_edit_form added a '\n' in Contrbutors field, every time it was saved.
+- metadate_edit_form added a '\n' in Contributors field, every time it was saved.
 
 - Issue 403 - added '<meta>' tags to header, not really used by modern search engines
   need script listMetaTags.py
@@ -15303,7 +15303,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 - folder_contents will no longer show empty dropdown/add new item button or
   (up one level) if they are not usable
 
-- on Plone site creation we now add another workflow defnition,
+- on Plone site creation we now add another workflow definition,
   folder_workflow which is bound to Folder types.
 
 - instead of having a Document as index_html, we use a PageTemplate that
@@ -15413,7 +15413,7 @@ We released a beta3 tarball and then decided to fix the above before a final bet
 
 - All CSS and most HTML validate according to W3C's validators
 
-- fixed up MembershipTool which will add a homepage which will partcipate
+- fixed up MembershipTool which will add a homepage which will participate
   in workflow
 
 - added a FormulatorTool (portal_form_validation) which is a *thin* wrapper

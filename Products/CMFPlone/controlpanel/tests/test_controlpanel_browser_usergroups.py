@@ -502,9 +502,9 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         # Add group2 to selected  group 1
         self.browser.getControl(name="searchstring").value = "group2"
         self.browser.getControl(name="form.button.Search").click()
-        self.browser.getControl(name="add:list").getControl(
-            value="group2"
-        ).selected = True
+        self.browser.getControl(name="add:list").getControl(value="group2").selected = (
+            True
+        )
 
         # Check that group is now part of the group
         self.browser.getControl("Add selected groups and users to this group").click()

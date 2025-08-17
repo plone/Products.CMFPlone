@@ -87,7 +87,7 @@
             </a>
           </div>
 
-          <div class="nav-item dropdown" id="search-filter">
+          <div class="nav-item dropdown me-3" id="search-filter">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" id="search-filter-toggle" i18n:translate="narrow_search_options">
               Filter the results
             </a>

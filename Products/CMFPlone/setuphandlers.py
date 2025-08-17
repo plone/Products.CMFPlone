@@ -163,7 +163,7 @@ def set_zsqlmethods_permissions(site):
     </permission>
     """
     try:
-        import Products.ZSQLMethods  # noqa
+        import Products.ZSQLMethods  # noqa: F401
     except ImportError:
         return
     site.manage_permission("Use Database Methods", ["Site Administrator"], False)

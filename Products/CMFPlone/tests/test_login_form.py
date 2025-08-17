@@ -145,7 +145,7 @@ class TestLoginForm(unittest.TestCase):
 
     def test_post_login_sets_LastLoginTime_if_member_lacks_set_own_properties_permission(
         self,
-    ):  # noqa: E501
+    ):
         # If members lack the "Set own properties" permission, they should
         # still be able to log in, and their login times should be set.
         now = DateTime()

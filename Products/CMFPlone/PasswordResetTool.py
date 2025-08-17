@@ -3,6 +3,7 @@
 Mailback password reset product for CMF.
 Author: J Cameron Cooper, Sept 2003
 """
+
 from AccessControl import ClassSecurityInfo
 from AccessControl import ModuleSecurityInfo
 from AccessControl.class_init import InitializeClass

@@ -1,4 +1,4 @@
-from persistent.dict import PersistentDict
+from persistent.mapping import PersistentMapping
 from plone.base.interfaces import IImageScalesAdapter
 from plone.dexterity.interfaces import IDexterityContent
 from plone.indexer.decorator import indexer
@@ -19,4 +19,4 @@ def image_scales(obj):
     scales = adapter()
     if not scales:
         raise AttributeError
-    return PersistentDict(scales)
+    return PersistentMapping(scales)

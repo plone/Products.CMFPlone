@@ -6,8 +6,6 @@ from Products.CMFPlone.PloneControlPanel import PloneConfiglet
 from Products.CMFPlone.PloneControlPanel import PloneControlPanel
 from Products.CMFPlone.PloneTool import PloneTool
 from Products.CMFPlone.Portal import PloneSite
-from Products.CMFPlone.PropertiesTool import PropertiesTool
-from Products.CMFPlone.PropertiesTool import SimpleItemWithProperties
 from Products.CMFPlone.RegistrationTool import RegistrationTool
 from Products.CMFPlone.SkinsTool import SkinsTool
 from Products.CMFPlone.TypesTool import TypesTool
@@ -300,8 +298,6 @@ testClasses = [
     (PloneConfiglet, ()),
     (PloneTool, ()),
     (PloneSite, ()),
-    (PropertiesTool, ()),
-    (SimpleItemWithProperties, ()),
     (RegistrationTool, ()),
     (SkinsTool, ()),
     (TypesTool, ()),

@@ -1,5 +1,5 @@
 <html lang="en"
-      metal:use-macro="here/main_template/macros/master"
+      metal:use-macro="context/@@main_template/macros/master"
       i18n:domain="plone">
 <body>
 

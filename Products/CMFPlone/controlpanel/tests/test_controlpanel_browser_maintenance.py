@@ -1,14 +1,12 @@
-from pkg_resources import get_distribution
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.testing.zope import Browser
 from plone.testing.zope import login
+from Products.CMFPlone.controlpanel.browser.maintenance import LIFETIME
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 
 import unittest
-
-
-has_zope4 = get_distribution("Zope2").version.startswith("4")
+import zExceptions
 
 
 class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
@@ -84,3 +82,18 @@ class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
         self.assertTrue(self.browser.url.endswith("maintenance-controlpanel"))
         self.assertTrue("Packed the database." in self.browser.contents)
         db.pack = original_pack
+
+    @unittest.skipIf(not LIFETIME, "Lifetime for shutdown not available")
+    def test_maintenance_shutdown_CSRF_protection(self):
+        login(self.app["acl_users"], "app")
+        import transaction
+
+        transaction.commit()
+        self.browser.handleErrors = False
+        self.browser.addHeader("Authorization", f"Basic app:{TEST_USER_PASSWORD}")
+        self.browser.open("/@@overview-controlpanel")
+        self.browser.getLink("Maintenance").click()
+        self.browser.getControl(name="_authenticator", index=0).value = "invalid!"
+        self.browser.getControl(name="_authenticator", index=1).value = "invalid!"
+        with self.asserRaises(zExceptions.Forbidden):
+            self.browser.getControl("Shut down").click()

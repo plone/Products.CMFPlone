@@ -1,6 +1,4 @@
-from plone.app.contenttypes.testing import (  # noqa: E501
-    PLONE_APP_CONTENTTYPES_INTEGRATION_TESTING,
-)
+from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_INTEGRATION_TESTING
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 
@@ -118,11 +116,6 @@ class ZMITests(unittest.TestCase):
 
     def test_portal_modifier(self):
         url = "portal_modifier/manage_main"
-        view = self.portal.restrictedTraverse(url)
-        self.assertTrue(view(), msg=f"{url} is broken")
-
-    def test_portal_properties(self):
-        url = "portal_properties/manage_main"
         view = self.portal.restrictedTraverse(url)
         self.assertTrue(view(), msg=f"{url} is broken")
 

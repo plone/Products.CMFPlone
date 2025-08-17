@@ -1,8 +1,11 @@
 from AccessControl import getSecurityManager
 from AccessControl.Permissions import view as View
 from collections import OrderedDict
+from functools import cached_property
+from importlib import import_module
+from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError
 from OFS.interfaces import IApplication
-from plone.base.interfaces import INonInstallable
 from plone.base.interfaces import IPloneSiteRoot
 from plone.base.utils import get_installer
 from plone.i18n.locales.interfaces import IContentLanguageAvailability
@@ -11,16 +14,13 @@ from plone.protect.authenticator import check as checkCSRF
 from plone.protect.interfaces import IDisableCSRFProtection
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
+from Products.CMFPlone.factory import _TYPES_PROFILE
 from Products.CMFPlone.factory import addPloneSite
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.GenericSetup import BASE
-from Products.GenericSetup import EXTENSION
-from Products.GenericSetup import profile_registry
 from Products.GenericSetup.upgrade import normalize_version
 from urllib import parse
 from ZODB.broken import Broken
 from zope.component import adapter
-from zope.component import getAllUtilitiesRegisteredFor
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
@@ -35,14 +35,23 @@ from zope.schema.interfaces import IVocabularyFactory
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 
 import logging
-import pkg_resources
 
 
 try:
-    pkg_resources.get_distribution("plone.volto")
+    distribution("plone.volto")
     HAS_VOLTO = True
-except pkg_resources.DistributionNotFound:
+except PackageNotFoundError:
     HAS_VOLTO = False
+try:
+    distribution("plone.app.caching")
+    HAS_CACHING = True
+except PackageNotFoundError:
+    HAS_CACHING = False
+try:
+    distribution("plone.app.upgrade")
+    HAS_UPGRADE = True
+except PackageNotFoundError:
+    HAS_UPGRADE = False
 LOGGER = logging.getLogger("Products.CMFPlone")
 
 
@@ -59,8 +68,6 @@ class AppTraverser(DefaultPublishTraverse):
 
 
 class Overview(BrowserView):
-    has_volto = HAS_VOLTO
-
     def sites(self, root=None):
         if root is None:
             root = self.context
@@ -147,67 +154,15 @@ class FrontPage(BrowserView):
 
 
 class AddPloneSite(BrowserView):
-    # Profiles that are installed by default,
-    # but can be removed later.
-    default_extension_profiles = (
-        "plone.app.caching:default",
-        "plonetheme.barceloneta:default",
-    )
-    # Let's have a separate list for Volto.
-    volto_default_extension_profiles = (
-        "plone.app.caching:default",
-        "plonetheme.barceloneta:default",
-        "plone.volto:default",
-    )
-
-    def profiles(self):
-        base_profiles = []
-        extension_profiles = []
-        if HAS_VOLTO and not self.request.get("classic"):
-            selected_extension_profiles = self.volto_default_extension_profiles
-        else:
-            selected_extension_profiles = self.default_extension_profiles
-
-        # profiles available for install/uninstall, but hidden at the time
-        # the Plone site is created
-        not_installable = [
-            "Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow",
-        ]
-        utils = getAllUtilitiesRegisteredFor(INonInstallable)
-        for util in utils:
-            not_installable.extend(
-                util.getNonInstallableProfiles()
-                if hasattr(util, "getNonInstallableProfiles")
-                else []
-            )
-
-        for info in profile_registry.listProfileInfo():
-            if info.get("type") == EXTENSION and info.get("for") in (
-                IPloneSiteRoot,
-                None,
-            ):
-                profile_id = info.get("id")
-                if profile_id not in not_installable:
-                    if profile_id in selected_extension_profiles:
-                        info["selected"] = "selected"
-                    extension_profiles.append(info)
-
-        def _key(v):
-            # Make sure implicitly selected items come first
-            selected = v.get("selected") and "automatic" or "manual"
-            return "{}-{}".format(selected, v.get("title", ""))
-
-        extension_profiles.sort(key=_key)
-
-        for info in profile_registry.listProfileInfo():
-            if info.get("type") == BASE and info.get("for") in (IPloneSiteRoot, None):
-                base_profiles.append(info)
-
-        return dict(
-            base=tuple(base_profiles),
-            default=_DEFAULT_PROFILE,
-            extensions=tuple(extension_profiles),
-        )
+    @property
+    def default_extension_profiles(self):
+        # Profiles that are installed by default,
+        # but can be removed later.
+        profiles = [_TYPES_PROFILE]
+        if HAS_CACHING:
+            profiles.append("plone.app.caching:default")
+        profiles.append("plonetheme.barceloneta:default")
+        return profiles
 
     def browser_language(self):
         language = "en"
@@ -300,9 +255,8 @@ class AddPloneSite(BrowserView):
                 context,
                 site_id,
                 title=form.get("title", ""),
-                profile_id=form.get("profile_id", _DEFAULT_PROFILE),
-                extension_ids=form.get("extension_ids", ()),
-                setup_content=form.get("setup_content", False),
+                profile_id=_DEFAULT_PROFILE,
+                extension_ids=self.default_extension_profiles,
                 default_language=form.get("default_language", "en"),
                 portal_timezone=form.get("portal_timezone", "UTC"),
             )
@@ -313,9 +267,47 @@ class AddPloneSite(BrowserView):
 
 
 class Upgrade(BrowserView):
+    has_upgrade = HAS_UPGRADE
+
     def upgrades(self):
         pm = getattr(self.context, "portal_migration")
         return pm.listUpgrades()
+
+    @cached_property
+    def missing_packages(self):
+        """Get list of missing packages that were installed in GS.
+
+        Main use case:
+
+        * Create a Product.CMFPlone 6.0 site.
+        * Upgrade the code to Products.CMFPlone 6.1.
+        * Now the plone.app.discussion package is missing.
+          This will give problems, because its GS profile was installed
+          by default in 6.0.
+
+        Beware of false positives.  For example when upgrading from Plone 5.2,
+        CMFFormController will be missing, but we have code in plone.app.upgrade
+        to properly clean this up. So we should not bother the admin with this.
+        """
+        setup = getattr(self.context, "portal_setup")
+        installed = sorted(
+            {x.split(":")[0] for x in setup._profile_upgrade_versions.keys()}
+        )
+        ignore = ["Products.CMFFormController"]
+        missing = []
+        for package in installed:
+            if package in ignore:
+                continue
+            try:
+                distribution(package)
+            except PackageNotFoundError:
+                try:
+                    # profiles can live in submodules of packages.
+                    # check if we can import the module namespace
+                    import_module(package)
+                except ModuleNotFoundError:
+                    missing.append(package)
+        return missing
 
     def versions(self):
         pm = getattr(self.context, "portal_migration")

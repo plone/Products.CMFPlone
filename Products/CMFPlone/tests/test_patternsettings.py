@@ -1,5 +1,3 @@
-from plone.app.testing import login
-from plone.app.testing import TEST_USER_NAME
 from plone.base.interfaces import ITinyMCESchema
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.patterns.view import PatternsSettingsView
@@ -21,15 +19,6 @@ class TestTinyMCESettings(unittest.TestCase):
             self.layer["portal"], self.layer["request"], None
         )
         return json.loads(adapter.tinymce()["data-pat-tinymce"])
-
-    def test_atd_included(self):
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(ITinyMCESchema, prefix="plone")
-        settings.libraries_spellchecker_choice = "AtD"
-        login(self.layer["portal"], TEST_USER_NAME)
-        conf = self.get_conf()
-        self.assertTrue("compat3x" in conf["tiny"]["plugins"])
-        self.assertTrue("AtD" in conf["tiny"]["external_plugins"])
 
     def test_style_formats(self):
         conf = self.get_conf()

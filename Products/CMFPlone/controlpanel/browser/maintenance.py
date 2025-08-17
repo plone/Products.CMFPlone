@@ -2,6 +2,7 @@ from AccessControl import getSecurityManager
 from AccessControl.Permissions import view_management_screens
 from Acquisition import aq_inner
 from App.config import getConfiguration
+from html import escape
 from plone.autoform.form import AutoExtensibleForm
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import IMaintenanceSchema
@@ -23,12 +24,6 @@ try:
     from Lifetime import shutdown
 except ImportError:
     LIFETIME = False
-
-try:
-    from html import escape
-except ImportError:
-    from cgi import escape
-
 
 logger = logging.getLogger(__file__)
 
@@ -90,7 +85,7 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
         if LIFETIME:
             shutdown(0)
         else:
-            raise
+            raise NotImplementedError("Lifetime is not available.")
         # TODO: returning html has no effect in button handlers
         self.request.response.setHeader("X-Theme-Disabled", "True")
         return """<html><head></head><body>{}</body></html>""".format(
@@ -136,6 +131,9 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
         if "ZMANAGED" in os.environ:
             return True
         return False
+
+    def isShutdownable(self):
+        return LIFETIME
 
     def isDevelopmentMode(self):
         return bool(getConfiguration().debug_mode)

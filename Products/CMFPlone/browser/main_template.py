@@ -6,24 +6,19 @@ from zope.interface import implementer
 
 @implementer(IMainTemplate)
 class MainTemplate(BrowserView):
-    ajax_template_name = "templates/ajax_main_template.pt"
-    main_template_name = "templates/main_template.pt"
+    ajax_template = ViewPageTemplateFile("templates/ajax_main_template.pt")
+    main_template = ViewPageTemplateFile("templates/main_template.pt")
 
     def __call__(self):
-        return ViewPageTemplateFile(self.template_name)
+        return self.template()
 
     @property
-    def template_name(self):
+    def template(self):
         if self.request.form.get("ajax_load"):
-            return self.ajax_template_name
+            return self.ajax_template
         else:
-            return self.main_template_name
+            return self.main_template
 
     @property
     def macros(self):
-        # Reinstantiating the templatefile is a workaround for
-        # https://github.com/plone/Products.CMFPlone/issues/2666
-        # Without this an infinite recursion in a template
-        # (i.e. a template that calls its own view)
-        # kills the instance instead of raising a RecursionError.
-        return ViewPageTemplateFile(self.template_name).macros
+        return self.template.macros

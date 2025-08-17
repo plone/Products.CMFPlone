@@ -150,17 +150,23 @@ class ActionControlPanelAdapter:
     visible = property(get_visible, set_visible)
 
     def get_position(self):
-        position = self.current_category.objectIds().index(self.context.id)
-        return position + 1
+        action_ids = self.current_category.objectIds()
+        if self.context.id in action_ids:
+            return action_ids.index(self.context.id) + 1
+        # default when moved to new category
+        return 1
 
     def set_position(self, value):
-        current_position = self.current_category.objectIds().index(self.context.id)
+        action_ids = self.current_category.objectIds()
+        if self.context.id not in action_ids:
+            # action got moved to a different category skip
+            return
+        current_position = action_ids.index(self.context.id)
         all_actions = list(self.current_category._objects)
         current_action = all_actions.pop(current_position)
+        # list index of new position
         new_position = value - 1
-        all_actions = (
-            all_actions[0:new_position] + [current_action] + all_actions[new_position:]
-        )
+        all_actions.insert(new_position, current_action)
         self.current_category._objects = tuple(all_actions)
 
     position = property(get_position, set_position)

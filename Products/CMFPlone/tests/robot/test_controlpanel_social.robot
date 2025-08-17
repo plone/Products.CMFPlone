@@ -1,78 +1,69 @@
-*** Settings *****************************************************************
+*** Settings ***
 
-Resource  plone/app/robotframework/keywords.robot
-Resource  plone/app/robotframework/saucelabs.robot
-Resource  plone/app/robotframework/selenium.robot
+Resource    plone/app/robotframework/browser.robot
+Resource    keywords.robot
 
-Library  Remote  ${PLONE_URL}/RobotRemote
+Library    Remote    ${PLONE_URL}/RobotRemote
 
-Resource  keywords.robot
-
-Test Setup  Run keywords  Plone Test Setup
-Test Teardown  Run keywords  Plone Test Teardown
+Test Setup    Run Keywords    Plone test setup
+Test Teardown    Run keywords     Plone test teardown
 
 
-*** Test Cases ***************************************************************
+*** Test Cases ***
 
 Scenario: Social settings are provided
-  Given a logged-in site administrator
-    and the social control panel
-   When I provide social settings
-   Then social tags should exist for anonymous
+    Given a logged-in site administrator
+      and the social control panel
+     When I provide social settings
+     Then social tags should exist for anonymous
 
 Scenario: Social tags are disabled
-  Given a logged-in site administrator
-    and the social control panel
-   When I provide social settings
-   When I disable social
-   Then social tags should not exist
+    Given a logged-in site administrator
+      and the social control panel
+     When I provide social settings
+     When I disable social
+     Then social tags should not exist
 
 
-*** Keywords *****************************************************************
+*** Keywords ***
 
-# --- GIVEN ------------------------------------------------------------------
-
-a logged-in site administrator
-  Enable autologin as  Site Administrator
+# GIVEN
 
 the social control panel
-  Go to  ${PLONE_URL}/@@social-controlpanel
-  Wait until page contains  Social Media Settings
+    Go to  ${PLONE_URL}/@@social-controlpanel
+    Get Text    //body    contains    Social Media Settings
 
 
-# --- WHEN -------------------------------------------------------------------
+# WHEN
 
 I disable social
-  UnSelect Checkbox  form.widgets.share_social_data:list
-  Wait For Then Click Element  css=#form-buttons-save
-  Wait until page contains  Changes saved
+    Uncheck Checkbox    //input[@name="form.widgets.share_social_data:list"]
+    Click    //button[@name="form.buttons.save"]
+    Get Text    //body    contains    Changes saved
 
 I provide social settings
-  Input Text  name=form.widgets.twitter_username  plonecms
-  Input Text  name=form.widgets.facebook_app_id  123456
-  Input Text  name=form.widgets.facebook_username  plonecms
-  Wait For Then Click Element  css=#form-buttons-save
-  Wait until page contains  Changes saved
+    Type Text    //input[@name="form.widgets.twitter_username"]    plonecms
+    Type Text    //input[@name="form.widgets.facebook_app_id"]    123456
+    Type Text    //input[@name="form.widgets.facebook_username"]    plonecms
+    Click    //button[@name="form.buttons.save"]
+    Get Text    //body    contains    Changes saved
 
 
-# --- THEN -------------------------------------------------------------------
+# THEN
 
 social tags should exist for anonymous
-  Go to  ${PLONE_URL}
-  Wait until page contains  Plone site
-  Page should not contain element  css=meta[name="twitter:site"]
-  Page should not contain element  css=meta[property="og:article:publisher"]
-  Page should not contain element  css=meta[property="fb:app_id"]
-  Disable autologin
-  Go to  ${PLONE_URL}
-  Wait until page contains  Plone site
-  Page should contain element  css=meta[name="twitter:site"]
-  Page should contain element  css=meta[property="og:article:publisher"]
-  Page should contain element  css=meta[property="fb:app_id"]
+    Go to    ${PLONE_URL}
+    Get Element Count    //meta[@name="twitter:site"]    should be    0
+    Get Element Count    //meta[@property="og:article:publisher"]    should be    0
+    Get Element Count    //meta[@property="fb:app_id"]    should be    0
+    Disable autologin
+    Go to     ${PLONE_URL}
+    Get Element Count    //meta[@name="twitter:site"]    should be    1
+    Get Element Count    //meta[@property="og:article:publisher"]    should be    1
+    Get Element Count    //meta[@property="fb:app_id"]    should be    1
 
 social tags should not exist
-  Go to  ${PLONE_URL}
-  Wait until page contains  Plone site
-  Page should not contain element  css=meta[name="twitter:site"]
-  Page should not contain element  css=meta[property="og:article:publisher"]
-  Page should not contain element  css=meta[property="fb:app_id"]
+    Go to    ${PLONE_URL}
+    Get Element Count    //meta[@name="twitter:site"]    should be    0
+    Get Element Count    //meta[@property="og:article:publisher"]    should be    0
+    Get Element Count    //meta[@property="fb:app_id"]    should be    0

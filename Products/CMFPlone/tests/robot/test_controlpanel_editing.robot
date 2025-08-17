@@ -1,105 +1,109 @@
-*** Settings *****************************************************************
+*** Settings ***
 
-Resource  plone/app/robotframework/keywords.robot
-Resource  plone/app/robotframework/saucelabs.robot
-Resource  plone/app/robotframework/selenium.robot
-
-Library  Remote  ${PLONE_URL}/RobotRemote
-
-Resource  keywords.robot
-
-Test Setup  Run keywords  Plone Test Setup
-Test Teardown  Run keywords  Plone Test Teardown
+Resource    plone/app/robotframework/browser.robot
+Resource    keywords.robot
 
 
-*** Test Cases ***************************************************************
+Library    Remote    ${PLONE_URL}/RobotRemote
+
+Test Setup    Run Keywords    Plone test setup
+Test Teardown    Run keywords     Plone test teardown
+
+*** Variables ***
+
+${PAGE_TITLE}    Doc
+${PAGE_ID}    doc
+
+*** Test Cases ***
 
 Scenario: Disable Standard Editor in the Editing Control Panel
-  Given a logged-in site administrator
-    and the editing control panel
-   When I disable the standard editor
-# XXX: This test fails because the TinyMCE 4 widget ignores both the old and
-# the new setting.
-#   Then I do not see the standard editor when I create a document
+    Given a logged-in site administrator
+      and the editing control panel
+     When I disable the standard editor
+     Then I do not see the standard editor when I create a document
+
+     When I go to the editing control panel
+      and I enable the standard editor
+     Then I see the standard editor when I create a document
+
 
 Scenario: Enable Link Integrity Check in the Editing Control Panel
-  Given a logged-in site administrator
-    and the editing control panel
-   When I enable link integrity checks
-# XXX: Enabling referencefield behaviour for Documents to make this test work makes other tests fail.
-# See https://github.com/plone/Products.CMFPlone/issues/255 for details.
-#   Then I will be warned if I remove a linked document
+    Given a logged-in site administrator
+      and the editing control panel
+    When I enable link integrity checks
+    # Linkintegrity checks are in `test_linkintegrity.robot`
 
 
 Scenario: Enable Lock on Through The Web in the Editing Control Panel
-  Given a logged-in site administrator
-    and the editing control panel
-   When I enable lock on through the web
-# XXX: This test is not finished yet.
-#   Then I will see a warning if a document is edited by another user
+    Given a logged-in site administrator
+      and the editing control panel
+      and a document '${PAGE_TITLE}'
+     When I enable lock on through the web
+      and I edit the document
+     Then I will see a warning if a document is edited by another user
 
 
-*** Keywords *****************************************************************
+*** Keywords ***
 
-# --- GIVEN ------------------------------------------------------------------
-
-a logged-in site administrator
-  Enable autologin as  Site Administrator
-
-a logged-in manager
-  Enable autologin as  Manager
-
-a document '${title}'
-  Create content  type=Document  id=doc  title=${title}
+# GIVEN
 
 the editing control panel
-  Go to  ${PLONE_URL}/@@editing-controlpanel
-  Wait until page contains  Editing Settings
+    Go to    ${PLONE_URL}/@@editing-controlpanel
 
-# --- WHEN -------------------------------------------------------------------
+
+# WHEN
 
 I disable the standard editor
-  Select from list by label  name=form.widgets.default_editor:list  None
-  Click Button  Save
-  Wait until page contains  Changes saved
+    Select Options By    //select[@name="form.widgets.default_editor:list"]    label    None
+    Click    //button[@name="form.buttons.save"]
+    Get Text    //body    contains    Changes saved
+
+
+I enable the standard editor
+    Select Options By    //select[@name="form.widgets.default_editor:list"]    label    TinyMCE
+    Click    //button[@name="form.buttons.save"]
+    Get Text    //body    contains    Changes saved
+
+
+I go to the editing control panel
+    Go to    ${PLONE_URL}/@@editing-controlpanel
+
 
 I enable link integrity checks
-  Select Checkbox  name=form.widgets.enable_link_integrity_checks:list
-  Click Button  Save
-  Wait until page contains  Changes saved
+    Check Checkbox    //input[@name="form.widgets.enable_link_integrity_checks:list"]
+    Click    //button[@name="form.buttons.save"]
+    Get Text    //body    contains    Changes saved
+
 
 I enable lock on through the web
-  Select Checkbox  name=form.widgets.lock_on_ttw_edit:list
-  Click Button  Save
-  Wait until page contains  Changes saved
+    Check Checkbox    //input[@name="form.widgets.lock_on_ttw_edit:list"]
+    Click    //button[@name="form.buttons.save"]
+    Get Text    //body    contains    Changes saved
+
+I edit the document
+    Go to    ${PLONE_URL}/${PAGE_ID}
+    Click    //li[@id="contentview-edit"]/a
+    Get Text    //body    contains    Edit Page
 
 
-# --- THEN -------------------------------------------------------------------
-
-I can see an id field in the settings tab when I create a document
-  Go To  ${PLONE_URL}/++add++Document
-  Given patterns are loaded
-  Execute Javascript  $('#form-widgets-IDublinCore-title').val('My Document'); return 0;
-  Click Link  Settings
-  Page should contain element  name=form.widgets.IShortName.id
-  Input Text  name=form.widgets.IShortName.id  this-is-my-custom-short-name
-  Click Button  Save
-  Wait until page contains  Item created
-  Location should be  ${PLONE_URL}/this-is-my-custom-short-name/view
+# THEN
 
 I do not see the standard editor when I create a document
-  Go To  ${PLONE_URL}/++add++Document
-  Wait until page contains  Add Page
-  Page should not contain element  css=.mce-tinymce
+    Go To  ${PLONE_URL}/++add++Document
+    Wait For Condition    Classes    //body    contains    patterns-loaded
+    Wait For Condition    Element Count    //*[@id="formfield-form-widgets-IRichTextBehavior-text"]/div[@role="application"]    should be    0
+    Wait For Condition    Element States    //textarea[@name="form.widgets.IRichTextBehavior.text"]    contains    visible
 
-I will be warned if I remove a linked document
-  ${doc1_uid}=  Create content  id=doc1  type=Document
-  ${doc2_uid}=  Create content  id=doc2  type=Document
-  Set field value  uid=${doc1_uid}  field=text  field_type=text/html  value=<p><a href='resolveuid/${doc2_uid}' data-val='${doc2_uid}' data-linktype='internal'>link</a></p>
-  Go To  ${PLONE_URL}/doc2/delete_confirmation
-  Wait until page contains  doc2
-  Click Button  Delete
-  Wait until page contains  Potential link breakage
+
+I see the standard editor when I create a document
+    Go To  ${PLONE_URL}/++add++Document
+    Wait For Condition    Classes    //body    contains    patterns-loaded
+    Wait For Condition    Element Count    //*[@id="formfield-form-widgets-IRichTextBehavior-text"]/div[@role="application"]    should be    1
+    Wait For Condition    Element States    //textarea[@name="form.widgets.IRichTextBehavior.text"]    contains    hidden
 
 I will see a warning if a document is edited by another user
-  ${doc1_uid}=  Create content  id=doc1  type=Document
+    Disable autologin
+    Enable autologin as   Contributor    Reviewer    Manager
+    New Page    ${PLONE_URL}/${PAGE_ID}
+    Wait For Condition    Text    //body    contains    Lock
+    Wait For Condition    Element Count    //input[@value="Unlock"]    should be    1

@@ -2,7 +2,6 @@ from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import bbb
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests import PloneTestCase
@@ -16,17 +15,6 @@ html = """\
 <body>Bar</body>
 </html>
 """
-
-
-class TestDAVProperties(PloneTestCase.PloneTestCase):
-    def testPropertiesToolTitle(self):
-        ptool = getToolByName(self.portal, "portal_properties")
-        psets = dict(ptool.propertysheets.items())
-        self.assertTrue("webdav" in psets.keys())
-        default = psets["webdav"]
-        items = dict(default.propertyItems())
-        self.assertTrue("displayname" in items.keys())
-        self.assertEqual(items["displayname"], ptool.title)
 
 
 class TestPUTObjects(PloneTestCase.PloneTestCase):
@@ -486,13 +474,16 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
+    import unittest
 
-    suite = TestSuite()
     if bbb.HAS_ZSERVER:
-        suite.addTest(makeSuite(TestDAVProperties))
-        suite.addTest(makeSuite(TestPUTObjects))
-        suite.addTest(makeSuite(TestPUTIndexHtml))
-        suite.addTest(makeSuite(TestDAVOperations))
-    return suite
+        return unittest.TestSuite(
+            (
+                unittest.defaultTestLoader.loadTestsFromTestCase(TestPUTObjects),
+                unittest.defaultTestLoader.loadTestsFromTestCase(TestPUTIndexHtml),
+                unittest.defaultTestLoader.loadTestsFromTestCase(TestDAVOperations),
+            )
+        )
+
+    # return empty suite
+    return unittest.TestSuite()

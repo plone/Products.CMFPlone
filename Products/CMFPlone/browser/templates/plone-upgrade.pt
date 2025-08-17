@@ -21,6 +21,7 @@
 
 <body id="plone-upgrade-screen"
       tal:define="versions view/versions;
+                  upgrades view/upgrades;
                   report options/report|nothing;">
 
     <div class="container admin mt-5 mb-5 p-4">
@@ -45,6 +46,12 @@
         </header>
         <article class="row mb-4">
           <div class="col-md-12 mb-3">
+            <div class="alert alert-danger" tal:condition="view/missing_packages">
+              <p><strong i18n:translate="msg_missing_packages">The following packages were previously installed, but are currently missing. This may be a problem.</strong></p>
+              <ul>
+                <li tal:repeat="package view/missing_packages">${package}</li>
+              </ul>
+            </div>
             <p class="alert alert-success p-2" tal:condition="versions/equal">
               <span i18n:translate="" tal:omit-tag="">Your site is up to date.</span>
             </p>
@@ -101,7 +108,7 @@
           </p>
 
           <dl class="mb-4">
-            <tal:block tal:repeat="upgrade_info view/upgrades">
+            <tal:block tal:repeat="upgrade_info upgrades">
 
                 <tal:single condition="python:not isinstance(upgrade_info, list)"
                             define="info upgrade_info">
@@ -144,9 +151,20 @@
           </div>
         </div>
 
+        <p class="alert alert-danger p-2" tal:condition="not:upgrades">
+          <span i18n:translate="msg_no_upgrades">
+            No upgrade steps are available.
+          </span>
+          <strong tal:condition="not:view/has_upgrade"
+                i18n:translate="msg_plone_app_upgrade_missing">
+            The plone.app.upgrade package is missing.
+          </strong>
+        </p>
+
         <input type="hidden" name="form.submitted:boolean" value="True" />
         <button type="submit"
                 name="submit"
+                tal:attributes="disabled python:'disabled' if not upgrades else ''"
                 class="btn btn-primary"
                 i18n:translate="" >Upgrade</button>
     </form>
