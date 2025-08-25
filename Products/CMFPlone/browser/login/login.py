@@ -131,10 +131,6 @@ class LoginForm(form.EditForm):
                 return
         return came_from
 
-    def updateActions(self):
-        super().updateActions()
-        self.actions["login"].addClass("btn-primary")
-
     def _post_login(self):
         membership_tool = getToolByName(self.context, "portal_membership")
         member = membership_tool.getAuthenticatedMember()

@@ -284,6 +284,47 @@ class RecycleBinFolderTests(RecycleBinTestCase):
         # Verify the item was removed from the recycle bin
         self.assertNotIn(recycle_id, self.recyclebin.storage)
 
+    def test_purge_folder_with_contents(self):
+        """Test purging a folder with content completely removes all related items"""
+        # Get the original path
+        folder_path = "/".join(self.folder.getPhysicalPath())
+        page_path = "/".join(self.folder["folder-page"].getPhysicalPath())
+        news_path = "/".join(self.folder["folder-news"].getPhysicalPath())
+
+        # Delete the folder and its contents by adding them individually to the recycle bin
+        # This simulates how the recycle bin typically receives items when a folder is deleted
+        folder_recycle_id = self.recyclebin.add_item(
+            self.folder, self.portal, folder_path
+        )
+        page_recycle_id = self.recyclebin.add_item(
+            self.folder["folder-page"], self.folder, page_path
+        )
+        news_recycle_id = self.recyclebin.add_item(
+            self.folder["folder-news"], self.folder, news_path
+        )
+
+        # Verify all items were added to the recycle bin
+        self.assertIn(folder_recycle_id, self.recyclebin.storage)
+        self.assertIn(page_recycle_id, self.recyclebin.storage)
+        self.assertIn(news_recycle_id, self.recyclebin.storage)
+
+        # Get all items before purging
+        before_items = self.recyclebin.get_items()
+        self.assertEqual(len(before_items), 3)
+
+        # Purge just the folder item
+        result = self.recyclebin.purge_item(folder_recycle_id)
+        self.assertTrue(result)
+
+        # Verify all related items were purged
+        self.assertNotIn(folder_recycle_id, self.recyclebin.storage)
+        self.assertNotIn(page_recycle_id, self.recyclebin.storage)
+        self.assertNotIn(news_recycle_id, self.recyclebin.storage)
+
+        # Verify no items remain in the listing
+        after_items = self.recyclebin.get_items()
+        self.assertEqual(len(after_items), 0)
+
 
 class RecycleBinNestedFolderTests(RecycleBinTestCase):
     """Tests for deleting and restoring nested folder structures"""

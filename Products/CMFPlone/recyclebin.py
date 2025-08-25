@@ -164,7 +164,10 @@ class RecycleBin:
         try:
             settings = self._get_settings()
             return settings.recycling_enabled
-        except (KeyError, AttributeError):
+        except Exception as e:
+            logger.error(
+                f"Error checking recycle bin settings: {str(e)}. Recycling is disabled."
+            )
             return False
 
     def _get_item_title(self, obj, item_type=None):
@@ -288,7 +291,7 @@ class RecycleBin:
             "parent_path": parent_path,
             "deletion_date": datetime.now(),
             "size": getattr(obj, "get_size", lambda: 0)(),
-            "object": aq_base(obj),  # Store the actual object
+            "object": aq_base(obj),  # Store the actual object with no acquisition chain
         }
 
         # Add children data if this was a folder/collection
@@ -814,20 +817,32 @@ class RecycleBin:
         try:
             # Purge any nested children first if this is a folder
             item_data = self.storage[item_id]
-            if "children" in item_data and isinstance(item_data["children"], dict):
+            item_path = item_data.get("path", "")
 
-                def purge_children(children_dict):
+            if "children" in item_data and isinstance(item_data["children"], dict):
+                # Find and purge standalone recycle bin entries for each child
+                def purge_children(children_dict, parent_path):
                     for child_id, child_data in list(children_dict.items()):
+                        child_path = f"{parent_path}/{child_id}"
+
+                        # Find any standalone entries for this child in the recycle bin
+                        for rec_id, rec_data in list(self.storage.get_items()):
+                            if rec_id != item_id and rec_data.get("path") == child_path:
+                                logger.info(
+                                    f"Purging standalone entry for child: {child_path} (ID: {rec_id})"
+                                )
+                                del self.storage[rec_id]
+
                         # If this child has children, recursively purge them first
                         if "children" in child_data and isinstance(
                             child_data["children"], dict
                         ):
-                            purge_children(child_data["children"])
+                            purge_children(child_data["children"], child_path)
 
                 # Start the recursive purge of children
-                purge_children(item_data["children"])
+                purge_children(item_data["children"], item_path)
 
-            # Simply remove from storage - the object will be garbage collected
+            # Remove the main item from storage - the object will be garbage collected
             del self.storage[item_id]
             logger.info(f"Item {item_id} purged from recycle bin")
             return True
