@@ -1,4 +1,5 @@
 from AccessControl import getSecurityManager
+from Acquisition import aq_base
 from BTrees.OOBTree import OOBTree
 from BTrees.OOBTree import OOTreeSet
 from datetime import datetime
@@ -287,7 +288,7 @@ class RecycleBin:
             "parent_path": parent_path,
             "deletion_date": datetime.now(),
             "size": getattr(obj, "get_size", lambda: 0)(),
-            "object": obj,  # Store the actual object
+            "object": aq_base(obj),  # Store the actual object
         }
 
         # Add children data if this was a folder/collection
@@ -497,6 +498,7 @@ class RecycleBin:
         # Add a workflow history entry about the restoration
         restored_obj = target_container[obj_id]
         self._update_workflow_history(restored_obj, "restoration", item_data)
+        restored_obj.reindexObject()
 
         # Remove from recycle bin
         del self.storage[item_id]
