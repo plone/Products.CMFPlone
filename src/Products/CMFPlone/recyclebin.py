@@ -387,19 +387,27 @@ class RecycleBin:
         obj.workflow_history[workflow_id] = tuple(history)
 
     def _find_target_container(self, target_container, parent_path):
-        """Helper to find the target container for restoration"""
+        """Helper to find the target container for restoration
+
+        Returns a tuple (success, container, error_message) where:
+            - success: Boolean indicating if the container was found
+            - container: The container object (None if not found)
+            - error_message: Error message if success is False
+        """
         site = self._get_context()
         if target_container is None:
             # Try to get the original parent
             try:
                 target_container = site.unrestrictedTraverse(parent_path)
+                return True, target_container, None
             except (KeyError, AttributeError):
                 # We need an explicit target container if original parent is gone
-                raise ValueError(
+                error_message = (
                     f"Original parent container at {parent_path} no longer exists. "
                     "You must specify a target_container to restore this item."
                 )
-        return target_container
+                return False, None, error_message
+        return True, target_container, None
 
     def _cleanup_child_references(self, item_data):
         """Clean up any child items associated with a parent that was restored"""
@@ -472,9 +480,13 @@ class RecycleBin:
 
         # Regular content object restoration
         # Find the container to restore to
-        target_container = self._find_target_container(
+        success, target_container, error_message = self._find_target_container(
             target_container, item_data["parent_path"]
         )
+
+        # If we couldn't find the target container, return the error message
+        if not success:
+            return {"success": False, "error": error_message}
 
         # Make sure we don't overwrite existing content
         self._handle_existing_object(obj_id, target_container, obj)
@@ -489,6 +501,7 @@ class RecycleBin:
         # Add a workflow history entry about the restoration
         restored_obj = target_container[obj_id]
         self._update_workflow_history(restored_obj, "restoration", item_data)
+        restored_obj.reindexObject()
 
         # Remove from recycle bin
         del self.storage[item_id]
