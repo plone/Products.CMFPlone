@@ -316,14 +316,14 @@
       name="recyclebin"
       for="plone.base.interfaces.siteroot.IPloneSiteRoot"
       class=".recyclebin.RecycleBinView"
-      permission="cmf.ManagePortal"
+      permission="Products.CMFPlone.ManageRecycleBin"
       />
 
   <browser:page
       name="recyclebin-item"
       for="plone.base.interfaces.siteroot.IPloneSiteRoot"
       class=".recyclebin.RecycleBinItemView"
-      permission="cmf.ManagePortal"
+      permission="Products.CMFPlone.ManageRecycleBin"
       />
 
 </configure>
