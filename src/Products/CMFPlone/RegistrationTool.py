@@ -148,8 +148,6 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     #
     # TODO: Could this be made private?
     def getPassword(self, length=5, s=None):
-        global password_chars, md5base
-
         if s is None:
             password = ""
             nchars = len(password_chars)
