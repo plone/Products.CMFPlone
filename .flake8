@@ -13,12 +13,12 @@ ignore =
     # black takes care of spaces after commas
     E231,
 per-file-ignores =
-    Products/CMFPlone/patches/__init__.py: F401,E402
-    Products/CMFPlone/skins/plone_scripts/*.py: E265,E266,F401,F821,F706
-    Products/CMFPlone/earlypatches/security.py: E402
-    Products/CMFPlone/UnicodeSplitter/__init__.py: F401,F403
-    Products/CMFPlone/utils.py: F821
-    Products/CMFPlone/patches/speed.py: E402
+    src/Products/CMFPlone/patches/__init__.py: F401,E402
+    src/Products/CMFPlone/skins/plone_scripts/*.py: E265,E266,F401,F821,F706
+    src/Products/CMFPlone/earlypatches/security.py: E402
+    src/Products/CMFPlone/UnicodeSplitter/__init__.py: F401,F403
+    src/Products/CMFPlone/utils.py: F821
+    src/Products/CMFPlone/patches/speed.py: E402
 
 ##
 # Add extra configuration options in .meta.toml:
