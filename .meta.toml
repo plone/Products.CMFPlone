@@ -42,3 +42,11 @@ jobs = [
    "release_ready",
    "circular",
    ]
+extra_lines_after_os_dependencies = """
+    - name: locale
+      # needed for CMFPlone testUnicodeSplitter test
+      if: startsWith(matrix.os, 'ubuntu')
+      run: |
+        sudo locale-gen nl_NL@euro
+        sudo update-locale
+"""
