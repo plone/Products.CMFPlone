@@ -36,7 +36,6 @@ jobs:
         allow-prereleases: true
     - name: locale
       # needed for CMFPlone testUnicodeSplitter test
-      if: startsWith(matrix.os, 'ubuntu')
       run: |
         sudo locale-gen nl_NL@euro
         sudo update-locale
