@@ -8,12 +8,12 @@ commit-id = "2.0.1.dev0"
 [flake8]
 extra_lines = """
 per-file-ignores =
-    Products/CMFPlone/patches/__init__.py: F401,E402
-    Products/CMFPlone/skins/plone_scripts/*.py: E265,E266,F401,F821,F706
-    Products/CMFPlone/earlypatches/security.py: E402
-    Products/CMFPlone/UnicodeSplitter/__init__.py: F401,F403
-    Products/CMFPlone/utils.py: F821
-    Products/CMFPlone/patches/speed.py: E402
+    src/Products/CMFPlone/patches/__init__.py: F401,E402
+    src/Products/CMFPlone/skins/plone_scripts/*.py: E265,E266,F401,F821,F706
+    src/Products/CMFPlone/earlypatches/security.py: E402
+    src/Products/CMFPlone/UnicodeSplitter/__init__.py: F401,F403
+    src/Products/CMFPlone/utils.py: F821
+    src/Products/CMFPlone/patches/speed.py: E402
 """
 
 [pre_commit]
