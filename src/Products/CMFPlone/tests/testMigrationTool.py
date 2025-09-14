@@ -1,7 +1,18 @@
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.tests import PloneTestCase
 
+import unittest
+
+
+try:
+    HAS_PLONE_APP_UPGRADE_DEV = "dev" in version("plone.app.upgrade")
+    HAS_PLONE_APP_UPGRADE = True
+except PackageNotFoundError:
+    HAS_PLONE_APP_UPGRADE_DEV = False
+    HAS_PLONE_APP_UPGRADE = False
 
 # Python 3 is only supported on 5.2+.
 # This means you can not upgrade from 5.1 or earlier.
@@ -39,6 +50,9 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
         upgrades = self.migration.listUpgrades()
         self.assertEqual(len(upgrades), 0)
 
+    @unittest.skipUnless(
+        HAS_PLONE_APP_UPGRADE_DEV, reason="Only run with plone.app.upgrade checkouts"
+    )
     def testDoUpgrades(self):
         self.setRoles(["Manager"])
         self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, START_PROFILE)
@@ -68,6 +82,10 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
         upgrades = self.migration.listUpgrades()
         self.assertEqual(len(upgrades), 0)
 
+    @unittest.skipUnless(
+        HAS_PLONE_APP_UPGRADE_DEV,
+        reason="plone.app.upgrade not installed",
+    )
     def testUpgrade(self):
         self.setRoles(["Manager"])
         self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, START_PROFILE)
@@ -135,6 +153,10 @@ class TestMigrationWithExtraUpgrades(PloneTestCase.PloneTestCase):
         upgrades = self.migration.listUpgrades()
         self.assertEqual(len(upgrades), 0)
 
+    @unittest.skipUnless(
+        HAS_PLONE_APP_UPGRADE_DEV,
+        reason="plone.app.upgrade not installed",
+    )
     def testUpgrade(self):
         self.setRoles(["Manager"])
         self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, START_PROFILE)
@@ -259,6 +281,10 @@ class TestPloneUpgradePage(PloneTestCase.PloneTestCase):
         self.migration = getToolByName(self.portal, "portal_migration")
         self.setup = getToolByName(self.portal, "portal_setup")
 
+    @unittest.skipUnless(
+        HAS_PLONE_APP_UPGRADE,
+        reason="plone.app.upgrade not installed",
+    )
     def test_upgrades(self):
         self.setRoles(["Manager"])
         view = self.portal.restrictedTraverse("@@plone-upgrade")

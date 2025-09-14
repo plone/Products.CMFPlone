@@ -1,15 +1,19 @@
+from pathlib import Path
 from setuptools import find_packages
 from setuptools import setup
 
 
 version = "6.1.1.dev0"
 
+long_description = (
+    f"{Path('README.md').read_text()}\n{Path('CHANGES.md').read_text()}\n"
+)
 
 setup(
     name="Products.CMFPlone",
     version=version,
     description="The Plone Content Management System (core)",
-    long_description=open("README.md").read() + "\n" + open("CHANGES.md").read(),
+    long_description=long_description,
     long_description_content_type="text/markdown",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -44,8 +48,9 @@ setup(
         "Videos": "https://youtube.com/@plonecms",
         "Sponsor": "https://github.com/sponsors/plone",
     },
-    packages=find_packages(),
+    packages=find_packages("src"),
     namespace_packages=["Products"],
+    package_dir={"": "src"},
     include_package_data=True,
     zip_safe=False,
     install_requires=[
