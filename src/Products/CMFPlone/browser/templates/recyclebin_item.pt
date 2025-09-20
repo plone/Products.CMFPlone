@@ -153,10 +153,11 @@
                                     
                                     <input tal:replace="structure context/@@authenticator/authenticator" />
                                     
-                                    <div class="mb-3">
+                                    <!-- Only show target_container when parent doesn't exist -->
+                                    <div class="mb-3" tal:condition="python:not context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
                                         <tal:widget tal:replace="structure view/widgets/target_container/@@ploneform-render-widget" />
                                         <div class="form-text">
-                                            <span class="ms-1" i18n:translate="">Leave blank to restore to the original location if it still exists.</span>
+                                            <span class="ms-1" i18n:translate="">The original location no longer exists. Please choose a new location to restore this item.</span>
                                         </div>
                                     </div>
                                     

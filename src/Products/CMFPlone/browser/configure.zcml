@@ -326,4 +326,11 @@
       permission="cmf.ManagePortal"
       />
 
+  <!-- Vocabulary for recycle bin restore containers -->
+  <utility
+      name="plone.recyclebin.RestoreContainers"
+      factory=".recyclebin.RestoreContainersVocabulary"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      />
+
 </configure>
