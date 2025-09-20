@@ -386,6 +386,81 @@ class RecycleBin:
         history.append(entry)
         obj.workflow_history[workflow_id] = tuple(history)
 
+    def _reset_workflow_state_if_needed(self, obj):
+        """Reset object workflow state to initial state if the setting is enabled"""
+        settings = self._get_settings()
+        if not settings.restore_to_initial_state:
+            return
+
+        workflow_tool = getToolByName(self._get_context(), "portal_workflow")
+        chains = workflow_tool.getChainFor(obj)
+
+        if not chains:
+            return
+            
+        workflow_id = chains[0]
+        workflow = workflow_tool.getWorkflowById(workflow_id)
+            
+        if not workflow:
+            return
+                
+        # Get the initial state of the workflow
+        initial_state = getattr(workflow, 'initial_state', None)
+        if not initial_state:
+            logger.warning(
+                f"Could not determine initial state for workflow {workflow_id}"
+            )
+            return
+                
+        # Get current state
+        current_state = workflow_tool.getInfoFor(obj, 'review_state', None)
+            
+        # Only reset if current state is different from initial state
+        if current_state != initial_state:
+            # Reset the workflow state by updating the workflow history
+            if hasattr(obj, "workflow_history") and workflow_id in obj.workflow_history:
+                history = list(obj.workflow_history[workflow_id])
+                if history:
+                    # Update the last entry to reflect the state reset
+                    user_id = getSecurityManager().getUser().getId() or "System"
+                    
+                    reset_entry = {
+                        "action": "Reset to initial state",
+                        "actor": user_id,
+                        "comments": f"Workflow state reset to '{initial_state}' during restoration from recycle bin",
+                        "time": DateTime(),
+                        "review_state": initial_state,
+                    }
+                    
+                    history.append(reset_entry)
+                    obj.workflow_history[workflow_id] = tuple(history)
+                    
+                    # Force the object's state to be updated
+                    workflow._changeStateOf(obj, workflow.states[initial_state])
+                    
+                    logger.info(
+                        f"Reset workflow state of {obj.getId()} from '{current_state}' to '{initial_state}'"
+                    )
+
+    def _reset_folder_children_workflow_if_needed(self, folder_obj):
+        """Recursively reset workflow states of folder children if the setting is enabled"""
+        settings = self._get_settings()
+        if not settings.restore_to_initial_state:
+            return
+            
+        # Check if this is a folder-like object
+        if not hasattr(folder_obj, "objectIds"):
+            return
+            
+        # Recursively reset workflow states for all children
+        for child_id in folder_obj.objectIds():
+            child = folder_obj[child_id]
+            self._reset_workflow_state_if_needed(child)
+
+                # If the child is also a folder, recurse
+            if hasattr(child, "objectIds"):
+                self._reset_folder_children_workflow_if_needed(child)
+
     def _find_target_container(self, target_container, parent_path):
         """Helper to find the target container for restoration
 
@@ -501,6 +576,13 @@ class RecycleBin:
         # Add a workflow history entry about the restoration
         restored_obj = target_container[obj_id]
         self._update_workflow_history(restored_obj, "restoration", item_data)
+        
+        # Reset workflow state to initial state if the setting is enabled
+        self._reset_workflow_state_if_needed(restored_obj)
+        
+        # Also reset workflow states of children if this is a folder
+        self._reset_folder_children_workflow_if_needed(restored_obj)
+        
         restored_obj.reindexObject()
 
         # Remove from recycle bin

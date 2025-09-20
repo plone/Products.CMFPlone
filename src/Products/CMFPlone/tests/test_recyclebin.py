@@ -88,6 +88,7 @@ class RecycleBinSetupTests(RecycleBinTestCase):
         self.assertTrue(settings.recycling_enabled)
         self.assertEqual(settings.retention_period, 30)
         self.assertEqual(settings.maximum_size, 100)
+        self.assertFalse(settings.restore_to_initial_state)
 
 
 class RecycleBinContentTests(RecycleBinTestCase):
@@ -592,3 +593,125 @@ class RecycleBinRestoreEdgeCaseTests(RecycleBinTestCase):
 
         # Verify the item was removed from the recycle bin
         self.assertNotIn(recycle_id, self.recyclebin.storage)
+
+
+class RecycleBinWorkflowTests(RecycleBinTestCase):
+    """Tests for workflow state restoration functionality"""
+
+    def setUp(self):
+        """Set up test content with workflow states"""
+        super().setUp()
+        
+        # Create a document and publish it
+        self.portal.invokeFactory("Document", "published-page", title="Published Page")
+        self.page = self.portal["published-page"]
+        
+        # Get workflow tool
+        from Products.CMFCore.utils import getToolByName
+        self.workflow_tool = getToolByName(self.portal, "portal_workflow")
+        
+        # Publish the page (move from initial state to published)
+        self.workflow_tool.doActionFor(self.page, "publish")
+        
+        # Verify the page is published
+        self.assertEqual(
+            self.workflow_tool.getInfoFor(self.page, "review_state"), "published"
+        )
+
+    def test_restore_without_workflow_reset(self):
+        """Test that restoration preserves original workflow state by default"""
+        # Add the published page to recycle bin
+        page_path = "/".join(self.page.getPhysicalPath())
+        recycle_id = self.recyclebin.add_item(self.page, self.portal, page_path)
+        
+        # Remove the page from portal
+        del self.portal[self.page.getId()]
+        
+        # Verify restore_to_initial_state is False by default
+        settings = self.recyclebin._get_settings()
+        self.assertFalse(settings.restore_to_initial_state)
+        
+        # Restore the item
+        restored_page = self.recyclebin.restore_item(recycle_id)
+        
+        # Verify the page is still in published state
+        self.assertIsNotNone(restored_page)
+        self.assertEqual(
+            self.workflow_tool.getInfoFor(restored_page, "review_state"), "published"
+        )
+
+    def test_restore_with_workflow_reset(self):
+        """Test that restoration resets to initial state when setting is enabled"""
+        # Enable workflow state reset
+        settings = self.registry.forInterface(
+            IRecycleBinControlPanelSettings, prefix="plone-recyclebin"
+        )
+        settings.restore_to_initial_state = True
+        
+        # Add the published page to recycle bin
+        page_path = "/".join(self.page.getPhysicalPath())
+        recycle_id = self.recyclebin.add_item(self.page, self.portal, page_path)
+        
+        # Remove the page from portal
+        del self.portal[self.page.getId()]
+        
+        # Restore the item
+        restored_page = self.recyclebin.restore_item(recycle_id)
+        
+        # Verify the page was reset to initial state (usually 'private' in Plone)
+        self.assertIsNotNone(restored_page)
+        restored_state = self.workflow_tool.getInfoFor(restored_page, "review_state")
+        
+        # Get the initial state of the workflow for this type
+        workflow_chain = self.workflow_tool.getChainFor(restored_page)
+        if workflow_chain:
+            workflow = self.workflow_tool.getWorkflowById(workflow_chain[0])
+            initial_state = workflow.initial_state
+            self.assertEqual(restored_state, initial_state)
+
+    def test_restore_folder_with_workflow_reset(self):
+        """Test that folder children also get their workflow states reset"""
+        # Create a folder with children
+        self.portal.invokeFactory("Folder", "test-folder", title="Test Folder")
+        folder = self.portal["test-folder"]
+        
+        # Create and publish a child document
+        folder.invokeFactory("Document", "child-page", title="Child Page")
+        child_page = folder["child-page"]
+        self.workflow_tool.doActionFor(child_page, "publish")
+        
+        # Verify child is published
+        self.assertEqual(
+            self.workflow_tool.getInfoFor(child_page, "review_state"), "published"
+        )
+        
+        # Enable workflow state reset
+        settings = self.registry.forInterface(
+            IRecycleBinControlPanelSettings, prefix="plone-recyclebin"
+        )
+        settings.restore_to_initial_state = True
+        
+        # Add the folder to recycle bin
+        folder_path = "/".join(folder.getPhysicalPath())
+        recycle_id = self.recyclebin.add_item(folder, self.portal, folder_path)
+        
+        # Remove the folder from portal
+        del self.portal[folder.getId()]
+        
+        # Restore the folder
+        restored_folder = self.recyclebin.restore_item(recycle_id)
+        
+        # Verify the folder was restored
+        self.assertIsNotNone(restored_folder)
+        self.assertIn("child-page", restored_folder)
+        
+        # Verify the child's workflow state was reset to initial state
+        restored_child = restored_folder["child-page"]
+        child_state = self.workflow_tool.getInfoFor(restored_child, "review_state")
+        
+        # Get the initial state of the workflow for this type
+        workflow_chain = self.workflow_tool.getChainFor(restored_child)
+        if workflow_chain:
+            workflow = self.workflow_tool.getWorkflowById(workflow_chain[0])
+            initial_state = workflow.initial_state
+            self.assertEqual(child_state, initial_state)
