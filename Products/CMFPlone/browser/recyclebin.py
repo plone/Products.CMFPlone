@@ -407,6 +407,10 @@ class RecycleBinView(form.Form):
         filter_type = self.get_filter_type()
         search_query = self.get_search_query().lower()
 
+        # Check if the user has full access to the recycle bin
+        # (includes permissions check and Manager/Site Administrator roles)
+        has_full_access = self.recycle_bin.check_permission(check_roles=True)
+
         # Create a list of all items that are children of a parent in the recycle bin
         child_items_to_exclude = []
         for item in items:
@@ -423,6 +427,11 @@ class RecycleBinView(form.Form):
 
         for item in items:
             if item.get("id") not in child_items_to_exclude:
+                # If user doesn't have full access, show only items they can restore
+                if not has_full_access:
+                    if not self.recycle_bin.check_permission():
+                        continue
+
                 # Apply type filtering
                 if filter_type and item.get("type") != filter_type:
                     continue
@@ -495,6 +504,19 @@ class RecycleBinItemView(form.Form):
         # Check if we have a valid item before proceeding
         if self.item_id is None:
             logger.debug("No item_id set, redirecting to main recyclebin view")
+            self.request.response.redirect(
+                f"{self.context.absolute_url()}/@@recyclebin"
+            )
+            return
+
+        # Check if the user has permission to access this item
+        if not self.recycle_bin.check_permission():
+            logger.debug(f"User does not have permission to view item {self.item_id}")
+            message = translate(
+                _("You don't have permission to access this item in the recycle bin."),
+                context=self.request,
+            )
+            IStatusMessage(self.request).addStatusMessage(message, type="error")
             self.request.response.redirect(
                 f"{self.context.absolute_url()}/@@recyclebin"
             )
