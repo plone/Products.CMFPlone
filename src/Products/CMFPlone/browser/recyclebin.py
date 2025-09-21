@@ -6,7 +6,6 @@ from plone.base.interfaces.recyclebin import IRecycleBinItemForm
 from plone.base.utils import human_readable_size
 from plone.namedfile.interfaces import IImage
 from plone.namedfile.interfaces import INamedField
-
 from plone.rfc822.interfaces import IPrimaryFieldInfo
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
@@ -47,33 +46,33 @@ class RecycleBinWorkflowMixin:
 
     def _get_workflow_state(self, item):
         """Get the workflow state that the item had when it was deleted
-        
+
         Args:
             item: The recycled item data dictionary
-            
+
         Returns:
             String representing the workflow state or None
         """
         # Try to get the object from the item
-        obj = item.get('object')
+        obj = item.get("object")
         if not obj:
             # For RecycleBinView, we need to get the full item data first
-            if hasattr(self, 'recycle_bin') and 'recycle_id' in item:
-                full_item_data = self.recycle_bin.get_item(item.get('recycle_id'))
+            if hasattr(self, "recycle_bin") and "recycle_id" in item:
+                full_item_data = self.recycle_bin.get_item(item.get("recycle_id"))
                 if full_item_data:
-                    obj = full_item_data.get('object')
-        
+                    obj = full_item_data.get("object")
+
         if not obj:
             return None
-            
+
         # Try to get the workflow state from the object
         try:
             # Get workflow tool
-            workflow_tool = getToolByName(self.context, 'portal_workflow')
-            
+            workflow_tool = getToolByName(self.context, "portal_workflow")
+
             # Get the workflow state that was preserved
             # First, try to get it from workflow history (the preserved state)
-            if hasattr(obj, 'workflow_history'):
+            if hasattr(obj, "workflow_history"):
                 # Get the workflow chain for this object type
                 chains = workflow_tool.getChainFor(obj)
                 if chains:
@@ -82,70 +81,74 @@ class RecycleBinWorkflowMixin:
                     if history:
                         # Get the last state before deletion
                         last_entry = history[-1]
-                        return last_entry.get('review_state', None)
-                        
+                        return last_entry.get("review_state", None)
+
             # If workflow history doesn't work, try getting current state
-            return workflow_tool.getInfoFor(obj, 'review_state', None)
-            
+            return workflow_tool.getInfoFor(obj, "review_state", None)
+
         except Exception as e:
-            logger.warning(f"Could not determine workflow state for item {item.get('id')}: {e}")
+            logger.warning(
+                f"Could not determine workflow state for item {item.get('id')}: {e}"
+            )
             return None
 
     def get_workflow_state_title(self, state):
         """Get user-friendly title for workflow state
-        
+
         Args:
             state: The workflow state ID
-            
+
         Returns:
             Human-readable title for the state
         """
         if not state:
             return translate(_("Unknown"), context=self.request)
-        
+
         # Common workflow state mappings
         state_titles = {
-            'private': translate(_("Private"), context=self.request),
-            'published': translate(_("Published"), context=self.request),
-            'pending': translate(_("Pending"), context=self.request),
-            'visible': translate(_("Visible"), context=self.request),
-            'internal': translate(_("Internal"), context=self.request),
-            'draft': translate(_("Draft"), context=self.request),
-            'review': translate(_("Review"), context=self.request),
-            'rejected': translate(_("Rejected"), context=self.request),
-            'external': translate(_("External"), context=self.request),
-            'retracted': translate(_("Retracted"), context=self.request),
+            "private": translate(_("Private"), context=self.request),
+            "published": translate(_("Published"), context=self.request),
+            "pending": translate(_("Pending"), context=self.request),
+            "visible": translate(_("Visible"), context=self.request),
+            "internal": translate(_("Internal"), context=self.request),
+            "draft": translate(_("Draft"), context=self.request),
+            "review": translate(_("Review"), context=self.request),
+            "rejected": translate(_("Rejected"), context=self.request),
+            "external": translate(_("External"), context=self.request),
+            "retracted": translate(_("Retracted"), context=self.request),
         }
-        
-        return state_titles.get(state, state.title() if hasattr(state, 'title') else str(state).title())
+
+        return state_titles.get(
+            state, state.title() if hasattr(state, "title") else str(state).title()
+        )
 
     def get_workflow_state_class(self, state):
         """Get CSS class for workflow state badge
-        
+
         Args:
             state: The workflow state ID
-            
+
         Returns:
             CSS class string for styling the state badge
         """
         if not state:
-            return 'bg-secondary text-white'
-        
+            return "bg-secondary text-white"
+
         # Color coding for different states
         state_classes = {
-            'private': 'bg-danger text-white',
-            'published': 'bg-success text-white',
-            'pending': 'bg-warning text-dark', 
-            'visible': 'bg-info text-white',
-            'internal': 'bg-primary text-white',
-            'draft': 'bg-secondary text-white',
-            'review': 'bg-warning text-dark',
-            'rejected': 'bg-danger text-white',
-            'external': 'bg-dark text-white',
-            'retracted': 'bg-secondary text-white',
+            "private": "bg-danger text-white",
+            "published": "bg-success text-white",
+            "pending": "bg-warning text-dark",
+            "visible": "bg-info text-white",
+            "internal": "bg-primary text-white",
+            "draft": "bg-secondary text-white",
+            "review": "bg-warning text-dark",
+            "rejected": "bg-danger text-white",
+            "external": "bg-dark text-white",
+            "retracted": "bg-secondary text-white",
         }
-        
-        return state_classes.get(state, 'bg-light text-dark')
+
+        return state_classes.get(state, "bg-light text-dark")
 
     def format_size(self, size_bytes):
         """Format size in bytes to human-readable format"""
@@ -153,57 +156,64 @@ class RecycleBinWorkflowMixin:
 
     def _has_image_preview(self, obj):
         """Check if an object has an image that can be used for preview
-        
+
         Args:
             obj: The recycled object to check
-            
+
         Returns:
             Boolean indicating if the object has an image for preview
         """
         if not obj:
             logger.debug("No object provided to _has_image_preview")
             return False
-            
-        portal_type = getattr(obj, 'portal_type', None)
-        logger.debug(f"Checking image preview for object with portal_type: {portal_type}")
-            
+
+        portal_type = getattr(obj, "portal_type", None)
+        logger.debug(
+            f"Checking image preview for object with portal_type: {portal_type}"
+        )
+
         # Check if it's an Image content type
-        if portal_type == 'Image':
-            image_field = getattr(obj, 'image', None)
+        if portal_type == "Image":
+            image_field = getattr(obj, "image", None)
             logger.debug(f"Image field found: {image_field is not None}")
             if image_field:
                 provides_iimage = IImage.providedBy(image_field)
-                has_data = hasattr(image_field, 'data') and image_field.data
-                logger.debug(f"Image field provides IImage: {provides_iimage}, has data: {has_data}")
+                has_data = hasattr(image_field, "data") and image_field.data
+                logger.debug(
+                    f"Image field provides IImage: {provides_iimage}, has data: {has_data}"
+                )
                 if image_field and (provides_iimage or has_data):
                     return True
-        
+
         # Check for lead image behavior
         try:
             lead_image = ILeadImageBehavior(obj, None)
             if lead_image and lead_image.image:
-                if hasattr(lead_image.image, 'getSize') and lead_image.image.getSize() > 0:
+                if (
+                    hasattr(lead_image.image, "getSize")
+                    and lead_image.image.getSize() > 0
+                ):
                     return True
         except (TypeError, AttributeError):
             pass
-        
+
         # Check for primary image field
         try:
-            primary = IPrimaryFieldInfo(obj, None) 
+            primary = IPrimaryFieldInfo(obj, None)
             if primary and INamedField.providedBy(primary.field):
-                if hasattr(primary.value, 'getSize') and primary.value.getSize() > 0:
+                if hasattr(primary.value, "getSize") and primary.value.getSize() > 0:
                     # Check if it's an image field
                     if IImage.providedBy(primary.value):
                         return True
         except (TypeError, AttributeError):
             pass
-        
+
         # Check for any image field named 'image'
-        image_field = getattr(obj, 'image', None)
+        image_field = getattr(obj, "image", None)
         if image_field and IImage.providedBy(image_field):
-            if hasattr(image_field, 'getSize') and image_field.getSize() > 0:
+            if hasattr(image_field, "getSize") and image_field.getSize() > 0:
                 return True
-                
+
         return False
 
 
@@ -451,7 +461,10 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
             params.append(f"filter_language={self.get_filter_language()}")
 
         # Add workflow state filter if it exists and is not being removed
-        if param_to_remove != "filter_workflow_state" and self.get_filter_workflow_state():
+        if (
+            param_to_remove != "filter_workflow_state"
+            and self.get_filter_workflow_state()
+        ):
             params.append(f"filter_workflow_state={self.get_filter_workflow_state()}")
 
         # Add sort option if it exists, is not default, and is not being removed
@@ -551,7 +564,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
             return False  # Can't filter items without deletion date
 
         # Convert deletion_date to date object for comparison
-        if hasattr(deletion_date, 'date'):
+        if hasattr(deletion_date, "date"):
             item_date = deletion_date.date()
         else:
             # If it's already a date object
@@ -744,7 +757,10 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
                     continue
 
                 # Apply workflow state filtering
-                if filter_workflow_state and item.get("workflow_state") != filter_workflow_state:
+                if (
+                    filter_workflow_state
+                    and item.get("workflow_state") != filter_workflow_state
+                ):
                     continue
 
                 # Check if parent container exists and add flag to the item
@@ -761,7 +777,9 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
                 logger.debug(f"Processing image preview for item: {item.get('id')}")
                 image_info = self._get_image_preview_info(item)
                 if image_info:
-                    logger.debug(f"Image preview info found for {item.get('id')}: has_preview={image_info.get('has_preview')}")
+                    logger.debug(
+                        f"Image preview info found for {item.get('id')}: has_preview={image_info.get('has_preview')}"
+                    )
                     item.update(image_info)
                 else:
                     logger.debug(f"No image preview info for item: {item.get('id')}")
@@ -800,36 +818,34 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
 
     def _get_image_preview_info(self, item):
         """Get image preview information for a recycled item
-        
+
         Args:
             item: Dictionary containing recycled item data
-            
+
         Returns:
             Dictionary with image preview information or None
         """
         # Get the full storage data including the object
-        full_item_data = self.recycle_bin.get_item(item.get('recycle_id'))
+        full_item_data = self.recycle_bin.get_item(item.get("recycle_id"))
         if not full_item_data:
             return None
-            
-        obj = full_item_data.get('object')
+
+        obj = full_item_data.get("object")
         if not obj:
             return None
-            
+
         if not self._has_image_preview(obj):
             return None
-            
+
         # Simply return preview info with a preview button
-        recycle_id = item.get('recycle_id')
+        recycle_id = item.get("recycle_id")
         preview_url = f"{self.context.absolute_url()}/@@recyclebin-image/{recycle_id}/image/preview"
-        
+
         return {
-            'has_preview': True,
-            'preview_url': preview_url,
-            'recycle_id': recycle_id
+            "has_preview": True,
+            "preview_url": preview_url,
+            "recycle_id": recycle_id,
         }
-
-
 
 
 @implementer(IPublishTraverse)
@@ -1094,7 +1110,7 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
             # Add children count information if not already present
             if "children" in item and "children_count" not in item:
                 item["children_count"] = len(item["children"])
-            
+
             # Add workflow state information
             workflow_state = self._get_workflow_state(item)
             item["workflow_state"] = workflow_state
@@ -1108,17 +1124,17 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
             for child_id, child_data in item["children"].items():
                 # Don't include the actual object in the listing
                 child_info = child_data.copy()
-                
+
                 # Add workflow state information for child before removing object
                 if "object" in child_info:
                     workflow_state = self._get_workflow_state(child_info)
                     child_info["workflow_state"] = workflow_state
                     del child_info["object"]
-                
+
                 # Add children count information for nested folders
                 if "children" in child_info and "children_count" not in child_info:
                     child_info["children_count"] = len(child_info["children"])
-                
+
                 children.append(child_info)
             return children
         return []
@@ -1161,21 +1177,19 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
         return []
 
 
-
-
 @implementer(IPublishTraverse)
 class RecycleBinImageView(BrowserView):
     """View for serving images from recycled items"""
-    
+
     def __init__(self, context, request):
         super().__init__(context, request)
         self.recycle_id = None
         self.field_name = None
         self.scale = None
-    
+
     def publishTraverse(self, request, name):
         """Handle URL traversal for image serving
-        
+
         Expected URL: @@recyclebin-image/{recycle_id}/{field_name}/{scale}
         """
         if self.recycle_id is None:
@@ -1189,26 +1203,26 @@ class RecycleBinImageView(BrowserView):
             return self
         else:
             raise NotFound("Invalid image path")
-    
+
     def __call__(self):
         """Serve the image data"""
         if not self.recycle_id or not self.field_name:
             raise NotFound("Missing recycle ID or field name")
-        
+
         # Get the recycled item
         recycle_bin = getUtility(IRecycleBin)
         item_data = recycle_bin.get_item(self.recycle_id)
         if not item_data:
             raise NotFound("Recycled item not found")
-        
-        obj = item_data.get('object')
+
+        obj = item_data.get("object")
         if not obj:
             raise NotFound("Object not found in recycled item")
-        
+
         # Get the image field
-        if self.field_name == 'image':
+        if self.field_name == "image":
             # For Image content type
-            if hasattr(obj, 'image'):
+            if hasattr(obj, "image"):
                 image_field = obj.image
             else:
                 raise NotFound("Image field not found")
@@ -1218,20 +1232,20 @@ class RecycleBinImageView(BrowserView):
                 image_field = getattr(obj, self.field_name)
             else:
                 raise NotFound(f"Field '{self.field_name}' not found")
-        
+
         # Check if we have image data
-        if not hasattr(image_field, 'data') or not image_field.data:
+        if not hasattr(image_field, "data") or not image_field.data:
             raise NotFound("No image data found")
-        
+
         # Set response headers
-        content_type = getattr(image_field, 'contentType', 'image/jpeg')
-        filename = getattr(image_field, 'filename', 'image')
-        
+        content_type = getattr(image_field, "contentType", "image/jpeg")
+        filename = getattr(image_field, "filename", "image")
+
         response = self.request.response
-        response.setHeader('Content-Type', content_type)
-        response.setHeader('Content-Disposition', f'inline; filename="{filename}"')
-        response.setHeader('Cache-Control', 'max-age=3600')  # Cache for 1 hour
-        
+        response.setHeader("Content-Type", content_type)
+        response.setHeader("Content-Disposition", f'inline; filename="{filename}"')
+        response.setHeader("Cache-Control", "max-age=3600")  # Cache for 1 hour
+
         # Return the image data
         return image_field.data
 

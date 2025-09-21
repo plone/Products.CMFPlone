@@ -631,18 +631,19 @@ class RecycleBinWorkflowTests(RecycleBinTestCase):
     def setUp(self):
         """Set up test content with workflow states"""
         super().setUp()
-        
+
         # Create a document and publish it
         self.portal.invokeFactory("Document", "published-page", title="Published Page")
         self.page = self.portal["published-page"]
-        
+
         # Get workflow tool
         from Products.CMFCore.utils import getToolByName
+
         self.workflow_tool = getToolByName(self.portal, "portal_workflow")
-        
+
         # Publish the page (move from initial state to published)
         self.workflow_tool.doActionFor(self.page, "publish")
-        
+
         # Verify the page is published
         self.assertEqual(
             self.workflow_tool.getInfoFor(self.page, "review_state"), "published"
@@ -653,17 +654,17 @@ class RecycleBinWorkflowTests(RecycleBinTestCase):
         # Add the published page to recycle bin
         page_path = "/".join(self.page.getPhysicalPath())
         recycle_id = self.recyclebin.add_item(self.page, self.portal, page_path)
-        
+
         # Remove the page from portal
         del self.portal[self.page.getId()]
-        
+
         # Verify restore_to_initial_state is False by default
         settings = self.recyclebin._get_settings()
         self.assertFalse(settings.restore_to_initial_state)
-        
+
         # Restore the item
         restored_page = self.recyclebin.restore_item(recycle_id)
-        
+
         # Verify the page is still in published state
         self.assertIsNotNone(restored_page)
         self.assertEqual(
@@ -677,21 +678,21 @@ class RecycleBinWorkflowTests(RecycleBinTestCase):
             IRecycleBinControlPanelSettings, prefix="plone-recyclebin"
         )
         settings.restore_to_initial_state = True
-        
+
         # Add the published page to recycle bin
         page_path = "/".join(self.page.getPhysicalPath())
         recycle_id = self.recyclebin.add_item(self.page, self.portal, page_path)
-        
+
         # Remove the page from portal
         del self.portal[self.page.getId()]
-        
+
         # Restore the item
         restored_page = self.recyclebin.restore_item(recycle_id)
-        
+
         # Verify the page was reset to initial state (usually 'private' in Plone)
         self.assertIsNotNone(restored_page)
         restored_state = self.workflow_tool.getInfoFor(restored_page, "review_state")
-        
+
         # Get the initial state of the workflow for this type
         workflow_chain = self.workflow_tool.getChainFor(restored_page)
         if workflow_chain:
@@ -704,41 +705,41 @@ class RecycleBinWorkflowTests(RecycleBinTestCase):
         # Create a folder with children
         self.portal.invokeFactory("Folder", "test-folder", title="Test Folder")
         folder = self.portal["test-folder"]
-        
+
         # Create and publish a child document
         folder.invokeFactory("Document", "child-page", title="Child Page")
         child_page = folder["child-page"]
         self.workflow_tool.doActionFor(child_page, "publish")
-        
+
         # Verify child is published
         self.assertEqual(
             self.workflow_tool.getInfoFor(child_page, "review_state"), "published"
         )
-        
+
         # Enable workflow state reset
         settings = self.registry.forInterface(
             IRecycleBinControlPanelSettings, prefix="plone-recyclebin"
         )
         settings.restore_to_initial_state = True
-        
+
         # Add the folder to recycle bin
         folder_path = "/".join(folder.getPhysicalPath())
         recycle_id = self.recyclebin.add_item(folder, self.portal, folder_path)
-        
+
         # Remove the folder from portal
         del self.portal[folder.getId()]
-        
+
         # Restore the folder
         restored_folder = self.recyclebin.restore_item(recycle_id)
-        
+
         # Verify the folder was restored
         self.assertIsNotNone(restored_folder)
         self.assertIn("child-page", restored_folder)
-        
+
         # Verify the child's workflow state was reset to initial state
         restored_child = restored_folder["child-page"]
         child_state = self.workflow_tool.getInfoFor(restored_child, "review_state")
-        
+
         # Get the initial state of the workflow for this type
         workflow_chain = self.workflow_tool.getChainFor(restored_child)
         if workflow_chain:
@@ -753,30 +754,32 @@ class RecycleBinViewTests(RecycleBinTestCase):
     def setUp(self):
         """Set up test content with different deletion dates"""
         super().setUp()
-        
+
         # Create test documents with different deletion dates
         self.portal.invokeFactory("Document", "doc1", title="Document 1")
         self.portal.invokeFactory("Document", "doc2", title="Document 2")
         self.portal.invokeFactory("Document", "doc3", title="Document 3")
-        
+
         self.doc1 = self.portal["doc1"]
         self.doc2 = self.portal["doc2"]
         self.doc3 = self.portal["doc3"]
 
         # Create a mock request for the view
         from unittest.mock import Mock
+
         self.request = Mock()
         self.request.form = {}
-        
+
         # Create the view instance
         from Products.CMFPlone.browser.recyclebin import RecycleBinView
+
         self.view = RecycleBinView(self.portal, self.request)
 
     def test_get_date_from(self):
         """Test get_date_from method"""
         # Test with no date_from parameter
         self.assertEqual(self.view.get_date_from(), "")
-        
+
         # Test with date_from parameter
         self.request.form["date_from"] = "2024-01-01"
         self.assertEqual(self.view.get_date_from(), "2024-01-01")
@@ -785,7 +788,7 @@ class RecycleBinViewTests(RecycleBinTestCase):
         """Test get_date_to method"""
         # Test with no date_to parameter
         self.assertEqual(self.view.get_date_to(), "")
-        
+
         # Test with date_to parameter
         self.request.form["date_to"] = "2024-12-31"
         self.assertEqual(self.view.get_date_to(), "2024-12-31")
@@ -794,7 +797,7 @@ class RecycleBinViewTests(RecycleBinTestCase):
         """Test get_filter_deleted_by method"""
         # Test with no filter_deleted_by parameter
         self.assertEqual(self.view.get_filter_deleted_by(), "")
-        
+
         # Test with filter_deleted_by parameter
         self.request.form["filter_deleted_by"] = "admin"
         self.assertEqual(self.view.get_filter_deleted_by(), "admin")
@@ -808,7 +811,7 @@ class RecycleBinViewTests(RecycleBinTestCase):
             {"deleted_by": "user2"},
             {"title": "item without deleted_by"},  # no deleted_by field
         ]
-        
+
         users = self.view.get_available_deleted_by_users(items)
         expected_users = ["admin", "user1", "user2"]
         self.assertEqual(users, expected_users)
@@ -822,7 +825,7 @@ class RecycleBinViewTests(RecycleBinTestCase):
     def test_check_item_matches_date_range_no_filter(self):
         """Test date range filtering with no date filters"""
         item = {"deletion_date": datetime.now()}
-        
+
         # No date filters should match all items
         self.assertTrue(self.view._check_item_matches_date_range(item, "", ""))
 
@@ -832,21 +835,27 @@ class RecycleBinViewTests(RecycleBinTestCase):
         today = datetime.now()
         yesterday = today - timedelta(days=1)
         tomorrow = today + timedelta(days=1)
-        
+
         item_today = {"deletion_date": today}
         item_yesterday = {"deletion_date": yesterday}
         item_tomorrow = {"deletion_date": tomorrow}
-        
+
         from_date = today.strftime("%Y-%m-%d")
-        
+
         # Item from today should match (same date)
-        self.assertTrue(self.view._check_item_matches_date_range(item_today, from_date, ""))
-        
+        self.assertTrue(
+            self.view._check_item_matches_date_range(item_today, from_date, "")
+        )
+
         # Item from yesterday should not match (before from_date)
-        self.assertFalse(self.view._check_item_matches_date_range(item_yesterday, from_date, ""))
-        
+        self.assertFalse(
+            self.view._check_item_matches_date_range(item_yesterday, from_date, "")
+        )
+
         # Item from tomorrow should match (after from_date)
-        self.assertTrue(self.view._check_item_matches_date_range(item_tomorrow, from_date, ""))
+        self.assertTrue(
+            self.view._check_item_matches_date_range(item_tomorrow, from_date, "")
+        )
 
     def test_check_item_matches_date_range_with_to_date(self):
         """Test date range filtering with to date only"""
@@ -854,21 +863,27 @@ class RecycleBinViewTests(RecycleBinTestCase):
         today = datetime.now()
         yesterday = today - timedelta(days=1)
         tomorrow = today + timedelta(days=1)
-        
+
         item_today = {"deletion_date": today}
         item_yesterday = {"deletion_date": yesterday}
         item_tomorrow = {"deletion_date": tomorrow}
-        
+
         to_date = today.strftime("%Y-%m-%d")
-        
+
         # Item from today should match (same date)
-        self.assertTrue(self.view._check_item_matches_date_range(item_today, "", to_date))
-        
+        self.assertTrue(
+            self.view._check_item_matches_date_range(item_today, "", to_date)
+        )
+
         # Item from yesterday should match (before to_date)
-        self.assertTrue(self.view._check_item_matches_date_range(item_yesterday, "", to_date))
-        
+        self.assertTrue(
+            self.view._check_item_matches_date_range(item_yesterday, "", to_date)
+        )
+
         # Item from tomorrow should not match (after to_date)
-        self.assertFalse(self.view._check_item_matches_date_range(item_tomorrow, "", to_date))
+        self.assertFalse(
+            self.view._check_item_matches_date_range(item_tomorrow, "", to_date)
+        )
 
     def test_check_item_matches_date_range_with_both_dates(self):
         """Test date range filtering with both from and to dates"""
@@ -878,42 +893,64 @@ class RecycleBinViewTests(RecycleBinTestCase):
         tomorrow = today + timedelta(days=1)
         day_before_yesterday = today - timedelta(days=2)
         day_after_tomorrow = today + timedelta(days=2)
-        
+
         item_today = {"deletion_date": today}
         item_yesterday = {"deletion_date": yesterday}
         item_tomorrow = {"deletion_date": tomorrow}
         item_before = {"deletion_date": day_before_yesterday}
         item_after = {"deletion_date": day_after_tomorrow}
-        
+
         from_date = yesterday.strftime("%Y-%m-%d")
         to_date = tomorrow.strftime("%Y-%m-%d")
-        
+
         # Items within range should match
-        self.assertTrue(self.view._check_item_matches_date_range(item_yesterday, from_date, to_date))
-        self.assertTrue(self.view._check_item_matches_date_range(item_today, from_date, to_date))
-        self.assertTrue(self.view._check_item_matches_date_range(item_tomorrow, from_date, to_date))
-        
+        self.assertTrue(
+            self.view._check_item_matches_date_range(item_yesterday, from_date, to_date)
+        )
+        self.assertTrue(
+            self.view._check_item_matches_date_range(item_today, from_date, to_date)
+        )
+        self.assertTrue(
+            self.view._check_item_matches_date_range(item_tomorrow, from_date, to_date)
+        )
+
         # Items outside range should not match
-        self.assertFalse(self.view._check_item_matches_date_range(item_before, from_date, to_date))
-        self.assertFalse(self.view._check_item_matches_date_range(item_after, from_date, to_date))
+        self.assertFalse(
+            self.view._check_item_matches_date_range(item_before, from_date, to_date)
+        )
+        self.assertFalse(
+            self.view._check_item_matches_date_range(item_after, from_date, to_date)
+        )
 
     def test_check_item_matches_date_range_invalid_date_format(self):
         """Test date range filtering with invalid date formats"""
         item = {"deletion_date": datetime.now()}
-        
+
         # Invalid date formats should be ignored (return True)
-        self.assertTrue(self.view._check_item_matches_date_range(item, "invalid-date", ""))
-        self.assertTrue(self.view._check_item_matches_date_range(item, "", "invalid-date"))
-        self.assertTrue(self.view._check_item_matches_date_range(item, "invalid", "also-invalid"))
+        self.assertTrue(
+            self.view._check_item_matches_date_range(item, "invalid-date", "")
+        )
+        self.assertTrue(
+            self.view._check_item_matches_date_range(item, "", "invalid-date")
+        )
+        self.assertTrue(
+            self.view._check_item_matches_date_range(item, "invalid", "also-invalid")
+        )
 
     def test_check_item_matches_date_range_no_deletion_date(self):
         """Test date range filtering with items that have no deletion_date"""
         item = {"title": "Item without deletion date"}
-        
+
         # Items without deletion_date should not match any date filter
-        self.assertFalse(self.view._check_item_matches_date_range(item, "2024-01-01", ""))
-        self.assertFalse(self.view._check_item_matches_date_range(item, "", "2024-12-31"))
-        self.assertFalse(self.view._check_item_matches_date_range(item, "2024-01-01", "2024-12-31"))
+        self.assertFalse(
+            self.view._check_item_matches_date_range(item, "2024-01-01", "")
+        )
+        self.assertFalse(
+            self.view._check_item_matches_date_range(item, "", "2024-12-31")
+        )
+        self.assertFalse(
+            self.view._check_item_matches_date_range(item, "2024-01-01", "2024-12-31")
+        )
 
     def test_get_clear_url_with_date_filters(self):
         """Test clear URL generation with date and deleted_by filters"""
@@ -924,9 +961,9 @@ class RecycleBinViewTests(RecycleBinTestCase):
             "date_from": "2024-01-01",
             "date_to": "2024-12-31",
             "filter_deleted_by": "admin",
-            "sort_by": "title_asc"
+            "sort_by": "title_asc",
         }
-        
+
         # Test clearing date_from while preserving others
         clear_url = self.view.get_clear_url("date_from")
         self.assertIn("search_query=test", clear_url)
@@ -935,7 +972,7 @@ class RecycleBinViewTests(RecycleBinTestCase):
         self.assertIn("filter_deleted_by=admin", clear_url)
         self.assertIn("sort_by=title_asc", clear_url)
         self.assertNotIn("date_from", clear_url)
-        
+
         # Test clearing date_to while preserving others
         clear_url = self.view.get_clear_url("date_to")
         self.assertIn("search_query=test", clear_url)
@@ -944,7 +981,7 @@ class RecycleBinViewTests(RecycleBinTestCase):
         self.assertIn("filter_deleted_by=admin", clear_url)
         self.assertIn("sort_by=title_asc", clear_url)
         self.assertNotIn("date_to", clear_url)
-        
+
         # Test clearing filter_deleted_by while preserving others
         clear_url = self.view.get_clear_url("filter_deleted_by")
         self.assertIn("search_query=test", clear_url)

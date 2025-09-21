@@ -222,9 +222,8 @@ class RecycleBin:
             child_path = f"{folder_path}/{child_id}"
             # Get workflow state for this child
             child_workflow_state = None
-            workflow_tool = getToolByName(self._get_context(), 'portal_workflow')
-            child_workflow_state = workflow_tool.getInfoFor(child, 'review_state', None)
-
+            workflow_tool = getToolByName(self._get_context(), "portal_workflow")
+            child_workflow_state = workflow_tool.getInfoFor(child, "review_state", None)
 
             # Store basic data for this child
             child_data = {
@@ -235,7 +234,8 @@ class RecycleBin:
                 "parent_path": folder_path,
                 "deletion_date": datetime.now(),
                 "size": getattr(child, "get_size", lambda: 0)(),
-                "language": getattr(child, "language", None) or getattr(child, "Language", lambda: None)(),
+                "language": getattr(child, "language", None)
+                or getattr(child, "Language", lambda: None)(),
                 "workflow_state": child_workflow_state,
                 "object": child,
             }
@@ -296,9 +296,8 @@ class RecycleBin:
 
         # Get workflow state at time of deletion
         workflow_state = None
-        workflow_tool = getToolByName(self._get_context(), 'portal_workflow')
-        workflow_state = workflow_tool.getInfoFor(obj, 'review_state', None)
-
+        workflow_tool = getToolByName(self._get_context(), "portal_workflow")
+        workflow_state = workflow_tool.getInfoFor(obj, "review_state", None)
 
         storage_data = {
             "id": item_id,
@@ -309,7 +308,8 @@ class RecycleBin:
             "deletion_date": datetime.now(),
             "deleted_by": user_id,
             "size": getattr(obj, "get_size", lambda: 0)(),
-            "language": getattr(obj, "language", None) or getattr(obj, "Language", lambda: None)(),
+            "language": getattr(obj, "language", None)
+            or getattr(obj, "Language", lambda: None)(),
             "workflow_state": workflow_state,
             "object": aq_base(obj),  # Store the actual object with no acquisition chain
         }
@@ -418,24 +418,24 @@ class RecycleBin:
 
         if not chains:
             return
-            
+
         workflow_id = chains[0]
         workflow = workflow_tool.getWorkflowById(workflow_id)
-            
+
         if not workflow:
             return
-                
+
         # Get the initial state of the workflow
-        initial_state = getattr(workflow, 'initial_state', None)
+        initial_state = getattr(workflow, "initial_state", None)
         if not initial_state:
             logger.warning(
                 f"Could not determine initial state for workflow {workflow_id}"
             )
             return
-                
+
         # Get current state
-        current_state = workflow_tool.getInfoFor(obj, 'review_state', None)
-            
+        current_state = workflow_tool.getInfoFor(obj, "review_state", None)
+
         # Only reset if current state is different from initial state
         if current_state != initial_state:
             # Reset the workflow state by updating the workflow history
@@ -444,7 +444,7 @@ class RecycleBin:
                 if history:
                     # Update the last entry to reflect the state reset
                     user_id = getSecurityManager().getUser().getId() or "System"
-                    
+
                     reset_entry = {
                         "action": "Reset to initial state",
                         "actor": user_id,
@@ -452,13 +452,13 @@ class RecycleBin:
                         "time": DateTime(),
                         "review_state": initial_state,
                     }
-                    
+
                     history.append(reset_entry)
                     obj.workflow_history[workflow_id] = tuple(history)
-                    
+
                     # Force the object's state to be updated
                     workflow._changeStateOf(obj, workflow.states[initial_state])
-                    
+
                     logger.info(
                         f"Reset workflow state of {obj.getId()} from '{current_state}' to '{initial_state}'"
                     )
@@ -468,17 +468,17 @@ class RecycleBin:
         settings = self._get_settings()
         if not settings.restore_to_initial_state:
             return
-            
+
         # Check if this is a folder-like object
         if not hasattr(folder_obj, "objectIds"):
             return
-            
+
         # Recursively reset workflow states for all children
         for child_id in folder_obj.objectIds():
             child = folder_obj[child_id]
             self._reset_workflow_state_if_needed(child)
 
-                # If the child is also a folder, recurse
+            # If the child is also a folder, recurse
             if hasattr(child, "objectIds"):
                 self._reset_folder_children_workflow_if_needed(child)
 
@@ -597,13 +597,13 @@ class RecycleBin:
         # Add a workflow history entry about the restoration
         restored_obj = target_container[obj_id]
         self._update_workflow_history(restored_obj, "restoration", item_data)
-        
+
         # Reset workflow state to initial state if the setting is enabled
         self._reset_workflow_state_if_needed(restored_obj)
-        
+
         # Also reset workflow states of children if this is a folder
         self._reset_folder_children_workflow_if_needed(restored_obj)
-        
+
         restored_obj.reindexObject()
 
         # Remove from recycle bin
