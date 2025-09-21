@@ -87,6 +87,18 @@
                                                 <th class="bg-light" width="30%" i18n:translate="">Original ID</th>
                                                 <td class="text-monospace" tal:content="item/id">ID</td>
                                             </tr>
+                                            <tr tal:condition="python:view._has_image_preview(item.get('object'))">
+                                                <th class="bg-light" i18n:translate="">Image Preview</th>
+                                                <td>
+                                                    <button type="button" 
+                                                            class="btn btn-sm btn-outline-primary"
+                                                            tal:attributes="onclick python:'window.open(\'%s/@@recyclebin-image/%s/image/preview\', \'_blank\')' % (context.absolute_url(), view.item_id)"
+                                                            title="Click to view image in new window"
+                                                            i18n:attributes="title">
+                                                        👁️ <span i18n:translate="">View Image</span>
+                                                    </button>
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <th class="bg-light" i18n:translate="">Original path</th>
                                                 <td>
@@ -222,26 +234,40 @@
                                                 <span tal:content="python:view.format_size(child.get('size', 0))">Size</span>
                                             </td>
                                             <td>
-                                                <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}"
-                                                      class="row g-2">
-                                                    <input tal:replace="structure context/@@authenticator/authenticator" />
-                                                    <input type="hidden" name="child_id" tal:attributes="value child/id" />
-                                                    <div class="col-8">
-                                                        <input type="text" name="target_path" 
-                                                               tal:attributes="placeholder child/parent_path"
-                                                               title="Enter target path or leave empty to restore to original location"
-                                                               i18n:attributes="title;placeholder"
-                                                               class="form-control form-control-sm target-path-input"
-                                                               required="required" />
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <button type="submit" name="restore.child" 
-                                                                class="btn btn-sm btn-success w-100 restore-child-button"
-                                                                i18n:translate="">
-                                                            <span class="ms-1">Restore</span>
+                                                <div class="d-flex flex-column gap-2">
+                                                    <!-- Image preview button if available -->
+                                                    <div tal:condition="python:view._has_image_preview(child.get('object'))" class="text-center">
+                                                        <button type="button" 
+                                                                class="btn btn-sm btn-outline-primary"
+                                                                tal:attributes="onclick python:'window.open(\'%s/@@recyclebin-image/%s/image/preview\', \'_blank\')' % (context.absolute_url(), child['id'])"
+                                                                title="Click to view image in new window"
+                                                                i18n:attributes="title">
+                                                            👁️
                                                         </button>
                                                     </div>
-                                                </form>
+                                                    
+                                                    <!-- Restore form -->
+                                                    <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}"
+                                                          class="row g-2">
+                                                        <input tal:replace="structure context/@@authenticator/authenticator" />
+                                                        <input type="hidden" name="child_id" tal:attributes="value child/id" />
+                                                        <div class="col-8">
+                                                            <input type="text" name="target_path" 
+                                                                   tal:attributes="placeholder child/parent_path"
+                                                                   title="Enter target path or leave empty to restore to original location"
+                                                                   i18n:attributes="title;placeholder"
+                                                                   class="form-control form-control-sm target-path-input"
+                                                                   required="required" />
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <button type="submit" name="restore.child" 
+                                                                    class="btn btn-sm btn-success w-100 restore-child-button"
+                                                                    i18n:translate="">
+                                                                <span class="ms-1">Restore</span>
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>

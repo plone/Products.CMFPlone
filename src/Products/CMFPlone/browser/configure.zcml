@@ -326,5 +326,12 @@
       permission="cmf.ManagePortal"
       />
 
+  <browser:page
+      name="recyclebin-image"
+      for="plone.base.interfaces.siteroot.IPloneSiteRoot"
+      class=".recyclebin.RecycleBinImageView"
+      permission="cmf.ManagePortal"
+      />
+
 
 </configure>
