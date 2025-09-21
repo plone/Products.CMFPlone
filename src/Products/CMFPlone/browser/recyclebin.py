@@ -228,6 +228,10 @@ class RecycleBinView(form.Form):
         """Get the language filter from the request"""
         return self.request.form.get("filter_language", "")
 
+    def get_filter_workflow_state(self):
+        """Get the workflow state filter from the request"""
+        return self.request.form.get("filter_workflow_state", "")
+
     def get_sort_labels(self):
         """Get a dictionary of human-readable sort option labels"""
         return {
@@ -285,6 +289,10 @@ class RecycleBinView(form.Form):
         if param_to_remove != "filter_language" and self.get_filter_language():
             params.append(f"filter_language={self.get_filter_language()}")
 
+        # Add workflow state filter if it exists and is not being removed
+        if param_to_remove != "filter_workflow_state" and self.get_filter_workflow_state():
+            params.append(f"filter_workflow_state={self.get_filter_workflow_state()}")
+
         # Add sort option if it exists, is not default, and is not being removed
         sort_option = self.get_sort_option()
         if param_to_remove != "sort_by" and sort_option != "date_desc":
@@ -321,6 +329,15 @@ class RecycleBinView(form.Form):
             if language:
                 languages.add(language)
         return sorted(list(languages))
+
+    def get_available_workflow_states(self, items):
+        """Get a list of all workflow states present in the recycle bin"""
+        states = set()
+        for item in items:
+            workflow_state = item.get("workflow_state")
+            if workflow_state:
+                states.add(workflow_state)
+        return sorted(list(states))
 
     def _check_item_matches_search(self, item, search_query):
         """Check if an item matches the search query.
@@ -523,6 +540,7 @@ class RecycleBinView(form.Form):
         filter_deleted_by = self.get_filter_deleted_by()
         filter_has_subitems = self.get_filter_has_subitems()
         filter_language = self.get_filter_language()
+        filter_workflow_state = self.get_filter_workflow_state()
 
         # Create a list of all items that are children of a parent in the recycle bin
         child_items_to_exclude = []
@@ -562,6 +580,10 @@ class RecycleBinView(form.Form):
 
                 # Apply language filtering
                 if filter_language and item.get("language") != filter_language:
+                    continue
+
+                # Apply workflow state filtering
+                if filter_workflow_state and item.get("workflow_state") != filter_workflow_state:
                     continue
 
                 # Check if parent container exists and add flag to the item

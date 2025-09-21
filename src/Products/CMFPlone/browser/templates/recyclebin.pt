@@ -167,6 +167,20 @@
                                                 tal:content="language">en</option>
                                     </select>
                                 </div>
+                                
+                                <!-- Workflow State Filter -->
+                                <div class="col-sm-6" 
+                                     tal:define="all_workflow_states python:view.get_available_workflow_states(view.get_items());
+                                                current_workflow_state_filter request/filter_workflow_state|nothing">
+                                    <label for="filter-workflow-state" class="form-label" i18n:translate="">Workflow state</label>
+                                    <select id="filter-workflow-state" name="filter_workflow_state" class="form-select" onchange="this.form.submit()">
+                                        <option value="" i18n:translate="">All workflow states</option>
+                                        <option tal:repeat="workflow_state all_workflow_states"
+                                                tal:attributes="value workflow_state;
+                                                                selected python:current_workflow_state_filter == workflow_state"
+                                                tal:content="python:view.get_workflow_state_title(workflow_state)">Published</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -182,9 +196,10 @@
                          filter_deleted_by view/get_filter_deleted_by;
                          filter_has_subitems view/get_filter_has_subitems;
                          filter_language view/get_filter_language;
+                         filter_workflow_state view/get_filter_workflow_state;
                          sort_option view/get_sort_option;
                          sort_labels python:view.get_sort_labels();
-                         has_active_filters python:search_query or filter_type or date_from or date_to or filter_deleted_by or filter_has_subitems or filter_language or (sort_option != 'date_desc')"
+                         has_active_filters python:search_query or filter_type or date_from or date_to or filter_deleted_by or filter_has_subitems or filter_language or filter_workflow_state or (sort_option != 'date_desc')"
              tal:condition="has_active_filters"
              class="alert alert-info d-flex align-items-center mb-4">
              
@@ -255,6 +270,16 @@
                     <a href="#" tal:attributes="href python:view.get_clear_url('filter_language')"
                        class="text-white ms-1" style="text-decoration: none;" 
                        title="Clear language filter" i18n:attributes="title">
+                       ×
+                    </a>
+                </span>
+                
+                <span tal:condition="filter_workflow_state" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                    <span i18n:translate="" class="ms-1 me-1">Workflow:</span>
+                    <span tal:content="python:view.get_workflow_state_title(filter_workflow_state)" class="me-1">Published</span>
+                    <a href="#" tal:attributes="href python:view.get_clear_url('filter_workflow_state')"
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear workflow state filter" i18n:attributes="title">
                        ×
                     </a>
                 </span>

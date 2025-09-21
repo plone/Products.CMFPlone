@@ -220,6 +220,12 @@ class RecycleBin:
         for child_id in folder_obj.objectIds():
             child = folder_obj[child_id]
             child_path = f"{folder_path}/{child_id}"
+            # Get workflow state for this child
+            child_workflow_state = None
+            workflow_tool = getToolByName(self._get_context(), 'portal_workflow')
+            child_workflow_state = workflow_tool.getInfoFor(child, 'review_state', None)
+
+
             # Store basic data for this child
             child_data = {
                 "id": child_id,
@@ -230,6 +236,7 @@ class RecycleBin:
                 "deletion_date": datetime.now(),
                 "size": getattr(child, "get_size", lambda: 0)(),
                 "language": getattr(child, "language", None) or getattr(child, "Language", lambda: None)(),
+                "workflow_state": child_workflow_state,
                 "object": child,
             }
 
@@ -287,6 +294,12 @@ class RecycleBin:
         # Get the current user who is deleting the item
         user_id = getSecurityManager().getUser().getId() or "System"
 
+        # Get workflow state at time of deletion
+        workflow_state = None
+        workflow_tool = getToolByName(self._get_context(), 'portal_workflow')
+        workflow_state = workflow_tool.getInfoFor(obj, 'review_state', None)
+
+
         storage_data = {
             "id": item_id,
             "title": item_title,
@@ -297,6 +310,7 @@ class RecycleBin:
             "deleted_by": user_id,
             "size": getattr(obj, "get_size", lambda: 0)(),
             "language": getattr(obj, "language", None) or getattr(obj, "Language", lambda: None)(),
+            "workflow_state": workflow_state,
             "object": aq_base(obj),  # Store the actual object with no acquisition chain
         }
 
