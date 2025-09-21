@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import date
 from plone.app.contenttypes.behaviors.leadimage import ILeadImageBehavior
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.recyclebin import IRecycleBin
@@ -207,6 +208,14 @@ class RecycleBinView(form.Form):
         """Get the content type filter from the request"""
         return self.request.form.get("filter_type", "")
 
+    def get_date_from(self):
+        """Get the start date filter from the request"""
+        return self.request.form.get("date_from", "")
+
+    def get_date_to(self):
+        """Get the end date filter from the request"""
+        return self.request.form.get("date_to", "")
+
     def get_sort_labels(self):
         """Get a dictionary of human-readable sort option labels"""
         return {
@@ -243,6 +252,14 @@ class RecycleBinView(form.Form):
         # Add filter type if it exists and is not being removed
         if param_to_remove != "filter_type" and self.get_filter_type():
             params.append(f"filter_type={self.get_filter_type()}")
+
+        # Add date from filter if it exists and is not being removed
+        if param_to_remove != "date_from" and self.get_date_from():
+            params.append(f"date_from={self.get_date_from()}")
+
+        # Add date to filter if it exists and is not being removed
+        if param_to_remove != "date_to" and self.get_date_to():
+            params.append(f"date_to={self.get_date_to()}")
 
         # Add sort option if it exists, is not default, and is not being removed
         sort_option = self.get_sort_option()
@@ -294,6 +311,44 @@ class RecycleBinView(form.Form):
             return True
 
         return False
+
+    def _check_item_matches_date_range(self, item, date_from_str, date_to_str):
+        """Check if an item's deletion date falls within the specified date range.
+
+        Args:
+            item: The item to check
+            date_from_str: Start date as string (YYYY-MM-DD format) or empty
+            date_to_str: End date as string (YYYY-MM-DD format) or empty
+
+        Returns:
+            Boolean indicating if the item matches the date range
+        """
+        if not date_from_str and not date_to_str:
+            return True  # No date filter applied
+
+        deletion_date = item.get("deletion_date")
+        if not deletion_date:
+            return False  # Can't filter items without deletion date
+
+        # Convert deletion_date to date object for comparison
+        if hasattr(deletion_date, 'date'):
+            item_date = deletion_date.date()
+        else:
+            # If it's already a date object
+            item_date = deletion_date
+
+        # Parse and validate date strings
+        if date_from_str:
+            date_from = datetime.strptime(date_from_str, "%Y-%m-%d").date()
+            if item_date < date_from:
+                return False
+
+        if date_to_str:
+            date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
+            if item_date > date_to:
+                return False
+
+        return True
 
     def _find_matching_children(self, item, search_query):
         """Find children of an item that match the search query.
@@ -421,6 +476,8 @@ class RecycleBinView(form.Form):
         # Get filters early to avoid multiple lookups during the loop
         filter_type = self.get_filter_type()
         search_query = self.get_search_query().lower()
+        date_from = self.get_date_from()
+        date_to = self.get_date_to()
 
         # Create a list of all items that are children of a parent in the recycle bin
         child_items_to_exclude = []
@@ -440,6 +497,10 @@ class RecycleBinView(form.Form):
             if item.get("id") not in child_items_to_exclude:
                 # Apply type filtering
                 if filter_type and item.get("type") != filter_type:
+                    continue
+
+                # Apply date range filtering
+                if not self._check_item_matches_date_range(item, date_from, date_to):
                     continue
 
                 # Check if parent container exists and add flag to the item

@@ -745,3 +745,170 @@ class RecycleBinWorkflowTests(RecycleBinTestCase):
             workflow = self.workflow_tool.getWorkflowById(workflow_chain[0])
             initial_state = workflow.initial_state
             self.assertEqual(child_state, initial_state)
+
+
+class RecycleBinViewTests(RecycleBinTestCase):
+    """Tests for RecycleBinView date filtering functionality"""
+
+    def setUp(self):
+        """Set up test content with different deletion dates"""
+        super().setUp()
+        
+        # Create test documents with different deletion dates
+        self.portal.invokeFactory("Document", "doc1", title="Document 1")
+        self.portal.invokeFactory("Document", "doc2", title="Document 2")
+        self.portal.invokeFactory("Document", "doc3", title="Document 3")
+        
+        self.doc1 = self.portal["doc1"]
+        self.doc2 = self.portal["doc2"]
+        self.doc3 = self.portal["doc3"]
+
+        # Create a mock request for the view
+        from unittest.mock import Mock
+        self.request = Mock()
+        self.request.form = {}
+        
+        # Create the view instance
+        from Products.CMFPlone.browser.recyclebin import RecycleBinView
+        self.view = RecycleBinView(self.portal, self.request)
+
+    def test_get_date_from(self):
+        """Test get_date_from method"""
+        # Test with no date_from parameter
+        self.assertEqual(self.view.get_date_from(), "")
+        
+        # Test with date_from parameter
+        self.request.form["date_from"] = "2024-01-01"
+        self.assertEqual(self.view.get_date_from(), "2024-01-01")
+
+    def test_get_date_to(self):
+        """Test get_date_to method"""
+        # Test with no date_to parameter
+        self.assertEqual(self.view.get_date_to(), "")
+        
+        # Test with date_to parameter
+        self.request.form["date_to"] = "2024-12-31"
+        self.assertEqual(self.view.get_date_to(), "2024-12-31")
+
+    def test_check_item_matches_date_range_no_filter(self):
+        """Test date range filtering with no date filters"""
+        item = {"deletion_date": datetime.now()}
+        
+        # No date filters should match all items
+        self.assertTrue(self.view._check_item_matches_date_range(item, "", ""))
+
+    def test_check_item_matches_date_range_with_from_date(self):
+        """Test date range filtering with from date only"""
+        # Create items with different dates
+        today = datetime.now()
+        yesterday = today - timedelta(days=1)
+        tomorrow = today + timedelta(days=1)
+        
+        item_today = {"deletion_date": today}
+        item_yesterday = {"deletion_date": yesterday}
+        item_tomorrow = {"deletion_date": tomorrow}
+        
+        from_date = today.strftime("%Y-%m-%d")
+        
+        # Item from today should match (same date)
+        self.assertTrue(self.view._check_item_matches_date_range(item_today, from_date, ""))
+        
+        # Item from yesterday should not match (before from_date)
+        self.assertFalse(self.view._check_item_matches_date_range(item_yesterday, from_date, ""))
+        
+        # Item from tomorrow should match (after from_date)
+        self.assertTrue(self.view._check_item_matches_date_range(item_tomorrow, from_date, ""))
+
+    def test_check_item_matches_date_range_with_to_date(self):
+        """Test date range filtering with to date only"""
+        # Create items with different dates
+        today = datetime.now()
+        yesterday = today - timedelta(days=1)
+        tomorrow = today + timedelta(days=1)
+        
+        item_today = {"deletion_date": today}
+        item_yesterday = {"deletion_date": yesterday}
+        item_tomorrow = {"deletion_date": tomorrow}
+        
+        to_date = today.strftime("%Y-%m-%d")
+        
+        # Item from today should match (same date)
+        self.assertTrue(self.view._check_item_matches_date_range(item_today, "", to_date))
+        
+        # Item from yesterday should match (before to_date)
+        self.assertTrue(self.view._check_item_matches_date_range(item_yesterday, "", to_date))
+        
+        # Item from tomorrow should not match (after to_date)
+        self.assertFalse(self.view._check_item_matches_date_range(item_tomorrow, "", to_date))
+
+    def test_check_item_matches_date_range_with_both_dates(self):
+        """Test date range filtering with both from and to dates"""
+        # Create items with different dates
+        today = datetime.now()
+        yesterday = today - timedelta(days=1)
+        tomorrow = today + timedelta(days=1)
+        day_before_yesterday = today - timedelta(days=2)
+        day_after_tomorrow = today + timedelta(days=2)
+        
+        item_today = {"deletion_date": today}
+        item_yesterday = {"deletion_date": yesterday}
+        item_tomorrow = {"deletion_date": tomorrow}
+        item_before = {"deletion_date": day_before_yesterday}
+        item_after = {"deletion_date": day_after_tomorrow}
+        
+        from_date = yesterday.strftime("%Y-%m-%d")
+        to_date = tomorrow.strftime("%Y-%m-%d")
+        
+        # Items within range should match
+        self.assertTrue(self.view._check_item_matches_date_range(item_yesterday, from_date, to_date))
+        self.assertTrue(self.view._check_item_matches_date_range(item_today, from_date, to_date))
+        self.assertTrue(self.view._check_item_matches_date_range(item_tomorrow, from_date, to_date))
+        
+        # Items outside range should not match
+        self.assertFalse(self.view._check_item_matches_date_range(item_before, from_date, to_date))
+        self.assertFalse(self.view._check_item_matches_date_range(item_after, from_date, to_date))
+
+    def test_check_item_matches_date_range_invalid_date_format(self):
+        """Test date range filtering with invalid date formats"""
+        item = {"deletion_date": datetime.now()}
+        
+        # Invalid date formats should be ignored (return True)
+        self.assertTrue(self.view._check_item_matches_date_range(item, "invalid-date", ""))
+        self.assertTrue(self.view._check_item_matches_date_range(item, "", "invalid-date"))
+        self.assertTrue(self.view._check_item_matches_date_range(item, "invalid", "also-invalid"))
+
+    def test_check_item_matches_date_range_no_deletion_date(self):
+        """Test date range filtering with items that have no deletion_date"""
+        item = {"title": "Item without deletion date"}
+        
+        # Items without deletion_date should not match any date filter
+        self.assertFalse(self.view._check_item_matches_date_range(item, "2024-01-01", ""))
+        self.assertFalse(self.view._check_item_matches_date_range(item, "", "2024-12-31"))
+        self.assertFalse(self.view._check_item_matches_date_range(item, "2024-01-01", "2024-12-31"))
+
+    def test_get_clear_url_with_date_filters(self):
+        """Test clear URL generation with date filters"""
+        # Set up request with multiple filters including dates
+        self.request.form = {
+            "search_query": "test",
+            "filter_type": "Document",
+            "date_from": "2024-01-01",
+            "date_to": "2024-12-31",
+            "sort_by": "title_asc"
+        }
+        
+        # Test clearing date_from while preserving others
+        clear_url = self.view.get_clear_url("date_from")
+        self.assertIn("search_query=test", clear_url)
+        self.assertIn("filter_type=Document", clear_url)
+        self.assertIn("date_to=2024-12-31", clear_url)
+        self.assertIn("sort_by=title_asc", clear_url)
+        self.assertNotIn("date_from", clear_url)
+        
+        # Test clearing date_to while preserving others
+        clear_url = self.view.get_clear_url("date_to")
+        self.assertIn("search_query=test", clear_url)
+        self.assertIn("filter_type=Document", clear_url)
+        self.assertIn("date_from=2024-01-01", clear_url)
+        self.assertIn("sort_by=title_asc", clear_url)
+        self.assertNotIn("date_to", clear_url)

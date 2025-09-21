@@ -102,6 +102,25 @@
                                     </select>
                                 </div>
                             </div>
+                            
+                            <!-- Date Range Filters -->
+                            <div class="row g-2 mt-2">
+                                <div class="col-sm-6">
+                                    <label for="date-from" class="form-label" i18n:translate="">Deleted from</label>
+                                    <input type="date" name="date_from" id="date-from" 
+                                           tal:attributes="value request/date_from|nothing"
+                                           class="form-control" 
+                                           onchange="this.form.submit()" />
+                                </div>
+                                
+                                <div class="col-sm-6">
+                                    <label for="date-to" class="form-label" i18n:translate="">Deleted to</label>
+                                    <input type="date" name="date_to" id="date-to" 
+                                           tal:attributes="value request/date_to|nothing"
+                                           class="form-control" 
+                                           onchange="this.form.submit()" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -111,9 +130,11 @@
         <!-- Combined notification for search, filter and sort -->
         <div tal:define="search_query view/get_search_query;
                          filter_type view/get_filter_type;
+                         date_from view/get_date_from;
+                         date_to view/get_date_to;
                          sort_option view/get_sort_option;
                          sort_labels python:view.get_sort_labels();
-                         has_active_filters python:search_query or filter_type or (sort_option != 'date_desc')"
+                         has_active_filters python:search_query or filter_type or date_from or date_to or (sort_option != 'date_desc')"
              tal:condition="has_active_filters"
              class="alert alert-info d-flex align-items-center mb-4">
              
@@ -134,6 +155,26 @@
                     <a href="#" tal:attributes="href python:view.get_clear_url('filter_type')"
                        class="text-white ms-1" style="text-decoration: none;" 
                        title="Clear filter" i18n:attributes="title">
+                       ×
+                    </a>
+                </span>
+                
+                <span tal:condition="date_from" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                    <span i18n:translate="" class="ms-1 me-1">From:</span>
+                    <span tal:content="date_from" class="me-1">2024-01-01</span>
+                    <a href="#" tal:attributes="href python:view.get_clear_url('date_from')"
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear date from filter" i18n:attributes="title">
+                       ×
+                    </a>
+                </span>
+                
+                <span tal:condition="date_to" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                    <span i18n:translate="" class="ms-1 me-1">To:</span>
+                    <span tal:content="date_to" class="me-1">2024-12-31</span>
+                    <a href="#" tal:attributes="href python:view.get_clear_url('date_to')"
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear date to filter" i18n:attributes="title">
                        ×
                     </a>
                 </span>
