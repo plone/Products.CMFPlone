@@ -283,6 +283,9 @@ class RecycleBin:
             else "/".join(original_path.split("/")[:-1])
         )
 
+        # Get the current user who is deleting the item
+        user_id = getSecurityManager().getUser().getId() or "System"
+
         storage_data = {
             "id": item_id,
             "title": item_title,
@@ -290,6 +293,7 @@ class RecycleBin:
             "path": original_path,
             "parent_path": parent_path,
             "deletion_date": datetime.now(),
+            "deleted_by": user_id,
             "size": getattr(obj, "get_size", lambda: 0)(),
             "object": aq_base(obj),  # Store the actual object with no acquisition chain
         }
@@ -323,6 +327,7 @@ class RecycleBin:
                 "path": data.get("path", ""),
                 "parent_path": data.get("parent_path", ""),
                 "deletion_date": data.get("deletion_date"),
+                "deleted_by": data.get("deleted_by", "Unknown"),
                 "size": data.get("size", 0),
             }
 

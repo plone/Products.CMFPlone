@@ -189,13 +189,14 @@
                                     <th i18n:translate="">Type</th>
                                     <th i18n:translate="">Original path</th>
                                     <th i18n:translate="">Deletion date</th>
+                                    <th i18n:translate="">Deleted by</th>
                                     <th i18n:translate="">Size</th>
                                     <th width="80" i18n:translate="">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr tal:condition="not:items">
-                                    <td colspan="7" class="text-center p-4">
+                                    <td colspan="8" class="text-center p-4">
                                         <div class="py-5">
                                             <p class="fw-bold" tal:condition="python:view.get_search_query() or view.get_filter_type()" i18n:translate="">
                                                 No items match your search criteria
@@ -266,6 +267,9 @@
                                     </td>
                                     <td>
                                         <span tal:content="python:context.restrictedTraverse('@@plone').toLocalizedTime(item['deletion_date'], long_format=True)">Deletion date</span>
+                                    </td>
+                                    <td>
+                                        <span tal:content="item/deleted_by">Deleted by</span>
                                     </td>
                                     <td>
                                         <span tal:content="python:view.format_size(item.get('size', 0))">Size</span>

@@ -178,6 +178,8 @@ class RecycleBinContentTests(RecycleBinTestCase):
         self.assertEqual(item_data["type"], "News Item")
         self.assertEqual(item_data["path"], news_path)
         self.assertIsInstance(item_data["deletion_date"], datetime)
+        self.assertIn("deleted_by", item_data)
+        self.assertIsInstance(item_data["deleted_by"], str)
 
         # Remove the original news item from the portal to simulate deletion
         del self.portal[news_id]
@@ -216,6 +218,34 @@ class RecycleBinContentTests(RecycleBinTestCase):
         # Verify the item is not in the listing
         items = self.recyclebin.get_items()
         self.assertEqual(len(items), 0)
+
+    def test_deleted_by_field(self):
+        """Test that deleted_by field is properly stored and retrieved"""
+        # Delete the page
+        page_path = "/".join(self.page.getPhysicalPath())
+        recycle_id = self.recyclebin.add_item(self.page, self.portal, page_path)
+
+        # Verify it was added to the recycle bin
+        self.assertIn(recycle_id, self.recyclebin.storage)
+
+        # Check that deleted_by is stored in the raw storage
+        item_data = self.recyclebin.storage[recycle_id]
+        self.assertIn("deleted_by", item_data)
+        self.assertIsInstance(item_data["deleted_by"], str)
+        self.assertEqual(item_data["deleted_by"], TEST_USER_ID)
+
+        # Check that deleted_by is included in get_items() result
+        items = self.recyclebin.get_items()
+        self.assertEqual(len(items), 1)
+        item = items[0]
+        self.assertIn("deleted_by", item)
+        self.assertEqual(item["deleted_by"], TEST_USER_ID)
+
+        # Check that deleted_by is included in get_item() result
+        retrieved_item = self.recyclebin.get_item(recycle_id)
+        self.assertIsNotNone(retrieved_item)
+        self.assertIn("deleted_by", retrieved_item)
+        self.assertEqual(retrieved_item["deleted_by"], TEST_USER_ID)
 
 
 class RecycleBinFolderTests(RecycleBinTestCase):

@@ -117,6 +117,12 @@
                                                     <span class="ms-1" tal:content="python:context.restrictedTraverse('@@plone').toLocalizedTime(item['deletion_date'], long_format=True)">Date</span>
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <th class="bg-light" i18n:translate="">Deleted by</th>
+                                                <td>
+                                                    <span class="ms-1" tal:content="item/deleted_by">User</span>
+                                                </td>
+                                            </tr>
                                             
                                             <!-- Comment-specific fields -->
                                             <tal:comment-fields condition="python:item.get('type') == 'Discussion Item'">
