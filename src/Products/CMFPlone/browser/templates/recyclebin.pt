@@ -229,6 +229,14 @@
                                              <span i18n:translate="">Comment on:</span>
                                             <span class="ms-1" tal:content="item/content_title">Content title</span>
                                         </div>
+                                        <div tal:condition="python:item.get('children_count', 0) > 0"
+                                             class="text-muted small mt-1" style="font-size: 0.8em;">
+                                            <i class="fa fa-folder-open me-1" aria-hidden="true"></i>
+                                            <span i18n:translate="">Contains</span>
+                                            <span tal:content="python:item.get('children_count', 0)">0</span>
+                                            <span i18n:translate="" tal:condition="python:item.get('children_count', 0) == 1">item</span>
+                                            <span i18n:translate="" tal:condition="python:item.get('children_count', 0) != 1">items</span>
+                                        </div>
                                         
                                         <!-- Show matching child items when search found results in folder contents -->
                                         <div tal:condition="python:item.get('matching_children')" 

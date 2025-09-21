@@ -441,6 +441,10 @@ class RecycleBinView(form.Form):
                 # Add comment-specific information
                 self._process_comment_item(item)
 
+                # Add children count information
+                if "children" in item:
+                    item["children_count"] = len(item["children"])
+
                 # Add image preview information
                 logger.debug(f"Processing image preview for item: {item.get('id')}")
                 image_info = self._get_image_preview_info(item)
@@ -883,6 +887,9 @@ class RecycleBinItemView(form.Form):
             logger.debug(
                 f"Found item: {item.get('title', 'Unknown')} of type {item.get('type', 'Unknown')}"
             )
+            # Add children count information if not already present
+            if "children" in item and "children_count" not in item:
+                item["children_count"] = len(item["children"])
         return item
 
     def get_children(self):
@@ -895,6 +902,11 @@ class RecycleBinItemView(form.Form):
                 child_info = child_data.copy()
                 if "object" in child_info:
                     del child_info["object"]
+                
+                # Add children count information for nested folders
+                if "children" in child_info and "children_count" not in child_info:
+                    child_info["children_count"] = len(child_info["children"])
+                
                 children.append(child_info)
             return children
         return []
