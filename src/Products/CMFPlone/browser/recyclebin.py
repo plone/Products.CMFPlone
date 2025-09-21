@@ -224,6 +224,10 @@ class RecycleBinView(form.Form):
         """Get the has sub-items filter from the request"""
         return self.request.form.get("filter_has_subitems", "")
 
+    def get_filter_language(self):
+        """Get the language filter from the request"""
+        return self.request.form.get("filter_language", "")
+
     def get_sort_labels(self):
         """Get a dictionary of human-readable sort option labels"""
         return {
@@ -277,6 +281,10 @@ class RecycleBinView(form.Form):
         if param_to_remove != "filter_has_subitems" and self.get_filter_has_subitems():
             params.append(f"filter_has_subitems={self.get_filter_has_subitems()}")
 
+        # Add language filter if it exists and is not being removed
+        if param_to_remove != "filter_language" and self.get_filter_language():
+            params.append(f"filter_language={self.get_filter_language()}")
+
         # Add sort option if it exists, is not default, and is not being removed
         sort_option = self.get_sort_option()
         if param_to_remove != "sort_by" and sort_option != "date_desc":
@@ -304,6 +312,15 @@ class RecycleBinView(form.Form):
             if deleted_by:
                 users.add(deleted_by)
         return sorted(list(users))
+
+    def get_available_languages(self, items):
+        """Get a list of all languages present in the recycle bin"""
+        languages = set()
+        for item in items:
+            language = item.get("language")
+            if language:
+                languages.add(language)
+        return sorted(list(languages))
 
     def _check_item_matches_search(self, item, search_query):
         """Check if an item matches the search query.
@@ -505,6 +522,7 @@ class RecycleBinView(form.Form):
         date_to = self.get_date_to()
         filter_deleted_by = self.get_filter_deleted_by()
         filter_has_subitems = self.get_filter_has_subitems()
+        filter_language = self.get_filter_language()
 
         # Create a list of all items that are children of a parent in the recycle bin
         child_items_to_exclude = []
@@ -541,6 +559,10 @@ class RecycleBinView(form.Form):
                         continue
                     elif filter_has_subitems == "without_subitems" and has_children:
                         continue
+
+                # Apply language filtering
+                if filter_language and item.get("language") != filter_language:
+                    continue
 
                 # Check if parent container exists and add flag to the item
                 item["parent_exists"] = self._check_parent_exists(item)

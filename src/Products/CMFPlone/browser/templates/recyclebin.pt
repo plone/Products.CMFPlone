@@ -151,6 +151,23 @@
                                     </select>
                                 </div>
                             </div>
+                            
+                            <!-- Additional Filters Row -->
+                            <div class="row g-2 mt-2">
+                                <!-- Language Filter -->
+                                <div class="col-sm-6" 
+                                     tal:define="all_languages python:view.get_available_languages(view.get_items());
+                                                current_language_filter request/filter_language|nothing">
+                                    <label for="filter-language" class="form-label" i18n:translate="">Language</label>
+                                    <select id="filter-language" name="filter_language" class="form-select" onchange="this.form.submit()">
+                                        <option value="" i18n:translate="">All languages</option>
+                                        <option tal:repeat="language all_languages"
+                                                tal:attributes="value language;
+                                                                selected python:current_language_filter == language"
+                                                tal:content="language">en</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -164,9 +181,10 @@
                          date_to view/get_date_to;
                          filter_deleted_by view/get_filter_deleted_by;
                          filter_has_subitems view/get_filter_has_subitems;
+                         filter_language view/get_filter_language;
                          sort_option view/get_sort_option;
                          sort_labels python:view.get_sort_labels();
-                         has_active_filters python:search_query or filter_type or date_from or date_to or filter_deleted_by or filter_has_subitems or (sort_option != 'date_desc')"
+                         has_active_filters python:search_query or filter_type or date_from or date_to or filter_deleted_by or filter_has_subitems or filter_language or (sort_option != 'date_desc')"
              tal:condition="has_active_filters"
              class="alert alert-info d-flex align-items-center mb-4">
              
@@ -227,6 +245,16 @@
                     <a href="#" tal:attributes="href python:view.get_clear_url('filter_has_subitems')"
                        class="text-white ms-1" style="text-decoration: none;" 
                        title="Clear sub-items filter" i18n:attributes="title">
+                       ×
+                    </a>
+                </span>
+                
+                <span tal:condition="filter_language" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                    <span i18n:translate="" class="ms-1 me-1">Language:</span>
+                    <span tal:content="filter_language" class="me-1">en</span>
+                    <a href="#" tal:attributes="href python:view.get_clear_url('filter_language')"
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear language filter" i18n:attributes="title">
                        ×
                     </a>
                 </span>

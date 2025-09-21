@@ -229,6 +229,7 @@ class RecycleBin:
                 "parent_path": folder_path,
                 "deletion_date": datetime.now(),
                 "size": getattr(child, "get_size", lambda: 0)(),
+                "language": getattr(child, "language", None) or getattr(child, "Language", lambda: None)(),
                 "object": child,
             }
 
@@ -295,6 +296,7 @@ class RecycleBin:
             "deletion_date": datetime.now(),
             "deleted_by": user_id,
             "size": getattr(obj, "get_size", lambda: 0)(),
+            "language": getattr(obj, "language", None) or getattr(obj, "Language", lambda: None)(),
             "object": aq_base(obj),  # Store the actual object with no acquisition chain
         }
 
