@@ -121,6 +121,22 @@
                                            onchange="this.form.submit()" />
                                 </div>
                             </div>
+                            
+                            <!-- Deleted By Filter -->
+                            <div class="row g-2 mt-2">
+                                <div class="col-sm-6" 
+                                     tal:define="all_deleted_by_users python:view.get_available_deleted_by_users(view.get_items());
+                                                current_deleted_by_filter request/filter_deleted_by|nothing">
+                                    <label for="filter-deleted-by" class="form-label" i18n:translate="">Deleted by</label>
+                                    <select id="filter-deleted-by" name="filter_deleted_by" class="form-select" onchange="this.form.submit()">
+                                        <option value="" i18n:translate="">All users</option>
+                                        <option tal:repeat="user_name all_deleted_by_users"
+                                                tal:attributes="value user_name;
+                                                                selected python:current_deleted_by_filter == user_name"
+                                                tal:content="user_name">username</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -132,9 +148,10 @@
                          filter_type view/get_filter_type;
                          date_from view/get_date_from;
                          date_to view/get_date_to;
+                         filter_deleted_by view/get_filter_deleted_by;
                          sort_option view/get_sort_option;
                          sort_labels python:view.get_sort_labels();
-                         has_active_filters python:search_query or filter_type or date_from or date_to or (sort_option != 'date_desc')"
+                         has_active_filters python:search_query or filter_type or date_from or date_to or filter_deleted_by or (sort_option != 'date_desc')"
              tal:condition="has_active_filters"
              class="alert alert-info d-flex align-items-center mb-4">
              
@@ -175,6 +192,16 @@
                     <a href="#" tal:attributes="href python:view.get_clear_url('date_to')"
                        class="text-white ms-1" style="text-decoration: none;" 
                        title="Clear date to filter" i18n:attributes="title">
+                       ×
+                    </a>
+                </span>
+                
+                <span tal:condition="filter_deleted_by" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                    <span i18n:translate="" class="ms-1 me-1">Deleted by:</span>
+                    <span tal:content="filter_deleted_by" class="me-1">username</span>
+                    <a href="#" tal:attributes="href python:view.get_clear_url('filter_deleted_by')"
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear deleted by filter" i18n:attributes="title">
                        ×
                     </a>
                 </span>

@@ -790,6 +790,35 @@ class RecycleBinViewTests(RecycleBinTestCase):
         self.request.form["date_to"] = "2024-12-31"
         self.assertEqual(self.view.get_date_to(), "2024-12-31")
 
+    def test_get_filter_deleted_by(self):
+        """Test get_filter_deleted_by method"""
+        # Test with no filter_deleted_by parameter
+        self.assertEqual(self.view.get_filter_deleted_by(), "")
+        
+        # Test with filter_deleted_by parameter
+        self.request.form["filter_deleted_by"] = "admin"
+        self.assertEqual(self.view.get_filter_deleted_by(), "admin")
+
+    def test_get_available_deleted_by_users(self):
+        """Test get_available_deleted_by_users method"""
+        items = [
+            {"deleted_by": "admin"},
+            {"deleted_by": "user1"},
+            {"deleted_by": "admin"},  # duplicate
+            {"deleted_by": "user2"},
+            {"title": "item without deleted_by"},  # no deleted_by field
+        ]
+        
+        users = self.view.get_available_deleted_by_users(items)
+        expected_users = ["admin", "user1", "user2"]
+        self.assertEqual(users, expected_users)
+
+    def test_get_available_deleted_by_users_empty(self):
+        """Test get_available_deleted_by_users with empty list"""
+        items = []
+        users = self.view.get_available_deleted_by_users(items)
+        self.assertEqual(users, [])
+
     def test_check_item_matches_date_range_no_filter(self):
         """Test date range filtering with no date filters"""
         item = {"deletion_date": datetime.now()}
@@ -887,13 +916,14 @@ class RecycleBinViewTests(RecycleBinTestCase):
         self.assertFalse(self.view._check_item_matches_date_range(item, "2024-01-01", "2024-12-31"))
 
     def test_get_clear_url_with_date_filters(self):
-        """Test clear URL generation with date filters"""
-        # Set up request with multiple filters including dates
+        """Test clear URL generation with date and deleted_by filters"""
+        # Set up request with multiple filters including dates and deleted_by
         self.request.form = {
             "search_query": "test",
             "filter_type": "Document",
             "date_from": "2024-01-01",
             "date_to": "2024-12-31",
+            "filter_deleted_by": "admin",
             "sort_by": "title_asc"
         }
         
@@ -902,6 +932,7 @@ class RecycleBinViewTests(RecycleBinTestCase):
         self.assertIn("search_query=test", clear_url)
         self.assertIn("filter_type=Document", clear_url)
         self.assertIn("date_to=2024-12-31", clear_url)
+        self.assertIn("filter_deleted_by=admin", clear_url)
         self.assertIn("sort_by=title_asc", clear_url)
         self.assertNotIn("date_from", clear_url)
         
@@ -910,5 +941,15 @@ class RecycleBinViewTests(RecycleBinTestCase):
         self.assertIn("search_query=test", clear_url)
         self.assertIn("filter_type=Document", clear_url)
         self.assertIn("date_from=2024-01-01", clear_url)
+        self.assertIn("filter_deleted_by=admin", clear_url)
         self.assertIn("sort_by=title_asc", clear_url)
         self.assertNotIn("date_to", clear_url)
+        
+        # Test clearing filter_deleted_by while preserving others
+        clear_url = self.view.get_clear_url("filter_deleted_by")
+        self.assertIn("search_query=test", clear_url)
+        self.assertIn("filter_type=Document", clear_url)
+        self.assertIn("date_from=2024-01-01", clear_url)
+        self.assertIn("date_to=2024-12-31", clear_url)
+        self.assertIn("sort_by=title_asc", clear_url)
+        self.assertNotIn("filter_deleted_by", clear_url)

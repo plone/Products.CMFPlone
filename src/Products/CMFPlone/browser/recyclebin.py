@@ -216,6 +216,10 @@ class RecycleBinView(form.Form):
         """Get the end date filter from the request"""
         return self.request.form.get("date_to", "")
 
+    def get_filter_deleted_by(self):
+        """Get the deleted by user filter from the request"""
+        return self.request.form.get("filter_deleted_by", "")
+
     def get_sort_labels(self):
         """Get a dictionary of human-readable sort option labels"""
         return {
@@ -261,6 +265,10 @@ class RecycleBinView(form.Form):
         if param_to_remove != "date_to" and self.get_date_to():
             params.append(f"date_to={self.get_date_to()}")
 
+        # Add deleted by filter if it exists and is not being removed
+        if param_to_remove != "filter_deleted_by" and self.get_filter_deleted_by():
+            params.append(f"filter_deleted_by={self.get_filter_deleted_by()}")
+
         # Add sort option if it exists, is not default, and is not being removed
         sort_option = self.get_sort_option()
         if param_to_remove != "sort_by" and sort_option != "date_desc":
@@ -279,6 +287,15 @@ class RecycleBinView(form.Form):
             if item_type:
                 types.add(item_type)
         return sorted(list(types))
+
+    def get_available_deleted_by_users(self, items):
+        """Get a list of all users who have deleted items in the recycle bin"""
+        users = set()
+        for item in items:
+            deleted_by = item.get("deleted_by")
+            if deleted_by:
+                users.add(deleted_by)
+        return sorted(list(users))
 
     def _check_item_matches_search(self, item, search_query):
         """Check if an item matches the search query.
@@ -478,6 +495,7 @@ class RecycleBinView(form.Form):
         search_query = self.get_search_query().lower()
         date_from = self.get_date_from()
         date_to = self.get_date_to()
+        filter_deleted_by = self.get_filter_deleted_by()
 
         # Create a list of all items that are children of a parent in the recycle bin
         child_items_to_exclude = []
@@ -501,6 +519,10 @@ class RecycleBinView(form.Form):
 
                 # Apply date range filtering
                 if not self._check_item_matches_date_range(item, date_from, date_to):
+                    continue
+
+                # Apply deleted by filtering
+                if filter_deleted_by and item.get("deleted_by") != filter_deleted_by:
                     continue
 
                 # Check if parent container exists and add flag to the item
