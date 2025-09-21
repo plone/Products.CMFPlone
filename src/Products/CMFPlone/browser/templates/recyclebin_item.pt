@@ -87,6 +87,18 @@
                                                 <th class="bg-light" width="30%" i18n:translate="">Original ID</th>
                                                 <td class="text-monospace" tal:content="item/id">ID</td>
                                             </tr>
+                                            <tr>
+                                                <th class="bg-light" i18n:translate="">Workflow state</th>
+                                                <td>
+                                                    <span tal:condition="python:item.get('workflow_state')"
+                                                          class="badge rounded-pill"
+                                                          tal:attributes="class python:'badge rounded-pill ' + view.get_workflow_state_class(item.get('workflow_state'))"
+                                                          tal:content="python:view.get_workflow_state_title(item.get('workflow_state'))">Published</span>
+                                                    <span tal:condition="python:not item.get('workflow_state')"
+                                                          class="text-muted"
+                                                          i18n:translate="">Unknown</span>
+                                                </td>
+                                            </tr>
                                             <tr tal:condition="python:view._has_image_preview(item.get('object'))">
                                                 <th class="bg-light" i18n:translate="">Image Preview</th>
                                                 <td>
@@ -220,6 +232,7 @@
                                         <tr>
                                             <th i18n:translate="">Title</th>
                                             <th i18n:translate="">Type</th>
+                                            <th i18n:translate="">Workflow state</th>
                                             <th i18n:translate="">Original path</th>
                                             <th i18n:translate="">Size</th>
                                             <th i18n:translate="">Actions</th>
@@ -240,6 +253,15 @@
                                             </td>
                                             <td>
                                                 <span class="badge rounded-pill bg-light text-dark border" tal:content="child/type">Type</span>
+                                            </td>
+                                            <td>
+                                                <span tal:condition="python:child.get('workflow_state')"
+                                                      class="badge rounded-pill"
+                                                      tal:attributes="class python:'badge rounded-pill ' + view.get_workflow_state_class(child.get('workflow_state'))"
+                                                      tal:content="python:view.get_workflow_state_title(child.get('workflow_state'))">Published</span>
+                                                <span tal:condition="python:not child.get('workflow_state')"
+                                                      class="text-muted"
+                                                      i18n:translate="">Unknown</span>
                                             </td>
                                             <td class="text-monospace small">
                                                 <span tal:content="child/path">Path</span>

@@ -93,6 +93,12 @@
                                         <option value="size_desc" 
                                                 tal:attributes="selected python:current_sort == 'size_desc'"
                                                 i18n:translate="">Size (largest first)</option>
+                                        <option value="workflow_asc" 
+                                                tal:attributes="selected python:current_sort == 'workflow_asc'"
+                                                i18n:translate="">Workflow state (A-Z)</option>
+                                        <option value="workflow_desc" 
+                                                tal:attributes="selected python:current_sort == 'workflow_desc'"
+                                                i18n:translate="">Workflow state (Z-A)</option>
                                     </select>
                                 </div>
                             </div>
@@ -187,6 +193,7 @@
                                     </th>
                                     <th i18n:translate="">Title</th>
                                     <th i18n:translate="">Type</th>
+                                    <th i18n:translate="">Workflow state</th>
                                     <th i18n:translate="">Original path</th>
                                     <th i18n:translate="">Deletion date</th>
                                     <th i18n:translate="">Deleted by</th>
@@ -196,7 +203,7 @@
                             </thead>
                             <tbody>
                                 <tr tal:condition="not:items">
-                                    <td colspan="8" class="text-center p-4">
+                                    <td colspan="9" class="text-center p-4">
                                         <div class="py-5">
                                             <p class="fw-bold" tal:condition="python:view.get_search_query() or view.get_filter_type()" i18n:translate="">
                                                 No items match your search criteria
@@ -264,6 +271,15 @@
                                     </td>
                                     <td>
                                         <span class="badge rounded-pill bg-light text-dark border" tal:content="item/type">Content type</span>
+                                    </td>
+                                    <td>
+                                        <span tal:condition="python:item.get('workflow_state')"
+                                              class="badge rounded-pill"
+                                              tal:attributes="class python:'badge rounded-pill ' + view.get_workflow_state_class(item.get('workflow_state'))"
+                                              tal:content="python:view.get_workflow_state_title(item.get('workflow_state'))">Published</span>
+                                        <span tal:condition="python:not item.get('workflow_state')"
+                                              class="text-muted"
+                                              i18n:translate="">Unknown</span>
                                     </td>
                                     <td class="text-muted small">
                                         <span tal:content="item/path">Original path</span>

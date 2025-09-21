@@ -8,6 +8,7 @@ from plone.namedfile.interfaces import IImage
 from plone.namedfile.interfaces import INamedField
 
 from plone.rfc822.interfaces import IPrimaryFieldInfo
+from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
@@ -219,6 +220,8 @@ class RecycleBinView(form.Form):
             "path_desc": _("Path (Z-A)"),
             "size_asc": _("Size (smallest first)"),
             "size_desc": _("Size (largest first)"),
+            "workflow_asc": _("Workflow state (A-Z)"),
+            "workflow_desc": _("Workflow state (Z-A)"),
         }
 
     def get_clear_url(self, param_to_remove):
@@ -375,6 +378,10 @@ class RecycleBinView(form.Form):
             items.sort(key=lambda x: x.get("size", 0), reverse=True)
         elif sort_option == "date_asc":
             items.sort(key=lambda x: x.get("deletion_date", datetime.now()))
+        elif sort_option == "workflow_asc":
+            items.sort(key=lambda x: x.get("workflow_state", "").lower())
+        elif sort_option == "workflow_desc":
+            items.sort(key=lambda x: x.get("workflow_state", "").lower(), reverse=True)
         # Default: date_desc
         else:
             items.sort(
@@ -453,6 +460,10 @@ class RecycleBinView(form.Form):
                     item.update(image_info)
                 else:
                     logger.debug(f"No image preview info for item: {item.get('id')}")
+
+                # Add workflow state information
+                workflow_state = self._get_workflow_state(item)
+                item["workflow_state"] = workflow_state
 
                 # Apply search query filtering
                 if search_query:
@@ -567,6 +578,105 @@ class RecycleBinView(form.Form):
             'preview_url': preview_url,
             'recycle_id': recycle_id
         }
+
+    def _get_workflow_state(self, item):
+        """Get the workflow state that the item had when it was deleted
+        
+        Args:
+            item: The recycled item data dictionary
+            
+        Returns:
+            String representing the workflow state or None
+        """
+        # Get the full storage data including the object
+        full_item_data = self.recycle_bin.get_item(item.get('recycle_id'))
+        if not full_item_data:
+            return None
+            
+        obj = full_item_data.get('object')
+        if not obj:
+            return None
+            
+        # Try to get the workflow state from the object
+        try:
+            # Get workflow tool
+            workflow_tool = getToolByName(self.context, 'portal_workflow')
+            
+            # Get the workflow state that was preserved
+            # First, try to get it from workflow history (the preserved state)
+            if hasattr(obj, 'workflow_history'):
+                # Get the workflow chain for this object type
+                chains = workflow_tool.getChainFor(obj)
+                if chains:
+                    workflow_id = chains[0]
+                    history = obj.workflow_history.get(workflow_id, ())
+                    if history:
+                        # Get the last state before deletion
+                        last_entry = history[-1]
+                        return last_entry.get('review_state', None)
+                        
+            # If workflow history doesn't work, try getting current state
+            return workflow_tool.getInfoFor(obj, 'review_state', None)
+            
+        except Exception as e:
+            logger.warning(f"Could not determine workflow state for item {item.get('id')}: {e}")
+            return None
+
+    def get_workflow_state_title(self, state):
+        """Get user-friendly title for workflow state
+        
+        Args:
+            state: The workflow state ID
+            
+        Returns:
+            Human-readable title for the state
+        """
+        if not state:
+            return translate(_("Unknown"), context=self.request)
+        
+        # Common workflow state mappings
+        state_titles = {
+            'private': translate(_("Private"), context=self.request),
+            'published': translate(_("Published"), context=self.request),
+            'pending': translate(_("Pending"), context=self.request),
+            'visible': translate(_("Visible"), context=self.request),
+            'internal': translate(_("Internal"), context=self.request),
+            'draft': translate(_("Draft"), context=self.request),
+            'review': translate(_("Review"), context=self.request),
+            'rejected': translate(_("Rejected"), context=self.request),
+            'external': translate(_("External"), context=self.request),
+            'retracted': translate(_("Retracted"), context=self.request),
+        }
+        
+        return state_titles.get(state, state.title() if hasattr(state, 'title') else str(state).title())
+
+    def get_workflow_state_class(self, state):
+        """Get CSS class for workflow state badge
+        
+        Args:
+            state: The workflow state ID
+            
+        Returns:
+            CSS class string for styling the state badge
+        """
+        if not state:
+            return 'bg-secondary text-white'
+        
+        # Color coding for different states
+        state_classes = {
+            'private': 'bg-danger text-white',
+            'published': 'bg-success text-white',
+            'pending': 'bg-warning text-dark', 
+            'visible': 'bg-info text-white',
+            'internal': 'bg-primary text-white',
+            'draft': 'bg-secondary text-white',
+            'review': 'bg-warning text-dark',
+            'rejected': 'bg-danger text-white',
+            'external': 'bg-dark text-white',
+            'retracted': 'bg-secondary text-white',
+        }
+        
+        return state_classes.get(state, 'bg-light text-dark')
 
     def format_size(self, size_bytes):
         """Format size in bytes to human-readable format"""
@@ -890,6 +1000,10 @@ class RecycleBinItemView(form.Form):
             # Add children count information if not already present
             if "children" in item and "children_count" not in item:
                 item["children_count"] = len(item["children"])
+            
+            # Add workflow state information
+            workflow_state = self._get_workflow_state(item)
+            item["workflow_state"] = workflow_state
         return item
 
     def get_children(self):
@@ -900,7 +1014,11 @@ class RecycleBinItemView(form.Form):
             for child_id, child_data in item["children"].items():
                 # Don't include the actual object in the listing
                 child_info = child_data.copy()
+                
+                # Add workflow state information for child before removing object
                 if "object" in child_info:
+                    workflow_state = self._get_workflow_state(child_info)
+                    child_info["workflow_state"] = workflow_state
                     del child_info["object"]
                 
                 # Add children count information for nested folders
@@ -947,6 +1065,100 @@ class RecycleBinItemView(form.Form):
 
             return comment_list
         return []
+
+    def _get_workflow_state(self, item):
+        """Get the workflow state that the item had when it was deleted
+        
+        Args:
+            item: The recycled item data dictionary
+            
+        Returns:
+            String representing the workflow state or None
+        """
+        obj = item.get('object')
+        if not obj:
+            return None
+            
+        # Try to get the workflow state from the object
+        try:
+            # Get workflow tool
+            workflow_tool = getToolByName(self.context, 'portal_workflow')
+            
+            # Get the workflow state that was preserved
+            # First, try to get it from workflow history (the preserved state)
+            if hasattr(obj, 'workflow_history'):
+                # Get the workflow chain for this object type
+                chains = workflow_tool.getChainFor(obj)
+                if chains:
+                    workflow_id = chains[0]
+                    history = obj.workflow_history.get(workflow_id, ())
+                    if history:
+                        # Get the last state before deletion
+                        last_entry = history[-1]
+                        return last_entry.get('review_state', None)
+                        
+            # If workflow history doesn't work, try getting current state
+            return workflow_tool.getInfoFor(obj, 'review_state', None)
+            
+        except Exception as e:
+            logger.warning(f"Could not determine workflow state for item {item.get('id')}: {e}")
+            return None
+
+    def get_workflow_state_title(self, state):
+        """Get user-friendly title for workflow state
+        
+        Args:
+            state: The workflow state ID
+            
+        Returns:
+            Human-readable title for the state
+        """
+        if not state:
+            return translate(_("Unknown"), context=self.request)
+        
+        # Common workflow state mappings
+        state_titles = {
+            'private': translate(_("Private"), context=self.request),
+            'published': translate(_("Published"), context=self.request),
+            'pending': translate(_("Pending"), context=self.request),
+            'visible': translate(_("Visible"), context=self.request),
+            'internal': translate(_("Internal"), context=self.request),
+            'draft': translate(_("Draft"), context=self.request),
+            'review': translate(_("Review"), context=self.request),
+            'rejected': translate(_("Rejected"), context=self.request),
+            'external': translate(_("External"), context=self.request),
+            'retracted': translate(_("Retracted"), context=self.request),
+        }
+        
+        return state_titles.get(state, state.title() if hasattr(state, 'title') else str(state).title())
+
+    def get_workflow_state_class(self, state):
+        """Get CSS class for workflow state badge
+        
+        Args:
+            state: The workflow state ID
+            
+        Returns:
+            CSS class string for styling the state badge
+        """
+        if not state:
+            return 'bg-secondary text-white'
+        
+        # Color coding for different states
+        state_classes = {
+            'private': 'bg-danger text-white',
+            'published': 'bg-success text-white',
+            'pending': 'bg-warning text-dark', 
+            'visible': 'bg-info text-white',
+            'internal': 'bg-primary text-white',
+            'draft': 'bg-secondary text-white',
+            'review': 'bg-warning text-dark',
+            'rejected': 'bg-danger text-white',
+            'external': 'bg-dark text-white',
+            'retracted': 'bg-secondary text-white',
+        }
+        
+        return state_classes.get(state, 'bg-light text-dark')
 
     def format_size(self, size_bytes):
         """Format size in bytes to human-readable format"""
