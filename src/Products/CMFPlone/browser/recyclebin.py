@@ -1,5 +1,4 @@
 from datetime import datetime
-from datetime import date
 from plone.app.contenttypes.behaviors.leadimage import ILeadImageBehavior
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.recyclebin import IRecycleBin
@@ -43,10 +42,172 @@ def _is_error_result(result):
     return isinstance(result, dict) and not result.get("success", True)
 
 
+class RecycleBinWorkflowMixin:
+    """Mixin class providing common workflow state methods for recycle bin views"""
+
+    def _get_workflow_state(self, item):
+        """Get the workflow state that the item had when it was deleted
+        
+        Args:
+            item: The recycled item data dictionary
+            
+        Returns:
+            String representing the workflow state or None
+        """
+        # Try to get the object from the item
+        obj = item.get('object')
+        if not obj:
+            # For RecycleBinView, we need to get the full item data first
+            if hasattr(self, 'recycle_bin') and 'recycle_id' in item:
+                full_item_data = self.recycle_bin.get_item(item.get('recycle_id'))
+                if full_item_data:
+                    obj = full_item_data.get('object')
+        
+        if not obj:
+            return None
+            
+        # Try to get the workflow state from the object
+        try:
+            # Get workflow tool
+            workflow_tool = getToolByName(self.context, 'portal_workflow')
+            
+            # Get the workflow state that was preserved
+            # First, try to get it from workflow history (the preserved state)
+            if hasattr(obj, 'workflow_history'):
+                # Get the workflow chain for this object type
+                chains = workflow_tool.getChainFor(obj)
+                if chains:
+                    workflow_id = chains[0]
+                    history = obj.workflow_history.get(workflow_id, ())
+                    if history:
+                        # Get the last state before deletion
+                        last_entry = history[-1]
+                        return last_entry.get('review_state', None)
+                        
+            # If workflow history doesn't work, try getting current state
+            return workflow_tool.getInfoFor(obj, 'review_state', None)
+            
+        except Exception as e:
+            logger.warning(f"Could not determine workflow state for item {item.get('id')}: {e}")
+            return None
+
+    def get_workflow_state_title(self, state):
+        """Get user-friendly title for workflow state
+        
+        Args:
+            state: The workflow state ID
+            
+        Returns:
+            Human-readable title for the state
+        """
+        if not state:
+            return translate(_("Unknown"), context=self.request)
+        
+        # Common workflow state mappings
+        state_titles = {
+            'private': translate(_("Private"), context=self.request),
+            'published': translate(_("Published"), context=self.request),
+            'pending': translate(_("Pending"), context=self.request),
+            'visible': translate(_("Visible"), context=self.request),
+            'internal': translate(_("Internal"), context=self.request),
+            'draft': translate(_("Draft"), context=self.request),
+            'review': translate(_("Review"), context=self.request),
+            'rejected': translate(_("Rejected"), context=self.request),
+            'external': translate(_("External"), context=self.request),
+            'retracted': translate(_("Retracted"), context=self.request),
+        }
+        
+        return state_titles.get(state, state.title() if hasattr(state, 'title') else str(state).title())
+
+    def get_workflow_state_class(self, state):
+        """Get CSS class for workflow state badge
+        
+        Args:
+            state: The workflow state ID
+            
+        Returns:
+            CSS class string for styling the state badge
+        """
+        if not state:
+            return 'bg-secondary text-white'
+        
+        # Color coding for different states
+        state_classes = {
+            'private': 'bg-danger text-white',
+            'published': 'bg-success text-white',
+            'pending': 'bg-warning text-dark', 
+            'visible': 'bg-info text-white',
+            'internal': 'bg-primary text-white',
+            'draft': 'bg-secondary text-white',
+            'review': 'bg-warning text-dark',
+            'rejected': 'bg-danger text-white',
+            'external': 'bg-dark text-white',
+            'retracted': 'bg-secondary text-white',
+        }
+        
+        return state_classes.get(state, 'bg-light text-dark')
+
+    def format_size(self, size_bytes):
+        """Format size in bytes to human-readable format"""
+        return human_readable_size(size_bytes)
+
+    def _has_image_preview(self, obj):
+        """Check if an object has an image that can be used for preview
+        
+        Args:
+            obj: The recycled object to check
+            
+        Returns:
+            Boolean indicating if the object has an image for preview
+        """
+        if not obj:
+            logger.debug("No object provided to _has_image_preview")
+            return False
+            
+        portal_type = getattr(obj, 'portal_type', None)
+        logger.debug(f"Checking image preview for object with portal_type: {portal_type}")
+            
+        # Check if it's an Image content type
+        if portal_type == 'Image':
+            image_field = getattr(obj, 'image', None)
+            logger.debug(f"Image field found: {image_field is not None}")
+            if image_field:
+                provides_iimage = IImage.providedBy(image_field)
+                has_data = hasattr(image_field, 'data') and image_field.data
+                logger.debug(f"Image field provides IImage: {provides_iimage}, has data: {has_data}")
+                if image_field and (provides_iimage or has_data):
+                    return True
+        
+        # Check for lead image behavior
+        try:
+            lead_image = ILeadImageBehavior(obj, None)
+            if lead_image and lead_image.image:
+                if hasattr(lead_image.image, 'getSize') and lead_image.image.getSize() > 0:
+                    return True
+        except (TypeError, AttributeError):
+            pass
+        
+        # Check for primary image field
+        try:
+            primary = IPrimaryFieldInfo(obj, None) 
+            if primary and INamedField.providedBy(primary.field):
+                if hasattr(primary.value, 'getSize') and primary.value.getSize() > 0:
+                    # Check if it's an image field
+                    if IImage.providedBy(primary.value):
+                        return True
+        except (TypeError, AttributeError):
+            pass
+        
+        # Check for any image field named 'image'
+        image_field = getattr(obj, 'image', None)
+        if image_field and IImage.providedBy(image_field):
+            if hasattr(image_field, 'getSize') and image_field.getSize() > 0:
+                return True
+                
+        return False
 
 
-
-class RecycleBinView(form.Form):
+class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
     """Form view for recycle bin management"""
 
     ignoreContext = True
@@ -637,61 +798,6 @@ class RecycleBinView(form.Form):
         # Apply sorting
         return self._apply_sorting(items, self.get_sort_option())
 
-    def _has_image_preview(self, obj):
-        """Check if an object has an image that can be used for preview
-        
-        Args:
-            obj: The recycled object to check
-            
-        Returns:
-            Boolean indicating if the object has an image for preview
-        """
-        if not obj:
-            logger.debug("No object provided to _has_image_preview")
-            return False
-            
-        portal_type = getattr(obj, 'portal_type', None)
-        logger.debug(f"Checking image preview for object with portal_type: {portal_type}")
-            
-        # Check if it's an Image content type
-        if portal_type == 'Image':
-            image_field = getattr(obj, 'image', None)
-            logger.debug(f"Image field found: {image_field is not None}")
-            if image_field:
-                provides_iimage = IImage.providedBy(image_field)
-                has_data = hasattr(image_field, 'data') and image_field.data
-                logger.debug(f"Image field provides IImage: {provides_iimage}, has data: {has_data}")
-                if image_field and (provides_iimage or has_data):
-                    return True
-        
-        # Check for lead image behavior
-        try:
-            lead_image = ILeadImageBehavior(obj, None)
-            if lead_image and lead_image.image:
-                if hasattr(lead_image.image, 'getSize') and lead_image.image.getSize() > 0:
-                    return True
-        except (TypeError, AttributeError):
-            pass
-        
-        # Check for primary image field
-        try:
-            primary = IPrimaryFieldInfo(obj, None) 
-            if primary and INamedField.providedBy(primary.field):
-                if hasattr(primary.value, 'getSize') and primary.value.getSize() > 0:
-                    # Check if it's an image field
-                    if IImage.providedBy(primary.value):
-                        return True
-        except (TypeError, AttributeError):
-            pass
-        
-        # Check for any image field named 'image'
-        image_field = getattr(obj, 'image', None)
-        if image_field and IImage.providedBy(image_field):
-            if hasattr(image_field, 'getSize') and image_field.getSize() > 0:
-                return True
-                
-        return False
-
     def _get_image_preview_info(self, item):
         """Get image preview information for a recycled item
         
@@ -723,112 +829,11 @@ class RecycleBinView(form.Form):
             'recycle_id': recycle_id
         }
 
-    def _get_workflow_state(self, item):
-        """Get the workflow state that the item had when it was deleted
-        
-        Args:
-            item: The recycled item data dictionary
-            
-        Returns:
-            String representing the workflow state or None
-        """
-        # Get the full storage data including the object
-        full_item_data = self.recycle_bin.get_item(item.get('recycle_id'))
-        if not full_item_data:
-            return None
-            
-        obj = full_item_data.get('object')
-        if not obj:
-            return None
-            
-        # Try to get the workflow state from the object
-        try:
-            # Get workflow tool
-            workflow_tool = getToolByName(self.context, 'portal_workflow')
-            
-            # Get the workflow state that was preserved
-            # First, try to get it from workflow history (the preserved state)
-            if hasattr(obj, 'workflow_history'):
-                # Get the workflow chain for this object type
-                chains = workflow_tool.getChainFor(obj)
-                if chains:
-                    workflow_id = chains[0]
-                    history = obj.workflow_history.get(workflow_id, ())
-                    if history:
-                        # Get the last state before deletion
-                        last_entry = history[-1]
-                        return last_entry.get('review_state', None)
-                        
-            # If workflow history doesn't work, try getting current state
-            return workflow_tool.getInfoFor(obj, 'review_state', None)
-            
-        except Exception as e:
-            logger.warning(f"Could not determine workflow state for item {item.get('id')}: {e}")
-            return None
 
-    def get_workflow_state_title(self, state):
-        """Get user-friendly title for workflow state
-        
-        Args:
-            state: The workflow state ID
-            
-        Returns:
-            Human-readable title for the state
-        """
-        if not state:
-            return translate(_("Unknown"), context=self.request)
-        
-        # Common workflow state mappings
-        state_titles = {
-            'private': translate(_("Private"), context=self.request),
-            'published': translate(_("Published"), context=self.request),
-            'pending': translate(_("Pending"), context=self.request),
-            'visible': translate(_("Visible"), context=self.request),
-            'internal': translate(_("Internal"), context=self.request),
-            'draft': translate(_("Draft"), context=self.request),
-            'review': translate(_("Review"), context=self.request),
-            'rejected': translate(_("Rejected"), context=self.request),
-            'external': translate(_("External"), context=self.request),
-            'retracted': translate(_("Retracted"), context=self.request),
-        }
-        
-        return state_titles.get(state, state.title() if hasattr(state, 'title') else str(state).title())
-
-    def get_workflow_state_class(self, state):
-        """Get CSS class for workflow state badge
-        
-        Args:
-            state: The workflow state ID
-            
-        Returns:
-            CSS class string for styling the state badge
-        """
-        if not state:
-            return 'bg-secondary text-white'
-        
-        # Color coding for different states
-        state_classes = {
-            'private': 'bg-danger text-white',
-            'published': 'bg-success text-white',
-            'pending': 'bg-warning text-dark', 
-            'visible': 'bg-info text-white',
-            'internal': 'bg-primary text-white',
-            'draft': 'bg-secondary text-white',
-            'review': 'bg-warning text-dark',
-            'rejected': 'bg-danger text-white',
-            'external': 'bg-dark text-white',
-            'retracted': 'bg-secondary text-white',
-        }
-        
-        return state_classes.get(state, 'bg-light text-dark')
-
-    def format_size(self, size_bytes):
-        """Format size in bytes to human-readable format"""
-        return human_readable_size(size_bytes)
 
 
 @implementer(IPublishTraverse)
-class RecycleBinItemView(form.Form):
+class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
     """View for managing individual recycled items"""
 
     ignoreContext = True
@@ -839,61 +844,6 @@ class RecycleBinItemView(form.Form):
     def __init__(self, context, request):
         super().__init__(context, request)
         self.recycle_bin = getUtility(IRecycleBin)
-
-    def _has_image_preview(self, obj):
-        """Check if an object has an image that can be used for preview
-        
-        Args:
-            obj: The recycled object to check
-            
-        Returns:
-            Boolean indicating if the object has an image for preview
-        """
-        if not obj:
-            logger.debug("No object provided to _has_image_preview")
-            return False
-            
-        portal_type = getattr(obj, 'portal_type', None)
-        logger.debug(f"Checking image preview for object with portal_type: {portal_type}")
-            
-        # Check if it's an Image content type
-        if portal_type == 'Image':
-            image_field = getattr(obj, 'image', None)
-            logger.debug(f"Image field found: {image_field is not None}")
-            if image_field:
-                provides_iimage = IImage.providedBy(image_field)
-                has_data = hasattr(image_field, 'data') and image_field.data
-                logger.debug(f"Image field provides IImage: {provides_iimage}, has data: {has_data}")
-                if image_field and (provides_iimage or has_data):
-                    return True
-        
-        # Check for lead image behavior
-        try:
-            lead_image = ILeadImageBehavior(obj, None)
-            if lead_image and lead_image.image:
-                if hasattr(lead_image.image, 'getSize') and lead_image.image.getSize() > 0:
-                    return True
-        except (TypeError, AttributeError):
-            pass
-        
-        # Check for primary image field
-        try:
-            primary = IPrimaryFieldInfo(obj, None) 
-            if primary and INamedField.providedBy(primary.field):
-                if hasattr(primary.value, 'getSize') and primary.value.getSize() > 0:
-                    # Check if it's an image field
-                    if IImage.providedBy(primary.value):
-                        return True
-        except (TypeError, AttributeError):
-            pass
-        
-        # Check for any image field named 'image'
-        image_field = getattr(obj, 'image', None)
-        if image_field and IImage.providedBy(image_field):
-            if hasattr(image_field, 'getSize') and image_field.getSize() > 0:
-                return True
-                
-        return False
 
     def publishTraverse(self, request, name):
         """Handle URLs like /recyclebin-item/[item_id]"""
@@ -1210,103 +1160,7 @@ class RecycleBinItemView(form.Form):
             return comment_list
         return []
 
-    def _get_workflow_state(self, item):
-        """Get the workflow state that the item had when it was deleted
-        
-        Args:
-            item: The recycled item data dictionary
-            
-        Returns:
-            String representing the workflow state or None
-        """
-        obj = item.get('object')
-        if not obj:
-            return None
-            
-        # Try to get the workflow state from the object
-        try:
-            # Get workflow tool
-            workflow_tool = getToolByName(self.context, 'portal_workflow')
-            
-            # Get the workflow state that was preserved
-            # First, try to get it from workflow history (the preserved state)
-            if hasattr(obj, 'workflow_history'):
-                # Get the workflow chain for this object type
-                chains = workflow_tool.getChainFor(obj)
-                if chains:
-                    workflow_id = chains[0]
-                    history = obj.workflow_history.get(workflow_id, ())
-                    if history:
-                        # Get the last state before deletion
-                        last_entry = history[-1]
-                        return last_entry.get('review_state', None)
-                        
-            # If workflow history doesn't work, try getting current state
-            return workflow_tool.getInfoFor(obj, 'review_state', None)
-            
-        except Exception as e:
-            logger.warning(f"Could not determine workflow state for item {item.get('id')}: {e}")
-            return None
 
-    def get_workflow_state_title(self, state):
-        """Get user-friendly title for workflow state
-        
-        Args:
-            state: The workflow state ID
-            
-        Returns:
-            Human-readable title for the state
-        """
-        if not state:
-            return translate(_("Unknown"), context=self.request)
-        
-        # Common workflow state mappings
-        state_titles = {
-            'private': translate(_("Private"), context=self.request),
-            'published': translate(_("Published"), context=self.request),
-            'pending': translate(_("Pending"), context=self.request),
-            'visible': translate(_("Visible"), context=self.request),
-            'internal': translate(_("Internal"), context=self.request),
-            'draft': translate(_("Draft"), context=self.request),
-            'review': translate(_("Review"), context=self.request),
-            'rejected': translate(_("Rejected"), context=self.request),
-            'external': translate(_("External"), context=self.request),
-            'retracted': translate(_("Retracted"), context=self.request),
-        }
-        
-        return state_titles.get(state, state.title() if hasattr(state, 'title') else str(state).title())
-
-    def get_workflow_state_class(self, state):
-        """Get CSS class for workflow state badge
-        
-        Args:
-            state: The workflow state ID
-            
-        Returns:
-            CSS class string for styling the state badge
-        """
-        if not state:
-            return 'bg-secondary text-white'
-        
-        # Color coding for different states
-        state_classes = {
-            'private': 'bg-danger text-white',
-            'published': 'bg-success text-white',
-            'pending': 'bg-warning text-dark', 
-            'visible': 'bg-info text-white',
-            'internal': 'bg-primary text-white',
-            'draft': 'bg-secondary text-white',
-            'review': 'bg-warning text-dark',
-            'rejected': 'bg-danger text-white',
-            'external': 'bg-dark text-white',
-            'retracted': 'bg-secondary text-white',
-        }
-        
-        return state_classes.get(state, 'bg-light text-dark')
-
-    def format_size(self, size_bytes):
-        """Format size in bytes to human-readable format"""
-        return human_readable_size(size_bytes)
 
 
 @implementer(IPublishTraverse)
