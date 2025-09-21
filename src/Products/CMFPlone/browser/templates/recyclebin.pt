@@ -33,7 +33,7 @@
                 <form method="get" tal:attributes="action string:${context/absolute_url}/@@recyclebin"
                       class="search-box">
                     <div class="row g-3">
-                        <!-- Search field -->
+                        <!-- Search field and additional filters -->
                         <div class="col-md-6">
                             <label for="search-query" class="form-label" i18n:translate="">Search items</label>
                             <div class="input-group">
@@ -46,9 +46,40 @@
                                     <span i18n:translate="">Search</span>
                                 </button>
                             </div>
+                            
+                            <!-- Additional filters below search -->
+                            <div class="row g-2 mt-2">
+                                <!-- Deleted By Filter -->
+                                <div class="col-sm-6" 
+                                     tal:define="all_deleted_by_users python:view.get_available_deleted_by_users(view.get_items());
+                                                current_deleted_by_filter request/filter_deleted_by|nothing">
+                                    <label for="filter-deleted-by" class="form-label" i18n:translate="">Deleted by</label>
+                                    <select id="filter-deleted-by" name="filter_deleted_by" class="form-select" onchange="this.form.submit()">
+                                        <option value="" i18n:translate="">All users</option>
+                                        <option tal:repeat="user_name all_deleted_by_users"
+                                                tal:attributes="value user_name;
+                                                                selected python:current_deleted_by_filter == user_name"
+                                                tal:content="user_name">username</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Language Filter -->
+                                <div class="col-sm-6" 
+                                     tal:define="all_languages python:view.get_available_languages(view.get_items());
+                                                current_language_filter request/filter_language|nothing">
+                                    <label for="filter-language" class="form-label" i18n:translate="">Language</label>
+                                    <select id="filter-language" name="filter_language" class="form-select" onchange="this.form.submit()">
+                                        <option value="" i18n:translate="">All languages</option>
+                                        <option tal:repeat="language all_languages"
+                                                tal:attributes="value language;
+                                                                selected python:current_language_filter == language"
+                                                tal:content="language">en</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         
-                        <!-- Filter & Sort Options -->
+                        <!-- Filter Options -->
                         <div class="col-md-6">
                             <div class="row g-2">
                                 <!-- Type Filter -->
@@ -65,40 +96,17 @@
                                     </select>
                                 </div>
                                 
-                                <!-- Sort Order -->
-                                <div class="col-sm-6" tal:define="current_sort request/sort_by|string:date_desc">
-                                    <label for="sort-by" class="form-label" i18n:translate="">Sort by</label>
-                                    <select id="sort-by" name="sort_by" class="form-select" onchange="this.form.submit()">
-                                        <option value="date_desc" 
-                                                tal:attributes="selected python:current_sort == 'date_desc'"
-                                                i18n:translate="">Newest first</option>
-                                        <option value="date_asc" 
-                                                tal:attributes="selected python:current_sort == 'date_asc'"
-                                                i18n:translate="">Oldest first</option>
-                                        <option value="title_asc" 
-                                                tal:attributes="selected python:current_sort == 'title_asc'"
-                                                i18n:translate="">Title (A-Z)</option>
-                                        <option value="title_desc" 
-                                                tal:attributes="selected python:current_sort == 'title_desc'"
-                                                i18n:translate="">Title (Z-A)</option>
-                                        <option value="type_asc" 
-                                                tal:attributes="selected python:current_sort == 'type_asc'"
-                                                i18n:translate="">Type (A-Z)</option>
-                                        <option value="type_desc" 
-                                                tal:attributes="selected python:current_sort == 'type_desc'"
-                                                i18n:translate="">Type (Z-A)</option>
-                                        <option value="size_asc" 
-                                                tal:attributes="selected python:current_sort == 'size_asc'"
-                                                i18n:translate="">Size (smallest first)</option>
-                                        <option value="size_desc" 
-                                                tal:attributes="selected python:current_sort == 'size_desc'"
-                                                i18n:translate="">Size (largest first)</option>
-                                        <option value="workflow_asc" 
-                                                tal:attributes="selected python:current_sort == 'workflow_asc'"
-                                                i18n:translate="">Workflow state (A-Z)</option>
-                                        <option value="workflow_desc" 
-                                                tal:attributes="selected python:current_sort == 'workflow_desc'"
-                                                i18n:translate="">Workflow state (Z-A)</option>
+                                <!-- Workflow State Filter -->
+                                <div class="col-sm-6" 
+                                     tal:define="all_workflow_states python:view.get_available_workflow_states(view.get_items());
+                                                current_workflow_state_filter request/filter_workflow_state|nothing">
+                                    <label for="filter-workflow-state" class="form-label" i18n:translate="">Workflow state</label>
+                                    <select id="filter-workflow-state" name="filter_workflow_state" class="form-select" onchange="this.form.submit()">
+                                        <option value="" i18n:translate="">All workflow states</option>
+                                        <option tal:repeat="workflow_state all_workflow_states"
+                                                tal:attributes="value workflow_state;
+                                                                selected python:current_workflow_state_filter == workflow_state"
+                                                tal:content="python:view.get_workflow_state_title(workflow_state)">Published</option>
                                     </select>
                                 </div>
                             </div>
@@ -122,66 +130,27 @@
                                 </div>
                             </div>
                             
-                            <!-- Deleted By Filter -->
-                            <div class="row g-2 mt-2">
-                                <div class="col-sm-6" 
-                                     tal:define="all_deleted_by_users python:view.get_available_deleted_by_users(view.get_items());
-                                                current_deleted_by_filter request/filter_deleted_by|nothing">
-                                    <label for="filter-deleted-by" class="form-label" i18n:translate="">Deleted by</label>
-                                    <select id="filter-deleted-by" name="filter_deleted_by" class="form-select" onchange="this.form.submit()">
-                                        <option value="" i18n:translate="">All users</option>
-                                        <option tal:repeat="user_name all_deleted_by_users"
-                                                tal:attributes="value user_name;
-                                                                selected python:current_deleted_by_filter == user_name"
-                                                tal:content="user_name">username</option>
-                                    </select>
-                                </div>
-                                
-                                <!-- Has Sub-items Filter -->
-                                <div class="col-sm-6" tal:define="current_subitems_filter request/filter_has_subitems|nothing">
-                                    <label for="filter-has-subitems" class="form-label" i18n:translate="">Sub-items</label>
-                                    <select id="filter-has-subitems" name="filter_has_subitems" class="form-select" onchange="this.form.submit()">
-                                        <option value="" i18n:translate="">Show all items</option>
-                                        <option value="with_subitems" 
-                                                tal:attributes="selected python:current_subitems_filter == 'with_subitems'"
-                                                i18n:translate="">Only items with sub-items</option>
-                                        <option value="without_subitems" 
-                                                tal:attributes="selected python:current_subitems_filter == 'without_subitems'"
-                                                i18n:translate="">Only items without sub-items</option>
-                                    </select>
-                                </div>
-                            </div>
+
                             
-                            <!-- Additional Filters Row -->
-                            <div class="row g-2 mt-2">
-                                <!-- Language Filter -->
-                                <div class="col-sm-6" 
-                                     tal:define="all_languages python:view.get_available_languages(view.get_items());
-                                                current_language_filter request/filter_language|nothing">
-                                    <label for="filter-language" class="form-label" i18n:translate="">Language</label>
-                                    <select id="filter-language" name="filter_language" class="form-select" onchange="this.form.submit()">
-                                        <option value="" i18n:translate="">All languages</option>
-                                        <option tal:repeat="language all_languages"
-                                                tal:attributes="value language;
-                                                                selected python:current_language_filter == language"
-                                                tal:content="language">en</option>
-                                    </select>
-                                </div>
-                                
-                                <!-- Workflow State Filter -->
-                                <div class="col-sm-6" 
-                                     tal:define="all_workflow_states python:view.get_available_workflow_states(view.get_items());
-                                                current_workflow_state_filter request/filter_workflow_state|nothing">
-                                    <label for="filter-workflow-state" class="form-label" i18n:translate="">Workflow state</label>
-                                    <select id="filter-workflow-state" name="filter_workflow_state" class="form-select" onchange="this.form.submit()">
-                                        <option value="" i18n:translate="">All workflow states</option>
-                                        <option tal:repeat="workflow_state all_workflow_states"
-                                                tal:attributes="value workflow_state;
-                                                                selected python:current_workflow_state_filter == workflow_state"
-                                                tal:content="python:view.get_workflow_state_title(workflow_state)">Published</option>
-                                    </select>
-                                </div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- Sub-items toggle switch - spans full width -->
+                    <div class="row mt-3 pt-3 border-top" tal:define="current_subitems_filter request/filter_has_subitems|nothing">
+                        <div class="col-12">
+                            <div class="form-check form-switch">
+                                <input type="checkbox" name="filter_has_subitems" value="with_subitems" 
+                                       id="filter-has-subitems" class="form-check-input" role="switch"
+                                       tal:attributes="checked python:current_subitems_filter == 'with_subitems'"
+                                       onchange="this.form.submit()" />
+                                <label for="filter-has-subitems" class="form-check-label fw-medium" i18n:translate="">
+                                    Show only items with sub-items
+                                </label>
                             </div>
+                            <small class="text-muted ms-4" i18n:translate="">
+                                Filter to show only folders and containers
+                            </small>
                         </div>
                     </div>
                 </form>
@@ -303,14 +272,59 @@
         <!-- Main content card -->
         <div class="card mb-4">
             <div class="card-header bg-light">
-                <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
                     <div>
                         <span class="ms-2" i18n:translate="">Deleted items</span>
                     </div>
-                    <div tal:define="items view/get_items">
-                        <span class="badge bg-secondary" tal:content="python:len(items)">0</span>
-                        <span i18n:translate="">items</span>
-                    </div>
+                    
+                    <!-- Sort Options in table header -->
+                    <form method="get" tal:attributes="action string:${context/absolute_url}/@@recyclebin"
+                          class="d-flex align-items-center">
+                        <!-- Hidden inputs to preserve other parameters -->
+                        <input type="hidden" name="search_query" tal:attributes="value request/search_query|nothing" tal:condition="request/search_query|nothing" />
+                        <input type="hidden" name="filter_type" tal:attributes="value request/filter_type|nothing" tal:condition="request/filter_type|nothing" />
+                        <input type="hidden" name="date_from" tal:attributes="value request/date_from|nothing" tal:condition="request/date_from|nothing" />
+                        <input type="hidden" name="date_to" tal:attributes="value request/date_to|nothing" tal:condition="request/date_to|nothing" />
+                        <input type="hidden" name="filter_deleted_by" tal:attributes="value request/filter_deleted_by|nothing" tal:condition="request/filter_deleted_by|nothing" />
+                        <input type="hidden" name="filter_has_subitems" tal:attributes="value request/filter_has_subitems|nothing" tal:condition="request/filter_has_subitems|nothing" />
+                        <input type="hidden" name="filter_language" tal:attributes="value request/filter_language|nothing" tal:condition="request/filter_language|nothing" />
+                        <input type="hidden" name="filter_workflow_state" tal:attributes="value request/filter_workflow_state|nothing" tal:condition="request/filter_workflow_state|nothing" />
+                        
+                        <label for="sort-by" class="form-label me-2 mb-0 text-muted small" i18n:translate="">Sort by:</label>
+                        <select id="sort-by" name="sort_by" class="form-select form-select-sm" style="width: auto; min-width: 150px;" onchange="this.form.submit()"
+                                tal:define="current_sort request/sort_by|string:date_desc">
+                            <option value="date_desc" 
+                                    tal:attributes="selected python:current_sort == 'date_desc'"
+                                    i18n:translate="">Newest first</option>
+                            <option value="date_asc" 
+                                    tal:attributes="selected python:current_sort == 'date_asc'"
+                                    i18n:translate="">Oldest first</option>
+                            <option value="title_asc" 
+                                    tal:attributes="selected python:current_sort == 'title_asc'"
+                                    i18n:translate="">Title (A-Z)</option>
+                            <option value="title_desc" 
+                                    tal:attributes="selected python:current_sort == 'title_desc'"
+                                    i18n:translate="">Title (Z-A)</option>
+                            <option value="type_asc" 
+                                    tal:attributes="selected python:current_sort == 'type_asc'"
+                                    i18n:translate="">Type (A-Z)</option>
+                            <option value="type_desc" 
+                                    tal:attributes="selected python:current_sort == 'type_desc'"
+                                    i18n:translate="">Type (Z-A)</option>
+                            <option value="size_asc" 
+                                    tal:attributes="selected python:current_sort == 'size_asc'"
+                                    i18n:translate="">Size (smallest first)</option>
+                            <option value="size_desc" 
+                                    tal:attributes="selected python:current_sort == 'size_desc'"
+                                    i18n:translate="">Size (largest first)</option>
+                            <option value="workflow_asc" 
+                                    tal:attributes="selected python:current_sort == 'workflow_asc'"
+                                    i18n:translate="">Workflow state (A-Z)</option>
+                            <option value="workflow_desc" 
+                                    tal:attributes="selected python:current_sort == 'workflow_desc'"
+                                    i18n:translate="">Workflow state (Z-A)</option>
+                        </select>
+                    </form>
                 </div>
             </div>
             
