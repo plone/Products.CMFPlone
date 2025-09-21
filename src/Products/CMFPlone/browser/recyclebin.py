@@ -220,6 +220,10 @@ class RecycleBinView(form.Form):
         """Get the deleted by user filter from the request"""
         return self.request.form.get("filter_deleted_by", "")
 
+    def get_filter_has_subitems(self):
+        """Get the has sub-items filter from the request"""
+        return self.request.form.get("filter_has_subitems", "")
+
     def get_sort_labels(self):
         """Get a dictionary of human-readable sort option labels"""
         return {
@@ -268,6 +272,10 @@ class RecycleBinView(form.Form):
         # Add deleted by filter if it exists and is not being removed
         if param_to_remove != "filter_deleted_by" and self.get_filter_deleted_by():
             params.append(f"filter_deleted_by={self.get_filter_deleted_by()}")
+
+        # Add has sub-items filter if it exists and is not being removed
+        if param_to_remove != "filter_has_subitems" and self.get_filter_has_subitems():
+            params.append(f"filter_has_subitems={self.get_filter_has_subitems()}")
 
         # Add sort option if it exists, is not default, and is not being removed
         sort_option = self.get_sort_option()
@@ -496,6 +504,7 @@ class RecycleBinView(form.Form):
         date_from = self.get_date_from()
         date_to = self.get_date_to()
         filter_deleted_by = self.get_filter_deleted_by()
+        filter_has_subitems = self.get_filter_has_subitems()
 
         # Create a list of all items that are children of a parent in the recycle bin
         child_items_to_exclude = []
@@ -524,6 +533,14 @@ class RecycleBinView(form.Form):
                 # Apply deleted by filtering
                 if filter_deleted_by and item.get("deleted_by") != filter_deleted_by:
                     continue
+
+                # Apply has sub-items filtering
+                if filter_has_subitems:
+                    has_children = "children" in item and item["children"]
+                    if filter_has_subitems == "with_subitems" and not has_children:
+                        continue
+                    elif filter_has_subitems == "without_subitems" and has_children:
+                        continue
 
                 # Check if parent container exists and add flag to the item
                 item["parent_exists"] = self._check_parent_exists(item)

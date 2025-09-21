@@ -136,6 +136,20 @@
                                                 tal:content="user_name">username</option>
                                     </select>
                                 </div>
+                                
+                                <!-- Has Sub-items Filter -->
+                                <div class="col-sm-6" tal:define="current_subitems_filter request/filter_has_subitems|nothing">
+                                    <label for="filter-has-subitems" class="form-label" i18n:translate="">Sub-items</label>
+                                    <select id="filter-has-subitems" name="filter_has_subitems" class="form-select" onchange="this.form.submit()">
+                                        <option value="" i18n:translate="">Show all items</option>
+                                        <option value="with_subitems" 
+                                                tal:attributes="selected python:current_subitems_filter == 'with_subitems'"
+                                                i18n:translate="">Only items with sub-items</option>
+                                        <option value="without_subitems" 
+                                                tal:attributes="selected python:current_subitems_filter == 'without_subitems'"
+                                                i18n:translate="">Only items without sub-items</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -149,9 +163,10 @@
                          date_from view/get_date_from;
                          date_to view/get_date_to;
                          filter_deleted_by view/get_filter_deleted_by;
+                         filter_has_subitems view/get_filter_has_subitems;
                          sort_option view/get_sort_option;
                          sort_labels python:view.get_sort_labels();
-                         has_active_filters python:search_query or filter_type or date_from or date_to or filter_deleted_by or (sort_option != 'date_desc')"
+                         has_active_filters python:search_query or filter_type or date_from or date_to or filter_deleted_by or filter_has_subitems or (sort_option != 'date_desc')"
              tal:condition="has_active_filters"
              class="alert alert-info d-flex align-items-center mb-4">
              
@@ -202,6 +217,16 @@
                     <a href="#" tal:attributes="href python:view.get_clear_url('filter_deleted_by')"
                        class="text-white ms-1" style="text-decoration: none;" 
                        title="Clear deleted by filter" i18n:attributes="title">
+                       ×
+                    </a>
+                </span>
+                
+                <span tal:condition="filter_has_subitems" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                    <span tal:content="python:'With sub-items' if filter_has_subitems == 'with_subitems' else 'Without sub-items'" 
+                          i18n:translate="" class="ms-1 me-1">Sub-items filter</span>
+                    <a href="#" tal:attributes="href python:view.get_clear_url('filter_has_subitems')"
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear sub-items filter" i18n:attributes="title">
                        ×
                     </a>
                 </span>
