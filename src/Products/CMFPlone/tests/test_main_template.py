@@ -47,7 +47,7 @@ class TestMainTemplate(unittest.TestCase):
     def test_main_template_auto(self):
         """Test, if an AJAX request leads to the ajax_main_template.pt."""
         registry = getUtility(IRegistry)
-        registry["plone.use_ajax"] = True
+        registry["plone.use_ajax_main_template"] = True
         self.request.environ["HTTP_X_REQUESTED_WITH"] = "XMLHttpRequest"
         view = getMultiAdapter((self.portal, self.request), name="main_template")
         self.assertIn("/ajax_main_template.pt", view.template.filename)
@@ -57,7 +57,7 @@ class TestMainTemplate(unittest.TestCase):
         normal main_template and not the ajax_main_template.pt.
         """
         registry = getUtility(IRegistry)
-        registry["plone.use_ajax"] = True
+        registry["plone.use_ajax_main_template"] = True
         self.request.environ["HTTP_X_REQUESTED_WITH"] = "XMLHttpRequest"
         self.request.form["ajax_load"] = "False"
         view = getMultiAdapter((self.portal, self.request), name="main_template")
@@ -66,7 +66,7 @@ class TestMainTemplate(unittest.TestCase):
     def test_main_template_no_ajax_1(self):
         """Test a falsy ajax_load value does not lead to ajax_main_template.pt."""
         registry = getUtility(IRegistry)
-        registry["plone.use_ajax"] = True
+        registry["plone.use_ajax_main_template"] = True
         self.request.environ["HTTP_X_REQUESTED_WITH"] = "XMLHttpRequest"
         self.request.form["ajax_load"] = False
         view = getMultiAdapter((self.portal, self.request), name="main_template")
@@ -75,7 +75,7 @@ class TestMainTemplate(unittest.TestCase):
     def test_main_template_no_ajax_2(self):
         """Test a falsy ajax_load value does not lead to ajax_main_template.pt."""
         registry = getUtility(IRegistry)
-        registry["plone.use_ajax"] = True
+        registry["plone.use_ajax_main_template"] = True
         self.request.environ["HTTP_X_REQUESTED_WITH"] = "XMLHttpRequest"
         self.request.form["ajax_load"] = "0"
         view = getMultiAdapter((self.portal, self.request), name="main_template")
@@ -84,7 +84,7 @@ class TestMainTemplate(unittest.TestCase):
     def test_main_template_no_ajax_3(self):
         """Test a falsy ajax_load value does not lead to ajax_main_template.pt."""
         registry = getUtility(IRegistry)
-        registry["plone.use_ajax"] = True
+        registry["plone.use_ajax_main_template"] = True
         self.request.environ["HTTP_X_REQUESTED_WITH"] = "XMLHttpRequest"
         self.request.form["ajax_load"] = "off"
         view = getMultiAdapter((self.portal, self.request), name="main_template")
