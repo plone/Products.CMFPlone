@@ -2,7 +2,6 @@ from datetime import datetime
 from plone.app.contenttypes.behaviors.leadimage import ILeadImageBehavior
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.recyclebin import IRecycleBin
-from plone.base.interfaces.recyclebin import IRecycleBinItemForm
 from plone.base.utils import human_readable_size
 from plone.namedfile.interfaces import IImage
 from plone.namedfile.interfaces import INamedField
@@ -15,11 +14,13 @@ from z3c.form import button
 from z3c.form import field
 from z3c.form import form
 from zExceptions import NotFound
+from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.interface import implementer
+from zope.interface import Interface
 from zope.publisher.interfaces import IPublishTraverse
 
 import logging
@@ -27,6 +28,29 @@ import uuid
 
 
 logger = logging.getLogger(__name__)
+
+
+class IRecycleBinForm(Interface):
+    """Schema for the recycle bin form"""
+
+    selected_items = schema.List(
+        title=_("Selected Items"),
+        description=_("Selected items for operations"),
+        value_type=schema.TextLine(),
+        required=False,
+    )
+
+
+class IRecycleBinItemForm(Interface):
+    """Schema for the recycle bin item form"""
+
+    target_container = schema.TextLine(
+        title=_("Target container"),
+        description=_(
+            "Enter the path to the container where the item should be restored (e.g., /folder1/subfolder)"
+        ),
+        required=False,
+    )
 
 
 def _is_error_result(result):
