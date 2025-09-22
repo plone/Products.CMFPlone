@@ -21,7 +21,7 @@ class MainTemplate(BrowserView):
 
     @property
     def template(self):
-        if self.plone_layout.use_ajax():
+        if self.plone_layout.use_ajax:
             return self.ajax_template
         else:
             return self.main_template
