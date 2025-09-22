@@ -1,11 +1,7 @@
-Automatically set the ajax_load request parameter.
+Automatically use the ajax main template for XHR requests, if set.
 
-Most JavaScript libraries send the "HTTP_X_REQUESTED_WITH" request header set
-to "XMLHttpRequest" for AJAX requests. For AJAX requests we set the "ajax_load"
-parameter on the request object before traversing, if it was not already set.
+If the `plone.use_ajax_main_template` registry parameter is set to True, a XHR
+request is detected and the `ajax_load` does not evaluate to `False`, the ajax
+main template is used automatically for XHR requests.
 
-This is further used to switch to the ajax_main_template and to turn off Diazo
-transformations.
-
-For AJAX requests which need a full-page rendering this automatic setting can
-be turned off by adding `?ajax_load=0` as query string to the URL.
+This can potentially speed up sites with a lot of AJAX requests.
