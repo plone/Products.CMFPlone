@@ -156,7 +156,7 @@ class RecycleBin:
         """Get recycle bin settings from registry"""
         registry = getUtility(IRegistry)
         return registry.forInterface(
-            IRecycleBinControlPanelSettings, prefix="plone-recyclebin"
+            IRecycleBinControlPanelSettings, prefix="recyclebin-controlpanel"
         )
 
     def is_enabled(self):

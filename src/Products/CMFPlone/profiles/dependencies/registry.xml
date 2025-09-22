@@ -127,12 +127,7 @@
     </value>
   </record>
   <records interface="Products.CMFPlone.controlpanel.browser.recyclebin.IRecycleBinControlPanelSettings"
-           prefix="plone-recyclebin"
-  >
-    <value key="recycling_enabled">True</value>
-    <value key="retention_period">30</value>
-    <value key="maximum_size">100</value>
-    <value key="restore_to_initial_state">False</value>
-  </records>
+           prefix="recyclebin-controlpanel"
+  />
 
 </registry>

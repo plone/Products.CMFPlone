@@ -207,7 +207,7 @@ class RecycleBinTestCase(unittest.TestCase, RecycleBinAssertionMixin):
     def _configure_recyclebin_settings(self, **overrides):
         """Configure recycle bin settings with sensible test defaults"""
         settings = self.registry.forInterface(
-            IRecycleBinControlPanelSettings, prefix="plone-recyclebin"
+            IRecycleBinControlPanelSettings, prefix="recyclebin-controlpanel"
         )
 
         # Default test settings

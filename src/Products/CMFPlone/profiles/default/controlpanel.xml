@@ -353,13 +353,13 @@
     <permission>Inspect Relations</permission>
   </configlet>
 
-  <configlet action_id="plone-recyclebin"
-             appId="plone-recyclebin"
+  <configlet action_id="recyclebin-controlpanel"
+             appId="recyclebin-controlpanel"
              category="plone-general"
              condition_expr=""
              icon_expr="string:trash"
              title="Recycle bin settings"
-             url_expr="string:${portal_url}/@@plone-recyclebin"
+             url_expr="string:${portal_url}/@@recyclebin-controlpanel"
              visible="True"
   >
     <permission>Manage portal</permission>

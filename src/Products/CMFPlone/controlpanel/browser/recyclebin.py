@@ -7,7 +7,7 @@ from plone.z3cform import layout
 
 class RecyclebinControlPanelForm(RegistryEditForm):
     schema = IRecycleBinControlPanelSettings
-    schema_prefix = "plone-recyclebin"
+    schema_prefix = "recyclebin-controlpanel"
     label = _("Recycle bin settings")
     description = _("Settings for the Plone recycle bin")
 
