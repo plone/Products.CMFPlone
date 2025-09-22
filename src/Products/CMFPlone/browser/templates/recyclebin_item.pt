@@ -58,10 +58,11 @@
                             <span tal:condition="python:item.get('type') == 'CommentTree'" i18n:translate="">Comment thread</span>
                             <span tal:condition="python:item.get('type') == 'Discussion Item'" i18n:translate="">Comment</span>
                             <span i18n:translate="">deleted from</span>
-                            <strong tal:condition="python:context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
+                            <strong tal:condition="python:context.unrestrictedTraverse(item['parent_path'].split('/'), None)"
+                                    tal:define="parent_obj python:context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
                                 <a tal:attributes="href item/parent_path" 
                                    class="alert-link"
-                                   tal:content="python:context.unrestrictedTraverse(item['parent_path'].split('/'), default='Content Object').Title()">
+                                   tal:content="python:getattr(parent_obj, 'Title', lambda: parent_obj.getId() if hasattr(parent_obj, 'getId') else 'Content Object')()">
                                    Content title
                                 </a>
                             </strong>

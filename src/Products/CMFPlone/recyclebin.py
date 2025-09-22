@@ -12,6 +12,7 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
+from zope.component import queryUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
 
@@ -180,32 +181,19 @@ class RecycleBin:
                 else getattr(obj, "title", "Unknown")
             )
         elif item_type == "CommentTree":
-            # For comment trees, generate a title including the number of comments
+            # Delegate to plone.app.discussion utility for comment tree titles
+            try:
+                from plone.app.discussion.recyclebin import ICommentRecycleBinSupport
+
+                support = queryUtility(ICommentRecycleBinSupport)
+                if support is not None:
+                    return support.get_comment_tree_title(obj)
+            except ImportError:
+                pass
+
+            # Fallback to basic title if utility is not available
             comment_count = len(obj.get("comments", []))
-            root_comment = None
-
-            # Try to find the root comment to get its text
-            for comment, _ in obj.get("comments", []):
-                if getattr(comment, "comment_id", None) == obj.get("root_comment_id"):
-                    root_comment = comment
-                    break
-
-            # If we found the root comment, get a preview of its text
-            comment_preview = ""
-            if root_comment and hasattr(root_comment, "text"):
-                # Take the first 30 characters of the text as a preview
-                text = getattr(root_comment, "text", "")
-                if text:
-                    if len(text) > 30:
-                        comment_preview = text[:30] + "..."
-                    else:
-                        comment_preview = text
-
-            # Create a meaningful title
-            if comment_preview:
-                return f'Comment thread: "{comment_preview}" ({comment_count} comments)'
-            else:
-                return f"Comment thread ({comment_count} comments)"
+            return f"Comment thread ({comment_count} comments)"
         else:
             # For regular items, use Title() if available
             return (
@@ -614,295 +602,53 @@ class RecycleBin:
 
         return restored_obj
 
-    def _find_parent_comment(
-        self, comment, original_in_reply_to, conversation, id_mapping=None
-    ):
-        """Helper method to find parent comment during restoration"""
-        id_mapping = id_mapping or {}
-        if original_in_reply_to is None or original_in_reply_to == 0:
-            return False, None
-
-        # First check if parent exists directly (not previously deleted)
-        if original_in_reply_to in conversation:
-            return True, original_in_reply_to
-
-        # Then check if it was restored with a different ID using mapping
-        if str(original_in_reply_to) in id_mapping:
-            # Use the ID mapping to find the new ID
-            new_parent_id = id_mapping[str(original_in_reply_to)]
-            return True, new_parent_id
-
-        # Look through all comments for original_id matching our in_reply_to
-        for comment_id in conversation.keys():
-            comment_obj = conversation[comment_id]
-            comment_original_id = getattr(comment_obj, "original_id", None)
-            if comment_original_id is not None and str(comment_original_id) == str(
-                original_in_reply_to
-            ):
-                # Found the parent with a new ID
-                return True, comment_id
-
-        # No parent found
-        return False, None
-
     def _restore_comment(self, item_id, item_data, target_container=None):
         """Enhanced restoration method for comments that preserves reply relationships"""
-        obj = item_data["object"]
-        site = self._get_context()
-
-        # Try to find the original conversation
-        parent_path = item_data["parent_path"]
+        # Delegate to plone.app.discussion utility for comment restoration
         try:
-            conversation = site.unrestrictedTraverse(parent_path)
-        except (KeyError, AttributeError):
-            logger.warning(
-                f"Cannot restore comment {item_id}: conversation no longer exists at {parent_path}"
-            )
-            return None
+            from plone.app.discussion.recyclebin import ICommentRecycleBinSupport
 
-        # Restore comment back to conversation
-        from plone.app.discussion.interfaces import IConversation
+            support = queryUtility(ICommentRecycleBinSupport)
+            if support is not None:
+                restored_comment = support.restore_comment(item_data, target_container)
+                if restored_comment:
+                    # Remove from recycle bin only if restoration was successful
+                    del self.storage[item_id]
+                return restored_comment
+        except ImportError:
+            logger.warning("plone.app.discussion not available for comment restoration")
 
-        if not IConversation.providedBy(conversation):
-            logger.warning(
-                f"Cannot restore comment {item_id}: parent is not a conversation"
-            )
-            return None
-
-        # Store the original comment ID before restoration
-        original_id = getattr(obj, "comment_id", None)
-        original_in_reply_to = getattr(obj, "in_reply_to", None)
-
-        # Track comment relationships using a request-based dictionary
-        from zope.globalrequest import getRequest
-
-        request = getRequest()
-        if request and not hasattr(request, "_comment_restore_mapping"):
-            request._comment_restore_mapping = {}
-
-        # Initialize mapping if needed
-        mapping = getattr(request, "_comment_restore_mapping", {})
-        conversation_path = "/".join(conversation.getPhysicalPath())
-        if conversation_path not in mapping:
-            mapping[conversation_path] = {}
-
-        id_mapping = mapping[conversation_path]
-
-        # Check if the parent comment exists in the conversation
-        parent_found, new_parent_id = self._find_parent_comment(
-            obj, original_in_reply_to, conversation, id_mapping
+        # If utility is not available, return None to indicate failure
+        logger.warning(
+            f"Cannot restore comment {item_id}: plone.app.discussion utility not available"
         )
-
-        # Update the in_reply_to reference or make it a top-level comment
-        if parent_found:
-            obj.in_reply_to = new_parent_id
-        else:
-            # If no parent was found, make this a top-level comment
-            obj.in_reply_to = None
-
-        # Store the original ID for future reference
-        if not hasattr(obj, "original_id"):
-            obj.original_id = original_id
-
-        # Add the comment to the conversation
-        new_id = conversation.addComment(obj)
-
-        # Store the mapping of original ID to new ID
-        if original_id is not None:
-            id_mapping[str(original_id)] = new_id
-
-        # Remove from recycle bin
-        del self.storage[item_id]
-
-        # Return the restored comment
-        return conversation[new_id]
+        return None
 
     def _restore_comment_tree(self, item_id, item_data, target_container=None):
         """Restore a comment tree with all its replies while preserving relationships"""
-        comment_tree = item_data["object"]
-        root_comment_id = comment_tree.get("root_comment_id")
-        comments_to_restore = comment_tree.get("comments", [])
-
-        logger.info(
-            f"Attempting to restore comment tree {item_id} with root_comment_id: {root_comment_id}"
-        )
-        logger.info(f"Found {len(comments_to_restore)} comments to restore")
-
-        if not comments_to_restore:
-            logger.warning(
-                f"Cannot restore comment tree {item_id}: no comments found in tree"
-            )
-            return None
-
-        site = self._get_context()
-
-        # Try to find the original conversation
-        parent_path = item_data["parent_path"]
+        # Delegate to plone.app.discussion utility for comment tree restoration
         try:
-            conversation = site.unrestrictedTraverse(parent_path)
-        except (KeyError, AttributeError):
-            logger.warning(
-                f"Cannot restore comment tree {item_id}: conversation no longer exists at {parent_path}"
-            )
-            return None
+            from plone.app.discussion.recyclebin import ICommentRecycleBinSupport
 
-        # Restore comments back to conversation
-        from plone.app.discussion.interfaces import IConversation
-
-        if not IConversation.providedBy(conversation):
-            logger.warning(
-                f"Cannot restore comment tree {item_id}: parent is not a conversation"
-            )
-            return None
-
-        # First extract all comments and create a mapping of original IDs
-        # to comment objects for quick lookup
-        comment_dict = {}
-        id_mapping = {}  # Will map original IDs to new IDs
-
-        # Process comments to build reference dictionary
-        for comment_obj, _ in comments_to_restore:
-            # Store original values we'll need for restoration
-            original_id = getattr(comment_obj, "comment_id", None)
-            original_in_reply_to = getattr(comment_obj, "in_reply_to", None)
-
-            logger.info(
-                f"Processing comment with ID: {original_id}, in_reply_to: {original_in_reply_to}"
-            )
-
-            comment_obj.original_id = (
-                original_id  # Store original ID for future reference
-            )
-
-            # Store in dictionary for quick access
-            comment_dict[original_id] = {
-                "comment": comment_obj,
-                "in_reply_to": original_in_reply_to,
-            }
-
-        # Find the root comment
-        root_comment = None
-        if root_comment_id in comment_dict:
-            root_comment = comment_dict[root_comment_id]["comment"]
-        else:
-            # Try to find a top-level comment to use as root
-            for comment_id, comment_data in comment_dict.items():
-                in_reply_to = comment_data["in_reply_to"]
-                if in_reply_to == 0 or in_reply_to is None:
-                    # Found a top-level comment, use as root
-                    root_comment = comment_data["comment"]
-                    root_comment_id = comment_id
-                    break
-
-            # If still no root, use the first comment
-            if not root_comment and comment_dict:
-                first_key = list(comment_dict.keys())[0]
-                root_comment = comment_dict[first_key]["comment"]
-                root_comment_id = first_key
-
-        if not root_comment:
-            logger.error(
-                f"Cannot restore comment tree {item_id}: no valid root comment could be determined"
-            )
-            return None
-
-        # Check if the parent comment exists
-        original_in_reply_to = getattr(root_comment, "in_reply_to", None)
-        parent_found, new_parent_id = self._find_parent_comment(
-            root_comment, original_in_reply_to, conversation
-        )
-
-        if parent_found:
-            root_comment.in_reply_to = new_parent_id
-        else:
-            root_comment.in_reply_to = None
-
-        # Add the root comment to the conversation
-        new_root_id = conversation.addComment(root_comment)
-        id_mapping[root_comment_id] = new_root_id
-
-        # Now restore all child comments, skipping the root comment
-        remaining_comments = {
-            k: v for k, v in comment_dict.items() if k != root_comment_id
-        }
-
-        # Track successfully restored comments
-        restored_count = 1  # Start with 1 for root
-
-        # Keep trying to restore comments until no more can be restored
-        max_passes = 10  # Limit passes to avoid infinite loops
-        current_pass = 0
-
-        while remaining_comments and current_pass < max_passes:
-            current_pass += 1
-            restored_in_pass = 0
-
-            # Copy keys to avoid modifying dict during iteration
-            comment_ids = list(remaining_comments.keys())
-
-            for comment_id in comment_ids:
-                comment_data = remaining_comments[comment_id]
-                comment_obj = comment_data["comment"]
-                original_in_reply_to = comment_data["in_reply_to"]
-
-                # Try to find the parent in our mapping
-                parent_found = False
-                new_parent_id = None
-
-                # If original parent was the root comment
-                if str(original_in_reply_to) == str(root_comment_id):
-                    parent_found = True
-                    new_parent_id = new_root_id
-                # Or if it was another already restored comment
-                elif str(original_in_reply_to) in id_mapping:
-                    parent_found = True
-                    new_parent_id = id_mapping[str(original_in_reply_to)]
-                # Or try to find it directly in the conversation
-                else:
-                    parent_found, new_parent_id = self._find_parent_comment(
-                        comment_obj, original_in_reply_to, conversation, id_mapping
-                    )
-
-                if parent_found:
-                    # We found the parent, update reference and restore
-                    comment_obj.in_reply_to = new_parent_id
-
-                    # Store original ID for future reference
-                    if not hasattr(comment_obj, "original_id"):
-                        comment_obj.original_id = comment_id
-
-                    # Add to conversation
-                    try:
-                        new_id = conversation.addComment(comment_obj)
-                        id_mapping[comment_id] = new_id
-                        del remaining_comments[comment_id]
-                        restored_in_pass += 1
-                    except Exception as e:
-                        logger.error(f"Error restoring comment {comment_id}: {e}")
-
-            # If we didn't restore any comments in this pass and still have comments left,
-            # something is wrong with the parent references
-            if restored_in_pass == 0 and remaining_comments:
-                # Make any remaining comments top-level comments
-                restored_in_pass += self._handle_orphaned_comments(
-                    remaining_comments, conversation, id_mapping
+            support = queryUtility(ICommentRecycleBinSupport)
+            if support is not None:
+                restored_comment = support.restore_comment_tree(
+                    item_data, target_container
                 )
+                if restored_comment:
+                    # Remove from recycle bin only if restoration was successful
+                    del self.storage[item_id]
+                return restored_comment
+        except ImportError:
+            logger.warning(
+                "plone.app.discussion not available for comment tree restoration"
+            )
 
-                # Break out of the loop since we've tried our best
-                break
-
-            restored_count += restored_in_pass
-
-            # If all comments were restored, exit the loop
-            if not remaining_comments:
-                break
-
-        # Clean up and return
-        del self.storage[item_id]
-        logger.info(f"Restored {restored_count} comments from comment tree {item_id}")
-
-        # Return the root comment as the result
-        return conversation.get(new_root_id) if new_root_id in conversation else None
+        # If utility is not available, return None to indicate failure
+        logger.warning(
+            f"Cannot restore comment tree {item_id}: plone.app.discussion utility not available"
+        )
+        return None
 
     def purge_item(self, item_id) -> bool:
         """Permanently delete an item from the recycle bin
@@ -1047,37 +793,3 @@ class RecycleBin:
 
         except Exception as e:
             logger.error(f"Error enforcing size limits: {str(e)}")
-
-    def _handle_orphaned_comments(self, remaining_comments, conversation, id_mapping):
-        """Handle comments whose parents cannot be found
-
-        Makes orphaned comments top-level comments rather than losing them.
-
-        Args:
-            remaining_comments: Dictionary of remaining comments to process
-            conversation: The conversation container
-            id_mapping: Mapping of original IDs to new IDs
-        """
-        orphaned_count = 0
-        for comment_id, comment_data in list(remaining_comments.items()):
-            try:
-                comment_obj = comment_data["comment"]
-                # Make it a top-level comment
-                comment_obj.in_reply_to = None
-
-                # Ensure original_id is preserved
-                if not hasattr(comment_obj, "original_id"):
-                    comment_obj.original_id = comment_id
-
-                # Add to conversation
-                new_id = conversation.addComment(comment_obj)
-                id_mapping[comment_id] = new_id
-                del remaining_comments[comment_id]
-                orphaned_count += 1
-                logger.info(
-                    f"Restored orphaned comment {comment_id} as top-level comment"
-                )
-            except Exception as e:
-                logger.error(f"Error restoring orphaned comment {comment_id}: {str(e)}")
-
-        return orphaned_count
