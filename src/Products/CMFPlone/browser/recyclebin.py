@@ -701,9 +701,9 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
             case "date_asc":
                 items.sort(key=lambda x: x.get("deletion_date", datetime.now()))
             case "workflow_asc":
-                items.sort(key=lambda x: x.get("workflow_state", "").lower())
+                items.sort(key=lambda x: (x.get("workflow_state") or "").lower())
             case "workflow_desc":
-                items.sort(key=lambda x: x.get("workflow_state", "").lower(), reverse=True)
+                items.sort(key=lambda x: (x.get("workflow_state") or "").lower(), reverse=True)
             case _:
                 # Default: date_desc
                 items.sort(
