@@ -68,7 +68,24 @@
                                     </select>
                                 </div>
                                 
-                                <!-- Language Filter -->
+                                <!-- Sub-items Filter -->
+                                <div class="col-sm-6" 
+                                     tal:define="current_subitems_filter request/filter_has_subitems|nothing">
+                                    <label for="filter-has-subitems" class="form-label" i18n:translate="">Contains sub-items</label>
+                                    <select id="filter-has-subitems" name="filter_has_subitems" class="form-select" onchange="this.form.submit()">
+                                        <option value="" i18n:translate="">All items</option>
+                                        <option value="with_subitems"
+                                                tal:attributes="selected python:current_subitems_filter == 'with_subitems'"
+                                                i18n:translate="">With sub-items</option>
+                                        <option value="without_subitems"
+                                                tal:attributes="selected python:current_subitems_filter == 'without_subitems'"
+                                                i18n:translate="">Without sub-items</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Language Filter -->
+                            <div class="row g-2 mt-2">
                                 <div class="col-sm-6" 
                                      tal:define="all_languages python:view.get_available_languages(view.get_items());
                                                 current_language_filter request/filter_language|nothing">
@@ -134,28 +151,7 @@
                                            onchange="this.form.submit()" />
                                 </div>
                             </div>
-                            
 
-                            
-
-                        </div>
-                    </div>
-                    
-                    <!-- Sub-items toggle switch - spans full width -->
-                    <div class="row mt-3 pt-3 border-top" tal:define="current_subitems_filter request/filter_has_subitems|nothing">
-                        <div class="col-12">
-                            <div class="form-check form-switch">
-                                <input type="checkbox" name="filter_has_subitems" value="with_subitems" 
-                                       id="filter-has-subitems" class="form-check-input" role="switch"
-                                       tal:attributes="checked python:current_subitems_filter == 'with_subitems'"
-                                       onchange="this.form.submit()" />
-                                <label for="filter-has-subitems" class="form-check-label fw-medium" i18n:translate="">
-                                    Show only items with sub-items
-                                </label>
-                            </div>
-                            <small class="text-muted ms-4" i18n:translate="">
-                                Filter to show only folders and containers
-                            </small>
                         </div>
                     </div>
                     
@@ -628,8 +624,8 @@
     const filterElements = document.querySelectorAll(
       'select[name="filter_type"], select[name="filter_deleted_by"], ' +
       'select[name="filter_language"], select[name="filter_workflow_state"], ' +
-      'input[name="date_from"], input[name="date_to"], ' +
-      'input[name="filter_has_subitems"]'
+      'select[name="filter_has_subitems"], ' +
+      'input[name="date_from"], input[name="date_to"]'
     );
     
     filterElements.forEach(element => {
