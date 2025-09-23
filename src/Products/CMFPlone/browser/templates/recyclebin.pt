@@ -556,14 +556,9 @@
 </metal:main>
 
 <metal:js fill-slot="javascript_head_slot">
-<!-- Hidden element for translatable strings -->
-<div id="recyclebin-i18n-messages" style="display: none;">
-  <span id="recyclebin-empty-message" i18n:translate="">Are you sure you want to permanently delete all items in the recycle bin?</span>
-</div>
-
 <script>
-  // Get confirmation message from translatable DOM element
-  const recyclebinEmptyMessage = document.getElementById('recyclebin-empty-message').textContent;
+  // Confirmation message when emptying recycle bin
+  const recyclebinEmptyMessage = 'Are you sure you want to permanently delete all items in the recycle bin?';
 
   document.addEventListener('DOMContentLoaded', function() {
     // Select all checkbox functionality
