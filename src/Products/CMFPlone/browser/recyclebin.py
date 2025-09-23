@@ -1092,6 +1092,9 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
                                 # Remove child from parent's children dict
                                 del item_data["children"][child_id]
                                 item_data["children_count"] = len(item_data["children"])
+                                
+                                # Persist the changes to ZODB
+                                self.recycle_bin.storage[self.item_id] = item_data
 
                                 message = translate(
                                     _(
