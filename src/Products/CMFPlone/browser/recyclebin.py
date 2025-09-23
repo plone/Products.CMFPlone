@@ -95,20 +95,7 @@ class RecycleBinWorkflowMixin:
             # Get workflow tool
             workflow_tool = getToolByName(self.context, "portal_workflow")
 
-            # Get the workflow state that was preserved
-            # First, try to get it from workflow history (the preserved state)
-            if hasattr(obj, "workflow_history"):
-                # Get the workflow chain for this object type
-                chains = workflow_tool.getChainFor(obj)
-                if chains:
-                    workflow_id = chains[0]
-                    history = obj.workflow_history.get(workflow_id, ())
-                    if history:
-                        # Get the last state before deletion
-                        last_entry = history[-1]
-                        return last_entry.get("review_state", None)
-
-            # If workflow history doesn't work, try getting current state
+            # Get the workflow state 
             return workflow_tool.getInfoFor(obj, "review_state", None)
 
         except Exception as e:
