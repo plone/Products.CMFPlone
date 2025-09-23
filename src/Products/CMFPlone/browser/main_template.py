@@ -34,8 +34,8 @@ class MainTemplate(BrowserView):
         if "ajax_load" in self.request:
             return is_truthy(self.request.get("ajax_load", False))
 
-        if not self.plone_layout.is_xhr:
-            # Not and ajax request. Use the normal main template.
+        if not self.plone_layout.is_ajax:
+            # Not an ajax request. Use the normal main template.
             return False
 
         # Automatic AJAX detection needs to be turned on.
