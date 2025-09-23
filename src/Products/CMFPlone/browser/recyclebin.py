@@ -11,6 +11,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
+from urllib.parse import urlencode
 from z3c.form import button
 from z3c.form import field
 from z3c.form import form
@@ -456,51 +457,52 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
             URL string with the specified parameter removed
         """
         base_url = f"{self.context.absolute_url()}/@@recyclebin"
-        params = []
+        params = {}
 
         # Add search query if it exists and is not being removed
         if param_to_remove != "search_query" and self.get_search_query():
-            params.append(f"search_query={self.get_search_query()}")
+            params["search_query"] = self.get_search_query()
 
         # Add filter type if it exists and is not being removed
         if param_to_remove != "filter_type" and self.get_filter_type():
-            params.append(f"filter_type={self.get_filter_type()}")
+            params["filter_type"] = self.get_filter_type()
 
         # Add date from filter if it exists and is not being removed
         if param_to_remove != "date_from" and self.get_date_from():
-            params.append(f"date_from={self.get_date_from()}")
+            params["date_from"] = self.get_date_from()
 
         # Add date to filter if it exists and is not being removed
         if param_to_remove != "date_to" and self.get_date_to():
-            params.append(f"date_to={self.get_date_to()}")
+            params["date_to"] = self.get_date_to()
 
         # Add deleted by filter if it exists and is not being removed
         if param_to_remove != "filter_deleted_by" and self.get_filter_deleted_by():
-            params.append(f"filter_deleted_by={self.get_filter_deleted_by()}")
+            params["filter_deleted_by"] = self.get_filter_deleted_by()
 
         # Add has sub-items filter if it exists and is not being removed
         if param_to_remove != "filter_has_subitems" and self.get_filter_has_subitems():
-            params.append(f"filter_has_subitems={self.get_filter_has_subitems()}")
+            params["filter_has_subitems"] = self.get_filter_has_subitems()
 
         # Add language filter if it exists and is not being removed
         if param_to_remove != "filter_language" and self.get_filter_language():
-            params.append(f"filter_language={self.get_filter_language()}")
+            params["filter_language"] = self.get_filter_language()
 
         # Add workflow state filter if it exists and is not being removed
         if (
             param_to_remove != "filter_workflow_state"
             and self.get_filter_workflow_state()
         ):
-            params.append(f"filter_workflow_state={self.get_filter_workflow_state()}")
+            params["filter_workflow_state"] = self.get_filter_workflow_state()
 
         # Add sort option if it exists, is not default, and is not being removed
         sort_option = self.get_sort_option()
         if param_to_remove != "sort_by" and sort_option != "date_desc":
-            params.append(f"sort_by={sort_option}")
+            params["sort_by"] = sort_option
 
-        # Construct final URL
+        # Construct final URL using urlencode for proper URL encoding
         if params:
-            return f"{base_url}?{'&'.join(params)}"
+            query_string = urlencode(params)
+            return f"{base_url}?{query_string}"
         return base_url
 
     def get_available_types(self, items):
