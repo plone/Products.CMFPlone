@@ -1,6 +1,7 @@
 from datetime import datetime
 from plone.app.contenttypes.behaviors.leadimage import ILeadImageBehavior
 from plone.base import PloneMessageFactory as _
+from plone.base.batch import Batch
 from plone.base.interfaces.recyclebin import IRecycleBin
 from plone.base.utils import human_readable_size
 from plone.namedfile.interfaces import IImage
@@ -253,6 +254,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
     def __init__(self, context, request):
         super().__init__(context, request)
         self.recycle_bin = getUtility(IRecycleBin)
+        self._batch = None
 
     @button.buttonAndHandler(_("Restore Selected"), name="restore")
     def handle_restore(self, action):
@@ -426,6 +428,32 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
     def get_filter_workflow_state(self):
         """Get the workflow state filter from the request"""
         return self.request.form.get("filter_workflow_state", "")
+
+    def get_b_start(self):
+        """Get the batch start index from the request"""
+        return int(self.request.form.get("b_start", 0))
+
+    def get_b_size(self):
+        """Get the batch size from the request (default 20)"""
+        return int(self.request.form.get("b_size", 20))
+
+    def get_batch(self):
+        """Get a batch of items for pagination"""
+        if self._batch is None:
+            # Get all items first (this applies filters and sorting)
+            all_items = self.get_items()
+            
+            # Create batch with pagination
+            b_start = self.get_b_start()
+            b_size = self.get_b_size()
+            
+            self._batch = Batch(all_items, size=b_size, start=b_start, orphan=1)
+        
+        return self._batch
+    
+    def get_page_size_options(self):
+        """Get available page size options"""
+        return [10, 20, 50, 100]
 
     def get_sort_labels(self):
         """Get a dictionary of human-readable sort option labels"""

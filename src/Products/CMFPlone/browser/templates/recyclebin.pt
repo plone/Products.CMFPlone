@@ -153,6 +153,10 @@
                             </small>
                         </div>
                     </div>
+                    
+                    <!-- Hidden inputs to preserve batch parameters during searches -->
+                    <input type="hidden" name="b_start" tal:attributes="value request/b_start|nothing" tal:condition="request/b_start|nothing" />
+                    <input type="hidden" name="b_size" tal:attributes="value request/b_size|nothing" tal:condition="request/b_size|nothing" />
                 </form>
             </div>
         </div>
@@ -273,8 +277,15 @@
         <div class="card mb-4">
             <div class="card-header bg-light">
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                    <div>
+                    <div tal:define="batch view/get_batch">
                         <span class="ms-2" i18n:translate="">Deleted items</span>
+                        <span tal:condition="python:batch and batch.sequence_length > 0" class="text-muted small ms-2"
+                              tal:define="page_start python:(batch.pagenumber - 1) * batch.pagesize + 1;
+                                          page_end python:min(batch.pagenumber * batch.pagesize, batch.sequence_length)">
+                            (<span tal:content="page_start">1</span>-<span tal:content="page_end">20</span> 
+                            <span i18n:translate="">of</span> 
+                            <span tal:content="batch/sequence_length">50</span>)
+                        </span>
                     </div>
                     
                     <!-- Sort Options in table header -->
@@ -289,6 +300,8 @@
                         <input type="hidden" name="filter_has_subitems" tal:attributes="value request/filter_has_subitems|nothing" tal:condition="request/filter_has_subitems|nothing" />
                         <input type="hidden" name="filter_language" tal:attributes="value request/filter_language|nothing" tal:condition="request/filter_language|nothing" />
                         <input type="hidden" name="filter_workflow_state" tal:attributes="value request/filter_workflow_state|nothing" tal:condition="request/filter_workflow_state|nothing" />
+                        <input type="hidden" name="b_start" tal:attributes="value request/b_start|nothing" tal:condition="request/b_start|nothing" />
+                        <input type="hidden" name="b_size" tal:attributes="value request/b_size|nothing" tal:condition="request/b_size|nothing" />
                         
                         <label for="sort-by" class="form-label me-2 mb-0 text-muted small" i18n:translate="">Sort by:</label>
                         <select id="sort-by" name="sort_by" class="form-select form-select-sm" style="width: auto; min-width: 150px;" onchange="this.form.submit()"
@@ -325,14 +338,40 @@
                                     i18n:translate="">Workflow state (Z-A)</option>
                         </select>
                     </form>
+                    
+                    <!-- Page size selector -->
+                    <form method="get" tal:attributes="action string:${context/absolute_url}/@@recyclebin"
+                          class="d-flex align-items-center ms-3">
+                        <!-- Hidden inputs to preserve other parameters -->
+                        <input type="hidden" name="search_query" tal:attributes="value request/search_query|nothing" tal:condition="request/search_query|nothing" />
+                        <input type="hidden" name="filter_type" tal:attributes="value request/filter_type|nothing" tal:condition="request/filter_type|nothing" />
+                        <input type="hidden" name="date_from" tal:attributes="value request/date_from|nothing" tal:condition="request/date_from|nothing" />
+                        <input type="hidden" name="date_to" tal:attributes="value request/date_to|nothing" tal:condition="request/date_to|nothing" />
+                        <input type="hidden" name="filter_deleted_by" tal:attributes="value request/filter_deleted_by|nothing" tal:condition="request/filter_deleted_by|nothing" />
+                        <input type="hidden" name="filter_has_subitems" tal:attributes="value request/filter_has_subitems|nothing" tal:condition="request/filter_has_subitems|nothing" />
+                        <input type="hidden" name="filter_language" tal:attributes="value request/filter_language|nothing" tal:condition="request/filter_language|nothing" />
+                        <input type="hidden" name="filter_workflow_state" tal:attributes="value request/filter_workflow_state|nothing" tal:condition="request/filter_workflow_state|nothing" />
+                        <input type="hidden" name="sort_by" tal:attributes="value request/sort_by|nothing" tal:condition="request/sort_by|nothing" />
+                        
+                        <label for="page-size" class="form-label me-2 mb-0 text-muted small" i18n:translate="">Show:</label>
+                        <select id="page-size" name="b_size" class="form-select form-select-sm" style="width: auto; min-width: 80px;" onchange="this.form.submit()"
+                                tal:define="current_size view/get_b_size;
+                                            page_sizes view/get_page_size_options">
+                            <option tal:repeat="size page_sizes"
+                                    tal:attributes="value size;
+                                                    selected python:current_size == size"
+                                    tal:content="size">20</option>
+                        </select>
+                    </form>
                 </div>
             </div>
             
             <!-- Main form - using z3c.form pattern -->
             <form id="recyclebin-form"
                   method="post"
-                  tal:define="items view/get_items"
-                  tal:condition="items"
+                  tal:define="batch view/get_batch;
+                              items batch"
+                  tal:condition="python:batch and batch.sequence_length > 0"
                   enctype="multipart/form-data"
                   tal:attributes="action request/URL;">
 
@@ -474,6 +513,11 @@
                     </div>
                 </div>
                 
+                <!-- Batch Navigation -->
+                <div tal:condition="python:batch and batch.numpages > 1" class="card-body border-top">
+                    <div metal:use-macro="context/batch_macros/macros/navigation" />
+                </div>
+                
                 <!-- Button group for selected items actions - z3c.form buttons -->
                 <div tal:condition="items" class="card-footer bg-light">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
@@ -496,7 +540,7 @@
             </form>
             
             <!-- Empty state if no items -->
-            <div tal:define="items view/get_items" tal:condition="not:items" class="card-body p-0">
+            <div tal:define="batch view/get_batch" tal:condition="python:not batch or batch.sequence_length == 0" class="card-body p-0">
                 <div class="text-center p-5">
                     <p class="fw-bold" tal:condition="python:view.get_search_query() or view.get_filter_type()" i18n:translate="">
                         No items match your search criteria
@@ -560,6 +604,28 @@
         if (previewUrl) {
           // Open image in a new window/tab
           window.open(previewUrl, 'imagePreview', 'width=800,height=600,scrollbars=yes,resizable=yes');
+        }
+      });
+    });
+    
+    // Reset pagination when filters change
+    // Add event listeners to filter dropdowns and inputs
+    const filterElements = document.querySelectorAll(
+      'select[name="filter_type"], select[name="filter_deleted_by"], ' +
+      'select[name="filter_language"], select[name="filter_workflow_state"], ' +
+      'input[name="date_from"], input[name="date_to"], ' +
+      'input[name="filter_has_subitems"]'
+    );
+    
+    filterElements.forEach(element => {
+      element.addEventListener('change', function() {
+        // Remove any existing b_start hidden inputs in the form before submitting
+        const form = this.closest('form');
+        if (form) {
+          const existingBStart = form.querySelector('input[name="b_start"]');
+          if (existingBStart) {
+            existingBStart.remove();
+          }
         }
       });
     });
