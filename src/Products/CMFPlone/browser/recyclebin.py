@@ -671,15 +671,6 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
                     content_path = content_path[:-1]
                 item["content_path"] = content_path
 
-                # Try to get the content title
-                try:
-                    content = self.context.unrestrictedTraverse(content_path)
-                    item["content_title"] = content.Title()
-                except (KeyError, AttributeError):
-                    item["content_title"] = translate(
-                        _("Content no longer exists"), context=self.request
-                    )
-
     def _apply_sorting(self, items, sort_option):
         """Apply sorting to the items list.
 
