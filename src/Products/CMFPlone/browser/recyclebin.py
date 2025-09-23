@@ -382,10 +382,26 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
 
     def get_date_from(self):
         """Get the start date filter from the request"""
-        return self.request.form.get("date_from", "")
+        date_str = self.request.form.get("date_from", "")
+        if date_str:
+            return datetime.strptime(date_str, "%Y-%m-%d").date()
+
+        return None
 
     def get_date_to(self):
         """Get the end date filter from the request"""
+        date_str = self.request.form.get("date_to", "")
+        if date_str:
+            return datetime.strptime(date_str, "%Y-%m-%d").date()
+            
+        return None
+
+    def get_date_from_str(self):
+        """Get the start date filter as string from the request"""
+        return self.request.form.get("date_from", "")
+
+    def get_date_to_str(self):
+        """Get the end date filter as string from the request"""
         return self.request.form.get("date_to", "")
 
     def get_filter_deleted_by(self):
@@ -468,12 +484,14 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
             params["filter_type"] = self.get_filter_type()
 
         # Add date from filter if it exists and is not being removed
-        if param_to_remove != "date_from" and self.get_date_from():
-            params["date_from"] = self.get_date_from()
+        date_from = self.get_date_from()
+        if param_to_remove != "date_from" and date_from:
+            params["date_from"] = date_from.strftime("%Y-%m-%d")
 
         # Add date to filter if it exists and is not being removed
-        if param_to_remove != "date_to" and self.get_date_to():
-            params["date_to"] = self.get_date_to()
+        date_to = self.get_date_to()
+        if param_to_remove != "date_to" and date_to:
+            params["date_to"] = date_to.strftime("%Y-%m-%d")
 
         # Add deleted by filter if it exists and is not being removed
         if param_to_remove != "filter_deleted_by" and self.get_filter_deleted_by():
@@ -573,18 +591,18 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
 
         return False
 
-    def _check_item_matches_date_range(self, item, date_from_str, date_to_str):
+    def _check_item_matches_date_range(self, item, date_from, date_to):
         """Check if an item's deletion date falls within the specified date range.
 
         Args:
             item: The item to check
-            date_from_str: Start date as string (YYYY-MM-DD format) or empty
-            date_to_str: End date as string (YYYY-MM-DD format) or empty
+            date_from: Start date as date object or None
+            date_to: End date as date object or None
 
         Returns:
             Boolean indicating if the item matches the date range
         """
-        if not date_from_str and not date_to_str:
+        if not date_from and not date_to:
             return True  # No date filter applied
 
         deletion_date = item.get("deletion_date")
@@ -598,16 +616,12 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
             # If it's already a date object
             item_date = deletion_date
 
-        # Parse and validate date strings
-        if date_from_str:
-            date_from = datetime.strptime(date_from_str, "%Y-%m-%d").date()
-            if item_date < date_from:
-                return False
+        # Check date range (dates are already parsed)
+        if date_from and item_date < date_from:
+            return False
 
-        if date_to_str:
-            date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
-            if item_date > date_to:
-                return False
+        if date_to and item_date > date_to:
+            return False
 
         return True
 

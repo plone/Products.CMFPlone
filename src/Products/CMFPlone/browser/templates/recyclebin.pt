@@ -165,15 +165,15 @@
         <!-- Combined notification for search, filter and sort -->
         <div tal:define="search_query view/get_search_query;
                          filter_type view/get_filter_type;
-                         date_from view/get_date_from;
-                         date_to view/get_date_to;
+                         date_from_str view/get_date_from_str;
+                         date_to_str view/get_date_to_str;
                          filter_deleted_by view/get_filter_deleted_by;
                          filter_has_subitems view/get_filter_has_subitems;
                          filter_language view/get_filter_language;
                          filter_workflow_state view/get_filter_workflow_state;
                          sort_option view/get_sort_option;
                          sort_labels python:view.get_sort_labels();
-                         has_active_filters python:search_query or filter_type or date_from or date_to or filter_deleted_by or filter_has_subitems or filter_language or filter_workflow_state or (sort_option != 'date_desc')"
+                         has_active_filters python:search_query or filter_type or date_from_str or date_to_str or filter_deleted_by or filter_has_subitems or filter_language or filter_workflow_state or (sort_option != 'date_desc')"
              tal:condition="has_active_filters"
              class="alert alert-info d-flex align-items-center mb-4">
              
@@ -198,9 +198,9 @@
                     </a>
                 </span>
                 
-                <span tal:condition="date_from" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                <span tal:condition="date_from_str" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
                     <span i18n:translate="" class="ms-1 me-1">From:</span>
-                    <span tal:content="date_from" class="me-1">2024-01-01</span>
+                    <span tal:content="date_from_str" class="me-1">2024-01-01</span>
                     <a href="#" tal:attributes="href python:view.get_clear_url('date_from')"
                        class="text-white ms-1" style="text-decoration: none;" 
                        title="Clear date from filter" i18n:attributes="title">
@@ -208,9 +208,9 @@
                     </a>
                 </span>
                 
-                <span tal:condition="date_to" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                <span tal:condition="date_to_str" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
                     <span i18n:translate="" class="ms-1 me-1">To:</span>
-                    <span tal:content="date_to" class="me-1">2024-12-31</span>
+                    <span tal:content="date_to_str" class="me-1">2024-12-31</span>
                     <a href="#" tal:attributes="href python:view.get_clear_url('date_to')"
                        class="text-white ms-1" style="text-decoration: none;" 
                        title="Clear date to filter" i18n:attributes="title">
