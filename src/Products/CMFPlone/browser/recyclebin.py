@@ -91,7 +91,7 @@ class RecycleBinWorkflowMixin:
             # Get workflow tool
             workflow_tool = getToolByName(self.context, "portal_workflow")
 
-            # Get the workflow state 
+            # Get the workflow state
             return workflow_tool.getInfoFor(obj, "review_state", None)
 
         except Exception as e:
@@ -326,7 +326,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
         date_str = self.request.form.get("date_to", "")
         if date_str:
             return datetime.strptime(date_str, "%Y-%m-%d").date()
-            
+
         return None
 
     def get_date_from_str(self):
@@ -366,15 +366,15 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
         if self._batch is None:
             # Get all items first (this applies filters and sorting)
             all_items = self.get_items()
-            
+
             # Create batch with pagination
             b_start = self.get_b_start()
             b_size = self.get_b_size()
-            
+
             self._batch = Batch(all_items, size=b_size, start=b_start, orphan=1)
-        
+
         return self._batch
-    
+
     def get_page_size_options(self):
         """Get available page size options"""
         return [10, 20, 50, 100]
@@ -636,7 +636,9 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
             case "workflow_asc":
                 items.sort(key=lambda x: (x.get("workflow_state") or "").lower())
             case "workflow_desc":
-                items.sort(key=lambda x: (x.get("workflow_state") or "").lower(), reverse=True)
+                items.sort(
+                    key=lambda x: (x.get("workflow_state") or "").lower(), reverse=True
+                )
             case _:
                 # Default: date_desc
                 items.sort(
@@ -794,7 +796,6 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
             try:
                 target_container = self.context.unrestrictedTraverse(target_path)
             except (KeyError, AttributeError):
-
                 message = translate(
                     _(
                         "The folder '${path}' where you are trying to restore this item cannot be found. It may have been moved or deleted. Please choose a different location.",
@@ -837,7 +838,6 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
         restored_obj = result
 
         if restored_obj:
-
             message = translate(
                 _(
                     "Item '${title}' successfully restored.",
@@ -855,7 +855,6 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
 
             self.request.response.redirect(redirect_url)
         else:
-
             message = translate(
                 _(
                     "Failed to restore item. It may have been already restored or deleted."
@@ -878,7 +877,6 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
             item_title = item.get("title", "Unknown")
 
             if self.recycle_bin.purge_item(self.item_id):
-
                 message = translate(
                     _(
                         "Item '${title}' permanently deleted.",
@@ -888,7 +886,6 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
                 )
                 IStatusMessage(self.request).addStatusMessage(message, type="info")
             else:
-
                 message = translate(
                     _(
                         "Failed to delete item '${title}'.",
@@ -898,7 +895,6 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
                 )
                 IStatusMessage(self.request).addStatusMessage(message, type="error")
         else:
-
             message = translate(
                 _("Item not found. It may have been already deleted."),
                 context=self.request,
@@ -951,7 +947,7 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
                                 # Remove child from parent's children dict
                                 del item_data["children"][child_id]
                                 item_data["children_count"] = len(item_data["children"])
-                                
+
                                 # Persist the changes to ZODB
                                 self.recycle_bin.storage[self.item_id] = item_data
 
@@ -970,7 +966,6 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
                                 )
                                 return
                         except (KeyError, AttributeError):
-
                             message = translate(
                                 _(
                                     "Target location not found: ${path}",
