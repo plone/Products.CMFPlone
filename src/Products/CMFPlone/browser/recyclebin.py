@@ -818,10 +818,6 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
                 else:
                     logger.debug(f"No image preview info for item: {item.get('id')}")
 
-                # Add workflow state information
-                workflow_state = self._get_workflow_state(item)
-                item["workflow_state"] = workflow_state
-
                 # Apply search query filtering
                 if search_query:
                     # Check for direct matches
@@ -1132,9 +1128,7 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
 
     def get_item(self):
         """Get the specific recycled item"""
-        logger.debug(f"RecycleBinItemView.get_item called for ID: {self.item_id}")
         if not self.item_id:
-            logger.debug("get_item called with no item_id")
             return None
 
         item = self.recycle_bin.get_item(self.item_id)
@@ -1148,9 +1142,6 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
             if "children" in item and "children_count" not in item:
                 item["children_count"] = len(item["children"])
 
-            # Add workflow state information
-            workflow_state = self._get_workflow_state(item)
-            item["workflow_state"] = workflow_state
         return item
 
     def get_children(self):
@@ -1162,10 +1153,7 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
                 # Don't include the actual object in the listing
                 child_info = child_data.copy()
 
-                # Add workflow state information for child before removing object
                 if "object" in child_info:
-                    workflow_state = self._get_workflow_state(child_info)
-                    child_info["workflow_state"] = workflow_state
                     del child_info["object"]
 
                 # Add children count information for nested folders
