@@ -100,18 +100,6 @@
                                                           i18n:translate="">Unknown</span>
                                                 </td>
                                             </tr>
-                                            <tr tal:condition="python:view._has_image_preview(item.get('object'))">
-                                                <th class="bg-light" i18n:translate="">Image Preview</th>
-                                                <td>
-                                                    <button type="button" 
-                                                            class="btn btn-sm btn-outline-primary"
-                                                            tal:attributes="onclick python:'window.open(\'%s/@@recyclebin-image/%s/image/preview\', \'_blank\')' % (context.absolute_url(), view.item_id)"
-                                                            title="Click to view image in new window"
-                                                            i18n:attributes="title">
-                                                        👁️ <span i18n:translate="">View Image</span>
-                                                    </button>
-                                                </td>
-                                            </tr>
                                             <tr>
                                                 <th class="bg-light" i18n:translate="">Original path</th>
                                                 <td>
@@ -272,17 +260,6 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex flex-column gap-2">
-                                                    <!-- Image preview button if available -->
-                                                    <div tal:condition="python:view._has_image_preview(child.get('object'))" class="text-center">
-                                                        <button type="button" 
-                                                                class="btn btn-sm btn-outline-primary"
-                                                                tal:attributes="onclick python:'window.open(\'%s/@@recyclebin-image/%s/image/preview\', \'_blank\')' % (context.absolute_url(), child['id'])"
-                                                                title="Click to view image in new window"
-                                                                i18n:attributes="title">
-                                                            👁️
-                                                        </button>
-                                                    </div>
-                                                    
                                                     <!-- Restore form -->
                                                     <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}"
                                                           class="row g-2">

@@ -1,12 +1,8 @@
 from datetime import datetime
-from plone.app.contenttypes.behaviors.leadimage import ILeadImageBehavior
 from plone.base import PloneMessageFactory as _
 from plone.base.batch import Batch
 from plone.base.interfaces.recyclebin import IRecycleBin
 from plone.base.utils import human_readable_size
-from plone.namedfile.interfaces import IImage
-from plone.namedfile.interfaces import INamedField
-from plone.rfc822.interfaces import IPrimaryFieldInfo
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -152,68 +148,6 @@ class RecycleBinWorkflowMixin:
     def format_size(self, size_bytes):
         """Format size in bytes to human-readable format"""
         return human_readable_size(size_bytes)
-
-    def _has_image_preview(self, obj):
-        """Check if an object has an image that can be used for preview
-
-        Args:
-            obj: The recycled object to check
-
-        Returns:
-            Boolean indicating if the object has an image for preview
-        """
-        if not obj:
-            logger.debug("No object provided to _has_image_preview")
-            return False
-
-        portal_type = getattr(obj, "portal_type", None)
-        logger.debug(
-            f"Checking image preview for object with portal_type: {portal_type}"
-        )
-
-        # Check if it's an Image content type
-        if portal_type == "Image":
-            image_field = getattr(obj, "image", None)
-            logger.debug(f"Image field found: {image_field is not None}")
-            if image_field:
-                provides_iimage = IImage.providedBy(image_field)
-                has_data = hasattr(image_field, "data") and image_field.data
-                logger.debug(
-                    f"Image field provides IImage: {provides_iimage}, has data: {has_data}"
-                )
-                if image_field and (provides_iimage or has_data):
-                    return True
-
-        # Check for lead image behavior
-        try:
-            lead_image = ILeadImageBehavior(obj, None)
-            if lead_image and lead_image.image:
-                if (
-                    hasattr(lead_image.image, "getSize")
-                    and lead_image.image.getSize() > 0
-                ):
-                    return True
-        except (TypeError, AttributeError):
-            pass
-
-        # Check for primary image field
-        try:
-            primary = IPrimaryFieldInfo(obj, None)
-            if primary and INamedField.providedBy(primary.field):
-                if hasattr(primary.value, "getSize") and primary.value.getSize() > 0:
-                    # Check if it's an image field
-                    if IImage.providedBy(primary.value):
-                        return True
-        except (TypeError, AttributeError):
-            pass
-
-        # Check for any image field named 'image'
-        image_field = getattr(obj, "image", None)
-        if image_field and IImage.providedBy(image_field):
-            if hasattr(image_field, "getSize") and image_field.getSize() > 0:
-                return True
-
-        return False
 
 
 class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
@@ -778,17 +712,6 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
                 if "children" in item:
                     item["children_count"] = len(item["children"])
 
-                # Add image preview information
-                logger.debug(f"Processing image preview for item: {item.get('id')}")
-                image_info = self._get_image_preview_info(item)
-                if image_info:
-                    logger.debug(
-                        f"Image preview info found for {item.get('id')}: has_preview={image_info.get('has_preview')}"
-                    )
-                    item.update(image_info)
-                else:
-                    logger.debug(f"No image preview info for item: {item.get('id')}")
-
                 # Apply search query filtering
                 if search_query:
                     # Check for direct matches
@@ -816,37 +739,6 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
 
         # Apply sorting
         return self._apply_sorting(items, self.get_sort_option())
-
-    def _get_image_preview_info(self, item):
-        """Get image preview information for a recycled item
-
-        Args:
-            item: Dictionary containing recycled item data
-
-        Returns:
-            Dictionary with image preview information or None
-        """
-        # Get the full storage data including the object
-        full_item_data = self.recycle_bin.get_item(item.get("recycle_id"))
-        if not full_item_data:
-            return None
-
-        obj = full_item_data.get("object")
-        if not obj:
-            return None
-
-        if not self._has_image_preview(obj):
-            return None
-
-        # Simply return preview info with a preview button
-        recycle_id = item.get("recycle_id")
-        preview_url = f"{self.context.absolute_url()}/@@recyclebin-image/{recycle_id}/image/preview"
-
-        return {
-            "has_preview": True,
-            "preview_url": preview_url,
-            "recycle_id": recycle_id,
-        }
 
 
 @implementer(IPublishTraverse)
@@ -1158,79 +1050,6 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
 
             return comment_list
         return []
-
-
-@implementer(IPublishTraverse)
-class RecycleBinImageView(BrowserView):
-    """View for serving images from recycled items"""
-
-    def __init__(self, context, request):
-        super().__init__(context, request)
-        self.recycle_id = None
-        self.field_name = None
-        self.scale = None
-
-    def publishTraverse(self, request, name):
-        """Handle URL traversal for image serving
-
-        Expected URL: @@recyclebin-image/{recycle_id}/{field_name}/{scale}
-        """
-        if self.recycle_id is None:
-            self.recycle_id = name
-            return self
-        elif self.field_name is None:
-            self.field_name = name
-            return self
-        elif self.scale is None:
-            self.scale = name
-            return self
-        else:
-            raise NotFound("Invalid image path")
-
-    def __call__(self):
-        """Serve the image data"""
-        if not self.recycle_id or not self.field_name:
-            raise NotFound("Missing recycle ID or field name")
-
-        # Get the recycled item
-        recycle_bin = getUtility(IRecycleBin)
-        item_data = recycle_bin.get_item(self.recycle_id)
-        if not item_data:
-            raise NotFound("Recycled item not found")
-
-        obj = item_data.get("object")
-        if not obj:
-            raise NotFound("Object not found in recycled item")
-
-        # Get the image field
-        if self.field_name == "image":
-            # For Image content type
-            if hasattr(obj, "image"):
-                image_field = obj.image
-            else:
-                raise NotFound("Image field not found")
-        else:
-            # For other content types with lead images or custom fields
-            if hasattr(obj, self.field_name):
-                image_field = getattr(obj, self.field_name)
-            else:
-                raise NotFound(f"Field '{self.field_name}' not found")
-
-        # Check if we have image data
-        if not hasattr(image_field, "data") or not image_field.data:
-            raise NotFound("No image data found")
-
-        # Set response headers
-        content_type = getattr(image_field, "contentType", "image/jpeg")
-        filename = getattr(image_field, "filename", "image")
-
-        response = self.request.response
-        response.setHeader("Content-Type", content_type)
-        response.setHeader("Content-Disposition", f'inline; filename="{filename}"')
-        response.setHeader("Cache-Control", "max-age=3600")  # Cache for 1 hour
-
-        # Return the image data
-        return image_field.data
 
 
 class RecycleBinEnabled(BrowserView):

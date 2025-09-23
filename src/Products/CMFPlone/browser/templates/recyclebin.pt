@@ -398,7 +398,6 @@
                                     <th i18n:translate="">Deletion date</th>
                                     <th i18n:translate="">Deleted by</th>
                                     <th i18n:translate="">Size</th>
-                                    <th width="80" i18n:translate="">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -498,16 +497,6 @@
                                     <td>
                                         <span tal:content="python:view.format_size(item.get('size', 0))">Size</span>
                                     </td>
-                                    <td class="text-center">
-                                        <button tal:condition="python:item.get('has_preview')"
-                                                type="button" 
-                                                class="btn btn-sm btn-outline-secondary recyclebin-preview-btn"
-                                                tal:attributes="data-preview-url python:item.get('preview_url')"
-                                                title="Preview image"
-                                                i18n:attributes="title">
-                                            👁️
-                                        </button>
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -595,18 +584,6 @@
         checkbox.addEventListener('change', updateSelectAllCheckbox);
       });
     }
-    
-    // Handle image preview buttons
-    document.querySelectorAll('.recyclebin-preview-btn').forEach(button => {
-      button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const previewUrl = this.getAttribute('data-preview-url');
-        if (previewUrl) {
-          // Open image in a new window/tab
-          window.open(previewUrl, 'imagePreview', 'width=800,height=600,scrollbars=yes,resizable=yes');
-        }
-      });
-    });
     
     // Handle empty recycle bin confirmation
     const emptyRecycleBinBtn = document.getElementById('empty-recycle-bin-btn');
