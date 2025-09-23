@@ -19,7 +19,6 @@ from zExceptions import NotFound
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.interface import implementer
 from zope.interface import Interface
@@ -711,31 +710,6 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
                 )
         return items
 
-    def _check_parent_exists(self, item):
-        """Check if the parent container of an item exists
-
-        Args:
-            item: The item to check
-
-        Returns:
-            Boolean indicating if the parent container exists
-        """
-        # Comments and comment trees have special handling
-        if item.get("type") in ("CommentTree", "Discussion Item"):
-            return True
-
-        site = getSite()
-        parent_path = item.get("parent_path", "")
-
-        if not parent_path:
-            return False
-
-        try:
-            parent = site.unrestrictedTraverse(parent_path)
-            return parent is not None
-        except (KeyError, AttributeError):
-            return False
-
     def get_items(self):
         """Get all items in the recycle bin"""
         items = self.recycle_bin.get_items()
@@ -796,9 +770,6 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
                     and item.get("workflow_state") != filter_workflow_state
                 ):
                     continue
-
-                # Check if parent container exists and add flag to the item
-                item["parent_exists"] = self._check_parent_exists(item)
 
                 # Add comment-specific information
                 self._process_comment_item(item)
