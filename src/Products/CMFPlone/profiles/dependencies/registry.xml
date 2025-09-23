@@ -54,6 +54,9 @@
   <records interface="plone.base.interfaces.ILinkSchema"
            prefix="plone"
   />
+  <records interface="plone.base.interfaces.IClassicUISchema"
+           prefix="plone"
+  />
   <record name="Products.CMFPlone.i18nl10n.override_dateformat.Enabled">
     <field type="plone.registry.field.Bool">
       <title>Enabled</title>
