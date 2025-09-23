@@ -30,7 +30,7 @@ class TestMainTemplate(unittest.TestCase):
 
     def test_use_ajax_default(self):
         """Default use_ajax should be False."""
-        self.assertFalse(self.view.use_ajax())
+        self.assertFalse(self.view.use_ajax)
 
     def test_use_ajax_xhr(self):
         """Return `True` for XHR requests, if all conditions are met."""
@@ -38,29 +38,29 @@ class TestMainTemplate(unittest.TestCase):
 
         # Patch registry record `plone.use_ajax_main_template` to return True
         with mock.patch("plone.registry.registry.Registry.get", return_value=True):
-            self.assertTrue(self.view.use_ajax())
+            self.assertTrue(self.view.use_ajax)
 
     def test_use_ajax_xhr_disabled(self):
         """Return `False` for XHR requests, if setting is off."""
         self.request.environ["HTTP_X_REQUESTED_WITH"] = "XMLHttpRequest"
-        self.assertFalse(self.view.use_ajax())
+        self.assertFalse(self.view.use_ajax)
 
     def test_use_ajax_ajax_load(self):
         """use_ajax can be explicitly set via ajax_load."""
         self.request.set("ajax_load", True)
-        self.assertTrue(self.view.use_ajax())
+        self.assertTrue(self.view.use_ajax)
 
     def test_use_ajax_ajax_load_other_true(self):
         """ajax_load understands also other forms of `True`."""
         self.request.set("ajax_load", "on")
-        self.assertTrue(self.view.use_ajax())
+        self.assertTrue(self.view.use_ajax)
 
     def test_use_ajax_ajax_load_query(self):
         """The ajax_load parameter can also be set as request parameter.
         Actually, this would be the typical and default case.
         """
         self.request.form["ajax_load"] = "yes"
-        self.assertTrue(self.view.use_ajax())
+        self.assertTrue(self.view.use_ajax)
 
     def test_use_ajax_ajax_load_precedence(self):
         """The ajax_load parameter always takes precedence."""
@@ -69,7 +69,7 @@ class TestMainTemplate(unittest.TestCase):
 
         # Patch registry record `plone.use_ajax_main_template` to return True
         with mock.patch("plone.registry.registry.Registry.get", return_value=True):
-            self.assertFalse(self.view.use_ajax())
+            self.assertFalse(self.view.use_ajax)
 
     def test_main_template_standard(self):
         """Test the standard case to use the main_template.pt."""
