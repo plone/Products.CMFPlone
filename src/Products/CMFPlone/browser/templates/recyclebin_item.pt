@@ -94,7 +94,7 @@
                                                     <span tal:condition="python:item.get('workflow_state')"
                                                           class="badge rounded-pill"
                                                           tal:attributes="class python:'badge rounded-pill ' + view.get_workflow_state_class(item.get('workflow_state'))"
-                                                          tal:content="python:view.get_workflow_state_title(item.get('workflow_state'))">Published</span>
+                                                          tal:content="python:view.get_workflow_state_title(item.get('workflow_state'), item.get('type'))">Published</span>
                                                     <span tal:condition="python:not item.get('workflow_state')"
                                                           class="text-muted"
                                                           i18n:translate="">Unknown</span>
@@ -259,7 +259,7 @@
                                                 <span tal:condition="python:child.get('workflow_state')"
                                                       class="badge rounded-pill"
                                                       tal:attributes="class python:'badge rounded-pill ' + view.get_workflow_state_class(child.get('workflow_state'))"
-                                                      tal:content="python:view.get_workflow_state_title(child.get('workflow_state'))">Published</span>
+                                                      tal:content="python:view.get_workflow_state_title(child.get('workflow_state'), child.get('type'))">Published</span>
                                                 <span tal:condition="python:not child.get('workflow_state')"
                                                       class="text-muted"
                                                       i18n:translate="">Unknown</span>

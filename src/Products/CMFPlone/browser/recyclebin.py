@@ -104,11 +104,12 @@ class RecycleBinWorkflowMixin:
             )
             return None
 
-    def get_workflow_state_title(self, state):
+    def get_workflow_state_title(self, state, portal_type=None):
         """Get user-friendly title for workflow state
 
         Args:
             state: The workflow state ID
+            portal_type: The portal type of the object (optional)
 
         Returns:
             Human-readable title for the state
@@ -116,23 +117,9 @@ class RecycleBinWorkflowMixin:
         if not state:
             return translate(_("Unknown"), context=self.request)
 
-        # Common workflow state mappings
-        state_titles = {
-            "private": translate(_("Private"), context=self.request),
-            "published": translate(_("Published"), context=self.request),
-            "pending": translate(_("Pending"), context=self.request),
-            "visible": translate(_("Visible"), context=self.request),
-            "internal": translate(_("Internal"), context=self.request),
-            "draft": translate(_("Draft"), context=self.request),
-            "review": translate(_("Review"), context=self.request),
-            "rejected": translate(_("Rejected"), context=self.request),
-            "external": translate(_("External"), context=self.request),
-            "retracted": translate(_("Retracted"), context=self.request),
-        }
-
-        return state_titles.get(
-            state, state.title() if hasattr(state, "title") else str(state).title()
-        )
+        workflow_tool = getToolByName(self.context, "portal_workflow")
+        title = workflow_tool.getTitleForStateOnType(state, portal_type)
+        return translate(title, context=self.request)
 
     def get_workflow_state_class(self, state):
         """Get CSS class for workflow state badge
