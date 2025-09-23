@@ -681,33 +681,34 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
         Returns:
             Sorted list of items
         """
-        if sort_option == "title_asc":
-            items.sort(key=lambda x: x.get("title", "").lower())
-        elif sort_option == "title_desc":
-            items.sort(key=lambda x: x.get("title", "").lower(), reverse=True)
-        elif sort_option == "type_asc":
-            items.sort(key=lambda x: x.get("type", "").lower())
-        elif sort_option == "type_desc":
-            items.sort(key=lambda x: x.get("type", "").lower(), reverse=True)
-        elif sort_option == "path_asc":
-            items.sort(key=lambda x: x.get("path", "").lower())
-        elif sort_option == "path_desc":
-            items.sort(key=lambda x: x.get("path", "").lower(), reverse=True)
-        elif sort_option == "size_asc":
-            items.sort(key=lambda x: x.get("size", 0))
-        elif sort_option == "size_desc":
-            items.sort(key=lambda x: x.get("size", 0), reverse=True)
-        elif sort_option == "date_asc":
-            items.sort(key=lambda x: x.get("deletion_date", datetime.now()))
-        elif sort_option == "workflow_asc":
-            items.sort(key=lambda x: x.get("workflow_state", "").lower())
-        elif sort_option == "workflow_desc":
-            items.sort(key=lambda x: x.get("workflow_state", "").lower(), reverse=True)
-        # Default: date_desc
-        else:
-            items.sort(
-                key=lambda x: x.get("deletion_date", datetime.now()), reverse=True
-            )
+        match sort_option:
+            case "title_asc":
+                items.sort(key=lambda x: x.get("title", "").lower())
+            case "title_desc":
+                items.sort(key=lambda x: x.get("title", "").lower(), reverse=True)
+            case "type_asc":
+                items.sort(key=lambda x: x.get("type", "").lower())
+            case "type_desc":
+                items.sort(key=lambda x: x.get("type", "").lower(), reverse=True)
+            case "path_asc":
+                items.sort(key=lambda x: x.get("path", "").lower())
+            case "path_desc":
+                items.sort(key=lambda x: x.get("path", "").lower(), reverse=True)
+            case "size_asc":
+                items.sort(key=lambda x: x.get("size", 0))
+            case "size_desc":
+                items.sort(key=lambda x: x.get("size", 0), reverse=True)
+            case "date_asc":
+                items.sort(key=lambda x: x.get("deletion_date", datetime.now()))
+            case "workflow_asc":
+                items.sort(key=lambda x: x.get("workflow_state", "").lower())
+            case "workflow_desc":
+                items.sort(key=lambda x: x.get("workflow_state", "").lower(), reverse=True)
+            case _:
+                # Default: date_desc
+                items.sort(
+                    key=lambda x: x.get("deletion_date", datetime.now()), reverse=True
+                )
         return items
 
     def _check_parent_exists(self, item):
