@@ -13,6 +13,11 @@
 </metal:override>
 
 <metal:main fill-slot="main">
+    <!-- Hidden translatable strings for JavaScript -->
+    <div id="recyclebin-messages" style="display: none;">
+        <span id="recyclebin-empty-message" i18n:translate="">Are you sure you want to permanently delete all items in the recycle bin?</span>
+    </div>
+    
     <div class="container-fluid px-0">
         <!-- Header section with icon -->
         <div class="d-flex align-items-center mb-4">
@@ -530,7 +535,7 @@
                             </button>
                             <button type="submit" name="form.buttons.empty" 
                                     class="btn btn-outline-danger"
-                                    onclick="return confirm(recyclebinEmptyMessage);" 
+                                    id="empty-recycle-bin-btn"
                                     i18n:translate="">
                                 <span class="ms-1">Empty Recycle Bin</span>
                             </button>
@@ -557,10 +562,9 @@
 
 <metal:js fill-slot="javascript_head_slot">
 <script>
-  // Confirmation message when emptying recycle bin
-  const recyclebinEmptyMessage = 'Are you sure you want to permanently delete all items in the recycle bin?';
-
   document.addEventListener('DOMContentLoaded', function() {
+    // Get confirmation message from DOM to ensure it's translatable
+    const recyclebinEmptyMessage = document.getElementById('recyclebin-empty-message').textContent;
     // Select all checkbox functionality
     const selectAllCheckbox = document.getElementById('select_all');
     
@@ -607,6 +611,17 @@
         }
       });
     });
+    
+    // Handle empty recycle bin confirmation
+    const emptyRecycleBinBtn = document.getElementById('empty-recycle-bin-btn');
+    if (emptyRecycleBinBtn) {
+      emptyRecycleBinBtn.addEventListener('click', function(e) {
+        if (!confirm(recyclebinEmptyMessage)) {
+          e.preventDefault();
+          return false;
+        }
+      });
+    }
     
     // Reset pagination when filters change
     // Add event listeners to filter dropdowns and inputs
