@@ -1148,20 +1148,7 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
         """Get the children of this item if it's a folder or collection"""
         item = self.get_item()
         if item and "children" in item:
-            children = []
-            for child_id, child_data in item["children"].items():
-                # Don't include the actual object in the listing
-                child_info = child_data.copy()
-
-                if "object" in child_info:
-                    del child_info["object"]
-
-                # Add children count information for nested folders
-                if "children" in child_info and "children_count" not in child_info:
-                    child_info["children_count"] = len(child_info["children"])
-
-                children.append(child_info)
-            return children
+            return list(item["children"].values())
         return []
 
     def get_comment_children(self):
