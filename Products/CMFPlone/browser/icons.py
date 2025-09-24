@@ -49,14 +49,6 @@ def _add_css_class(svgtree, cfg):
 SVG_MODIFER["add_css_class"] = _add_css_class
 
 
-def _strip_id(svgtree, cfg):
-    for el in svgtree.getroot().xpath("//*[@id]"):
-        del el.attrib["id"]
-
-
-SVG_MODIFER["strip_id"] = _strip_id
-
-
 @implementer(IPublishTraverse)
 class IconsView(BrowserView):
     prefix = "plone.icon."
