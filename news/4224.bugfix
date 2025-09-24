@@ -1,0 +1,1 @@
+Remove the svn modifier "strip_id" from "@@iconresolver" view to fix SVGs with repeatable elements.  @petschki
