@@ -12,7 +12,6 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
-from zope.component import queryUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
 
@@ -180,20 +179,7 @@ class RecycleBin:
                 if hasattr(obj, "Title")
                 else getattr(obj, "title", "Unknown")
             )
-        elif item_type == "CommentTree":
-            # Delegate to plone.app.discussion utility for comment tree titles
-            try:
-                from plone.app.discussion.recyclebin import ICommentRecycleBinSupport
 
-                support = queryUtility(ICommentRecycleBinSupport)
-                if support is not None:
-                    return support.get_comment_tree_title(obj)
-            except ImportError:
-                pass
-
-            # Fallback to basic title if utility is not available
-            comment_count = len(obj.get("comments", []))
-            return f"Comment thread ({comment_count} comments)"
         else:
             # For regular items, use Title() if available
             return (
@@ -552,15 +538,6 @@ class RecycleBin:
         item_data = self.storage[item_id]
         obj = item_data["object"]
         obj_id = item_data["id"]
-        item_type = item_data.get("type", None)
-
-        # Special handling for CommentTree (comments with replies)
-        if item_type == "CommentTree":
-            return self._restore_comment_tree(item_id, item_data, target_container)
-
-        # Special handling for Discussion Item (Comments)
-        if item_data.get("type") == "Discussion Item":
-            return self._restore_comment(item_id, item_data, target_container)
 
         # Regular content object restoration
         # Find the container to restore to
@@ -601,54 +578,6 @@ class RecycleBin:
         self._cleanup_child_references(item_data)
 
         return restored_obj
-
-    def _restore_comment(self, item_id, item_data, target_container=None):
-        """Enhanced restoration method for comments that preserves reply relationships"""
-        # Delegate to plone.app.discussion utility for comment restoration
-        try:
-            from plone.app.discussion.recyclebin import ICommentRecycleBinSupport
-
-            support = queryUtility(ICommentRecycleBinSupport)
-            if support is not None:
-                restored_comment = support.restore_comment(item_data, target_container)
-                if restored_comment:
-                    # Remove from recycle bin only if restoration was successful
-                    del self.storage[item_id]
-                return restored_comment
-        except ImportError:
-            logger.warning("plone.app.discussion not available for comment restoration")
-
-        # If utility is not available, return None to indicate failure
-        logger.warning(
-            f"Cannot restore comment {item_id}: plone.app.discussion utility not available"
-        )
-        return None
-
-    def _restore_comment_tree(self, item_id, item_data, target_container=None):
-        """Restore a comment tree with all its replies while preserving relationships"""
-        # Delegate to plone.app.discussion utility for comment tree restoration
-        try:
-            from plone.app.discussion.recyclebin import ICommentRecycleBinSupport
-
-            support = queryUtility(ICommentRecycleBinSupport)
-            if support is not None:
-                restored_comment = support.restore_comment_tree(
-                    item_data, target_container
-                )
-                if restored_comment:
-                    # Remove from recycle bin only if restoration was successful
-                    del self.storage[item_id]
-                return restored_comment
-        except ImportError:
-            logger.warning(
-                "plone.app.discussion not available for comment tree restoration"
-            )
-
-        # If utility is not available, return None to indicate failure
-        logger.warning(
-            f"Cannot restore comment tree {item_id}: plone.app.discussion utility not available"
-        )
-        return None
 
     def purge_item(self, item_id) -> bool:
         """Permanently delete an item from the recycle bin

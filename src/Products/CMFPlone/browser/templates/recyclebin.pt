@@ -430,11 +430,7 @@
                                         <a tal:attributes="href string:${context/absolute_url}/@@recyclebin-item/${item/recycle_id}"
                                            class="fw-medium text-decoration-none"
                                            tal:content="item/title">Title</a>
-                                        <div tal:condition="python:item.get('type') == 'Discussion Item' and item.get('content_title')"
-                                             class="text-muted small">
-                                             <span i18n:translate="">Comment on:</span>
-                                            <span class="ms-1" tal:content="item/content_title">Content title</span>
-                                        </div>
+
                                         <div tal:condition="python:item.get('children_count', 0) > 0"
                                              class="text-muted small mt-1" style="font-size: 0.8em;">
                                             <i class="fa fa-folder-open me-1" aria-hidden="true"></i>
@@ -482,11 +478,7 @@
                                     </td>
                                     <td class="text-muted small">
                                         <span tal:content="item/path">Original path</span>
-                                        <div tal:condition="python:item.get('type') == 'Discussion Item' and item.get('content_path')"
-                                             class="text-muted smaller mt-1">
-                                             <span i18n:translate="">Content:</span> 
-                                            <span class="ms-1" tal:content="item/content_path">Content path</span>
-                                        </div>
+
                                     </td>
                                     <td>
                                         <span tal:content="python:context.restrictedTraverse('@@plone').toLocalizedTime(item['deletion_date'], long_format=True)">Deletion date</span>

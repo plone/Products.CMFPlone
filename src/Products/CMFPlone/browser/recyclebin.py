@@ -586,24 +586,6 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
 
         return None
 
-    def _process_comment_item(self, item):
-        """Add extra information to comment items.
-
-        Args:
-            item: The comment item to process
-        """
-        if item.get("type") == "Discussion Item":
-            # Extract content path from comment path
-            path = item.get("path", "")
-            # The conversation part is usually ++conversation++default
-            parts = path.split("++conversation++")
-            if len(parts) > 1:
-                content_path = parts[0]
-                # Remove trailing slash if present
-                if content_path.endswith("/"):
-                    content_path = content_path[:-1]
-                item["content_path"] = content_path
-
     def _apply_sorting(self, items, sort_option):
         """Apply sorting to the items list.
 
@@ -706,9 +688,6 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
                     and item.get("workflow_state") != filter_workflow_state
                 ):
                     continue
-
-                # Add comment-specific information
-                self._process_comment_item(item)
 
                 # Add children count information
                 if "children" in item:
@@ -1007,43 +986,6 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
         item = self.get_item()
         if item and "children" in item:
             return list(item["children"].values())
-        return []
-
-    def get_comment_children(self):
-        """Get comments from a CommentTree item"""
-        item = self.get_item()
-        if item and item.get("type") == "CommentTree":
-            comment_tree = item.get("object", {})
-            comments = comment_tree.get("comments", [])
-
-            # Process comments to build a list for display
-            comment_list = []
-            for comment_obj, comment_path in comments:
-                # Get author info
-                author = getattr(comment_obj, "author_name", None) or getattr(
-                    comment_obj, "author_username", "Anonymous"
-                )
-
-                # Extract comment data
-                comment_data = {
-                    "id": getattr(comment_obj, "comment_id", ""),
-                    "text": getattr(comment_obj, "text", ""),
-                    "author": author,
-                    "in_reply_to": getattr(comment_obj, "in_reply_to", None),
-                    "path": comment_path,
-                    "creation_date": getattr(comment_obj, "creation_date", None),
-                    "modification_date": getattr(
-                        comment_obj, "modification_date", None
-                    ),
-                    "title": translate(
-                        _("Comment by ${author}", mapping={"author": author}),
-                        context=self.request,
-                    ),
-                    "size": len(getattr(comment_obj, "text", "")),
-                }
-                comment_list.append(comment_data)
-
-            return comment_list
         return []
 
 
