@@ -6,6 +6,7 @@ from datetime import datetime
 from datetime import timedelta
 from DateTime import DateTime
 from persistent import Persistent
+from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.recyclebin import IRecycleBin
 from plone.base.interfaces.recyclebin import IRecycleBinControlPanelSettings
 from plone.registry.interfaces import IRegistry
@@ -332,29 +333,27 @@ class RecycleBin:
         if not history:
             return
 
-        history = list(history)
         current_state = history[-1].get("review_state", None) if history else None
         user_id = getSecurityManager().getUser().getId() or "System"
 
         entry = {
             "action": (
-                "Moved to recycle bin"
+                _("Moved to recycle bin")
                 if action_type == "deletion"
-                else "Restored from recycle bin"
+                else _("Restored from recycle bin")
             ),
             "actor": user_id,
             "comments": (
-                "Item was deleted and moved to recycle bin"
+                _("Item was deleted and moved to recycle bin")
                 if action_type == "deletion"
-                else "Restored from recycle bin after deletion"
+                else _("Restored from recycle bin after deletion")
             ),
             "time": DateTime(),
             "review_state": current_state,
         }
 
         # Add the entry and update the history
-        history.append(entry)
-        obj.workflow_history[workflow_id] = tuple(history)
+        obj.workflow_history[workflow_id] = history + (entry,)
 
     def _reset_workflow_state_if_needed(self, obj):
         """Reset object workflow state to initial state if the setting is enabled"""
@@ -389,21 +388,21 @@ class RecycleBin:
         if current_state != initial_state:
             # Reset the workflow state by updating the workflow history
             if hasattr(obj, "workflow_history") and workflow_id in obj.workflow_history:
-                history = list(obj.workflow_history[workflow_id])
+                history = obj.workflow_history[workflow_id]
                 if history:
                     # Update the last entry to reflect the state reset
                     user_id = getSecurityManager().getUser().getId() or "System"
 
                     reset_entry = {
-                        "action": "Reset to initial state",
+                        "action": _("Reset to initial state"),
                         "actor": user_id,
-                        "comments": f"Workflow state reset to '{initial_state}' during restoration from recycle bin",
+                        "comments": _("Workflow state reset to '${initial_state}' during restoration from recycle bin",
+                                    mapping={"initial_state": initial_state}),
                         "time": DateTime(),
                         "review_state": initial_state,
                     }
 
-                    history.append(reset_entry)
-                    obj.workflow_history[workflow_id] = tuple(history)
+                    obj.workflow_history[workflow_id] = history + (reset_entry,)
 
                     # Force the object's state to be updated
                     workflow._changeStateOf(obj, workflow.states[initial_state])
