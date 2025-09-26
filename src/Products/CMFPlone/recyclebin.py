@@ -300,30 +300,10 @@ class RecycleBin:
 
     def get_items(self):
         """Return all items in recycle bin"""
-        items = []
-        # Use the pre-sorted index to get items by date (newest first)
-        for item_id, data in self.storage.get_items_sorted_by_date(reverse=True):
-            # Only copy the essential metadata instead of the entire data dictionary
-            item_data = {
-                "recycle_id": item_id,
-                "id": data.get("id", ""),
-                "title": data.get("title", ""),
-                "type": data.get("type", "Unknown"),
-                "path": data.get("path", ""),
-                "parent_path": data.get("parent_path", ""),
-                "deletion_date": data.get("deletion_date"),
-                "deleted_by": data.get("deleted_by", "Unknown"),
-                "size": data.get("size", 0),
-            }
-
-            # Copy any other metadata but not the actual object
-            for key, value in data.items():
-                if key != "object" and key not in item_data:
-                    item_data[key] = value
-
-            items.append(item_data)
-
-        return items
+        return [
+            {**{k: v for k, v in data.items() if k != "object"}, "recycle_id": item_id}
+            for item_id, data in self.storage.get_items_sorted_by_date(reverse=True)
+        ]
 
     def get_item(self, item_id):
         """Get a specific deleted item by ID"""
