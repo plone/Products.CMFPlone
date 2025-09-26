@@ -159,23 +159,7 @@ class RecycleBin:
             )
             return False
 
-    def _get_item_title(self, obj, item_type=None):
-        """Helper method to get a meaningful title for an item"""
-        if hasattr(obj, "objectIds") or item_type == "Collection":
-            # For folders and collections
-            return (
-                obj.Title()
-                if hasattr(obj, "Title")
-                else getattr(obj, "title", "Unknown")
-            )
 
-        else:
-            # For regular items, use Title() if available
-            return (
-                obj.Title()
-                if hasattr(obj, "Title")
-                else getattr(obj, "title", "Unknown")
-            )
 
     def _process_folder_children(self, folder_obj, folder_path):
         """Helper method to process folder children recursively"""
@@ -191,7 +175,7 @@ class RecycleBin:
             # Store basic data for this child
             child_data = {
                 "id": child_id,
-                "title": self._get_item_title(child),
+                "title": child.Title(),
                 "type": getattr(child, "portal_type", "Unknown"),
                 "path": child_path,
                 "parent_path": folder_path,
@@ -236,7 +220,7 @@ class RecycleBin:
         self._update_workflow_history(obj, "deletion")
 
         # Generate a meaningful title
-        item_title = self._get_item_title(obj, item_type)
+        item_title = obj.Title()
 
         # Handle folders and collections specially
         children = {}
