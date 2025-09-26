@@ -73,14 +73,8 @@ class RecycleBinStorage(Persistent):
             return
         
         value = self.items[key]
-        if "deletion_date" in value:
-            try:
-                sort_key = (value["deletion_date"], key)
-                if sort_key in self._sorted_index:
-                    self._sorted_index.remove(sort_key)
-            except (KeyError, TypeError):
-                # Ignore errors if the entry doesn't exist or date is not comparable
-                pass
+        sort_key = (value["deletion_date"], key)
+        self._sorted_index.remove(sort_key)
 
     def __contains__(self, key):
         return key in self.items
