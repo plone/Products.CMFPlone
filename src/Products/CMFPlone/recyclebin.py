@@ -9,6 +9,7 @@ from persistent import Persistent
 from plone.base.interfaces.recyclebin import IRecycleBin
 from plone.base.interfaces.recyclebin import IRecycleBinControlPanelSettings
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.utils import getToolByName
 from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
@@ -162,10 +163,20 @@ class RecycleBin:
 
 
     def _process_folder_children(self, folder_obj, folder_path):
-        """Helper method to process folder children recursively"""
+        """Helper method to process folder children recursively
+        
+        Only processes children that provide IContentish interface.
+        Non-content objects (tools, utilities) are skipped.
+        """
         folder_children = {}
         for child_id in folder_obj.objectIds():
             child = folder_obj[child_id]
+            
+            # Skip non-content objects (e.g., tools, utilities)
+            if not IContentish.providedBy(child):
+                logger.debug(f"Skipping non-content object {child_id} in folder {folder_path}")
+                continue
+                
             child_path = f"{folder_path}/{child_id}"
             # Get workflow state for this child
             child_workflow_state = None
@@ -204,16 +215,33 @@ class RecycleBin:
         item_type=None,
         process_children=True,
     ):
-        """Add deleted item to recycle bin"""
+        """Add deleted item to recycle bin
+        
+        Args:
+            obj: The content object to add. Must provide IContentish interface.
+            original_container: The original container the object was in
+            original_path: The original path of the object
+            item_type: Optional type override
+            process_children: Whether to recursively process folder children
+            
+        Returns:
+            The recycle ID of the stored item, or None if recycling is disabled
+            
+        Raises:
+            TypeError: If obj does not provide IContentish interface
+        """
         if not self.is_enabled():
             return None
 
-        # Get the original id but if not found then generate a unique ID for the recycled item
-        item_id = (
-            obj.getId()
-            if hasattr(obj, "getId")
-            else getattr(obj, "id", str(uuid.uuid4()))
-        )
+        # Check if obj provides IContentish interface (i.e., is a content item)
+        if not IContentish.providedBy(obj):
+            raise TypeError(
+                f"Object {repr(obj)} does not provide IContentish interface. "
+                "Only content items can be added to the recycle bin."
+            )
+
+        # Now we know the object has getId() since it provides IContentish
+        item_id = obj.getId()
 
         # Add a workflow history entry about the deletion if possible
         self._update_workflow_history(obj, "deletion")
