@@ -19,7 +19,7 @@ import logging
 import uuid
 
 
-logger = logging.getLogger("Products.CMFPlone.RecycleBin")
+logger = logging.getLogger(__name__)
 
 ANNOTATION_KEY = "Products.CMFPlone.RecycleBin"
 
