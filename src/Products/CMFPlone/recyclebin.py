@@ -57,15 +57,9 @@ class RecycleBinStorage(Persistent):
 
     def _add_to_index(self, key, value):
         """Add an item to the sorted index"""
-        if "deletion_date" in value:
-            try:
-                # Store as (date, id) for automatic sorting
-                self._sorted_index.add((value["deletion_date"], key))
-            except TypeError:
-                # Skip if the date is not comparable
-                logger.warning(
-                    f"Could not index item {key} by date: {value.get('deletion_date')}"
-                )
+        # Store as (date, id) for automatic sorting
+        self._sorted_index.add((value["deletion_date"], key))
+
 
     def _remove_from_index(self, key):
         """Remove an item from the sorted index"""
