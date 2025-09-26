@@ -408,7 +408,7 @@ class RecycleBinFolderTests(RecycleBinTestCase):
 
         # Verify children tracking
         self.assertIn("children", item_data)
-        self.assertEqual(item_data["children_count"], 2)
+        self.assertEqual(len(item_data["children"]), 2)
 
         # Verify each child is tracked
         for child_id in self.expected_children.keys():
@@ -493,7 +493,7 @@ class RecycleBinNestedFolderTests(RecycleBinTestCase):
 
         # Verify the children were tracked
         self.assertIn("children", item_data)
-        self.assertEqual(item_data["children_count"], 3)
+        self.assertEqual(len(item_data["children"]), 3)
         self.assertIn("page-0", item_data["children"])
         self.assertIn("news-0", item_data["children"])
         self.assertIn("folder-level-1", item_data["children"])
@@ -501,7 +501,7 @@ class RecycleBinNestedFolderTests(RecycleBinTestCase):
         # Verify the nested children were tracked
         child_data = item_data["children"]["folder-level-1"]
         self.assertIn("children", child_data)
-        self.assertEqual(child_data["children_count"], 3)
+        self.assertEqual(len(child_data["children"]), 3)
         self.assertIn("page-1", child_data["children"])
         self.assertIn("news-1", child_data["children"])
         self.assertIn("folder-level-2", child_data["children"])
@@ -509,7 +509,7 @@ class RecycleBinNestedFolderTests(RecycleBinTestCase):
         # Verify the deepest level was tracked
         grandchild_data = child_data["children"]["folder-level-2"]
         self.assertIn("children", grandchild_data)
-        self.assertEqual(grandchild_data["children_count"], 2)
+        self.assertEqual(len(grandchild_data["children"]), 2)
         self.assertIn("page-2", grandchild_data["children"])
         self.assertIn("news-2", grandchild_data["children"])
 
@@ -564,7 +564,7 @@ class RecycleBinNestedFolderTests(RecycleBinTestCase):
 
         # Verify the nested children were tracked
         self.assertIn("children", item_data)
-        self.assertEqual(item_data["children_count"], 3)
+        self.assertEqual(len(item_data["children"]), 3)
 
         # Remove the child folder from the parent folder to simulate deletion
         del self.parent_folder[child_id]

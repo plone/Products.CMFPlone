@@ -925,7 +925,6 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
                             if restored_obj:
                                 # Remove child from parent's children dict
                                 del item_data["children"][child_id]
-                                item_data["children_count"] = len(item_data["children"])
 
                                 # Persist the changes to ZODB
                                 self.recycle_bin.storage[self.item_id] = item_data
@@ -975,8 +974,8 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
             logger.debug(
                 f"Found item: {item.get('title', 'Unknown')} of type {item.get('type', 'Unknown')}"
             )
-            # Add children count information if not already present
-            if "children" in item and "children_count" not in item:
+            # Add children count information
+            if "children" in item:
                 item["children_count"] = len(item["children"])
 
         return item

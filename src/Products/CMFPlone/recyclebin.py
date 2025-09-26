@@ -192,7 +192,6 @@ class RecycleBin:
                 nested_children = self._process_folder_children(child, child_path)
                 if nested_children:
                     child_data["children"] = nested_children
-                    child_data["children_count"] = len(nested_children)
 
             folder_children[child_id] = child_data
         return folder_children
@@ -264,7 +263,6 @@ class RecycleBin:
         # Add children data if this was a folder/collection
         if children:
             storage_data["children"] = children
-            storage_data["children_count"] = len(children)
 
         # Generate a unique recycle ID
         recycle_id = str(uuid.uuid4())
