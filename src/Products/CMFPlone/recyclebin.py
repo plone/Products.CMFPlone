@@ -40,8 +40,7 @@ class RecycleBinStorage(Persistent):
         # When adding or updating an item, update the sorted index
         if key in self.items:
             # If updating an existing item, remove old index entry first
-            old_value = self.items[key]
-            self._remove_from_index(key, old_value)
+            self._remove_from_index(key)
 
         # Add the item to main storage
         self.items[key] = value
@@ -51,9 +50,7 @@ class RecycleBinStorage(Persistent):
 
     def __delitem__(self, key):
         # When deleting an item, also remove it from the sorted index
-        if key in self.items:
-            item = self.items[key]
-            self._remove_from_index(key, item)
+        self._remove_from_index(key)
 
         # Remove from main storage
         del self.items[key]
@@ -70,8 +67,12 @@ class RecycleBinStorage(Persistent):
                     f"Could not index item {key} by date: {value.get('deletion_date')}"
                 )
 
-    def _remove_from_index(self, key, value):
+    def _remove_from_index(self, key):
         """Remove an item from the sorted index"""
+        if key not in self.items:
+            return
+        
+        value = self.items[key]
         if "deletion_date" in value:
             try:
                 sort_key = (value["deletion_date"], key)
