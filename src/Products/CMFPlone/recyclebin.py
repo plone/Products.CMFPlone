@@ -249,14 +249,10 @@ class RecycleBin:
         # Generate a meaningful title
         item_title = obj.Title()
 
-        # Handle folders and collections specially
         children = {}
-        if process_children and (
-            hasattr(obj, "objectIds") or item_type == "Collection"
-        ):
-            if hasattr(obj, "objectIds"):
-                # Process all children recursively
-                children = self._process_folder_children(obj, original_path)
+        if process_children and hasattr(obj, "objectIds"):
+            # Process all children recursively
+            children = self._process_folder_children(obj, original_path)
 
         # Store metadata about the deletion
         parent_path = (
