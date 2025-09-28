@@ -507,7 +507,7 @@ class RecycleBin:
     def restore_item(self, item_id, target_container=None):
         """Restore item to original location or specified container"""
         if item_id not in self.storage:
-            return None
+            raise KeyError(f"Item with ID '{item_id}' not found in recycle bin")
 
         item_data = self.storage[item_id]
         obj = item_data["object"]
