@@ -112,6 +112,11 @@ class RecycleBinStorage(Persistent):
             if item_id in self.items:  # Double check item still exists
                 yield (item_id, self.items[item_id])
 
+    def clear(self):
+        """Clear all items from the storage"""
+        self.items.clear()
+        self._sorted_index.clear()
+
 
 @implementer(IRecycleBin)
 class RecycleBin:
@@ -687,3 +692,7 @@ class RecycleBin:
 
         except Exception as e:
             logger.error(f"Error enforcing size limits: {str(e)}")
+
+    def clear(self):
+        """Clear all items from the recycle bin"""
+        self.storage.clear()

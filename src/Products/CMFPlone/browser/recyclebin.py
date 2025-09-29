@@ -284,13 +284,11 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
         """Empty recycle bin handler"""
         data, errors = self.extractData()
 
+        # Get count before clearing for the status message
         items = self.recycle_bin.get_items()
-        deleted_count = 0
+        deleted_count = len(items)
 
-        for item in items:
-            item_id = item["recycle_id"]
-            if self.recycle_bin.purge_item(item_id):
-                deleted_count += 1
+        self.recycle_bin.clear()
 
         message = translate(
             _(
