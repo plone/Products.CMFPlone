@@ -490,19 +490,10 @@ class RecycleBin:
     def _handle_existing_object(self, obj_id, target_container, obj):
         """Handle cases where an object with the same ID already exists in target"""
         if obj_id in target_container:
-            # Check if explicit restoration is requested
-            if getattr(obj, "_v_restoring_from_recyclebin", False):
-                # We were explicitly asked to restore this item, so delete existing item first
-                logger.info(
-                    f"Removing existing object {obj_id} to restore recycled version"
-                )
-                target_container._delObject(obj_id)
-            else:
-                # Raise a meaningful exception instead of generating a new ID
-                raise ValueError(
-                    f"Cannot restore item '{obj_id}' because an item with this ID already exists in the target location. "
-                    f"To replace the existing item with the recycled one, use the recycle bin interface."
-                )
+            raise ValueError(
+                f"Cannot restore item '{obj_id}' because an item with this ID already exists in the target location. "
+                f"To replace the existing item with the recycled one, use the recycle bin interface."
+            )
 
     def restore_item(self, item_id, target_container=None):
         """Restore item to original location or specified container"""
