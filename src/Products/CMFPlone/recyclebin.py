@@ -62,12 +62,11 @@ class RecycleBinStorage(Persistent):
         # Store as (date, id) for automatic sorting
         self._sorted_index.add((value["deletion_date"], key))
 
-
     def _remove_from_index(self, key):
         """Remove an item from the sorted index"""
         if key not in self.items:
             return
-        
+
         value = self.items[key]
         sort_key = (value["deletion_date"], key)
         self._sorted_index.remove(sort_key)
@@ -166,23 +165,23 @@ class RecycleBin:
             )
             return False
 
-
-
     def _process_folder_children(self, folder_obj, folder_path):
         """Helper method to process folder children recursively
-        
+
         Only processes children that provide IContentish interface.
         Non-content objects (tools, utilities) are skipped.
         """
         folder_children = {}
         for child_id in folder_obj.objectIds():
             child = folder_obj[child_id]
-            
+
             # Skip non-content objects (e.g., tools, utilities)
             if not IContentish.providedBy(child):
-                logger.debug(f"Skipping non-content object {child_id} in folder {folder_path}")
+                logger.debug(
+                    f"Skipping non-content object {child_id} in folder {folder_path}"
+                )
                 continue
-                
+
             child_path = f"{folder_path}/{child_id}"
             # Get workflow state for this child
             child_workflow_state = None
@@ -222,17 +221,17 @@ class RecycleBin:
         process_children=True,
     ):
         """Add deleted item to recycle bin
-        
+
         Args:
             obj: The content object to add. Must provide IContentish interface.
             original_container: The original container the object was in
             original_path: The original path of the object
             item_type: Optional type override
             process_children: Whether to recursively process folder children
-            
+
         Returns:
             The recycle ID of the stored item, or None if recycling is disabled
-            
+
         Raises:
             TypeError: If obj does not provide IContentish interface
         """
@@ -401,8 +400,10 @@ class RecycleBin:
                     reset_entry = {
                         "action": _("Reset to initial state"),
                         "actor": user_id,
-                        "comments": _("Workflow state reset to '${initial_state}' during restoration from recycle bin",
-                                    mapping={"initial_state": initial_state}),
+                        "comments": _(
+                            "Workflow state reset to '${initial_state}' during restoration from recycle bin",
+                            mapping={"initial_state": initial_state},
+                        ),
                         "time": DateTime(),
                         "review_state": initial_state,
                     }

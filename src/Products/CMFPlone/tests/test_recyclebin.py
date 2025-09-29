@@ -1148,7 +1148,7 @@ class OptimizedRecycleBinTests(RecycleBinTestCase):
         doc = create_test_content(self.portal, "Document", "-bulk")
         news = create_test_content(self.portal, "News Item", "-bulk")
         folder = create_test_content(self.portal, "Folder", "-bulk")
-        
+
         test_objects = [doc, news, folder]
         recycle_ids = []
 
