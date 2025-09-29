@@ -1,8 +1,7 @@
 from datetime import datetime
 from datetime import timedelta
-from plone.app.testing import IntegrationTesting
 from plone.app.testing import login
-from plone.app.testing import PLONE_FIXTURE
+from plone.app.testing import PLONE_INTEGRATION_TESTING
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
@@ -11,12 +10,8 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.controlpanel.browser.recyclebin import (
     IRecycleBinControlPanelSettings,
 )
-from Products.CMFPlone.recyclebin import ANNOTATION_KEY
-from unittest import mock
-from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
 
-import functools
 import unittest
 
 
@@ -42,30 +37,6 @@ def create_test_content(portal, content_type, id_suffix="", title_suffix=""):
 
     portal.invokeFactory(content_type, obj_id, title=obj_title)
     return portal[obj_id]
-
-
-# Decorators for common test patterns
-def with_test_content(*content_types):
-    """Decorator to create test content and add it to test instance"""
-
-    def decorator(test_method):
-        @functools.wraps(test_method)
-        def wrapper(self):
-            # Create content and store references
-            self.test_objects = {}
-            for i, content_type in enumerate(content_types):
-                suffix = f"-{i}" if i > 0 else ""
-                obj = create_test_content(self.portal, content_type, suffix, suffix)
-                key = content_type.lower().replace(" ", "_")
-                if key in self.test_objects:
-                    key = f"{key}_{i}"
-                self.test_objects[key] = obj
-
-            return test_method(self)
-
-        return wrapper
-
-    return decorator
 
 
 # Helper assertion mixins
@@ -175,9 +146,7 @@ class ContentTestHelper:
 class RecycleBinTestCase(unittest.TestCase, RecycleBinAssertionMixin):
     """Base test case for RecycleBin tests with optimized setup and helper methods"""
 
-    layer = IntegrationTesting(
-        bases=(PLONE_FIXTURE,), name="RecycleBinTests:Integration"
-    )
+    layer = PLONE_INTEGRATION_TESTING
 
     def setUp(self):
         """Set up the test environment"""
@@ -227,9 +196,7 @@ class RecycleBinTestCase(unittest.TestCase, RecycleBinAssertionMixin):
 
     def _clear_recyclebin(self):
         """Clear all items from the recycle bin"""
-        annotations = IAnnotations(self.portal)
-        if ANNOTATION_KEY in annotations:
-            del annotations[ANNOTATION_KEY]
+        self.recyclebin.clear()
 
     def _add_item_to_recyclebin(self, obj, container=None):
         """Helper method to add an item to the recycle bin"""
@@ -237,14 +204,6 @@ class RecycleBinTestCase(unittest.TestCase, RecycleBinAssertionMixin):
             container = self.portal
         obj_path = "/".join(obj.getPhysicalPath())
         return self.recyclebin.add_item(obj, container, obj_path)
-
-    def _simulate_deletion(self, obj, container=None):
-        """Helper method to simulate object deletion from container"""
-        if container is None:
-            container = self.portal
-        obj_id = obj.getId()
-        if obj_id in container:
-            del container[obj_id]
 
     def _test_basic_recycle_restore_cycle(self, obj, container=None):
         """Test the basic cycle of recycling and restoring an object"""
@@ -264,7 +223,7 @@ class RecycleBinTestCase(unittest.TestCase, RecycleBinAssertionMixin):
         self.assertItemInRecycleBin(recycle_id, obj_id, obj_title, obj_type)
 
         # Simulate deletion
-        self._simulate_deletion(obj, container)
+        del container[obj_id]
         self.assertNotIn(obj_id, container)
 
         # Restore the item
@@ -608,17 +567,19 @@ class RecycleBinExpirationTests(RecycleBinTestCase):
         # Verify it was added
         self.assertIn(recycle_id, self.recyclebin.storage)
 
-        # Mock the deletion date to be older than the retention period
-        with mock.patch.dict(
-            self.recyclebin.storage[recycle_id],
-            {"deletion_date": datetime.now() - timedelta(days=31)},
-        ):
-            # Call _purge_expired_items
-            purged_count = self.recyclebin._purge_expired_items()
+        # Modify the deletion date to be older than the retention period
+        old_date = datetime.now() - timedelta(days=31)
+        # Get the item data, modify it, and set it back to update the index
+        item_data = self.recyclebin.storage[recycle_id].copy()
+        item_data["deletion_date"] = old_date
+        self.recyclebin.storage[recycle_id] = item_data
 
-            # Verify the item was purged
-            self.assertEqual(purged_count, 1)
-            self.assertNotIn(recycle_id, self.recyclebin.storage)
+        # Call _purge_expired_items
+        purged_count = self.recyclebin._purge_expired_items()
+
+        # Verify the item was purged
+        self.assertEqual(purged_count, 1)
+        self.assertNotIn(recycle_id, self.recyclebin.storage)
 
 
 class RecycleBinRestoreEdgeCaseTests(RecycleBinTestCase):
@@ -762,7 +723,7 @@ class RecycleBinWorkflowTests(RecycleBinTestCase):
                 # Test the recycle/restore cycle
                 recycle_id = self._add_item_to_recyclebin(test_page)
                 test_page_id = test_page.getId()
-                self._simulate_deletion(test_page)
+                del self.portal[test_page_id]
                 restored_page = self.recyclebin.restore_item(recycle_id)
 
                 # Verify the page was restored
@@ -957,9 +918,12 @@ class RecycleBinRetentionTests(RecycleBinTestCase):
         obj = create_test_content(self.portal, "Document")
         recycle_id = self._add_item_to_recyclebin(obj)
 
-        # Mock the deletion date to be older than retention period
+        # Modify the deletion date to be older than retention period
         old_date = datetime.now() - timedelta(days=2)
-        self.recyclebin.storage[recycle_id]["deletion_date"] = old_date
+        # Get the item data, modify it, and set it back to update the index
+        item_data = self.recyclebin.storage[recycle_id].copy()
+        item_data["deletion_date"] = old_date
+        self.recyclebin.storage[recycle_id] = item_data
 
         # Trigger expiration check
         purged_count = self.recyclebin._purge_expired_items()
@@ -978,7 +942,10 @@ class RecycleBinRetentionTests(RecycleBinTestCase):
 
         # Mock very old deletion date
         old_date = datetime.now() - timedelta(days=365)
-        self.recyclebin.storage[recycle_id]["deletion_date"] = old_date
+        # Get the item data, modify it, and set it back to update the index
+        item_data = self.recyclebin.storage[recycle_id].copy()
+        item_data["deletion_date"] = old_date
+        self.recyclebin.storage[recycle_id] = item_data
 
         # Trigger expiration check
         purged_count = self.recyclebin._purge_expired_items()
@@ -1013,7 +980,7 @@ class RecycleBinWorkflowHistoryTests(RecycleBinTestCase):
 
         # Add to recycle bin and simulate deletion
         recycle_id = self._add_item_to_recyclebin(obj)
-        self._simulate_deletion(obj)
+        del self.portal[obj_id]
 
         # Restore the item
         restored_obj = self.recyclebin.restore_item(recycle_id)
@@ -1175,14 +1142,18 @@ class OptimizedRecycleBinTests(RecycleBinTestCase):
                 # Test full cycle
                 self._test_basic_recycle_restore_cycle(obj)
 
-    @with_test_content("Document", "News Item", "Folder")
     def test_bulk_operations_with_decorator(self):
-        """Test bulk operations using the decorator pattern"""
-        # All content is already created by decorator
+        """Test bulk operations with multiple content types"""
+        # Create test content directly
+        doc = create_test_content(self.portal, "Document", "-bulk")
+        news = create_test_content(self.portal, "News Item", "-bulk")
+        folder = create_test_content(self.portal, "Folder", "-bulk")
+        
+        test_objects = [doc, news, folder]
         recycle_ids = []
 
         # Add all items to recycle bin
-        for obj in self.test_objects.values():
+        for obj in test_objects:
             recycle_id = self._add_item_to_recyclebin(obj)
             recycle_ids.append(recycle_id)
 
@@ -1264,7 +1235,7 @@ class OptimizedRecycleBinTests(RecycleBinTestCase):
         self.assertEqual(all_items[0]["id"], obj_id)
 
         # Stage 4: Simulate deletion from portal
-        self._simulate_deletion(obj)
+        del self.portal[obj_id]
         self.assertNotIn(obj_id, self.portal)
 
         # Stage 5: Restore item
