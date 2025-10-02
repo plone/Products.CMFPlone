@@ -15,6 +15,19 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.3 (2025-10-02)
+
+
+### Internal:
+
+- Updated metadata version to 6110.
+  [maurits] #6110
+
+
+### Tests
+
+- Fix robottests for new contentbrowser updates.  @petschki 
+
 ## 6.1.2 (2025-06-20)
 
 
