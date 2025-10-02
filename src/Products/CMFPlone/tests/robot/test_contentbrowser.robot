@@ -136,7 +136,7 @@ I select a related item image via contentbrowser
    Click item in contenbrowser column    4    3
    # Click second element in fifth column, that is the "Image2" Object
    Click item in contenbrowser column    5    2
-   # Click the select Button in the Toolbar of column 6   
+   # Click the select Button in the Toolbar of column 6
    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[6]/div[contains(@class, "levelToolbar")]/div[contains(@class,"selectLevel")]/button
 
 
@@ -155,7 +155,7 @@ I select two related item images via contentbrowser
    # Click third element in fourth column, that is the "Images" folder
    Click item in contenbrowser column    4    3
 
-   # now we select two items in a column via Shift+Click
+   # now we select two items in a colum via Shift+Click
    # Click first element in fifth column, that is the "Image1" Object
    Click item in contenbrowser column    5    1
    # Click second element in fifth column with SHIFT, that is the "Image2" Object
@@ -188,9 +188,9 @@ I set an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
     Fill text to tinymce editor    Susi Sorglos and John Doe
     Click tiny button and open contentbrowser    Insert/edit image
-    Click item in contenbrowser column    1    3
+    Click item in contenbrowser column    1    4
     Click item in contenbrowser column    2    1
-    Click item in contenbrowser column    3    1
+    Click item in contenbrowser column    3    2
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/div[contains(@class,"selectLevel")]/button
     Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
@@ -198,12 +198,12 @@ I upload an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
     Fill text to tinymce editor    Susi Sorglos and John Doe
     Click tiny button and open contentbrowser    Insert/edit image
-    Click item in contenbrowser column    1    3
+    Click item in contenbrowser column    1    4
     Click item in contenbrowser column    2    1
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//button[contains(@class,"upload")]
     Upload File By Selector    //div[contains(@class,"pat-upload")]//input[@class="dz-hidden-input"]    ${PATH_TO_TEST_FILES}/plone-logo.png
     Click    //div[contains(@class,"pat-upload")]//button[contains(@class,"upload-all")]
-    Click item in contenbrowser column    3    3
+    Click item in contenbrowser column    3    6
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]/div[contains(@class,"selectLevel")]/button
     Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
@@ -211,9 +211,9 @@ I search and select an image via contentbrowser
     Go to  ${PLONE_URL}/${DOCUMENT_ID}/edit
     Fill text to tinymce editor    Susi Sorglos and John Doe
     Click tiny button and open contentbrowser    Insert/edit image
-    Click item in contenbrowser column    1    3
+    Click item in contenbrowser column    1    4
     Click item in contenbrowser column    2    1
-    Click item in contenbrowser column    3    2
+    Click item in contenbrowser column    3    5
     Click item in contenbrowser column    4    1
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]
     Type Text    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "toolBar")]//input[contains(@name,"filter")]    Anot
