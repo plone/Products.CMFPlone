@@ -155,7 +155,7 @@ I select two related item images via contentbrowser
    # Click third element in fourth column, that is the "Images" folder
    Click item in contenbrowser column    4    3
 
-   # now we select two items in a colum via Shift+Click
+   # now we select two items in a column via Shift+Click
    # Click first element in fifth column, that is the "Image1" Object
    Click item in contenbrowser column    5    1
    # Click second element in fifth column with SHIFT, that is the "Image2" Object
