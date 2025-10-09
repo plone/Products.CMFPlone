@@ -1,3 +1,4 @@
+from collections import defaultdict
 from lxml import etree
 from OFS.Image import File
 from plone.registry.interfaces import IRegistry
@@ -10,7 +11,6 @@ from zope.publisher.interfaces import IPublishTraverse
 
 import hashlib
 import logging
-import time
 
 
 logger = logging.getLogger(__name__)
@@ -81,6 +81,10 @@ class IconsView(BrowserView):
     defaulticon = "++plone++icons/plone.svg"
     name = ""
 
+    def __init__(self, context, request):
+        super().__init__(context, request)
+        self._svg_count = defaultdict(int)
+
     def publishTraverse(self, request, name):
         if self.name:
             # fix traversing to eg. "contenttype/document"
@@ -145,10 +149,11 @@ class IconsView(BrowserView):
             raise ValueError(
                 f"SVG file content root tag mismatch (not svg but {svgtree.docinfo.root_name}): {iconfile.path}"
             )
+        self._svg_count[name] += 1
         modifier_cfg = {
             "cssclass": tag_class,
             "title": tag_alt,
-            "hash": hashlib.md5(str(time.time()).encode()).hexdigest(),
+            "hash": hashlib.md5(f"{name}{self._svg_count[name]}".encode()).hexdigest(),
         }
         for mod_name, modifier in SVG_MODIFER.items():
             __traceback_info__ = mod_name
