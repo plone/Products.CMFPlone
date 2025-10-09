@@ -8,7 +8,9 @@ from zope.component.hooks import getSite
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
 
+import hashlib
 import logging
+import time
 
 
 logger = logging.getLogger(__name__)
@@ -28,8 +30,9 @@ def _add_aria_title(svgtree, cfg):
         title = etree.Element("title")
         root.append(title)
     title.text = cfg["title"]
+    title.attrib["id"] = f"title-{cfg['hash']}"
     # add aria attr
-    root.attrib["aria-labelledby"] = "title"
+    root.attrib["aria-labelledby"] = f"title-{cfg['hash']}"
 
 
 SVG_MODIFER["add_aria_title"] = _add_aria_title
@@ -47,6 +50,29 @@ def _add_css_class(svgtree, cfg):
 
 
 SVG_MODIFER["add_css_class"] = _add_css_class
+
+
+def _unique_id(svgtree, cfg):
+    # for <use (xlink:)href="#someid" /> references to work
+    # the ids in the svg must be unique in the document
+    root = svgtree.getroot()
+    for el in root.xpath("//*[@id]"):
+        _id = el.attrib["id"]
+        if cfg["hash"] in _id:
+            # might be already unique
+            continue
+        _unique_id = f"{_id}-{cfg['hash']}"
+        el.attrib["id"] = _unique_id
+        refs = root.xpath(f"//*[@* = '#{_id}' or @* = 'url(#{_id})']")
+        for ref in refs:
+            for attr, attr_val in ref.attrib.items():
+                # there are multiple attributes that might contain a reference
+                # to an id, e.g. href, xlink:href, fill, filter, clip-path, ...
+                if f"#{_id}" in attr_val:
+                    ref.attrib[attr] = attr_val.replace(f"#{_id}", f"#{_unique_id}")
+
+
+SVG_MODIFER["unique_id"] = _unique_id
 
 
 @implementer(IPublishTraverse)
@@ -122,8 +148,9 @@ class IconsView(BrowserView):
         modifier_cfg = {
             "cssclass": tag_class,
             "title": tag_alt,
+            "hash": hashlib.md5(str(time.time()).encode()).hexdigest(),
         }
-        for name, modifier in SVG_MODIFER.items():
-            __traceback_info__ = name
+        for mod_name, modifier in SVG_MODIFER.items():
+            __traceback_info__ = mod_name
             modifier(svgtree, modifier_cfg)
         return etree.tostring(svgtree)
