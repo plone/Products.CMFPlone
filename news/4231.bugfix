@@ -1,0 +1,1 @@
+Filter out REST API control panels from redirection checks in absolutize_path @rohnsha0
