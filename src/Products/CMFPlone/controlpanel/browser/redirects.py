@@ -86,7 +86,21 @@ def absolutize_path(path, is_source=True):
             else:
                 # Check whether obj exists at source path.
                 # A redirect would be useless then.
-                if portal.unrestrictedTraverse(path, None) is not None:
+                obj = portal.unrestrictedTraverse(path, None)
+                if obj is not None:
+                    # Exclude REST API controlpanels from this check
+                    # as they shouldn't prevent redirect creation
+                    try:
+                        from plone.restapi.controlpanels.interfaces import IControlpanel
+
+                        if IControlpanel.providedBy(obj):
+                            obj = None  # Treat as non-existent
+                    except ImportError:
+                        # plone.restapi not installed, proceed normally
+                        pass
+
+                # Set error if we still have a valid object after controlpanel filtering
+                if obj is not None:
                     err = _("Cannot use a working path as alternative url.")
         else:
             # Check whether obj exists at target path
