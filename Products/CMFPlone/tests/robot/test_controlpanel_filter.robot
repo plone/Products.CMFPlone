@@ -157,8 +157,15 @@ Mark text heading as h1 in tinymce editor
     ...    }
     ...    all_elements=False
     # here we use the editor to format the text `heading` with h1
-    # NOTE: TinyMCE formats menu is a bit flaky ... try to harden it with splitting hover and click events
     Click    //button[@aria-label="Format Paragraph"]
-    Hover    //div[@aria-label="Headers"]
-    Hover    //div[@aria-label="Header 1"]
+
+    # NOTE: TinyMCE formats menu is a bit flaky ... try to harden it
+    Mouse Move Relative To    //div[@aria-label="Headers"]    0    10
+    Hover    //div[@aria-label="Headers"]/div[contains(@class,"tox-collection__item-label")]
+    Wait For Condition    Attribute   //div[@aria-label="Headers"]    aria-expanded     ==    true
+
+    Mouse Move Relative To    //div[@aria-label="Header 1"]    0    10
+    Hover    //div[@aria-label="Header 1"]/div[contains(@class,"tox-collection__item-label")]
+    Wait For Condition    Attribute   //div[@aria-label="Header 1"]    aria-selected     ==    true
+
     Click    //div[@aria-label="Header 1"]//h1
