@@ -47,9 +47,6 @@
     <utility interface="Products.CMFCore.interfaces.IUndoTool"
              object="portal_undo"
     />
-    <utility interface="five.customerize.interfaces.IViewTemplateContainer"
-             object="portal_view_customizations"
-    />
     <utility factory="plone.app.redirector.storage.RedirectionStorage"
              interface="plone.app.redirector.interfaces.IRedirectionStorage"
     />

@@ -55,7 +55,6 @@ setup(
     zip_safe=False,
     install_requires=[
         "borg.localrole",
-        "five.customerize",
         "five.intid",
         "lxml",
         "packaging",
@@ -64,7 +63,6 @@ setup(
         "plone.app.contentmenu >= 2.0.1",
         "plone.app.contentrules",
         "plone.app.contenttypes",
-        "plone.app.customerize",
         "plone.app.dexterity",
         "plone.app.i18n",
         "plone.app.layout >= 6.0.0a3",
