@@ -32,8 +32,8 @@ class ExceptionView(BrowserView):
 
         # Always use portal root as context to ensure resources load correctly
         current = self.__parent__
-        while hasattr(current, '__parent__') and current.__parent__ is not None:
-            if hasattr(current, 'meta_type') and current.meta_type == 'Plone Site':
+        while hasattr(current, "__parent__") and current.__parent__ is not None:
+            if hasattr(current, "meta_type") and current.meta_type == "Plone Site":
                 break
             current = current.__parent__
 
