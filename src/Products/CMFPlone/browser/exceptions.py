@@ -32,21 +32,13 @@ class ExceptionView(BrowserView):
 
         # Always use portal root as context to ensure resources load correctly
         current = self.__parent__
-        print(f"DEBUG: Starting context: {current}")
-        print(f"DEBUG: Starting context path: {getattr(current, 'absolute_url_path', lambda: 'NO PATH')()}")
-
         while hasattr(current, '__parent__') and current.__parent__ is not None:
             if hasattr(current, 'meta_type') and current.meta_type == 'Plone Site':
-                print(f"DEBUG: Found Plone Site at: {current}")
                 break
             current = current.__parent__
-            print(f"DEBUG: Moving up to: {current}")
 
         self.context = current
         self.__parent__ = current  # Also update __parent__ to ensure consistency
-        print(f"DEBUG: Final context: {self.context}")
-        print(f"DEBUG: Final __parent__: {self.__parent__}")
-        print(f"DEBUG: Final context path: {getattr(self.context, 'absolute_url_path', lambda: 'NO PATH')()}")
         request = self.request
 
         exc_type, value, traceback = sys.exc_info()
