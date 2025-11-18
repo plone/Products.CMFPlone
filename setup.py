@@ -1,5 +1,4 @@
 from pathlib import Path
-from setuptools import find_packages
 from setuptools import setup
 
 
@@ -19,7 +18,7 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Framework :: Plone",
-        "Framework :: Plone :: 6.1",
+        "Framework :: Plone :: 6.2",
         "Framework :: Plone :: Core",
         "Framework :: Zope :: 5",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
@@ -48,9 +47,6 @@ setup(
         "Videos": "https://youtube.com/@plonecms",
         "Sponsor": "https://github.com/sponsors/plone",
     },
-    packages=find_packages("src"),
-    namespace_packages=["Products"],
-    package_dir={"": "src"},
     include_package_data=True,
     zip_safe=False,
     install_requires=[
