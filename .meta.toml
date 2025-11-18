@@ -3,7 +3,7 @@
 # See the inline comments on how to expand/tweak this configuration file
 [meta]
 template = "default"
-commit-id = "2.0.1.dev0"
+commit-id = "2.2.2"
 
 [flake8]
 extra_lines = """
@@ -33,7 +33,7 @@ dependencies_mappings = [
 ]
 
 [tox]
-test_matrix = {"6.2" = ["3.12", "3.10"]}
+test_matrix = {"6.2" = ["*"]}
 
 [github]
 jobs = [
@@ -49,3 +49,4 @@ extra_lines_after_os_dependencies = """
         sudo locale-gen nl_NL@euro
         sudo update-locale
 """
+
