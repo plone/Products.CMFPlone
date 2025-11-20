@@ -118,7 +118,6 @@ setup(
         "Products.SiteErrorLog",
         "Products.statusmessages",
         "Products.ZCatalog",
-        "setuptools>=36.2",
         "webresource>=1.2",
         "z3c.caching",
         "z3c.form",
