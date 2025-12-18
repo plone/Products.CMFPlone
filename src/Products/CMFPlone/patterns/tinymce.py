@@ -127,6 +127,7 @@ class TinyMCESettingsGenerator:
             "table_cell_advtab": False,
             "table_style_by_css": False,
             "table_appearance_options": False,
+            "license_key": settings.license_key or "gpl",
         }
         toolbar_additions = settings.custom_buttons or []
 
