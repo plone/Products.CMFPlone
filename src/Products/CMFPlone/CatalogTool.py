@@ -440,7 +440,9 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
         return ZCatalog.searchResults(self, query, **kw)
 
-    __call__ = searchResults
+    @security.protected(ManageZCatalogEntries)
+    def __call__(self, *args, **kwargs):
+        return self.searchResults(*args, **kwargs)
 
     def search(self, query, sort_index=None, reverse=0, limit=None, merge=1):
         # Wrap search() the same way that searchResults() is
