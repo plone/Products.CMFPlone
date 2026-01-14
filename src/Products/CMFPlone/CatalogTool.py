@@ -37,6 +37,7 @@ from zope.component.hooks import getSite
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import providedBy
+from ZPublisher import zpublish
 
 import logging
 import re
@@ -440,7 +441,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
         return ZCatalog.searchResults(self, query, **kw)
 
-    @security.protected(ManageZCatalogEntries)
+    @zpublish(False)
     def __call__(self, *args, **kwargs):
         return self.searchResults(*args, **kwargs)
 
