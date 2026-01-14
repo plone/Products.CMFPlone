@@ -20,7 +20,7 @@ setup(
         "Framework :: Plone",
         "Framework :: Plone :: 6.2",
         "Framework :: Plone :: Core",
-        "Framework :: Zope :: 5",
+        "Framework :: Zope :: 6",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
