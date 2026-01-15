@@ -15,6 +15,23 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.4 (2026-01-15)
+
+
+### Bug fixes:
+
+- Remove the alias that links the searchResults method to the call of the portal catalog #4248
+
+
+### Internal:
+
+- Updated metadata version to 6111.  @mauritsvanrees #6111
+
+
+### Tests
+
+- Fix `pat-contentbrowser` robottests for latest changes in mockup=5.4.5 @petschki 
+
 ## 6.1.3 (2025-10-02)
 
 
