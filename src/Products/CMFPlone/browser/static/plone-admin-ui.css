@@ -10,3 +10,8 @@ body {
 #go-to-site-link:active {
   color: #fff;
 }
+/* Fix classic toolbar scrolling on small height screens */
+#edit-zone {
+  max-height: 100vh;
+  overflow-y: auto;
+}
