@@ -133,9 +133,14 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         item = node["item"]
 
         portalType = getattr(item, "portal_type", None)
-        itemUrl = item.getURL()
-        if portalType is not None and portalType in self.viewActionTypes:
-            itemUrl += "/view"
+        from plone.app.contenttypes.interfaces import ILink
+        if ILink.providedBy(item):
+            from Products.CMFPlone.browser.link_utils import get_absolute_remote_url
+            itemUrl = get_absolute_remote_url(item, getattr(item, 'REQUEST', None) or context.REQUEST)
+        else:
+            itemUrl = item.getURL()
+            if portalType is not None and portalType in self.viewActionTypes:
+                itemUrl += "/view"
 
         useRemoteUrl = False
         getRemoteUrl = getattr(item, "getRemoteUrl", None)
