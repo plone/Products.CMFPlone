@@ -44,7 +44,8 @@ def _wrap_update(update):
                 if req_url_parsed.netloc != referrer_parsed.netloc:
                     # We do not trust data from outside referrers.
                     self.ignoreRequest = True
-                    self.form.ignoreRequest = True
+                    if getattr(self, "form", None) is not None:
+                        self.form.ignoreRequest = True
         return update(self)
 
     return _wrapped
