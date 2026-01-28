@@ -8,7 +8,6 @@ import os
 import re
 import unittest
 
-
 UNITTESTS = ["messages.txt", "mails.txt", "emaillogin.rst", "translate.txt"]
 CONTENT_TESTS = [
     "AddMoveAndDeleteDocument.txt",

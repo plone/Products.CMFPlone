@@ -12,7 +12,6 @@ from zope.component import getUtility
 
 import unittest
 
-
 SITE_LOGO_BASE64 = (
     b"filenameb64:cGl4ZWwucG5n;datab64:iVBORw0KGgoAAAANSUhEUgA"
     b"AAAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4z8AAAAMBAQAY3Y2wAAA"

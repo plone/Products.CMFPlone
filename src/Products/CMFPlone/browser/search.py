@@ -20,7 +20,6 @@ from ZTUtils import make_query
 import json
 import re
 
-
 _ = MessageFactory("plone")
 
 # We should accept both a simple space, unicode u'\u0020 but also a

@@ -20,7 +20,6 @@ import logging
 import sys
 import transaction
 
-
 logger = logging.getLogger("plone.app.upgrade")
 _upgradePaths = {}
 

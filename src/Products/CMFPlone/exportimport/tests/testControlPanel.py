@@ -5,7 +5,6 @@ from Products.CMFPlone.PloneControlPanel import PloneControlPanel
 from zope.component import provideAdapter
 from zope.component import provideUtility
 
-
 _CONTROLPANEL_XML = b"""\
 <?xml version="1.0" encoding="utf-8"?>
 <object name="portal_controlpanel" meta_type="Plone Control Panel Tool">

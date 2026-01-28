@@ -7,7 +7,6 @@ from zope.deprecation import deprecate
 
 import logging
 
-
 logger = logging.getLogger("Plone")
 
 

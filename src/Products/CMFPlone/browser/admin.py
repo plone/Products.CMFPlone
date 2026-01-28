@@ -36,7 +36,6 @@ from ZPublisher.BaseRequest import DefaultPublishTraverse
 
 import logging
 
-
 try:
     distribution("plone.volto")
     HAS_VOLTO = True

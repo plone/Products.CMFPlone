@@ -5,7 +5,6 @@ from plone.namedfile.file import NamedImage
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests import PloneTestCase
 
-
 AddPortalTopics = "Add portal topics"
 
 

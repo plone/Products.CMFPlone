@@ -31,7 +31,6 @@ from zope.schema import ValidationError
 import random
 import re
 
-
 try:
     # Products.MailHost has a patch to fix quoted-printable soft line breaks.
     # See https://github.com/zopefoundation/Products.MailHost/issues/35

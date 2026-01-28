@@ -5,7 +5,6 @@ import doctest
 import re
 import unittest
 
-
 tests = ("../README.rst",)
 
 

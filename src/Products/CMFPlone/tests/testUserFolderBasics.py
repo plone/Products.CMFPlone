@@ -14,7 +14,6 @@ from ZPublisher.utils import basic_auth_encode
 
 import unittest
 
-
 user_role = "Member"
 
 

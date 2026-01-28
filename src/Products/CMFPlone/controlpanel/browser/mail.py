@@ -13,7 +13,6 @@ import smtplib
 import socket
 import sys
 
-
 log = getLogger("Plone")
 
 

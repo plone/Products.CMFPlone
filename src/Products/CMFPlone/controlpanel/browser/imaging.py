@@ -3,7 +3,6 @@ from plone.app.registry.browser import controlpanel
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.controlpanel import IImagingSchema
 
-
 log = getLogger("Plone")
 
 

@@ -18,7 +18,6 @@ from Products.CMFPlone.UnicodeSplitter import Splitter
 import locale
 import unittest
 
-
 LATIN1 = (
     "en_US.ISO-8859-1",
     "en_US.ISO8859-15",

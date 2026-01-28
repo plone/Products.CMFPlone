@@ -13,7 +13,6 @@ from zope.component import queryUtility
 
 import unittest
 
-
 try:
     distribution("plone.distribution")
     HAS_DISTRIBUTION = True

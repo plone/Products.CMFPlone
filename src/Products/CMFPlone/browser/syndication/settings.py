@@ -8,7 +8,6 @@ from zope.component import adapter
 from zope.component import getUtility
 from zope.interface import implementer
 
-
 FEED_SETTINGS_KEY = "syndication_settings"
 
 

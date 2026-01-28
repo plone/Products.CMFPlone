@@ -46,7 +46,6 @@ import sys
 import transaction
 import zope.interface
 
-
 # todo: check below if this is still needed
 ClassType = type
 

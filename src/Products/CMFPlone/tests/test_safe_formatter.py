@@ -7,7 +7,6 @@ from plone.app.testing import TEST_USER_NAME
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zExceptions import Unauthorized
 
-
 BAD_ATTR_STR = """
 <p tal:content="python:'class of {0} is {0.__class__}'.format(context)" />
 """

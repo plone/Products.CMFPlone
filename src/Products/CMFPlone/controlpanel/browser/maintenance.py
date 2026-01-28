@@ -18,7 +18,6 @@ import logging
 import os
 import time
 
-
 LIFETIME = True
 try:
     from Lifetime import shutdown

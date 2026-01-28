@@ -21,7 +21,6 @@ import logging
 import tempfile
 import warnings
 
-
 try:
     # use this to stream csv data if we can
     from ZPublisher.Iterators import filestream_iterator

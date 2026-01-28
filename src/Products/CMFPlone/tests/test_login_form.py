@@ -11,7 +11,6 @@ import re
 import time
 import unittest
 
-
 FORM_ID = "login"
 
 

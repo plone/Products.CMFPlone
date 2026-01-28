@@ -12,7 +12,6 @@ from zope.i18n import translate
 from zope.interface import implementer
 from zope.size import byteDisplay
 
-
 _marker = []
 
 

@@ -10,7 +10,6 @@ from Products.CMFPlone.tests import PloneTestCase
 from zope.interface import directlyProvides
 from zope.interface import implementer
 
-
 default_user = PloneTestCase.default_user
 
 

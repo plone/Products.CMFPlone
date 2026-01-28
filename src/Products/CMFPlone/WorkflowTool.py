@@ -13,7 +13,6 @@ from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION
 from ZODB.POSException import ConflictError
 from zope.component import getMultiAdapter
 
-
 try:
     multilingual_version = distribution("plone.app.multilingual").version
 except PackageNotFoundError:

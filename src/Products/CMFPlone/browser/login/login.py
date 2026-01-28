@@ -25,7 +25,6 @@ from zope.interface import implementer
 
 import logging
 
-
 logger = logging.getLogger(__name__)
 # TODO: Scale down this list now that we've removed a lot of
 # templates.

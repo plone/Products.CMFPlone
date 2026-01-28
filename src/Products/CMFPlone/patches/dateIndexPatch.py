@@ -4,7 +4,6 @@ from DateTime import DateTime
 from Products.PluginIndexes.DateIndex.DateIndex import DateIndex
 from Products.PluginIndexes.DateRangeIndex.DateRangeIndex import DateRangeIndex
 
-
 maxDate = DateTime(4008, 0)
 
 

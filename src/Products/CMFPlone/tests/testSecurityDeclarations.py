@@ -199,13 +199,11 @@ class TestSecurityDeclarations(RestrictedPythonTest):
 
     def testCatch_ConflictErrorRaisedByRestrictedCode(self):
         try:
-            self.check(
-                """
+            self.check("""
 from ZODB.POSException import ConflictError
 try: raise ConflictError
 except ConflictError: pass
-"""
-            )
+""")
         except Exception as e:
             self.fail(
                 "Failed to catch: %s %s (module %s)"
@@ -215,13 +213,11 @@ except ConflictError: pass
     def testCatch_ConflictErrorRaisedByPythonModule(self):
         self.app._setObject("raiseConflictError", dummy.Raiser(ConflictError))
         try:
-            self.check(
-                """
+            self.check("""
 from ZODB.POSException import ConflictError
 try: context.raiseConflictError()
 except ConflictError: pass
-"""
-            )
+""")
         except Exception as e:
             self.fail(
                 "Failed to catch: %s %s (module %s)"
@@ -240,13 +236,11 @@ except ConflictError: pass
     def testCatch_ParseErrorRaisedByPythonModule(self):
         self.folder._setObject("raiseParseError", dummy.Raiser(ParseError))
         try:
-            self.check(
-                """
+            self.check("""
 from Products.ZCTextIndex.ParseTree import ParseError
 try: context.raiseParseError()
 except ParseError: pass
-"""
-            )
+""")
         except Exception as e:
             self.fail(
                 "Failed to catch: %s %s (module %s)"
@@ -268,13 +262,11 @@ except ParseError: pass
     def testCatch_DateTimeErrorRaisedByPythonModule(self):
         self.folder._setObject("raiseDateTimeError", dummy.Raiser(self.DateTimeError))
         try:
-            self.check(
-                """
+            self.check("""
 from DateTime.interfaces import DateTimeError
 try: context.raiseDateTimeError()
 except DateTimeError: pass
-"""
-            )
+""")
         except Exception as e:
             self.fail(
                 "Failed to catch: %s %s (module %s)"
@@ -296,13 +288,11 @@ except DateTimeError: pass
     def testCatch_SyntaxErrorRaisedByPythonModule(self):
         self.folder._setObject("raiseSyntaxError", dummy.Raiser(self.SyntaxError))
         try:
-            self.check(
-                """
+            self.check("""
 from DateTime.interfaces import SyntaxError
 try: context.raiseSyntaxError()
 except SyntaxError: pass
-"""
-            )
+""")
         except Exception as e:
             self.fail(
                 "Failed to catch: %s %s (module %s)"
@@ -318,13 +308,11 @@ except SyntaxError: pass
     def testCatch_CopyErrorRaisedByPythonModule(self):
         self.folder._setObject("raiseCopyError", dummy.Raiser(CopyError))
         try:
-            self.check(
-                """
+            self.check("""
 from OFS.CopySupport import CopyError
 try: context.raiseCopyError()
 except CopyError: pass
-"""
-            )
+""")
         except Exception as e:
             self.fail(
                 "Failed to catch: %s %s (module %s)"

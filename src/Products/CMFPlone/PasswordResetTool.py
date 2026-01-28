@@ -22,7 +22,6 @@ from zope.interface import implementer
 
 import datetime
 
-
 module_security = ModuleSecurityInfo("Products.CMFPlone.PasswordResetTool")
 
 

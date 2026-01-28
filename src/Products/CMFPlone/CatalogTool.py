@@ -44,7 +44,6 @@ import re
 import time
 import urllib
 
-
 logger = logging.getLogger("Plone")
 try:
     from plone.app.discussion.interfaces import DISCUSSION_ANNOTATION_KEY
