@@ -51,7 +51,9 @@ showcontent = true
 ##
 
 [tool.isort]
-profile = "plone"
+profile = "black"
+force_alphabetical_sort = true
+force_single_line = true
 
 ##
 # Add extra configuration options in .meta.toml:
