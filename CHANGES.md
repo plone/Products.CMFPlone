@@ -15,6 +15,88 @@
 
 <!-- towncrier release notes start -->
 
+## 6.2.0a1 (2026-01-15)
+
+
+### Breaking changes:
+
+- Replace ``pkg_resources`` namespace with PEP 420 native namespace.
+  Support only Plone 6.2 and Python 3.10+. #3928
+
+
+### New features:
+
+- Start the Plone 6.2 development cycle by fixing the profile version, adding the `plone-62` zcml feature, and defining `PLONE62MARKER` as True. #3861
+- RegistrationTool: add method `principal_id_or_login_name_exists`.
+  This is factored out from the `isMemberIdAllowed` method, which now calls this after checking the allowed member id pattern.
+  [maurits] #4120
+- Add configurable license key to TinyMCE options.  @petschki 
+- When enabled, use the ajax main template for XHR requests.
+
+  If the ``plone.use_ajax_main_template`` registry setting is set to ``True``,
+  and an XHR request is detected where the ``ajax_load`` query string parameter
+  does not evaluate to ``False``, the system will automatically use the AJAX main
+  template for that request.
+
+  This can improve performance on sites that handle a large number of AJAX requests. 
+
+
+### Bug fixes:
+
+- Make resource registry more robust against broken resources.
+
+  Don't break the resource registry when a resource error happens (missing
+  dependency, circular dependency, file not found, etc). Admins will see a
+  warning badge and can fix the problem in the resource registry user interface.
+  Previously such errors broke the rendering of the whole site, making fixes very
+  fiddly.
+  [thet] dont-break-resource-registry
+- Fix moving portal actions between categories.
+  [petschki] #3029
+- In catalog queries, make sure `show_inactive=False` hides inactive items even for admins who have the `Access inactive portal content` permission. @gyst #4098
+- Update broken GNU GPLv2 license link in footer. @rohnsha0 #4108
+- Replace `pkg_resources` with `importlib.metadata` and `packaging`. @gforcada #4126
+- Use contentbrowser options for TinyMCE image/link browser.
+  This also fixes the basePath calculation for uploading.
+  [petschki] #4133
+- Fix `redirect_after_login` in VHM environments. @ale-rt, @petschki #4151
+- Harden condition of external editor action to not fail when the `externalEditorEnabled` script is not available.
+  [maurits] #4179
+- add login to the list of button names that showbmit button @erral #4180
+- Drop workaround for #2666 - a bug in Python (bugs.python.org/issue46110) which was fixed in 3.9.10. @pbauer #4196
+- Remove the alias that links the searchResults method to the call of the portal catalog #4248
+- Fix robottest for `pat-contentbrowser` update. @petschki 
+
+
+### Internal:
+
+- Move distribution to src layout [gforcada] #4217
+- Update `PLIP.md` issue template to assign `type=PLIP`. @tisto #4221
+- Updated metadata version to 6108.
+  [maurits] #6108
+- Register the IClassicUISchema registry entries from plone.base.
+
+  [thet] 
+- Update configuration files @plone 
+- Update dependencies for plone.base and plone.app.layout.
+
+  - Raise minimum version of plone.base to 4.0.0a1 to register the new ``IClassicUISchema``.
+  - Raise minimum version of plone.app.layout to 6.0.0a3 to get the new ``is_ajax`` function.
+
+  Ref: https://github.com/plone/Products.CMFPlone/pull/4169
+
+  [thet] 
+
+
+### Tests:
+
+- Fix robottests for contentbrowser.
+  [1letter] #4113
+- Fix `pat-contentbrowser` robottests for latest changes in mockup=5.4.5 @petschki 
+- Fix deprecated robot keyword [Return] -> RETURN.  @petschki 
+- Fix robottests for plone.staticresources 2.3.3  @petschki 
+- fix robot test "folder_contents" with the new multiselection @1letter 
+
 ## 6.1.0 (2025-02-07)
 
 

@@ -1,2 +1,0 @@
-Harden condition of external editor action to not fail when the `externalEditorEnabled` script is not available.
-[maurits]

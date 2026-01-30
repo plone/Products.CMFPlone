@@ -60,14 +60,14 @@ insert link
     ...    all_elements=False
     Click    //button[@aria-label='Insert/edit link']
     Click    css=.linkModal .content-browser-selected-items-wrapper a.btn-primary
-    Click item in contenbrowser column    1    3
+    Click item in contenbrowser column    1    1
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]//button
     Click    //div[contains(@class, 'modal-footer')]//input[contains(@name, 'insert')]
 
 insert image
     Click    //button[@aria-label="Insert/edit image"]
     Click    css=.linkModal .content-browser-selected-items-wrapper a.btn-primary
-    Click item in contenbrowser column    1    3
+    Click item in contenbrowser column    1    2
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]//button
     Type Text    //div[contains(@class, 'modal-body')]//input[@name="title"]    SomeTitle
     Type Text    //div[contains(@class, 'modal-body')]//input[@name="alt"]    SomeAlt

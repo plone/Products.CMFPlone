@@ -1,9 +1,8 @@
 from pathlib import Path
-from setuptools import find_packages
 from setuptools import setup
 
 
-version = "6.1.1.dev0"
+version = "6.2.0a2.dev0"
 
 long_description = (
     f"{Path('README.md').read_text()}\n{Path('CHANGES.md').read_text()}\n"
@@ -19,9 +18,9 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Framework :: Plone",
-        "Framework :: Plone :: 6.1",
+        "Framework :: Plone :: 6.2",
         "Framework :: Plone :: Core",
-        "Framework :: Zope :: 5",
+        "Framework :: Zope :: 6",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
@@ -48,9 +47,6 @@ setup(
         "Videos": "https://youtube.com/@plonecms",
         "Sponsor": "https://github.com/sponsors/plone",
     },
-    packages=find_packages("src"),
-    namespace_packages=["Products"],
-    package_dir={"": "src"},
     include_package_data=True,
     zip_safe=False,
     install_requires=[
@@ -67,7 +63,7 @@ setup(
         "plone.app.customerize",
         "plone.app.dexterity",
         "plone.app.i18n",
-        "plone.app.layout >= 2.5.15",
+        "plone.app.layout >= 6.0.0a3",
         "plone.app.linkintegrity >=1.0.3",
         "plone.app.locales",
         "plone.app.portlets",
@@ -83,7 +79,7 @@ setup(
         "plone.app.z3cform >= 4.1.0",
         "plone.autoform",
         "plone.autoinclude",
-        "plone.base",
+        "plone.base >= 4.0.0a1",
         "plone.browserlayer >= 2.1.5",
         "plone.contentrules",
         "plone.dexterity",
@@ -122,7 +118,6 @@ setup(
         "Products.SiteErrorLog",
         "Products.statusmessages",
         "Products.ZCatalog",
-        "setuptools>=36.2",
         "webresource>=1.2",
         "z3c.caching",
         "z3c.form",
