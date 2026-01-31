@@ -1,0 +1,2 @@
+Register plone.i18n negotiator as the Zope INegotiator utility.
+
