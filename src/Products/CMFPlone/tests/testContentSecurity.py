@@ -89,7 +89,7 @@ class TestContentSecurity(PloneTestCase):
         # This should now raise ValueError
         with self.assertRaises(zUnauthorized):
             folder.subfolder.invokeFactory("Document", "new")
-            
+
     def test_sharing_does_not_change_modification_date(self):
         self.login("user1")
 
@@ -104,7 +104,7 @@ class TestContentSecurity(PloneTestCase):
         sharingView.update_inherit(False)
 
         self.assertEqual(doc.ModificationDate(), old_modified)
-        
+
     def testCreateSucceedsWithLocalRoleBlockedInParentButAssingedInSubFolder(self):
         # Make sure that blocking a acquisition in a folder does not interfere
         # with assigning a role in subfolders
