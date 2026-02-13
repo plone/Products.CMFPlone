@@ -75,6 +75,9 @@ class IconsView(BrowserView):
         if name is None:
             raise NotFound("No name were given as subpath.")
         fileobj = self._iconfile(self.lookup(self.name))
+        # Calling the @@iconresolver/NAME url directly will lead ZPublisher
+        # HTTPResponse add the image/svg+xml mimetype to the response header
+        # and encode the body as bytes.
         return fileobj(REQUEST=self.request, RESPONSE=self.request.response)
 
     def _iconfile(self, icon):
@@ -121,7 +124,8 @@ class IconsView(BrowserView):
                 svgtree = etree.parse(fh)
         except etree.XMLSyntaxError:
             logger.exception(f"SVG File: {iconfile.path}")
-            with open(iconfile.path, "rb") as fh:
+            with open(iconfile.path) as fh:
+                # Read and return as string.
                 return fh.read()
         if svgtree.docinfo.root_name.lower() != "svg":
             raise ValueError(
@@ -134,4 +138,4 @@ class IconsView(BrowserView):
         for name, modifier in SVG_MODIFER.items():
             __traceback_info__ = name
             modifier(svgtree, modifier_cfg)
-        return etree.tostring(svgtree)
+        return etree.tostring(svgtree).decode("utf-8")

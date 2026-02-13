@@ -18,12 +18,15 @@ class IconsTest(unittest.TestCase):
         portal_url = self.portal.absolute_url()
         url = portal_url + "/@@iconresolver/bug"
         browser.open(url)
+        # Calling the @@iconresolver/bug url directly will lead ZPublisher
+        # HTTPResponse add the image/svg+xml mimetype to the response header
+        # and encode the body as bytes.
         self.assertIn(b"bi bi-bug", browser.contents)
 
     def test_icons_view(self):
         page = self.app
         view = page.restrictedTraverse("@@iconresolver")
-        self.assertIn(b"bi bi-bug", view.tag("bug"))
+        self.assertIn("bi bi-bug", view.tag("bug"))
 
     def test_icons_url(self):
         page = self.app
@@ -33,7 +36,7 @@ class IconsTest(unittest.TestCase):
     def test_icons_tag(self):
         page = self.app
         view = page.restrictedTraverse("@@iconresolver")
-        self.assertIn(b"bi bi-bug", view.tag("bug"))
+        self.assertIn("bi bi-bug", view.tag("bug"))
 
 
 class IconTraverserTest(unittest.TestCase):

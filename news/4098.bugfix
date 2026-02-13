@@ -1,1 +1,0 @@
-In catalog queries, make sure `show_inactive=False` hides inactive items even for admins who have the `Access inactive portal content` permission. @gyst
