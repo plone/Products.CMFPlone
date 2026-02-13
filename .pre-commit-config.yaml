@@ -7,7 +7,7 @@ ci:
 
 repos:
 -   repo: https://github.com/asottile/pyupgrade
-    rev: v3.21.0
+    rev: v3.21.2
     hooks:
     -   id: pyupgrade
         args: [--py38-plus]
@@ -16,7 +16,7 @@ repos:
     hooks:
     -   id: isort
 -   repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 25.9.0
+    rev: 25.12.0
     hooks:
     -   id: black
 -   repo: https://github.com/collective/zpretty
@@ -63,16 +63,16 @@ repos:
     hooks:
     -   id: check-manifest
 -   repo: https://github.com/regebro/pyroma
-    rev: "5.0"
+    rev: "5.0.1"
     hooks:
     -   id: pyroma
 -   repo: https://github.com/mgedmin/check-python-versions
-    rev: "0.23.0"
+    rev: "0.24.0"
     hooks:
     -   id: check-python-versions
         args: ['--only', 'setup.py,pyproject.toml']
 -   repo: https://github.com/collective/i18ndude
-    rev: "6.2.1"
+    rev: "6.3.0"
     hooks:
     -   id: i18ndude
         pass_filenames: false

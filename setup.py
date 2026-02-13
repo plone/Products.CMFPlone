@@ -2,7 +2,7 @@ from pathlib import Path
 from setuptools import setup
 
 
-version = "6.1.1.dev0"
+version = "6.2.0a2.dev0"
 
 long_description = (
     f"{Path('README.md').read_text()}\n{Path('CHANGES.md').read_text()}\n"
@@ -20,7 +20,7 @@ setup(
         "Framework :: Plone",
         "Framework :: Plone :: 6.2",
         "Framework :: Plone :: Core",
-        "Framework :: Zope :: 5",
+        "Framework :: Zope :: 6",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
