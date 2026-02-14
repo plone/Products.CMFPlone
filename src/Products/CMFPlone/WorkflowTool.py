@@ -28,6 +28,24 @@ class WorkflowTool(PloneBaseTool, BaseTool):
     plone_tool = 1
     toolicon = "skins/plone_images/workflow_icon.png"
 
+    @security.private
+    def notifyCreated(self, ob):
+        """Notify all applicable workflows that an object has been created.
+
+        Overrides CMFCore to skip _reindexWorkflowVariables.
+        The caller (handleContentishEvent) always calls indexObject()
+        immediately after, which indexes all fields including workflow
+        variables and security. Calling _reindexWorkflowVariables here
+        is redundant and expensive: reindexObjectSecurity forces an
+        immediate queue flush via unrestrictedSearchResults for an object
+        that has no children yet.
+        """
+        wfs = self.getWorkflowsFor(ob)
+        for wf in wfs:
+            if self.getHistoryOf(wf.getId(), ob):
+                continue
+            wf.notifyCreated(ob)
+
     # TODO this should not make it into 1.0
     # Refactor me, my maker was tired
     def flattenTransitions(self, objs, container=None):
