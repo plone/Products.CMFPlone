@@ -1,4 +1,3 @@
-from collections import defaultdict
 from lxml import etree
 from OFS.Image import File
 from plone.registry.interfaces import IRegistry
@@ -9,8 +8,8 @@ from zope.component.hooks import getSite
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
 
-import hashlib
 import logging
+import uuid
 
 
 logger = logging.getLogger(__name__)
@@ -30,9 +29,9 @@ def _add_aria_title(svgtree, cfg):
         title = etree.Element("title")
         root.append(title)
     title.text = cfg["title"]
-    title.attrib["id"] = f"title-{cfg['hash']}"
+    title.attrib["id"] = cfg["hash"]
     # add aria attr
-    root.attrib["aria-labelledby"] = f"title-{cfg['hash']}"
+    root.attrib["aria-labelledby"] = cfg["hash"]
 
 
 SVG_MODIFER["add_aria_title"] = _add_aria_title
@@ -80,10 +79,6 @@ class IconsView(BrowserView):
     prefix = "plone.icon."
     defaulticon = "++plone++icons/plone.svg"
     name = ""
-
-    def __init__(self, context, request):
-        super().__init__(context, request)
-        self._svg_count = defaultdict(int)
 
     def publishTraverse(self, request, name):
         if self.name:
@@ -149,11 +144,10 @@ class IconsView(BrowserView):
             raise ValueError(
                 f"SVG file content root tag mismatch (not svg but {svgtree.docinfo.root_name}): {iconfile.path}"
             )
-        self._svg_count[name] += 1
         modifier_cfg = {
             "cssclass": tag_class,
             "title": tag_alt,
-            "hash": hashlib.md5(f"{name}{self._svg_count[name]}".encode()).hexdigest(),
+            "hash": str(uuid.uuid4()),
         }
         for mod_name, modifier in SVG_MODIFER.items():
             __traceback_info__ = mod_name
