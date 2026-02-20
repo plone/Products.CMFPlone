@@ -172,10 +172,9 @@ class PloneSite(Container, SkinnableObjectManager):
                 return result
             elif method not in ("GET", "HEAD", "POST"):
                 raise AttributeError("index_html")
-        # Acquire from skin.
+        # Acquire content from here.
         _target = self.__getattr__("index_html")
         result = aq_base(_target).__of__(self)
-        setattr(result, "__replaceable__", REPLACEABLE)
         return result
 
     index_html = ComputedAttribute(index_html, 1)
