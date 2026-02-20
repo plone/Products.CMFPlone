@@ -30,7 +30,15 @@ class ExceptionView(BrowserView):
             # and sets the proper location header
             return
 
-        self.context = self.__parent__
+        # Always use portal root as context to ensure resources load correctly
+        current = self.__parent__
+        while hasattr(current, "__parent__") and current.__parent__ is not None:
+            if hasattr(current, "meta_type") and current.meta_type == "Plone Site":
+                break
+            current = current.__parent__
+
+        self.context = current
+        self.__parent__ = current  # Also update __parent__ to ensure consistency
         request = self.request
 
         exc_type, value, traceback = sys.exc_info()
