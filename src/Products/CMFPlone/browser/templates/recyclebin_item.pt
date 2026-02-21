@@ -1,0 +1,321 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:override fill-slot="top_slot">
+  <tal:block define="dummy python:request.set('disable_border', 1);
+                     dummy python:request.set('disable_plone.leftcolumn', 1);
+                     dummy python:request.set('disable_plone.rightcolumn', 1)" />
+</metal:override>
+
+<metal:main fill-slot="main">
+    <div class="container-fluid px-0">
+        <tal:item define="item view/get_item;
+                         form_context nocall:context">
+            <!-- Item not found message -->
+            <div tal:condition="not:item" class="card border-danger mb-4">
+                <div class="card-header bg-danger text-white">
+                    <span class="ms-2" i18n:translate="">Item not found</span>
+                </div>
+                <div class="card-body p-4 text-center">
+                    <div class="mb-4">
+                        <h2 class="mt-3" i18n:translate="">The requested item was not found</h2>
+                        <p class="text-muted" i18n:translate="">
+                            The requested item was not found in the recycle bin. It may have been already restored or deleted.
+                        </p>
+                    </div>
+                    <a tal:attributes="href string:${context/absolute_url}/@@recyclebin" 
+                       class="btn btn-primary" i18n:translate="">
+                        <span class="ms-1">Return to recycle bin</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Item found - display details -->
+            <div tal:condition="item">
+                <!-- Header with back button -->
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="d-flex align-items-center">
+                        <a tal:attributes="href string:${context/absolute_url}/@@recyclebin" 
+                           class="btn btn-sm btn-outline-secondary me-3">
+                            <span class="ms-1" i18n:translate="">Back to recycle bin</span>
+                        </a>
+                        <h1 class="documentFirstHeading mb-0">
+                            <span tal:content="item/title">Title</span>
+                            <span class="badge rounded-pill bg-light text-dark border ms-2" tal:content="item/type">Content type</span>
+                        </h1>
+                    </div>
+                </div>
+                
+                
+                
+                <div class="row">
+                    <!-- Left column: Item details -->
+                    <div class="col-md-8">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <span class="ms-2" i18n:translate="">Item details</span>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <th class="bg-light" width="30%" i18n:translate="">Original ID</th>
+                                                <td class="text-monospace" tal:content="item/id">ID</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-light" i18n:translate="">Workflow state</th>
+                                                <td>
+                                                    <span tal:condition="python:item.get('workflow_state')"
+                                                          class="badge rounded-pill"
+                                                          tal:attributes="class python:'badge rounded-pill ' + view.get_workflow_state_class(item.get('workflow_state'))"
+                                                          tal:content="python:view.get_workflow_state_title(item.get('workflow_state'), item.get('type'))">Published</span>
+                                                    <span tal:condition="python:not item.get('workflow_state')"
+                                                          class="text-muted"
+                                                          i18n:translate="">Unknown</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-light" i18n:translate="">Original path</th>
+                                                <td>
+                                                    <span class="text-monospace ms-1" tal:content="item/path">Path</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-light" i18n:translate="">Parent path</th>
+                                                <td>
+                                                    <span class="text-monospace ms-1" tal:content="item/parent_path">Parent</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-light" i18n:translate="">Deletion date</th>
+                                                <td>
+                                                    <span class="ms-1" tal:content="python:context.restrictedTraverse('@@plone').toLocalizedTime(item['deletion_date'], long_format=True)">Date</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-light" i18n:translate="">Deleted by</th>
+                                                <td>
+                                                    <span class="ms-1" tal:content="item/deleted_by">User</span>
+                                                </td>
+                                            </tr>
+                                            
+                                            <!-- Comment-specific fields -->
+                                            
+                                            
+                                            <!-- Collection/folder children count -->
+                                            <tr tal:condition="python:'children_count' in item">
+                                                <th class="bg-light" i18n:translate="">Number of items</th>
+                                                <td>
+                                                    <span class="badge bg-secondary me-1" tal:content="item/children_count">Count</span>
+                                                    <span i18n:translate="">contained items</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right column: Restore form using z3c.form pattern -->
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <span class="ms-2" i18n:translate="">Restore item</span>
+                            </div>
+                            <div class="card-body">
+                                <form method="post" 
+                                      enctype="multipart/form-data"
+                                      class="pat-formunloadalert"
+                                      tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}">
+                                    
+                                    <input tal:replace="structure context/@@authenticator/authenticator" />
+                                    
+                                    <!-- Only show target_container when parent doesn't exist -->
+                                    <div class="mb-3" tal:condition="python:not context.unrestrictedTraverse(item['parent_path'].split('/'), None)">
+                                        <tal:widget tal:replace="structure view/widgets/target_container/@@ploneform-render-widget" />
+                                        <div class="form-text">
+                                            <span class="ms-1" i18n:translate="">The original location no longer exists. Please choose a new location to restore this item.</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-grid gap-2">
+                                        <tal:button tal:replace="structure view/actions/restore/render" />
+                                        <tal:button tal:replace="structure view/actions/delete/render" />
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer bg-light text-center">
+                                <div class="text-muted">
+                                    <small class="ms-1" i18n:translate="">Deleted on:</small>
+                                    <span tal:content="python:context.restrictedTraverse('@@plone').toLocalizedTime(item['deletion_date'], long_format=True)">date</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Folder contents section -->
+                <tal:folder-contents define="children view/get_children" condition="children">
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="ms-2" i18n:translate="">Folder contents</span>
+                                </div>
+                                <span class="badge bg-secondary" tal:content="python:len(children)">0</span>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="text-muted p-3 bg-light border-bottom">
+                                <span class="ms-1" i18n:translate="">
+                                    These items were contained in this folder when it was deleted. 
+                                    You can restore them individually to any location.
+                                </span>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th i18n:translate="">Title</th>
+                                            <th i18n:translate="">Type</th>
+                                            <th i18n:translate="">Workflow state</th>
+                                            <th i18n:translate="">Original path</th>
+                                            <th i18n:translate="">Size</th>
+                                            <th i18n:translate="">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr tal:repeat="child children">
+                                            <td>
+                                                <span tal:content="child/title">Title</span>
+                                                <div tal:condition="python:child.get('children_count', 0) > 0"
+                                                     class="text-muted small mt-1" style="font-size: 0.8em;">
+                                                    <i class="fa fa-folder-open me-1" aria-hidden="true"></i>
+                                                    <span i18n:translate="">Contains</span>
+                                                    <span tal:content="python:child.get('children_count', 0)">0</span>
+                                                    <span i18n:translate="" tal:condition="python:child.get('children_count', 0) == 1">item</span>
+                                                    <span i18n:translate="" tal:condition="python:child.get('children_count', 0) != 1">items</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge rounded-pill bg-light text-dark border" tal:content="child/type">Type</span>
+                                            </td>
+                                            <td>
+                                                <span tal:condition="python:child.get('workflow_state')"
+                                                      class="badge rounded-pill"
+                                                      tal:attributes="class python:'badge rounded-pill ' + view.get_workflow_state_class(child.get('workflow_state'))"
+                                                      tal:content="python:view.get_workflow_state_title(child.get('workflow_state'), child.get('type'))">Published</span>
+                                                <span tal:condition="python:not child.get('workflow_state')"
+                                                      class="text-muted"
+                                                      i18n:translate="">Unknown</span>
+                                            </td>
+                                            <td class="text-monospace small">
+                                                <span tal:content="child/path">Path</span>
+                                            </td>
+                                            <td>
+                                                <span tal:content="python:view.format_size(child.get('size', 0))">Size</span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex flex-column gap-2">
+                                                    <!-- Restore form -->
+                                                    <form method="post" tal:attributes="action string:${context/absolute_url}/@@recyclebin-item/${view/item_id}"
+                                                          class="row g-2">
+                                                        <input tal:replace="structure context/@@authenticator/authenticator" />
+                                                        <input type="hidden" name="child_id" tal:attributes="value child/id" />
+                                                        <div class="col-8">
+                                                            <input type="text" name="target_path" 
+                                                                   tal:attributes="placeholder child/parent_path"
+                                                                   title="Enter target path or leave empty to restore to original location"
+                                                                   i18n:attributes="title;placeholder"
+                                                                   class="form-control form-control-sm target-path-input"
+                                                                   required="required" />
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <button type="submit" name="restore.child" 
+                                                                    class="btn btn-sm btn-success w-100 restore-child-button"
+                                                                    i18n:translate="">
+                                                                <span class="ms-1">Restore</span>
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </tal:folder-contents>
+                
+
+            </div>
+        </tal:item>
+    </div>
+</metal:main>
+
+<metal:js fill-slot="javascript_head_slot">
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Enable restore buttons when path inputs are filled in
+    const targetPathInputs = document.querySelectorAll('.target-path-input');
+    
+    targetPathInputs.forEach(input => {
+        const updateButtonState = () => {
+            const button = input.closest('form').querySelector('.restore-child-button');
+            if (input.value.trim() !== '') {
+                button.disabled = false;
+            } else {
+                button.disabled = true;
+            }
+        };
+        
+        // Initial state
+        updateButtonState();
+        
+        // Update on input changes
+        input.addEventListener('input', updateButtonState);
+        
+        // If the input has a placeholder, enable using the placeholder value
+        if (input.placeholder) {
+            const useDefaultBtn = document.createElement('button');
+            useDefaultBtn.type = 'button';
+            useDefaultBtn.className = 'btn btn-link btn-sm p-0 mt-1';
+            useDefaultBtn.textContent = 'Use original location';
+            useDefaultBtn.style.fontSize = '0.8em';
+            useDefaultBtn.onclick = function() {
+                input.value = input.placeholder;
+                updateButtonState();
+            };
+            
+            // Insert after the input
+            input.parentNode.appendChild(useDefaultBtn);
+        }
+    });
+    
+    // Initialize any z3c.form buttons with proper classes
+    const primaryButtons = document.querySelectorAll('button.submit-widget.button-field.btn.btn-primary');
+    primaryButtons.forEach(button => {
+        button.classList.add('btn-primary');
+    });
+    
+    const dangerButtons = document.querySelectorAll('button[name="form.buttons.delete"]');
+    dangerButtons.forEach(button => {
+        button.classList.add('btn-danger');
+        button.setAttribute('onclick', "return confirm('Are you sure you want to permanently delete this item?');");
+    });
+  });
+
+</script>
+</metal:js>
+
+</body>
+</html>

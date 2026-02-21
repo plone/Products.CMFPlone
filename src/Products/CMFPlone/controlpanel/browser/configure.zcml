@@ -348,4 +348,13 @@
       permission="cmf.ManagePortal"
       />
 
+  <!-- RecycleBin -->
+
+  <browser:page
+      name="recyclebin-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class="Products.CMFPlone.controlpanel.browser.recyclebin.RecyclebinControlPanelView"
+      permission="cmf.ManagePortal"
+      />
+
 </configure>

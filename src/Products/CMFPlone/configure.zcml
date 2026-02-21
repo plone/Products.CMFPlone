@@ -159,4 +159,17 @@
       for="zope.pagetemplate.engine.ZopeBaseEngine"
       />
 
+  <!-- Recycle Bin utility -->
+  <utility
+      factory=".recyclebin.RecycleBin"
+      provides="plone.base.interfaces.recyclebin.IRecycleBin"
+      />
+
+  <!-- Event handlers -->
+  <subscriber
+      for="Products.CMFCore.interfaces.IContentish
+           zope.lifecycleevent.interfaces.IObjectRemovedEvent"
+      handler=".events.handle_content_removal"
+      />
+
 </configure>
