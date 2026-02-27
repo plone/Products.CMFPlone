@@ -1,8 +1,8 @@
 from AccessControl import Unauthorized
 from plone.app.testing.bbb import PloneTestCase
+from plone.base.utils import check_id
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.tests import dummy
-from Products.CMFPlone.utils import check_id
 from ZODB.POSException import ConflictError
 
 
