@@ -10,7 +10,6 @@ from zope.component import getGlobalSiteManager
 from zope.component import getUtility
 from zope.interface import Interface
 
-
 default_user = PloneTestCase.default_user
 portal_name = PloneTestCase.portal_name
 

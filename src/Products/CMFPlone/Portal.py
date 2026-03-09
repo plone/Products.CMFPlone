@@ -35,7 +35,6 @@ from zope.interface import implementer
 from zope.interface.interfaces import ComponentLookupError
 from zope.traversing.interfaces import BeforeTraverseEvent
 
-
 if bbb.HAS_ZSERVER:
     from webdav.NullResource import NullResource
 

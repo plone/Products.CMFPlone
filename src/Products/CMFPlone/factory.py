@@ -12,7 +12,6 @@ from zope.lifecycleevent import ObjectCreatedEvent
 
 import warnings
 
-
 _TOOL_ID = "portal_setup"
 _DEFAULT_PROFILE = "Products.CMFPlone:plone"
 _TYPES_PROFILE = "plone.app.contenttypes:default"

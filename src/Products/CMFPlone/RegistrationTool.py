@@ -31,7 +31,6 @@ from zope.schema import ValidationError
 import random
 import re
 
-
 try:
     # Products.MailHost has a patch to fix quoted-printable soft line breaks.
     # See https://github.com/zopefoundation/Products.MailHost/issues/35
@@ -132,7 +131,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         # the template will be made with a blank To:, this is bad
         if email is None:
             msg = _(
-                "No email address is registered for member: " "${member_id}",
+                "No email address is registered for member: ${member_id}",
                 mapping={"member_id": member.getId()},
             )
             raise ValueError(msg)
@@ -195,9 +194,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             return err
 
         if confirm is not None and confirm != password:
-            return _(
-                "Your password and confirmation did not match. " "Please try again."
-            )
+            return _("Your password and confirmation did not match. Please try again.")
         return None
 
     def pasValidation(self, property, password):

@@ -27,7 +27,6 @@ import transaction
 import unittest
 import zope.interface
 
-
 user2 = "u2"
 group2 = "g2"
 

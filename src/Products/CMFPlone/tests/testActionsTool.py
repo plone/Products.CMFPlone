@@ -130,6 +130,4 @@ class TestActionsTool(unittest.TestCase):
         try:
             self.actions.listActions()
         except Exception:
-            self.fail_tb(
-                "Should not fail if item exists w/o IActionCategory " "interface"
-            )
+            self.fail_tb("Should not fail if item exists w/o IActionCategory interface")

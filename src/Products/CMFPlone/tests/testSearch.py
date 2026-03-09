@@ -387,7 +387,7 @@ class TestSection(SearchTestCase):
             (
                 # mix quoting and unquoted
                 'let\'s eat some "ham and eggs " without spam ',
-                '"ham and eggs" AND let\'s AND eat AND some ' "AND without AND spam*",
+                '"ham and eggs" AND let\'s AND eat AND some AND without AND spam*',
             ),
             (
                 'test "Welcome" to "Plone" retest',

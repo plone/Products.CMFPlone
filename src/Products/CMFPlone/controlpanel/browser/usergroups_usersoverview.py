@@ -15,7 +15,6 @@ from zope.component import getUtility
 
 import logging
 
-
 logger = logging.getLogger("Products.CMFPlone")
 
 
@@ -140,10 +139,12 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
         # Sort the users by fullname
         results.sort(
-            key=lambda x: x is not None
-            and x["fullname"] is not None
-            and normalizeString(x["fullname"])
-            or ""
+            key=lambda x: (
+                x is not None
+                and x["fullname"] is not None
+                and normalizeString(x["fullname"])
+                or ""
+            )
         )
 
         # Reset the request variable, just in case.
@@ -255,7 +256,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             acl_users.userFolderDelUsers(member_ids)
         except (AttributeError, NotImplementedError):
             raise NotImplementedError(
-                "The underlying User Folder " "doesn't support deleting members."
+                "The underlying User Folder doesn't support deleting members."
             )
 
         # Delete member data in portal_memberdata.

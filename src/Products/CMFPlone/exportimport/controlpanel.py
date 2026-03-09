@@ -14,6 +14,7 @@
 
 $Id$
 """
+
 from plone.base.interfaces import IControlPanel
 from Products.CMFCore.interfaces import IActionProvider
 from Products.CMFCore.utils import getToolByName

@@ -20,7 +20,6 @@ import logging
 import sys
 import transaction
 
-
 logger = logging.getLogger("plone.app.upgrade")
 _upgradePaths = {}
 
@@ -332,7 +331,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                         raise
                     except Exception:
                         logger.error(
-                            "Exception was thrown while cataloging:" "\n", exc_info=True
+                            "Exception was thrown while cataloging:\n", exc_info=True
                         )
                         if not swallow_errors:
                             raise
@@ -346,7 +345,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                         raise
                     except Exception:
                         logger.error(
-                            "Exception was thrown while updating " "role mappings",
+                            "Exception was thrown while updating role mappings",
                             exc_info=True,
                         )
                         if not swallow_errors:

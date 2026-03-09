@@ -14,7 +14,6 @@ from ZPublisher.HTTPRequest import WSGIRequest
 
 import warnings
 
-
 try:
     import plone.app.event
 

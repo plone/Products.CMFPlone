@@ -17,7 +17,6 @@ from Products.CMFCore.utils import getToolByName
 from zope.component import getUtility
 from zope.interface import implementer
 
-
 # Strategy objects for the navtree creation code. You can subclass these
 # to expand the default navtree behaviour, and pass instances of your
 # subclasses to buildFolderTree().
