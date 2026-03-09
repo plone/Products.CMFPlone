@@ -466,7 +466,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     @security.public
     def createBreadCrumbs(self, context, request=None):
-        # Returns a structure for the portal breadcumbs.
+        # Returns a structure for the portal breadcrumbs.
         if request is None:
             request = self.REQUEST
         return utils.createBreadCrumbs(context, request)
