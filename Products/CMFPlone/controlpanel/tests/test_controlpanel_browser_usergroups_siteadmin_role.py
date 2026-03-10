@@ -121,6 +121,29 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
         roles = self.portal.acl_users.getUserById(self.normal_user).getRoles()
         self.assertEqual(["Member", "Authenticated"], roles)
 
+    def testNonManagersCanDelegateRolesIfAManagerEsists(self):
+        # A user without the Manager role cannot remove the Manager role
+        # but can still use the form
+        self.browser.addHeader("Authorization", f"Basic siteadmin:{TEST_USER_PASSWORD}")
+        self.browser.open(self.usergroups_url)
+        form = [
+            ("_authenticator", self._get_authenticator()),
+            ("users.id:records", self.normal_user),
+            ("users.roles:list:records", ["Member"]),
+            ("users.id:records", "root"),
+            ("users.roles:list:records", ["Member"]),
+            ("form.button.Modify", "Save"),
+            ("form.submitted", 1),
+        ]
+        post_data = urlencode(form, doseq=True)
+        self.browser.post(self.usergroups_url, post_data)
+
+        roles = set(self.portal.acl_users.getUserById(self.normal_user).getRoles())
+        self.assertSetEqual({"Member", "Authenticated"}, roles)
+
+        roles = set(self.portal.acl_users.getUserById("root").getRoles())
+        self.assertSetEqual({"Member", "Manager", "Authenticated"}, roles)
+
     def testNonManagersCanEditOtherRolesOfUsersWithManagerRole(self):
         roles = self.portal.acl_users.getUserById("root").getRoles()
         self.assertEqual(["Manager", "Authenticated"], roles)
