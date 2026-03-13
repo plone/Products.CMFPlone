@@ -27,7 +27,6 @@ from zope.intid.interfaces import ObjectMissingError
 
 import logging
 
-
 try:
     # "iterate" is not a dependency of CMFPlone, but a consumer of it
     distribution("plone.app.iterate")

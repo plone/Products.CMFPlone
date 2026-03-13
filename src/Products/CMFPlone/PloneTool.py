@@ -60,7 +60,6 @@ import sys
 import transaction
 import warnings
 
-
 _icons = {}
 
 CEILING_DATE = DateTime(2500, 0)  # never expires
@@ -467,7 +466,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     @security.public
     def createBreadCrumbs(self, context, request=None):
-        # Returns a structure for the portal breadcumbs.
+        # Returns a structure for the portal breadcrumbs.
         if request is None:
             request = self.REQUEST
         return utils.createBreadCrumbs(context, request)
@@ -572,7 +571,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # The arguments are:
         #     message:   a string, with the text message you want to show,
         #                or a HTML fragment (see type='structure' below)
-        #     type:      optional, defaults to 'info'. The type determines how
+        # type: optional, defaults to 'info'. The type determines how
         #                the message will be rendered, as it is used to select
         #                the CSS class for the message. Predefined types are:
         #                'info' - for informational messages

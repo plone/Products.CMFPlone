@@ -36,7 +36,6 @@ from ZPublisher.BaseRequest import DefaultPublishTraverse
 
 import logging
 
-
 try:
     distribution("plone.volto")
     HAS_VOLTO = True
@@ -246,7 +245,7 @@ class AddPloneSite(BrowserView):
             # if it is because it is not installed until a plone site
             # is created
             if queryUtility(IKeyManager) is None:
-                LOGGER.info("CSRF protection disabled on initial site " "creation")
+                LOGGER.info("CSRF protection disabled on initial site creation")
             else:
                 # we have a keymanager, check csrf protection manually now
                 checkCSRF(self.request)

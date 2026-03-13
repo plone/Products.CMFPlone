@@ -30,7 +30,6 @@ import string
 import sys
 import unittest
 
-
 # Path of this directory:
 path = os.path.dirname(__file__)
 

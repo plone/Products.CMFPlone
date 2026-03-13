@@ -42,7 +42,6 @@ import re
 import sys
 import zope.interface
 
-
 # todo: check below if this is still needed
 ClassType = type
 

@@ -8,7 +8,6 @@ from zope.component import provideAdapter
 from zope.interface import directlyProvides
 from zope.interface import Interface
 
-
 default_user = PloneTestCase.default_user
 
 

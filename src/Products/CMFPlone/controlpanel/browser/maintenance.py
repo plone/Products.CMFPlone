@@ -18,7 +18,6 @@ import logging
 import os
 import time
 
-
 LIFETIME = True
 try:
     from Lifetime import shutdown
@@ -117,8 +116,7 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
             escape(url, 1),
             _(
                 "plone_restarting",
-                default="Zope is restarting. This page will refresh in 30"
-                " seconds...",
+                default="Zope is restarting. This page will refresh in 30 seconds...",
             ),
         )
 

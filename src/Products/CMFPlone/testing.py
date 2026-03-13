@@ -125,7 +125,6 @@ optionflags = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE
 
 
 class ITestSelectWidgetSchema(Interface):
-
     directives.widget("select_field", Select2Widget)
     select_field = Choice(
         title="Select Widget",
@@ -150,6 +149,5 @@ class ITestSelectWidgetSchema(Interface):
 
 
 class TestSelectWidgetForm(AutoExtensibleForm, form.EditForm):
-
     schema = ITestSelectWidgetSchema
     ignoreContext = True

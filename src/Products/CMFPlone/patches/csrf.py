@@ -1,7 +1,6 @@
 from plone.protect import CheckAuthenticator
 from plone.protect import protect
 
-
 # apply csrf-protection decorator to the given callable
 patch = protect(CheckAuthenticator)
 

@@ -15,7 +15,6 @@ from zope.i18n import translate
 import logging
 import transaction
 
-
 logger = logging.getLogger("Plone")
 
 
@@ -332,7 +331,7 @@ class InstallerView(BrowserView):
         profile = self.get_uninstall_profile(product_id)
         if not profile:
             logger.error(
-                "Could not uninstall %s: no uninstall profile " "found.", product_id
+                "Could not uninstall %s: no uninstall profile found.", product_id
             )
             return False
 

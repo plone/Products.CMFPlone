@@ -57,7 +57,7 @@ class TestCheckId(PloneTestCase):
         self.folder.invokeFactory("Document", id="foo")
         self.folder.invokeFactory("Document", id="bar")
         r = check_id(self.folder.foo, "bar")
-        self.assertEqual(r, "There is already an item named bar in this " "folder.")
+        self.assertEqual(r, "There is already an item named bar in this folder.")
 
     def testReservedId(self):
         self.folder._setObject("foo", dummy.Item("foo"))

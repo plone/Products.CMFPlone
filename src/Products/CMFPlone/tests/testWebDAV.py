@@ -8,7 +8,6 @@ from Products.CMFPlone.tests import PloneTestCase
 
 import io
 
-
 html = """\
 <html>
 <head><title>Foo</title></head>

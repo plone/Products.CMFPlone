@@ -6,7 +6,6 @@ from Products.CMFPlone.tests import PloneTestCase
 
 import unittest
 
-
 try:
     HAS_PLONE_APP_UPGRADE_DEV = "dev" in version("plone.app.upgrade")
     HAS_PLONE_APP_UPGRADE = True

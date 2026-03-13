@@ -15,7 +15,6 @@ from zope.component import queryUtility
 import logging
 import webresource
 
-
 logger = logging.getLogger(__name__)
 
 REQUEST_CACHE_KEY = "_WEBRESOURCE_CACHE_"
