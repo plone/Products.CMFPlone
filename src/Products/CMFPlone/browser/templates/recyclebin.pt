@@ -1,0 +1,619 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:override fill-slot="top_slot">
+  <tal:block define="dummy python:request.set('disable_border', 1);
+                     dummy python:request.set('disable_plone.leftcolumn', 1);
+                     dummy python:request.set('disable_plone.rightcolumn', 1)" />
+</metal:override>
+
+<metal:main fill-slot="main">
+    <!-- Hidden translatable strings for JavaScript -->
+    <div id="recyclebin-messages" style="display: none;">
+        <span id="recyclebin-empty-message" i18n:translate="">Are you sure you want to permanently delete all items in the recycle bin?</span>
+    </div>
+    
+    <div class="container-fluid px-0">
+        <!-- Header section with icon -->
+        <div class="d-flex align-items-center mb-4">
+            <div>
+                <h1 class="documentFirstHeading mb-0" i18n:translate="">Recycle bin</h1>
+                <div class="documentDescription text-muted" i18n:translate="">
+                    Items deleted from this site are stored here, and can be restored or permanently deleted.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Search and filter form in a card -->
+        <div class="card mb-4">
+            <div class="card-header bg-light d-flex align-items-center">
+                <span i18n:translate="">Search and Filter</span>
+            </div>
+            <div class="card-body">
+                <form method="get" tal:attributes="action string:${context/absolute_url}/@@recyclebin"
+                      class="search-box">
+                    <div class="row g-3">
+                        <!-- Search field and additional filters -->
+                        <div class="col-md-6">
+                            <label for="search-query" class="form-label" i18n:translate="">Search items</label>
+                            <div class="input-group">
+                                <input type="text" name="search_query" id="search-query" 
+                                       tal:attributes="value request/search_query|nothing"
+                                       class="form-control" 
+                                       placeholder="Search by title or path..." 
+                                       i18n:attributes="placeholder" />
+                                <button class="btn btn-primary" type="submit">
+                                    <span i18n:translate="">Search</span>
+                                </button>
+                            </div>
+                            
+                            <!-- Additional filters below search -->
+                            <div class="row g-2 mt-2">
+                                <!-- Deleted By Filter -->
+                                <div class="col-sm-6" 
+                                     tal:define="all_deleted_by_users python:view.get_available_deleted_by_users(view.get_items());
+                                                current_deleted_by_filter request/filter_deleted_by|nothing">
+                                    <label for="filter-deleted-by" class="form-label" i18n:translate="">Deleted by</label>
+                                    <select id="filter-deleted-by" name="filter_deleted_by" class="form-select" onchange="this.form.submit()">
+                                        <option value="" i18n:translate="">All users</option>
+                                        <option tal:repeat="user_name all_deleted_by_users"
+                                                tal:attributes="value user_name;
+                                                                selected python:current_deleted_by_filter == user_name"
+                                                tal:content="user_name">username</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Sub-items Filter -->
+                                <div class="col-sm-6" 
+                                     tal:define="current_subitems_filter request/filter_has_subitems|nothing">
+                                    <label for="filter-has-subitems" class="form-label" i18n:translate="">Contains sub-items</label>
+                                    <select id="filter-has-subitems" name="filter_has_subitems" class="form-select" onchange="this.form.submit()">
+                                        <option value="" i18n:translate="">All items</option>
+                                        <option value="with_subitems"
+                                                tal:attributes="selected python:current_subitems_filter == 'with_subitems'"
+                                                i18n:translate="">With sub-items</option>
+                                        <option value="without_subitems"
+                                                tal:attributes="selected python:current_subitems_filter == 'without_subitems'"
+                                                i18n:translate="">Without sub-items</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Language Filter -->
+                            <div class="row g-2 mt-2">
+                                <div class="col-sm-6" 
+                                     tal:define="all_languages python:view.get_available_languages(view.get_items());
+                                                current_language_filter request/filter_language|nothing">
+                                    <label for="filter-language" class="form-label" i18n:translate="">Language</label>
+                                    <select id="filter-language" name="filter_language" class="form-select" onchange="this.form.submit()">
+                                        <option value="" i18n:translate="">All languages</option>
+                                        <option tal:repeat="language all_languages"
+                                                tal:attributes="value language;
+                                                                selected python:current_language_filter == language"
+                                                tal:content="language">en</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Filter Options -->
+                        <div class="col-md-6">
+                            <div class="row g-2">
+                                <!-- Type Filter -->
+                                <div class="col-sm-6" 
+                                     tal:define="all_types python:view.get_available_types(view.get_items());
+                                                current_filter request/filter_type|nothing">
+                                    <label for="filter-type" class="form-label" i18n:translate="">Content type</label>
+                                    <select id="filter-type" name="filter_type" class="form-select" onchange="this.form.submit()">
+                                        <option value="" i18n:translate="">All content types</option>
+                                        <option tal:repeat="type_name all_types"
+                                                tal:attributes="value type_name;
+                                                                selected python:current_filter == type_name"
+                                                tal:content="type_name">Document</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Workflow State Filter -->
+                                <div class="col-sm-6" 
+                                     tal:define="all_workflow_states python:view.get_available_workflow_states(view.get_items());
+                                                current_workflow_state_filter request/filter_workflow_state|nothing">
+                                    <label for="filter-workflow-state" class="form-label" i18n:translate="">Workflow state</label>
+                                    <select id="filter-workflow-state" name="filter_workflow_state" class="form-select" onchange="this.form.submit()">
+                                        <option value="" i18n:translate="">All workflow states</option>
+                                        <option tal:repeat="workflow_state all_workflow_states"
+                                                tal:attributes="value workflow_state;
+                                                                selected python:current_workflow_state_filter == workflow_state"
+                                                tal:content="python:view.get_workflow_state_title(workflow_state)">Published</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Date Range Filters -->
+                            <div class="row g-2 mt-2">
+                                <div class="col-sm-6">
+                                    <label for="date-from" class="form-label" i18n:translate="">Deleted from</label>
+                                    <input type="date" name="date_from" id="date-from" 
+                                           tal:attributes="value request/date_from|nothing"
+                                           class="form-control" 
+                                           onchange="this.form.submit()" />
+                                </div>
+                                
+                                <div class="col-sm-6">
+                                    <label for="date-to" class="form-label" i18n:translate="">Deleted to</label>
+                                    <input type="date" name="date_to" id="date-to" 
+                                           tal:attributes="value request/date_to|nothing"
+                                           class="form-control" 
+                                           onchange="this.form.submit()" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- Hidden inputs to preserve batch parameters during searches -->
+                    <input type="hidden" name="b_start" tal:attributes="value request/b_start|nothing" tal:condition="request/b_start|nothing" />
+                    <input type="hidden" name="b_size" tal:attributes="value request/b_size|nothing" tal:condition="request/b_size|nothing" />
+                </form>
+            </div>
+        </div>
+
+        <!-- Combined notification for search, filter and sort -->
+        <div tal:define="search_query view/get_search_query;
+                         filter_type view/get_filter_type;
+                         date_from_str view/get_date_from_str;
+                         date_to_str view/get_date_to_str;
+                         filter_deleted_by view/get_filter_deleted_by;
+                         filter_has_subitems view/get_filter_has_subitems;
+                         filter_language view/get_filter_language;
+                         filter_workflow_state view/get_filter_workflow_state;
+                         sort_option view/get_sort_option;
+                         sort_labels python:view.get_sort_labels();
+                         has_active_filters python:search_query or filter_type or date_from_str or date_to_str or filter_deleted_by or filter_has_subitems or filter_language or filter_workflow_state or (sort_option != 'date_desc')"
+             tal:condition="has_active_filters"
+             class="alert alert-info d-flex align-items-center mb-4">
+             
+            <div class="ms-3 d-flex flex-grow-1 flex-wrap align-items-center gap-2">
+                <span i18n:translate="" class="fw-bold me-2">Active filters:</span>
+                
+                <span tal:condition="search_query" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                    <span tal:content="search_query" class="ms-1 me-1">query</span>
+                    <a href="#" tal:attributes="href python:view.get_clear_url('search_query')"
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear search" i18n:attributes="title">
+                       ×
+                    </a>
+                </span>
+                
+                <span tal:condition="filter_type" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                    <span tal:content="filter_type" class="ms-1 me-1">Document</span>
+                    <a href="#" tal:attributes="href python:view.get_clear_url('filter_type')"
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear filter" i18n:attributes="title">
+                       ×
+                    </a>
+                </span>
+                
+                <span tal:condition="date_from_str" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                    <span i18n:translate="" class="ms-1 me-1">From:</span>
+                    <span tal:content="date_from_str" class="me-1">2024-01-01</span>
+                    <a href="#" tal:attributes="href python:view.get_clear_url('date_from')"
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear date from filter" i18n:attributes="title">
+                       ×
+                    </a>
+                </span>
+                
+                <span tal:condition="date_to_str" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                    <span i18n:translate="" class="ms-1 me-1">To:</span>
+                    <span tal:content="date_to_str" class="me-1">2024-12-31</span>
+                    <a href="#" tal:attributes="href python:view.get_clear_url('date_to')"
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear date to filter" i18n:attributes="title">
+                       ×
+                    </a>
+                </span>
+                
+                <span tal:condition="filter_deleted_by" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                    <span i18n:translate="" class="ms-1 me-1">Deleted by:</span>
+                    <span tal:content="filter_deleted_by" class="me-1">username</span>
+                    <a href="#" tal:attributes="href python:view.get_clear_url('filter_deleted_by')"
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear deleted by filter" i18n:attributes="title">
+                       ×
+                    </a>
+                </span>
+                
+                <span tal:condition="filter_has_subitems" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                    <span tal:content="python:'With sub-items' if filter_has_subitems == 'with_subitems' else 'Without sub-items'" 
+                          i18n:translate="" class="ms-1 me-1">Sub-items filter</span>
+                    <a href="#" tal:attributes="href python:view.get_clear_url('filter_has_subitems')"
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear sub-items filter" i18n:attributes="title">
+                       ×
+                    </a>
+                </span>
+                
+                <span tal:condition="filter_language" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                    <span i18n:translate="" class="ms-1 me-1">Language:</span>
+                    <span tal:content="filter_language" class="me-1">en</span>
+                    <a href="#" tal:attributes="href python:view.get_clear_url('filter_language')"
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear language filter" i18n:attributes="title">
+                       ×
+                    </a>
+                </span>
+                
+                <span tal:condition="filter_workflow_state" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                    <span i18n:translate="" class="ms-1 me-1">Workflow:</span>
+                    <span tal:content="python:view.get_workflow_state_title(filter_workflow_state)" class="me-1">Published</span>
+                    <a href="#" tal:attributes="href python:view.get_clear_url('filter_workflow_state')"
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Clear workflow state filter" i18n:attributes="title">
+                       ×
+                    </a>
+                </span>
+                
+                <span tal:condition="python:sort_option != 'date_desc'" class="badge rounded-pill bg-primary d-inline-flex align-items-center p-2">
+                    <span tal:content="python:sort_labels.get(sort_option, sort_option)" class="ms-1 me-1">Sort option</span>
+                    <a href="#" tal:attributes="href python:view.get_clear_url('sort_by')"
+                       class="text-white ms-1" style="text-decoration: none;" 
+                       title="Reset sort" i18n:attributes="title">
+                       ×
+                    </a>
+                </span>
+            </div>
+            
+            <a tal:attributes="href string:${context/absolute_url}/@@recyclebin"
+               class="btn btn-sm btn-outline-secondary ms-auto" i18n:translate="">
+                Clear all
+            </a>
+        </div>
+        
+        <!-- Main content card -->
+        <div class="card mb-4">
+            <div class="card-header bg-light">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div tal:define="batch view/get_batch">
+                        <span class="ms-2" i18n:translate="">Deleted items</span>
+                        <span tal:condition="python:batch and batch.sequence_length > 0" class="text-muted small ms-2"
+                              tal:define="page_start python:(batch.pagenumber - 1) * batch.pagesize + 1;
+                                          page_end python:min(batch.pagenumber * batch.pagesize, batch.sequence_length)">
+                            (<span tal:content="page_start">1</span>-<span tal:content="page_end">20</span> 
+                            <span i18n:translate="">of</span> 
+                            <span tal:content="batch/sequence_length">50</span>)
+                        </span>
+                    </div>
+                    
+                    <!-- Sort Options in table header -->
+                    <form method="get" tal:attributes="action string:${context/absolute_url}/@@recyclebin"
+                          class="d-flex align-items-center">
+                        <!-- Hidden inputs to preserve other parameters -->
+                        <input type="hidden" name="search_query" tal:attributes="value request/search_query|nothing" tal:condition="request/search_query|nothing" />
+                        <input type="hidden" name="filter_type" tal:attributes="value request/filter_type|nothing" tal:condition="request/filter_type|nothing" />
+                        <input type="hidden" name="date_from" tal:attributes="value request/date_from|nothing" tal:condition="request/date_from|nothing" />
+                        <input type="hidden" name="date_to" tal:attributes="value request/date_to|nothing" tal:condition="request/date_to|nothing" />
+                        <input type="hidden" name="filter_deleted_by" tal:attributes="value request/filter_deleted_by|nothing" tal:condition="request/filter_deleted_by|nothing" />
+                        <input type="hidden" name="filter_has_subitems" tal:attributes="value request/filter_has_subitems|nothing" tal:condition="request/filter_has_subitems|nothing" />
+                        <input type="hidden" name="filter_language" tal:attributes="value request/filter_language|nothing" tal:condition="request/filter_language|nothing" />
+                        <input type="hidden" name="filter_workflow_state" tal:attributes="value request/filter_workflow_state|nothing" tal:condition="request/filter_workflow_state|nothing" />
+                        <input type="hidden" name="b_start" tal:attributes="value request/b_start|nothing" tal:condition="request/b_start|nothing" />
+                        <input type="hidden" name="b_size" tal:attributes="value request/b_size|nothing" tal:condition="request/b_size|nothing" />
+                        
+                        <label for="sort-by" class="form-label me-2 mb-0 text-muted small" i18n:translate="">Sort by:</label>
+                        <select id="sort-by" name="sort_by" class="form-select form-select-sm" style="width: auto; min-width: 150px;" onchange="this.form.submit()"
+                                tal:define="current_sort request/sort_by|string:date_desc">
+                            <option value="date_desc" 
+                                    tal:attributes="selected python:current_sort == 'date_desc'"
+                                    i18n:translate="">Newest first</option>
+                            <option value="date_asc" 
+                                    tal:attributes="selected python:current_sort == 'date_asc'"
+                                    i18n:translate="">Oldest first</option>
+                            <option value="title_asc" 
+                                    tal:attributes="selected python:current_sort == 'title_asc'"
+                                    i18n:translate="">Title (A-Z)</option>
+                            <option value="title_desc" 
+                                    tal:attributes="selected python:current_sort == 'title_desc'"
+                                    i18n:translate="">Title (Z-A)</option>
+                            <option value="type_asc" 
+                                    tal:attributes="selected python:current_sort == 'type_asc'"
+                                    i18n:translate="">Type (A-Z)</option>
+                            <option value="type_desc" 
+                                    tal:attributes="selected python:current_sort == 'type_desc'"
+                                    i18n:translate="">Type (Z-A)</option>
+                            <option value="size_asc" 
+                                    tal:attributes="selected python:current_sort == 'size_asc'"
+                                    i18n:translate="">Size (smallest first)</option>
+                            <option value="size_desc" 
+                                    tal:attributes="selected python:current_sort == 'size_desc'"
+                                    i18n:translate="">Size (largest first)</option>
+                            <option value="workflow_asc" 
+                                    tal:attributes="selected python:current_sort == 'workflow_asc'"
+                                    i18n:translate="">Workflow state (A-Z)</option>
+                            <option value="workflow_desc" 
+                                    tal:attributes="selected python:current_sort == 'workflow_desc'"
+                                    i18n:translate="">Workflow state (Z-A)</option>
+                        </select>
+                    </form>
+                    
+                    <!-- Page size selector -->
+                    <form method="get" tal:attributes="action string:${context/absolute_url}/@@recyclebin"
+                          class="d-flex align-items-center ms-3">
+                        <!-- Hidden inputs to preserve other parameters -->
+                        <input type="hidden" name="search_query" tal:attributes="value request/search_query|nothing" tal:condition="request/search_query|nothing" />
+                        <input type="hidden" name="filter_type" tal:attributes="value request/filter_type|nothing" tal:condition="request/filter_type|nothing" />
+                        <input type="hidden" name="date_from" tal:attributes="value request/date_from|nothing" tal:condition="request/date_from|nothing" />
+                        <input type="hidden" name="date_to" tal:attributes="value request/date_to|nothing" tal:condition="request/date_to|nothing" />
+                        <input type="hidden" name="filter_deleted_by" tal:attributes="value request/filter_deleted_by|nothing" tal:condition="request/filter_deleted_by|nothing" />
+                        <input type="hidden" name="filter_has_subitems" tal:attributes="value request/filter_has_subitems|nothing" tal:condition="request/filter_has_subitems|nothing" />
+                        <input type="hidden" name="filter_language" tal:attributes="value request/filter_language|nothing" tal:condition="request/filter_language|nothing" />
+                        <input type="hidden" name="filter_workflow_state" tal:attributes="value request/filter_workflow_state|nothing" tal:condition="request/filter_workflow_state|nothing" />
+                        <input type="hidden" name="sort_by" tal:attributes="value request/sort_by|nothing" tal:condition="request/sort_by|nothing" />
+                        
+                        <label for="page-size" class="form-label me-2 mb-0 text-muted small" i18n:translate="">Show:</label>
+                        <select id="page-size" name="b_size" class="form-select form-select-sm" style="width: auto; min-width: 80px;" onchange="this.form.submit()"
+                                tal:define="current_size view/get_b_size;
+                                            page_sizes view/get_page_size_options">
+                            <option tal:repeat="size page_sizes"
+                                    tal:attributes="value size;
+                                                    selected python:current_size == size"
+                                    tal:content="size">20</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Main form - using z3c.form pattern -->
+            <form id="recyclebin-form"
+                  method="post"
+                  tal:define="batch view/get_batch;
+                              items batch"
+                  tal:condition="python:batch and batch.sequence_length > 0"
+                  enctype="multipart/form-data"
+                  tal:attributes="action request/URL;">
+
+                <input tal:replace="structure context/@@authenticator/authenticator" />
+                
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="40">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="select_all" id="select_all" 
+                                                   aria-label="Select all items" title="Select all items"
+                                                   i18n:attributes="title;aria-label" />
+                                            <label class="form-check-label visually-hidden" for="select_all" i18n:translate="">Select all</label>
+                                        </div>
+                                    </th>
+                                    <th i18n:translate="">Title</th>
+                                    <th i18n:translate="">Type</th>
+                                    <th i18n:translate="">Workflow state</th>
+                                    <th i18n:translate="">Original path</th>
+                                    <th i18n:translate="">Deletion date</th>
+                                    <th i18n:translate="">Deleted by</th>
+                                    <th i18n:translate="">Size</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr tal:condition="not:items">
+                                    <td colspan="9" class="text-center p-4">
+                                        <div class="py-5">
+                                            <p class="fw-bold" tal:condition="python:view.get_search_query() or view.get_filter_type()" i18n:translate="">
+                                                No items match your search criteria
+                                            </p>
+                                            <p class="fw-bold" tal:condition="python:not view.get_search_query() and not view.get_filter_type()" i18n:translate="">
+                                                No items in recycle bin
+                                            </p>
+                                            <p class="text-muted" i18n:translate="">Items that are deleted will appear here</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr tal:repeat="item items">
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" name="selected_items:list" 
+                                                   class="form-check-input item-checkbox"
+                                                   tal:attributes="value item/recycle_id;
+                                                                  id string:item-${item/recycle_id}" />
+                                            <label class="form-check-label visually-hidden" 
+                                                   tal:attributes="for string:item-${item/recycle_id}" 
+                                                   i18n:translate="">Select item</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a tal:attributes="href string:${context/absolute_url}/@@recyclebin-item/${item/recycle_id}"
+                                           class="fw-medium text-decoration-none"
+                                           tal:content="item/title">Title</a>
+
+                                        <div tal:condition="python:item.get('children_count', 0) > 0"
+                                             class="text-muted small mt-1" style="font-size: 0.8em;">
+                                            <i class="fa fa-folder-open me-1" aria-hidden="true"></i>
+                                            <span i18n:translate="">Contains</span>
+                                            <span tal:content="python:item.get('children_count', 0)">0</span>
+                                            <span i18n:translate="" tal:condition="python:item.get('children_count', 0) == 1">item</span>
+                                            <span i18n:translate="" tal:condition="python:item.get('children_count', 0) != 1">items</span>
+                                        </div>
+                                        
+                                        <!-- Show matching child items when search found results in folder contents -->
+                                        <div tal:condition="python:item.get('matching_children')" 
+                                             class="alert alert-light mt-2 p-2 border">
+                                            <small>
+                                                <strong class="ms-1" i18n:translate="">Found matches in contents:</strong> 
+                                                <span tal:content="python:item.get('matching_children_count')">3</span> 
+                                                <span i18n:translate="">items match your search</span>
+                                            </small>
+                                            <ul class="list-unstyled ps-3 mt-1 mb-0" style="font-size: 0.85em; line-height: 1.4;">
+                                                <li tal:repeat="child python:item.get('matching_children')[:3]" class="text-truncate">
+                                                    <span class="ms-1" tal:content="child/title">Child title</span>
+                                                    <span class="text-muted">
+                                                        (<span tal:content="child/type">Type</span>)
+                                                    </span>
+                                                </li>
+                                                <li tal:condition="python:len(item.get('matching_children', [])) > 3" 
+                                                    class="text-muted">
+                                                    <span i18n:translate="">and</span>
+                                                    <span tal:content="python:len(item.get('matching_children', [])) - 3"></span>
+                                                    <span i18n:translate="">more...</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge rounded-pill bg-light text-dark border" tal:content="item/type">Content type</span>
+                                    </td>
+                                    <td>
+                                        <span tal:condition="python:item.get('workflow_state')"
+                                              class="badge rounded-pill"
+                                              tal:attributes="class python:'badge rounded-pill ' + view.get_workflow_state_class(item.get('workflow_state'))"
+                                              tal:content="python:view.get_workflow_state_title(item.get('workflow_state'), item.get('type'))">Published</span>
+                                        <span tal:condition="python:not item.get('workflow_state')"
+                                              class="text-muted"
+                                              i18n:translate="">Unknown</span>
+                                    </td>
+                                    <td class="text-muted small">
+                                        <span tal:content="item/path">Original path</span>
+
+                                    </td>
+                                    <td>
+                                        <span tal:content="python:context.restrictedTraverse('@@plone').toLocalizedTime(item['deletion_date'], long_format=True)">Deletion date</span>
+                                    </td>
+                                    <td>
+                                        <span tal:content="item/deleted_by">Deleted by</span>
+                                    </td>
+                                    <td>
+                                        <span tal:content="python:view.format_size(item.get('size', 0))">Size</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Batch Navigation -->
+                <div tal:condition="python:batch and batch.numpages > 1" class="card-body border-top">
+                    <div metal:use-macro="context/batch_macros/macros/navigation" />
+                </div>
+                
+                <!-- Button group for selected items actions - z3c.form buttons -->
+                <div tal:condition="items" class="card-footer bg-light">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div class="btn-group" role="group">
+                            <button type="submit" name="form.buttons.restore" class="btn btn-primary" i18n:translate="">
+                                <span class="ms-1">Restore Selected</span>
+                            </button>
+                            <button type="submit" name="form.buttons.delete" class="btn btn-danger" i18n:translate="">
+                                <span class="ms-1">Delete Selected</span>
+                            </button>
+                            <button type="submit" name="form.buttons.empty" 
+                                    class="btn btn-outline-danger"
+                                    id="empty-recycle-bin-btn"
+                                    i18n:translate="">
+                                <span class="ms-1">Empty Recycle Bin</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Empty state if no items -->
+            <div tal:define="batch view/get_batch" tal:condition="python:not batch or batch.sequence_length == 0" class="card-body p-0">
+                <div class="text-center p-5">
+                    <p class="fw-bold" tal:condition="python:view.get_search_query() or view.get_filter_type()" i18n:translate="">
+                        No items match your search criteria
+                    </p>
+                    <p class="fw-bold" tal:condition="python:not view.get_search_query() and not view.get_filter_type()" i18n:translate="">
+                        No items in recycle bin
+                    </p>
+                    <p class="text-muted" i18n:translate="">Items that are deleted will appear here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</metal:main>
+
+<metal:js fill-slot="javascript_head_slot">
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get confirmation message from DOM to ensure it's translatable
+    const recyclebinEmptyMessage = document.getElementById('recyclebin-empty-message').textContent;
+    // Select all checkbox functionality
+    const selectAllCheckbox = document.getElementById('select_all');
+    
+    if (selectAllCheckbox) {
+      // Find all item checkboxes
+      const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+      
+      // Update select all checkbox when item checkboxes change
+      function updateSelectAllCheckbox() {
+        if (itemCheckboxes.length === 0) return;
+        
+        let allChecked = true;
+        for (const checkbox of itemCheckboxes) {
+          if (!checkbox.checked) {
+            allChecked = false;
+            break;
+          }
+        }
+        selectAllCheckbox.checked = allChecked;
+      }
+      
+      // Toggle all checkboxes when select all changes
+      selectAllCheckbox.addEventListener('change', function() {
+        const isChecked = this.checked;
+        itemCheckboxes.forEach(checkbox => {
+          checkbox.checked = isChecked;
+        });
+      });
+      
+      // Update select all when individual checkboxes change
+      itemCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateSelectAllCheckbox);
+      });
+    }
+    
+    // Handle empty recycle bin confirmation
+    const emptyRecycleBinBtn = document.getElementById('empty-recycle-bin-btn');
+    if (emptyRecycleBinBtn) {
+      emptyRecycleBinBtn.addEventListener('click', function(e) {
+        if (!confirm(recyclebinEmptyMessage)) {
+          e.preventDefault();
+          return false;
+        }
+      });
+    }
+    
+    // Reset pagination when filters change
+    // Add event listeners to filter dropdowns and inputs
+    const filterElements = document.querySelectorAll(
+      'select[name="filter_type"], select[name="filter_deleted_by"], ' +
+      'select[name="filter_language"], select[name="filter_workflow_state"], ' +
+      'select[name="filter_has_subitems"], ' +
+      'input[name="date_from"], input[name="date_to"]'
+    );
+    
+    filterElements.forEach(element => {
+      element.addEventListener('change', function() {
+        // Remove any existing b_start hidden inputs in the form before submitting
+        const form = this.closest('form');
+        if (form) {
+          const existingBStart = form.querySelector('input[name="b_start"]');
+          if (existingBStart) {
+            existingBStart.remove();
+          }
+        }
+      });
+    });
+  });
+</script>
+
+
+</metal:js>
+
+</body>
+</html>
