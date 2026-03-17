@@ -23,7 +23,6 @@ from ZTUtils import make_query
 
 import logging
 
-
 logger = logging.getLogger("Plone")
 
 

@@ -1,8 +1,8 @@
 from AccessControl import Unauthorized
 from plone.app.testing.bbb import PloneTestCase
+from plone.base.utils import check_id
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.tests import dummy
-from Products.CMFPlone.utils import check_id
 from ZODB.POSException import ConflictError
 
 
@@ -57,7 +57,7 @@ class TestCheckId(PloneTestCase):
         self.folder.invokeFactory("Document", id="foo")
         self.folder.invokeFactory("Document", id="bar")
         r = check_id(self.folder.foo, "bar")
-        self.assertEqual(r, "There is already an item named bar in this " "folder.")
+        self.assertEqual(r, "There is already an item named bar in this folder.")
 
     def testReservedId(self):
         self.folder._setObject("foo", dummy.Item("foo"))

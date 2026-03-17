@@ -35,7 +35,6 @@ from zope.interface import implementer
 from zope.interface.interfaces import ComponentLookupError
 from zope.traversing.interfaces import BeforeTraverseEvent
 
-
 if bbb.HAS_ZSERVER:
     from webdav.NullResource import NullResource
 
@@ -172,10 +171,9 @@ class PloneSite(Container, SkinnableObjectManager):
                 return result
             elif method not in ("GET", "HEAD", "POST"):
                 raise AttributeError("index_html")
-        # Acquire from skin.
+        # Acquire content from here.
         _target = self.__getattr__("index_html")
         result = aq_base(_target).__of__(self)
-        setattr(result, "__replaceable__", REPLACEABLE)
         return result
 
     index_html = ComputedAttribute(index_html, 1)

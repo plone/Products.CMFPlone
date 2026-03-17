@@ -4,7 +4,6 @@ from Products.MailHost.MailHost import MailBase
 
 import re
 
-
 # regexp for a valid CSS identifier without the leading #
 VALID_CSS_ID = re.compile("[A-Za-z_@][A-Za-z0-9_@-]*")
 

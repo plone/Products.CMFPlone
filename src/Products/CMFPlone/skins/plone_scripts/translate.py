@@ -8,7 +8,6 @@
 
 from zExceptions import Forbidden
 
-
 if container.REQUEST.get("PUBLISHED") is script:
     raise Forbidden("Script may not be published.")
 
@@ -18,7 +17,6 @@ if msgid is None:
     return None
 
 from Products.CMFCore.utils import getToolByName
-
 
 # get tool
 tool = getToolByName(context, "translation_service")

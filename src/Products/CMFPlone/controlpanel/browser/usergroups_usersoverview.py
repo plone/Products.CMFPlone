@@ -15,7 +15,6 @@ from zope.component import getUtility
 
 import logging
 
-
 logger = logging.getLogger("Products.CMFPlone")
 
 
@@ -140,10 +139,12 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
         # Sort the users by fullname
         results.sort(
-            key=lambda x: x is not None
-            and x["fullname"] is not None
-            and normalizeString(x["fullname"])
-            or ""
+            key=lambda x: (
+                x is not None
+                and x["fullname"] is not None
+                and normalizeString(x["fullname"])
+                or ""
+            )
         )
 
         # Reset the request variable, just in case.
@@ -198,8 +199,17 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                 roles = user.get("roles", [])
                 if not self.is_zope_manager:
                     # don't allow adding or removing the Manager role
-                    if ("Manager" in roles) != ("Manager" in current_roles):
-                        raise Forbidden
+                    if "Manager" in current_roles:
+                        # The manager checkbox is disabled in the form,
+                        # so if the user has it already, we need to manually restore it.
+                        if "Manager" not in roles:
+                            roles.append("Manager")
+                    else:
+                        # This should not happen because the Manager role
+                        # should not be available in the form, but just in case,
+                        # we want to make sure it cannot be added.
+                        if "Manager" in roles:
+                            raise Forbidden
 
                 acl_users.userFolderEditUser(
                     user.id, pw, roles, member.getDomains(), REQUEST=context.REQUEST
@@ -246,7 +256,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             acl_users.userFolderDelUsers(member_ids)
         except (AttributeError, NotImplementedError):
             raise NotImplementedError(
-                "The underlying User Folder " "doesn't support deleting members."
+                "The underlying User Folder doesn't support deleting members."
             )
 
         # Delete member data in portal_memberdata.

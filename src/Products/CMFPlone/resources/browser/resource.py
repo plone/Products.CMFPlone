@@ -15,7 +15,6 @@ from zope.component import queryUtility
 import logging
 import webresource
 
-
 logger = logging.getLogger(__name__)
 
 REQUEST_CACHE_KEY = "_WEBRESOURCE_CACHE_"
@@ -114,7 +113,7 @@ class ResourceBase:
             valid_dependencies = []
 
             for name in depend_names:
-                if name in bundles or name == "all":
+                if name in bundles or name in ("all", "*"):
                     valid_dependencies.append(name)
                     continue
                 if name in js_names + css_names:
@@ -159,7 +158,7 @@ class ResourceBase:
                     continue
                 external = self.is_external_url(record.jscompilation)
                 r_group = registry_group_js
-                if "all" in depends:
+                if "all" in depends or "*" in depends:
                     # move to a separate group which is rendered after all others
                     r_group = registry_group_js_deferred
                     depends = None
@@ -186,7 +185,7 @@ class ResourceBase:
                     continue
                 external = self.is_external_url(record.csscompilation)
                 r_group = registry_group_css
-                if "all" in depends:
+                if "all" in depends or "*" in depends:
                     # move to a separate group which is rendered after all others
                     r_group = registry_group_css_deferred
                     depends = None

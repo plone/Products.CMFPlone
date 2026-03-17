@@ -30,7 +30,6 @@ import string
 import sys
 import unittest
 
-
 # Path of this directory:
 path = os.path.dirname(__file__)
 
@@ -82,6 +81,7 @@ class TestAttackVector(unittest.TestCase):
         with self.assertRaises((NotFound, NameError)):
             template()
 
+    @unittest.skipIf(sys.version_info >= (3, 14), "3.14 no longer has string._re")
     def test_template_bad2(self):
         template = self._makeOne("bad2.pt")
         with self.assertRaises(NotFound):
@@ -138,6 +138,7 @@ class TestDirectAttackVector(unittest.TestCase):
         result = trusted_traverse_function(random, ("_os", "system"), None)
         self.assertEqual(result, os.system)
 
+    @unittest.skipIf(sys.version_info >= (3, 14), "3.14 no longer has string._re")
     def test_traverse_function_string(self):
         with self.assertRaises(NotFound):
             traverse_function(string, ("_re", "purge"), None)
@@ -242,6 +243,7 @@ class TestDirectAttackVector(unittest.TestCase):
         result = TrustedTraverseClass.traverse(random, None, ("_os", "system"))
         self.assertEqual(result, os.system)
 
+    @unittest.skipIf(sys.version_info >= (3, 14), "3.14 no longer has string._re")
     def test_traverse_class_string(self):
         with self.assertRaises(NotFound):
             TraverseClass.traverse(string, None, ("_re", "purge"))

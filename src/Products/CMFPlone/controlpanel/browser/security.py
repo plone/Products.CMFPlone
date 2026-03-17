@@ -10,7 +10,6 @@ from Products.Five.browser import BrowserView
 
 import logging
 
-
 logger = logging.getLogger("Products.CMFPlone")
 
 
@@ -107,7 +106,7 @@ class EmailLogin(BrowserView):
         for login_name, userids in self._userid_list.items():
             if len(userids) > 1:
                 logger.warning(
-                    "Duplicate accounts for lower case user id " "%s: %r",
+                    "Duplicate accounts for lower case user id %s: %r",
                     login_name,
                     userids,
                 )

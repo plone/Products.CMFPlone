@@ -3,7 +3,6 @@ from Products.CMFPlone.tests import PloneTestCase
 
 import unittest
 
-
 try:
     import Products.ExternalEditor  # noqa: F401
 except ImportError:

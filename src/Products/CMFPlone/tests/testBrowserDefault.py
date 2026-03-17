@@ -17,7 +17,6 @@ import re
 import transaction
 import unittest
 
-
 RE_REMOVE_DOCCONT = re.compile(r'\s*href="http://.*?#content"')
 RE_REMOVE_SKIPNAV = re.compile(r'\s*href="http://.*?#portal-globalnav-wrapper"')
 RE_REMOVE_TABS = re.compile(r'<div id="portal-header".*?</nav>', re.S)

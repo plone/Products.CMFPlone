@@ -1,7 +1,6 @@
 from os import environ
 from plone.memoize import forever
 
-
 # Remember the installed products and packages (unless running tests)
 if "ZOPETESTCASE" not in environ:
     from App import FactoryDispatcher
@@ -23,7 +22,6 @@ def wrap_init(func):
 
 from zope.tal.talinterpreter import TALInterpreter
 
-
 TALInterpreter.__init__ = wrap_init(TALInterpreter.__init__)
 
 
@@ -38,6 +36,5 @@ def opaqueItems(self):
 
 
 from Products.CMFCore.CMFCatalogAware import OpaqueItemManager
-
 
 OpaqueItemManager.opaqueItems = opaqueItems

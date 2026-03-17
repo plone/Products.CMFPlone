@@ -17,7 +17,6 @@ from zope.component import getUtility
 
 import unittest
 
-
 member_id = "new_member"
 
 

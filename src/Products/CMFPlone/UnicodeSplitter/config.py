@@ -6,7 +6,6 @@ Created by Manabu Terada, CMScom on 2009-08-08.
 
 import re
 
-
 STOP_WORD = []
 
 # Setting, adding langs.
