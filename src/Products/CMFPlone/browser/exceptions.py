@@ -66,9 +66,12 @@ class ExceptionView(BrowserView):
         request.set("disable_border", True)
         request.set("disable_plone.leftcolumn", True)
         request.set("disable_plone.rightcolumn", True)
-        self._error_context = self.__parent__
-        self.context = self.layout_context
-        self.__parent__ = self.layout_context
+        if error_type == "NotFound":
+            self._error_context = self.__parent__
+            self.context = self.layout_context
+            self.__parent__ = self.layout_context
+        else:
+            self.context = self.__parent__
 
         try:
             return self.index(error_type=error_type, error_tb=error_tb)
