@@ -293,18 +293,22 @@ class RecycleBin:
         if children:
             storage_data["children"] = children
 
+        # Make room for the new item before inserting it, so it is never purged
+        self._check_size_limits(incoming_size=self._get_item_total_size(storage_data))
+        self._purge_expired_items()
+
         # Generate a unique recycle ID
         recycle_id = str(uuid.uuid4())
         self.storage[recycle_id] = storage_data
-
-        # Check if we need to clean up old items
-        self._check_size_limits()
-        self._purge_expired_items()
 
         return recycle_id
 
     def get_items(self):
         """Return all items in recycle bin"""
+        asd = [
+            {**{k: v for k, v in data.items() if k != "object"}, "recycle_id": item_id}
+            for item_id, data in self.storage.get_items_sorted_by_date(reverse=True)
+        ]
         return [
             {**{k: v for k, v in data.items() if k != "object"}, "recycle_id": item_id}
             for item_id, data in self.storage.get_items_sorted_by_date(reverse=True)
@@ -459,6 +463,111 @@ class RecycleBin:
                 return False, None, error_message
         return True, target_container, None
 
+    def _reindex_recursive(self, obj):
+        """Reindex obj and all its descendants in the portal catalog.
+
+        This is necessary after restoring a folder to a different location so
+        that every item gets the correct new path in the catalog.
+        """
+        if hasattr(obj, "reindexObject"):
+            obj.reindexObject()
+        if hasattr(obj, "objectValues"):
+            for child in obj.objectValues():
+                self._reindex_recursive(child)
+
+    @staticmethod
+    def _find_child_by_path(children_dict, child_path):
+        """Recursively find a child by its path anywhere in the children tree.
+
+        Returns (child_data, parent_dict, key) or (None, None, None) if not found.
+        """
+        for key, child_data in children_dict.items():
+            if child_data.get("path") == child_path:
+                return child_data, children_dict, key
+            nested = child_data.get("children", {})
+            if isinstance(nested, dict) and nested:
+                result = RecycleBin._find_child_by_path(nested, child_path)
+                if result[0] is not None:
+                    return result
+        return None, None, None
+
+    @staticmethod
+    def _count_descendants(children_dict):
+        """Recursively count all descendants in a children dict."""
+        count = 0
+        for child_data in children_dict.values():
+            count += 1
+            nested = child_data.get("children", {})
+            if isinstance(nested, dict) and nested:
+                count += RecycleBin._count_descendants(nested)
+        return count
+
+    @staticmethod
+    def _flatten_children(children_dict, depth=0):
+        """Recursively yield all descendants as a flat sequence.
+
+        Each entry is a copy of the child data dict (without the nested
+        'children' key) augmented with a 'depth' field for indentation.
+        Nodes that have sub-children also get a 'children_count' field.
+        """
+        for child_data in children_dict.values():
+            entry = {k: v for k, v in child_data.items() if k != "children"}
+            entry["depth"] = depth
+            nested = child_data.get("children", {})
+            if isinstance(nested, dict) and nested:
+                entry["children_count"] = RecycleBin._count_descendants(nested)
+            yield entry
+            if isinstance(nested, dict) and nested:
+                yield from RecycleBin._flatten_children(nested, depth + 1)
+
+    def restore_child_item(self, item_id, child_path, target_container):
+        """Restore a specific child from a recycled folder item.
+
+        Args:
+            item_id: The recycle bin ID of the parent item.
+            child_path: The original path of the child (unique at any depth).
+            target_container: The container object where the child will be restored.
+
+        Returns:
+            The restored object on success, or a dict with ``success: False``
+            and an ``error`` key on failure.
+        """
+        item_data = self.storage.get(item_id)
+        if not item_data:
+            return {
+                "success": False,
+                "error": f"Item {item_id!r} not found in recycle bin",
+            }
+
+        if "children" not in item_data:
+            return {"success": False, "error": "Item has no children"}
+
+        child_data, parent_dict, child_key = self._find_child_by_path(
+            item_data["children"], child_path
+        )
+        if child_data is None:
+            return {
+                "success": False,
+                "error": f"Child with path {child_path!r} not found",
+            }
+
+        temp_id = str(uuid.uuid4())
+        self.storage[temp_id] = child_data
+        try:
+            result = self.restore_item(temp_id, target_container)
+        except Exception:
+            if temp_id in self.storage:
+                del self.storage[temp_id]
+            raise
+
+        if isinstance(result, dict) and not result.get("success", True):
+            return result
+
+        # Remove child from parent tree and persist the updated parent record
+        del parent_dict[child_key]
+        self.storage[item_id] = item_data
+        return result
+
     def _cleanup_child_references(self, item_data):
         """Clean up any child items associated with a parent that was restored"""
         if "children" in item_data and isinstance(item_data["children"], dict):
@@ -527,6 +636,18 @@ class RecycleBin:
         if obj_id != item_data["id"]:
             obj.id = obj_id
 
+        # Update __parent__ and __name__ on the persistent object BEFORE
+        # inserting it into the container.  OFS does not do this automatically,
+        # and CMFCatalogAware.manage_afterAdd calls indexObject() during
+        # _setObject, so the catalog would otherwise record the old path.
+        # We keep the acquisition-wrapped target_container as __parent__ so
+        # that getPhysicalPath() can traverse the full portal path during the
+        # current transaction; ZODB will persist only the underlying reference.
+        if hasattr(obj, "__parent__"):
+            obj.__parent__ = target_container
+        if hasattr(obj, "__name__"):
+            obj.__name__ = obj_id
+
         # Add object to the target container
         target_container[obj_id] = obj
 
@@ -540,7 +661,9 @@ class RecycleBin:
         # Also reset workflow states of children if this is a folder
         self._reset_folder_children_workflow_if_needed(restored_obj)
 
-        restored_obj.reindexObject()
+        # Reindex the restored object and all its descendants so the catalog
+        # reflects the new path and security.
+        self._reindex_recursive(restored_obj)
 
         # Remove from recycle bin
         del self.storage[item_id]
@@ -593,7 +716,7 @@ class RecycleBin:
 
             # Remove the main item from storage - the object will be garbage collected
             del self.storage[item_id]
-            logger.info(f"Item {item_id} purged from recycle bin")
+            logger.info(f"Item {item_path} ({item_id}) purged from recycle bin")
             return True
         except Exception as e:
             logger.error(f"Error purging item {item_id}: {str(e)}")
@@ -641,11 +764,24 @@ class RecycleBin:
             logger.error(f"Error purging expired items: {str(e)}")
             return 0
 
-    def _check_size_limits(self):
+    def _get_item_total_size(self, item_data):
+        """Calculate the total size of an item including all nested children recursively"""
+        total = item_data.get("size", 0)
+        children = item_data.get("children", {})
+        if isinstance(children, dict):
+            for child_data in children.values():
+                total += self._get_item_total_size(child_data)
+        return total
+
+    def _check_size_limits(self, incoming_size=0):
         """Check if the recycle bin exceeds size limits and purge oldest items if needed
 
-        This method enforces the maximum size limit for the recycle bin by removing
-        the oldest items when the limit is exceeded.
+        Purges oldest items until existing content + incoming_size fits within the limit.
+        If incoming_size alone exceeds the limit, a warning is logged but no purge is done
+        (the caller will still insert the item).
+
+        Args:
+            incoming_size: Size in bytes of the item about to be inserted (not yet in storage).
         """
         try:
             settings = self._get_settings()
@@ -657,29 +793,38 @@ class RecycleBin:
                 return
 
             max_size_bytes = max_size_mb * 1024 * 1024  # Convert MB to bytes
+
+            # Warn if the incoming item alone exceeds the limit, but still allow it
+            if incoming_size > max_size_bytes:
+                logger.warning(
+                    f"Incoming item ({incoming_size / (1024 * 1024):.2f} MB) exceeds "
+                    f"the recycle bin size limit ({max_size_mb} MB). "
+                    "It will be stored but older items will be purged to make room."
+                )
+
             total_size = 0
             items_by_date = []
 
             # Get items sorted by date (oldest first) and calculate total size
             for item_id, data in self.storage.get_items_sorted_by_date(reverse=False):
-                size = data.get("size", 0)
+                size = self._get_item_total_size(data)
                 total_size += size
                 items_by_date.append((item_id, size))
 
-            # If we're under the limit, nothing to do
-            if total_size <= max_size_bytes:
+            # If existing content already fits alongside the incoming item, nothing to do
+            if total_size + incoming_size <= max_size_bytes:
                 return
 
             # Log the size excess
             logger.info(
-                f"Recycle bin size ({total_size / (1024 * 1024):.2f} MB) exceeds limit ({max_size_mb} MB)"
+                f"Recycle bin size ({total_size / (1024 * 1024):.2f} MB) plus incoming item "
+                f"({incoming_size / (1024 * 1024):.2f} MB) exceeds limit ({max_size_mb} MB)"
             )
 
-            # Remove oldest items until we're under the limit
+            # Remove oldest items until existing content fits alongside the incoming item
             items_purged = 0
             for item_id, size in items_by_date:
-                # Stop once we're under the limit
-                if total_size <= max_size_bytes:
+                if total_size + incoming_size <= max_size_bytes:
                     break
 
                 if self.purge_item(item_id):

@@ -21,7 +21,6 @@ from zope.interface import Interface
 from zope.publisher.interfaces import IPublishTraverse
 
 import logging
-import uuid
 
 
 logger = logging.getLogger(__name__)
@@ -689,7 +688,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
 
                 # Add children count information
                 if "children" in item:
-                    item["children_count"] = len(item["children"])
+                    item["children_count"] = self.recycle_bin._count_descendants(item["children"])
 
                 # Apply search query filtering
                 if search_query:
@@ -881,84 +880,57 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
         self.request.response.redirect(f"{self.context.absolute_url()}/@@recyclebin")
 
     def _handle_child_restoration(self):
-        """Extract child restoration logic to separate method for clarity"""
-        child_id = self.request.form.get("child_id")
+        """Restore a child item using the recycle bin tool."""
+        child_path = self.request.form.get("child_path")
         target_path = self.request.form.get("target_path")
 
-        if child_id and target_path:
-            try:
-                # Get item data
-                item_data = self.recycle_bin.get_item(self.item_id)
+        if not child_path or not target_path:
+            return
 
-                if item_data and "children" in item_data:
-                    child_data = item_data["children"].get(child_id)
-                    if child_data:
-                        # Try to get target container
-                        try:
-                            target_container = self.context.unrestrictedTraverse(
-                                target_path
-                            )
+        try:
+            target_container = self.context.unrestrictedTraverse(target_path)
+        except (KeyError, AttributeError):
+            message = translate(
+                _("Target location not found: ${path}", mapping={"path": target_path}),
+                context=self.request,
+            )
+            IStatusMessage(self.request).addStatusMessage(message, type="error")
+            return
 
-                            # Create a temporary storage entry for the child
-                            temp_id = str(uuid.uuid4())
-                            self.recycle_bin.storage[temp_id] = child_data
+        try:
+            result = self.recycle_bin.restore_child_item(
+                self.item_id, child_path, target_container
+            )
+        except Exception as e:
+            logger.error(f"Error restoring child item: {e}")
+            message = translate(_("Failed to restore child item."), context=self.request)
+            IStatusMessage(self.request).addStatusMessage(message, type="error")
+            return
 
-                            # Restore the child
-                            result = self.recycle_bin.restore_item(
-                                temp_id, target_container
-                            )
+        if _is_error_result(result):
+            IStatusMessage(self.request).addStatusMessage(
+                result.get("error", "Unknown error during child restoration"),
+                type="error",
+            )
+            return
 
-                            # Check if we got an error dictionary
-                            if _is_error_result(result):
-                                error_message = result.get(
-                                    "error", "Unknown error during child restoration"
-                                )
-                                IStatusMessage(self.request).addStatusMessage(
-                                    error_message, type="error"
-                                )
-                                return
-
-                            restored_obj = result
-
-                            if restored_obj:
-                                # Remove child from parent's children dict
-                                del item_data["children"][child_id]
-
-                                # Persist the changes to ZODB
-                                self.recycle_bin.storage[self.item_id] = item_data
-
-                                message = translate(
-                                    _(
-                                        "Child item '${title}' successfully restored.",
-                                        mapping={"title": child_data["title"]},
-                                    ),
-                                    context=self.request,
-                                )
-                                IStatusMessage(self.request).addStatusMessage(
-                                    message, type="info"
-                                )
-                                self.request.response.redirect(
-                                    restored_obj.absolute_url()
-                                )
-                                return
-                        except (KeyError, AttributeError):
-                            message = translate(
-                                _(
-                                    "Target location not found: ${path}",
-                                    mapping={"path": target_path},
-                                ),
-                                context=self.request,
-                            )
-                            IStatusMessage(self.request).addStatusMessage(
-                                message, type="error"
-                            )
-            except Exception as e:
-                logger.error(f"Error restoring child item: {e}")
-
-                message = translate(
-                    _("Failed to restore child item."), context=self.request
-                )
-                IStatusMessage(self.request).addStatusMessage(message, type="error")
+        restored_obj = result
+        if restored_obj:
+            # Derive the child id from the restored object so the redirect is accurate
+            obj_id = restored_obj.getId()
+            child_data = self.recycle_bin.get_item(self.item_id) or {}
+            child_title = child_data.get("title", obj_id)
+            message = translate(
+                _(
+                    "Child item '${title}' successfully restored.",
+                    mapping={"title": child_title},
+                ),
+                context=self.request,
+            )
+            IStatusMessage(self.request).addStatusMessage(message, type="info")
+            self.request.response.redirect(
+                f"{target_container.absolute_url()}/{obj_id}"
+            )
 
     def get_item(self):
         """Get the specific recycled item"""
@@ -972,17 +944,17 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
             logger.debug(
                 f"Found item: {item.get('title', 'Unknown')} of type {item.get('type', 'Unknown')}"
             )
-            # Add children count information
+            # Add children count information (total descendants, not just direct children)
             if "children" in item:
-                item["children_count"] = len(item["children"])
+                item["children_count"] = self.recycle_bin._count_descendants(item["children"])
 
         return item
 
     def get_children(self):
-        """Get the children of this item if it's a folder or collection"""
+        """Get all descendants of this item as a flat list with depth metadata."""
         item = self.get_item()
         if item and "children" in item:
-            return list(item["children"].values())
+            return list(self.recycle_bin._flatten_children(item["children"], depth=0))
         return []
 
 
