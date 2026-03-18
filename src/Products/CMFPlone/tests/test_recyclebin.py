@@ -1479,19 +1479,8 @@ class RecycleBinBrowserViewTests(RecycleBinTestCase):
         self.assertTrue(folder_found)
 
 
-# ---------------------------------------------------------------------------
-# Tests for changes introduced in the recycle-bin bugfix session
-# ---------------------------------------------------------------------------
-
-
 class RecycleBinEventDispatchTests(RecycleBinTestCase):
     """Tests for handle_content_removal with OFS sub-location event dispatch.
-
-    When a folder is deleted, OFS dispatches IObjectRemovedEvent to every
-    child with event.object == folder (not the child).  Before the fix each
-    child was added as a standalone recycle-bin entry, causing spurious purges
-    and duplicate data.  After the fix only the folder gets one entry and the
-    children are stored inside its 'children' dict.
     """
 
     def _make_folder_with_children(self, folder_id="evt-folder"):
