@@ -26,8 +26,9 @@ class ExceptionView(BrowserView):
     @memoize
     def layout_context(self):
         portal = get_portal()
-        context = self.error_context or portal
-        context = get_navigation_root_object(context, portal)
+        if not self.error_context:
+            return portal
+        context = get_navigation_root_object(self.error_context, portal)
         if getSecurityManager().checkPermission("View", context):
             return context
         return portal
