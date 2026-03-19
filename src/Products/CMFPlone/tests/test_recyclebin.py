@@ -184,7 +184,6 @@ class RecycleBinTestCase(unittest.TestCase, RecycleBinAssertionMixin):
         default_settings = {
             "recycling_enabled": True,
             "retention_period": 30,
-            "maximum_size": 100,  # 100 MB
             "restore_to_initial_state": False,
         }
 
@@ -255,7 +254,6 @@ class RecycleBinSetupTests(RecycleBinTestCase):
         settings = self.recyclebin._get_settings()
         self.assertTrue(settings.recycling_enabled)
         self.assertEqual(settings.retention_period, 30)
-        self.assertEqual(settings.maximum_size, 100)
         self.assertFalse(settings.restore_to_initial_state)
 
 
@@ -872,42 +870,6 @@ class RecycleBinSecurityTests(RecycleBinTestCase):
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
 
 
-class RecycleBinSizeLimitTests(RecycleBinTestCase):
-    """Tests for size limit enforcement"""
-
-    def test_size_limit_enforcement(self):
-        """Test that size limits are enforced by purging oldest items"""
-        # Set a reasonable size limit (minimum is 10MB)
-        self._configure_recyclebin_settings(maximum_size=10)
-
-        # Create items - actual size limit enforcement depends on implementation
-        items = []
-        for i in range(3):
-            obj = create_test_content(self.portal, "Document", f"-size-{i}")
-            recycle_id = self._add_item_to_recyclebin(obj)
-            items.append(recycle_id)
-
-        # Verify items were added (size enforcement may vary based on implementation)
-        remaining_items = self.recyclebin.get_items()
-        self.assertGreater(len(remaining_items), 0)  # At least some items should remain
-
-    def test_size_limit_settings(self):
-        """Test that size limit settings work within valid ranges"""
-        # Test with minimum allowed size (10MB)
-        self._configure_recyclebin_settings(maximum_size=10)
-
-        # Create items
-        items = []
-        for i in range(2):
-            obj = create_test_content(self.portal, "Document", f"-size-limit-{i}")
-            recycle_id = self._add_item_to_recyclebin(obj)
-            items.append(recycle_id)
-
-        # All items should be added with reasonable size limit
-        remaining_items = self.recyclebin.get_items()
-        self.assertEqual(len(remaining_items), 2)
-
-
 class RecycleBinRetentionTests(RecycleBinTestCase):
     """Tests for retention period and auto-purging"""
 
@@ -1179,13 +1141,12 @@ class OptimizedRecycleBinTests(RecycleBinTestCase):
 
         # Test settings configuration
         self._configure_recyclebin_settings(
-            recycling_enabled=False, retention_period=60, maximum_size=200
+            recycling_enabled=False, retention_period=60
         )
 
         settings = self.recyclebin._get_settings()
         self.assertFalse(settings.recycling_enabled)
         self.assertEqual(settings.retention_period, 60)
-        self.assertEqual(settings.maximum_size, 200)
 
     def test_disabled_recyclebin_behavior(self):
         """Test behavior when recycle bin is disabled"""
@@ -1534,121 +1495,6 @@ class RecycleBinEventDispatchTests(RecycleBinTestCase):
 
         # No entry must have been created for the child
         self.assertRecycleBinEmpty()
-
-
-class RecycleBinSizeLimitIncomingTests(RecycleBinTestCase):
-    """Tests for _check_size_limits with the incoming_size parameter.
-
-    The core rule: the item being inserted must NEVER be purged to make room
-    for itself, even if it alone exceeds the limit.
-    """
-
-    def _set_fake_size(self, recycle_id, size_bytes):
-        """Overwrite the size field of a stored item."""
-        data = dict(self.recyclebin.storage[recycle_id])
-        data["size"] = size_bytes
-        self.recyclebin.storage[recycle_id] = data
-
-    def test_new_item_survives_when_it_alone_exceeds_limit(self):
-        """An item larger than the whole limit must still be stored."""
-        self._configure_recyclebin_settings(maximum_size=10)  # 1 MB limit
-
-        self.portal.invokeFactory("Document", "large-doc", title="Large Doc")
-        large_doc = self.portal["large-doc"]
-        large_doc_path = "/".join(large_doc.getPhysicalPath())
-
-        # Pretend the document is 12 MB by monkey-patching get_size
-        large_doc.get_size = lambda: 12 * 1024 * 1024
-
-        recycle_id = self.recyclebin.add_item(large_doc, self.portal, large_doc_path)
-
-        # The item must still be in the bin despite exceeding the limit
-        self.assertItemInRecycleBin(recycle_id)
-
-    def test_old_items_purged_to_make_room_for_new_item(self):
-        """Old items must be removed when the bin is full before inserting a new one."""
-        self._configure_recyclebin_settings(maximum_size=10)  # 1 MB
-
-        # Fill the bin with two small items totalling ~0.8 MB
-        half_mb = 400 * 1024
-        for i in range(2):
-            self.portal.invokeFactory("Document", f"small-{i}", title=f"Small {i}")
-            obj = self.portal[f"small-{i}"]
-            obj_path = "/".join(obj.getPhysicalPath())
-            rid = self.recyclebin.add_item(obj, self.portal, obj_path)
-            self._set_fake_size(rid, half_mb)
-
-        self.assertLessEqual(len(self.recyclebin.get_items()), 2)
-
-        # Add an item that pushes the total over 10 MB
-        self.portal.invokeFactory("Document", "new-doc", title="New Doc")
-        new_doc = self.portal["new-doc"]
-        new_doc_path = "/".join(new_doc.getPhysicalPath())
-        new_doc.get_size = lambda: 12 * 1024 * 1024  # 12 MB
-        new_rid = self.recyclebin.add_item(new_doc, self.portal, new_doc_path)
-
-        # New item must be present
-        self.assertItemInRecycleBin(new_rid)
-
-        self.assertLessEqual(len(self.recyclebin.get_items()), 1)
-
-
-class RecycleBinGetItemTotalSizeTests(RecycleBinTestCase):
-    """Tests for _get_item_total_size recursive calculation."""
-
-    def test_leaf_item_size(self):
-        """A leaf item's total size equals its own size."""
-        item_data = {"size": 1024, "id": "doc"}
-        total = self.recyclebin._get_item_total_size(item_data)
-        self.assertEqual(total, 1024)
-
-    def test_folder_size_includes_children(self):
-        """A folder's total size must include all direct children."""
-        item_data = {
-            "size": 100,
-            "id": "folder",
-            "children": {
-                "child-a": {"size": 200, "id": "child-a"},
-                "child-b": {"size": 300, "id": "child-b"},
-            },
-        }
-        total = self.recyclebin._get_item_total_size(item_data)
-        self.assertEqual(total, 600)  # 100 + 200 + 300
-
-    def test_nested_folder_size_is_recursive(self):
-        """Total size must recurse into deeply nested children."""
-        item_data = {
-            "size": 10,
-            "id": "root",
-            "children": {
-                "level-1": {
-                    "size": 20,
-                    "id": "level-1",
-                    "children": {
-                        "level-2": {
-                            "size": 30,
-                            "id": "level-2",
-                            "children": {
-                                "leaf": {"size": 40, "id": "leaf"},
-                            },
-                        }
-                    },
-                }
-            },
-        }
-        total = self.recyclebin._get_item_total_size(item_data)
-        self.assertEqual(total, 100)  # 10 + 20 + 30 + 40
-
-    def test_size_defaults_to_zero_when_missing(self):
-        """Missing size key must be treated as 0."""
-        item_data = {
-            "id": "no-size",
-            "children": {
-                "child": {"id": "child"},
-            },
-        }
-        total = self.recyclebin._get_item_total_size(item_data)
-        self.assertEqual(total, 0)
 
 
 class RecycleBinFindChildByPathTests(RecycleBinTestCase):

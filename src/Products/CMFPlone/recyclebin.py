@@ -293,8 +293,6 @@ class RecycleBin:
         if children:
             storage_data["children"] = children
 
-        # Make room for the new item before inserting it, so it is never purged
-        self._check_size_limits(incoming_size=self._get_item_total_size(storage_data))
         self._purge_expired_items()
 
         # Generate a unique recycle ID
@@ -763,81 +761,6 @@ class RecycleBin:
         except Exception as e:
             logger.error(f"Error purging expired items: {str(e)}")
             return 0
-
-    def _get_item_total_size(self, item_data):
-        """Calculate the total size of an item including all nested children recursively"""
-        total = item_data.get("size", 0)
-        children = item_data.get("children", {})
-        if isinstance(children, dict):
-            for child_data in children.values():
-                total += self._get_item_total_size(child_data)
-        return total
-
-    def _check_size_limits(self, incoming_size=0):
-        """Check if the recycle bin exceeds size limits and purge oldest items if needed
-
-        Purges oldest items until existing content + incoming_size fits within the limit.
-        If incoming_size alone exceeds the limit, a warning is logged but no purge is done
-        (the caller will still insert the item).
-
-        Args:
-            incoming_size: Size in bytes of the item about to be inserted (not yet in storage).
-        """
-        try:
-            settings = self._get_settings()
-            max_size_mb = settings.maximum_size
-
-            # If max_size is 0, size limiting is disabled
-            if max_size_mb <= 0:
-                logger.debug("Size limiting is disabled (maximum_size = 0)")
-                return
-
-            max_size_bytes = max_size_mb * 1024 * 1024  # Convert MB to bytes
-
-            # Warn if the incoming item alone exceeds the limit, but still allow it
-            if incoming_size > max_size_bytes:
-                logger.warning(
-                    f"Incoming item ({incoming_size / (1024 * 1024):.2f} MB) exceeds "
-                    f"the recycle bin size limit ({max_size_mb} MB). "
-                    "It will be stored but older items will be purged to make room."
-                )
-
-            total_size = 0
-            items_by_date = []
-
-            # Get items sorted by date (oldest first) and calculate total size
-            for item_id, data in self.storage.get_items_sorted_by_date(reverse=False):
-                size = self._get_item_total_size(data)
-                total_size += size
-                items_by_date.append((item_id, size))
-
-            # If existing content already fits alongside the incoming item, nothing to do
-            if total_size + incoming_size <= max_size_bytes:
-                return
-
-            # Log the size excess
-            logger.info(
-                f"Recycle bin size ({total_size / (1024 * 1024):.2f} MB) plus incoming item "
-                f"({incoming_size / (1024 * 1024):.2f} MB) exceeds limit ({max_size_mb} MB)"
-            )
-
-            # Remove oldest items until existing content fits alongside the incoming item
-            items_purged = 0
-            for item_id, size in items_by_date:
-                if total_size + incoming_size <= max_size_bytes:
-                    break
-
-                if self.purge_item(item_id):
-                    total_size -= size
-                    items_purged += 1
-
-            if items_purged:
-                logger.info(
-                    f"Purged {items_purged} oldest item{'s' if items_purged != 1 else ''} due to size constraints"
-                )
-
-        except Exception as e:
-            logger.error(f"Error enforcing size limits: {str(e)}")
 
     def clear(self):
         """Clear all items from the recycle bin"""
