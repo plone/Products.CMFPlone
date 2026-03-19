@@ -333,16 +333,15 @@
                                     "
                               >
                                 <input tal:replace="structure context/@@authenticator/authenticator" />
-                                <input name="child_path"
+                                <input name="restore_id"
                                        type="hidden"
                                        tal:attributes="
-                                         value child/path;
+                                         value python:child.get('restore_id', '');
                                        "
                                 />
                                 <div class="col-8">
                                   <input class="form-control form-control-sm target-path-input"
                                          name="target_path"
-                                         required="required"
                                          title="Enter target path or leave empty to restore to original location"
                                          type="text"
                                          tal:attributes="
@@ -384,7 +383,7 @@
     const targetPathInputs = document.querySelectorAll('.target-path-input');
 
     targetPathInputs.forEach(input => {
-        const updateButtonState = () => {
+      const updateButtonState = () => {
             const button = input.closest('form').querySelector('.restore-child-button');
             if (input.value.trim() !== '') {
                 button.disabled = false;

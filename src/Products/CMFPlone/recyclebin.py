@@ -191,6 +191,7 @@ class RecycleBin:
             # Store basic data for this child
             child_data = {
                 "id": child_id,
+                "restore_id": str(uuid.uuid4()),
                 "title": child.Title(),
                 "type": getattr(child, "portal_type", "Unknown"),
                 "path": child_path,
@@ -274,6 +275,9 @@ class RecycleBin:
         workflow_tool = getToolByName(self._get_context(), "portal_workflow")
         workflow_state = workflow_tool.getInfoFor(obj, "review_state", None)
 
+        # Generate a unique recycle ID
+        recycle_id = str(uuid.uuid4())
+
         storage_data = {
             "id": item_id,
             "title": item_title,
@@ -287,6 +291,7 @@ class RecycleBin:
             or getattr(obj, "Language", lambda: None)(),
             "workflow_state": workflow_state,
             "object": aq_base(obj),  # Store the actual object with no acquisition chain
+            "recycle_id": recycle_id,
         }
 
         # Add children data if this was a folder/collection
@@ -295,18 +300,12 @@ class RecycleBin:
 
         self._purge_expired_items()
 
-        # Generate a unique recycle ID
-        recycle_id = str(uuid.uuid4())
         self.storage[recycle_id] = storage_data
 
         return recycle_id
 
     def get_items(self):
         """Return all items in recycle bin"""
-        asd = [
-            {**{k: v for k, v in data.items() if k != "object"}, "recycle_id": item_id}
-            for item_id, data in self.storage.get_items_sorted_by_date(reverse=True)
-        ]
         return [
             {**{k: v for k, v in data.items() if k != "object"}, "recycle_id": item_id}
             for item_id, data in self.storage.get_items_sorted_by_date(reverse=True)
@@ -473,57 +472,27 @@ class RecycleBin:
             for child in obj.objectValues():
                 self._reindex_recursive(child)
 
-    @staticmethod
-    def _find_child_by_path(children_dict, child_path):
-        """Recursively find a child by its path anywhere in the children tree.
+    def _find_child_by_restore_id(self, children_dict, restore_id):
+        """Recursively find a child by restore_id in the children tree.
 
         Returns (child_data, parent_dict, key) or (None, None, None) if not found.
         """
         for key, child_data in children_dict.items():
-            if child_data.get("path") == child_path:
+            if child_data.get("restore_id") == restore_id:
                 return child_data, children_dict, key
             nested = child_data.get("children", {})
             if isinstance(nested, dict) and nested:
-                result = RecycleBin._find_child_by_path(nested, child_path)
+                result = self._find_child_by_restore_id(nested, restore_id)
                 if result[0] is not None:
                     return result
         return None, None, None
 
-    @staticmethod
-    def _count_descendants(children_dict):
-        """Recursively count all descendants in a children dict."""
-        count = 0
-        for child_data in children_dict.values():
-            count += 1
-            nested = child_data.get("children", {})
-            if isinstance(nested, dict) and nested:
-                count += RecycleBin._count_descendants(nested)
-        return count
-
-    @staticmethod
-    def _flatten_children(children_dict, depth=0):
-        """Recursively yield all descendants as a flat sequence.
-
-        Each entry is a copy of the child data dict (without the nested
-        'children' key) augmented with a 'depth' field for indentation.
-        Nodes that have sub-children also get a 'children_count' field.
-        """
-        for child_data in children_dict.values():
-            entry = {k: v for k, v in child_data.items() if k != "children"}
-            entry["depth"] = depth
-            nested = child_data.get("children", {})
-            if isinstance(nested, dict) and nested:
-                entry["children_count"] = RecycleBin._count_descendants(nested)
-            yield entry
-            if isinstance(nested, dict) and nested:
-                yield from RecycleBin._flatten_children(nested, depth + 1)
-
-    def restore_child_item(self, item_id, child_path, target_container):
+    def restore_child_item(self, item_id, restore_id, target_container):
         """Restore a specific child from a recycled folder item.
 
         Args:
             item_id: The recycle bin ID of the parent item.
-            child_path: The original path of the child (unique at any depth).
+            restore_id: The unique ID assigned to each child for lookup.
             target_container: The container object where the child will be restored.
 
         Returns:
@@ -540,13 +509,24 @@ class RecycleBin:
         if "children" not in item_data:
             return {"success": False, "error": "Item has no children"}
 
-        child_data, parent_dict, child_key = self._find_child_by_path(
-            item_data["children"], child_path
+        if target_container is None:
+            return {
+                "success": False,
+                "error": "You must specify a target_container to restore a child item",
+            }
+        if not restore_id:
+            return {
+                "success": False,
+                "error": "You must provide restore_id to restore a child item",
+            }
+
+        child_data, parent_dict, child_key = self._find_child_by_restore_id(
+            item_data["children"], restore_id
         )
         if child_data is None:
             return {
                 "success": False,
-                "error": f"Child with path {child_path!r} not found",
+                "error": f"Child with restore_id {restore_id!r} not found",
             }
 
         temp_id = str(uuid.uuid4())

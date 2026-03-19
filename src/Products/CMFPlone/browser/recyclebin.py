@@ -148,7 +148,33 @@ class RecycleBinWorkflowMixin:
         """Format size in bytes to human-readable format"""
         return human_readable_size(size_bytes)
 
+    def _flatten_children(self, children_dict, depth=0):
+        """Recursively yield all descendants as a flat sequence.
 
+        Each entry is a copy of the child data dict (without the nested
+        'children' key) augmented with a 'depth' field for indentation.
+        Nodes that have sub-children also get a 'children_count' field.
+        """
+        for child_data in children_dict.values():
+            entry = {k: v for k, v in child_data.items() if k != "children"}
+            entry["restore_id"] = child_data.get("restore_id", "")
+            entry["depth"] = depth
+            nested = child_data.get("children", {})
+            if isinstance(nested, dict) and nested:
+                entry["children_count"] = self._count_descendants(nested)
+            yield entry
+            if isinstance(nested, dict) and nested:
+                yield from self._flatten_children(nested, depth + 1)
+
+    def _count_descendants(self, children_dict):
+        """Recursively count all descendants in a children dict."""
+        count = 0
+        for child_data in children_dict.values():
+            count += 1
+            nested = child_data.get("children", {})
+            if isinstance(nested, dict) and nested:
+                count += self._count_descendants(nested)
+        return count
 class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
     """Form view for recycle bin management"""
 
@@ -688,7 +714,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
 
                 # Add children count information
                 if "children" in item:
-                    item["children_count"] = self.recycle_bin._count_descendants(item["children"])
+                    item["children_count"] = self._count_descendants(item["children"])
 
                 # Apply search query filtering
                 if search_query:
@@ -881,11 +907,36 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
 
     def _handle_child_restoration(self):
         """Restore a child item using the recycle bin tool."""
-        child_path = self.request.form.get("child_path")
-        target_path = self.request.form.get("target_path")
+        restore_id = self.request.form.get("restore_id")
+        target_path = (self.request.form.get("target_path") or "").strip()
 
-        if not child_path or not target_path:
+        if not restore_id:
+            message = translate(
+                _("Missing child identifier. Please refresh and try again."),
+                context=self.request,
+            )
+            IStatusMessage(self.request).addStatusMessage(message, type="error")
             return
+
+        if not target_path:
+            item_data = self.recycle_bin.get_item(self.item_id) or {}
+            children = item_data.get("children", {})
+            child_match = self.recycle_bin._find_child_by_restore_id(
+                children, restore_id
+            )
+            child_data = child_match[0]
+            target_path = (child_data or {}).get("parent_path", "")
+
+            if not target_path:
+                message = translate(
+                    _(
+                        "Could not determine the original location for this child item. "
+                        "Please enter a target path."
+                    ),
+                    context=self.request,
+                )
+                IStatusMessage(self.request).addStatusMessage(message, type="error")
+                return
 
         try:
             target_container = self.context.unrestrictedTraverse(target_path)
@@ -899,7 +950,9 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
 
         try:
             result = self.recycle_bin.restore_child_item(
-                self.item_id, child_path, target_container
+                self.item_id,
+                restore_id=restore_id,
+                target_container=target_container,
             )
         except Exception as e:
             logger.error(f"Error restoring child item: {e}")
@@ -946,16 +999,19 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
             )
             # Add children count information (total descendants, not just direct children)
             if "children" in item:
-                item["children_count"] = self.recycle_bin._count_descendants(item["children"])
+                item["children_count"] = self._count_descendants(item["children"])
 
         return item
 
     def get_children(self):
         """Get all descendants of this item as a flat list with depth metadata."""
         item = self.get_item()
+
+
         if item and "children" in item:
-            return list(self.recycle_bin._flatten_children(item["children"], depth=0))
+            return list(self._flatten_children(item["children"], depth=0))
         return []
+
 
 
 class RecycleBinEnabled(BrowserView):
