@@ -8,7 +8,6 @@ from plone.app.testing import TEST_USER_NAME
 from plone.base.interfaces.recyclebin import IRecycleBin
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.browser.recyclebin import RecycleBinView
-from Products.CMFPlone.recyclebin import RecycleBin
 from Products.CMFPlone.controlpanel.browser.recyclebin import (
     IRecycleBinControlPanelSettings,
 )
