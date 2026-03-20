@@ -1838,3 +1838,98 @@ class RecycleBinChildRestoreReindexTests(RecycleBinTestCase):
 
         self.assertFalse(result.get("success", True))
         self.assertIn("error", result)
+
+
+class RecycleBinSearchChildrenTests(RecycleBinTestCase):
+    """Tests that search() also matches titles and paths of nested children."""
+
+    def setUp(self):
+        super().setUp()
+        # Create a 3-level deep structure:
+        #   search-root/ (Folder)
+        #     top-doc    (Document, title="Top Doc")
+        #     sub-folder/ (Folder)
+        #       nested-news  (News Item, title="Deeply Nested News")
+        #       deep-folder/ (Folder)
+        #         deep-doc   (Document, title="Deepest Page")
+        self.portal.invokeFactory("Folder", "search-root", title="Search Root")
+        root = self.portal["search-root"]
+        root.invokeFactory("Document", "top-doc", title="Top Doc")
+        root.invokeFactory("Folder", "sub-folder", title="Sub Folder")
+        sub = root["sub-folder"]
+        sub.invokeFactory("News Item", "nested-news", title="Deeply Nested News")
+        sub.invokeFactory("Folder", "deep-folder", title="Deep Folder")
+        deep = sub["deep-folder"]
+        deep.invokeFactory("Document", "deep-doc", title="Deepest Page")
+
+        root_path = "/".join(root.getPhysicalPath())
+        self.recycle_id = self.recyclebin.add_item(root, self.portal, root_path)
+        self.portal.manage_delObjects(["search-root"])
+
+    def test_search_title_matches_root(self):
+        """Searching for the root title returns the item."""
+        results = self.recyclebin.search(title="Search Root")
+        ids = [r["recycle_id"] for r in results]
+        self.assertIn(self.recycle_id, ids)
+
+    def test_search_title_matches_direct_child(self):
+        """Searching for a direct child's title returns the parent item."""
+        results = self.recyclebin.search(title="Top Doc")
+        ids = [r["recycle_id"] for r in results]
+        self.assertIn(self.recycle_id, ids)
+
+    def test_search_title_matches_deeply_nested_child(self):
+        """Searching for a deeply nested child's title returns the parent item."""
+        results = self.recyclebin.search(title="Deepest Page")
+        ids = [r["recycle_id"] for r in results]
+        self.assertIn(self.recycle_id, ids)
+
+    def test_search_title_partial_match_in_child(self):
+        """Partial title match in a child returns the parent item."""
+        results = self.recyclebin.search(title="Nested News")
+        ids = [r["recycle_id"] for r in results]
+        self.assertIn(self.recycle_id, ids)
+
+    def test_search_title_no_match(self):
+        """Searching for a title not present anywhere returns nothing."""
+        results = self.recyclebin.search(title="Nonexistent Title XYZ")
+        ids = [r["recycle_id"] for r in results]
+        self.assertNotIn(self.recycle_id, ids)
+
+    def test_search_path_matches_nested_child(self):
+        """Searching for a path fragment of a nested child returns the parent item."""
+        results = self.recyclebin.search(path="deep-folder/deep-doc")
+        ids = [r["recycle_id"] for r in results]
+        self.assertIn(self.recycle_id, ids)
+
+    def test_search_path_no_match(self):
+        """Searching for a path not present anywhere returns nothing."""
+        results = self.recyclebin.search(path="/nonexistent/path/xyz")
+        ids = [r["recycle_id"] for r in results]
+        self.assertNotIn(self.recycle_id, ids)
+
+    def test_search_portal_type_matches_nested_child(self):
+        """Searching for a portal_type present only in a nested child returns the parent."""
+        results = self.recyclebin.search(portal_type="News Item")
+        ids = [r["recycle_id"] for r in results]
+        self.assertIn(self.recycle_id, ids)
+
+    def test_search_portal_type_matches_deeply_nested_child(self):
+        """Searching for Document matches the deeply nested deep-doc child."""
+        # The root is a Folder, but deep-doc (3 levels down) is a Document.
+        results = self.recyclebin.search(portal_type="Document")
+        ids = [r["recycle_id"] for r in results]
+        self.assertIn(self.recycle_id, ids)
+
+    def test_search_portal_type_no_match(self):
+        """Searching for a portal_type not present anywhere returns nothing."""
+        results = self.recyclebin.search(portal_type="Event")
+        ids = [r["recycle_id"] for r in results]
+        self.assertNotIn(self.recycle_id, ids)
+
+    def test_search_portal_type_is_exact_match(self):
+        """portal_type filter uses exact match, not substring."""
+        # "News" is a substring of "News Item" but must NOT match.
+        results = self.recyclebin.search(portal_type="News")
+        ids = [r["recycle_id"] for r in results]
+        self.assertNotIn(self.recycle_id, ids)

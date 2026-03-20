@@ -325,7 +325,11 @@ class RecycleBin:
         sort_on="deletion_date",
         sort_order="descending",
     ):
-        """Return filtered and sorted items from the recycle bin."""
+        """Return filtered and sorted items from the recycle bin.
+
+        The ``title`` and ``path`` filters also search recursively through
+        children so that a nested child match surfaces the parent item.
+        """
         items = self.get_items()
         reverse = sort_order != "ascending"
 
@@ -333,7 +337,13 @@ class RecycleBin:
         filtered = []
         for item in items:
             if portal_type and item.get("portal_type") != portal_type:
-                continue
+                if not self._children_match(
+                    item.get("children", {}),
+                    "portal_type",
+                    portal_type,
+                    exact=True,
+                ):
+                    continue
 
             if date_from or date_to:
                 deletion_date = item.get("deletion_date")
@@ -364,11 +374,21 @@ class RecycleBin:
             if review_state and item.get("review_state") != review_state:
                 continue
 
-            if title and title.lower() not in item.get("title", "").lower():
-                continue
+            if title:
+                title_lower = title.lower()
+                if title_lower not in item.get("title", "").lower():
+                    if not self._children_match(
+                        item.get("children", {}), "title", title_lower
+                    ):
+                        continue
 
-            if path and path.lower() not in item.get("path", "").lower():
-                continue
+            if path:
+                path_lower = path.lower()
+                if path_lower not in item.get("path", "").lower():
+                    if not self._children_match(
+                        item.get("children", {}), "path", path_lower
+                    ):
+                        continue
 
             filtered.append(item)
 
@@ -385,6 +405,27 @@ class RecycleBin:
         filtered.sort(key=key_fn, reverse=reverse)
 
         return filtered
+
+    def _children_match(self, children_dict, field, value, exact=False):
+        """Return True if *value* is found in *field* of any descendant.
+
+        When *exact* is False (default) a case-insensitive substring check is
+        performed.  When *exact* is True the field value must match exactly
+        (case-sensitive).
+        """
+        for child_data in children_dict.values():
+            child_value = child_data.get(field, "")
+            if exact:
+                if child_value == value:
+                    return True
+            else:
+                if value in child_value.lower():
+                    return True
+            nested = child_data.get("children", {})
+            if isinstance(nested, dict) and nested:
+                if self._children_match(nested, field, value, exact=exact):
+                    return True
+        return False
 
     def get_item(self, item_id):
         """Get a specific deleted item by ID"""

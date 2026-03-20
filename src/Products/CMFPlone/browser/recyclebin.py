@@ -995,7 +995,7 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
             logger.debug(f"No item found in recycle bin with ID: {self.item_id}")
         else:
             logger.debug(
-                f"Found item: {item.get('title', 'Unknown')} of type {item.get('type', 'Unknown')}"
+                f"Found item: {item.get('title', 'Unknown')} of type {item.get('portal_type', 'Unknown')}"
             )
             # Add children count information (total descendants, not just direct children)
             if "children" in item:

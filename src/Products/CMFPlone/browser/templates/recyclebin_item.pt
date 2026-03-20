@@ -69,7 +69,7 @@
                 <h1 class="documentFirstHeading mb-0">
                   <span tal:content="item/title">Title</span>
                   <span class="badge rounded-pill bg-light text-dark border ms-2"
-                        tal:content="item/type"
+                        tal:content="item/portal_type"
                   >Content type</span>
                 </h1>
               </div>
@@ -105,14 +105,14 @@
                             >Workflow state</th>
                             <td>
                               <span class="badge rounded-pill"
-                                    tal:condition="python:item.get('workflow_state')"
-                                    tal:content="python:view.get_workflow_state_title(item.get('workflow_state'), item.get('type'))"
+                                    tal:condition="python:item.get('review_state')"
+                                    tal:content="python:view.get_workflow_state_title(item.get('review_state'), item.get('portal_type'))"
                                     tal:attributes="
-                                      class python:'badge rounded-pill ' + view.get_workflow_state_class(item.get('workflow_state'));
+                                      class python:'badge rounded-pill ' + view.get_workflow_state_class(item.get('review_state'));
                                     "
                               >Published</span>
                               <span class="text-muted"
-                                    tal:condition="python:not item.get('workflow_state')"
+                                    tal:condition="python:not item.get('review_state')"
                                     i18n:translate=""
                               >Unknown</span>
                             </td>
@@ -301,19 +301,19 @@
                           </td>
                           <td>
                             <span class="badge rounded-pill bg-light text-dark border"
-                                  tal:content="child/type"
+                                  tal:content="child/portal_type"
                             >Type</span>
                           </td>
                           <td>
                             <span class="badge rounded-pill"
-                                  tal:condition="python:child.get('workflow_state')"
-                                  tal:content="python:view.get_workflow_state_title(child.get('workflow_state'), child.get('type'))"
+                                  tal:condition="python:child.get('review_state')"
+                                  tal:content="python:view.get_workflow_state_title(child.get('review_state'), child.get('portal_type'))"
                                   tal:attributes="
-                                    class python:'badge rounded-pill ' + view.get_workflow_state_class(child.get('workflow_state'));
+                                    class python:'badge rounded-pill ' + view.get_workflow_state_class(child.get('review_state'));
                                   "
                             >Published</span>
                             <span class="text-muted"
-                                  tal:condition="python:not child.get('workflow_state')"
+                                  tal:condition="python:not child.get('review_state')"
                                   i18n:translate=""
                             >Unknown</span>
                           </td>
