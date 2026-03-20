@@ -197,7 +197,6 @@ class RecycleBin:
                 "path": child_path,
                 "parent_path": folder_path,
                 "deletion_date": datetime.now(),
-                "size": getattr(child, "get_size", lambda: 0)(),
                 "language": getattr(child, "language", None)
                 or getattr(child, "Language", lambda: None)(),
                 "review_state": child_workflow_state,
@@ -286,7 +285,6 @@ class RecycleBin:
             "parent_path": parent_path,
             "deletion_date": datetime.now(),
             "deleted_by": user_id,
-            "size": getattr(obj, "get_size", lambda: 0)(),
             "language": getattr(obj, "language", None)
             or getattr(obj, "Language", lambda: None)(),
             "review_state": workflow_state,
@@ -397,7 +395,6 @@ class RecycleBin:
             "title": lambda x: x.get("title", "").lower(),
             "portal_type": lambda x: x.get("portal_type", "").lower(),
             "path": lambda x: x.get("path", "").lower(),
-            "size": lambda x: x.get("size", 0),
             "deletion_date": lambda x: x.get("deletion_date", datetime.now()),
             "review_state": lambda x: (x.get("review_state") or "").lower(),
         }

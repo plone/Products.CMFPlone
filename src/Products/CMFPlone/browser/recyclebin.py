@@ -2,7 +2,6 @@ from datetime import datetime
 from plone.base import PloneMessageFactory as _
 from plone.base.batch import Batch
 from plone.base.interfaces.recyclebin import IRecycleBin
-from plone.base.utils import human_readable_size
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -143,10 +142,6 @@ class RecycleBinWorkflowMixin:
         }
 
         return state_classes.get(state, "bg-light text-dark")
-
-    def format_size(self, size_bytes):
-        """Format size in bytes to human-readable format"""
-        return human_readable_size(size_bytes)
 
     def _flatten_children(self, children_dict, depth=0):
         """Recursively yield all descendants as a flat sequence.
@@ -413,8 +408,6 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
             "type_desc": _("Type (Z-A)"),
             "path_asc": _("Path (A-Z)"),
             "path_desc": _("Path (Z-A)"),
-            "size_asc": _("Size (smallest first)"),
-            "size_desc": _("Size (largest first)"),
             "workflow_asc": _("Workflow state (A-Z)"),
             "workflow_desc": _("Workflow state (Z-A)"),
         }
@@ -632,10 +625,6 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
                 items.sort(key=lambda x: x.get("path", "").lower())
             case "path_desc":
                 items.sort(key=lambda x: x.get("path", "").lower(), reverse=True)
-            case "size_asc":
-                items.sort(key=lambda x: x.get("size", 0))
-            case "size_desc":
-                items.sort(key=lambda x: x.get("size", 0), reverse=True)
             case "date_asc":
                 items.sort(key=lambda x: x.get("deletion_date", datetime.now()))
             case "workflow_asc":
@@ -995,7 +984,7 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
             logger.debug(f"No item found in recycle bin with ID: {self.item_id}")
         else:
             logger.debug(
-                f"Found item: {item.get('title', 'Unknown')} of type {item.get('portal_type', 'Unknown')}"
+                f"Found item: {item.get('title', 'Unknown')} of type {item.get('type', 'Unknown')}"
             )
             # Add children count information (total descendants, not just direct children)
             if "children" in item:

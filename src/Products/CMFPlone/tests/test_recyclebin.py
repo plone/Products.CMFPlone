@@ -1019,7 +1019,6 @@ class RecycleBinMetadataTests(RecycleBinTestCase):
             "parent_path",
             "deletion_date",
             "deleted_by",
-            "size",
             "object",
         ]
 
@@ -1040,18 +1039,6 @@ class RecycleBinSpecialContentTests(RecycleBinTestCase):
         recycle_id = self._add_item_to_recyclebin(obj)
         item_data = self.recyclebin.storage[recycle_id]
         self.assertEqual(item_data["title"], obj.Title())
-
-    def test_size_fallback_mechanisms(self):
-        """Test different size determination mechanisms"""
-        obj = create_test_content(self.portal, "Document")
-
-        # Test with existing size methods
-        recycle_id = self._add_item_to_recyclebin(obj)
-        item_data = self.recyclebin.storage[recycle_id]
-
-        # Size should be determined by available methods
-        self.assertIsInstance(item_data["size"], int)
-        self.assertGreaterEqual(item_data["size"], 0)
 
 
 class RecycleBinConcurrencyTests(RecycleBinTestCase):
@@ -1408,7 +1395,6 @@ class RecycleBinBrowserViewTests(RecycleBinTestCase):
 
         # Test that view-related metadata is present
         self.assertIn("deletion_date", item)
-        self.assertIn("size", item)
         self.assertIn("portal_type", item)
 
     def test_item_filtering_support(self):
@@ -1559,17 +1545,14 @@ class RecycleBinFlattenChildrenTests(RecycleBinTestCase):
             "a": {
                 "id": "a",
                 "path": "/root/a",
-                "size": 10,
                 "children": {
                     "b": {
                         "id": "b",
                         "path": "/root/a/b",
-                        "size": 20,
                         "children": {
                             "c": {
                                 "id": "c",
                                 "path": "/root/a/b/c",
-                                "size": 30,
                             }
                         },
                     }
@@ -1578,7 +1561,6 @@ class RecycleBinFlattenChildrenTests(RecycleBinTestCase):
             "d": {
                 "id": "d",
                 "path": "/root/d",
-                "size": 40,
             },
         }
 
