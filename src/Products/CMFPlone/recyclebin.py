@@ -191,15 +191,15 @@ class RecycleBin:
             # Store basic data for this child
             child_data = {
                 "id": child_id,
+                "restore_id": str(uuid.uuid4()),
                 "title": child.Title(),
-                "type": getattr(child, "portal_type", "Unknown"),
+                "portal_type": getattr(child, "portal_type", "Unknown"),
                 "path": child_path,
                 "parent_path": folder_path,
                 "deletion_date": datetime.now(),
-                "size": getattr(child, "get_size", lambda: 0)(),
                 "language": getattr(child, "language", None)
                 or getattr(child, "Language", lambda: None)(),
-                "workflow_state": child_workflow_state,
+                "review_state": child_workflow_state,
                 "object": child,
             }
 
@@ -274,32 +274,31 @@ class RecycleBin:
         workflow_tool = getToolByName(self._get_context(), "portal_workflow")
         workflow_state = workflow_tool.getInfoFor(obj, "review_state", None)
 
+        # Generate a unique recycle ID
+        recycle_id = str(uuid.uuid4())
+
         storage_data = {
             "id": item_id,
             "title": item_title,
-            "type": item_type or getattr(obj, "portal_type", "Unknown"),
+            "portal_type": item_type or getattr(obj, "portal_type", "Unknown"),
             "path": original_path,
             "parent_path": parent_path,
             "deletion_date": datetime.now(),
             "deleted_by": user_id,
-            "size": getattr(obj, "get_size", lambda: 0)(),
             "language": getattr(obj, "language", None)
             or getattr(obj, "Language", lambda: None)(),
-            "workflow_state": workflow_state,
+            "review_state": workflow_state,
             "object": aq_base(obj),  # Store the actual object with no acquisition chain
+            "recycle_id": recycle_id,
         }
 
         # Add children data if this was a folder/collection
         if children:
             storage_data["children"] = children
 
-        # Generate a unique recycle ID
-        recycle_id = str(uuid.uuid4())
-        self.storage[recycle_id] = storage_data
-
-        # Check if we need to clean up old items
-        self._check_size_limits()
         self._purge_expired_items()
+
+        self.storage[recycle_id] = storage_data
 
         return recycle_id
 
@@ -309,6 +308,121 @@ class RecycleBin:
             {**{k: v for k, v in data.items() if k != "object"}, "recycle_id": item_id}
             for item_id, data in self.storage.get_items_sorted_by_date(reverse=True)
         ]
+
+    def search(
+        self,
+        title=None,
+        path=None,
+        portal_type=None,
+        date_from=None,
+        date_to=None,
+        deleted_by=None,
+        has_subitems=None,
+        language=None,
+        review_state=None,
+        sort_on="deletion_date",
+        sort_order="descending",
+    ):
+        """Return filtered and sorted items from the recycle bin.
+
+        The ``title`` and ``path`` filters also search recursively through
+        children so that a nested child match surfaces the parent item.
+        """
+        items = self.get_items()
+        reverse = sort_order != "ascending"
+
+        # --- filtering ---
+        filtered = []
+        for item in items:
+            if portal_type and item.get("portal_type") != portal_type:
+                if not self._children_match(
+                    item.get("children", {}),
+                    "portal_type",
+                    portal_type,
+                    exact=True,
+                ):
+                    continue
+
+            if date_from or date_to:
+                deletion_date = item.get("deletion_date")
+                if deletion_date:
+                    item_date = (
+                        deletion_date.date()
+                        if hasattr(deletion_date, "date")
+                        else deletion_date
+                    )
+                    if date_from and item_date < date_from:
+                        continue
+                    if date_to and item_date > date_to:
+                        continue
+
+            if deleted_by and item.get("deleted_by") != deleted_by:
+                continue
+
+            if has_subitems is not None:
+                has_children = bool(item.get("children"))
+                if has_subitems and not has_children:
+                    continue
+                if not has_subitems and has_children:
+                    continue
+
+            if language and item.get("language") != language:
+                continue
+
+            if review_state and item.get("review_state") != review_state:
+                continue
+
+            if title:
+                title_lower = title.lower()
+                if title_lower not in item.get("title", "").lower():
+                    if not self._children_match(
+                        item.get("children", {}), "title", title_lower
+                    ):
+                        continue
+
+            if path:
+                path_lower = path.lower()
+                if path_lower not in item.get("path", "").lower():
+                    if not self._children_match(
+                        item.get("children", {}), "path", path_lower
+                    ):
+                        continue
+
+            filtered.append(item)
+
+        # --- sorting ---
+        sort_keys = {
+            "title": lambda x: x.get("title", "").lower(),
+            "portal_type": lambda x: x.get("portal_type", "").lower(),
+            "path": lambda x: x.get("path", "").lower(),
+            "deletion_date": lambda x: x.get("deletion_date", datetime.now()),
+            "review_state": lambda x: (x.get("review_state") or "").lower(),
+        }
+        key_fn = sort_keys.get(sort_on, sort_keys["deletion_date"])
+        filtered.sort(key=key_fn, reverse=reverse)
+
+        return filtered
+
+    def _children_match(self, children_dict, field, value, exact=False):
+        """Return True if *value* is found in *field* of any descendant.
+
+        When *exact* is False (default) a case-insensitive substring check is
+        performed.  When *exact* is True the field value must match exactly
+        (case-sensitive).
+        """
+        for child_data in children_dict.values():
+            child_value = child_data.get(field, "")
+            if exact:
+                if child_value == value:
+                    return True
+            else:
+                if value in child_value.lower():
+                    return True
+            nested = child_data.get("children", {})
+            if isinstance(nested, dict) and nested:
+                if self._children_match(nested, field, value, exact=exact):
+                    return True
+        return False
 
     def get_item(self, item_id):
         """Get a specific deleted item by ID"""
@@ -459,6 +573,92 @@ class RecycleBin:
                 return False, None, error_message
         return True, target_container, None
 
+    def _reindex_recursive(self, obj):
+        """Reindex obj and all its descendants in the portal catalog.
+
+        This is necessary after restoring a folder to a different location so
+        that every item gets the correct new path in the catalog.
+        """
+        if hasattr(obj, "reindexObject"):
+            obj.reindexObject()
+        if hasattr(obj, "objectValues"):
+            for child in obj.objectValues():
+                self._reindex_recursive(child)
+
+    def _find_child_by_restore_id(self, children_dict, restore_id):
+        """Recursively find a child by restore_id in the children tree.
+
+        Returns (child_data, parent_dict, key) or (None, None, None) if not found.
+        """
+        for key, child_data in children_dict.items():
+            if child_data.get("restore_id") == restore_id:
+                return child_data, children_dict, key
+            nested = child_data.get("children", {})
+            if isinstance(nested, dict) and nested:
+                result = self._find_child_by_restore_id(nested, restore_id)
+                if result[0] is not None:
+                    return result
+        return None, None, None
+
+    def restore_child_item(self, item_id, restore_id, target_container):
+        """Restore a specific child from a recycled folder item.
+
+        Args:
+            item_id: The recycle bin ID of the parent item.
+            restore_id: The unique ID assigned to each child for lookup.
+            target_container: The container object where the child will be restored.
+
+        Returns:
+            The restored object on success, or a dict with ``success: False``
+            and an ``error`` key on failure.
+        """
+        item_data = self.storage.get(item_id)
+        if not item_data:
+            return {
+                "success": False,
+                "error": f"Item {item_id!r} not found in recycle bin",
+            }
+
+        if "children" not in item_data:
+            return {"success": False, "error": "Item has no children"}
+
+        if target_container is None:
+            return {
+                "success": False,
+                "error": "You must specify a target_container to restore a child item",
+            }
+        if not restore_id:
+            return {
+                "success": False,
+                "error": "You must provide restore_id to restore a child item",
+            }
+
+        child_data, parent_dict, child_key = self._find_child_by_restore_id(
+            item_data["children"], restore_id
+        )
+        if child_data is None:
+            return {
+                "success": False,
+                "error": f"Child with restore_id {restore_id!r} not found",
+            }
+
+        temp_id = str(uuid.uuid4())
+        self.storage[temp_id] = child_data
+        try:
+            result = self.restore_item(temp_id, target_container)
+        except Exception:
+            if temp_id in self.storage:
+                del self.storage[temp_id]
+            raise
+
+        if isinstance(result, dict) and not result.get("success", True):
+            return result
+
+        # Remove child from parent tree and persist the updated parent record
+        del parent_dict[child_key]
+        self.storage[item_id] = item_data
+        return result
+
     def _cleanup_child_references(self, item_data):
         """Clean up any child items associated with a parent that was restored"""
         if "children" in item_data and isinstance(item_data["children"], dict):
@@ -527,6 +727,18 @@ class RecycleBin:
         if obj_id != item_data["id"]:
             obj.id = obj_id
 
+        # Update __parent__ and __name__ on the persistent object BEFORE
+        # inserting it into the container.  OFS does not do this automatically,
+        # and CMFCatalogAware.manage_afterAdd calls indexObject() during
+        # _setObject, so the catalog would otherwise record the old path.
+        # We keep the acquisition-wrapped target_container as __parent__ so
+        # that getPhysicalPath() can traverse the full portal path during the
+        # current transaction; ZODB will persist only the underlying reference.
+        if hasattr(obj, "__parent__"):
+            obj.__parent__ = target_container
+        if hasattr(obj, "__name__"):
+            obj.__name__ = obj_id
+
         # Add object to the target container
         target_container[obj_id] = obj
 
@@ -540,7 +752,9 @@ class RecycleBin:
         # Also reset workflow states of children if this is a folder
         self._reset_folder_children_workflow_if_needed(restored_obj)
 
-        restored_obj.reindexObject()
+        # Reindex the restored object and all its descendants so the catalog
+        # reflects the new path and security.
+        self._reindex_recursive(restored_obj)
 
         # Remove from recycle bin
         del self.storage[item_id]
@@ -593,7 +807,7 @@ class RecycleBin:
 
             # Remove the main item from storage - the object will be garbage collected
             del self.storage[item_id]
-            logger.info(f"Item {item_id} purged from recycle bin")
+            logger.info(f"Item {item_path} ({item_id}) purged from recycle bin")
             return True
         except Exception as e:
             logger.error(f"Error purging item {item_id}: {str(e)}")
@@ -640,59 +854,6 @@ class RecycleBin:
         except Exception as e:
             logger.error(f"Error purging expired items: {str(e)}")
             return 0
-
-    def _check_size_limits(self):
-        """Check if the recycle bin exceeds size limits and purge oldest items if needed
-
-        This method enforces the maximum size limit for the recycle bin by removing
-        the oldest items when the limit is exceeded.
-        """
-        try:
-            settings = self._get_settings()
-            max_size_mb = settings.maximum_size
-
-            # If max_size is 0, size limiting is disabled
-            if max_size_mb <= 0:
-                logger.debug("Size limiting is disabled (maximum_size = 0)")
-                return
-
-            max_size_bytes = max_size_mb * 1024 * 1024  # Convert MB to bytes
-            total_size = 0
-            items_by_date = []
-
-            # Get items sorted by date (oldest first) and calculate total size
-            for item_id, data in self.storage.get_items_sorted_by_date(reverse=False):
-                size = data.get("size", 0)
-                total_size += size
-                items_by_date.append((item_id, size))
-
-            # If we're under the limit, nothing to do
-            if total_size <= max_size_bytes:
-                return
-
-            # Log the size excess
-            logger.info(
-                f"Recycle bin size ({total_size / (1024 * 1024):.2f} MB) exceeds limit ({max_size_mb} MB)"
-            )
-
-            # Remove oldest items until we're under the limit
-            items_purged = 0
-            for item_id, size in items_by_date:
-                # Stop once we're under the limit
-                if total_size <= max_size_bytes:
-                    break
-
-                if self.purge_item(item_id):
-                    total_size -= size
-                    items_purged += 1
-
-            if items_purged:
-                logger.info(
-                    f"Purged {items_purged} oldest item{'s' if items_purged != 1 else ''} due to size constraints"
-                )
-
-        except Exception as e:
-            logger.error(f"Error enforcing size limits: {str(e)}")
 
     def clear(self):
         """Clear all items from the recycle bin"""

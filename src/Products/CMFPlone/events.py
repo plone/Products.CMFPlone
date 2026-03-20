@@ -55,6 +55,14 @@ def handle_content_removal(obj, event):
     if getattr(obj, "_v_is_being_moved", False):
         return
 
+    # Ignore if this event was dispatched from a parent container deletion.
+    # OFS dispatches IObjectRemovedEvent to all sub-objects via dispatchToSublocations,
+    # keeping event.object pointing to the original deleted container. When obj != event.object,
+    # it means obj is a child being notified indirectly — it will be captured as
+    # nested data when the parent container is added to the recycle bin.
+    if event.object is not obj:
+        return
+
     # Get the recycle bin
     recycle_bin = queryUtility(IRecycleBin)
     if recycle_bin is None or not recycle_bin.is_enabled():

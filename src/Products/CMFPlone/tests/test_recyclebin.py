@@ -7,6 +7,7 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.base.interfaces.recyclebin import IRecycleBin
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.browser.recyclebin import RecycleBinView
 from Products.CMFPlone.controlpanel.browser.recyclebin import (
     IRecycleBinControlPanelSettings,
 )
@@ -56,7 +57,7 @@ class RecycleBinAssertionMixin:
             if obj_title:
                 self.assertEqual(item_data["title"], obj_title)
             if obj_type:
-                self.assertEqual(item_data["type"], obj_type)
+                self.assertEqual(item_data["portal_type"], obj_type)
 
     def assertItemNotInRecycleBin(self, item_id):
         """Assert that an item is not in the recycle bin"""
@@ -183,7 +184,6 @@ class RecycleBinTestCase(unittest.TestCase, RecycleBinAssertionMixin):
         default_settings = {
             "recycling_enabled": True,
             "retention_period": 30,
-            "maximum_size": 100,  # 100 MB
             "restore_to_initial_state": False,
         }
 
@@ -254,7 +254,6 @@ class RecycleBinSetupTests(RecycleBinTestCase):
         settings = self.recyclebin._get_settings()
         self.assertTrue(settings.recycling_enabled)
         self.assertEqual(settings.retention_period, 30)
-        self.assertEqual(settings.maximum_size, 100)
         self.assertFalse(settings.restore_to_initial_state)
 
 
@@ -291,7 +290,7 @@ class RecycleBinContentTests(RecycleBinTestCase):
                 # Common metadata assertions
                 self.assertEqual(item_data["id"], obj.getId())
                 self.assertEqual(item_data["title"], obj.Title())
-                self.assertEqual(item_data["type"], expected_type)
+                self.assertEqual(item_data["portal_type"], expected_type)
                 self.assertIsInstance(item_data["deletion_date"], datetime)
                 self.assertIn("deleted_by", item_data)
                 self.assertEqual(item_data["deleted_by"], TEST_USER_ID)
@@ -448,7 +447,7 @@ class RecycleBinNestedFolderTests(RecycleBinTestCase):
         # Verify the parent folder metadata was stored correctly
         item_data = self.recyclebin.storage[recycle_id]
         self.assertEqual(item_data["id"], parent_id)
-        self.assertEqual(item_data["type"], "Folder")
+        self.assertEqual(item_data["portal_type"], "Folder")
 
         # Verify the children were tracked
         self.assertIn("children", item_data)
@@ -519,7 +518,7 @@ class RecycleBinNestedFolderTests(RecycleBinTestCase):
         # Verify the child folder metadata was stored correctly
         item_data = self.recyclebin.storage[recycle_id]
         self.assertEqual(item_data["id"], child_id)
-        self.assertEqual(item_data["type"], "Folder")
+        self.assertEqual(item_data["portal_type"], "Folder")
 
         # Verify the nested children were tracked
         self.assertIn("children", item_data)
@@ -871,42 +870,6 @@ class RecycleBinSecurityTests(RecycleBinTestCase):
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
 
 
-class RecycleBinSizeLimitTests(RecycleBinTestCase):
-    """Tests for size limit enforcement"""
-
-    def test_size_limit_enforcement(self):
-        """Test that size limits are enforced by purging oldest items"""
-        # Set a reasonable size limit (minimum is 10MB)
-        self._configure_recyclebin_settings(maximum_size=10)
-
-        # Create items - actual size limit enforcement depends on implementation
-        items = []
-        for i in range(3):
-            obj = create_test_content(self.portal, "Document", f"-size-{i}")
-            recycle_id = self._add_item_to_recyclebin(obj)
-            items.append(recycle_id)
-
-        # Verify items were added (size enforcement may vary based on implementation)
-        remaining_items = self.recyclebin.get_items()
-        self.assertGreater(len(remaining_items), 0)  # At least some items should remain
-
-    def test_size_limit_settings(self):
-        """Test that size limit settings work within valid ranges"""
-        # Test with minimum allowed size (10MB)
-        self._configure_recyclebin_settings(maximum_size=10)
-
-        # Create items
-        items = []
-        for i in range(2):
-            obj = create_test_content(self.portal, "Document", f"-size-limit-{i}")
-            recycle_id = self._add_item_to_recyclebin(obj)
-            items.append(recycle_id)
-
-        # All items should be added with reasonable size limit
-        remaining_items = self.recyclebin.get_items()
-        self.assertEqual(len(remaining_items), 2)
-
-
 class RecycleBinRetentionTests(RecycleBinTestCase):
     """Tests for retention period and auto-purging"""
 
@@ -1051,12 +1014,11 @@ class RecycleBinMetadataTests(RecycleBinTestCase):
         required_fields = [
             "id",
             "title",
-            "type",
+            "portal_type",
             "path",
             "parent_path",
             "deletion_date",
             "deleted_by",
-            "size",
             "object",
         ]
 
@@ -1077,18 +1039,6 @@ class RecycleBinSpecialContentTests(RecycleBinTestCase):
         recycle_id = self._add_item_to_recyclebin(obj)
         item_data = self.recyclebin.storage[recycle_id]
         self.assertEqual(item_data["title"], obj.Title())
-
-    def test_size_fallback_mechanisms(self):
-        """Test different size determination mechanisms"""
-        obj = create_test_content(self.portal, "Document")
-
-        # Test with existing size methods
-        recycle_id = self._add_item_to_recyclebin(obj)
-        item_data = self.recyclebin.storage[recycle_id]
-
-        # Size should be determined by available methods
-        self.assertIsInstance(item_data["size"], int)
-        self.assertGreaterEqual(item_data["size"], 0)
 
 
 class RecycleBinConcurrencyTests(RecycleBinTestCase):
@@ -1178,13 +1128,12 @@ class OptimizedRecycleBinTests(RecycleBinTestCase):
 
         # Test settings configuration
         self._configure_recyclebin_settings(
-            recycling_enabled=False, retention_period=60, maximum_size=200
+            recycling_enabled=False, retention_period=60
         )
 
         settings = self.recyclebin._get_settings()
         self.assertFalse(settings.recycling_enabled)
         self.assertEqual(settings.retention_period, 60)
-        self.assertEqual(settings.maximum_size, 200)
 
     def test_disabled_recyclebin_behavior(self):
         """Test behavior when recycle bin is disabled"""
@@ -1422,7 +1371,7 @@ class RecycleBinDataIntegrityTests(RecycleBinTestCase):
             item for item in self.recyclebin.get_items() if item["id"] == original_id
         ][0]
 
-        key_fields = ["id", "title", "type", "deleted_by"]
+        key_fields = ["id", "title", "portal_type", "deleted_by"]
         for field in key_fields:
             self.assertEqual(item_data[field], get_item_result[field])
             self.assertEqual(item_data[field], get_items_result[field])
@@ -1446,8 +1395,7 @@ class RecycleBinBrowserViewTests(RecycleBinTestCase):
 
         # Test that view-related metadata is present
         self.assertIn("deletion_date", item)
-        self.assertIn("size", item)
-        self.assertIn("type", item)
+        self.assertIn("portal_type", item)
 
     def test_item_filtering_support(self):
         """Test support for filtering that browser views might use"""
@@ -1462,8 +1410,8 @@ class RecycleBinBrowserViewTests(RecycleBinTestCase):
         all_items = self.recyclebin.get_items()
 
         # Filter by type (simulating what a browser view might do)
-        doc_items = [item for item in all_items if item["type"] == "Document"]
-        folder_items = [item for item in all_items if item["type"] == "Folder"]
+        doc_items = [item for item in all_items if item["portal_type"] == "Document"]
+        folder_items = [item for item in all_items if item["portal_type"] == "Folder"]
 
         self.assertGreater(len(doc_items), 0)
         self.assertGreater(len(folder_items), 0)
@@ -1476,3 +1424,494 @@ class RecycleBinBrowserViewTests(RecycleBinTestCase):
 
         self.assertTrue(doc_found)
         self.assertTrue(folder_found)
+
+
+class RecycleBinEventDispatchTests(RecycleBinTestCase):
+    """Tests for handle_content_removal with OFS sub-location event dispatch."""
+
+    def _make_folder_with_children(self, folder_id="evt-folder"):
+        """Create a folder with two leaf documents and return it."""
+        self.portal.invokeFactory("Folder", folder_id, title="Event Test Folder")
+        folder = self.portal[folder_id]
+        folder.invokeFactory("Document", "child-a", title="Child A")
+        folder.invokeFactory("Document", "child-b", title="Child B")
+        return folder
+
+    def test_deleting_folder_creates_single_entry(self):
+        """Deleting a folder must produce exactly one recycle-bin entry."""
+        folder = self._make_folder_with_children()
+        folder_path = "/".join(folder.getPhysicalPath())
+
+        self.recyclebin.add_item(folder, self.portal, folder_path)
+
+        # Only one top-level entry must exist
+        self.assertRecycleBinCount(1)
+
+    def test_children_stored_inside_folder_entry(self):
+        """Children must be stored inside the folder entry, not as standalone entries."""
+        folder = self._make_folder_with_children()
+        folder_path = "/".join(folder.getPhysicalPath())
+
+        recycle_id = self.recyclebin.add_item(folder, self.portal, folder_path)
+        item_data = self.recyclebin.storage[recycle_id]
+
+        self.assertIn("children", item_data)
+        self.assertIn("child-a", item_data["children"])
+        self.assertIn("child-b", item_data["children"])
+
+    def test_simulated_ofs_dispatch_does_not_add_children_as_standalone(self):
+        """Simulates OFS dispatching the event to a child (event.object != obj).
+
+        The handler must skip children when event.object is the parent folder.
+        """
+        from Products.CMFPlone.events import handle_content_removal
+        from unittest.mock import MagicMock
+
+        folder = self._make_folder_with_children("dispatch-folder")
+        child = folder["child-a"]
+
+        # Build a fake IObjectRemovedEvent where event.object == folder (parent)
+        fake_event = MagicMock()
+        fake_event.newParent = None
+        fake_event.oldParent = self.portal
+        fake_event.object = folder  # <-- parent, not the child
+
+        handle_content_removal(child, fake_event)
+
+        # No entry must have been created for the child
+        self.assertRecycleBinEmpty()
+
+
+class RecycleBinFindChildByRestoreIdTests(RecycleBinTestCase):
+    """Unit tests for RecycleBin._find_child_by_restore_id."""
+
+    def _make_tree(self):
+        return {
+            "a": {
+                "id": "a",
+                "restore_id": "rid-a",
+                "children": {
+                    "b": {
+                        "id": "b",
+                        "restore_id": "rid-b",
+                        "children": {
+                            "c": {
+                                "id": "c",
+                                "restore_id": "rid-c",
+                            }
+                        },
+                    }
+                },
+            },
+            "d": {
+                "id": "d",
+                "restore_id": "rid-d",
+            },
+        }
+
+    def test_finds_direct_child_by_restore_id(self):
+        tree = self._make_tree()
+        data, _, key = self.recyclebin._find_child_by_restore_id(tree, "rid-d")
+        self.assertIsNotNone(data)
+        self.assertEqual(data["id"], "d")
+        self.assertEqual(key, "d")
+
+    def test_finds_deeply_nested_child_by_restore_id(self):
+        tree = self._make_tree()
+        data, parent, key = self.recyclebin._find_child_by_restore_id(tree, "rid-c")
+        self.assertIsNotNone(data)
+        self.assertEqual(data["id"], "c")
+        self.assertEqual(key, "c")
+
+    def test_returns_none_for_missing_restore_id(self):
+        tree = self._make_tree()
+        data, parent, key = self.recyclebin._find_child_by_restore_id(
+            tree, "rid-missing"
+        )
+        self.assertIsNone(data)
+        self.assertIsNone(parent)
+        self.assertIsNone(key)
+
+
+class RecycleBinFlattenChildrenTests(RecycleBinTestCase):
+    """Unit tests for RecycleBinView._flatten_children."""
+
+    def setUp(self):
+        super().setUp()
+        self.view = RecycleBinView(self.portal, self.request)
+
+    def _make_nested(self):
+        return {
+            "a": {
+                "id": "a",
+                "path": "/root/a",
+                "children": {
+                    "b": {
+                        "id": "b",
+                        "path": "/root/a/b",
+                        "children": {
+                            "c": {
+                                "id": "c",
+                                "path": "/root/a/b/c",
+                            }
+                        },
+                    }
+                },
+            },
+            "d": {
+                "id": "d",
+                "path": "/root/d",
+            },
+        }
+
+    def test_all_descendants_are_yielded(self):
+        tree = self._make_nested()
+        flat = list(self.view._flatten_children(tree))
+        ids = [e["id"] for e in flat]
+        self.assertIn("a", ids)
+        self.assertIn("b", ids)
+        self.assertIn("c", ids)
+        self.assertIn("d", ids)
+        self.assertEqual(len(flat), 4)
+
+    def test_depth_increases_with_nesting(self):
+        tree = self._make_nested()
+        flat = {e["id"]: e for e in self.view._flatten_children(tree)}
+        self.assertEqual(flat["a"]["depth"], 0)
+        self.assertEqual(flat["b"]["depth"], 1)
+        self.assertEqual(flat["c"]["depth"], 2)
+        self.assertEqual(flat["d"]["depth"], 0)
+
+    def test_children_key_stripped_from_entries(self):
+        tree = self._make_nested()
+        for entry in self.view._flatten_children(tree):
+            self.assertNotIn("children", entry)
+
+    def test_children_count_set_for_nodes_with_sub_children(self):
+        tree = self._make_nested()
+        flat = {e["id"]: e for e in self.view._flatten_children(tree)}
+        # "a" has one direct child "b" which itself has child "c" → count = 2
+        self.assertIn("children_count", flat["a"])
+        self.assertEqual(flat["a"]["children_count"], 2)
+        # "d" has no children → no children_count key
+        self.assertNotIn("children_count", flat["d"])
+
+
+class RecycleBinCountDescendantsTests(RecycleBinTestCase):
+    """Unit tests for RecycleBinView._count_descendants."""
+
+    def setUp(self):
+        super().setUp()
+        self.view = RecycleBinView(self.portal, self.request)
+
+    def test_empty_dict_returns_zero(self):
+        self.assertEqual(self.view._count_descendants({}), 0)
+
+    def test_flat_children(self):
+        children = {
+            "a": {"id": "a"},
+            "b": {"id": "b"},
+        }
+        self.assertEqual(self.view._count_descendants(children), 2)
+
+    def test_deeply_nested_children(self):
+        children = {
+            "a": {
+                "id": "a",
+                "children": {
+                    "b": {
+                        "id": "b",
+                        "children": {
+                            "c": {"id": "c"},
+                        },
+                    }
+                },
+            }
+        }
+        # a + b + c = 3
+        self.assertEqual(self.view._count_descendants(children), 3)
+
+    def test_mixed_flat_and_nested(self):
+        children = {
+            "flat": {"id": "flat"},
+            "nested": {
+                "id": "nested",
+                "children": {
+                    "child": {"id": "child"},
+                },
+            },
+        }
+        # flat + nested + child = 3
+        self.assertEqual(self.view._count_descendants(children), 3)
+
+
+class RecycleBinChildRestoreReindexTests(RecycleBinTestCase):
+    """Integration tests for RecycleBin.restore_child_item.
+
+    These tests use Plone's manage_delObjects() to delete content so that
+    the real event handlers (handle_content_removal) are triggered and the
+    item lands in the recycle bin exactly as it would in production.
+    """
+
+    def _delete(self, container, obj_id):
+        """Delete an object via manage_delObjects (fires Plone event handlers)."""
+        container.manage_delObjects([obj_id])
+
+    def _find_child_restore_id(self, children, child_id):
+        """Find restore_id for a child id in a nested children tree."""
+        for child_data in children.values():
+            if child_data.get("id") == child_id:
+                return child_data.get("restore_id")
+            nested = child_data.get("children", {})
+            if isinstance(nested, dict) and nested:
+                found = self._find_child_restore_id(nested, child_id)
+                if found:
+                    return found
+        return None
+
+    def test_restore_child_item_error_when_parent_not_found(self):
+        """restore_child_item must return an error dict when item_id is unknown."""
+        result = self.recyclebin.restore_child_item(
+            "nonexistent-id", restore_id="some-id", target_container=self.portal
+        )
+        self.assertFalse(result.get("success", True))
+        self.assertIn("error", result)
+
+    def test_restore_child_item_error_when_restore_id_not_found(self):
+        """restore_child_item must return an error dict when restore_id is unknown."""
+        self.portal.invokeFactory("Folder", "err-folder", title="Err Folder")
+        err_folder = self.portal["err-folder"]
+        err_folder.invokeFactory("Document", "err-doc", title="Err Doc")
+
+        # Delete the whole folder — event handler stores it with its children
+        self._delete(self.portal, "err-folder")
+
+        # There must be exactly one item in the bin (the folder)
+        items = self.recyclebin.get_items()
+        self.assertEqual(len(items), 1)
+        recycle_id = items[0]["recycle_id"]
+
+        result = self.recyclebin.restore_child_item(
+            recycle_id,
+            restore_id="missing-restore-id",
+            target_container=self.portal,
+        )
+        self.assertFalse(result.get("success", True))
+        self.assertIn("error", result)
+
+    def test_restore_child_item_success_direct_child(self):
+        """restore_child_item must restore a direct child by restore_id."""
+        self.portal.invokeFactory("Folder", "src-folder", title="Src Folder")
+        src_folder = self.portal["src-folder"]
+        src_folder.invokeFactory("Document", "a-doc", title="A Doc")
+
+        # Delete the whole folder via Plone (fires events, fills recycle bin)
+        self._delete(self.portal, "src-folder")
+
+        items = self.recyclebin.get_items()
+        self.assertEqual(len(items), 1)
+        recycle_id = items[0]["recycle_id"]
+        parent_data = self.recyclebin.get_item(recycle_id)
+        restore_id = self._find_child_restore_id(
+            parent_data.get("children", {}), "a-doc"
+        )
+        self.assertIsNotNone(restore_id)
+
+        # Create a separate target container
+        self.portal.invokeFactory("Folder", "target-folder", title="Target Folder")
+        target = self.portal["target-folder"]
+
+        result = self.recyclebin.restore_child_item(
+            recycle_id,
+            restore_id=restore_id,
+            target_container=target,
+        )
+
+        self.assertIsNotNone(result)
+        self.assertTrue(
+            hasattr(result, "getId"), "result should be the restored object"
+        )
+        self.assertEqual(result.getId(), "a-doc")
+        self.assertIn("a-doc", target.objectIds())
+
+    def test_restore_child_item_removes_child_from_parent_tree(self):
+        """After restore_child_item the child must be removed from the parent's children."""
+        self.portal.invokeFactory("Folder", "src2", title="Src2")
+        src2 = self.portal["src2"]
+        src2.invokeFactory("Document", "child-doc", title="Child Doc")
+        doc_path = "/".join(src2["child-doc"].getPhysicalPath())
+
+        self._delete(self.portal, "src2")
+
+        items = self.recyclebin.get_items()
+        self.assertEqual(len(items), 1)
+        recycle_id = items[0]["recycle_id"]
+        parent_data = self.recyclebin.get_item(recycle_id)
+        restore_id = self._find_child_restore_id(
+            parent_data.get("children", {}), "child-doc"
+        )
+        self.assertIsNotNone(restore_id)
+
+        self.portal.invokeFactory("Folder", "dest2", title="Dest2")
+        dest = self.portal["dest2"]
+
+        self.recyclebin.restore_child_item(
+            recycle_id,
+            restore_id=restore_id,
+            target_container=dest,
+        )
+
+        # Parent entry must still exist but without the restored child
+        parent_data = self.recyclebin.get_item(recycle_id)
+        self.assertIsNotNone(parent_data)
+        child_paths = [c.get("path") for c in parent_data.get("children", {}).values()]
+        self.assertNotIn(doc_path, child_paths)
+
+    def test_restored_child_is_catalogued_at_new_path(self):
+        """Restored child must be findable in the catalog at its new location."""
+        self.portal.invokeFactory("Folder", "orig", title="Orig")
+        orig = self.portal["orig"]
+        orig.invokeFactory("Document", "catalogued-doc", title="Catalogued Doc")
+
+        self._delete(self.portal, "orig")
+
+        items = self.recyclebin.get_items()
+        self.assertEqual(len(items), 1)
+        recycle_id = items[0]["recycle_id"]
+        parent_data = self.recyclebin.get_item(recycle_id)
+        restore_id = self._find_child_restore_id(
+            parent_data.get("children", {}), "catalogued-doc"
+        )
+        self.assertIsNotNone(restore_id)
+
+        self.portal.invokeFactory("Folder", "new-home", title="New Home")
+        new_home = self.portal["new-home"]
+
+        self.recyclebin.restore_child_item(
+            recycle_id,
+            restore_id=restore_id,
+            target_container=new_home,
+        )
+
+        catalog = self.portal.portal_catalog
+        expected_path = "/".join(new_home.getPhysicalPath()) + "/catalogued-doc"
+        results = catalog.searchResults(path={"query": expected_path, "depth": 0})
+        self.assertEqual(
+            len(results), 1, "Restored child must appear in catalog at new path"
+        )
+
+    def test_restore_child_item_error_when_restore_id_missing(self):
+        """restore_child_item must return an error dict when restore_id is empty."""
+        self.portal.invokeFactory("Folder", "missing-id-folder", title="Missing ID")
+        missing_id_folder = self.portal["missing-id-folder"]
+        missing_id_folder.invokeFactory("Document", "doc", title="Doc")
+
+        self._delete(self.portal, "missing-id-folder")
+
+        items = self.recyclebin.get_items()
+        self.assertEqual(len(items), 1)
+        recycle_id = items[0]["recycle_id"]
+
+        result = self.recyclebin.restore_child_item(
+            recycle_id,
+            restore_id="",
+            target_container=self.portal,
+        )
+
+        self.assertFalse(result.get("success", True))
+        self.assertIn("error", result)
+
+
+class RecycleBinSearchChildrenTests(RecycleBinTestCase):
+    """Tests that search() also matches titles and paths of nested children."""
+
+    def setUp(self):
+        super().setUp()
+        # Create a 3-level deep structure:
+        #   search-root/ (Folder)
+        #     top-doc    (Document, title="Top Doc")
+        #     sub-folder/ (Folder)
+        #       nested-news  (News Item, title="Deeply Nested News")
+        #       deep-folder/ (Folder)
+        #         deep-doc   (Document, title="Deepest Page")
+        self.portal.invokeFactory("Folder", "search-root", title="Search Root")
+        root = self.portal["search-root"]
+        root.invokeFactory("Document", "top-doc", title="Top Doc")
+        root.invokeFactory("Folder", "sub-folder", title="Sub Folder")
+        sub = root["sub-folder"]
+        sub.invokeFactory("News Item", "nested-news", title="Deeply Nested News")
+        sub.invokeFactory("Folder", "deep-folder", title="Deep Folder")
+        deep = sub["deep-folder"]
+        deep.invokeFactory("Document", "deep-doc", title="Deepest Page")
+
+        root_path = "/".join(root.getPhysicalPath())
+        self.recycle_id = self.recyclebin.add_item(root, self.portal, root_path)
+        self.portal.manage_delObjects(["search-root"])
+
+    def test_search_title_matches_root(self):
+        """Searching for the root title returns the item."""
+        results = self.recyclebin.search(title="Search Root")
+        ids = [r["recycle_id"] for r in results]
+        self.assertIn(self.recycle_id, ids)
+
+    def test_search_title_matches_direct_child(self):
+        """Searching for a direct child's title returns the parent item."""
+        results = self.recyclebin.search(title="Top Doc")
+        ids = [r["recycle_id"] for r in results]
+        self.assertIn(self.recycle_id, ids)
+
+    def test_search_title_matches_deeply_nested_child(self):
+        """Searching for a deeply nested child's title returns the parent item."""
+        results = self.recyclebin.search(title="Deepest Page")
+        ids = [r["recycle_id"] for r in results]
+        self.assertIn(self.recycle_id, ids)
+
+    def test_search_title_partial_match_in_child(self):
+        """Partial title match in a child returns the parent item."""
+        results = self.recyclebin.search(title="Nested News")
+        ids = [r["recycle_id"] for r in results]
+        self.assertIn(self.recycle_id, ids)
+
+    def test_search_title_no_match(self):
+        """Searching for a title not present anywhere returns nothing."""
+        results = self.recyclebin.search(title="Nonexistent Title XYZ")
+        ids = [r["recycle_id"] for r in results]
+        self.assertNotIn(self.recycle_id, ids)
+
+    def test_search_path_matches_nested_child(self):
+        """Searching for a path fragment of a nested child returns the parent item."""
+        results = self.recyclebin.search(path="deep-folder/deep-doc")
+        ids = [r["recycle_id"] for r in results]
+        self.assertIn(self.recycle_id, ids)
+
+    def test_search_path_no_match(self):
+        """Searching for a path not present anywhere returns nothing."""
+        results = self.recyclebin.search(path="/nonexistent/path/xyz")
+        ids = [r["recycle_id"] for r in results]
+        self.assertNotIn(self.recycle_id, ids)
+
+    def test_search_portal_type_matches_nested_child(self):
+        """Searching for a portal_type present only in a nested child returns the parent."""
+        results = self.recyclebin.search(portal_type="News Item")
+        ids = [r["recycle_id"] for r in results]
+        self.assertIn(self.recycle_id, ids)
+
+    def test_search_portal_type_matches_deeply_nested_child(self):
+        """Searching for Document matches the deeply nested deep-doc child."""
+        # The root is a Folder, but deep-doc (3 levels down) is a Document.
+        results = self.recyclebin.search(portal_type="Document")
+        ids = [r["recycle_id"] for r in results]
+        self.assertIn(self.recycle_id, ids)
+
+    def test_search_portal_type_no_match(self):
+        """Searching for a portal_type not present anywhere returns nothing."""
+        results = self.recyclebin.search(portal_type="Event")
+        ids = [r["recycle_id"] for r in results]
+        self.assertNotIn(self.recycle_id, ids)
+
+    def test_search_portal_type_is_exact_match(self):
+        """portal_type filter uses exact match, not substring."""
+        # "News" is a substring of "News Item" but must NOT match.
+        results = self.recyclebin.search(portal_type="News")
+        ids = [r["recycle_id"] for r in results]
+        self.assertNotIn(self.recycle_id, ids)

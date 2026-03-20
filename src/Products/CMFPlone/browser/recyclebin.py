@@ -2,7 +2,6 @@ from datetime import datetime
 from plone.base import PloneMessageFactory as _
 from plone.base.batch import Batch
 from plone.base.interfaces.recyclebin import IRecycleBin
-from plone.base.utils import human_readable_size
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -21,7 +20,6 @@ from zope.interface import Interface
 from zope.publisher.interfaces import IPublishTraverse
 
 import logging
-import uuid
 
 
 logger = logging.getLogger(__name__)
@@ -145,11 +143,33 @@ class RecycleBinWorkflowMixin:
 
         return state_classes.get(state, "bg-light text-dark")
 
-    def format_size(self, size_bytes):
-        """Format size in bytes to human-readable format"""
-        return human_readable_size(size_bytes)
+    def _flatten_children(self, children_dict, depth=0):
+        """Recursively yield all descendants as a flat sequence.
 
+        Each entry is a copy of the child data dict (without the nested
+        'children' key) augmented with a 'depth' field for indentation.
+        Nodes that have sub-children also get a 'children_count' field.
+        """
+        for child_data in children_dict.values():
+            entry = {k: v for k, v in child_data.items() if k != "children"}
+            entry["restore_id"] = child_data.get("restore_id", "")
+            entry["depth"] = depth
+            nested = child_data.get("children", {})
+            if isinstance(nested, dict) and nested:
+                entry["children_count"] = self._count_descendants(nested)
+            yield entry
+            if isinstance(nested, dict) and nested:
+                yield from self._flatten_children(nested, depth + 1)
 
+    def _count_descendants(self, children_dict):
+        """Recursively count all descendants in a children dict."""
+        count = 0
+        for child_data in children_dict.values():
+            count += 1
+            nested = child_data.get("children", {})
+            if isinstance(nested, dict) and nested:
+                count += self._count_descendants(nested)
+        return count
 class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
     """Form view for recycle bin management"""
 
@@ -388,8 +408,6 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
             "type_desc": _("Type (Z-A)"),
             "path_asc": _("Path (A-Z)"),
             "path_desc": _("Path (Z-A)"),
-            "size_asc": _("Size (smallest first)"),
-            "size_desc": _("Size (largest first)"),
             "workflow_asc": _("Workflow state (A-Z)"),
             "workflow_desc": _("Workflow state (Z-A)"),
         }
@@ -458,7 +476,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
         """Get a list of all content types present in the recycle bin"""
         types = set()
         for item in items:
-            item_type = item.get("type")
+            item_type = item.get("portal_type")
             if item_type:
                 types.add(item_type)
         return sorted(list(types))
@@ -485,7 +503,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
         """Get a list of all workflow states present in the recycle bin"""
         states = set()
         for item in items:
-            workflow_state = item.get("workflow_state")
+            workflow_state = item.get("review_state")
             if workflow_state:
                 states.add(workflow_state)
         return sorted(list(states))
@@ -517,7 +535,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
             return True
 
         # Search in type
-        if search_query in item.get("type", "").lower():
+        if search_query in item.get("portal_type", "").lower():
             return True
 
         return False
@@ -575,7 +593,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
                     search_query in child_data.get("title", "").lower()
                     or search_query in child_data.get("path", "").lower()
                     or search_query in child_data.get("id", "").lower()
-                    or search_query in child_data.get("type", "").lower()
+                    or search_query in child_data.get("portal_type", "").lower()
                 ):
                     child_matches.append(child_data)
 
@@ -600,24 +618,20 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
             case "title_desc":
                 items.sort(key=lambda x: x.get("title", "").lower(), reverse=True)
             case "type_asc":
-                items.sort(key=lambda x: x.get("type", "").lower())
+                items.sort(key=lambda x: x.get("portal_type", "").lower())
             case "type_desc":
-                items.sort(key=lambda x: x.get("type", "").lower(), reverse=True)
+                items.sort(key=lambda x: x.get("portal_type", "").lower(), reverse=True)
             case "path_asc":
                 items.sort(key=lambda x: x.get("path", "").lower())
             case "path_desc":
                 items.sort(key=lambda x: x.get("path", "").lower(), reverse=True)
-            case "size_asc":
-                items.sort(key=lambda x: x.get("size", 0))
-            case "size_desc":
-                items.sort(key=lambda x: x.get("size", 0), reverse=True)
             case "date_asc":
                 items.sort(key=lambda x: x.get("deletion_date", datetime.now()))
             case "workflow_asc":
-                items.sort(key=lambda x: (x.get("workflow_state") or "").lower())
+                items.sort(key=lambda x: (x.get("review_state") or "").lower())
             case "workflow_desc":
                 items.sort(
-                    key=lambda x: (x.get("workflow_state") or "").lower(), reverse=True
+                    key=lambda x: (x.get("review_state") or "").lower(), reverse=True
                 )
             case _:
                 # Default: date_desc
@@ -657,7 +671,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
         for item in items:
             if item.get("id") not in child_items_to_exclude:
                 # Apply type filtering
-                if filter_type and item.get("type") != filter_type:
+                if filter_type and item.get("portal_type") != filter_type:
                     continue
 
                 # Apply date range filtering
@@ -670,7 +684,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
 
                 # Apply has sub-items filtering
                 if filter_has_subitems:
-                    has_children = "children" in item and item["children"]
+                    has_children = bool(item.get("children"))
                     if filter_has_subitems == "with_subitems" and not has_children:
                         continue
                     elif filter_has_subitems == "without_subitems" and has_children:
@@ -683,13 +697,13 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
                 # Apply workflow state filtering
                 if (
                     filter_workflow_state
-                    and item.get("workflow_state") != filter_workflow_state
+                    and item.get("review_state") != filter_workflow_state
                 ):
                     continue
 
                 # Add children count information
                 if "children" in item:
-                    item["children_count"] = len(item["children"])
+                    item["children_count"] = self._count_descendants(item["children"])
 
                 # Apply search query filtering
                 if search_query:
@@ -881,84 +895,84 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
         self.request.response.redirect(f"{self.context.absolute_url()}/@@recyclebin")
 
     def _handle_child_restoration(self):
-        """Extract child restoration logic to separate method for clarity"""
-        child_id = self.request.form.get("child_id")
-        target_path = self.request.form.get("target_path")
+        """Restore a child item using the recycle bin tool."""
+        restore_id = self.request.form.get("restore_id")
+        target_path = (self.request.form.get("target_path") or "").strip()
 
-        if child_id and target_path:
-            try:
-                # Get item data
-                item_data = self.recycle_bin.get_item(self.item_id)
+        if not restore_id:
+            message = translate(
+                _("Missing child identifier. Please refresh and try again."),
+                context=self.request,
+            )
+            IStatusMessage(self.request).addStatusMessage(message, type="error")
+            return
 
-                if item_data and "children" in item_data:
-                    child_data = item_data["children"].get(child_id)
-                    if child_data:
-                        # Try to get target container
-                        try:
-                            target_container = self.context.unrestrictedTraverse(
-                                target_path
-                            )
+        if not target_path:
+            item_data = self.recycle_bin.get_item(self.item_id) or {}
+            children = item_data.get("children", {})
+            child_match = self.recycle_bin._find_child_by_restore_id(
+                children, restore_id
+            )
+            child_data = child_match[0]
+            target_path = (child_data or {}).get("parent_path", "")
 
-                            # Create a temporary storage entry for the child
-                            temp_id = str(uuid.uuid4())
-                            self.recycle_bin.storage[temp_id] = child_data
-
-                            # Restore the child
-                            result = self.recycle_bin.restore_item(
-                                temp_id, target_container
-                            )
-
-                            # Check if we got an error dictionary
-                            if _is_error_result(result):
-                                error_message = result.get(
-                                    "error", "Unknown error during child restoration"
-                                )
-                                IStatusMessage(self.request).addStatusMessage(
-                                    error_message, type="error"
-                                )
-                                return
-
-                            restored_obj = result
-
-                            if restored_obj:
-                                # Remove child from parent's children dict
-                                del item_data["children"][child_id]
-
-                                # Persist the changes to ZODB
-                                self.recycle_bin.storage[self.item_id] = item_data
-
-                                message = translate(
-                                    _(
-                                        "Child item '${title}' successfully restored.",
-                                        mapping={"title": child_data["title"]},
-                                    ),
-                                    context=self.request,
-                                )
-                                IStatusMessage(self.request).addStatusMessage(
-                                    message, type="info"
-                                )
-                                self.request.response.redirect(
-                                    restored_obj.absolute_url()
-                                )
-                                return
-                        except (KeyError, AttributeError):
-                            message = translate(
-                                _(
-                                    "Target location not found: ${path}",
-                                    mapping={"path": target_path},
-                                ),
-                                context=self.request,
-                            )
-                            IStatusMessage(self.request).addStatusMessage(
-                                message, type="error"
-                            )
-            except Exception as e:
-                logger.error(f"Error restoring child item: {e}")
-
+            if not target_path:
                 message = translate(
-                    _("Failed to restore child item."), context=self.request
+                    _(
+                        "Could not determine the original location for this child item. "
+                        "Please enter a target path."
+                    ),
+                    context=self.request,
                 )
                 IStatusMessage(self.request).addStatusMessage(message, type="error")
+                return
+
+        try:
+            target_container = self.context.unrestrictedTraverse(target_path)
+        except (KeyError, AttributeError):
+            message = translate(
+                _("Target location not found: ${path}", mapping={"path": target_path}),
+                context=self.request,
+            )
+            IStatusMessage(self.request).addStatusMessage(message, type="error")
+            return
+
+        try:
+            result = self.recycle_bin.restore_child_item(
+                self.item_id,
+                restore_id=restore_id,
+                target_container=target_container,
+            )
+        except Exception as e:
+            logger.error(f"Error restoring child item: {e}")
+            message = translate(_("Failed to restore child item."), context=self.request)
+            IStatusMessage(self.request).addStatusMessage(message, type="error")
+            return
+
+        if _is_error_result(result):
+            IStatusMessage(self.request).addStatusMessage(
+                result.get("error", "Unknown error during child restoration"),
+                type="error",
+            )
+            return
+
+        restored_obj = result
+        if restored_obj:
+            # Derive the child id from the restored object so the redirect is accurate
+            obj_id = restored_obj.getId()
+            child_data = self.recycle_bin.get_item(self.item_id) or {}
+            child_title = child_data.get("title", obj_id)
+            message = translate(
+                _(
+                    "Child item '${title}' successfully restored.",
+                    mapping={"title": child_title},
+                ),
+                context=self.request,
+            )
+            IStatusMessage(self.request).addStatusMessage(message, type="info")
+            self.request.response.redirect(
+                f"{target_container.absolute_url()}/{obj_id}"
+            )
 
     def get_item(self):
         """Get the specific recycled item"""
@@ -972,18 +986,21 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
             logger.debug(
                 f"Found item: {item.get('title', 'Unknown')} of type {item.get('type', 'Unknown')}"
             )
-            # Add children count information
+            # Add children count information (total descendants, not just direct children)
             if "children" in item:
-                item["children_count"] = len(item["children"])
+                item["children_count"] = self._count_descendants(item["children"])
 
         return item
 
     def get_children(self):
-        """Get the children of this item if it's a folder or collection"""
+        """Get all descendants of this item as a flat list with depth metadata."""
         item = self.get_item()
+
+
         if item and "children" in item:
-            return list(item["children"].values())
+            return list(self._flatten_children(item["children"], depth=0))
         return []
+
 
 
 class RecycleBinEnabled(BrowserView):
