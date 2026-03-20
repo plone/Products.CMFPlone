@@ -7,6 +7,7 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.base.interfaces.recyclebin import IRecycleBin
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.browser.recyclebin import RecycleBinView
 from Products.CMFPlone.recyclebin import RecycleBin
 from Products.CMFPlone.controlpanel.browser.recyclebin import (
     IRecycleBinControlPanelSettings,
@@ -57,7 +58,7 @@ class RecycleBinAssertionMixin:
             if obj_title:
                 self.assertEqual(item_data["title"], obj_title)
             if obj_type:
-                self.assertEqual(item_data["type"], obj_type)
+                self.assertEqual(item_data["portal_type"], obj_type)
 
     def assertItemNotInRecycleBin(self, item_id):
         """Assert that an item is not in the recycle bin"""
@@ -290,7 +291,7 @@ class RecycleBinContentTests(RecycleBinTestCase):
                 # Common metadata assertions
                 self.assertEqual(item_data["id"], obj.getId())
                 self.assertEqual(item_data["title"], obj.Title())
-                self.assertEqual(item_data["type"], expected_type)
+                self.assertEqual(item_data["portal_type"], expected_type)
                 self.assertIsInstance(item_data["deletion_date"], datetime)
                 self.assertIn("deleted_by", item_data)
                 self.assertEqual(item_data["deleted_by"], TEST_USER_ID)
@@ -447,7 +448,7 @@ class RecycleBinNestedFolderTests(RecycleBinTestCase):
         # Verify the parent folder metadata was stored correctly
         item_data = self.recyclebin.storage[recycle_id]
         self.assertEqual(item_data["id"], parent_id)
-        self.assertEqual(item_data["type"], "Folder")
+        self.assertEqual(item_data["portal_type"], "Folder")
 
         # Verify the children were tracked
         self.assertIn("children", item_data)
@@ -518,7 +519,7 @@ class RecycleBinNestedFolderTests(RecycleBinTestCase):
         # Verify the child folder metadata was stored correctly
         item_data = self.recyclebin.storage[recycle_id]
         self.assertEqual(item_data["id"], child_id)
-        self.assertEqual(item_data["type"], "Folder")
+        self.assertEqual(item_data["portal_type"], "Folder")
 
         # Verify the nested children were tracked
         self.assertIn("children", item_data)
@@ -1014,7 +1015,7 @@ class RecycleBinMetadataTests(RecycleBinTestCase):
         required_fields = [
             "id",
             "title",
-            "type",
+            "portal_type",
             "path",
             "parent_path",
             "deletion_date",
@@ -1384,7 +1385,7 @@ class RecycleBinDataIntegrityTests(RecycleBinTestCase):
             item for item in self.recyclebin.get_items() if item["id"] == original_id
         ][0]
 
-        key_fields = ["id", "title", "type", "deleted_by"]
+        key_fields = ["id", "title", "portal_type", "deleted_by"]
         for field in key_fields:
             self.assertEqual(item_data[field], get_item_result[field])
             self.assertEqual(item_data[field], get_items_result[field])
@@ -1409,7 +1410,7 @@ class RecycleBinBrowserViewTests(RecycleBinTestCase):
         # Test that view-related metadata is present
         self.assertIn("deletion_date", item)
         self.assertIn("size", item)
-        self.assertIn("type", item)
+        self.assertIn("portal_type", item)
 
     def test_item_filtering_support(self):
         """Test support for filtering that browser views might use"""
@@ -1424,8 +1425,8 @@ class RecycleBinBrowserViewTests(RecycleBinTestCase):
         all_items = self.recyclebin.get_items()
 
         # Filter by type (simulating what a browser view might do)
-        doc_items = [item for item in all_items if item["type"] == "Document"]
-        folder_items = [item for item in all_items if item["type"] == "Folder"]
+        doc_items = [item for item in all_items if item["portal_type"] == "Document"]
+        folder_items = [item for item in all_items if item["portal_type"] == "Folder"]
 
         self.assertGreater(len(doc_items), 0)
         self.assertGreater(len(folder_items), 0)
@@ -1548,7 +1549,11 @@ class RecycleBinFindChildByRestoreIdTests(RecycleBinTestCase):
 
 
 class RecycleBinFlattenChildrenTests(RecycleBinTestCase):
-    """Unit tests for RecycleBin._flatten_children."""
+    """Unit tests for RecycleBinView._flatten_children."""
+
+    def setUp(self):
+        super().setUp()
+        self.view = RecycleBinView(self.portal, self.request)
 
     def _make_nested(self):
         return {
@@ -1580,7 +1585,7 @@ class RecycleBinFlattenChildrenTests(RecycleBinTestCase):
 
     def test_all_descendants_are_yielded(self):
         tree = self._make_nested()
-        flat = list(self.recyclebin._flatten_children(tree))
+        flat = list(self.view._flatten_children(tree))
         ids = [e["id"] for e in flat]
         self.assertIn("a", ids)
         self.assertIn("b", ids)
@@ -1590,7 +1595,7 @@ class RecycleBinFlattenChildrenTests(RecycleBinTestCase):
 
     def test_depth_increases_with_nesting(self):
         tree = self._make_nested()
-        flat = {e["id"]: e for e in self.recyclebin._flatten_children(tree)}
+        flat = {e["id"]: e for e in self.view._flatten_children(tree)}
         self.assertEqual(flat["a"]["depth"], 0)
         self.assertEqual(flat["b"]["depth"], 1)
         self.assertEqual(flat["c"]["depth"], 2)
@@ -1598,12 +1603,12 @@ class RecycleBinFlattenChildrenTests(RecycleBinTestCase):
 
     def test_children_key_stripped_from_entries(self):
         tree = self._make_nested()
-        for entry in self.recyclebin._flatten_children(tree):
+        for entry in self.view._flatten_children(tree):
             self.assertNotIn("children", entry)
 
     def test_children_count_set_for_nodes_with_sub_children(self):
         tree = self._make_nested()
-        flat = {e["id"]: e for e in self.recyclebin._flatten_children(tree)}
+        flat = {e["id"]: e for e in self.view._flatten_children(tree)}
         # "a" has one direct child "b" which itself has child "c" → count = 2
         self.assertIn("children_count", flat["a"])
         self.assertEqual(flat["a"]["children_count"], 2)
@@ -1612,17 +1617,21 @@ class RecycleBinFlattenChildrenTests(RecycleBinTestCase):
 
 
 class RecycleBinCountDescendantsTests(RecycleBinTestCase):
-    """Unit tests for RecycleBin._count_descendants."""
+    """Unit tests for RecycleBinView._count_descendants."""
+
+    def setUp(self):
+        super().setUp()
+        self.view = RecycleBinView(self.portal, self.request)
 
     def test_empty_dict_returns_zero(self):
-        self.assertEqual(self.recyclebin._count_descendants({}), 0)
+        self.assertEqual(self.view._count_descendants({}), 0)
 
     def test_flat_children(self):
         children = {
             "a": {"id": "a"},
             "b": {"id": "b"},
         }
-        self.assertEqual(self.recyclebin._count_descendants(children), 2)
+        self.assertEqual(self.view._count_descendants(children), 2)
 
     def test_deeply_nested_children(self):
         children = {
@@ -1639,7 +1648,7 @@ class RecycleBinCountDescendantsTests(RecycleBinTestCase):
             }
         }
         # a + b + c = 3
-        self.assertEqual(self.recyclebin._count_descendants(children), 3)
+        self.assertEqual(self.view._count_descendants(children), 3)
 
     def test_mixed_flat_and_nested(self):
         children = {
@@ -1652,7 +1661,7 @@ class RecycleBinCountDescendantsTests(RecycleBinTestCase):
             },
         }
         # flat + nested + child = 3
-        self.assertEqual(self.recyclebin._count_descendants(children), 3)
+        self.assertEqual(self.view._count_descendants(children), 3)
 
 
 class RecycleBinChildRestoreReindexTests(RecycleBinTestCase):

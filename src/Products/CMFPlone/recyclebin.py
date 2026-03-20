@@ -193,14 +193,14 @@ class RecycleBin:
                 "id": child_id,
                 "restore_id": str(uuid.uuid4()),
                 "title": child.Title(),
-                "type": getattr(child, "portal_type", "Unknown"),
+                "portal_type": getattr(child, "portal_type", "Unknown"),
                 "path": child_path,
                 "parent_path": folder_path,
                 "deletion_date": datetime.now(),
                 "size": getattr(child, "get_size", lambda: 0)(),
                 "language": getattr(child, "language", None)
                 or getattr(child, "Language", lambda: None)(),
-                "workflow_state": child_workflow_state,
+                "review_state": child_workflow_state,
                 "object": child,
             }
 
@@ -281,7 +281,7 @@ class RecycleBin:
         storage_data = {
             "id": item_id,
             "title": item_title,
-            "type": item_type or getattr(obj, "portal_type", "Unknown"),
+            "portal_type": item_type or getattr(obj, "portal_type", "Unknown"),
             "path": original_path,
             "parent_path": parent_path,
             "deletion_date": datetime.now(),
@@ -289,7 +289,7 @@ class RecycleBin:
             "size": getattr(obj, "get_size", lambda: 0)(),
             "language": getattr(obj, "language", None)
             or getattr(obj, "Language", lambda: None)(),
-            "workflow_state": workflow_state,
+            "review_state": workflow_state,
             "object": aq_base(obj),  # Store the actual object with no acquisition chain
             "recycle_id": recycle_id,
         }
@@ -310,6 +310,81 @@ class RecycleBin:
             {**{k: v for k, v in data.items() if k != "object"}, "recycle_id": item_id}
             for item_id, data in self.storage.get_items_sorted_by_date(reverse=True)
         ]
+
+    def search(
+        self,
+        title=None,
+        path=None,
+        portal_type=None,
+        date_from=None,
+        date_to=None,
+        deleted_by=None,
+        has_subitems=None,
+        language=None,
+        review_state=None,
+        sort_on="deletion_date",
+        sort_order="descending",
+    ):
+        """Return filtered and sorted items from the recycle bin."""
+        items = self.get_items()
+        reverse = sort_order != "ascending"
+
+        # --- filtering ---
+        filtered = []
+        for item in items:
+            if portal_type and item.get("portal_type") != portal_type:
+                continue
+
+            if date_from or date_to:
+                deletion_date = item.get("deletion_date")
+                if deletion_date:
+                    item_date = (
+                        deletion_date.date()
+                        if hasattr(deletion_date, "date")
+                        else deletion_date
+                    )
+                    if date_from and item_date < date_from:
+                        continue
+                    if date_to and item_date > date_to:
+                        continue
+
+            if deleted_by and item.get("deleted_by") != deleted_by:
+                continue
+
+            if has_subitems is not None:
+                has_children = bool(item.get("children"))
+                if has_subitems and not has_children:
+                    continue
+                if not has_subitems and has_children:
+                    continue
+
+            if language and item.get("language") != language:
+                continue
+
+            if review_state and item.get("review_state") != review_state:
+                continue
+
+            if title and title.lower() not in item.get("title", "").lower():
+                continue
+
+            if path and path.lower() not in item.get("path", "").lower():
+                continue
+
+            filtered.append(item)
+
+        # --- sorting ---
+        sort_keys = {
+            "title": lambda x: x.get("title", "").lower(),
+            "portal_type": lambda x: x.get("portal_type", "").lower(),
+            "path": lambda x: x.get("path", "").lower(),
+            "size": lambda x: x.get("size", 0),
+            "deletion_date": lambda x: x.get("deletion_date", datetime.now()),
+            "review_state": lambda x: (x.get("review_state") or "").lower(),
+        }
+        key_fn = sort_keys.get(sort_on, sort_keys["deletion_date"])
+        filtered.sort(key=key_fn, reverse=reverse)
+
+        return filtered
 
     def get_item(self, item_id):
         """Get a specific deleted item by ID"""

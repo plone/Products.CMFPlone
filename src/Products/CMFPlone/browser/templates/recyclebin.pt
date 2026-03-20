@@ -468,11 +468,11 @@
                                         <span class="badge rounded-pill bg-light text-dark border" tal:content="item/type">Content type</span>
                                     </td>
                                     <td>
-                                        <span tal:condition="python:item.get('workflow_state')"
+                                        <span tal:condition="python:item.get('review_state')"
                                               class="badge rounded-pill"
-                                              tal:attributes="class python:'badge rounded-pill ' + view.get_workflow_state_class(item.get('workflow_state'))"
-                                              tal:content="python:view.get_workflow_state_title(item.get('workflow_state'), item.get('type'))">Published</span>
-                                        <span tal:condition="python:not item.get('workflow_state')"
+                                              tal:attributes="class python:'badge rounded-pill ' + view.get_workflow_state_class(item.get('review_state'))"
+                                              tal:content="python:view.get_workflow_state_title(item.get('review_state'), item.get('portal_type'))">Published</span>
+                                        <span tal:condition="python:not item.get('review_state')"
                                               class="text-muted"
                                               i18n:translate="">Unknown</span>
                                     </td>

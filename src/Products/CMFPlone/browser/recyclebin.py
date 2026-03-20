@@ -483,7 +483,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
         """Get a list of all content types present in the recycle bin"""
         types = set()
         for item in items:
-            item_type = item.get("type")
+            item_type = item.get("portal_type")
             if item_type:
                 types.add(item_type)
         return sorted(list(types))
@@ -510,7 +510,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
         """Get a list of all workflow states present in the recycle bin"""
         states = set()
         for item in items:
-            workflow_state = item.get("workflow_state")
+            workflow_state = item.get("review_state")
             if workflow_state:
                 states.add(workflow_state)
         return sorted(list(states))
@@ -542,7 +542,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
             return True
 
         # Search in type
-        if search_query in item.get("type", "").lower():
+        if search_query in item.get("portal_type", "").lower():
             return True
 
         return False
@@ -600,7 +600,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
                     search_query in child_data.get("title", "").lower()
                     or search_query in child_data.get("path", "").lower()
                     or search_query in child_data.get("id", "").lower()
-                    or search_query in child_data.get("type", "").lower()
+                    or search_query in child_data.get("portal_type", "").lower()
                 ):
                     child_matches.append(child_data)
 
@@ -625,9 +625,9 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
             case "title_desc":
                 items.sort(key=lambda x: x.get("title", "").lower(), reverse=True)
             case "type_asc":
-                items.sort(key=lambda x: x.get("type", "").lower())
+                items.sort(key=lambda x: x.get("portal_type", "").lower())
             case "type_desc":
-                items.sort(key=lambda x: x.get("type", "").lower(), reverse=True)
+                items.sort(key=lambda x: x.get("portal_type", "").lower(), reverse=True)
             case "path_asc":
                 items.sort(key=lambda x: x.get("path", "").lower())
             case "path_desc":
@@ -639,10 +639,10 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
             case "date_asc":
                 items.sort(key=lambda x: x.get("deletion_date", datetime.now()))
             case "workflow_asc":
-                items.sort(key=lambda x: (x.get("workflow_state") or "").lower())
+                items.sort(key=lambda x: (x.get("review_state") or "").lower())
             case "workflow_desc":
                 items.sort(
-                    key=lambda x: (x.get("workflow_state") or "").lower(), reverse=True
+                    key=lambda x: (x.get("review_state") or "").lower(), reverse=True
                 )
             case _:
                 # Default: date_desc
@@ -682,7 +682,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
         for item in items:
             if item.get("id") not in child_items_to_exclude:
                 # Apply type filtering
-                if filter_type and item.get("type") != filter_type:
+                if filter_type and item.get("portal_type") != filter_type:
                     continue
 
                 # Apply date range filtering
@@ -695,7 +695,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
 
                 # Apply has sub-items filtering
                 if filter_has_subitems:
-                    has_children = "children" in item and item["children"]
+                    has_children = bool(item.get("children"))
                     if filter_has_subitems == "with_subitems" and not has_children:
                         continue
                     elif filter_has_subitems == "without_subitems" and has_children:
@@ -708,7 +708,7 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
                 # Apply workflow state filtering
                 if (
                     filter_workflow_state
-                    and item.get("workflow_state") != filter_workflow_state
+                    and item.get("review_state") != filter_workflow_state
                 ):
                     continue
 
