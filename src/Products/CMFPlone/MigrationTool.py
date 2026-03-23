@@ -266,25 +266,87 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         upgrades = setup.listUpgrades(self.profile, dest=fs_version)
         return upgrades
 
+    @security.protected(ManagePortal)
+    def list_steps(self):
+        upgrades = self.listUpgrades()
+        steps = []
+        for upgrade in upgrades:
+            if isinstance(upgrade, list):
+                steps.extend(upgrade)
+            else:
+                steps.append(upgrade)
+        return steps
+
     @property
     def addon_list(self) -> AddonList:
         utility = getUtility(IAddonList, self.package_name)
         return utility.addon_list
 
+    def _upgrade_run_steps(self, steps, swallow_errors=True):
+        setup = getToolByName(self, "portal_setup")
+        for step in steps:
+            try:
+                step["step"].doStep(setup)
+                setup.setLastVersionForProfile(self.profile, step["dest"])
+                logger.info("Ran upgrade step: %s" % step["title"])
+            except (ConflictError, KeyboardInterrupt):
+                raise
+            except Exception:
+                logger.error("Upgrade aborted. Error:\n", exc_info=True)
+
+                if not swallow_errors:
+                    raise
+                else:
+                    # abort transaction to safe the zodb
+                    transaction.abort()
+                    break
+
+    def _upgrade_recatalog(self, swallow_errors=True):
+        if not self.needRecatalog():
+            return
+        logger.info("Recatalog needed. This may take a while...")
+        try:
+            catalog = self.portal_catalog
+            # Reduce threshold for the reindex run
+            old_threshold = catalog.threshold
+            pg_threshold = getattr(catalog, "pgthreshold", 0)
+            catalog.pgthreshold = 300
+            catalog.threshold = 2000
+            catalog.refreshCatalog(clear=1)
+            catalog.threshold = old_threshold
+            catalog.pgthreshold = pg_threshold
+            self._needRecatalog = 0
+        except (ConflictError, KeyboardInterrupt):
+            raise
+        except Exception:
+            logger.error("Exception was thrown while cataloging:\n", exc_info=True)
+            if not swallow_errors:
+                raise
+
+    def _upgrade_roles(self, swallow_errors=True):
+        if not self.needUpdateRole():
+            return
+        logger.info("Role update needed. This may take a while...")
+        try:
+            self.portal_workflow.updateRoleMappings()
+            self._needUpdateRole = 0
+        except (ConflictError, KeyboardInterrupt):
+            raise
+        except Exception:
+            logger.error(
+                "Exception was thrown while updating role mappings",
+                exc_info=True,
+            )
+            if not swallow_errors:
+                raise
+
     @security.protected(ManagePortal)
     def upgrade(self, REQUEST=None, dry_run=None, swallow_errors=True):
         # Perform the upgrade.
-        setup = getToolByName(self, "portal_setup")
 
         # This sets the profile version if it wasn't set yet
         version = self.getInstanceVersion()
-        upgrades = self.listUpgrades()
-        steps = []
-        for u in upgrades:
-            if isinstance(u, list):
-                steps.extend(u)
-            else:
-                steps.append(u)
+        steps = self.list_steps()
 
         try:
             stream = StringIO()
@@ -298,24 +360,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 logger.info("Dry run selected.")
 
             logger.info("Starting the migration from version: %s" % version)
-
-            for step in steps:
-                try:
-                    step["step"].doStep(setup)
-                    setup.setLastVersionForProfile(self.profile, step["dest"])
-                    logger.info("Ran upgrade step: %s" % step["title"])
-                except (ConflictError, KeyboardInterrupt):
-                    raise
-                except Exception:
-                    logger.error("Upgrade aborted. Error:\n", exc_info=True)
-
-                    if not swallow_errors:
-                        raise
-                    else:
-                        # abort transaction to safe the zodb
-                        transaction.abort()
-                        break
-
+            self._upgrade_run_steps(steps, swallow_errors=swallow_errors)
             logger.info("End of upgrade path, main migration has finished.")
 
             if self.needUpgrading():
@@ -327,42 +372,9 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 logger.info("Done upgrading core addons.")
 
                 # do this once all the changes have been done
-                if self.needRecatalog():
-                    logger.info("Recatalog needed. This may take a while...")
-                    try:
-                        catalog = self.portal_catalog
-                        # Reduce threshold for the reindex run
-                        old_threshold = catalog.threshold
-                        pg_threshold = getattr(catalog, "pgthreshold", 0)
-                        catalog.pgthreshold = 300
-                        catalog.threshold = 2000
-                        catalog.refreshCatalog(clear=1)
-                        catalog.threshold = old_threshold
-                        catalog.pgthreshold = pg_threshold
-                        self._needRecatalog = 0
-                    except (ConflictError, KeyboardInterrupt):
-                        raise
-                    except Exception:
-                        logger.error(
-                            "Exception was thrown while cataloging:\n", exc_info=True
-                        )
-                        if not swallow_errors:
-                            raise
+                self._upgrade_recatalog(swallow_errors=swallow_errors)
+                self._upgrade_roles(swallow_errors=swallow_errors)
 
-                if self.needUpdateRole():
-                    logger.info("Role update needed. This may take a while...")
-                    try:
-                        self.portal_workflow.updateRoleMappings()
-                        self._needUpdateRole = 0
-                    except (ConflictError, KeyboardInterrupt):
-                        raise
-                    except Exception:
-                        logger.error(
-                            "Exception was thrown while updating role mappings",
-                            exc_info=True,
-                        )
-                        if not swallow_errors:
-                            raise
                 logger.info("Your Plone instance is now up-to-date.")
 
             if dry_run:
