@@ -134,8 +134,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security = ClassSecurityInfo()
 
-    security.declareProtected(ManagePortal, "getInstanceVersion")
-
+    @security.protected(ManagePortal)
     def getInstanceVersion(self):
         # The version this instance of plone is on.
         setup = getToolByName(self, "portal_setup")
@@ -162,16 +161,14 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
             self.setInstanceVersion(version)
         return version
 
-    security.declareProtected(ManagePortal, "setInstanceVersion")
-
+    @security.protected(ManagePortal)
     def setInstanceVersion(self, version):
         # The version this instance of plone is on.
         setup = getToolByName(self, "portal_setup")
         setup.setLastVersionForProfile(_DEFAULT_PROFILE, version)
         self._version = False
 
-    security.declareProtected(ManagePortal, "getFileSystemVersion")
-
+    @security.protected(ManagePortal)
     def getFileSystemVersion(self):
         # The version this instance of plone is on.
         setup = getToolByName(self, "portal_setup")
@@ -181,21 +178,18 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
             pass
         return None
 
-    security.declareProtected(ManagePortal, "getSoftwareVersion")
-
+    @security.protected(ManagePortal)
     def getSoftwareVersion(self):
         # The software version.
         dist = distribution("Products.CMFPlone")
         return dist.version
 
-    security.declareProtected(ManagePortal, "needUpgrading")
-
+    @security.protected(ManagePortal)
     def needUpgrading(self):
         # Need upgrading?
         return self.getInstanceVersion() != self.getFileSystemVersion()
 
-    security.declareProtected(ManagePortal, "coreVersions")
-
+    @security.protected(ManagePortal)
     def coreVersions(self):
         # Useful core information.
         vars = {}
@@ -226,28 +220,24 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         return vars
 
-    security.declareProtected(ManagePortal, "coreVersionsList")
-
+    @security.protected(ManagePortal)
     def coreVersionsList(self):
         # Useful core information.
         res = self.coreVersions().items()
         res.sort()
         return res
 
-    security.declareProtected(ManagePortal, "needUpdateRole")
-
+    @security.protected(ManagePortal)
     def needUpdateRole(self):
         # Do roles need to be updated?
         return self._needUpdateRole
 
-    security.declareProtected(ManagePortal, "needRecatalog")
-
+    @security.protected(ManagePortal)
     def needRecatalog(self):
         # Does this thing now need recataloging?
         return self._needRecatalog
 
-    security.declareProtected(ManagePortal, "listUpgrades")
-
+    @security.protected(ManagePortal)
     def listUpgrades(self):
         # List available upgrade steps for our default profile.
         # Do not include upgrade steps for too new versions:
@@ -257,8 +247,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         upgrades = setup.listUpgrades(_DEFAULT_PROFILE, dest=fs_version)
         return upgrades
 
-    security.declareProtected(ManagePortal, "upgrade")
-
+    @security.protected(ManagePortal)
     def upgrade(self, REQUEST=None, dry_run=None, swallow_errors=True):
         # Perform the upgrade.
         setup = getToolByName(self, "portal_setup")
