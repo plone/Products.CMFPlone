@@ -14,7 +14,9 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from ZODB.POSException import ConflictError
+from zope.component import getUtility
 from zope.interface import implementer
+from zope.interface import Interface
 
 import logging
 import sys
@@ -82,6 +84,12 @@ class AddonList(list):
                 setup.upgradeProfile(addon.profile_id, quiet=True)
 
 
+class IAddonList(Interface):
+    """Utility providing a list of add-ons managed by the migration tool."""
+
+    addon_list: AddonList
+
+
 # List of upgradeable packages.  Obvious items to add here, are all
 # core packages that actually have upgrade steps.
 # Good start is portal_setup.listProfilesWithUpgrades()
@@ -117,6 +125,11 @@ ADDON_LIST = AddonList(
 )
 
 
+@implementer(IAddonList)
+class LocalAddonList:
+    addon_list = ADDON_LIST
+
+
 @implementer(IMigrationTool)
 class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     """Handles migrations between Plone releases"""
@@ -124,6 +137,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     id = "portal_migration"
     meta_type = "Plone Migration Tool"
     toolicon = "skins/plone_images/site_icon.png"
+    profile = _DEFAULT_PROFILE
 
     manage_options = (
         {"label": "Upgrade", "action": "../@@plone-upgrade"},
@@ -134,11 +148,16 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security = ClassSecurityInfo()
 
+    @property
+    def package_name(self):
+        # Products.CMFPlone:plone -> Products.CMFPlone
+        return self.profile.partition(":")[0]
+
     @security.protected(ManagePortal)
     def getInstanceVersion(self):
         # The version this instance of plone is on.
         setup = getToolByName(self, "portal_setup")
-        version = setup.getLastVersionForProfile(_DEFAULT_PROFILE)
+        version = setup.getLastVersionForProfile(self.profile)
         if isinstance(version, tuple):
             version = ".".join(version)
 
@@ -157,7 +176,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 _version = _version.replace("-", ".")
                 version = _version
             else:
-                version = setup.getVersionForProfile(_DEFAULT_PROFILE)
+                version = setup.getVersionForProfile(self.profile)
             self.setInstanceVersion(version)
         return version
 
@@ -165,7 +184,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     def setInstanceVersion(self, version):
         # The version this instance of plone is on.
         setup = getToolByName(self, "portal_setup")
-        setup.setLastVersionForProfile(_DEFAULT_PROFILE, version)
+        setup.setLastVersionForProfile(self.profile, version)
         self._version = False
 
     @security.protected(ManagePortal)
@@ -173,7 +192,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         # The version this instance of plone is on.
         setup = getToolByName(self, "portal_setup")
         try:
-            return setup.getVersionForProfile(_DEFAULT_PROFILE)
+            return setup.getVersionForProfile(self.profile)
         except KeyError:
             pass
         return None
@@ -244,8 +263,13 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         # using a newer plone.app.upgrade version should not give problems.
         setup = getToolByName(self, "portal_setup")
         fs_version = self.getFileSystemVersion()
-        upgrades = setup.listUpgrades(_DEFAULT_PROFILE, dest=fs_version)
+        upgrades = setup.listUpgrades(self.profile, dest=fs_version)
         return upgrades
+
+    @property
+    def addon_list(self) -> AddonList:
+        utility = getUtility(IAddonList, self.package_name)
+        return utility.addon_list
 
     @security.protected(ManagePortal)
     def upgrade(self, REQUEST=None, dry_run=None, swallow_errors=True):
@@ -278,7 +302,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
             for step in steps:
                 try:
                     step["step"].doStep(setup)
-                    setup.setLastVersionForProfile(_DEFAULT_PROFILE, step["dest"])
+                    setup.setLastVersionForProfile(self.profile, step["dest"])
                     logger.info("Ran upgrade step: %s" % step["title"])
                 except (ConflictError, KeyboardInterrupt):
                     raise
@@ -299,7 +323,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 logger.error("Migration has failed")
             else:
                 logger.info("Starting upgrade of core addons.")
-                ADDON_LIST.upgrade_all(self)
+                self.addon_list.upgrade_all(self)
                 logger.info("Done upgrading core addons.")
 
                 # do this once all the changes have been done
