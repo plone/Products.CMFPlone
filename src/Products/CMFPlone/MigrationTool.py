@@ -15,6 +15,7 @@ from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from ZODB.POSException import ConflictError
 from zope.component import getUtility
+from zope.component.hooks import getSite
 from zope.interface import implementer
 from zope.interface import Interface
 
@@ -149,6 +150,15 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security = ClassSecurityInfo()
 
     @property
+    def setup(self):
+        # Get the portal_setup tool.
+        # Note: depending on the acquisition chain, sometimes
+        # getToolByName(self, "portal_setup") works, sometimes not.
+        # So we always get the site.
+        site = getSite()
+        return getToolByName(site, "portal_setup")
+
+    @property
     def package_name(self):
         # Products.CMFPlone:plone -> Products.CMFPlone
         return self.profile.partition(":")[0]
@@ -156,7 +166,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     @security.protected(ManagePortal)
     def getInstanceVersion(self):
         # The version this instance of plone is on.
-        setup = getToolByName(self, "portal_setup")
+        setup = self.setup
         version = setup.getLastVersionForProfile(self.profile)
         if isinstance(version, tuple):
             version = ".".join(version)
@@ -183,16 +193,14 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     @security.protected(ManagePortal)
     def setInstanceVersion(self, version):
         # The version this instance of plone is on.
-        setup = getToolByName(self, "portal_setup")
-        setup.setLastVersionForProfile(self.profile, version)
+        self.setup.setLastVersionForProfile(self.profile, version)
         self._version = False
 
     @security.protected(ManagePortal)
     def getFileSystemVersion(self):
         # The version this instance of plone is on.
-        setup = getToolByName(self, "portal_setup")
         try:
-            return setup.getVersionForProfile(self.profile)
+            return self.setup.getVersionForProfile(self.profile)
         except KeyError:
             pass
         return None
@@ -261,9 +269,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         # List available upgrade steps for our default profile.
         # Do not include upgrade steps for too new versions:
         # using a newer plone.app.upgrade version should not give problems.
-        setup = getToolByName(self, "portal_setup")
         fs_version = self.getFileSystemVersion()
-        upgrades = setup.listUpgrades(self.profile, dest=fs_version)
+        upgrades = self.setup.listUpgrades(self.profile, dest=fs_version)
         return upgrades
 
     @security.protected(ManagePortal)
@@ -283,7 +290,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         return utility.addon_list
 
     def _upgrade_run_steps(self, steps, swallow_errors=True):
-        setup = getToolByName(self, "portal_setup")
+        setup = self.setup
         for step in steps:
             try:
                 step["step"].doStep(setup)
