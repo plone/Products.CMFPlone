@@ -75,11 +75,25 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
 
     def version_overview(self):
         core_versions = self.core_versions()
-        versions = [
-            "Plone {} ({})".format(
-                core_versions["Plone"], core_versions["Plone Instance"]
+        versions = []
+        core_package = core_versions.get("core_package")
+        if core_package and core_package != "Products.CMFPlone":
+            # We have a different base profile.
+            # Show info from its package and from Products.CMFPlone.
+            versions.append(
+                "{} {} ({})".format(
+                    core_versions["core_package"],
+                    core_versions["core_version"],
+                    core_versions["Plone Instance"],
+                )
             )
-        ]
+            versions.append(f"Plone {core_versions['Plone']}")
+        else:
+            versions.append(
+                "Plone {} ({})".format(
+                    core_versions["Plone"], core_versions["Plone Instance"]
+                )
+            )
 
         for v in ("CMF", "Zope", "Python"):
             versions.append(v + " " + core_versions.get(v))

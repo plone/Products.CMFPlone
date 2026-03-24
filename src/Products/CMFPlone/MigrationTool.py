@@ -223,8 +223,11 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         vars["Python"] = sys.version
         vars["Platform"] = sys.platform
         vars["Plone"] = dist_version("Products.CMFPlone")
+        # The next few belong to the base profile:
         vars["Plone Instance"] = self.getInstanceVersion()
         vars["Plone File System"] = self.getFileSystemVersion()
+        vars["core_package"] = self.package_name
+        vars["core_version"] = self.getSoftwareVersion()
         vars["CMF"] = dist_version("Products.CMFCore")
         vars["Debug mode"] = getConfiguration().debug_mode and "Yes" or "No"
         try:
