@@ -256,9 +256,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     @security.protected(ManagePortal)
     def coreVersionsList(self):
         # Useful core information.
-        res = self.coreVersions().items()
-        res.sort()
-        return res
+        return sorted(self.coreVersions().items())
 
     @security.protected(ManagePortal)
     def needUpdateRole(self):
