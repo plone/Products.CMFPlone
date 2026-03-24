@@ -80,21 +80,16 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
         if core_package and core_package != "Products.CMFPlone":
             # We have a different base profile.
             # Show info from its package and from Products.CMFPlone.
-            versions.append(
-                "{} {} ({})".format(
-                    core_versions["core_package"],
-                    core_versions["core_version"],
-                    core_versions["Plone Instance"],
-                )
-            )
+            name = core_versions["core_package"]
+            package_version = core_versions["core_version"]
+            metadata_version = core_versions["Plone Instance"]
+            versions.append(f"{name} {package_version} ({metadata_version})")
             versions.append(f"Plone {core_versions['Plone']}")
         else:
-            versions.append(
-                "Plone {} ({})".format(
-                    core_versions["Plone"], core_versions["Plone Instance"]
-                )
-            )
-
+            name = "Plone"
+            package_version = core_versions["Plone"]
+            metadata_version = core_versions["Plone Instance"]
+            versions.append(f"{name} {package_version} ({metadata_version})")
         for v in ("CMF", "Zope", "Python"):
             versions.append(v + " " + core_versions.get(v))
         pil = core_versions.get("PIL", None)
