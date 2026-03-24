@@ -6,6 +6,7 @@ from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as dist_version
 from io import StringIO
 from OFS.SimpleItem import SimpleItem
+from plone.base.interfaces import IAddonList
 from plone.base.interfaces import IMigrationTool
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
@@ -16,7 +17,6 @@ from ZODB.POSException import ConflictError
 from zope.component import queryUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
-from zope.interface import Interface
 
 import logging
 import sys
@@ -82,29 +82,6 @@ class AddonList(list):
         for addon in self:
             if addon.safe():
                 setup.upgradeProfile(addon.profile_id, quiet=True)
-
-
-class IAddonList(Interface):
-    """Utility providing a list of add-ons managed by the migration tool.
-
-    * addon_list is the list of add-ons that are upgraded at the end
-      of the migration
-    * pre_addon_list is the list of add-ons that are upgraded at the start
-      of the migration.
-
-    The pre_addon_list is optional.  If you have a Plone distribution with an
-    own base profile, you may want to add the default Plone profile here,
-    so the core of Plone is updated first:
-
-    pre_addon_list = AddonList([Addon(profile_id="Products.CMFPlone:plone")])
-
-    Maybe add a part of the standard ADDON_LIST from below as well.
-    But if you find yourself adding *all* of them, then your distribution
-    probably doesn't need its own base profile and add-on list.
-    """
-
-    addon_list: AddonList
-    pre_addon_list: AddonList
 
 
 # List of upgradeable packages.  Obvious items to add here, are all
