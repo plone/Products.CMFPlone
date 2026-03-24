@@ -43,9 +43,7 @@ class TestLoginForm(unittest.TestCase):
         )
 
     def test_failsafe_login_view_sets_no_cache_headers(self):
-        view = getMultiAdapter(
-            (self.portal, self.request), name="failsafe_login"
-        )
+        view = getMultiAdapter((self.portal, self.request), name="failsafe_login")
         view()
         response = self.request.response
         self.assertEqual(
