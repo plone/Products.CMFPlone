@@ -13,7 +13,7 @@ from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from ZODB.POSException import ConflictError
-from zope.component import getUtility
+from zope.component import queryUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
 from zope.interface import Interface
@@ -273,7 +273,11 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     @property
     def addon_list(self) -> AddonList:
-        utility = getUtility(IAddonList, self.package_name)
+        utility = queryUtility(IAddonList, self.package_name)
+        if utility is None:
+            utility = queryUtility(IAddonList, "Products.CMFPlone")
+            if utility is None:
+                return AddonList()
         return utility.addon_list
 
     def _upgrade_run_steps(self, steps, swallow_errors=True):
