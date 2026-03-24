@@ -85,9 +85,26 @@ class AddonList(list):
 
 
 class IAddonList(Interface):
-    """Utility providing a list of add-ons managed by the migration tool."""
+    """Utility providing a list of add-ons managed by the migration tool.
+
+    * addon_list is the list of add-ons that are upgraded at the end
+      of the migration
+    * pre_addon_list is the list of add-ons that are upgraded at the start
+      of the migration.
+
+    The pre_addon_list is optional.  If you have a Plone distribution with an
+    own base profile, you may want to add the default Plone profile here,
+    so the core of Plone is updated first:
+
+    pre_addon_list = AddonList([Addon(profile_id="Products.CMFPlone:plone")])
+
+    Maybe add a part of the standard ADDON_LIST from below as well.
+    But if you find yourself adding *all* of them, then your distribution
+    probably doesn't need its own base profile and add-on list.
+    """
 
     addon_list: AddonList
+    pre_addon_list: AddonList
 
 
 # List of upgradeable packages.  Obvious items to add here, are all
@@ -128,6 +145,7 @@ ADDON_LIST = AddonList(
 @implementer(IAddonList)
 class LocalAddonList:
     addon_list = ADDON_LIST
+    pre_addon_list = AddonList()
 
 
 @implementer(IMigrationTool)
@@ -272,6 +290,15 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         return steps
 
     @property
+    def pre_addon_list(self) -> AddonList:
+        utility = queryUtility(IAddonList, self.package_name)
+        if utility is None:
+            utility = queryUtility(IAddonList, "Products.CMFPlone")
+            if utility is None:
+                return AddonList()
+        return getattr(utility, "pre_addon_list", AddonList())
+
+    @property
     def addon_list(self) -> AddonList:
         utility = queryUtility(IAddonList, self.package_name)
         if utility is None:
@@ -356,6 +383,10 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
             if dry_run:
                 logger.info("Dry run selected.")
+
+            logger.info("Starting upgrade of core addons from the PRE list.")
+            self.pre_addon_list.upgrade_all(self)
+            logger.info("Done upgrading core addons from the PRE list.")
 
             logger.info("Starting the migration from version: %s" % version)
             self._upgrade_run_steps(steps, swallow_errors=swallow_errors)
