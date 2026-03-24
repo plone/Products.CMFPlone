@@ -11,7 +11,6 @@ from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
-from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from ZODB.POSException import ConflictError
 from zope.component import getUtility
@@ -138,7 +137,6 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     id = "portal_migration"
     meta_type = "Plone Migration Tool"
     toolicon = "skins/plone_images/site_icon.png"
-    profile = _DEFAULT_PROFILE
 
     manage_options = (
         {"label": "Upgrade", "action": "../@@plone-upgrade"},
@@ -157,6 +155,14 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         # So we always get the site.
         site = getSite()
         return getToolByName(site, "portal_setup")
+
+    @property
+    def profile(self):
+        context_id = self.setup.getBaselineContextID()
+        prefix = "profile-"
+        if context_id.startswith(prefix):
+            context_id = context_id[len(prefix) :]
+        return context_id
 
     @property
     def package_name(self):
