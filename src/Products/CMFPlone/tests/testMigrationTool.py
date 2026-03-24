@@ -3,6 +3,7 @@ from importlib.metadata import version
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.tests import PloneTestCase
+from zope.component import queryUtility
 
 import unittest
 
@@ -48,6 +49,62 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
         # There should be no upgrade steps from the current version
         upgrades = self.migration.listUpgrades()
         self.assertEqual(len(upgrades), 0)
+
+    def test_profile(self):
+        self.assertEqual(self.migration.profile, "Products.CMFPlone:plone")
+
+    def test_package_name(self):
+        self.assertEqual(self.migration.package_name, "Products.CMFPlone")
+
+    def test_getInstanceVersion(self):
+        version = int(self.migration.getInstanceVersion())
+        self.assertGreaterEqual(version, 6201)
+        self.assertLessEqual(version, 9000)
+
+    def test_getFileSystemVersion(self):
+        version = int(self.migration.getFileSystemVersion())
+        self.assertGreaterEqual(version, 6201)
+        self.assertLessEqual(version, 9000)
+
+    def test_getSoftwareVersion(self):
+        from packaging.version import parse
+
+        version = self.migration.getSoftwareVersion()
+        parsed_version = parse(version)
+        self.assertGreaterEqual(parsed_version, parse("6.2.0a1"))
+        self.assertLessEqual(parsed_version, parse("9.0.0a1"))
+
+    def test_other_base_profile(self):
+        orig_context_id = self.setup.getBaselineContextID()
+        plone_instance_version = self.migration.getInstanceVersion()
+        plone_fs_version = self.migration.getFileSystemVersion()
+        plone_software_version = self.migration.getSoftwareVersion()
+        try:
+            self.setup.setBaselineContext("PluggableAuthService:simple")
+            self.assertEqual(self.migration.profile, "PluggableAuthService:simple")
+            self.assertEqual(self.migration.package_name, "PluggableAuthService")
+            # Currently, the next two versions are 1.6.1 (from metadata.xml in
+            # PluggableAuthService), but that can change.  The two versions
+            # should be the same though, and not unknown.
+            pas_instance_version = self.migration.getInstanceVersion()
+            pas_fs_version = self.migration.getFileSystemVersion()
+            self.assertTrue(pas_instance_version)
+            self.assertNotEqual(pas_instance_version, "unknown")
+            self.assertEqual(pas_instance_version, pas_fs_version)
+            self.assertNotEqual(pas_instance_version, plone_instance_version)
+            self.assertNotEqual(pas_fs_version, plone_fs_version)
+            # PluggableAuthService manually registers its base profile
+            # with the name PluggableAuthService:simple.  This means that
+            # the package_name that we compute from the profile is
+            # PluggableAuthService, and not Products.PluggableAuthService,
+            # so we cannot actually find a package.  For normally named
+            # profiles and packages this should be no problem.
+            # In the case here, we are happy if that the method does not fail.
+            pas_software_version = self.migration.getSoftwareVersion()
+            self.assertNotEqual(pas_software_version, plone_software_version)
+            self.assertIsNone(pas_software_version)
+        finally:
+            self.setup.setBaselineContext(orig_context_id)
 
     @unittest.skipUnless(
         HAS_PLONE_APP_UPGRADE_DEV, reason="Only run with plone.app.upgrade checkouts"
@@ -273,6 +330,19 @@ class TestAddonList(PloneTestCase.PloneTestCase):
         # original versions.
         self.assertEqual(cmfeditions_version, getversion(cmfeditions_id))
         self.assertEqual(querystring_version, getversion(querystring_id))
+
+    def test_addonlist_utility(self):
+        from Products.CMFPlone.MigrationTool import AddonList
+        from Products.CMFPlone.MigrationTool import IAddonList
+
+        util = queryUtility(IAddonList, "Products.CMFPlone")
+        self.assertIsNotNone(util)
+        self.assertTrue(hasattr(util, "addon_list"))
+        self.assertTrue(hasattr(util, "pre_addon_list"))
+        self.assertIsInstance(util.addon_list, AddonList)
+        self.assertGreater(len(util.addon_list), 7)
+        self.assertIsInstance(util.pre_addon_list, AddonList)
+        self.assertEqual(len(util.pre_addon_list), 0)
 
 
 class TestPloneUpgradePage(PloneTestCase.PloneTestCase):
