@@ -29,6 +29,30 @@ class TestLoginForm(unittest.TestCase):
         view = getMultiAdapter((self.portal, self.request), name="login")
         self.assertTrue(view())
 
+    def test_login_view_sets_no_cache_headers(self):
+        view = getMultiAdapter((self.portal, self.request), name="login")
+        view()
+        response = self.request.response
+        self.assertEqual(
+            response.getHeader("Cache-Control"),
+            "max-age=0, must-revalidate, private",
+        )
+        self.assertEqual(
+            response.getHeader("Expires"),
+            "Sat, 1 Jan 2000 00:00:00 GMT",
+        )
+
+    def test_failsafe_login_view_sets_no_cache_headers(self):
+        view = getMultiAdapter(
+            (self.portal, self.request), name="failsafe_login"
+        )
+        view()
+        response = self.request.response
+        self.assertEqual(
+            response.getHeader("Cache-Control"),
+            "max-age=0, must-revalidate, private",
+        )
+
     def _setup_authenticator_request(self):
         self.request.set("REQUEST_METHOD", "POST")
         authenticator = getMultiAdapter(
