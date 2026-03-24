@@ -176,23 +176,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         version = setup.getLastVersionForProfile(self.profile)
         if isinstance(version, tuple):
             version = ".".join(version)
-
-        _version = getattr(self, "_version", None)
-        if _version is None:
-            self._version = False
-
         if version == "unknown":
-            if _version:
-                # Instance version was not standard...
-                _version = _version.replace("devel (svn/unreleased)", "dev")
-                _version = _version.rstrip("-final")
-                _version = _version.rstrip("final")
-                _version = _version.replace("alpha", "a")
-                _version = _version.replace("beta", "b")
-                _version = _version.replace("-", ".")
-                version = _version
-            else:
-                version = setup.getVersionForProfile(self.profile)
+            version = setup.getVersionForProfile(self.profile)
             self.setInstanceVersion(version)
         return version
 
@@ -200,7 +185,6 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     def setInstanceVersion(self, version):
         # The version this instance of plone is on.
         self.setup.setLastVersionForProfile(self.profile, version)
-        self._version = False
 
     @security.protected(ManagePortal)
     def getFileSystemVersion(self):
