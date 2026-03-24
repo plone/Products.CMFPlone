@@ -234,22 +234,9 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         vars["CMF"] = dist_version("Products.CMFCore")
         vars["Debug mode"] = getConfiguration().debug_mode and "Yes" or "No"
         try:
-            vars["PIL"] = dist_version("PIL")
+            vars["PIL"] = "%s (Pillow)" % dist_version("Pillow")
         except PackageNotFoundError:
-            try:
-                vars["PIL"] = dist_version("PILwoTK")
-            except PackageNotFoundError:
-                try:
-                    vars["PIL"] = "%s (Pillow)" % dist_version("Pillow")
-                except PackageNotFoundError:
-                    try:
-                        import _imaging
-
-                        _imaging  # pyflakes
-                        vars["PIL"] = "unknown"
-                    except ImportError:
-                        pass
-
+            pass
         return vars
 
     @security.protected(ManagePortal)
