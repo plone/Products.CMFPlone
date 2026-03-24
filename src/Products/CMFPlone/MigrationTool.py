@@ -171,7 +171,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     @security.protected(ManagePortal)
     def getInstanceVersion(self):
-        # The version this instance of plone is on.
+        # Get the version of the base profile this Plone instance is on.
         setup = self.setup
         version = setup.getLastVersionForProfile(self.profile)
         if isinstance(version, tuple):
@@ -183,12 +183,13 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     @security.protected(ManagePortal)
     def setInstanceVersion(self, version):
-        # The version this instance of plone is on.
+        # Set the version of the base profile for this Plone instance.
         self.setup.setLastVersionForProfile(self.profile, version)
 
     @security.protected(ManagePortal)
     def getFileSystemVersion(self):
-        # The version this instance of plone is on.
+        # Get the version of the base profile that is available on the
+        # filesystem.
         try:
             return self.setup.getVersionForProfile(self.profile)
         except KeyError:
@@ -197,8 +198,17 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     @security.protected(ManagePortal)
     def getSoftwareVersion(self):
-        # The software version.
-        return dist_version("Products.CMFPlone")
+        # Get the software version of the Python package that contains the
+        # base profile for this Plone instance.
+        try:
+            return dist_version(self.package_name)
+        except PackageNotFoundError:
+            logger.error(
+                "No distribution found for package %s (base profile %s).",
+                self.package_name,
+                self.profile,
+            )
+            return None
 
     @security.protected(ManagePortal)
     def needUpgrading(self):
