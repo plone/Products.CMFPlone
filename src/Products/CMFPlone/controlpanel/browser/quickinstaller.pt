@@ -19,11 +19,11 @@
       add-ons in the lists below.
     </p>
     <p class="discreet" i18n:translate="">
-      To make new add-ons show up here, add them to your buildout
-      configuration, run buildout, and restart the server process.
+      To make new add-ons show up here, install them into your Python
+      environment and restart the server process.
       For detailed instructions see
       <span i18n:name="third_party_product">
-      <a i18n:translate="" href="http://docs.plone.org/manage/installing/installing_addons.html">
+      <a i18n:translate="" href="https://6.docs.plone.org/admin-guide/add-ons.html">
         Installing a third party add-on
       </a>
       </span>.
