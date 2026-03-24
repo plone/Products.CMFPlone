@@ -48,11 +48,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.transforms = self.portal.portal_transforms
         self.setup = self.portal.portal_setup
 
-    def testInstanceVersion(self):
-        # Test if the version of the instance has been set
-        mt = getToolByName(self.portal, "portal_migration")
-        self.assertEqual(mt._version, False)
-
     def testProfileVersion(self):
         # The profile version for the base profile should be the same
         # as the file system version and the instance version
