@@ -183,11 +183,17 @@
     </tal:report>
   </article>
   <footer class="row"
-          tal:define="corelist versions/corelist">
+          tal:define="
+            corelist versions/corelist;
+            core_package python:corelist.get('core_package');
+          ">
     <h2 i18n:translate="heading_version_overview">Version Overview</h2>
-    <div>Plone <span tal:replace="corelist/Plone" /></div>
-    <div>Zope <span tal:replace="corelist/Zope" /></div>
-    <div>Python <span tal:replace="corelist/Python" /></div>
+    <div tal:condition="python:core_package and core_package != 'Products.CMFPlone'">
+      ${core_package} ${python:corelist.get('core_version')}
+    </div>
+    <div>Plone ${python:corelist.get('Plone')}</div>
+    <div>Zope ${python:corelist.get('Zope')}</div>
+    <div>Python ${python:corelist.get('Python')}</div>
   </footer>
 
     </div>

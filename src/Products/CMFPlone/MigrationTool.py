@@ -2,18 +2,20 @@ from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from AccessControl.requestmethod import postonly
 from App.config import getConfiguration
-from importlib.metadata import distribution
 from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as dist_version
 from io import StringIO
 from OFS.SimpleItem import SimpleItem
+from plone.base.interfaces import IAddonList
 from plone.base.interfaces import IMigrationTool
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
-from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from ZODB.POSException import ConflictError
+from zope.component import queryUtility
+from zope.component.hooks import getSite
 from zope.interface import implementer
 
 import logging
@@ -117,6 +119,12 @@ ADDON_LIST = AddonList(
 )
 
 
+@implementer(IAddonList)
+class LocalAddonList:
+    addon_list = ADDON_LIST
+    pre_addon_list = AddonList()
+
+
 @implementer(IMigrationTool)
 class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     """Handles migrations between Plone releases"""
@@ -134,144 +142,213 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security = ClassSecurityInfo()
 
-    security.declareProtected(ManagePortal, "getInstanceVersion")
+    @property
+    def setup(self):
+        # Get the portal_setup tool.
+        # Note: depending on the acquisition chain, sometimes
+        # getToolByName(self, "portal_setup") works, sometimes not.
+        # So we always get the site.
+        site = getSite()
+        return getToolByName(site, "portal_setup")
 
+    @property
+    def profile(self):
+        context_id = self.setup.getBaselineContextID()
+        prefix = "profile-"
+        if context_id.startswith(prefix):
+            context_id = context_id[len(prefix) :]
+        return context_id
+
+    @property
+    def package_name(self):
+        # Products.CMFPlone:plone -> Products.CMFPlone
+        return self.profile.partition(":")[0]
+
+    @security.protected(ManagePortal)
     def getInstanceVersion(self):
-        # The version this instance of plone is on.
-        setup = getToolByName(self, "portal_setup")
-        version = setup.getLastVersionForProfile(_DEFAULT_PROFILE)
+        # Get the version of the base profile this Plone instance is on.
+        setup = self.setup
+        version = setup.getLastVersionForProfile(self.profile)
         if isinstance(version, tuple):
             version = ".".join(version)
-
-        _version = getattr(self, "_version", None)
-        if _version is None:
-            self._version = False
-
         if version == "unknown":
-            if _version:
-                # Instance version was not standard...
-                _version = _version.replace("devel (svn/unreleased)", "dev")
-                _version = _version.rstrip("-final")
-                _version = _version.rstrip("final")
-                _version = _version.replace("alpha", "a")
-                _version = _version.replace("beta", "b")
-                _version = _version.replace("-", ".")
-                version = _version
-            else:
-                version = setup.getVersionForProfile(_DEFAULT_PROFILE)
+            version = setup.getVersionForProfile(self.profile)
             self.setInstanceVersion(version)
         return version
 
-    security.declareProtected(ManagePortal, "setInstanceVersion")
-
+    @security.protected(ManagePortal)
     def setInstanceVersion(self, version):
-        # The version this instance of plone is on.
-        setup = getToolByName(self, "portal_setup")
-        setup.setLastVersionForProfile(_DEFAULT_PROFILE, version)
-        self._version = False
+        # Set the version of the base profile for this Plone instance.
+        self.setup.setLastVersionForProfile(self.profile, version)
 
-    security.declareProtected(ManagePortal, "getFileSystemVersion")
-
+    @security.protected(ManagePortal)
     def getFileSystemVersion(self):
-        # The version this instance of plone is on.
-        setup = getToolByName(self, "portal_setup")
+        # Get the version of the base profile that is available on the
+        # filesystem.
         try:
-            return setup.getVersionForProfile(_DEFAULT_PROFILE)
+            return self.setup.getVersionForProfile(self.profile)
         except KeyError:
             pass
         return None
 
-    security.declareProtected(ManagePortal, "getSoftwareVersion")
-
+    @security.protected(ManagePortal)
     def getSoftwareVersion(self):
-        # The software version.
-        dist = distribution("Products.CMFPlone")
-        return dist.version
+        # Get the software version of the Python package that contains the
+        # base profile for this Plone instance.
+        try:
+            return dist_version(self.package_name)
+        except PackageNotFoundError:
+            logger.error(
+                "No distribution found for package %s (base profile %s).",
+                self.package_name,
+                self.profile,
+            )
+            return None
 
-    security.declareProtected(ManagePortal, "needUpgrading")
-
+    @security.protected(ManagePortal)
     def needUpgrading(self):
         # Need upgrading?
         return self.getInstanceVersion() != self.getFileSystemVersion()
 
-    security.declareProtected(ManagePortal, "coreVersions")
-
+    @security.protected(ManagePortal)
     def coreVersions(self):
         # Useful core information.
         vars = {}
-        vars["Zope"] = distribution("Zope").version
+        vars["Zope"] = dist_version("Zope")
         vars["Python"] = sys.version
         vars["Platform"] = sys.platform
-        vars["Plone"] = distribution("Products.CMFPlone").version
+        vars["Plone"] = dist_version("Products.CMFPlone")
+        # The next few belong to the base profile:
         vars["Plone Instance"] = self.getInstanceVersion()
         vars["Plone File System"] = self.getFileSystemVersion()
-        vars["CMF"] = distribution("Products.CMFCore").version
+        vars["core_package"] = self.package_name
+        vars["core_version"] = self.getSoftwareVersion()
+        vars["CMF"] = dist_version("Products.CMFCore")
         vars["Debug mode"] = getConfiguration().debug_mode and "Yes" or "No"
         try:
-            vars["PIL"] = distribution("PIL").version
+            vars["PIL"] = "%s (Pillow)" % dist_version("Pillow")
         except PackageNotFoundError:
-            try:
-                vars["PIL"] = distribution("PILwoTK").version
-            except PackageNotFoundError:
-                try:
-                    vars["PIL"] = "%s (Pillow)" % distribution("Pillow").version
-                except PackageNotFoundError:
-                    try:
-                        import _imaging
-
-                        _imaging  # pyflakes
-                        vars["PIL"] = "unknown"
-                    except ImportError:
-                        pass
-
+            pass
         return vars
 
-    security.declareProtected(ManagePortal, "coreVersionsList")
-
+    @security.protected(ManagePortal)
     def coreVersionsList(self):
         # Useful core information.
-        res = self.coreVersions().items()
-        res.sort()
-        return res
+        return sorted(self.coreVersions().items())
 
-    security.declareProtected(ManagePortal, "needUpdateRole")
-
+    @security.protected(ManagePortal)
     def needUpdateRole(self):
         # Do roles need to be updated?
         return self._needUpdateRole
 
-    security.declareProtected(ManagePortal, "needRecatalog")
-
+    @security.protected(ManagePortal)
     def needRecatalog(self):
         # Does this thing now need recataloging?
         return self._needRecatalog
 
-    security.declareProtected(ManagePortal, "listUpgrades")
-
+    @security.protected(ManagePortal)
     def listUpgrades(self):
         # List available upgrade steps for our default profile.
         # Do not include upgrade steps for too new versions:
         # using a newer plone.app.upgrade version should not give problems.
-        setup = getToolByName(self, "portal_setup")
         fs_version = self.getFileSystemVersion()
-        upgrades = setup.listUpgrades(_DEFAULT_PROFILE, dest=fs_version)
+        upgrades = self.setup.listUpgrades(self.profile, dest=fs_version)
         return upgrades
 
-    security.declareProtected(ManagePortal, "upgrade")
+    @security.protected(ManagePortal)
+    def list_steps(self):
+        upgrades = self.listUpgrades()
+        steps = []
+        for upgrade in upgrades:
+            if isinstance(upgrade, list):
+                steps.extend(upgrade)
+            else:
+                steps.append(upgrade)
+        return steps
 
+    @property
+    def pre_addon_list(self) -> AddonList:
+        utility = queryUtility(IAddonList, self.package_name)
+        if utility is None:
+            utility = queryUtility(IAddonList, "Products.CMFPlone")
+            if utility is None:
+                return AddonList()
+        return getattr(utility, "pre_addon_list", AddonList())
+
+    @property
+    def addon_list(self) -> AddonList:
+        utility = queryUtility(IAddonList, self.package_name)
+        if utility is None:
+            utility = queryUtility(IAddonList, "Products.CMFPlone")
+            if utility is None:
+                return AddonList()
+        return utility.addon_list
+
+    def _upgrade_run_steps(self, steps, swallow_errors=True):
+        setup = self.setup
+        for step in steps:
+            try:
+                step["step"].doStep(setup)
+                setup.setLastVersionForProfile(self.profile, step["dest"])
+                logger.info("Ran upgrade step: %s" % step["title"])
+            except (ConflictError, KeyboardInterrupt):
+                raise
+            except Exception:
+                logger.error("Upgrade aborted. Error:\n", exc_info=True)
+
+                if not swallow_errors:
+                    raise
+                else:
+                    # abort transaction to safe the zodb
+                    transaction.abort()
+                    break
+
+    def _upgrade_recatalog(self, swallow_errors=True):
+        if not self.needRecatalog():
+            return
+        logger.info("Recatalog needed. This may take a while...")
+        try:
+            catalog = self.portal_catalog
+            # Reduce threshold for the reindex run
+            old_threshold = catalog.threshold
+            pg_threshold = getattr(catalog, "pgthreshold", 0)
+            catalog.pgthreshold = 300
+            catalog.threshold = 2000
+            catalog.refreshCatalog(clear=1)
+            catalog.threshold = old_threshold
+            catalog.pgthreshold = pg_threshold
+            self._needRecatalog = 0
+        except (ConflictError, KeyboardInterrupt):
+            raise
+        except Exception:
+            logger.error("Exception was thrown while cataloging:\n", exc_info=True)
+            if not swallow_errors:
+                raise
+
+    def _upgrade_roles(self, swallow_errors=True):
+        if not self.needUpdateRole():
+            return
+        logger.info("Role update needed. This may take a while...")
+        try:
+            self.portal_workflow.updateRoleMappings()
+            self._needUpdateRole = 0
+        except (ConflictError, KeyboardInterrupt):
+            raise
+        except Exception:
+            logger.error(
+                "Exception was thrown while updating role mappings",
+                exc_info=True,
+            )
+            if not swallow_errors:
+                raise
+
+    @security.protected(ManagePortal)
     def upgrade(self, REQUEST=None, dry_run=None, swallow_errors=True):
         # Perform the upgrade.
-        setup = getToolByName(self, "portal_setup")
 
         # This sets the profile version if it wasn't set yet
         version = self.getInstanceVersion()
-        upgrades = self.listUpgrades()
-        steps = []
-        for u in upgrades:
-            if isinstance(u, list):
-                steps.extend(u)
-            else:
-                steps.append(u)
+        steps = self.list_steps()
 
         try:
             stream = StringIO()
@@ -284,25 +361,12 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
             if dry_run:
                 logger.info("Dry run selected.")
 
+            logger.info("Starting upgrade of core addons from the PRE list.")
+            self.pre_addon_list.upgrade_all(self)
+            logger.info("Done upgrading core addons from the PRE list.")
+
             logger.info("Starting the migration from version: %s" % version)
-
-            for step in steps:
-                try:
-                    step["step"].doStep(setup)
-                    setup.setLastVersionForProfile(_DEFAULT_PROFILE, step["dest"])
-                    logger.info("Ran upgrade step: %s" % step["title"])
-                except (ConflictError, KeyboardInterrupt):
-                    raise
-                except Exception:
-                    logger.error("Upgrade aborted. Error:\n", exc_info=True)
-
-                    if not swallow_errors:
-                        raise
-                    else:
-                        # abort transaction to safe the zodb
-                        transaction.abort()
-                        break
-
+            self._upgrade_run_steps(steps, swallow_errors=swallow_errors)
             logger.info("End of upgrade path, main migration has finished.")
 
             if self.needUpgrading():
@@ -310,46 +374,13 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 logger.error("Migration has failed")
             else:
                 logger.info("Starting upgrade of core addons.")
-                ADDON_LIST.upgrade_all(self)
+                self.addon_list.upgrade_all(self)
                 logger.info("Done upgrading core addons.")
 
                 # do this once all the changes have been done
-                if self.needRecatalog():
-                    logger.info("Recatalog needed. This may take a while...")
-                    try:
-                        catalog = self.portal_catalog
-                        # Reduce threshold for the reindex run
-                        old_threshold = catalog.threshold
-                        pg_threshold = getattr(catalog, "pgthreshold", 0)
-                        catalog.pgthreshold = 300
-                        catalog.threshold = 2000
-                        catalog.refreshCatalog(clear=1)
-                        catalog.threshold = old_threshold
-                        catalog.pgthreshold = pg_threshold
-                        self._needRecatalog = 0
-                    except (ConflictError, KeyboardInterrupt):
-                        raise
-                    except Exception:
-                        logger.error(
-                            "Exception was thrown while cataloging:\n", exc_info=True
-                        )
-                        if not swallow_errors:
-                            raise
+                self._upgrade_recatalog(swallow_errors=swallow_errors)
+                self._upgrade_roles(swallow_errors=swallow_errors)
 
-                if self.needUpdateRole():
-                    logger.info("Role update needed. This may take a while...")
-                    try:
-                        self.portal_workflow.updateRoleMappings()
-                        self._needUpdateRole = 0
-                    except (ConflictError, KeyboardInterrupt):
-                        raise
-                    except Exception:
-                        logger.error(
-                            "Exception was thrown while updating role mappings",
-                            exc_info=True,
-                        )
-                        if not swallow_errors:
-                            raise
                 logger.info("Your Plone instance is now up-to-date.")
 
             if dry_run:
