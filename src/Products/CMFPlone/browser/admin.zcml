@@ -72,10 +72,5 @@
       file="static/plone-admin-ui.js"
       />
 
-  <browser:resource
-      name="jstz-1.0.4.min.js"
-      file="static/jstz-1.0.4.min.js"
-      />
-
 
 </configure>

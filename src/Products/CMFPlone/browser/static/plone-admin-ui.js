@@ -6,10 +6,13 @@ function siteid_focus() {
 
 function set_timezone() {
   "use strict";
-  var i, tzopt,
-      tz = jstz.determine(),
-      tzname = tz.name(),
-      tzopts = document.getElementById('portal_timezone').options;
+  var i, tzopt, tzname, tzopts;
+  try {
+    tzname = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  } catch (e) {
+    return;
+  }
+  tzopts = document.getElementById('portal_timezone').options;
   for (i=1; i<=tzopts.length; i++) {
     tzopt = tzopts[i-1];
     if (tzname === tzopt.value){
