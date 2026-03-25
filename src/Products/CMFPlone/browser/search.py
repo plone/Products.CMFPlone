@@ -5,6 +5,7 @@ from plone.base.interfaces import INavigationRoot
 from plone.base.interfaces import ISearchSchema
 from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.base.navigationroot import get_navigation_root
+from plone.base.utils import munge_search_term as _munge_search_term
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.ZCTextIndex.ParseTree import ParseError
@@ -12,64 +13,27 @@ from zope.cachedescriptors.property import Lazy as lazy_property
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryUtility
+from zope.deferredimport import deprecated
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
 from zope.schema.interfaces import IVocabularyFactory
 from ZTUtils import make_query
 
 import json
-import re
 
 _ = MessageFactory("plone")
 
-# We should accept both a simple space, unicode u'\u0020 but also a
-# multi-space, so called 'waji-kankaku', unicode u'\u3000'
-MULTISPACE = "\u3000"
-BAD_CHARS = ("?", "-", "+", "*", MULTISPACE)
 EVER = DateTime("1970-01-03")
 
-
-def quote_chars(s):
-    # We need to quote parentheses when searching text indices
-    if "(" in s:
-        s = s.replace("(", '"("')
-    if ")" in s:
-        s = s.replace(")", '")"')
-    if MULTISPACE in s:
-        s = s.replace(MULTISPACE, " ")
-    return s
-
-
-def quote(term):
-    # The terms and, or and not must be wrapped in quotes to avoid
-    # being parsed as logical query atoms.
-    if term.lower() in ("and", "or", "not"):
-        term = '"%s"' % term
-    return quote_chars(term)
-
-
-def munge_search_term(query):
-    original_query = query
-    for char in BAD_CHARS:
-        query = query.replace(char, " ")
-
-    # extract quoted phrases first
-    quoted_phrases = re.findall(r'"([^"]*)"', query)
-    r = []
-    for qp in quoted_phrases:
-        # remove from original query
-        query = query.replace(f'"{qp}"', "")
-        # replace with cleaned leading/trailing whitespaces
-        # and skip empty phrases
-        clean_qp = qp.strip()
-        if not clean_qp:
-            continue
-        r.append(f'"{clean_qp}"')
-
-    r += map(quote, query.strip().split())
-    r = " AND ".join(r)
-    r = r + ("*" if r and not original_query.endswith('"') else "")
-    return r
+deprecated(
+    "Moved to plone.base.utils. Import from there instead "
+    "(will be removed in Plone 7).",
+    BAD_CHARS="plone.base.utils:BAD_CHARS",
+    MULTISPACE="plone.base.utils:MULTISPACE",
+    quote_chars="plone.base.utils:_search_quote_chars",
+    quote="plone.base.utils:_search_quote",
+    munge_search_term="plone.base.utils:munge_search_term",
+)
 
 
 class Search(BrowserView):
@@ -126,7 +90,7 @@ class Search(BrowserView):
             if v and ((k in valid_keys) or k.startswith("facet.")):
                 query[k] = v
         if text:
-            query["SearchableText"] = munge_search_term(text)
+            query["SearchableText"] = _munge_search_term(text)
 
         # don't filter on created at all if we want all results
         created = query.get("created")
