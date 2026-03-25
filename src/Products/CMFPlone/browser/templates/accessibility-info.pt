@@ -64,11 +64,11 @@
         <p i18n:translate="description_vpat">
           View
             <a title="Plone's Voluntary Product Accessibility Template (VPAT)"
-               href="https://plone.org/plone-vpat.pdf/view"
+               href="https://plone.org/accessibility"
                i18n:attributes="title title_plone_vpat;">
                Plone's VPAT
             </a>
-            <a href="https://www.state.gov/m/irm/impact/126340.htm">
+            <a href="https://www.section508.gov/sell/acr/">
                 <acronym i18n:name="vpat" title="About VPAT" i18n:attributes="title title_vpat;">(about VPAT)</acronym>
             </a>
         </p>
