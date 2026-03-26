@@ -325,9 +325,9 @@ class TestSection(SearchTestCase):
         )
 
         # unquoted multi substring search
-        # XXX: this is munged to "egg AND spa*" and doesn't find any results
+        # munged to "egg* AND spa*" - both get wildcard, matches "eggs" + "spam"
         self.assertEqual(
-            view.results(query=dict(SearchableText="egg spa")).sequence_length, 0
+            view.results(query=dict(SearchableText="egg spa")).sequence_length, 12
         )
 
         # weird input
@@ -343,6 +343,7 @@ class TestSection(SearchTestCase):
             view.results(query=dict(SearchableText='eggs ham spam"')).sequence_length,
             12,
         )
+
 
 def test_suite():
     """This sets up a test suite that actually runs the tests in the class

@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.3.2 (Python 3.14.0 on linux)" generated="2026-03-26T14:52:11.201812" rpa="false" schemaversion="5">
+<suite id="s1" name="Test Controlpanel Language" source="/home/jensens/ws/cdev/p6/src/Products.CMFPlone/src/Products/CMFPlone/tests/robot/test_controlpanel_language.robot">
+<test id="s1-t1" name="Scenario: Set Site Language in the Language Control Panel" line="13">
+<kw name="Run Keywords" owner="BuiltIn" type="SETUP">
+<kw name="Plone Test Setup" owner="browser">
+<kw name="Open Test Browser" owner="browser">
+<kw name="Configure Test Browser" owner="browser">
+<kw name="Set Variable If" owner="BuiltIn">
+<msg time="2026-03-26T14:52:11.594410" level="INFO">${DEBUG} = False</msg>
+<var>${DEBUG}</var>
+<arg>"${DEBUG}".lower() in ["1", "on", "true", "yes"]</arg>
+<arg>${TRUE}</arg>
+<arg>${FALSE}</arg>
+<doc>Sets variable based on the given condition.</doc>
+<status status="PASS" start="2026-03-26T14:52:11.593906" elapsed="0.000559"/>
+</kw>
+<kw name="Set Variable If" owner="BuiltIn">
+<msg time="2026-03-26T14:52:11.594973" level="INFO">${TRACE} = False</msg>
+<var>${TRACE}</var>
+<arg>"${TRACE}".lower() in ["1", "on", "true", "yes"]</arg>
+<arg>${TRUE}</arg>
+<arg>${FALSE}</arg>
+<doc>Sets variable based on the given condition.</doc>
+<status status="PASS" start="2026-03-26T14:52:11.594634" elapsed="0.000383"/>
+</kw>
+<kw name="Set Variable If" owner="BuiltIn">
+<msg time="2026-03-26T14:52:11.595543" level="INFO">${HEADLESS} = False</msg>
+<var>${HEADLESS}</var>
+<arg>"${HEADLESS}".lower() in ["1", "on", "true", "yes"]</arg>
+<arg>${TRUE}</arg>
+<arg>${FALSE}</arg>
+<doc>Sets variable based on the given condition.</doc>
+<status status="PASS" start="2026-03-26T14:52:11.595206" elapsed="0.000365"/>
+</kw>
+<kw name="Set Variable If" owner="BuiltIn">
+<msg time="2026-03-26T14:52:11.595979" level="INFO">${HEADLESS} = True</msg>
+<var>${HEADLESS}</var>
+<arg>"${BROWSER}".startswith("headless")</arg>
+<arg>${TRUE}</arg>
+<arg>${HEADLESS}</arg>
+<doc>Sets variable based on the given condition.</doc>
+<status status="PASS" start="2026-03-26T14:52:11.595710" elapsed="0.000294"/>
+</kw>
+<kw name="Set Variable If" owner="BuiltIn">
+<msg time="2026-03-26T14:52:11.596325" level="INFO">${HEADLESS} = True</msg>
+<var>${HEADLESS}</var>
+<arg>${TRACE}</arg>
+<arg>${FALSE}</arg>
+<arg>${HEADLESS}</arg>
+<doc>Sets variable based on the given condition.</doc>
+<status status="PASS" start="2026-03-26T14:52:11.596120" elapsed="0.000227"/>
+</kw>
+<kw name="Set Variable If" owner="BuiltIn">
+<msg time="2026-03-26T14:52:11.596665" level="INFO">${HEADLESS} = True</msg>
+<var>${HEADLESS}</var>
+<arg>${DEBUG}</arg>
+<arg>${FALSE}</arg>
+<arg>${HEADLESS}</arg>
+<doc>Sets variable based on the given condition.</doc>
+<status status="PASS" start="2026-03-26T14:52:11.596453" elapsed="0.000234"/>
+</kw>
+<kw name="Set Variable If" owner="BuiltIn">
+<msg time="2026-03-26T14:52:11.597463" level="INFO">${BROWSER} = chromium</msg>
+<var>${BROWSER}</var>
+<arg>"${BROWSER}".startswith("headless")</arg>
+<arg>${BROWSER[len("headless"):]}</arg>
+<arg>${BROWSER}</arg>
+<doc>Sets variable based on the given condition.</doc>
+<status status="PASS" start="2026-03-26T14:52:11.596789" elapsed="0.000702"/>
+</kw>
+<kw name="Set Variable If" owner="BuiltIn">
+<msg time="2026-03-26T14:52:11.597940" level="INFO">${BROWSER} = chromium</msg>
+<var>${BROWSER}</var>
+<arg>"${BROWSER}" == "chrome"</arg>
+<arg>chromium</arg>
+<arg>${BROWSER}</arg>
+<doc>Sets variable based on the given condition.</doc>
+<status status="PASS" start="2026-03-26T14:52:11.597626" elapsed="0.000349"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-26T14:52:11.598565" level="INFO">${VIDEO} = {'dir': '/home/jensens/ws/cdev/p6/src/Products.CMFPlone/test_controlpanel_language/Scenario_Set_Site_Language_in_the_Language_Control_Panel/video'}</msg>
+<var>${VIDEO}</var>
+<arg>dir</arg>
+<arg>${OUTPUT_DIR}/video</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-26T14:52:11.598118" elapsed="0.000474"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-26T14:52:11.598937" level="INFO">${BROWSER} = chromium</msg>
+<arg>${BROWSER}</arg>
+<arg>${BROWSER}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-26T14:52:11.598708" elapsed="0.000268"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-26T14:52:11.599277" level="INFO">${DEBUG} = False</msg>
+<arg>${DEBUG}</arg>
+<arg>${DEBUG}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-26T14:52:11.599086" elapsed="0.000225"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-26T14:52:11.599598" level="INFO">${HEADLESS} = True</msg>
+<arg>${HEADLESS}</arg>
+<arg>${HEADLESS}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-26T14:52:11.599410" elapsed="0.000221"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-26T14:52:11.600198" level="INFO">${TRACE} = False</msg>
+<arg>${TRACE}</arg>
+<arg>${TRACE}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-26T14:52:11.599917" elapsed="0.000321"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-26T14:52:11.600546" level="INFO">${VIDEO} = {'dir': '/home/jensens/ws/cdev/p6/src/Products.CMFPlone/test_controlpanel_language/Scenario_Set_Site_Language_in_the_Language_Control_Panel/video'}</msg>
+<arg>${VIDEO}</arg>
+<arg>${VIDEO}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-26T14:52:11.600345" elapsed="0.000257"/>
+</kw>
+<status status="PASS" start="2026-03-26T14:52:11.593497" elapsed="0.007186"/>
+</kw>
+<if>
+<branch type="IF" condition="${DEBUG}">
+<kw name="Open Browser" owner="Browser">
+<arg>url=${START_URL}</arg>
+<arg>browser=${BROWSER}</arg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Opens a new browser instance. Use this keyword for quick experiments or debugging sessions.</doc>
+<status status="NOT RUN" start="2026-03-26T14:52:11.601097" elapsed="0.000056"/>
+</kw>
+<status status="NOT RUN" start="2026-03-26T14:52:11.600901" elapsed="0.000305"/>
+</branch>
+<branch type="ELSE IF" condition="${TRACE}">
+<kw name="New Persistent Context" owner="Browser">
+<arg>url=${START_URL}</arg>
+<arg>browser=${BROWSER}</arg>
+<arg>tracing=${TRACING}</arg>
+<arg>headless=${HEADLESS}</arg>
+<arg>recordVideo=${VIDEO}</arg>
+<doc>Open a new
+[https://playwright.dev/docs/api/class-browsertype#browser-type-launch-persistent-context | persistent context].</doc>
+<status status="NOT RUN" start="2026-03-26T14:52:11.601430" elapsed="0.000044"/>
+</kw>
+<status status="NOT RUN" start="2026-03-26T14:52:11.601255" elapsed="0.000260"/>
+</branch>
+<branch type="ELSE">
+<kw name="New Persistent Context" owner="Browser">
+<msg time="2026-03-26T14:52:11.604755" level="INFO">{
+  "userDataDir": "",
+  "browser": "chromium",
+  "headless": true,
+  "acceptDownloads": true,
+  "bypassCSP": false,
+  "chromiumSandbox": false,
+  "devtools": false,
+  "forcedColors": "none",
+  "handleSIGHUP": true,
+  "handleSIGINT": true,
+  "handleSIGTERM": true,
+  "ignoreHTTPSErrors": false,
+  "javaScriptEnabled": true,
+  "offline": false,
+  "reducedMotion": "no-preference",
+  "serviceWorkers": "allow",
+  "slowMo": 0.0,
+  "timeout": 30000.0,
+  "url": "http://localhost:55865/plone",
+  "viewport": {
+    "height": 720,
+    "width": 1280
+  },
+  "tracesDir": "/home/jensens/ws/cdev/p6/src/Products.CMFPlone/test_controlpanel_language/Scenario_Set_Site_Language_in_the_Language_Control_Panel/browser/traces/temp/3abd7876-90d8-419b-b2ed-65acea3cc3d7"
+}</msg>
+<msg time="2026-03-26T14:52:11.609363" level="FAIL">
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</msg>
+<arg>url=${START_URL}</arg>
+<arg>browser=${BROWSER}</arg>
+<arg>headless=${HEADLESS}</arg>
+<doc>Open a new
+[https://playwright.dev/docs/api/class-browsertype#browser-type-launch-persistent-context | persistent context].</doc>
+<status status="FAIL" start="2026-03-26T14:52:11.601656" elapsed="0.009951">
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</status>
+</kw>
+<status status="FAIL" start="2026-03-26T14:52:11.601551" elapsed="0.010252">
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</status>
+</branch>
+<status status="FAIL" start="2026-03-26T14:52:11.600872" elapsed="0.011001">
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</status>
+</if>
+<status status="FAIL" start="2026-03-26T14:52:11.592943" elapsed="0.019070">
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</status>
+</kw>
+<status status="FAIL" start="2026-03-26T14:52:11.592474" elapsed="0.019647">
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</status>
+</kw>
+<arg>Plone test setup</arg>
+<doc>Executes all the given keywords in a sequence.</doc>
+<status status="FAIL" start="2026-03-26T14:52:11.591886" elapsed="0.020298">
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</status>
+</kw>
+<kw name="Run Keywords" owner="BuiltIn" type="TEARDOWN">
+<kw name="Plone Test Teardown" owner="browser">
+<kw name="Run Keyword If Test Failed" owner="BuiltIn">
+<kw name="Take Screenshot" owner="Browser">
+<msg time="2026-03-26T14:52:11.618634" level="FAIL">
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</msg>
+<tag>PageContent</tag>
+<doc>Takes a screenshot of the current window or element and saves it to disk.</doc>
+<status status="FAIL" start="2026-03-26T14:52:11.613169" elapsed="0.006638">
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</status>
+</kw>
+<arg>${BROWSER_RUN_ON_FAILURE}</arg>
+<doc>Runs the given keyword with the given arguments, if the test failed.</doc>
+<status status="FAIL" start="2026-03-26T14:52:11.612981" elapsed="0.006975">
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</status>
+</kw>
+<if>
+<branch type="IF" condition="${TRACE}">
+<kw name="Sleep" owner="BuiltIn">
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2026-03-26T14:52:11.620342" elapsed="0.000061"/>
+</kw>
+<status status="NOT RUN" start="2026-03-26T14:52:11.620080" elapsed="0.000372"/>
+</branch>
+<status status="PASS" start="2026-03-26T14:52:11.620044" elapsed="0.000456"/>
+</if>
+<kw name="Close Browser" owner="Browser">
+<msg time="2026-03-26T14:52:11.625145" level="FAIL">
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</msg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Closes the current browser.</doc>
+<status status="FAIL" start="2026-03-26T14:52:11.620638" elapsed="0.005628">
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</status>
+</kw>
+<status status="FAIL" start="2026-03-26T14:52:11.612743" elapsed="0.013774">Several failures occurred:
+
+1) 
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper
+
+2) 
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</status>
+</kw>
+<arg>Plone test teardown</arg>
+<doc>Executes all the given keywords in a sequence.</doc>
+<status status="FAIL" start="2026-03-26T14:52:11.612439" elapsed="0.014364">Several failures occurred:
+
+1) 
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper
+
+2) 
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</status>
+</kw>
+<status status="FAIL" start="2026-03-26T14:52:11.590847" elapsed="0.036210">Setup failed:
+
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper
+
+Also teardown failed:
+Several failures occurred:
+
+1) 
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper
+
+2) 
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</status>
+</test>
+<status status="FAIL" start="2026-03-26T14:52:11.204012" elapsed="0.430654"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Test Controlpanel Language" id="s1" pass="0" fail="1" skip="0">Test Controlpanel Language</stat>
+</suite>
+</statistics>
+<errors>
+<msg time="2026-03-26T14:52:11.633682" level="ERROR">Calling method '_end_test' of listener 'Browser' failed: 
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</msg>
+<msg time="2026-03-26T14:52:11.641598" level="ERROR">Calling method '_end_suite' of listener 'Browser' failed: 
+#############################################################
+#                                                           #
+#  RF-Browser dependencies not found in installation path!  #
+#           Run `rfbrowser init` to install.                #
+#                                                           #
+#############################################################
+Installation path: /home/jensens/ws/cdev/p6/.venv/lib/python3.14/site-packages/Browser/wrapper</msg>
+</errors>
+</robot>
