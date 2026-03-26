@@ -51,7 +51,7 @@ Scenario: Filter Navigation By Workflow States in the Navigation Control Panel
 
 the navigation control panel
     Go to  ${PLONE_URL}/@@navigation-controlpanel
-    Get Text    //body    contains    Navigation Settings
+    Wait For Condition    Text    //body    contains    Navigation Settings
 
 a published document '${title}'
     ${uid}=    Create content
@@ -72,32 +72,32 @@ a private document '${title}'
 I disable generate tabs
     Uncheck Checkbox    //input[@name="form.widgets.generate_tabs:list"]
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved.
+    Wait For Condition    Text    //body    contains    Changes saved.
 
 I disable non-folderish tabs
     Uncheck Checkbox  //input[@value='Document']
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved.
+    Wait For Condition    Text    //body    contains    Changes saved.
 
 I remove '${portal_type}' from the displayed types list
     Uncheck Checkbox  //input[@value='Document']
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved.
+    Wait For Condition    Text    //body    contains    Changes saved.
 
 I enable filtering by workflow states
     Check Checkbox    //input[@name="form.widgets.filter_on_workflow:list"]
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved.
+    Wait For Condition    Text    //body    contains    Changes saved.
 
 I choose to show '${workflow_state}' items
     Check Checkbox    //input[@value='${workflow_state}']
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved.
+    Wait For Condition    Text    //body    contains    Changes saved.
 
 I choose to not show '${workflow_state}' items
     Uncheck Checkbox    //input[@value='${workflow_state}']
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved.
+    Wait For Condition    Text    //body    contains    Changes saved.
 
 
 # THEN

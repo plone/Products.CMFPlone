@@ -65,7 +65,7 @@ I add a link in rich text
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[contains(@class, "preview")]/div[contains(@class, "levelToolbar")]//button
     Click    //div[contains(@class,"modal-footer")]//input[@name="insert"]
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 I remove link to page
     Go To    ${PLONE_URL}/bar
@@ -74,7 +74,7 @@ I remove link to page
     Mark text foo in tinymce editor
     Click    //button[@aria-label="Remove link"]
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 # Then
 
@@ -110,7 +110,7 @@ I should not see a warning when deleting page from folder_contents
     Get Element States    //*[@id="popover-delete"]//*[contains(@class,"popover-content")]    contains    visible
     Get Element Count    //*[contains(@class,"breach-container")]//*[contains(@class,"breach-item")]    should be    0
     Click    //*[contains(@class,"popover-content")]//button[contains(@class,"applyBtn")]
-    Get Text    //body    contains    Successfully delete items
+    Wait For Condition    Text    //body    contains    Successfully delete items
     Get Element Count      //tr[@data-id="foo"]//input    should be    0
 
 # DRY

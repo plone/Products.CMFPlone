@@ -27,7 +27,7 @@ Scenario: A page is opened to edit in TinyMCE
       and insert image
 
     Click    //*[@id="form-buttons-save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 
 *** Keywords *****************************************************************
@@ -37,7 +37,7 @@ Scenario: A page is opened to edit in TinyMCE
 an edited page
     Create content  type=Document  title=${TITLE}
     Go to  ${PLONE_URL}/${PAGE_ID}/edit
-    Get Text    //body    contains    Edit Page
+    Wait For Condition    Text    //body    contains    Edit Page
 
 an uploaded image
     Create content  type=Image  title=an-image

@@ -32,20 +32,20 @@ Scenario: Exclude Content Types from Search
 
 the search control panel
     Go to    ${PLONE_URL}/@@search-controlpanel
-    Get Text    //body    contains    Search Settings
+    Wait For Condition    Text    //body    contains    Search Settings
 
 # WHEN
 
 I enable livesearch
     Check Checkbox  //input[@name="form.widgets.enable_livesearch:list"]
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 I exclude the '${portal_type}' type from search
     # Make sure we see the checkbox, in expanded in jenkins it gets a bit under the toolbar
     Check Checkbox  //input[@name='form.widgets.types_not_searched:list' and @value='${portal_type}']
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 
 # THEN
@@ -58,8 +58,8 @@ then searching for 'My Document' will show a live search
 
 searching for '${search_term}' will not return any results
     Go to    ${PLONE_URL}/@@search
-    Get Text    //body    contains    No results were found
+    Wait For Condition    Text    //body    contains    No results were found
     Type Text    //form[@id='searchform']//input[@name='SearchableText']    ${search_term}
     Click    //input[@type="submit" and @value="Search"]
-    Get Text    //body    contains    items matching your search terms
+    Wait For Condition    Text    //body    contains    items matching your search terms
     Get Text    //span[@id='search-results-number']    should be    0
