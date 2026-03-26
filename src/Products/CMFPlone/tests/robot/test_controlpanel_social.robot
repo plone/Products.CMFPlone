@@ -31,7 +31,7 @@ Scenario: Social tags are disabled
 
 the social control panel
     Go to  ${PLONE_URL}/@@social-controlpanel
-    Get Text    //body    contains    Social Media Settings
+    Wait For Condition    Text    //body    contains    Social Media Settings
 
 
 # WHEN
@@ -39,14 +39,14 @@ the social control panel
 I disable social
     Uncheck Checkbox    //input[@name="form.widgets.share_social_data:list"]
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 I provide social settings
     Type Text    //input[@name="form.widgets.twitter_username"]    plonecms
     Type Text    //input[@name="form.widgets.facebook_app_id"]    123456
     Type Text    //input[@name="form.widgets.facebook_username"]    plonecms
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 
 # THEN

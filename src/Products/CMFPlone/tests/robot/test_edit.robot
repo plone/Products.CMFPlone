@@ -85,14 +85,14 @@ an edited page
     ...    type=Document
     ...    title=${TITLE}
     Go to    ${PLONE_URL}/${PAGE_ID}/edit
-    Get Text    //body    contains    Edit Page
+    Wait For Condition    Text    //body    contains    Edit Page
 
 an edited link item
     Create content
     ...    type=Link
     ...    title=${LINK_TITLE}
     Go to    ${PLONE_URL}/${LINK_ID}/edit
-    Get Text    //body    contains    Edit Link
+    Wait For Condition    Text    //body    contains    Edit Link
 
 
 # WHEN
@@ -173,4 +173,4 @@ at least one other item
     Wait For Condition    Classes    //body    contains    patterns-loaded
     Type Text    //input[@id="form-widgets-IDublinCore-title"]    ${TITLE}
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Item created
+    Wait For Condition    Text    //body    contains    Item created
