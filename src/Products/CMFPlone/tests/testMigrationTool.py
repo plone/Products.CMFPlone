@@ -51,10 +51,10 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
         self.assertEqual(len(upgrades), 0)
 
     def test_profile(self):
-        self.assertEqual(self.migration.profile, "Products.CMFPlone:plone")
+        self.assertEqual(self.migration.get_profile(), "Products.CMFPlone:plone")
 
     def test_package_name(self):
-        self.assertEqual(self.migration.package_name, "Products.CMFPlone")
+        self.assertEqual(self.migration.get_package_name(), "Products.CMFPlone")
 
     def test_getInstanceVersion(self):
         version = int(self.migration.getInstanceVersion())
@@ -81,8 +81,10 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
         plone_software_version = self.migration.getSoftwareVersion()
         try:
             self.setup.setBaselineContext("PluggableAuthService:simple")
-            self.assertEqual(self.migration.profile, "PluggableAuthService:simple")
-            self.assertEqual(self.migration.package_name, "PluggableAuthService")
+            self.assertEqual(
+                self.migration.get_profile(), "PluggableAuthService:simple"
+            )
+            self.assertEqual(self.migration.get_package_name(), "PluggableAuthService")
             # Currently, the next two versions are 1.6.1 (from metadata.xml in
             # PluggableAuthService), but that can change.  The two versions
             # should be the same though, and not unknown.
