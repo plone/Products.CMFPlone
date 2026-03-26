@@ -205,7 +205,7 @@ a document as the default view of the test folder
 
 the users and groups configlet
     Go to    ${PLONE_URL}/@@usergroup-userprefs
-    Get Text    //body    contains    User Search
+    Wait For Condition    Text    //body    contains    User Search
 
 # WHEN
 

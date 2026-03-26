@@ -62,10 +62,10 @@ Scenario: As a manager I can add a field with constraints to the registration fo
 
 site registration enabled
     Go To  ${PLONE_URL}/@@security-controlpanel
-    Get Text    //body    contains    Security Settings
+    Wait For Condition    Text    //body    contains    Security Settings
     Check Checkbox    //input[@name="form.widgets.enable_self_reg:list"]
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved.
+    Wait For Condition    Text    //body    contains    Changes saved.
 
 # WHEN
 
@@ -76,7 +76,7 @@ I add a new text field to the member fields
     Press Keys  //form[@id="add-field-form"]//input[@name="form.widgets.title"]    Tab
     Select Options By    //form[@id="add-field-form"]//select[@name="form.widgets.factory:list"]    label    Text line (String)
     Click    //div[@class="modal-footer"]//button[@name="form.buttons.add"]
-    Get Text    //body    contains    Field added successfully.
+    Wait For Condition    Text    //body    contains    Field added successfully.
 
 I Open the test_field Settings
     Go to    ${PLONE_URL}/@@member-fields
@@ -90,19 +90,19 @@ I add a new required text field to the member fields
     Select Options By    //form[@id="add-field-form"]//select[@name="form.widgets.factory:list"]    label    Text line (String)
     Check Checkbox    //input[@name="form.widgets.required:list"]
     Click    //div[@class="modal-footer"]//button[@name="form.buttons.add"]
-    Get Text    //body    contains    Field added successfully.
+    Wait For Condition    Text    //body    contains    Field added successfully.
 
 choose to show the field on registration
     I Open the test_field Settings
     Check Checkbox  //input[@name="form.widgets.IUserFormSelection.forms:list" and @value="On Registration"]
     Click    //div[@class="modal-footer"]//button[@name="form.buttons.save"]
-    Get Text    //body    contains    Data successfully updated.
+    Wait For Condition    Text    //body    contains    Data successfully updated.
 
 choose to show the field in the user profile
     I Open the test_field Settings
     Check Checkbox  //input[@name="form.widgets.IUserFormSelection.forms:list" and @value="In User Profile"]
     Click    //div[@class="modal-footer"]//button[@name="form.buttons.save"]
-    Get Text    //body    contains    Data successfully updated.
+    Wait For Condition    Text    //body    contains    Data successfully updated.
 
 I move the new field to the top
     Drag And Drop    //div[@data-field_id="test_field"]//span[contains(@class, "draghandle")]    //div[@data-field_id="home_page"]
@@ -113,7 +113,7 @@ add a min/max constraint to the field
     Type Text    //input[@name="form.widgets.min_length"]    4
     Type Text    //input[@name="form.widgets.max_length"]    6
     Click    //div[@class="modal-footer"]//button[@name="form.buttons.save"]
-    Get Text    //body    contains    Data successfully updated.
+    Wait For Condition    Text    //body    contains    Data successfully updated.
 
 
 # THEN
@@ -121,7 +121,7 @@ add a min/max constraint to the field
 an anonymous user will see the field in the registration form
     Disable Autologin
     Go to    ${PLONE_URL}/@@register
-    Get Text    //body    contains    Register
+    Wait For Condition    Text    //body    contains    Register
     Get Element Count    //input[@name="form.widgets.test_field"]    should be    1
 
 a logged-in user will see the field in the user profile
@@ -143,5 +143,5 @@ a logged-in user will see a field with min/max constraints
     Type Text    //input[@name="form.widgets.email"]    test@plone.org
     Type Text    //input[@name="form.widgets.test_field"]    1
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    There were some errors.
-    Get Text    //body    contains    Value is too short
+    Wait For Condition    Text    //body    contains    There were some errors.
+    Wait For Condition    Text    //body    contains    Value is too short

@@ -23,7 +23,7 @@ Scenario: Set Site Language in the Language Control Panel
 
 the language control panel
     Go to  ${PLONE_URL}/@@language-controlpanel
-    Get Text    //body    contains    Language Settings
+    Wait For Condition    Text    //body    contains    Language Settings
 
 
 # WHEN
@@ -33,11 +33,11 @@ I set the site language to German
     Select Options By    //select[@name="form.widgets.available_languages.from"]    label    Deutsch
     Click    //button[@value="→"]
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved.
+    Wait For Condition    Text    //body    contains    Changes saved.
 
 
 # THEN
 
 the Plone user interface is in German
     Go to    ${PLONE_URL}
-    Get Text    //body    contains    Lizensiert unter der
+    Wait For Condition    Text    //body    contains    Lizensiert unter der

@@ -59,7 +59,7 @@ I add '${tag}' to the nasty tags list and remove it from the valid tags list
 
 I save the form
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 
 I remove '${tag}' from the valid tags list
@@ -90,8 +90,8 @@ the 'h1' tag is filtered out when a document is saved
     Fill text to tinymce editor    heading\nSpanish Inquisition
     Mark text heading as h1 in tinymce editor
     I save the form
-    Get Text    //body    contains    Spanish Inquisition
-    Get Text    //body    not contains    heading
+    Wait For Condition    Text    //body    contains    Spanish Inquisition
+    Wait For Condition    Text    //body    not contains    heading
 
 
 the 'h1' tag is stripped when a document is saved
@@ -104,8 +104,8 @@ the 'h1' tag is stripped when a document is saved
     Fill text to tinymce editor    heading\nSpanish Inquisition
     Mark text heading as h1 in tinymce editor
     I save the form
-    Get Text    //body    contains    Spanish Inquisition
-    Get Text    //body    contains    heading
+    Wait For Condition    Text    //body    contains    Spanish Inquisition
+    Wait For Condition    Text    //body    contains    heading
     Get Element Count    //div[@id='content-core']//h1    should be    0    message=h1 should have been stripped out
 
 
@@ -118,7 +118,7 @@ the '${tag}' tag is preserved when a document is saved
     Go To    ${PLONE_URL}/doc1/edit
     Fill source code to tinymce editor    <${tag}>lorem ipsum</${tag}><p>Spanish Inquisition</p>
     I save the form
-    Get Text    //body    contains    Spanish Inquisition
+    Wait For Condition    Text    //body    contains    Spanish Inquisition
     Get Element Count    //div[@id='content-core']//${tag}    should be    1    message=the ${tag} tag should have been preserved
 
 
@@ -131,7 +131,7 @@ the '${attribute}' attribute is preserved when a document is saved
     Go To    ${PLONE_URL}/doc1/edit
     Fill source code to tinymce editor    <span ${attribute}="foo">lorem ipsum</span><p>Spanish Inquisition</p>
     I save the form
-    Get Text    //body    contains    Spanish Inquisition
+    Wait For Condition    Text    //body    contains    Spanish Inquisition
     Get Element Count    //span[@${attribute}]    should be    1    message=the ${attribute} tag should have been preserved
 
 

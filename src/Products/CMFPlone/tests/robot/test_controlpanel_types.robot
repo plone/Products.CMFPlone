@@ -23,7 +23,7 @@ Scenario: Change default workflow
 # GIVEN
 the types control panel
     Go to    ${PLONE_URL}/@@content-controlpanel
-    Get Text    //body    contains    Content Settings
+    Wait For Condition    Text    //body    contains    Content Settings
 
 
 # WHEN

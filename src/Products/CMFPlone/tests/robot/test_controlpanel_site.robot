@@ -49,7 +49,7 @@ Scenario: Add Webstats Javascript in the Site Control Panel
 
 the site control panel
     Go to    ${PLONE_URL}/@@site-controlpanel
-    Get Text    //body    contains    Site Settings
+    Wait For Condition    Text    //body    contains    Site Settings
 
 
 # WHEN
@@ -57,27 +57,27 @@ the site control panel
 I enable the sitemap
     Check Checkbox    //input[@name="form.widgets.enable_sitemap:list"]
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 I set the site title to '${site_title}'
     Type Text    //input[@name="form.widgets.site_title"]    ${site_title}
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 I set a custom logo
     Upload File By Selector    //input[@name="form.widgets.site_logo"]    ${PATH_TO_TEST_FILES}/pixel.png
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 I enable dublin core metadata
     Check Checkbox    //input[@name="form.widgets.exposeDCMetaTags:list"]
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 I add a Javascript snippet to the webstats javascript
     Type Text    //textarea[@name="form.widgets.webstats_js"]    <script id="webstats_snippet"></script>
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 
 # THEN

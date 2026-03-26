@@ -49,7 +49,7 @@ a news item
     Type text    //input[@name="form.widgets.IDublinCore.title"]    ${title}
     Upload File By Selector    //input[@name="form.widgets.ILeadImageBehavior.image"]    ${PATH_TO_TEST_FILES}/pixel.png
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Item created    message=Image could not be created.
+    Wait For Condition    Text    //body    contains    Item created    message=Image could not be created.
 
 I search for
     [Arguments]    ${searchtext}
@@ -79,4 +79,4 @@ I disable images in results in search controlpanel
     Go to    ${PLONE_URL}/@@search-controlpanel
     Uncheck Checkbox    //input[@name="form.widgets.search_show_images:list"]
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved

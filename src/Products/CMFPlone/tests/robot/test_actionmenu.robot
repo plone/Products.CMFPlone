@@ -92,7 +92,7 @@ Scenario:
 an actionsmenu page
     Create content    type=Document    title=${TITLE}
     Go To    ${PLONE_URL}/${PAGE_ID}
-    Get Text    //body    contains    An actionsmenu page
+    Wait For Condition    Text    //body    contains    An actionsmenu page
 
 # WHEN
 
@@ -111,12 +111,12 @@ workflow link is clicked
     Set Suite Variable    ${OLD_STATE}    ${OLD_STATE}
     Click    xpath=//li[@id='plone-contentmenu-workflow']/a
     Click    xpath=(//li[@id='plone-contentmenu-workflow']/ul/li/a)[1]
-    Get Text    //body    contains    Item state changed.
+    Wait For Condition    Text    //body    contains    Item state changed.
 
 I copy the page
     Open Action Menu
     Click    xpath=//li[@id='plone-contentmenu-actions']//a[contains(@class,'actionicon-object_buttons-copy')]
-    Get Text    //body    contains    copied
+    Wait For Condition    Text    //body    contains    copied
 
 I paste
     Go to  ${PLONE_URL}
@@ -152,7 +152,7 @@ state should have changed
     Should Not Be Equal As Strings    ${NEW_STATE}    ${OLD_STATE}
 
 I should see '${message}' in the page
-    Get Text    //body    contains    ${message}
+    Wait For Condition    Text    //body    contains    ${message}
 
 
 # DRY
