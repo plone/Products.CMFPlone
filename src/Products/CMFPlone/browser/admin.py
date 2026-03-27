@@ -24,6 +24,7 @@ from zope.component import adapter
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
+from zope.component.hooks import site as site_cm
 from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.i18n.locales import LoadLocaleError
 from zope.i18n.locales import locales
@@ -85,14 +86,18 @@ class Overview(BrowserView):
         return result
 
     def outdated(self, obj):
-        # Try to pick the portal_migration as an attribute
-        # (Plone 5 unmigrated site root) or as an item
-        mig = getattr(obj, "portal_migration", None) or obj.get(
-            "portal_migration", None
-        )
-        if mig is not None:
-            return mig.needUpgrading()
-        return False
+        # Check if Plone site object is outdated.
+        # Temporarily set this Plone as the component site, so the migration
+        # tool can find portal_setup.
+        with site_cm(obj):
+            # Try to pick the portal_migration as an attribute
+            # (Plone 5 unmigrated site root) or as an item
+            mig = getattr(obj, "portal_migration", None) or obj.get(
+                "portal_migration", None
+            )
+            if mig is not None:
+                return mig.needUpgrading()
+            return False
 
     def can_manage(self):
         secman = getSecurityManager()
