@@ -495,6 +495,24 @@
       <property name="visible">True</property>
     </object>
     <object meta_type="CMF Action"
+            name="recyclebin"
+            i18n:domain="plone"
+    >
+      <property name="title"
+                i18n:translate=""
+      >Recycle Bin</property>
+      <property name="description"
+                i18n:translate=""
+      />
+      <property name="url_expr">string:${portal_url}/@@recyclebin</property>
+      <property name="icon_expr">string:plone-delete</property>
+      <property name="available_expr">portal/@@recyclebin-enabled|nothing</property>
+      <property name="permissions">
+        <element value="Manage portal" />
+      </property>
+      <property name="visible">True</property>
+    </object>
+    <object meta_type="CMF Action"
             name="logout"
             i18n:domain="plone"
     >
