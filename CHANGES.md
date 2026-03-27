@@ -23,8 +23,8 @@
 - `MigrationTool`: Prepare support for custom base profiles without subclassing.
   Make `AddonList` a named utility and register ours under the name `Products.CMFPlone`.
   The utility must have an `addon_list` property and optionally may have a `pre_addon_list`, which gets upgraded before the base profile upgrade.
-  Add `MigrationTool.profile` property method, returning the base profile id that was set, by default `Products.CMFPlone:plone`.
-  Add `MigrationTool.package_name` property method, taking the package name from the profile, so by default `Products.CMFPlone`.
+  Add `MigrationTool.get_profile` method, returning the base profile id that was set, by default `Products.CMFPlone:plone`.
+  Add `MigrationTool.get_package_name` method, taking the package name from the profile, so by default `Products.CMFPlone`.
   In `MigrationTool.coreVersions` return `core_package` and `core_version`.  If `core_package` is not `Products.CMFPlone`, show this version in the overview control panel.
   @rohnsha0 @ericof @mauritsvanrees #4155
 - Resource registry: Allow to use `*` dependencies.
