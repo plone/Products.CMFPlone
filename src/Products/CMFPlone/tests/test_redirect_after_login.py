@@ -136,6 +136,26 @@ class TestRedirectAfterLogin(unittest.TestCase):
             "Logout status message not displayed.",
         )
 
+    def test_redirect_to_came_from_with_query_params(self):
+        # https://github.com/plone/Products.CMFPlone/issues/4201
+        self.browser.open("http://nohost/plone/login")
+        self.browser.getLink("Log in").click()
+
+        self.browser.getControl("Login Name").value = TEST_USER_NAME
+        self.browser.getControl("Password").value = TEST_USER_PASSWORD
+        self.browser.getControl(name="came_from").value = (
+            "http://nohost/plone/contact-info?foo=bar&baz=1"
+        )
+
+        self.browser.getControl("Log in").click()
+
+        self.assertIn("You are now logged in.", self.browser.contents)
+        self.assertEqual(
+            self.browser.url,
+            "http://nohost/plone/contact-info?foo=bar&baz=1",
+            "Query parameters in came_from were lost after login redirect.",
+        )
+
     def test_redirect_to_adapter_result(self):
         # Register our redirect adapter
         from zope.component import getGlobalSiteManager
