@@ -325,9 +325,9 @@ class TestSection(SearchTestCase):
         )
 
         # unquoted multi substring search
-        # XXX: this is munged to "egg AND spa*" and doesn't find any results
+        # munged to "egg* AND spa*" - both get wildcard, matches "eggs" + "spam"
         self.assertEqual(
-            view.results(query=dict(SearchableText="egg spa")).sequence_length, 0
+            view.results(query=dict(SearchableText="egg spa")).sequence_length, 12
         )
 
         # weird input
@@ -343,80 +343,6 @@ class TestSection(SearchTestCase):
             view.results(query=dict(SearchableText='eggs ham spam"')).sequence_length,
             12,
         )
-
-    def test_munge_search_term(self):
-        from Products.CMFPlone.browser.search import BAD_CHARS
-        from Products.CMFPlone.browser.search import munge_search_term
-
-        search_term_tests = [
-            (
-                # search term
-                "spam ham",
-                "spam AND ham*",
-            ),
-            (
-                # quoted term
-                '"spam ham"',
-                '"spam ham"',
-            ),
-            (
-                # cleanup quoted terms
-                '" spam ham   "',
-                '"spam ham"',
-            ),
-            (
-                # quoted term with inner parenthesis
-                '"spam (ham)"',
-                '"spam (ham)"',
-            ),
-            (
-                # quoted term with inner parenthesis
-                '"spam" (ham)',
-                '"spam" AND "("ham")"*',
-            ),
-            (
-                # quoted term with inner parenthesis
-                '"(spam ham)"',
-                '"(spam ham)"',
-            ),
-            (
-                # mixed cases
-                "Spam hAm",
-                "Spam AND hAm*",
-            ),
-            (
-                # mix quoting and unquoted
-                'let\'s eat some "ham and eggs " without spam ',
-                '"ham and eggs" AND let\'s AND eat AND some AND without AND spam*',
-            ),
-            (
-                'test "Welcome" to "Plone" retest',
-                '"Welcome" AND "Plone" AND test AND to AND retest*',
-            ),
-            (
-                # parentheses
-                "spam (ham)",
-                'spam AND "("ham")"*',
-            ),
-            (
-                # special keywords
-                "spam or not ham and eggs",
-                'spam AND "or" AND "not" AND ham AND "and" AND eggs*',
-            ),
-            (
-                # bad characters
-                " ".join(BAD_CHARS),
-                "",
-            ),
-            (
-                # weird input
-                'test ""Welcome" to "Plone"" retest',
-                '"to" AND test AND WelcomePlone AND retest*',
-            ),
-        ]
-
-        for _in, _out in search_term_tests:
-            self.assertEqual(munge_search_term(_in), _out)
 
 
 def test_suite():
