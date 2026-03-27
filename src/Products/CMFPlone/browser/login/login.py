@@ -226,7 +226,13 @@ class LoginForm(form.EditForm):
             came_from = adapter(came_from, is_initial_login)
 
         if came_from:
-            came_from_path = self.request.physicalPathFromURL(came_from)
+            # Strip query string and fragment before path validation,
+            # physicalPathFromURL does not handle them.
+            came_from_url = parse.urlsplit(came_from)
+            came_from_bare = parse.urlunsplit(
+                (came_from_url.scheme, came_from_url.netloc, came_from_url.path, "", "")
+            )
+            came_from_path = self.request.physicalPathFromURL(came_from_bare)
 
             nav_root_path = self.portal_state.navigation_root_path().split("/")
 
