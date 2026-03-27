@@ -1,5 +1,7 @@
 from AccessControl import getSecurityManager
+from plone.base.navigationroot import get_navigation_root_object
 from plone.memoize.view import memoize
+from Products.CMFPlone.utils import get_portal
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zExceptions.ExceptionFormatter import format_exception
@@ -17,9 +19,25 @@ class ExceptionView(BrowserView):
 
     @property
     @memoize
+    def error_context(self):
+        return getattr(self, "_error_context", self.__parent__)
+
+    @property
+    @memoize
+    def layout_context(self):
+        portal = get_portal()
+        if not self.error_context:
+            return portal
+        context = get_navigation_root_object(self.error_context, portal)
+        if getSecurityManager().checkPermission("View", context):
+            return context
+        return portal
+
+    @property
+    @memoize
     def plone_redirector_view(self):
         return getMultiAdapter(
-            (self.__parent__, self.request), name="plone_redirector_view"
+            (self.error_context, self.request), name="plone_redirector_view"
         )
 
     def __call__(self):
@@ -30,7 +48,6 @@ class ExceptionView(BrowserView):
             # and sets the proper location header
             return
 
-        self.context = self.__parent__
         request = self.request
 
         exc_type, value, traceback = sys.exc_info()
@@ -50,6 +67,12 @@ class ExceptionView(BrowserView):
         request.set("disable_border", True)
         request.set("disable_plone.leftcolumn", True)
         request.set("disable_plone.rightcolumn", True)
+        if error_type == "NotFound":
+            self._error_context = self.__parent__
+            self.context = self.layout_context
+            self.__parent__ = self.layout_context
+        else:
+            self.context = self.__parent__
 
         try:
             return self.index(error_type=error_type, error_tb=error_tb)
