@@ -9,7 +9,6 @@ import doctest
 import re
 import unittest
 
-
 OPTIONFLAGS = (
     doctest.ELLIPSIS
     | doctest.NORMALIZE_WHITESPACE  # |

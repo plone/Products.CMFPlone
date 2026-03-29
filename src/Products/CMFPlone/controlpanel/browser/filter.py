@@ -11,7 +11,7 @@ class FilterControlPanel(controlpanel.RegistryEditForm):
     id = "FilterControlPanel"
     label = _("HTML Filtering Settings")
     description = _(
-        "Keep in mind that editors like TinyMCE might have " "additional filters."
+        "Keep in mind that editors like TinyMCE might have additional filters."
     )
     schema = IFilterSchema
     schema_prefix = "plone"

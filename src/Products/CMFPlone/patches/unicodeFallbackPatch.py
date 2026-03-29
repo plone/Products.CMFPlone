@@ -20,7 +20,6 @@ from zope.pagetemplate import pagetemplate
 from zope.tal import talinterpreter
 from zope.tales import expressions
 
-
 # Enable use of utf-8 text in tales inserts, until all code is changed to use
 # pure Unicode only. This will only work for sites with a portal encoding of
 # utf-8 but it will give us some time to change Archetypes and Plone

@@ -10,7 +10,6 @@ from Products.CMFCore.utils import getToolByName
 from zope.component import getMultiAdapter
 from zope.interface import implementer
 
-
 # getOAI() and getExprContext copied from CMF 1.5.1+cvs
 # Copyright (c) 2002 Zope Corporation and Contributors. All Rights Reserved.
 # ZPL 2.1

@@ -2,7 +2,6 @@ from zope.deprecation import deprecate
 
 import os
 
-
 RESOURCE_DEVELOPMENT_MODE = os.getenv("FEDEV", "").lower() == "true"
 
 

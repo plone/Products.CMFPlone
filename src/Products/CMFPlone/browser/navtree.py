@@ -17,7 +17,6 @@ from Products.CMFCore.utils import getToolByName
 from zope.component import getUtility
 from zope.interface import implementer
 
-
 # Strategy objects for the navtree creation code. You can subclass these
 # to expand the default navtree behaviour, and pass instances of your
 # subclasses to buildFolderTree().
@@ -139,12 +138,6 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         if portalType is not None and portalType in self.viewActionTypes:
             itemUrl += "/view"
 
-        useRemoteUrl = False
-        getRemoteUrl = getattr(item, "getRemoteUrl", None)
-        isCreator = self.memberId == getattr(item, "Creator", None)
-        if getRemoteUrl and not isCreator:
-            useRemoteUrl = True
-
         isFolderish = getattr(item, "is_folderish", None)
         showChildren = False
         if isFolderish and (portalType is None or portalType not in self.parentTypesNQ):
@@ -163,9 +156,9 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         newNode["Description"] = getattr(item, "Description", None)
         newNode["show_children"] = showChildren
         newNode["no_display"] = False  # We sort this out with the nodeFilter
-        # BBB getRemoteUrl and link_remote are deprecated, remove in Plone 4
+        # BBB link_remote is deprecated, remove in Plone 7
         newNode["getRemoteUrl"] = getattr(item, "getRemoteUrl", None)
-        newNode["useRemoteUrl"] = useRemoteUrl
+        newNode["useRemoteUrl"] = False
         newNode["link_remote"] = (
             newNode["getRemoteUrl"] and newNode["Creator"] != self.memberId
         )

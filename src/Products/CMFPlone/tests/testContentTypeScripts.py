@@ -5,7 +5,6 @@ from plone.namedfile.file import NamedImage
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests import PloneTestCase
 
-
 AddPortalTopics = "Add portal topics"
 
 
@@ -123,5 +122,5 @@ class TestImageProps(PloneTestCase.PloneTestCase):
         # Wrap object so that ComputedAttribute gets executed.
         self.ob = dummy.ImageComputedProps(**kw).__of__(self.folder)
 
-        endswith = 'alt="alt tag" title="some title" ' 'height="100" width="100" />'
+        endswith = 'alt="alt tag" title="some title" height="100" width="100" />'
         self.assertEqual(tag(self.ob)[-len(endswith) :], endswith)

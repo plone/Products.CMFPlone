@@ -48,11 +48,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.transforms = self.portal.portal_transforms
         self.setup = self.portal.portal_setup
 
-    def testInstanceVersion(self):
-        # Test if the version of the instance has been set
-        mt = getToolByName(self.portal, "portal_migration")
-        self.assertEqual(mt._version, False)
-
     def testProfileVersion(self):
         # The profile version for the base profile should be the same
         # as the file system version and the instance version
@@ -480,6 +475,32 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         for action in self.actions.listActions():
             if action.getId() == "syndication" and action.visible:
                 self.fail("Actions tool still has visible 'syndication' action")
+
+    def testIndexHtmlNotInvokingPloneProtect(self):
+        """A `index_html` in the portal root should not invoke a plone.protect
+        exception.
+        """
+        from plone.app.testing import SITE_OWNER_NAME
+        from plone.app.testing import SITE_OWNER_PASSWORD
+        from plone.testing.zope import Browser
+
+        browser = Browser(self.layer["app"])
+        browser.open(self.portal.absolute_url() + "/login_form")
+
+        browser.getControl("Login Name").value = SITE_OWNER_NAME
+        browser.getControl("Password").value = SITE_OWNER_PASSWORD
+        browser.getControl("Log in").click()
+
+        browser.open(self.portal.absolute_url() + "/++add++Document")
+        browser.getControl("Title").value = "index_html"
+        browser.getControl("Save").click()
+        browser.open(self.portal.absolute_url() + "/index_html")
+
+        contents = browser.contents
+
+        # Check, if plone.protect confirm view isn't shown.
+        self.assertNotIn("exploit", contents)
+        self.assertNotIn("Confirm action", contents)
 
     def testObjectButtonActionsInvisibleOnPortalDefaultDocument(self):
         # only a manager would have proper permissions

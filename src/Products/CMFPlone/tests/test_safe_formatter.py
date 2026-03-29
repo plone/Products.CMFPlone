@@ -7,7 +7,6 @@ from plone.app.testing import TEST_USER_NAME
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zExceptions import Unauthorized
 
-
 BAD_ATTR_STR = """
 <p tal:content="python:'class of {0} is {0.__class__}'.format(context)" />
 """
@@ -256,7 +255,7 @@ class TestSafeFormatter(PloneTestCase):
         namespace = {"context": self.portal}
         self.assertEqual(
             pt.pt_render(namespace).strip(),
-            "<p>&lt;plonesite at plone&gt;</p>\n" "<p>&lt;PLONESITE AT PLONE&gt;</p>",
+            "<p>&lt;plonesite at plone&gt;</p>\n<p>&lt;PLONESITE AT PLONE&gt;</p>",
         )
 
     def test_cook_zope3_page_templates_using_format(self):

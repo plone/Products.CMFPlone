@@ -1,6 +1,5 @@
 from OFS.role import RoleManager
 
-
 ADD_SECURITY_WARNING = """
 <!-- Added security warning -->
 <dtml-unless expr="getattr(context, 'meta_type') == 'Plone Site' or 'PloneSite' not in [o.__class__.__name__ for o in this().aq_chain]">

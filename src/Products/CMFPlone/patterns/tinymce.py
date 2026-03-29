@@ -142,7 +142,7 @@ class TinyMCESettingsGenerator:
         # specific plugin options
         if "contextmenu" in settings.plugins:
             tiny_config["contextmenu"] = (
-                "plonelink ploneimage inserttable |" " cell row column deletetable"
+                "plonelink ploneimage inserttable | cell row column deletetable"
             )
 
         if toolbar_additions:

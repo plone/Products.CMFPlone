@@ -66,7 +66,7 @@ Scenario: Move an action to new category in Actions Control Panel
 
 the actions control panel
     Go to    ${PLONE_URL}/@@actions-controlpanel
-    Get Text    //body    contains    Portal actions
+    Wait For Condition    Text    //body    contains    Portal actions
 
 # WHEN
 
@@ -121,7 +121,7 @@ I change category of an action
 anonymous users can see the new action title
     Disable autologin
     Go to    ${PLONE_URL}
-    Get Text    //body    contains    A new site map
+    Wait For Condition    Text    //body    contains    A new site map
 
 
 anonymous users can see the actions new ordering
@@ -142,13 +142,13 @@ logged-in users can see the new action
 anonymous users cannot see the action anymore
     Disable autologin
     Go to  ${PLONE_URL}
-    Get Text    //body    not contains    Site Map
+    Wait For Condition    Text    //body    not contains    Site Map
 
 
 anonymous users can see the action again
     Disable autologin
     Go to  ${PLONE_URL}
-    Get Text    //body    contains    Site Map
+    Wait For Condition    Text    //body    contains    Site Map
 
 logged in users can see action in new category
     Get Text    //*[@id="portal-globalnav"]    contains    Log out

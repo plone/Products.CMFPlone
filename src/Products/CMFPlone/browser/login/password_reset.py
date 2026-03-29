@@ -120,7 +120,7 @@ class PasswordResetView(BrowserView):
             IStatusMessage(self.request).addStatusMessage(
                 _(
                     "password_reset_successful",
-                    default="Password reset successful, " "you are logged in now!",
+                    default="Password reset successful, you are logged in now!",
                 ),
                 "info",
             )

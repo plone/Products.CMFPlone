@@ -2,7 +2,6 @@
 from urllib.parse import urlparse
 from z3c.form import widget
 
-
 # Attribute name to allow prefilling a widget with a value from a GET request.
 # Usually all forms are only for POST, and we disallow filling it with GET
 # data.  This works the way around too: allow prefilling from a POST request

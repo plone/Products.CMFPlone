@@ -13,7 +13,6 @@ from zope.deprecation import deprecate
 
 import logging
 
-
 PRODUCTION_RESOURCE_DIRECTORY = "production"
 logger = logging.getLogger(__name__)
 
@@ -66,7 +65,7 @@ def get_resource(context, path):
         return
 
     if isinstance(resource, FilesystemFile):
-        (directory, sep, filename) = path.rpartition("/")
+        directory, sep, filename = path.rpartition("/")
         return context.unrestrictedTraverse(directory).readFile(filename)
 
     # calling the resource may modify the header, i.e. the content-type.

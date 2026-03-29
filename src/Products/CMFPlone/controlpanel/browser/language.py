@@ -10,7 +10,7 @@ class LanguageControlPanelForm(controlpanel.RegistryEditForm):
     label = _("heading_language_settings", default="Language Settings")
     description = _(
         "description_language_settings",
-        default="Settings related to interface languages and " "content translations.",
+        default="Settings related to interface languages and content translations.",
     )
 
     schema = ILanguageSchema

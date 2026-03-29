@@ -161,7 +161,7 @@ class TestRedirectAfterLogin(unittest.TestCase):
         self.assertEqual(
             self.browser.url,
             "http://nohost/plone/sitemap",
-            "Successful login did not use the adapter for " "redirect.",
+            "Successful login did not use the adapter for redirect.",
         )
 
         # Now log out.
@@ -345,7 +345,7 @@ class TestRedirectAfterLogin(unittest.TestCase):
         self.assertEqual(
             self.browser.url,
             "http://nohost/plone/sitemap",
-            "Successful login did not use the adapter for " "redirect.",
+            "Successful login did not use the adapter for redirect.",
         )
         self.assertEqual(self.portal.foo, "foo")
 

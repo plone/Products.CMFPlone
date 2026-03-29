@@ -12,7 +12,6 @@ from Products.CMFPlone.tests.utils import validateCSSIdentifier
 from zope.component import getUtility
 from zope.interface import directlyProvides
 
-
 portal_name = PloneTestCase.portal_name
 
 

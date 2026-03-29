@@ -6,7 +6,6 @@ import sys
 import warnings
 import zope.deferredimport
 
-
 __version__ = metadata("Products.CMFPlone")["version"]
 
 if __version__ < "7":

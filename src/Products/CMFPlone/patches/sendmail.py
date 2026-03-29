@@ -7,7 +7,6 @@ from zope.sendmail.mailer import SMTPMailer
 import logging
 import transaction
 
-
 log = logging.getLogger("MailDataManager")
 
 

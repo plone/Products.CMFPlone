@@ -13,7 +13,6 @@ from zope.intid.interfaces import IntIdMissingError
 
 import logging
 
-
 logger = logging.getLogger(__name__)
 
 

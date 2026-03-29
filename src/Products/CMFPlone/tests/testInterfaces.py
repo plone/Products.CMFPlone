@@ -18,7 +18,6 @@ from zope.interface.interface import InterfaceClass
 
 import unittest
 
-
 # for Python 2
 try:
     from types import ClassType

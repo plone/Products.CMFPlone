@@ -4,7 +4,6 @@ from z3c.form.browser.text import TextWidget
 
 import unittest
 
-
 WIDGETS_TO_TEST = [
     TextWidget,
     widget.Widget,

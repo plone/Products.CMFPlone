@@ -15,6 +15,88 @@
 
 <!-- towncrier release notes start -->
 
+## 6.2.0rc1 (2026-03-27)
+
+
+### New features:
+
+- `MigrationTool`: Prepare support for custom base profiles without subclassing.
+  Make `AddonList` a named utility and register ours under the name `Products.CMFPlone`.
+  The utility must have an `addon_list` property and optionally may have a `pre_addon_list`, which gets upgraded before the base profile upgrade.
+  Add `MigrationTool.get_profile` method, returning the base profile id that was set, by default `Products.CMFPlone:plone`.
+  Add `MigrationTool.get_package_name` method, taking the package name from the profile, so by default `Products.CMFPlone`.
+  In `MigrationTool.coreVersions` return `core_package` and `core_version`.  If `core_package` is not `Products.CMFPlone`, show this version in the overview control panel.
+  @rohnsha0 @ericof @mauritsvanrees #4155
+- Resource registry: Allow to use `*` dependencies.
+
+  In #4076, #4077 and #4054 we added the `all` keyword for the `depends`
+  attribute of resource registry entries to define a resource which should be
+  loaded after all other. In Plone < 6 we had the `*` keyword for exactly that.
+  This brings now back `*` in addition to `all` for the same purpose. This might
+  also allow for a smoother upgrade experience.
+  [thet] 
+
+
+### Bug fixes:
+
+- Fix broken link and outdated buildout references in add-ons control panel and site overview.
+  Fixes: https://github.com/plone/Products.CMFPlone/issues/1607
+  [jensens] #1607
+- Replace outdated jstz library with native `Intl.DateTimeFormat` API for timezone detection on site creation form. Fixes incorrect default timezone (e.g., Europe/Berlin instead of Europe/Paris for French users).
+  @jensens #2951
+- Set no-cache headers on login and failsafe login views to prevent proxy caches from serving stale ``came_from`` values.
+  Fixes: https://github.com/plone/Products.CMFPlone/issues/3403
+  [jensens] #3403
+- Fix broken links in accessibility-info page: VPAT PDF and state.gov reference.
+  Fixes: https://github.com/plone/Products.CMFPlone/issues/3697
+  [jensens] #3697
+- Fix history action permission from "Modify portal content" to "CMFEditions: Access previous versions".
+  Fixes: https://github.com/plone/Products.CMFPlone/issues/4059
+  [jensens] #4059
+- Iconresolver: Return strings instead of bytes.
+  Fixes: https://github.com/plone/Products.CMFPlone/issues/4258
+  [thet] #4258
+- Do not use the remote url of a link item in navigation.  [maurits] #4269
+- Avoid a plone.protect warning on `index_html` documents in portal root.
+
+  `index_html` are often used to create default pages in containers. On the
+  portal root this was prevented by a problem in a name collision checker in
+  plone.base, fixed in https://github.com/plone/plone.base/pull/107 and a
+  plone.protect warning issued by a write-on-read by setting the
+  `__replaceable__` attribute on the `index_html` object.
+
+  Fixes: https://github.com/plone/Products.CMFPlone/issues/4279
+  [thet] #4279
+- Allow a Site Administrator to manage the users roles if there are users that have the Manager role set through the portal_role plugin.
+  [ale-rt] #4287
+- When viewing Zope root, activate each Plone site before checking if it is outdated.  @mauritsvanrees #4307
+- Fix `pat-contentbrowser` markup changes in robottests.  @petschki 
+- Fix deprecated `plone_view.pattern_settings()` call.
+  @petschki 
+- Fix flaky robot tests: replace ``Get Text //body`` with ``Wait For Condition Text //body`` to properly wait for page content after navigation.
+  @jensens 
+
+
+### Internal:
+
+- Updated metadata version to 6201.  @mauritsvanrees #6201
+- Remove utility functions which were already moved to plone.base.
+
+  The following utility functions were already moved to plone.base.utils and are
+  removed from CMFPlone:
+
+  - `transaction_note`
+  - `check_id`
+  - `_check_for_collision`
+
+  [thet] 
+- Update configuration files, add Python 3.14 to testing matrix and announce Python 3.14 in Trove classifiers. @plone 
+
+
+### Tests:
+
+- Skip security tests for `string._re` on Python 3.14, as it does not exist.  @mauritsvanrees 
+
 ## 6.2.0a1 (2026-01-15)
 
 

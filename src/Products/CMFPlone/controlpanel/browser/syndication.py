@@ -6,7 +6,6 @@ from Products.statusmessages.interfaces import IStatusMessage
 from z3c.form import button
 from zope.i18nmessageid import MessageFactory
 
-
 _ = MessageFactory("plone")
 
 

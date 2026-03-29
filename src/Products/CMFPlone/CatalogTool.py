@@ -44,7 +44,6 @@ import re
 import time
 import urllib
 
-
 logger = logging.getLogger("Plone")
 try:
     from plone.app.discussion.interfaces import DISCUSSION_ANNOTATION_KEY
@@ -510,10 +509,9 @@ class CatalogTool(PloneBaseTool, BaseTool):
         elapse = time.time() - elapse
         c_elapse = process_time() - c_elapse
 
-        msg = (
-            "Catalog Rebuilt\n"
-            "Total time: %s\n"
-            "Total CPU time: %s" % (repr(elapse), repr(c_elapse))
+        msg = "Catalog Rebuilt\nTotal time: {}\nTotal CPU time: {}".format(
+            repr(elapse),
+            repr(c_elapse),
         )
         logger.info(msg)
 

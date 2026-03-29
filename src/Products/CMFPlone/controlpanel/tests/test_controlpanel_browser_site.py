@@ -10,7 +10,6 @@ from zope.component import getUtility
 
 import unittest
 
-
 # Red pixel with filename pixel.png
 SITE_LOGO_BASE64 = (
     b"filenameb64:cGl4ZWwucG5n;datab64:iVBORw0KGgoAAAANSUhEUgA"

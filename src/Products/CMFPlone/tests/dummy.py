@@ -13,7 +13,6 @@ from ZPublisher.HTTPRequest import FileUpload
 
 import os
 
-
 TEXT = b"file data"
 UTEXT = "file data"
 GIF_FILE = os.path.join(os.path.dirname(__file__), os.pardir, "tool.gif")

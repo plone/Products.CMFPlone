@@ -1,13 +1,11 @@
 # 1. make sure allow_module can't be called from restricted code
 import AccessControl
 
-
 AccessControl.allow_module.__roles__ = ()
 
 # 2. make sure /@@ doesn't traverse to annotations
 from zope.traversing import namespace
 from zope.traversing.interfaces import TraversalError
-
 
 old_traverse = namespace.view.traverse
 
@@ -22,7 +20,6 @@ namespace.view.traverse = traverse
 
 # 3. be sure to check Access contents information permission for FTP users
 from Products.CMFPlone import bbb
-
 
 if bbb.HAS_ZSERVER:
     from AccessControl import getSecurityManager
@@ -52,7 +49,6 @@ if bbb.HAS_ZSERVER:
 # 4. Make sure z3c.form widgets don't get declared as public
 from AccessControl.metaconfigure import ClassDirective
 
-
 old_require = ClassDirective.require
 
 
@@ -70,7 +66,6 @@ ClassDirective.require = require
 # 6. Protect some methods in ZCatalog
 from Products.ZCatalog.ZCatalog import ZCatalog
 
-
 ZCatalog.resolve_path__roles__ = ()
 ZCatalog.resolve_url__roles__ = ()
 
@@ -81,7 +76,6 @@ from zope.publisher.http import HTTPRequest as ZPHTTPRequest
 # 7. Prevent publish traversal of the request
 from ZPublisher.BaseRequest import BaseRequest
 from ZPublisher.HTTPRequest import HTTPRequest
-
 
 for c in [BaseRequest, HTTPRequest, ZPBaseRequest, FTPRequest, ZPHTTPRequest]:
     try:

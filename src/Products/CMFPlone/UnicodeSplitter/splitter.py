@@ -4,6 +4,7 @@ splitter.py
 
 Created by Mikio Hokari, CMScom and Manabu Terada, CMScom on 2009-09-30.
 """
+
 from plone.i18n.normalizer.base import baseNormalize
 from Products.CMFPlone.UnicodeSplitter.config import pattern
 from Products.CMFPlone.UnicodeSplitter.config import pattern_g

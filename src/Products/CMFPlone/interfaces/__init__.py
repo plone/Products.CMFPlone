@@ -1,6 +1,5 @@
 from zope.deferredimport import deprecated
 
-
 deprecated(
     "Moved to plone.base.interfaces, import from there instead (will be removed in Plone 7).",
     IPloneBaseTool="plone.base.interfaces.basetool:IPloneBaseTool",
