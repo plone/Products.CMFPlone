@@ -34,7 +34,7 @@
   loaded after all other. In Plone < 6 we had the `*` keyword for exactly that.
   This brings now back `*` in addition to `all` for the same purpose. This might
   also allow for a smoother upgrade experience.
-  [thet] 
+  [thet]
 
 
 ### Bug fixes:
@@ -70,11 +70,11 @@
 - Allow a Site Administrator to manage the users roles if there are users that have the Manager role set through the portal_role plugin.
   [ale-rt] #4287
 - When viewing Zope root, activate each Plone site before checking if it is outdated.  @mauritsvanrees #4307
-- Fix `pat-contentbrowser` markup changes in robottests.  @petschki 
+- Fix `pat-contentbrowser` markup changes in robottests.  @petschki
 - Fix deprecated `plone_view.pattern_settings()` call.
-  @petschki 
+  @petschki
 - Fix flaky robot tests: replace ``Get Text //body`` with ``Wait For Condition Text //body`` to properly wait for page content after navigation.
-  @jensens 
+  @jensens
 
 
 ### Internal:
@@ -89,13 +89,13 @@
   - `check_id`
   - `_check_for_collision`
 
-  [thet] 
-- Update configuration files, add Python 3.14 to testing matrix and announce Python 3.14 in Trove classifiers. @plone 
+  [thet]
+- Update configuration files, add Python 3.14 to testing matrix and announce Python 3.14 in Trove classifiers. @plone
 
 
 ### Tests:
 
-- Skip security tests for `string._re` on Python 3.14, as it does not exist.  @mauritsvanrees 
+- Skip security tests for `string._re` on Python 3.14, as it does not exist.  @mauritsvanrees
 
 ## 6.2.0a1 (2026-01-15)
 
@@ -112,7 +112,7 @@
 - RegistrationTool: add method `principal_id_or_login_name_exists`.
   This is factored out from the `isMemberIdAllowed` method, which now calls this after checking the allowed member id pattern.
   [maurits] #4120
-- Add configurable license key to TinyMCE options.  @petschki 
+- Add configurable license key to TinyMCE options.  @petschki
 - When enabled, use the ajax main template for XHR requests.
 
   If the ``plone.use_ajax_main_template`` registry setting is set to ``True``,
@@ -120,7 +120,7 @@
   does not evaluate to ``False``, the system will automatically use the AJAX main
   template for that request.
 
-  This can improve performance on sites that handle a large number of AJAX requests. 
+  This can improve performance on sites that handle a large number of AJAX requests.
 
 
 ### Bug fixes:
@@ -147,7 +147,7 @@
 - add login to the list of button names that showbmit button @erral #4180
 - Drop workaround for #2666 - a bug in Python (bugs.python.org/issue46110) which was fixed in 3.9.10. @pbauer #4196
 - Remove the alias that links the searchResults method to the call of the portal catalog #4248
-- Fix robottest for `pat-contentbrowser` update. @petschki 
+- Fix robottest for `pat-contentbrowser` update. @petschki
 
 
 ### Internal:
@@ -158,8 +158,8 @@
   [maurits] #6108
 - Register the IClassicUISchema registry entries from plone.base.
 
-  [thet] 
-- Update configuration files @plone 
+  [thet]
+- Update configuration files @plone
 - Update dependencies for plone.base and plone.app.layout.
 
   - Raise minimum version of plone.base to 4.0.0a1 to register the new ``IClassicUISchema``.
@@ -167,17 +167,17 @@
 
   Ref: https://github.com/plone/Products.CMFPlone/pull/4169
 
-  [thet] 
+  [thet]
 
 
 ### Tests:
 
 - Fix robottests for contentbrowser.
   [1letter] #4113
-- Fix `pat-contentbrowser` robottests for latest changes in mockup=5.4.5 @petschki 
-- Fix deprecated robot keyword [Return] -> RETURN.  @petschki 
-- Fix robottests for plone.staticresources 2.3.3  @petschki 
-- fix robot test "folder_contents" with the new multiselection @1letter 
+- Fix `pat-contentbrowser` robottests for latest changes in mockup=5.4.5 @petschki
+- Fix deprecated robot keyword [Return] -> RETURN.  @petschki
+- Fix robottests for plone.staticresources 2.3.3  @petschki
+- fix robot test "folder_contents" with the new multiselection @1letter
 
 ## 6.1.0 (2025-02-07)
 
