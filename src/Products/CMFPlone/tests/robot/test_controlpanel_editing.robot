@@ -56,13 +56,13 @@ the editing control panel
 I disable the standard editor
     Select Options By    //select[@name="form.widgets.default_editor:list"]    label    None
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 
 I enable the standard editor
     Select Options By    //select[@name="form.widgets.default_editor:list"]    label    TinyMCE
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 
 I go to the editing control panel
@@ -72,18 +72,18 @@ I go to the editing control panel
 I enable link integrity checks
     Check Checkbox    //input[@name="form.widgets.enable_link_integrity_checks:list"]
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 
 I enable lock on through the web
     Check Checkbox    //input[@name="form.widgets.lock_on_ttw_edit:list"]
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved
+    Wait For Condition    Text    //body    contains    Changes saved
 
 I edit the document
     Go to    ${PLONE_URL}/${PAGE_ID}
     Click    //li[@id="contentview-edit"]/a
-    Get Text    //body    contains    Edit Page
+    Wait For Condition    Text    //body    contains    Edit Page
 
 
 # THEN

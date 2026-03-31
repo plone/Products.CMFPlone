@@ -15,7 +15,6 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from ZODB.POSException import ConflictError
 from zope.component import queryUtility
-from zope.component.hooks import getSite
 from zope.interface import implementer
 
 import logging
@@ -142,51 +141,52 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security = ClassSecurityInfo()
 
-    @property
-    def setup(self):
-        # Get the portal_setup tool.
-        # Note: depending on the acquisition chain, sometimes
-        # getToolByName(self, "portal_setup") works, sometimes not.
-        # So we always get the site.
-        site = getSite()
-        return getToolByName(site, "portal_setup")
-
-    @property
-    def profile(self):
-        context_id = self.setup.getBaselineContextID()
+    def get_profile(self):
+        # I wanted to do this:
+        # @property
+        # def profile(self):...
+        # But @property does not work well with acquisition wrappers.
+        # See https://github.com/plone/Products.CMFPlone/pull/4308
+        setup = getToolByName(self, "portal_setup")
+        context_id = setup.getBaselineContextID()
         prefix = "profile-"
         if context_id.startswith(prefix):
             context_id = context_id[len(prefix) :]
         return context_id
 
-    @property
-    def package_name(self):
+    def get_package_name(self):
         # Products.CMFPlone:plone -> Products.CMFPlone
-        return self.profile.partition(":")[0]
+        profile = self.get_profile()
+        return profile.partition(":")[0]
 
     @security.protected(ManagePortal)
     def getInstanceVersion(self):
         # Get the version of the base profile this Plone instance is on.
-        setup = self.setup
-        version = setup.getLastVersionForProfile(self.profile)
+        setup = getToolByName(self, "portal_setup")
+        profile = self.get_profile()
+        version = setup.getLastVersionForProfile(profile)
         if isinstance(version, tuple):
             version = ".".join(version)
         if version == "unknown":
-            version = setup.getVersionForProfile(self.profile)
+            version = setup.getVersionForProfile(profile)
             self.setInstanceVersion(version)
         return version
 
     @security.protected(ManagePortal)
     def setInstanceVersion(self, version):
         # Set the version of the base profile for this Plone instance.
-        self.setup.setLastVersionForProfile(self.profile, version)
+        setup = getToolByName(self, "portal_setup")
+        profile = self.get_profile()
+        setup.setLastVersionForProfile(profile, version)
 
     @security.protected(ManagePortal)
     def getFileSystemVersion(self):
         # Get the version of the base profile that is available on the
         # filesystem.
+        setup = getToolByName(self, "portal_setup")
+        profile = self.get_profile()
         try:
-            return self.setup.getVersionForProfile(self.profile)
+            return setup.getVersionForProfile(profile)
         except KeyError:
             pass
         return None
@@ -195,13 +195,15 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     def getSoftwareVersion(self):
         # Get the software version of the Python package that contains the
         # base profile for this Plone instance.
+        package_name = self.get_package_name()
         try:
-            return dist_version(self.package_name)
+            return dist_version(package_name)
         except PackageNotFoundError:
+            profile = self.get_profile()
             logger.error(
                 "No distribution found for package %s (base profile %s).",
-                self.package_name,
-                self.profile,
+                package_name,
+                profile,
             )
             return None
 
@@ -221,7 +223,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         # The next few belong to the base profile:
         vars["Plone Instance"] = self.getInstanceVersion()
         vars["Plone File System"] = self.getFileSystemVersion()
-        vars["core_package"] = self.package_name
+        vars["core_package"] = self.get_package_name()
         vars["core_version"] = self.getSoftwareVersion()
         vars["CMF"] = dist_version("Products.CMFCore")
         vars["Debug mode"] = getConfiguration().debug_mode and "Yes" or "No"
@@ -252,7 +254,9 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Do not include upgrade steps for too new versions:
         # using a newer plone.app.upgrade version should not give problems.
         fs_version = self.getFileSystemVersion()
-        upgrades = self.setup.listUpgrades(self.profile, dest=fs_version)
+        setup = getToolByName(self, "portal_setup")
+        profile = self.get_profile()
+        upgrades = setup.listUpgrades(profile, dest=fs_version)
         return upgrades
 
     @security.protected(ManagePortal)
@@ -266,18 +270,18 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 steps.append(upgrade)
         return steps
 
-    @property
-    def pre_addon_list(self) -> AddonList:
-        utility = queryUtility(IAddonList, self.package_name)
+    def get_pre_addon_list(self) -> AddonList:
+        package_name = self.get_package_name()
+        utility = queryUtility(IAddonList, package_name)
         if utility is None:
             utility = queryUtility(IAddonList, "Products.CMFPlone")
             if utility is None:
                 return AddonList()
         return getattr(utility, "pre_addon_list", AddonList())
 
-    @property
-    def addon_list(self) -> AddonList:
-        utility = queryUtility(IAddonList, self.package_name)
+    def get_addon_list(self) -> AddonList:
+        package_name = self.get_package_name()
+        utility = queryUtility(IAddonList, package_name)
         if utility is None:
             utility = queryUtility(IAddonList, "Products.CMFPlone")
             if utility is None:
@@ -285,11 +289,12 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         return utility.addon_list
 
     def _upgrade_run_steps(self, steps, swallow_errors=True):
-        setup = self.setup
+        setup = getToolByName(self, "portal_setup")
+        profile = self.get_profile()
         for step in steps:
             try:
                 step["step"].doStep(setup)
-                setup.setLastVersionForProfile(self.profile, step["dest"])
+                setup.setLastVersionForProfile(profile, step["dest"])
                 logger.info("Ran upgrade step: %s" % step["title"])
             except (ConflictError, KeyboardInterrupt):
                 raise
@@ -362,7 +367,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 logger.info("Dry run selected.")
 
             logger.info("Starting upgrade of core addons from the PRE list.")
-            self.pre_addon_list.upgrade_all(self)
+            pre_addon_list = self.get_pre_addon_list()
+            pre_addon_list.upgrade_all(self)
             logger.info("Done upgrading core addons from the PRE list.")
 
             logger.info("Starting the migration from version: %s" % version)
@@ -374,7 +380,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 logger.error("Migration has failed")
             else:
                 logger.info("Starting upgrade of core addons.")
-                self.addon_list.upgrade_all(self)
+                addon_list = self.get_addon_list()
+                addon_list.upgrade_all(self)
                 logger.info("Done upgrading core addons.")
 
                 # do this once all the changes have been done

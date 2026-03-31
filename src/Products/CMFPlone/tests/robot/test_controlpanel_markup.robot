@@ -33,7 +33,7 @@ Scenario: Set Default Markup to be Restructured Text
 
 the markup control panel
     Go to    ${PLONE_URL}/@@markup-controlpanel
-    Get Text    //body    contains    Markup Settings
+    Wait For Condition    Text    //body    contains    Markup Settings
 
 
 # --- WHEN -------------------------------------------------------------------
@@ -45,7 +45,7 @@ I set allowed types to
     Uncheck Checkbox    //input[@name="form.widgets.allowed_types:list" and @value="text/html"]
     Uncheck Checkbox    //input[@name="form.widgets.allowed_types:list" and @value="text/x-web-textile"]
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved.
+    Wait For Condition    Text    //body    contains    Changes saved.
 
     Get Element States    //input[@name="form.widgets.allowed_types:list" and @value="${type}"]    contains    checked
     Get Element States    //input[@name="form.widgets.allowed_types:list" and @value="text/html"]    not contains    checked
@@ -56,7 +56,7 @@ I set the default type to
 
     Select Options By    //select[@name="form.widgets.default_type:list"]    value    ${type}
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Changes saved.
+    Wait For Condition    Text    //body    contains    Changes saved.
 
 # I disable the standard editor
 #   Select from list by label  name=form.widgets.default_editor:list  None

@@ -89,7 +89,7 @@ I do not get redirected when visiting
     [Arguments]    ${old}
     Go to    ${PLONE_URL}/${old}
     Get Url    should be    ${PLONE_URL}/${old}
-    Get Text    //body    contains    This page does not seem to exist
+    Wait For Condition    Text    //body    contains    This page does not seem to exist
 
 
 I can download all redirects as CSV

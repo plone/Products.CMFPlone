@@ -50,17 +50,17 @@ Scenario: Delete Login Portlet from right column
 
 a manage portlets view
     Go to    ${PLONE_URL}/@@manage-portlets
-    Get Text    //body    contains    Manage portlets
+    Wait For Condition    Text    //body    contains    Manage portlets
 
 # When
 
 I add a '${portletname}' portlet to the left column
     Select Options By    //div[@id="portletmanager-plone-leftcolumn"]//select[contains(@class,"add-portlet")]    label    ${portletname}
-    Get Text    //body    contains    Portlet added
+    Wait For Condition    Text    //body    contains    Portlet added
 
 I add a '${portletname}' portlet to the right column
     Select Options By    //div[@id="portletmanager-plone-rightcolumn"]//select[contains(@class,"add-portlet")]    label    ${portletname}
-    Get Text    //body    contains    Portlet added
+    Wait For Condition    Text    //body    contains    Portlet added
 
 I go to portal root
     Disable autologin
