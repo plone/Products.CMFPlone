@@ -20,7 +20,6 @@ from zope.interface import implementer
 import logging
 import uuid
 
-
 logger = logging.getLogger(__name__)
 
 ANNOTATION_KEY = "Products.CMFPlone.RecycleBin"
