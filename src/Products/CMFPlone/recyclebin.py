@@ -578,6 +578,23 @@ class RecycleBin:
             logger.error(f"Error purging expired items: {str(e)}")
             return 0
 
+    def _get_total_item_size(self, item_data):
+        """Return total size including embedded children.
+
+        Size limits should account for nested child metadata stored under a
+        parent recycle-bin entry.
+        """
+        size = item_data.get("size", 0)
+        total = size if isinstance(size, (int, float)) and size > 0 else 0
+
+        children = item_data.get("children")
+        if isinstance(children, dict):
+            for child_data in children.values():
+                if isinstance(child_data, dict):
+                    total += self._get_total_item_size(child_data)
+
+        return total
+
     def _check_size_limits(self):
         """Check if the recycle bin exceeds size limits and purge oldest items if needed
 
@@ -599,7 +616,7 @@ class RecycleBin:
 
             # Get items sorted by date (oldest first) and calculate total size
             for item_id, data in self.storage.get_items_sorted_by_date(reverse=False):
-                size = data.get("size", 0)
+                size = self._get_total_item_size(data)
                 total_size += size
                 items_by_date.append((item_id, size))
 

@@ -875,6 +875,53 @@ class RecycleBinSecurityTests(RecycleBinTestCase):
 class RecycleBinSizeLimitTests(RecycleBinTestCase):
     """Tests for size limit enforcement"""
 
+    def test_size_limit_includes_embedded_children(self):
+        """Test that parent entry size includes nested children sizes."""
+        self._configure_recyclebin_settings(maximum_size=10)
+
+        mb = 1024 * 1024
+        old_item_id = "old-parent-item"
+        new_item_id = "new-item"
+
+        self.recyclebin.storage[old_item_id] = {
+            "id": "old-parent-item",
+            "title": "Old Parent",
+            "type": "Folder",
+            "path": "/plone/old-parent-item",
+            "parent_path": "/plone",
+            "deletion_date": datetime.now() - timedelta(days=2),
+            "size": 1 * mb,
+            "children": {
+                "child-1": {
+                    "id": "child-1",
+                    "size": 7 * mb,
+                    "children": {
+                        "grandchild-1": {
+                            "id": "grandchild-1",
+                            "size": 1 * mb,
+                        }
+                    },
+                }
+            },
+        }
+
+        self.recyclebin.storage[new_item_id] = {
+            "id": "new-item",
+            "title": "New Item",
+            "type": "Document",
+            "path": "/plone/new-item",
+            "parent_path": "/plone",
+            "deletion_date": datetime.now() - timedelta(days=1),
+            "size": 2 * mb,
+        }
+
+        self.recyclebin._check_size_limits()
+
+        # 1MB parent + 7MB child + 1MB grandchild + 2MB new item = 11MB.
+        # With a 10MB limit, the oldest entry must be purged.
+        self.assertNotIn(old_item_id, self.recyclebin.storage)
+        self.assertIn(new_item_id, self.recyclebin.storage)
+
     def test_size_limit_enforcement(self):
         """Test that size limits are enforced by purging oldest items"""
         # Set a reasonable size limit (minimum is 10MB)
