@@ -85,14 +85,14 @@ an edited page
     ...    type=Document
     ...    title=${TITLE}
     Go to    ${PLONE_URL}/${PAGE_ID}/edit
-    Get Text    //body    contains    Edit Page
+    Wait For Condition    Text    //body    contains    Edit Page
 
 an edited link item
     Create content
     ...    type=Link
     ...    title=${LINK_TITLE}
     Go to    ${PLONE_URL}/${LINK_ID}/edit
-    Get Text    //body    contains    Edit Link
+    Wait For Condition    Text    //body    contains    Edit Link
 
 
 # WHEN
@@ -114,7 +114,7 @@ I select a related item
     # Click first element in first column
     Click item in contenbrowser column    1    1
     # Click the select Button in the Toolbar of column 2
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelToolbar")]//button[contains(@class, "btn-outline-primary")]
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelToolbar")]//button[contains(@class, "btn-primary")]
 
 I select a linked item
     # Click the select button
@@ -123,7 +123,7 @@ I select a linked item
     Click item in contenbrowser column    1    1
     # Click the select Button in the Toolbar of column 2
     # This selects the "test-folder"
-    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelToolbar")]//button[contains(@class, "btn-outline-primary")]
+    Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelToolbar")]//button[contains(@class, "btn-primary")]
 
 I save the page
     Click    //button[@name="form.buttons.save"]
@@ -173,4 +173,4 @@ at least one other item
     Wait For Condition    Classes    //body    contains    patterns-loaded
     Type Text    //input[@id="form-widgets-IDublinCore-title"]    ${TITLE}
     Click    //button[@name="form.buttons.save"]
-    Get Text    //body    contains    Item created
+    Wait For Condition    Text    //body    contains    Item created

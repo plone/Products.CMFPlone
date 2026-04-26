@@ -61,11 +61,24 @@ class LoginForm(form.EditForm):
     ignoreContext = True
     prefix = ""
 
+    def _set_no_cache_headers(self):
+        """Prevent proxy caches from caching the login page.
+
+        The came_from hidden field is populated from HTTP_REFERER and
+        varies per request. Without no-cache headers, a proxy could
+        serve a cached login page with the wrong came_from value.
+        See: https://github.com/plone/Products.CMFPlone/issues/3403
+        """
+        response = self.request.response
+        response.setHeader("Expires", "Sat, 1 Jan 2000 00:00:00 GMT")
+        response.setHeader("Cache-Control", "max-age=0, must-revalidate, private")
+
     def render(self):
         registry = queryUtility(IRegistry)
         ext_login_url = registry["plone.external_login_url"]
         if ext_login_url:
             return self._handle_external_login(ext_login_url)
+        self._set_no_cache_headers()
         return self.index()
 
     def _handle_external_login(self, url):
@@ -213,7 +226,13 @@ class LoginForm(form.EditForm):
             came_from = adapter(came_from, is_initial_login)
 
         if came_from:
-            came_from_path = self.request.physicalPathFromURL(came_from)
+            # Strip query string and fragment before path validation,
+            # physicalPathFromURL does not handle them.
+            came_from_url = parse.urlsplit(came_from)
+            came_from_bare = parse.urlunsplit(
+                (came_from_url.scheme, came_from_url.netloc, came_from_url.path, "", "")
+            )
+            came_from_path = self.request.physicalPathFromURL(came_from_bare)
 
             nav_root_path = self.portal_state.navigation_root_path().split("/")
 
@@ -248,6 +267,7 @@ class LoginForm(form.EditForm):
 
 class FailsafeLoginForm(LoginForm):
     def render(self):
+        self._set_no_cache_headers()
         return self.index()
 
 

@@ -169,7 +169,7 @@
       <property name="icon_expr">string:toolbar-action/history</property>
       <property name="available_expr" />
       <property name="permissions">
-        <element value="Modify portal content" />
+        <element value="CMFEditions: Access previous versions" />
       </property>
       <property name="visible">True</property>
     </object>
