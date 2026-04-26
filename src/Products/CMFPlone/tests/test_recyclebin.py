@@ -374,7 +374,7 @@ class RecycleBinFolderTests(RecycleBinTestCase):
             self.assertIn(child_id, item_data["children"])
 
     def test_purge_folder_with_contents(self):
-        """Test purging a folder with content completely removes all related items"""
+        """Test purging a folder does not remove standalone child entries"""
         # Get the original path
         folder_path = "/".join(self.folder.getPhysicalPath())
         page_path = "/".join(self.folder["folder-page"].getPhysicalPath())
@@ -405,14 +405,15 @@ class RecycleBinFolderTests(RecycleBinTestCase):
         result = self.recyclebin.purge_item(folder_recycle_id)
         self.assertTrue(result)
 
-        # Verify all related items were purged
+        # Verify only the folder entry was purged.
+        # Standalone entries for child items are separate delete operations.
         self.assertNotIn(folder_recycle_id, self.recyclebin.storage)
-        self.assertNotIn(page_recycle_id, self.recyclebin.storage)
-        self.assertNotIn(news_recycle_id, self.recyclebin.storage)
+        self.assertIn(page_recycle_id, self.recyclebin.storage)
+        self.assertIn(news_recycle_id, self.recyclebin.storage)
 
-        # Verify no items remain in the listing
+        # Verify child standalone entries remain in the listing
         after_items = self.recyclebin.get_items()
-        self.assertEqual(len(after_items), 0)
+        self.assertEqual(len(after_items), 2)
 
 
 class RecycleBinNestedFolderTests(RecycleBinTestCase):

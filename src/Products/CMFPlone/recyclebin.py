@@ -459,40 +459,6 @@ class RecycleBin:
                 return False, None, error_message
         return True, target_container, None
 
-    def _cleanup_child_references(self, item_data):
-        """Clean up any child items associated with a parent that was restored"""
-        if "children" in item_data and isinstance(item_data["children"], dict):
-            logger.info(
-                f"Cleaning up {len(item_data['children'])} child items from recyclebin"
-            )
-
-            # Define a function to recursively process nested folders
-            def cleanup_children(children_dict):
-                for child_id, child_data in children_dict.items():
-                    # Clean up any entries that might match this child
-                    child_path = child_data.get("path")
-                    child_orig_id = child_data.get("id")
-
-                    for storage_id, storage_data in list(self.storage.get_items()):
-                        if (
-                            storage_data.get("path") == child_path
-                            or storage_data.get("id") == child_orig_id
-                        ):
-                            logger.info(
-                                f"Removing child item {child_orig_id} from recyclebin"
-                            )
-                            if storage_id in self.storage:
-                                del self.storage[storage_id]
-
-                    # If this child is also a folder, recursively process its children
-                    if "children" in child_data and isinstance(
-                        child_data["children"], dict
-                    ):
-                        cleanup_children(child_data["children"])
-
-            # Start the recursive cleanup
-            cleanup_children(item_data["children"])
-
     def _handle_existing_object(self, obj_id, target_container, obj):
         """Handle cases where an object with the same ID already exists in target"""
         if obj_id in target_container:
@@ -545,9 +511,6 @@ class RecycleBin:
         # Remove from recycle bin
         del self.storage[item_id]
 
-        # Clean up any child items
-        self._cleanup_child_references(item_data)
-
         return restored_obj
 
     def purge_item(self, item_id) -> bool:
@@ -564,34 +527,8 @@ class RecycleBin:
             return False
 
         try:
-            # Purge any nested children first if this is a folder
-            item_data = self.storage[item_id]
-            item_path = item_data.get("path", "")
-
-            if "children" in item_data and isinstance(item_data["children"], dict):
-                # Find and purge standalone recycle bin entries for each child
-                def purge_children(children_dict, parent_path):
-                    for child_id, child_data in list(children_dict.items()):
-                        child_path = f"{parent_path}/{child_id}"
-
-                        # Find any standalone entries for this child in the recycle bin
-                        for rec_id, rec_data in list(self.storage.get_items()):
-                            if rec_id != item_id and rec_data.get("path") == child_path:
-                                logger.info(
-                                    f"Purging standalone entry for child: {child_path} (ID: {rec_id})"
-                                )
-                                del self.storage[rec_id]
-
-                        # If this child has children, recursively purge them first
-                        if "children" in child_data and isinstance(
-                            child_data["children"], dict
-                        ):
-                            purge_children(child_data["children"], child_path)
-
-                # Start the recursive purge of children
-                purge_children(item_data["children"], item_path)
-
-            # Remove the main item from storage - the object will be garbage collected
+            # Remove only the requested entry. Do not cascade based on child path/id,
+            # because separate recycle-bin entries may legitimately share those values.
             del self.storage[item_id]
             logger.info(f"Item {item_id} purged from recycle bin")
             return True
