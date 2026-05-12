@@ -9,7 +9,7 @@
           context_state python:context.restrictedTraverse('@@plone_context_state');
           plone_view python:context.restrictedTraverse('@@plone');
           icons python:context.restrictedTraverse('@@iconresolver');
-          plone_layout python:context.restrictedTraverse('@@plone_layout');
+          plone_layout python:view.plone_layout;
           lang python:portal_state.language();
           view nocall:view | nocall: plone_view;
           dummy python: plone_layout.mark_view(view);
