@@ -6,11 +6,20 @@ from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.interface import implementer
 
+import warnings
+
 
 @adapter(IPloneSiteRoot)
 @implementer(ISearchSchema)
 class SearchControlPanelAdapter:
     def __init__(self, context):
+        warnings.warn(
+            f"Usage of bbb controlpanel '{self.__class__.__name__}' is deprecated. "
+            "Use registry.forInterface(plone.base.interfaces.ISearchSchema, prefix='plone') instead. "
+            "It will be removed in Plone 7.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.portal = getSite()
         registry = getUtility(IRegistry)
         self.search_settings = registry.forInterface(ISearchSchema, prefix="plone")

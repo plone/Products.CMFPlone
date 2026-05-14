@@ -5,11 +5,19 @@ from zope.component import adapter
 from zope.component import getUtility
 from zope.interface import implementer
 
+import warnings
+
 
 @adapter(IPloneSiteRoot)
 @implementer(INavigationSchema)
 class NavigationControlPanelAdapter:
     def __init__(self, context):
+        warnings.warn(
+            f"Usage of bbb controlpanel '{self.__class__.__name__}' is deprecated."
+            "Use registry record plone.base.interfaces.INavigationSchema instead."
+            "It will be removed in Plone 6.1",
+            DeprecationWarning,
+        )
         self.context = context
         registry = getUtility(IRegistry)
         self.navigation_settings = registry.forInterface(

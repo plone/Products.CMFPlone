@@ -5,11 +5,20 @@ from zope.component import adapter
 from zope.component import getUtility
 from zope.interface import implementer
 
+import warnings
+
 
 @adapter(IPloneSiteRoot)
 @implementer(IFilterSchema)
 class FilterControlPanelAdapter:
     def __init__(self, context):
+        warnings.warn(
+            f"Usage of bbb controlpanel '{self.__class__.__name__}' is deprecated. "
+            "Use registry.forInterface(plone.base.interfaces.IFilterSchema, prefix='plone') instead. "
+            "It will be removed in Plone 7.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         registry = getUtility(IRegistry)
         self.settings = registry.forInterface(IFilterSchema, prefix="plone")
 
