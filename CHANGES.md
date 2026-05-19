@@ -15,6 +15,18 @@
 
 <!-- towncrier release notes start -->
 
+## 6.2.0 (2026-05-19)
+
+
+### Bug fixes:
+
+- Use feed logo in the RSS template @erral #4321
+
+
+### Internal:
+
+- Updated metadata version to 6203.  @mauritsvanrees 
+
 ## 6.2.0rc2 (2026-05-08)
 
 

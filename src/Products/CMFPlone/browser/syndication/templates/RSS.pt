@@ -15,7 +15,7 @@
   <title tal:content="feed/title">The title</title>
   <link tal:content="feed/link" />
   <description tal:content="feed/description" />
-  <image tal:attributes="rdf:resource string:${context/portal_url}/logo.png" />
+  <image tal:attributes="rdf:resource feed/logo" />
 
   <items>
     <rdf:Seq>
