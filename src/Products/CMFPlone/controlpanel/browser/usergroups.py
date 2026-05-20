@@ -136,12 +136,6 @@ class UsersGroupsControlPanelView(BrowserView):
 
         return groupResults + userResults
 
-    def atoi(self, s):
-        try:
-            return int(s)
-        except ValueError:
-            return 0
-
     @property
     def is_zope_manager(self):
         return getSecurityManager().checkPermission(ManagePortal, self.context)
