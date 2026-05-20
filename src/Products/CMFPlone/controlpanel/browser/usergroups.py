@@ -5,6 +5,7 @@ from plone.autoform.form import AutoExtensibleForm
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import ISecuritySchema
 from plone.base.interfaces import IUserGroupsSettingsSchema
+from plone.registry.interfaces import IRegistry
 from plone.z3cform import layout
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
@@ -13,8 +14,8 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import button
 from z3c.form import form
-from zope.component import getAdapter
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from ZTUtils import make_query
 
 
@@ -56,17 +57,21 @@ class UsersGroupsControlPanelView(BrowserView):
 
     @property
     def many_users(self):
-        return getAdapter(aq_inner(self.context), IUserGroupsSettingsSchema).many_users
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IUserGroupsSettingsSchema, prefix="plone")
+        return settings.many_users
 
     @property
     def many_groups(self):
-        return getAdapter(aq_inner(self.context), IUserGroupsSettingsSchema).many_groups
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IUserGroupsSettingsSchema, prefix="plone")
+        return settings.many_groups
 
     @property
     def email_as_username(self):
-        return getAdapter(
-            aq_inner(self.context), ISecuritySchema
-        ).get_use_email_as_login()
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISecuritySchema, prefix="plone")
+        return settings.use_email_as_login
 
     def makeQuery(self, **kw):
         return make_query(**kw)
