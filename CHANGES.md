@@ -15,6 +15,35 @@
 
 <!-- towncrier release notes start -->
 
+## 6.2.0 (2026-05-19)
+
+
+### Bug fixes:
+
+- Use feed logo in the RSS template @erral #4321
+
+
+### Internal:
+
+- Updated metadata version to 6203.  @mauritsvanrees 
+
+## 6.2.0rc2 (2026-05-08)
+
+
+### Bug fixes:
+
+- Preserve query parameters in redirect after login.
+  URLs with query strings (e.g. ``?foo=bar``) no longer redirect to the portal root.
+  @jensens #4201
+- Fix multi-word search so all word parts get wildcard prefix matching, not just the last one.
+  Move `munge_search_term` and helpers to `plone.base.utils`, deprecate old import paths.
+  @jensens #4205
+
+
+### Internal:
+
+- Updated metadata version to 6202.  @mauritsvanrees #6202
+
 ## 6.2.0rc1 (2026-03-27)
 
 
