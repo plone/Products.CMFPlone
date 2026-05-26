@@ -56,6 +56,12 @@ class RecycleBinStorage(Persistent):
         # Remove from main storage
         del self.items[key]
 
+    def pop(self, key, default=None):
+        item = self.items.get(key, default)
+        if item is not default:
+            del self[key]
+        return item
+
     def _add_to_index(self, key, value):
         """Add an item to the sorted index"""
         # Store as (date, id) for automatic sorting
@@ -776,8 +782,8 @@ class RecycleBin:
         try:
             # Remove only the requested entry. Do not cascade based on child path/id,
             # because separate recycle-bin entries may legitimately share those values.
-            del self.storage[item_id]
-            logger.info(f"Item {item_path} ({item_id}) purged from recycle bin")
+            item = self.storage.pop(item_id)
+            logger.info(f"Item {item['path']} ({item_id}) purged from recycle bin")
             return True
         except Exception as e:
             logger.error(f"Error purging item {item_id}: {str(e)}")
