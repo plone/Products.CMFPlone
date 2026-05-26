@@ -21,7 +21,6 @@ from zope.publisher.interfaces import IPublishTraverse
 
 import logging
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -170,6 +169,8 @@ class RecycleBinWorkflowMixin:
             if isinstance(nested, dict) and nested:
                 count += self._count_descendants(nested)
         return count
+
+
 class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
     """Form view for recycle bin management"""
 
@@ -612,32 +613,35 @@ class RecycleBinView(RecycleBinWorkflowMixin, form.Form):
         Returns:
             Sorted list of items
         """
-        match sort_option:
-            case "title_asc":
-                items.sort(key=lambda x: x.get("title", "").lower())
-            case "title_desc":
-                items.sort(key=lambda x: x.get("title", "").lower(), reverse=True)
-            case "type_asc":
-                items.sort(key=lambda x: x.get("portal_type", "").lower())
-            case "type_desc":
-                items.sort(key=lambda x: x.get("portal_type", "").lower(), reverse=True)
-            case "path_asc":
-                items.sort(key=lambda x: x.get("path", "").lower())
-            case "path_desc":
-                items.sort(key=lambda x: x.get("path", "").lower(), reverse=True)
-            case "date_asc":
-                items.sort(key=lambda x: x.get("deletion_date", datetime.now()))
-            case "workflow_asc":
-                items.sort(key=lambda x: (x.get("review_state") or "").lower())
-            case "workflow_desc":
-                items.sort(
-                    key=lambda x: (x.get("review_state") or "").lower(), reverse=True
-                )
-            case _:
-                # Default: date_desc
-                items.sort(
-                    key=lambda x: x.get("deletion_date", datetime.now()), reverse=True
-                )
+        if sort_option == "title_asc":
+            items.sort(key=lambda x: x.get("title", "").lower())
+        elif sort_option == "title_desc":
+            items.sort(key=lambda x: x.get("title", "").lower(), reverse=True)
+        elif sort_option == "type_asc":
+            items.sort(key=lambda x: x.get("type", "").lower())
+        elif sort_option == "type_desc":
+            items.sort(key=lambda x: x.get("type", "").lower(), reverse=True)
+        elif sort_option == "path_asc":
+            items.sort(key=lambda x: x.get("path", "").lower())
+        elif sort_option == "path_desc":
+            items.sort(key=lambda x: x.get("path", "").lower(), reverse=True)
+        elif sort_option == "size_asc":
+            items.sort(key=lambda x: x.get("size", 0))
+        elif sort_option == "size_desc":
+            items.sort(key=lambda x: x.get("size", 0), reverse=True)
+        elif sort_option == "date_asc":
+            items.sort(key=lambda x: x.get("deletion_date", datetime.now()))
+        elif sort_option == "workflow_asc":
+            items.sort(key=lambda x: (x.get("workflow_state") or "").lower())
+        elif sort_option == "workflow_desc":
+            items.sort(
+                key=lambda x: (x.get("workflow_state") or "").lower(), reverse=True
+            )
+        else:
+            # Default: date_desc
+            items.sort(
+                key=lambda x: x.get("deletion_date", datetime.now()), reverse=True
+            )
         return items
 
     def get_items(self):
@@ -945,7 +949,9 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
             )
         except Exception as e:
             logger.error(f"Error restoring child item: {e}")
-            message = translate(_("Failed to restore child item."), context=self.request)
+            message = translate(
+                _("Failed to restore child item."), context=self.request
+            )
             IStatusMessage(self.request).addStatusMessage(message, type="error")
             return
 
@@ -996,11 +1002,9 @@ class RecycleBinItemView(RecycleBinWorkflowMixin, form.Form):
         """Get all descendants of this item as a flat list with depth metadata."""
         item = self.get_item()
 
-
         if item and "children" in item:
             return list(self._flatten_children(item["children"], depth=0))
         return []
-
 
 
 class RecycleBinEnabled(BrowserView):

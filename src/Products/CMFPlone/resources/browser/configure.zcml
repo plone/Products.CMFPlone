@@ -8,14 +8,14 @@
       name="plone.resourceregistries.scripts"
       manager="plone.app.layout.viewlets.interfaces.IScripts"
       class="Products.CMFPlone.resources.browser.resource.ScriptsView"
-      permission="zope2.View"
+      permission="zope.Public"
       />
 
   <browser:viewlet
       name="plone.resourceregistries.styles"
       manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
       class="Products.CMFPlone.resources.browser.resource.StylesView"
-      permission="zope2.View"
+      permission="zope.Public"
       />
 
   <adapter

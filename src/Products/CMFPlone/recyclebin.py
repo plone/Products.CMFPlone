@@ -20,7 +20,6 @@ from zope.interface import implementer
 import logging
 import uuid
 
-
 logger = logging.getLogger(__name__)
 
 ANNOTATION_KEY = "Products.CMFPlone.RecycleBin"
@@ -759,9 +758,6 @@ class RecycleBin:
         # Remove from recycle bin
         del self.storage[item_id]
 
-        # Clean up any child items
-        self._cleanup_child_references(item_data)
-
         return restored_obj
 
     def purge_item(self, item_id) -> bool:
@@ -778,34 +774,8 @@ class RecycleBin:
             return False
 
         try:
-            # Purge any nested children first if this is a folder
-            item_data = self.storage[item_id]
-            item_path = item_data.get("path", "")
-
-            if "children" in item_data and isinstance(item_data["children"], dict):
-                # Find and purge standalone recycle bin entries for each child
-                def purge_children(children_dict, parent_path):
-                    for child_id, child_data in list(children_dict.items()):
-                        child_path = f"{parent_path}/{child_id}"
-
-                        # Find any standalone entries for this child in the recycle bin
-                        for rec_id, rec_data in list(self.storage.get_items()):
-                            if rec_id != item_id and rec_data.get("path") == child_path:
-                                logger.info(
-                                    f"Purging standalone entry for child: {child_path} (ID: {rec_id})"
-                                )
-                                del self.storage[rec_id]
-
-                        # If this child has children, recursively purge them first
-                        if "children" in child_data and isinstance(
-                            child_data["children"], dict
-                        ):
-                            purge_children(child_data["children"], child_path)
-
-                # Start the recursive purge of children
-                purge_children(item_data["children"], item_path)
-
-            # Remove the main item from storage - the object will be garbage collected
+            # Remove only the requested entry. Do not cascade based on child path/id,
+            # because separate recycle-bin entries may legitimately share those values.
             del self.storage[item_id]
             logger.info(f"Item {item_path} ({item_id}) purged from recycle bin")
             return True

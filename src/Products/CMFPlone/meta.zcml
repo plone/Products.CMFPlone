@@ -22,6 +22,7 @@
   <meta:provides feature="plone-60" />
   <meta:provides feature="plone-61" />
   <meta:provides feature="plone-62" />
+  <meta:provides feature="plone-63" />
 
   <include
       package="Products.CMFCore"
