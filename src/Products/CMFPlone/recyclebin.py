@@ -201,7 +201,7 @@ class RecycleBin:
                 "portal_type": getattr(child, "portal_type", "Unknown"),
                 "path": child_path,
                 "parent_path": folder_path,
-                "deletion_date": datetime.now(),
+                "deletion_date": self._get_deletion_date(),
                 "language": getattr(child, "language", None)
                 or getattr(child, "Language", lambda: None)(),
                 "review_state": child_workflow_state,
@@ -288,7 +288,7 @@ class RecycleBin:
             "portal_type": item_type or getattr(obj, "portal_type", "Unknown"),
             "path": original_path,
             "parent_path": parent_path,
-            "deletion_date": datetime.now(),
+            "deletion_date": self._get_deletion_date(),
             "deleted_by": user_id,
             "language": getattr(obj, "language", None)
             or getattr(obj, "Language", lambda: None)(),
@@ -400,7 +400,9 @@ class RecycleBin:
             "title": lambda x: x.get("title", "").lower(),
             "portal_type": lambda x: x.get("portal_type", "").lower(),
             "path": lambda x: x.get("path", "").lower(),
-            "deletion_date": lambda x: x.get("deletion_date", datetime.now()),
+            "deletion_date": lambda x: x.get(
+                "deletion_date", self._get_deletion_date()
+            ),
             "review_state": lambda x: (x.get("review_state") or "").lower(),
         }
         key_fn = sort_keys.get(sort_on, sort_keys["deletion_date"])
@@ -834,3 +836,6 @@ class RecycleBin:
     def clear(self):
         """Clear all items from the recycle bin"""
         self.storage.clear()
+
+    def _get_deletion_date(self):
+        return datetime.now()
