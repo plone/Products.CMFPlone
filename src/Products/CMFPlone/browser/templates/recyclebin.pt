@@ -833,7 +833,6 @@
                       <th i18n:translate="">Original path</th>
                       <th i18n:translate="">Deletion date</th>
                       <th i18n:translate="">Deleted by</th>
-                      <th i18n:translate="">Size</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -965,9 +964,6 @@
                       </td>
                       <td>
                         <span tal:content="item/deleted_by">Deleted by</span>
-                      </td>
-                      <td>
-                        <span tal:content="python:view.format_size(item.get('size', 0))">Size</span>
                       </td>
                     </tr>
                   </tbody>

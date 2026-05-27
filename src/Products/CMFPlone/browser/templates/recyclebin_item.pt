@@ -266,7 +266,6 @@
                           <th i18n:translate="">Type</th>
                           <th i18n:translate="">Workflow state</th>
                           <th i18n:translate="">Original path</th>
-                          <th i18n:translate="">Size</th>
                           <th i18n:translate="">Actions</th>
                         </tr>
                       </thead>
@@ -319,9 +318,6 @@
                           </td>
                           <td class="text-monospace small">
                             <span tal:content="child/path">Path</span>
-                          </td>
-                          <td>
-                            <span tal:content="python:view.format_size(child.get('size', 0))">Size</span>
                           </td>
                           <td>
                             <div class="d-flex flex-column gap-2">
