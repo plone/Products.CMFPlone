@@ -21,6 +21,7 @@ from zope.component import getUtility
 from zope.interface import implementer
 
 import datetime
+from datetime import timezone
 
 module_security = ModuleSecurityInfo("Products.CMFPlone.PasswordResetTool")
 
@@ -175,7 +176,7 @@ class PasswordResetTool(UniqueObject, SimpleItem):
         """Destroys all expired reset request records.
         Parameter controls how many days past expired it must be to disappear.
         """
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(timezone.utc)
         for key, record in list(self._requests.items()):
             stored_user, expiry = record
             if self.expired(expiry, now - datetime.timedelta(days=days)):
@@ -201,12 +202,12 @@ class PasswordResetTool(UniqueObject, SimpleItem):
 
     @security.private
     def expirationDate(self):
-        """Returns a DateTime for exipiry of a request from the
+        """Returns a datetime for expiry of a request from the
         current time.
 
         This is used by housekeeping methods (like clearEpired)
         and stored in reset request records."""
-        return datetime.datetime.utcnow() + datetime.timedelta(days=self._timedelta)
+        return datetime.datetime.now(timezone.utc) + datetime.timedelta(days=self._timedelta)
 
     @security.private
     def getValidUser(self, userid):
@@ -225,7 +226,9 @@ class PasswordResetTool(UniqueObject, SimpleItem):
         with regards to either 'now', if provided, or the current
         time."""
         if not now:
-            now = datetime.datetime.utcnow()
+            now = datetime.datetime.now(timezone.utc)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
         return now >= dt
 
 
