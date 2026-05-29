@@ -8,6 +8,7 @@ from AccessControl import ClassSecurityInfo
 from AccessControl import ModuleSecurityInfo
 from AccessControl.class_init import InitializeClass
 from BTrees.OOBTree import OOBTree
+from datetime import timezone
 from OFS.SimpleItem import SimpleItem
 from plone.base.interfaces import IPWResetTool
 from plone.base.interfaces import ISecuritySchema
@@ -21,7 +22,6 @@ from zope.component import getUtility
 from zope.interface import implementer
 
 import datetime
-from datetime import timezone
 
 module_security = ModuleSecurityInfo("Products.CMFPlone.PasswordResetTool")
 
@@ -207,7 +207,9 @@ class PasswordResetTool(UniqueObject, SimpleItem):
 
         This is used by housekeeping methods (like clearEpired)
         and stored in reset request records."""
-        return datetime.datetime.now(timezone.utc) + datetime.timedelta(days=self._timedelta)
+        return datetime.datetime.now(timezone.utc) + datetime.timedelta(
+            days=self._timedelta
+        )
 
     @security.private
     def getValidUser(self, userid):
