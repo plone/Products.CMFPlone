@@ -1,7 +1,7 @@
 from plone.base import PloneMessageFactory as _
+from plone.base.utils import transaction_note
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import transaction_note
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getMultiAdapter
