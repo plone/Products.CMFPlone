@@ -1,7 +1,7 @@
 from DateTime import DateTime
 from plone.base import PloneMessageFactory as _
+from plone.base.utils import safe_text
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import safe_nativestring
 from Products.Five import BrowserView
 
 
@@ -48,7 +48,7 @@ class ErrorLogSetProperties(BrowserView):
         ignored_exceptions = self.request.form.get("ignored_exceptions")
         copy_to_zlog = self.request.form.get("copy_to_zlog", 0)
 
-        ignored_exceptions = map(safe_nativestring, ignored_exceptions)
+        ignored_exceptions = map(safe_text, ignored_exceptions)
         self.context.error_log.setProperties(
             keep_entries, copy_to_zlog, ignored_exceptions
         )

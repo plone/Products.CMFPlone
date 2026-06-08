@@ -1,5 +1,6 @@
 from importlib.metadata import distribution
 from importlib.metadata import PackageNotFoundError
+from plone.base.utils import get_installer
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.factory import addPloneSite
@@ -7,7 +8,6 @@ from Products.CMFPlone.testing import (
     PRODUCTS_CMFPLONE_DISTRIBUTIONS_INTEGRATION_TESTING,
 )
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
-from Products.CMFPlone.utils import get_installer
 from zope.component import getUtility
 from zope.component import queryUtility
 
