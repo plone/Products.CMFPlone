@@ -53,3 +53,69 @@ class LogoTests(unittest.TestCase):
         logo_url, logo_type = getSiteLogo(include_type=True)
         self.assertTrue("http://nohost/plone/++resource++plone-logo.svg" in logo_url)
         self.assertEqual("image/svg+xml", logo_type)
+
+
+class GetCurrentContextTests(unittest.TestCase):
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer["portal"]
+        self.request = self.layer["request"]
+
+    def tearDown(self):
+        pass
+
+    def test_get_current_context_no_request(self):
+        from Products.CMFPlone.utils import get_current_context
+        from zope.globalrequest import clearRequest
+
+        clearRequest()
+        self.assertIsNone(get_current_context())
+
+    def test_get_current_context_with_published_view(self):
+        from Products.CMFPlone.utils import get_current_context
+        from zope.globalrequest import setRequest
+
+        class FakeView:
+            def __init__(self, context):
+                self.context = context
+
+        view = FakeView(self.portal)
+        self.request.set("PUBLISHED", view)
+        setRequest(self.request)
+
+        self.assertEqual(get_current_context(), self.portal)
+
+    def test_get_current_context_with_published_view_parent(self):
+        from Products.CMFPlone.utils import get_current_context
+        from zope.globalrequest import setRequest
+
+        class FakeView:
+            def __init__(self, context):
+                self.__parent__ = context
+
+        view = FakeView(self.portal)
+        self.request.set("PUBLISHED", view)
+        setRequest(self.request)
+
+        self.assertEqual(get_current_context(), self.portal)
+
+    def test_get_current_context_from_parents(self):
+        from Products.CMFPlone.utils import get_current_context
+        from zope.globalrequest import setRequest
+
+        self.request.set("PARENTS", [self.portal])
+        setRequest(self.request)
+
+        self.assertEqual(get_current_context(), self.portal)
+
+    def test_get_current_context_non_contentish_ignored(self):
+        from Products.CMFPlone.utils import get_current_context
+        from zope.globalrequest import setRequest
+
+        # Something that is not IContentish
+        non_content = object()
+        self.request.set("PARENTS", [non_content])
+        setRequest(self.request)
+
+        self.assertIsNone(get_current_context())
