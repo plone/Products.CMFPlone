@@ -62,9 +62,6 @@ class GetCurrentContextTests(unittest.TestCase):
         self.portal = self.layer["portal"]
         self.request = self.layer["request"]
 
-    def tearDown(self):
-        pass
-
     def test_get_current_context_no_request(self):
         from Products.CMFPlone.utils import get_current_context
         from zope.globalrequest import clearRequest

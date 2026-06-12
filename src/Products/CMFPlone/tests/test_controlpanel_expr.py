@@ -14,9 +14,6 @@ class TestControlPanelExpressions(unittest.TestCase):
         self.cp = getToolByName(self.portal, "portal_controlpanel")
         self.folder = self.portal["test-folder"]
 
-    def tearDown(self):
-        pass
-
     def test_enum_configlets_uses_plone_context_state_on_portal(self):
         # This condition uses plone_context_state which is provided by the new _getExprContext
         # is_portal_root() will be true on portal root.
