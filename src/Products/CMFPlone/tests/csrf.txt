@@ -305,32 +305,8 @@ Now rename
   >>> browser.contents
   '...Info...Renamed...a-folder...to...folder...'
 
-"Sharing" the item is next:
-
-  >>> browser.getLink('Sharing').click()
-  >>> browser.url
-  'http://nohost/plone/folder/@@sharing?_auth...'
-  >>> browser.getControl(name='entries.role_Editor:records').value
-  []
-
-Change the value of the second _authenticator and check for Exception
-
-  >>> browser.getControl(name='_authenticator', index=1).value = 'invalid!'
-  >>> browser.getControl(name='entries.role_Editor:records').value = ['True']
-  >>> browser.getControl('Save').click()
-  Traceback (most recent call last):
-  ...
-  zExceptions.Forbidden
-
-  >>> browser.getLink('Sharing').click()
-  >>> browser.getControl(name='entries.role_Editor:records').value = ['True']
-  >>> browser.getControl('Save').click()
-  >>> browser.url
-  'http://nohost/plone/folder/@@sharing'
-  >>> browser.contents
-  '...Info...Changes saved...'
-  >>> browser.getControl(name='entries.role_Editor:records').value
-  ['True']
+The CSRF protection of the Classic-UI ``@@sharing`` view is tested in
+``plone.app.layout`` (``sharing_csrf.txt``), where that view now lives.
 
 And finally removing the item again:
 

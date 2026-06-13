@@ -27,13 +27,6 @@ Scenario: Disable Standard Editor in the Editing Control Panel
      Then I see the standard editor when I create a document
 
 
-Scenario: Enable Link Integrity Check in the Editing Control Panel
-    Given a logged-in site administrator
-      and the editing control panel
-    When I enable link integrity checks
-    # Linkintegrity checks are in `test_linkintegrity.robot`
-
-
 Scenario: Enable Lock on Through The Web in the Editing Control Panel
     Given a logged-in site administrator
       and the editing control panel
@@ -67,12 +60,6 @@ I enable the standard editor
 
 I go to the editing control panel
     Go to    ${PLONE_URL}/@@editing-controlpanel
-
-
-I enable link integrity checks
-    Check Checkbox    //input[@name="form.widgets.enable_link_integrity_checks:list"]
-    Click    //button[@name="form.buttons.save"]
-    Wait For Condition    Text    //body    contains    Changes saved
 
 
 I enable lock on through the web
