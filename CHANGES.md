@@ -15,6 +15,24 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.5 (2026-06-25)
+
+
+### Bug fixes:
+
+- Allow a Site Administrator to manage the users roles if there are users that have the Manager role set through the portal_role plugin.
+  [ale-rt] #4287
+
+
+### Internal:
+
+- Updated metadata version to 6112.  @mauritsvanrees #6112
+
+
+### Tests
+
+- Fix robottests for UI changes in `pat-contentbrowser`. @petschki 
+
 ## 6.1.4 (2026-01-15)
 
 
