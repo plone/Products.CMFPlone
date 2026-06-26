@@ -15,6 +15,23 @@
 
 <!-- towncrier release notes start -->
 
+## 6.2.1 (2026-06-26)
+
+
+### Bug fixes:
+
+- Always allow access to the scripts and styles viewlets.
+  Otherwise the site may look ugly when you don't have access to the context.
+  @mauritsvanrees #4239
+- Import from `plone.base.utils` instead of `Products.CMFPlone.utils` where possible.  @mauritsvanrees 
+
+
+### Internal:
+
+- Replace BBB ``getAdapter`` calls with ``registry.forInterface()`` in usergroups control panel.
+  @jensens #1050
+- Updated metadata version to 6204.  @mauritsvanrees 
+
 ## 6.2.0 (2026-05-19)
 
 
