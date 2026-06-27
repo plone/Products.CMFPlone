@@ -1,10 +1,11 @@
 # Generated from:
-# https://github.com/plone/meta/tree/main/src/plone/meta/default
+# https://github.com/plone/meta/tree/2.x/src/plone/meta/default
 # See the inline comments on how to expand/tweak this configuration file
 name: Tests
 
 on:
   push:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -29,11 +30,15 @@ jobs:
     - uses: actions/checkout@v7
       with:
         persist-credentials: false
-    - name: Set up Python
-      uses: actions/setup-python@v6
+    - name: Install uv + caching
+      uses: astral-sh/setup-uv@v8.1.0
       with:
+        enable-cache: true
+        cache-dependency-glob: |
+          setup.*
+          tox.ini
+          pyproject.toml
         python-version: ${{ matrix.config[0] }}
-        allow-prereleases: true
     - name: locale
       # needed for CMFPlone testUnicodeSplitter test
       run: |
@@ -47,25 +52,13 @@ jobs:
 #  _your own configuration lines_
 #  """
 ##
-    - name: Pip cache
-      uses: actions/cache@v5
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ matrix.config[0] }}-${{ hashFiles('setup.*', 'tox.ini') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-${{ matrix.config[0] }}-
-          ${{ runner.os }}-pip-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install tox
     - name: Initialize tox
       # the bash one-liner below does not work on Windows
       if: contains(matrix.os, 'ubuntu')
       run: |
-        if [ `tox list --no-desc -f init|wc -l` = 1 ]; then tox -e init;else true; fi
+        if [ `uvx tox list --no-desc -f init|wc -l` = 1 ]; then uvx --with tox-uv tox -e init;else true; fi
     - name: Test
-      run: tox -e ${{ matrix.config[2] }}
+      run: uvx --with tox-uv tox -e ${{ matrix.config[2] }}
 
 
 ##
