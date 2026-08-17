@@ -91,7 +91,7 @@ I add a new action
     Type Text    //input[@name="form.widgets.id"]    favorites
     Click    //div[contains(@class,'pattern-modal-buttons')]/button
     Wait For Condition    Text    //body    contains    favorites
-    Click    //*[@id="content-core"]/section[6]/section/ol/li[8]/form/a
+    Click    //*[@id="content-core"]/section[6]/section/ol/li[9]/form/a
     Wait For Condition    Text    //body    contains    Action Settings
     Type Text    //input[@name="form.widgets.title"]    My favorites
     Type Text    //input[@name="form.widgets.url_expr"]    string:\${globals_view/navigationRootUrl}/favorites
@@ -111,7 +111,7 @@ I delete an action
     Click    //*[@id="content-core"]/section[2]/section/ol/li[1]/form/button[@name="delete"]
 
 I change category of an action
-    Click    //*[@id="content-core"]/section[6]/section/ol/li[7]/form/a
+    Click    //*[@id="content-core"]/section[6]/section/ol/li[8]/form/a
     Wait For Condition    Text    //body    contains    Action Settings
     Select Options By    //select[@name="form.widgets.category:list"]    value    portal_tabs
     Click    //div[contains(@class,'pattern-modal-buttons')]/button
