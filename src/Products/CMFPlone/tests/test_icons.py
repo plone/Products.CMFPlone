@@ -1,6 +1,9 @@
+from lxml import etree
 from plone.testing.zope import Browser
+from Products.CMFPlone.browser.icons import _add_aria_title
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
+import io
 import unittest
 
 
@@ -71,3 +74,84 @@ class IconTraverserTest(unittest.TestCase):
         """
         self.request.environ["PATH_INFO"] = "plone"
         self.portal.restrictedTraverse("++plone++bootstrap-icons/clock.svg")
+
+
+class SVGAriaTest(unittest.TestCase):
+    """The aria attributes put on SVG icons by the icon resolver.
+
+    These exercise the modifier directly, so they need no Plone layer.
+    """
+
+    SVG = (
+        b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">'
+        b'<path d="M0 0h16v16H0z"/></svg>'
+    )
+
+    def _modify(self, cfg, svg=None):
+        tree = etree.parse(io.BytesIO(svg or self.SVG))
+        _add_aria_title(tree, cfg)
+        return tree.getroot()
+
+    def test_icon_is_hidden_from_assistive_technology(self):
+        # Icons are always rendered beside their own text label, so they are
+        # decorative and must not be announced.
+        root = self._modify({"title": "Bug"})
+        self.assertEqual(root.attrib.get("aria-hidden"), "true")
+
+    def test_icon_without_title_is_also_hidden(self):
+        root = self._modify({"title": ""})
+        self.assertEqual(root.attrib.get("aria-hidden"), "true")
+
+    def test_broken_aria_labelledby_is_not_emitted(self):
+        # Regression for #3394: this pointed at id="title", which was never
+        # set -- and _strip_id removes all ids anyway.
+        root = self._modify({"title": "Bug"})
+        self.assertNotIn("aria-labelledby", root.attrib)
+
+    def test_existing_aria_labelledby_is_removed(self):
+        svg = (
+            b'<svg xmlns="http://www.w3.org/2000/svg" aria-labelledby="title">'
+            b"</svg>"
+        )
+        root = self._modify({"title": "Bug"}, svg)
+        self.assertNotIn("aria-labelledby", root.attrib)
+
+    def test_title_is_kept_for_the_hover_tooltip(self):
+        root = self._modify({"title": "Bug"})
+        title = root.find("{http://www.w3.org/2000/svg}title")
+        self.assertIsNotNone(title)
+        self.assertEqual(title.text, "Bug")
+
+    def test_no_title_tag_when_no_alt_given(self):
+        root = self._modify({"title": ""})
+        self.assertIsNone(root.find("{http://www.w3.org/2000/svg}title"))
+
+    def test_title_is_not_duplicated_on_a_second_pass(self):
+        # The title is created in the SVG namespace, so the lookup finds it
+        # again instead of appending a second one.
+        tree = etree.parse(io.BytesIO(self.SVG))
+        _add_aria_title(tree, {"title": "Bug"})
+        _add_aria_title(tree, {"title": "Bug"})
+        titles = tree.getroot().findall("{http://www.w3.org/2000/svg}title")
+        self.assertEqual(len(titles), 1)
+
+    def test_prefixed_namespace_svg(self):
+        # An SVG declaring its namespace with a prefix has no default nsmap
+        # entry; the title must still land in the SVG namespace.
+        svg = (
+            b'<svg:svg xmlns:svg="http://www.w3.org/2000/svg" '
+            b'viewBox="0 0 16 16"></svg:svg>'
+        )
+        root = self._modify({"title": "Bug"}, svg)
+        self.assertEqual(root.attrib.get("aria-hidden"), "true")
+        title = root.find("{http://www.w3.org/2000/svg}title")
+        self.assertIsNotNone(title)
+        self.assertEqual(title.text, "Bug")
+
+    def test_serialised_output(self):
+        tree = etree.parse(io.BytesIO(self.SVG))
+        _add_aria_title(tree, {"title": "Bug"})
+        out = etree.tostring(tree).decode()
+        self.assertIn('aria-hidden="true"', out)
+        self.assertNotIn("aria-labelledby", out)
+        self.assertIn("<title>Bug</title>", out)
