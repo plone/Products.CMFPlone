@@ -15,6 +15,18 @@
 
 <!-- towncrier release notes start -->
 
+## 6.2.2 (2026-09-10)
+
+
+### Bug fixes:
+
+- Only send mail from contact-info on POST requests.  @mauritsvanrees #4360
+
+
+### Internal:
+
+- Updated metadata version to 6205. @thet 
+
 ## 6.2.1 (2026-06-26)
 
 
