@@ -17,18 +17,32 @@ SVG_MODIFER = {}
 
 
 def _add_aria_title(svgtree, cfg):
+    root = svgtree.getroot()
+    # Every icons.tag() call site renders the icon next to its own text label,
+    # so the icons carry no information of their own and are decorative in the
+    # ARIA sense. Hide them from assistive technology rather than have screen
+    # readers announce them twice.
+    root.attrib["aria-hidden"] = "true"
+    # The previous "aria-labelledby" pointed at id="title", which was never set
+    # on the title element -- and _strip_id removes every id from the tree in
+    # any case, so the reference could never resolve. See issue #3394.
+    root.attrib.pop("aria-labelledby", None)
     if not cfg.get("title"):
         return
-    root = svgtree.getroot()
-    ns = root.nsmap.get(None, "")
-    # set title tag
+    # Take the namespace from the root element itself rather than from the
+    # default namespace mapping: an SVG using a prefixed namespace
+    # (<svg:svg xmlns:svg="...">) has no default entry, and nsmap.get(None)
+    # would fall back to no namespace at all.
+    ns = etree.QName(root).namespace or ""
+    # A title tag is still useful: browsers show it as a hover tooltip. It is
+    # not used for screen reader labelling, which aria-hidden now suppresses.
     title = root.find(f"{{{ns}}}title")
     if title is None:
-        title = etree.Element("title")
-        root.append(title)
+        # Build it in the SVG namespace. A bare etree.Element("title") lands in
+        # no namespace, so the lookup above could never find a title this code
+        # had created and a second pass would append a duplicate one.
+        title = etree.SubElement(root, f"{{{ns}}}title" if ns else "title")
     title.text = cfg["title"]
-    # add aria attr
-    root.attrib["aria-labelledby"] = "title"
 
 
 SVG_MODIFER["add_aria_title"] = _add_aria_title
