@@ -3,7 +3,7 @@
 # See the inline comments on how to expand/tweak this configuration file
 [meta]
 template = "default"
-commit-id = "2.9.0"
+commit-id = "2.10.1.dev0"
 
 [flake8]
 extra_lines = """
@@ -33,7 +33,7 @@ dependencies_mappings = [
 ]
 
 [tox]
-test_matrix = {"6.2" = ["*"]}
+test_matrix = {"6.3" = ["*"]}
 
 [github]
 jobs = [

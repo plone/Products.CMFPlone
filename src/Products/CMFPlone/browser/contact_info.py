@@ -44,6 +44,12 @@ class ContactForm(AutoExtensibleForm, form.Form):
 
     @button.buttonAndHandler(_("label_send", default="Send"), name="send")
     def handle_send(self, action):
+        if self.request.method != "POST":
+            # Only send on POST requests.
+            # See https://github.com/plone/Products.CMFPlone/issues/4360
+            self.success = False
+            return
+
         data, errors = self.extractData()
         if errors:
             IStatusMessage(self.request).add(self.formErrorsMessage, type="error")

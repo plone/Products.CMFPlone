@@ -79,3 +79,12 @@ lines ending in different spots:
   >>> import quopri
   >>> quopri.decodestring(msg).replace(b'\n', b' ')
   b'...Another t\xc3\xa4st message...You are receiving this mail because T\xc3\xa4st user test@plone.test...is sending feedback about the site you administer at...'
+
+We should only send an email on a POST request.
+See https://github.com/plone/Products.CMFPlone/issues/4360
+
+  >>> browser.open('http://nohost/plone/contact-info?form.buttons.send=1&form.widgets.sender_fullname=Maurits&form.widgets.sender_from_address=maurits@example.com&form.widgets.subject=Hello&form.widgets.message=Bye')
+  >>> browser.url.startswith('http://nohost/plone/contact-info')
+  True
+  >>> 'A mail has now been sent' in browser.contents
+  False
