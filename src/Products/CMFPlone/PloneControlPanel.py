@@ -168,6 +168,14 @@ class PloneControlPanel(
             return
         self.deleteActions(selection)
 
+    def _queryActionById(self, id):
+        """Returns the currently stored action for the input id if exists."""
+        if not id:
+            return
+        for action in self.listActions():
+            if action.getId() == id:
+                return action
+
     def _extractAction(self, properties, index):
         # Extract an ActionInformation from the funky form properties.
         id = str(properties.get("id_%d" % index, ""))
@@ -183,6 +191,13 @@ class PloneControlPanel(
 
         if not name:
             raise ValueError("A name is required.")
+
+        # Restore extracted name string to i18n Message
+        current_action = self._queryActionById(id)
+        if current_action:
+            current_name = current_action.Title()
+            if isinstance(current_name, Message) and name == str(current_name):
+                name = current_name
 
         if action != "":
             action = Expression(text=action)
