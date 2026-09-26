@@ -6,6 +6,16 @@
     i18n_domain="plone"
     >
 
+  <include
+      package="z3c.jbot"
+      file="meta.zcml"
+      zcml:condition="installed z3c.jbot"
+      />
+  <browser:jbotDeprecated
+      dictionary=".jbot_deprecations"
+      zcml:condition="have jbot-deprecations"
+      />
+
   <include package=".login" />
   <include file="admin.zcml" />
   <include
@@ -156,20 +166,6 @@
       name="author-feedback-template"
       for="plone.base.interfaces.IPloneSiteRoot"
       template="templates/author_feedback_template.pt"
-      permission="zope.Public"
-      />
-
-  <browser:page
-      name="contact-info"
-      for="*"
-      class=".contact_info.ContactForm"
-      permission="zope.Public"
-      />
-
-  <browser:page
-      name="contact-info-email"
-      for="*"
-      template="templates/contact-info-email.pt"
       permission="zope.Public"
       />
 
