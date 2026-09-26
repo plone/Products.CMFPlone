@@ -147,14 +147,6 @@
       permission="zope.Public"
       />
 
-  <browser:page
-      name="author"
-      for="plone.base.interfaces.IPloneSiteRoot"
-      class=".author.AuthorView"
-      template="templates/author.pt"
-      permission="zope.Public"
-      />
-
   <adapter
       factory=".navtree.DefaultNavtreeStrategy"
       provides="plone.app.layout.navigation.interfaces.INavtreeStrategy"

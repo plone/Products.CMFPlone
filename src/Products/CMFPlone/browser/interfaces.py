@@ -12,6 +12,7 @@ zope.deferredimport.deprecated(
     "Import from plone.app.layout.views.interfaces instead. "
     "This will be removed in Plone 7.",
     IContactForm="plone.app.layout.views.interfaces:IContactForm",
+    IAuthorFeedbackForm="plone.app.layout.views.interfaces:IAuthorFeedbackForm",
 )
 
 
@@ -300,16 +301,3 @@ class ISendToForm(Interface):
         description=_("help_comment_to_link", default="A comment about this link."),
         required=False,
     )
-
-
-class IAuthorFeedbackForm(Interface):
-    """Interface describing the author feedback form"""
-
-    subject = schema.TextLine(
-        title=_("label_subject", default="Subject"), required=True
-    )
-
-    message = schema.Text(title=_("label_message", default="Message"), required=True)
-
-    author = schema.TextLine()
-    referer = schema.TextLine(required=False)
