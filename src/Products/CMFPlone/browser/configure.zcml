@@ -134,13 +134,6 @@
       />
 
   <browser:page
-      name="render-toolbar"
-      for="*"
-      template="templates/toolbar.pt"
-      permission="zope.Public"
-      />
-
-  <browser:page
       name="global_statusmessage"
       for="*"
       class=".global_statusmessage.GlobalStatusMessage"

@@ -28,4 +28,7 @@ jbot_deprecations = {
     "Products.CMFPlone.browser.templates.recently_published.pt": (
         "plone.app.layout.views.templates.recently_published.pt"
     ),
+    "Products.CMFPlone.browser.templates.toolbar.pt": (
+        "plone.app.layout.views.templates.toolbar.pt"
+    ),
 }
