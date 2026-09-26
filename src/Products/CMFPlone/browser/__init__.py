@@ -10,4 +10,7 @@ jbot_deprecations = {
     "Products.CMFPlone.browser.templates.colophon.pt": (
         "plone.app.layout.views.templates.colophon.pt"
     ),
+    "Products.CMFPlone.browser.templates.accessibility-info.pt": (
+        "plone.app.layout.views.templates.accessibility-info.pt"
+    ),
 }

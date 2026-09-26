@@ -148,13 +148,6 @@
       />
 
   <browser:page
-      name="accessibility-info"
-      for="plone.base.interfaces.INavigationRoot"
-      template="templates/accessibility-info.pt"
-      permission="zope.Public"
-      />
-
-  <browser:page
       name="author"
       for="plone.base.interfaces.IPloneSiteRoot"
       class=".author.AuthorView"
