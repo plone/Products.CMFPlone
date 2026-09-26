@@ -208,13 +208,6 @@
       />
 
   <browser:page
-      name="footer"
-      for="*"
-      template="templates/footer.pt"
-      permission="zope.Public"
-      />
-
-  <browser:page
       name="index.html"
       for="Exception"
       class=".exceptions.ExceptionView"

@@ -19,4 +19,7 @@ jbot_deprecations = {
     "Products.CMFPlone.browser.templates.author.pt": (
         "plone.app.layout.views.templates.author.pt"
     ),
+    "Products.CMFPlone.browser.templates.footer.pt": (
+        "plone.app.layout.views.templates.footer.pt"
+    ),
 }
