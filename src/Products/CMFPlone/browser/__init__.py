@@ -13,4 +13,7 @@ jbot_deprecations = {
     "Products.CMFPlone.browser.templates.accessibility-info.pt": (
         "plone.app.layout.views.templates.accessibility-info.pt"
     ),
+    "Products.CMFPlone.browser.templates.author_feedback_template.pt": (
+        "plone.app.layout.views.templates.author_feedback_template.pt"
+    ),
 }
