@@ -1,1 +1,0 @@
-<div tal:replace="structure provider:plone.toolbar" />

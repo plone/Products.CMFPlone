@@ -6,6 +6,16 @@
     i18n_domain="plone"
     >
 
+  <include
+      package="z3c.jbot"
+      file="meta.zcml"
+      zcml:condition="installed z3c.jbot"
+      />
+  <browser:jbotDeprecated
+      dictionary=".jbot_deprecations"
+      zcml:condition="have jbot-deprecations"
+      />
+
   <include package=".login" />
   <include file="admin.zcml" />
   <include
@@ -124,52 +134,9 @@
       />
 
   <browser:page
-      name="render-toolbar"
-      for="*"
-      template="templates/toolbar.pt"
-      permission="zope.Public"
-      />
-
-  <browser:page
       name="global_statusmessage"
       for="*"
       class=".global_statusmessage.GlobalStatusMessage"
-      permission="zope.Public"
-      />
-
-  <browser:page
-      name="accessibility-info"
-      for="plone.base.interfaces.INavigationRoot"
-      template="templates/accessibility-info.pt"
-      permission="zope.Public"
-      />
-
-  <browser:page
-      name="author"
-      for="plone.base.interfaces.IPloneSiteRoot"
-      class=".author.AuthorView"
-      template="templates/author.pt"
-      permission="zope.Public"
-      />
-
-  <browser:page
-      name="author-feedback-template"
-      for="plone.base.interfaces.IPloneSiteRoot"
-      template="templates/author_feedback_template.pt"
-      permission="zope.Public"
-      />
-
-  <browser:page
-      name="contact-info"
-      for="*"
-      class=".contact_info.ContactForm"
-      permission="zope.Public"
-      />
-
-  <browser:page
-      name="contact-info-email"
-      for="*"
-      template="templates/contact-info-email.pt"
       permission="zope.Public"
       />
 
@@ -234,20 +201,6 @@
       />
 
   <browser:page
-      name="footer"
-      for="*"
-      template="templates/footer.pt"
-      permission="zope.Public"
-      />
-
-  <browser:page
-      name="colophon"
-      for="*"
-      template="templates/colophon.pt"
-      permission="zope.Public"
-      />
-
-  <browser:page
       name="index.html"
       for="Exception"
       class=".exceptions.ExceptionView"
@@ -289,20 +242,6 @@
       for="*"
       class=".icons.IconsView"
       permission="zope.Public"
-      />
-
-  <browser:page
-      name="recently_modified"
-      for="*"
-      template="templates/recently_modified.pt"
-      permission="zope2.View"
-      />
-
-  <browser:page
-      name="recently_published"
-      for="*"
-      template="templates/recently_published.pt"
-      permission="zope2.View"
       />
 
 </configure>
