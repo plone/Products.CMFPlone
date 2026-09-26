@@ -237,13 +237,6 @@
       />
 
   <browser:page
-      name="colophon"
-      for="*"
-      template="templates/colophon.pt"
-      permission="zope.Public"
-      />
-
-  <browser:page
       name="index.html"
       for="Exception"
       class=".exceptions.ExceptionView"
