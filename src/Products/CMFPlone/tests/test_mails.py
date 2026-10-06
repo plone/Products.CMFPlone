@@ -44,15 +44,6 @@ def test_suite():
         (
             layered(
                 doctest.DocFileSuite(
-                    "mails.txt",
-                    optionflags=OPTIONFLAGS,
-                    package="Products.CMFPlone.tests",
-                    checker=Py23DocChecker(),
-                ),
-                layer=MOCK_MAILHOST_FUNCTIONAL_TESTING,
-            ),
-            layered(
-                doctest.DocFileSuite(
                     "emaillogin.rst",
                     optionflags=OPTIONFLAGS,
                     package="Products.CMFPlone.tests",

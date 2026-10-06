@@ -4,6 +4,17 @@ from zope import schema
 from zope.interface import Attribute
 from zope.interface import Interface
 
+import zope.deferredimport
+
+zope.deferredimport.initialize()
+
+zope.deferredimport.deprecated(
+    "Import from plone.app.layout.views.interfaces instead. "
+    "This will be removed in Plone 7.",
+    IContactForm="plone.app.layout.views.interfaces:IContactForm",
+    IAuthorFeedbackForm="plone.app.layout.views.interfaces:IAuthorFeedbackForm",
+)
+
 
 class INavigationBreadcrumbs(Interface):
     def breadcrumbs():
@@ -290,46 +301,3 @@ class ISendToForm(Interface):
         description=_("help_comment_to_link", default="A comment about this link."),
         required=False,
     )
-
-
-class IContactForm(Interface):
-    """Interface for describing the contact info form"""
-
-    sender_fullname = schema.TextLine(
-        title=_("label_sender_fullname", default="Name"),
-        description=_("help_sender_fullname", default="Please enter your full name."),
-        required=True,
-    )
-
-    sender_from_address = Email(
-        title=_("label_sender_from_address", default="From"),
-        description=_(
-            "help_sender_from_address", default="Please enter your e-mail address."
-        ),
-        required=True,
-    )
-
-    subject = schema.TextLine(
-        title=_("label_subject", default="Subject"), required=True
-    )
-
-    message = schema.Text(
-        title=_("label_message", default="Message"),
-        description=_(
-            "help_message", default="Please enter the message you want to send."
-        ),
-        required=False,
-    )
-
-
-class IAuthorFeedbackForm(Interface):
-    """Interface describing the author feedback form"""
-
-    subject = schema.TextLine(
-        title=_("label_subject", default="Subject"), required=True
-    )
-
-    message = schema.Text(title=_("label_message", default="Message"), required=True)
-
-    author = schema.TextLine()
-    referer = schema.TextLine(required=False)
