@@ -63,6 +63,8 @@ class NonInstallable:
             "Products.CMFEditions",
             "Products.NuPlone",
             "borg.localrole",
+            # PLIP 4119 phase 2: remove to make content rules an opt-in add-on.
+            "plone.app.contentrules",
             "plone.app.dexterity",
             "plone.app.event",
             "plone.app.intid",
@@ -105,6 +107,8 @@ class NonInstallable:
             "plone.portlet.static:default",
             "plone.portlet.collection:default",
             "plone.protect:default",
+            # PLIP 4119 phase 2: remove to make content rules an opt-in add-on.
+            "plone.app.contentrules:default",
             "plone.app.contenttypes:default",
             "plone.app.dexterity:default",
             "plone.app.event:default",
