@@ -244,18 +244,6 @@
   >
     <permission>Manage portal</permission>
   </configlet>
-  <configlet action_id="ContentRules"
-             appId="Plone"
-             category="plone-content"
-             condition_expr=""
-             icon_expr="string:card-checklist"
-             title="Content Rules"
-             url_expr="string:${portal_url}/@@rules-controlpanel"
-             visible="True"
-             i18n:attributes="title"
-  >
-    <permission>Content rules: Manage rules</permission>
-  </configlet>
   <configlet action_id="syndication"
              appId="Plone"
              category="plone-general"

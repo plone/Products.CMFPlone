@@ -60,6 +60,24 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(instance, fsversion)
         self.assertEqual(instance, version)
 
+    def testContentRulesInstalledAsDependency(self):
+        # Since PLIP 4119 the setup lives in plone.app.contentrules.
+        from plone.contentrules.engine.interfaces import IRuleStorage
+
+        self.assertNotEqual(
+            self.setup.getLastVersionForProfile("plone.app.contentrules:default"),
+            "unknown",
+        )
+        self.assertIsNotNone(queryUtility(IRuleStorage))
+        self.setRoles(["Manager"])
+        configlets = [c["id"] for c in self.cp.enumConfiglets(group="plone-content")]
+        self.assertIn("ContentRules", configlets)
+        object_actions = list(self.actions.object.objectIds())
+        self.assertEqual(
+            object_actions.index("contentrules"),
+            object_actions.index("local_roles") + 1,
+        )
+
     def testPloneSkins(self):
         # Plone skins should have been set up
         self.assertTrue(hasattr(self.folder, "logo.png"))
