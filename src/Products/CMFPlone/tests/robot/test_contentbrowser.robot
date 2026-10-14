@@ -230,8 +230,10 @@ I save the document
 I edit the Link
     Go to  ${PLONE_URL}/${LINK_ID}/edit
     Click  //div[contains(@class, "content-browser-selected-items")]/a
-    # Click first element in first column, that is a folder
-    Click item in contenbrowser column    1    3
+    # Select the intended target, regardless of the browser's item order.
+    ${target}=    Set Variable    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[1]/div[contains(@class, "levelItems")]/div[normalize-space(.)="Test Folder"]
+    Wait For Condition    Element States    ${target}    contains    visible
+    Click    ${target}
     # Click the select Button in the Toolbar of column 2
     Click    //div[contains(@class, "content-browser-wrapper")]//div[contains(@class, "levelColumns")]/div[2]/div[contains(@class, "levelToolbar")]/button
 
