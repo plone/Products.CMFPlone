@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-  <version>4</version>
+  <version>5</version>
   <dependencies>
     <dependency>profile-Products.MimetypesRegistry:MimetypesRegistry</dependency>
     <dependency>profile-Products.PortalTransforms:PortalTransforms</dependency>
     <dependency>profile-Products.CMFEditions:CMFEditions</dependency>
     <dependency>profile-Products.PlonePAS:PlonePAS</dependency>
+    <dependency>profile-plone.app.contentrules:default</dependency>
     <dependency>profile-plone.app.linkintegrity:default</dependency>
     <dependency>profile-plone.app.registry:default</dependency>
     <dependency>profile-plone.app.theming:default</dependency>
