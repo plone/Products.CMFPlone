@@ -54,6 +54,23 @@ allow_module('os')
         script.write(src)
         self.assertRaises((ImportError, Unauthorized), script)
 
+    def test_allow_class_roles_disabled(self):
+        import AccessControl
+
+        self.assertEqual(AccessControl.allow_class.__roles__, ())
+
+    def test_allow_class_not_available_in_RestrictedPython(self):
+        src = """
+import AccessControl
+AccessControl.allow_class.__roles__ = ()
+"""
+        from Products.PythonScripts.PythonScript import PythonScript
+
+        script = makerequest(PythonScript("bazscript"))
+        script._filepath = "bazscript"
+        script.write(src)
+        self.assertRaises((ImportError, Unauthorized, SyntaxError), script)
+
     def test_get_request_var_or_attr_disallowed(self):
         import App.Undo
 

@@ -1,7 +1,8 @@
-# 1. make sure allow_module can't be called from restricted code
+# 1. make sure allow_module and allow_class can't be called from restricted code
 import AccessControl
 
 AccessControl.allow_module.__roles__ = ()
+AccessControl.allow_class.__roles__ = ()
 
 # 2. make sure /@@ doesn't traverse to annotations
 from zope.traversing import namespace

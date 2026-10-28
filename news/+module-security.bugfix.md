@@ -1,1 +1,1 @@
-Restrict the security declarations of `Products.CMFPlone.utils` and `Products.CMFPlone.browser.navtree` to explicit public names, and stop opening `OFS.ObjectManager` as a whole module.
+Restrict the security declarations of `Products.CMFPlone.utils` and `Products.CMFPlone.browser.navtree` to explicit public names, and stop opening `OFS.ObjectManager` as a whole module. Also make sure `AccessControl.allow_class` can't be called from restricted code.
