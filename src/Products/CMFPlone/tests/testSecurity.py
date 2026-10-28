@@ -5,6 +5,7 @@ from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.testing.zope import Browser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Testing.makerequest import makerequest
 from zExceptions import NotFound
@@ -268,3 +269,30 @@ class TestFunctional(unittest.TestCase):
         for obj_id in qi.objectIds():
             qi.unrestrictedTraverse(obj_id)
             qi.restrictedTraverse(obj_id)
+
+
+class TestModuleSecurityDeclarations(unittest.TestCase):
+    """Whole modules must not be opened: only specific names are public."""
+
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+    def _import(self, module, name):
+        from AccessControl.ZopeGuards import guarded_import
+
+        return guarded_import(module, {}, {}, [name])
+
+    def test_declared_names_importable(self):
+        self._import("Products.CMFPlone.utils", "normalizeString")
+        self._import("Products.CMFPlone.browser.navtree", "NavtreeQueryBuilder")
+        self._import("Products.MimetypesRegistry.common", "MimeTypeException")
+
+    def test_imported_names_not_importable(self):
+        for module, name in (
+            ("Products.CMFPlone.utils", "ModuleSecurityInfo"),
+            ("Products.CMFPlone.utils", "getSecurityManager"),
+            ("Products.CMFPlone.utils", "sys"),
+            ("Products.CMFPlone.browser.navtree", "ModuleSecurityInfo"),
+            ("Products.MimetypesRegistry.common", "zope"),
+        ):
+            with self.assertRaises((ImportError, Unauthorized)):
+                self._import(module, name)
