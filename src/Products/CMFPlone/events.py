@@ -37,3 +37,21 @@ def removeBase(event):
     https://dev.plone.org/ticket/13705
     """
     event.request.response.base = None
+
+
+def freezeSecurityDeclarations(event):
+    """Refuse changes to security declarations once Zope has started.
+
+    After this, no code can make more modules, classes or types accessible
+    from restricted code, for example with allow_module or allow_class.
+    Zope may already have done this, in which case the freeze does nothing.
+    """
+    try:
+        from AccessControl.SecurityInfo import check_dangerous_modules
+        from AccessControl.SecurityInfo import freeze_security_declarations
+    except ImportError:
+        # AccessControl is too old.
+        return
+    # The standard dangerous modules are checked by the freeze.
+    check_dangerous_modules({"plone.api.env", "plone.protect"})
+    freeze_security_declarations()

@@ -160,6 +160,11 @@
       handler=".events.removeBase"
       />
 
+  <subscriber
+      for="zope.processlifetime.IProcessStarting"
+      handler=".events.freezeSecurityDeclarations"
+      />
+
   <adapter
       factory=".traversal.get_zope_page_template_engine"
       for="zope.pagetemplate.engine.ZopeBaseEngine"

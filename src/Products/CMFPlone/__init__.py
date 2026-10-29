@@ -65,10 +65,6 @@ def initialize(context):
 
     allow_class(Logger)
 
-    # various small utils functions
-    # added for unescaping view names in urls when finding selected action
-    ModuleSecurityInfo("urllib").declarePublic("unquote")
-
     allow_module("Products.CMFPlone.utils")
 
     # For content_status_modify
@@ -93,8 +89,6 @@ def initialize(context):
 
     # Make Batch available at module level
     this_module.Batch = Batch
-
-    ModuleSecurityInfo("StringIO").declarePublic("StringIO")
 
     # Make Unauthorized importable TTW
     ModuleSecurityInfo("AccessControl").declarePublic("Unauthorized")
