@@ -53,10 +53,11 @@ def initialize(context):
     from AccessControl import allow_class
     from AccessControl import ModuleSecurityInfo
 
-    # protect OFS.ObjectManager
-    ModuleSecurityInfo("OFS.ObjectManager").setDefaultAccess(0)
-    ModuleSecurityInfo("OFS.ObjectManager").declareObjectPrivate()
+    # Allow importing and catching BeforeDeleteException in untrusted code.
     ModuleSecurityInfo("OFS.ObjectManager").declarePublic("BeforeDeleteException")
+    from OFS.ObjectManager import BeforeDeleteException
+
+    allow_class(BeforeDeleteException)
 
     # allow logging
     ModuleSecurityInfo("logging").declarePublic("getLogger")
@@ -170,11 +171,6 @@ def initialize(context):
         "NavtreeStrategyBase",
     ):
         navtree_security.declarePublic(name)
-
-    # Allow access to the exception in the folder_delete script
-    from OFS.ObjectManager import BeforeDeleteException
-
-    allow_class(BeforeDeleteException)
 
     # Make cgi.escape available TTW
     ModuleSecurityInfo("cgi").declarePublic("escape")

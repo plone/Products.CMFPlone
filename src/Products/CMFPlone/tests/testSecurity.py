@@ -302,6 +302,7 @@ class TestModuleSecurityDeclarations(unittest.TestCase):
         self._import("Products.CMFPlone.utils", "normalizeString")
         self._import("Products.CMFPlone.browser.navtree", "NavtreeQueryBuilder")
         self._import("Products.MimetypesRegistry.common", "MimeTypeException")
+        self._import("OFS.ObjectManager", "BeforeDeleteException")
 
     def test_imported_names_not_importable(self):
         for module, name in (
@@ -310,6 +311,8 @@ class TestModuleSecurityDeclarations(unittest.TestCase):
             ("Products.CMFPlone.utils", "sys"),
             ("Products.CMFPlone.browser.navtree", "ModuleSecurityInfo"),
             ("Products.MimetypesRegistry.common", "zope"),
+            ("OFS.ObjectManager", "os"),
+            ("OFS.ObjectManager", "getSecurityManager"),
             ("os", "listdir"),
             ("sys", "argv"),
             ("subprocess", "run"),
