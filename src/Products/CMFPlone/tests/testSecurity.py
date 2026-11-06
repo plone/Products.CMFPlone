@@ -311,5 +311,11 @@ class TestModuleSecurityDeclarations(unittest.TestCase):
             ("Products.CMFPlone.browser.navtree", "ModuleSecurityInfo"),
             ("Products.MimetypesRegistry.common", "zope"),
         ):
-            with self.assertRaises((ImportError, Unauthorized)):
+            with (
+                self.subTest(module=module, name=name),
+                self.assertRaises(
+                    (ImportError, Unauthorized),
+                    msg=f"from {module} import {name} should not be allowed",
+                ),
+            ):
                 self._import(module, name)
