@@ -310,6 +310,10 @@ class TestModuleSecurityDeclarations(unittest.TestCase):
             ("Products.CMFPlone.utils", "sys"),
             ("Products.CMFPlone.browser.navtree", "ModuleSecurityInfo"),
             ("Products.MimetypesRegistry.common", "zope"),
+            ("os", "listdir"),
+            ("sys", "argv"),
+            ("subprocess", "run"),
+            ("shutil", "rmtree"),
         ):
             with (
                 self.subTest(module=module, name=name),
