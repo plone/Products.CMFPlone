@@ -62,7 +62,7 @@ allow_module('os')
     def test_allow_class_not_available_in_RestrictedPython(self):
         src = """
 import AccessControl
-AccessControl.allow_class.__roles__ = ()
+AccessControl.allow_class
 """
         from Products.PythonScripts.PythonScript import PythonScript
 
