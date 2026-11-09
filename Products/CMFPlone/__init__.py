@@ -45,13 +45,13 @@ def initialize(context):
     # it does speed up import *significantly*.
 
     from AccessControl import allow_class
-    from AccessControl import allow_module
     from AccessControl import ModuleSecurityInfo
 
-    # protect OFS.ObjectManager
-    ModuleSecurityInfo("OFS.ObjectManager").setDefaultAccess(0)
-    ModuleSecurityInfo("OFS.ObjectManager").declareObjectPrivate()
+    # Allow importing and catching BeforeDeleteException in untrusted code.
     ModuleSecurityInfo("OFS.ObjectManager").declarePublic("BeforeDeleteException")
+    from OFS.ObjectManager import BeforeDeleteException
+
+    allow_class(BeforeDeleteException)
 
     # allow logging
     ModuleSecurityInfo("logging").declarePublic("getLogger")
@@ -63,7 +63,43 @@ def initialize(context):
     # added for unescaping view names in urls when finding selected action
     ModuleSecurityInfo("urllib").declarePublic("unquote")
 
-    allow_module("Products.CMFPlone.utils")
+    # Declare the public names of the utils module one by one.
+    # Never open the whole module: it would publish all its imports.
+    utils_security = ModuleSecurityInfo("Products.CMFPlone.utils")
+    for name in (
+        "normalizeString",
+        "get_portal",
+        "getSiteLogo",
+        "typesToList",
+        "safe_unicode",
+        "safe_encode",
+        "safe_nativestring",
+        "webdav_enabled",
+        "parent",
+        "bodyfinder",
+        "createBreadCrumbs",
+        "createSiteMap",
+        "isExpired",
+        "versionTupleFromString",
+        "getFSVersionTuple",
+        "tuplize",
+        "flatten",
+        "ajax_load_url",
+        "log",
+        "log_exc",
+        "log_deprecated",
+        "base_hasattr",
+        "safe_hasattr",
+        "safe_callable",
+        "safe_text",
+        "safe_bytes",
+        "safeToInt",
+        "transaction_note",
+        "pretty_title_or_id",
+        "human_readable_size",
+        "check_id",
+    ):
+        utils_security.declarePublic(name)
 
     # For content_status_modify
     from Products.CMFCore.WorkflowCore import ObjectDeleted
@@ -120,13 +156,15 @@ def initialize(context):
     ModuleSecurityInfo("Products.ZCatalog.Catalog").declarePublic("mergeResults")
 
     # Make the navtree constructs available TTW
-    allow_module("Products.CMFPlone.browser.navtree")
-
-    # Allow access to the exception in the folder_delete script
-    from OFS.ObjectManager import BeforeDeleteException
-
-    allow_module("OFS.ObjectManager")
-    allow_class(BeforeDeleteException)
+    navtree_security = ModuleSecurityInfo("Products.CMFPlone.browser.navtree")
+    for name in (
+        "NavtreeQueryBuilder",
+        "SitemapQueryBuilder",
+        "SitemapNavtreeStrategy",
+        "DefaultNavtreeStrategy",
+        "NavtreeStrategyBase",
+    ):
+        navtree_security.declarePublic(name)
 
     # Make cgi.escape available TTW
     ModuleSecurityInfo("cgi").declarePublic("escape")
