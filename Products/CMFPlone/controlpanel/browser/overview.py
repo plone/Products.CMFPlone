@@ -30,10 +30,10 @@ except ImportError:
 # See https://devguide.python.org/versions/#versions
 _PYTHON_MINOR_OUT_OF_SUPPORT = {
     9: date(2025, 10, 31),
-    10: date(2026, 10, 31),
-    11: date(2027, 10, 31),
-    12: date(2028, 10, 31),
-    13: date(2029, 10, 31),
+    10: date(2026, 10, 1),
+    11: date(2027, 10, 1),
+    12: date(2028, 10, 1),
+    13: date(2029, 10, 1),
 }
 # This date is specific to the current Plone major version.
 # See https://plone.org/download/release-schedule
@@ -156,7 +156,7 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
             # This Python version is not supported at all
             return True
         # Warn when today is after the deadline for this minor version.
-        return date.today() > deadline
+        return date.today() >= deadline
 
     def plone_maintenance_warning(self):
         return True
