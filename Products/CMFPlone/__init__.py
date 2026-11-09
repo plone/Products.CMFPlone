@@ -163,6 +163,8 @@ def initialize(context):
         "SitemapNavtreeStrategy",
         "DefaultNavtreeStrategy",
         "NavtreeStrategyBase",
+        # Used by the queryCatalog skin script.
+        "getNavigationRoot",
     ):
         navtree_security.declarePublic(name)
 
