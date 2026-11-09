@@ -32,27 +32,55 @@ class MockVersionInfo:
         self.micro = micro
 
 
-mock_python310 = MockVersionInfo(3, 10)
-mock_python311 = MockVersionInfo(3, 11)
-mock_python312 = MockVersionInfo(3, 12)
-mock_python313 = MockVersionInfo(3, 13)
-mock_python314 = MockVersionInfo(3, 14)
-mock_python315 = MockVersionInfo(3, 15)
-mock_python316 = MockVersionInfo(3, 16)
-
-PYTHON_WARNING = "You are using a Python version that is not supported."
-MAINTENANCE_WARNING = (
-    "You are using a Plone version that is out of maintenance support."
-)
-SECURITY_WARNING = "You are using a Plone version that is out of security support."
-
-
 class MockDate:
     def __init__(self, today):
         self._today = today
 
     def today(self):
         return self._today
+
+
+PYTHON_WARNING = "You are using a Python version that is not supported."
+MAINTENANCE_WARNING = (
+    "You are using a Plone version that is out of maintenance support."
+)
+SECURITY_WARNING = "You are using a Plone version that is out of security support."
+RELEASE_SCHEDULE = "Plone release schedule"
+
+# Test cases for the version warnings.  Each case becomes a separate test.
+# Keys: py is the Python 3 minor version, today is the mocked current date,
+# python and security are the expected Python and Plone security warnings.
+# Plone 6.2 has no end date for maintenance support yet,
+# so we never expect a maintenance warning.
+# Security support for Plone 6.2 ends after 2027-12-31.
+VERSION_WARNING_CASES = (
+    # Python 3.10 is supported until 2026-10-01.
+    {"py": 10, "today": date(2025, 4, 1), "python": False, "security": False},
+    {"py": 10, "today": date(2026, 11, 1), "python": True, "security": False},
+    # Python 3.11 is supported until 2027-10-01.
+    {"py": 11, "today": date(2025, 4, 1), "python": False, "security": False},
+    {"py": 11, "today": date(2027, 11, 1), "python": True, "security": False},
+    # Python 3.12 is supported until 2028-10-01.
+    # Use it to test the end of Plone security support.
+    {"py": 12, "today": date(2025, 4, 1), "python": False, "security": False},
+    {"py": 12, "today": date(2026, 11, 1), "python": False, "security": False},
+    {"py": 12, "today": date(2027, 12, 31), "python": False, "security": False},
+    {"py": 12, "today": date(2028, 1, 1), "python": False, "security": True},
+    {"py": 12, "today": date(2028, 12, 1), "python": True, "security": True},
+    # Python 3.13 is supported until 2029-10-01.
+    {"py": 13, "today": date(2025, 4, 1), "python": False, "security": False},
+    {"py": 13, "today": date(2029, 11, 1), "python": True, "security": True},
+    # Python 3.14 is supported until 2030-10-01.
+    # Test the day before, on, and after the deadline.
+    {"py": 14, "today": date(2030, 9, 30), "python": False, "security": True},
+    {"py": 14, "today": date(2030, 10, 1), "python": True, "security": True},
+    {"py": 14, "today": date(2030, 10, 2), "python": True, "security": True},
+    # Python 3.15 is supported until 2031-10-01.
+    {"py": 15, "today": date(2026, 11, 1), "python": False, "security": False},
+    {"py": 15, "today": date(2031, 11, 1), "python": True, "security": True},
+    # Python 3.16 is not supported at all.
+    {"py": 16, "today": date(2026, 11, 1), "python": True, "security": False},
+)
 
 
 class TestControlPanel(unittest.TestCase):
@@ -63,203 +91,34 @@ class TestControlPanel(unittest.TestCase):
         self.request = self.layer["request"]
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
 
-    @mock.patch("sys.version_info", new=mock_python312)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2026, 11, 1)),
-    )
-    def test_version_warning_none(self):
-        # Plone 6.2 is still in maintenance support,
-        # and Python 3.12 is still supported.
+    def check_version_warnings(self, py, today, python, security):
+        # Compare all results at once, so a failure shows every difference,
+        # and which Python version and date it is about.
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertFalse(view.python_warning())
-        self.assertFalse(view.plone_maintenance_warning())
-        self.assertFalse(view.plone_security_warning())
-        self.assertFalse(view.version_warning())
         html = view()
-        self.assertNotIn(PYTHON_WARNING, html)
-        self.assertNotIn(MAINTENANCE_WARNING, html)
-        self.assertNotIn(SECURITY_WARNING, html)
-        self.assertNotIn("Plone release schedule", html)
-
-    @mock.patch("sys.version_info", new=mock_python312)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2027, 12, 31)),
-    )
-    def test_plone_security_warning_on_deadline(self):
-        # On the last day of security support, we do not warn yet.
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertFalse(view.plone_security_warning())
-        self.assertFalse(view.version_warning())
-
-    @mock.patch("sys.version_info", new=mock_python312)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2028, 1, 1)),
-    )
-    def test_plone_security_warning_after_deadline(self):
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertTrue(view.plone_security_warning())
-        self.assertTrue(view.version_warning())
-        html = view()
-        self.assertIn(SECURITY_WARNING, html)
-        self.assertIn("Plone release schedule", html)
-        self.assertNotIn(PYTHON_WARNING, html)
-
-    @mock.patch("sys.version_info", new=mock_python310)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2025, 4, 1)),
-    )
-    def test_python310_warning_early(self):
-        # Test the warnings that get shown when using Python 3.10.
-        # This depends on the date.
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertFalse(view.python_warning())
-
-    @mock.patch("sys.version_info", new=mock_python310)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2026, 11, 1)),
-    )
-    def test_python310_warning_late(self):
-        # Test the warnings that get shown when using Python 3.10.
-        # This depends on the date.
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertTrue(view.python_warning())
-        self.assertIn(PYTHON_WARNING, view())
-
-    @mock.patch("sys.version_info", new=mock_python311)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2025, 4, 1)),
-    )
-    def test_python311_warning_early(self):
-        # Test the warnings that get shown when using Python 3.11.
-        # This depends on the date.
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertFalse(view.python_warning())
-
-    @mock.patch("sys.version_info", new=mock_python311)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2027, 11, 1)),
-    )
-    def test_python311_warning_late(self):
-        # Test the warnings that get shown when using Python 3.11.
-        # This depends on the date.
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertTrue(view.python_warning())
-        self.assertIn(PYTHON_WARNING, view())
-
-    @mock.patch("sys.version_info", new=mock_python312)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2025, 4, 1)),
-    )
-    def test_python312_warning_early(self):
-        # Test the warnings that get shown when using Python 3.12.
-        # This depends on the date.
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertFalse(view.python_warning())
-
-    @mock.patch("sys.version_info", new=mock_python312)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2028, 12, 1)),
-    )
-    def test_python312_warning_late(self):
-        # Test the warnings that get shown when using Python 3.12.
-        # This depends on the date.
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertTrue(view.python_warning())
-        self.assertIn(PYTHON_WARNING, view())
-
-    @mock.patch("sys.version_info", new=mock_python313)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2025, 4, 1)),
-    )
-    def test_python313_warning_early(self):
-        # Test the warnings that get shown when using Python 3.13.
-        # This depends on the date.
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertFalse(view.python_warning())
-
-    @mock.patch("sys.version_info", new=mock_python313)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2029, 11, 1)),
-    )
-    def test_python313_warning_late(self):
-        # Test the warnings that get shown when using Python 3.13.
-        # This depends on the date.
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertTrue(view.python_warning())
-        self.assertIn(PYTHON_WARNING, view())
-
-    @mock.patch("sys.version_info", new=mock_python314)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2030, 9, 30)),
-    )
-    def test_python314_warning_day_before(self):
-        # The day before the end-of-life date, we do not warn yet.
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertFalse(view.python_warning())
-
-    @mock.patch("sys.version_info", new=mock_python314)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2030, 10, 1)),
-    )
-    def test_python314_warning_on_deadline(self):
-        # On the end-of-life date itself, we warn.
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertTrue(view.python_warning())
-
-    @mock.patch("sys.version_info", new=mock_python314)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2030, 10, 2)),
-    )
-    def test_python314_warning_after_deadline(self):
-        # After the end-of-life date, we warn.
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertTrue(view.python_warning())
-        self.assertIn(PYTHON_WARNING, view())
-
-    @mock.patch("sys.version_info", new=mock_python315)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2026, 11, 1)),
-    )
-    def test_python315_warning_early(self):
-        # Test the warnings that get shown when using Python 3.15.
-        # This depends on the date.
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertFalse(view.python_warning())
-
-    @mock.patch("sys.version_info", new=mock_python315)
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(date(2031, 11, 1)),
-    )
-    def test_python315_warning_late(self):
-        # Test the warnings that get shown when using Python 3.15.
-        # This depends on the date.
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertTrue(view.python_warning())
-        self.assertIn(PYTHON_WARNING, view())
-
-    @mock.patch("sys.version_info", new=mock_python316)
-    def test_python316_warning(self):
-        # Python 3.16 is too new, so we always warn.
-        view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertTrue(view.python_warning())
-        self.assertTrue(view.version_warning())
-        self.assertIn(PYTHON_WARNING, view())
+        actual = {
+            "python_warning()": view.python_warning(),
+            "plone_maintenance_warning()": view.plone_maintenance_warning(),
+            "plone_security_warning()": view.plone_security_warning(),
+            "version_warning()": view.version_warning(),
+            "Python warning shown": PYTHON_WARNING in html,
+            "maintenance warning shown": MAINTENANCE_WARNING in html,
+            "security warning shown": SECURITY_WARNING in html,
+            "release schedule link shown": RELEASE_SCHEDULE in html,
+        }
+        expected = {
+            "python_warning()": python,
+            "plone_maintenance_warning()": False,
+            "plone_security_warning()": security,
+            "version_warning()": python or security,
+            "Python warning shown": python,
+            "maintenance warning shown": False,
+            "security warning shown": security,
+            "release schedule link shown": python or security,
+        }
+        self.assertEqual(
+            actual, expected, f"Version warnings for Python 3.{py} on {today}"
+        )
 
     @mock.patch(
         "Products.CMFPlone.controlpanel.browser.overview.getUtility",
@@ -303,3 +162,23 @@ class TestControlPanel(unittest.TestCase):
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         with self.assertWarns(Warning):
             view.server_info()["server_name"]
+
+
+def _make_version_warning_test(py, today, python, security):
+    @mock.patch("sys.version_info", new=MockVersionInfo(3, py))
+    @mock.patch(
+        "Products.CMFPlone.controlpanel.browser.overview.date",
+        new=MockDate(today),
+    )
+    def test(self):
+        self.check_version_warnings(py, today, python, security)
+
+    return test
+
+
+# Add a separate test method for each case,
+# e.g. test_version_warning_python312_20280101.
+for _case in VERSION_WARNING_CASES:
+    _name = f"test_version_warning_python3{_case['py']}_{_case['today']:%Y%m%d}"
+    assert not hasattr(TestControlPanel, _name), f"Duplicate test {_name}"
+    setattr(TestControlPanel, _name, _make_version_warning_test(**_case))
