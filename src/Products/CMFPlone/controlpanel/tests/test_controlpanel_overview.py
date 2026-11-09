@@ -32,6 +32,14 @@ class MockVersionInfo:
         self.micro = micro
 
 
+class MockSys:
+    # Only mock sys in the overview module, not sys.version_info globally:
+    # Chameleon compares sys.version_info with a tuple when compiling
+    # a template, which fails with our MockVersionInfo.
+    def __init__(self, major, minor, micro=0):
+        self.version_info = MockVersionInfo(major, minor, micro)
+
+
 class MockDate:
     def __init__(self, today):
         self._today = today
@@ -96,7 +104,8 @@ class TestControlPanel(unittest.TestCase):
         for case in VERSION_WARNING_CASES:
             with self.subTest(**case):
                 with mock.patch(
-                    "sys.version_info", new=MockVersionInfo(3, case["py"])
+                    "Products.CMFPlone.controlpanel.browser.overview.sys",
+                    new=MockSys(3, case["py"]),
                 ), mock.patch(
                     "Products.CMFPlone.controlpanel.browser.overview.date",
                     new=MockDate(case["today"]),
