@@ -47,7 +47,7 @@ MAINTENANCE_WARNING = (
 SECURITY_WARNING = "You are using a Plone version that is out of security support."
 RELEASE_SCHEDULE = "Plone release schedule"
 
-# Test cases for the version warnings.  Each case becomes a separate test.
+# Test cases for the version warnings.  Each case becomes a subtest.
 # Keys: py is the Python 3 minor version, today is the mocked current date,
 # python and security are the expected Python and Plone security warnings.
 # Plone 6.2 has no end date for maintenance support yet,
@@ -91,9 +91,22 @@ class TestControlPanel(unittest.TestCase):
         self.request = self.layer["request"]
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
 
-    def check_version_warnings(self, py, today, python, security):
-        # Compare all results at once, so a failure shows every difference,
-        # and which Python version and date it is about.
+    def test_version_warnings(self):
+        # Each case is a subtest, so when one case fails, the others still run.
+        for case in VERSION_WARNING_CASES:
+            with self.subTest(**case):
+                with mock.patch(
+                    "sys.version_info", new=MockVersionInfo(3, case["py"])
+                ), mock.patch(
+                    "Products.CMFPlone.controlpanel.browser.overview.date",
+                    new=MockDate(case["today"]),
+                ):
+                    self.check_version_warnings(case["python"], case["security"])
+
+    def check_version_warnings(self, python, security):
+        # Compare all results at once, so a failure shows every difference.
+        # Show the full diff, even when many values differ.
+        self.maxDiff = None
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         html = view()
         actual = {
@@ -116,9 +129,7 @@ class TestControlPanel(unittest.TestCase):
             "security warning shown": security,
             "release schedule link shown": python or security,
         }
-        self.assertEqual(
-            actual, expected, f"Version warnings for Python 3.{py} on {today}"
-        )
+        self.assertEqual(actual, expected)
 
     @mock.patch(
         "Products.CMFPlone.controlpanel.browser.overview.getUtility",
@@ -162,23 +173,3 @@ class TestControlPanel(unittest.TestCase):
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         with self.assertWarns(Warning):
             view.server_info()["server_name"]
-
-
-def _make_version_warning_test(py, today, python, security):
-    @mock.patch("sys.version_info", new=MockVersionInfo(3, py))
-    @mock.patch(
-        "Products.CMFPlone.controlpanel.browser.overview.date",
-        new=MockDate(today),
-    )
-    def test(self):
-        self.check_version_warnings(py, today, python, security)
-
-    return test
-
-
-# Add a separate test method for each case,
-# e.g. test_version_warning_python312_20280101.
-for _case in VERSION_WARNING_CASES:
-    _name = f"test_version_warning_python3{_case['py']}_{_case['today']:%Y%m%d}"
-    assert not hasattr(TestControlPanel, _name), f"Duplicate test {_name}"
-    setattr(TestControlPanel, _name, _make_version_warning_test(**_case))
