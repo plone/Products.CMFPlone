@@ -4,6 +4,11 @@ ci:
     autofix_prs: false
     autoupdate_schedule: monthly
 
+# The pinned pyupgrade and black versions use ast.Str,
+# which was removed in Python 3.14.
+default_language_version:
+    python: python3.13
+
 repos:
 -   repo: https://github.com/asottile/pyupgrade
     rev: v3.3.2
