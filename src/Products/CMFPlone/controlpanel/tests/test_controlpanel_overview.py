@@ -177,7 +177,16 @@ class TestControlPanel(unittest.TestCase):
     def test_gunicorn_server_name(self):
         self.request["SERVER_SOFTWARE"] = "gunicorn/19.6.0"
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
-        self.assertEqual(view.server_info()["server_name"], "gunicorn")
+        # gunicorn is usually not installed, so mock its distribution.
+        # Otherwise we get a warning that its version cannot be found.
+        with mock.patch(
+            "Products.CMFPlone.controlpanel.browser.overview.distribution",
+            return_value=mock.Mock(version="19.6.0"),
+        ) as distribution:
+            info = view.server_info()
+        distribution.assert_called_once_with("gunicorn")
+        self.assertEqual(info["server_name"], "gunicorn")
+        self.assertEqual(info["version"], "19.6.0")
         self.request["SERVER_SOFTWARE"] = "bad-gunicorn-name/19.6.0"
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         with self.assertWarns(Warning):
