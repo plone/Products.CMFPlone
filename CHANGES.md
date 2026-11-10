@@ -15,6 +15,21 @@
 
 <!-- towncrier release notes start -->
 
+## 6.1.6 (2026-11-10)
+
+
+### Bug fixes:
+
+- In the Site Setup warn that Plone 6.1 is out of maintenance support.
+  Also check the Python version and warn when that is out of security support.
+  [maurits] 
+- Restrict the security declarations of `Products.CMFPlone.utils` and `Products.CMFPlone.browser.navtree` to explicit public names, and stop opening `OFS.ObjectManager` as a whole module. Also make sure `AccessControl.allow_class` can't be called from restricted code. 
+
+
+### Internal:
+
+- Updated metadata version to 6113.  @mauritsvanrees 
+
 ## 6.1.5 (2026-06-25)
 
 
