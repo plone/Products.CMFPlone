@@ -32,12 +32,20 @@ class MockVersionInfo:
         self.micro = micro
 
 
-mock_python39 = MockVersionInfo(3, 9)
-mock_python310 = MockVersionInfo(3, 10)
-mock_python311 = MockVersionInfo(3, 11)
-mock_python312 = MockVersionInfo(3, 12)
-mock_python313 = MockVersionInfo(3, 13)
-mock_python314 = MockVersionInfo(3, 14)
+class MockSys:
+    # Only mock sys in the overview module, not sys.version_info globally:
+    # Chameleon compares sys.version_info with a tuple when compiling
+    # a template, which fails with our MockVersionInfo.
+    def __init__(self, major, minor, micro=0):
+        self.version_info = MockVersionInfo(major, minor, micro)
+
+
+mock_python39 = MockSys(3, 9)
+mock_python310 = MockSys(3, 10)
+mock_python311 = MockSys(3, 11)
+mock_python312 = MockSys(3, 12)
+mock_python313 = MockSys(3, 13)
+mock_python314 = MockSys(3, 14)
 
 
 class MockDate:
@@ -61,7 +69,9 @@ class TestControlPanel(unittest.TestCase):
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertTrue(view.version_warning())
 
-    @mock.patch("sys.version_info", new=mock_python39)
+    @mock.patch(
+        "Products.CMFPlone.controlpanel.browser.overview.sys", new=mock_python39
+    )
     def test_python39_warning(self):
         # Test the warnings that get shown when using Python 3.9.
         # Plone 6.1 does not support Python 3.9, so we always warn.
@@ -69,7 +79,9 @@ class TestControlPanel(unittest.TestCase):
         self.assertTrue(view.python_warning())
         self.assertIn("You are using a Python version that is not supported.", view())
 
-    @mock.patch("sys.version_info", new=mock_python310)
+    @mock.patch(
+        "Products.CMFPlone.controlpanel.browser.overview.sys", new=mock_python310
+    )
     @mock.patch(
         "Products.CMFPlone.controlpanel.browser.overview.date",
         new=MockDate(date(2026, 9, 30)),
@@ -79,7 +91,9 @@ class TestControlPanel(unittest.TestCase):
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertFalse(view.python_warning())
 
-    @mock.patch("sys.version_info", new=mock_python310)
+    @mock.patch(
+        "Products.CMFPlone.controlpanel.browser.overview.sys", new=mock_python310
+    )
     @mock.patch(
         "Products.CMFPlone.controlpanel.browser.overview.date",
         new=MockDate(date(2026, 10, 1)),
@@ -89,7 +103,9 @@ class TestControlPanel(unittest.TestCase):
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertTrue(view.python_warning())
 
-    @mock.patch("sys.version_info", new=mock_python310)
+    @mock.patch(
+        "Products.CMFPlone.controlpanel.browser.overview.sys", new=mock_python310
+    )
     @mock.patch(
         "Products.CMFPlone.controlpanel.browser.overview.date",
         new=MockDate(date(2026, 10, 2)),
@@ -99,7 +115,9 @@ class TestControlPanel(unittest.TestCase):
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertTrue(view.python_warning())
 
-    @mock.patch("sys.version_info", new=mock_python311)
+    @mock.patch(
+        "Products.CMFPlone.controlpanel.browser.overview.sys", new=mock_python311
+    )
     @mock.patch(
         "Products.CMFPlone.controlpanel.browser.overview.date",
         new=MockDate(date(2025, 4, 1)),
@@ -110,7 +128,9 @@ class TestControlPanel(unittest.TestCase):
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertFalse(view.python_warning())
 
-    @mock.patch("sys.version_info", new=mock_python311)
+    @mock.patch(
+        "Products.CMFPlone.controlpanel.browser.overview.sys", new=mock_python311
+    )
     @mock.patch(
         "Products.CMFPlone.controlpanel.browser.overview.date",
         new=MockDate(date(2027, 11, 1)),
@@ -122,7 +142,9 @@ class TestControlPanel(unittest.TestCase):
         self.assertTrue(view.python_warning())
         self.assertIn("You are using a Python version that is not supported.", view())
 
-    @mock.patch("sys.version_info", new=mock_python312)
+    @mock.patch(
+        "Products.CMFPlone.controlpanel.browser.overview.sys", new=mock_python312
+    )
     @mock.patch(
         "Products.CMFPlone.controlpanel.browser.overview.date",
         new=MockDate(date(2025, 4, 1)),
@@ -133,7 +155,9 @@ class TestControlPanel(unittest.TestCase):
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertFalse(view.python_warning())
 
-    @mock.patch("sys.version_info", new=mock_python312)
+    @mock.patch(
+        "Products.CMFPlone.controlpanel.browser.overview.sys", new=mock_python312
+    )
     @mock.patch(
         "Products.CMFPlone.controlpanel.browser.overview.date",
         new=MockDate(date(2028, 12, 1)),
@@ -145,7 +169,9 @@ class TestControlPanel(unittest.TestCase):
         self.assertTrue(view.python_warning())
         self.assertIn("You are using a Python version that is not supported.", view())
 
-    @mock.patch("sys.version_info", new=mock_python313)
+    @mock.patch(
+        "Products.CMFPlone.controlpanel.browser.overview.sys", new=mock_python313
+    )
     @mock.patch(
         "Products.CMFPlone.controlpanel.browser.overview.date",
         new=MockDate(date(2025, 4, 1)),
@@ -156,7 +182,9 @@ class TestControlPanel(unittest.TestCase):
         view = self.portal.restrictedTraverse("@@overview-controlpanel")
         self.assertFalse(view.python_warning())
 
-    @mock.patch("sys.version_info", new=mock_python313)
+    @mock.patch(
+        "Products.CMFPlone.controlpanel.browser.overview.sys", new=mock_python313
+    )
     @mock.patch(
         "Products.CMFPlone.controlpanel.browser.overview.date",
         new=MockDate(date(2029, 11, 1)),
@@ -168,7 +196,9 @@ class TestControlPanel(unittest.TestCase):
         self.assertTrue(view.python_warning())
         self.assertIn("You are using a Python version that is not supported.", view())
 
-    @mock.patch("sys.version_info", new=mock_python314)
+    @mock.patch(
+        "Products.CMFPlone.controlpanel.browser.overview.sys", new=mock_python314
+    )
     def test_python314_warning(self):
         # Test the warnings that get shown when using Python 3.14.
         # 3.14 is too new, so we always warn.
