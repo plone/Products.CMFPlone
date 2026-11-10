@@ -15,6 +15,26 @@
 
 <!-- towncrier release notes start -->
 
+## 6.0.16 (2026-11-10)
+
+
+### Bug fixes:
+
+- Fix `redirect_after_login` in VHM environments. @ale-rt, @petschki #4151
+- TinyMCE: Restore ability to choose which content are folderish types
+  [frapell] #4207
+- Allow a Site Administrator to manage the users roles if there are users that have the Manager role set through the portal_role plugin.
+  [ale-rt] #4287
+- Fix the end-of-life dates for Python 3.10 and higher in the control panel overview. Warn from the end-of-life date itself.
+  [maurits] 
+- Restrict the security declarations of `Products.CMFPlone.utils` and `Products.CMFPlone.browser.navtree` to explicit public names, and stop opening `OFS.ObjectManager` as a whole module. Also make sure `AccessControl.allow_class` can't be called from restricted code. 
+
+
+### Internal:
+
+- Updated metadata version to 6027.
+  [maurits] #6027
+
 ## 6.0.15 (2025-03-27)
 
 
