@@ -5,6 +5,7 @@ from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.testing.zope import Browser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Testing.makerequest import makerequest
 from zExceptions import NotFound
@@ -52,6 +53,23 @@ allow_module('os')
         script._filepath = "barscript"
         script.write(src)
         self.assertRaises((ImportError, Unauthorized), script)
+
+    def test_allow_class_roles_disabled(self):
+        import AccessControl
+
+        self.assertEqual(AccessControl.allow_class.__roles__, ())
+
+    def test_allow_class_not_available_in_RestrictedPython(self):
+        src = """
+import AccessControl
+AccessControl.allow_class
+"""
+        from Products.PythonScripts.PythonScript import PythonScript
+
+        script = makerequest(PythonScript("bazscript"))
+        script._filepath = "bazscript"
+        script.write(src)
+        self.assertRaises((ImportError, Unauthorized, SyntaxError), script)
 
     def test_get_request_var_or_attr_disallowed(self):
         import App.Undo
@@ -276,3 +294,43 @@ class TestFunctional(unittest.TestCase):
         for obj_id in qi.objectIds():
             qi.unrestrictedTraverse(obj_id)
             qi.restrictedTraverse(obj_id)
+
+
+class TestModuleSecurityDeclarations(unittest.TestCase):
+    """Whole modules must not be opened: only specific names are public."""
+
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+    def _import(self, module, name):
+        from AccessControl.ZopeGuards import guarded_import
+
+        return guarded_import(module, {}, {}, [name])
+
+    def test_declared_names_importable(self):
+        self._import("Products.CMFPlone.utils", "normalizeString")
+        self._import("Products.CMFPlone.browser.navtree", "NavtreeQueryBuilder")
+        self._import("Products.MimetypesRegistry.common", "MimeTypeException")
+        self._import("OFS.ObjectManager", "BeforeDeleteException")
+
+    def test_imported_names_not_importable(self):
+        for module, name in (
+            ("Products.CMFPlone.utils", "ModuleSecurityInfo"),
+            ("Products.CMFPlone.utils", "getSecurityManager"),
+            ("Products.CMFPlone.utils", "sys"),
+            ("Products.CMFPlone.browser.navtree", "ModuleSecurityInfo"),
+            ("Products.MimetypesRegistry.common", "zope"),
+            ("OFS.ObjectManager", "os"),
+            ("OFS.ObjectManager", "getSecurityManager"),
+            ("os", "listdir"),
+            ("sys", "argv"),
+            ("subprocess", "run"),
+            ("shutil", "rmtree"),
+        ):
+            with (
+                self.subTest(module=module, name=name),
+                self.assertRaises(
+                    (ImportError, Unauthorized),
+                    msg=f"from {module} import {name} should not be allowed",
+                ),
+            ):
+                self._import(module, name)
