@@ -72,6 +72,32 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
         settings = registry.forInterface(IMailSchema, prefix="plone")
         self.assertEqual(str(settings.smtp_port), "88")
 
+    def _save_implicit_tls(self, port):
+        self.browser.open("%s/@@mail-controlpanel" % self.portal_url)
+        self.browser.getControl(name="form.widgets.smtp_port").value = port
+        self.browser.getControl(name="form.widgets.smtp_implicit_tls:list").value = [
+            "selected"
+        ]
+        self.browser.getControl(name="form.widgets.email_from_name").value = "John"
+        self.browser.getControl(name="form.widgets.email_from_address").value = (
+            "john@example.com"
+        )
+        self.browser.getControl(name="form.buttons.save").click()
+        registry = getUtility(IRegistry)
+        return registry.forInterface(IMailSchema, prefix="plone")
+
+    def test_mail_controlpanel_smtp_implicit_tls(self):
+        settings = self._save_implicit_tls("465")
+        self.assertTrue(settings.smtp_implicit_tls)
+        self.assertEqual(settings.smtp_port, 465)
+
+    def test_mail_controlpanel_smtp_implicit_tls_starttls_port(self):
+        # Port 587 uses STARTTLS: SSL/TLS from the start cannot connect.
+        settings = self._save_implicit_tls("587")
+        self.assertIn("usually runs on port 465", self.browser.contents)
+        self.assertFalse(settings.smtp_implicit_tls)
+        self.assertNotEqual(settings.smtp_port, 587)
+
     def test_mail_controlpanel_smtp_userid(self):
         self.browser.open("%s/@@mail-controlpanel" % self.portal_url)
         self.browser.getControl(name="form.widgets.smtp_userid").value = (

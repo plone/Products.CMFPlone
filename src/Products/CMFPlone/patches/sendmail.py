@@ -39,11 +39,15 @@ def applyPatches():
 def mail_settings_wrapper(func):
     def wrapper(self, **kwargs):
         registry = getUtility(IRegistry)
-        mail_settings = registry.forInterface(IMailSchema, prefix="plone")
+        mail_settings = registry.forInterface(IMailSchema, prefix="plone", check=False)
         kwargs["hostname"] = mail_settings.smtp_host
         kwargs["port"] = mail_settings.smtp_port
         kwargs["username"] = mail_settings.smtp_userid
         kwargs["password"] = mail_settings.smtp_pass
+        # SSL/TLS from the start (SMTPS).  Also on when it is switched on in
+        # the MailHost in the ZMI.  False on sites without the record.
+        if registry.get("plone.smtp_implicit_tls", False):
+            kwargs["implicit_tls"] = True
         return func(self, **kwargs)
 
     return wrapper
