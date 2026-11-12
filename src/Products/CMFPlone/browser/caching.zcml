@@ -14,5 +14,10 @@
       for=".sitelogo.SiteLogo"
       ruleset="plone.stableResource"
       />
+  <!-- Without the current version in the URL, the logo can change. -->
+  <cache:ruleset
+      for=".sitelogo.IUnversionedSiteLogo"
+      ruleset="plone.content.file"
+      />
 
 </configure>

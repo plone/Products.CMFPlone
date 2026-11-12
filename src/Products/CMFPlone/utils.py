@@ -494,8 +494,11 @@ def getSiteLogo(site=None, include_type=False):
     site_url = site.absolute_url()
 
     if getattr(settings, "site_logo", False):
+        from Products.CMFPlone.browser.sitelogo import site_logo_version
+
         filename, data = b64decode_file(settings.site_logo)
-        site_logo_url = f"{site_url}/@@site-logo/{filename}"
+        version = site_logo_version(settings.site_logo)
+        site_logo_url = f"{site_url}/@@site-logo/{version}/{filename}"
         site_logo_type = mimetypes.guess_type(filename)[0]
     else:
         site_logo_url = "%s/++resource++plone-logo.svg" % site_url
