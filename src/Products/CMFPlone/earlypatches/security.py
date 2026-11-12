@@ -1,7 +1,29 @@
-# 1. make sure allow_module can't be called from restricted code
+# 1A. make sure allow_* can't be called from restricted code
 import AccessControl
 
 AccessControl.allow_module.__roles__ = ()
+AccessControl.allow_class.__roles__ = ()
+AccessControl.allow_type.__roles__ = ()
+AccessControl.ClassSecurityInfo.__roles__ = ()
+AccessControl.ModuleSecurityInfo.__roles__ = ()
+AccessControl.setSecurityPolicy.__roles__ = ()
+
+# 1B. make sure some stdlib libraries can't be called from restricted code
+# See also https://restrictedpython.readthedocs.io/en/latest/usage/security_considerations.html#modules-that-must-not-be-reachable
+# With AccessControl 7.6+ you get warnings on startup for some known dangerous
+# modules.  We can't add protection for every library that might offer a way
+# out of restricted code.  But protecting the most obvious ones seems good.
+# Someone might unknowingly call `allow_module` on a module that imports
+# one of these.
+import os
+import subprocess
+import shutil
+import sys
+
+os.__roles__ = ()
+subprocess.__roles__ = ()
+shutil.__roles__ = ()
+sys.__roles__ = ()
 
 # 2. make sure /@@ doesn't traverse to annotations
 from zope.traversing import namespace
