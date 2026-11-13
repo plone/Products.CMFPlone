@@ -16,8 +16,8 @@ AccessControl.setSecurityPolicy.__roles__ = ()
 # Someone might unknowingly call `allow_module` on a module that imports
 # one of these.
 import os
-import subprocess
 import shutil
+import subprocess
 import sys
 
 os.__roles__ = ()
