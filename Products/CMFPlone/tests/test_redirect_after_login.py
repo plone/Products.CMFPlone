@@ -8,7 +8,6 @@ from plone.testing.zope import Browser
 from Products.CMFPlone.browser.login.login import LoginForm
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
-from urllib.parse import urlencode
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.publisher.interfaces import IRequest

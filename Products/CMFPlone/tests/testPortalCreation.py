@@ -182,7 +182,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testUnfriendlyTypesProperty(self):
         # We should have an types_not_searched property
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISearchSchema, prefix="plone")
         self.assertTrue("plone.types_not_searched" in registry)
 
     def testDefaultSortOrderProperty(self):
