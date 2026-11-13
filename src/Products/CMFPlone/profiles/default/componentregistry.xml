@@ -53,9 +53,6 @@
     <utility factory="plone.app.redirector.storage.RedirectionStorage"
              interface="plone.app.redirector.interfaces.IRedirectionStorage"
     />
-    <utility factory="plone.contentrules.engine.storage.RuleStorage"
-             interface="plone.contentrules.engine.interfaces.IRuleStorage"
-    />
     <utility factory="plone.app.i18n.locales.countries.Countries"
              interface="plone.app.i18n.locales.interfaces.ICountries"
     />

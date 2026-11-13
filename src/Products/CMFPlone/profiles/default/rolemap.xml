@@ -304,12 +304,6 @@
       <role name="Site Administrator" />
       <role name="Member" />
     </permission>
-    <permission acquire="False"
-                name="Content rules: Manage rules"
-    >
-      <role name="Manager" />
-      <role name="Site Administrator" />
-    </permission>
     <permission acquire="True"
                 name="View"
     >
