@@ -2,7 +2,6 @@ from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import bbb
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests import PloneTestCase
@@ -478,12 +477,13 @@ def test_suite():
     import unittest
 
     if bbb.HAS_ZSERVER:
-        return unittest.TestSuite((
-            unittest.defaultTestLoader.loadTestsFromTestCase(TestDAVProperties),
-            unittest.defaultTestLoader.loadTestsFromTestCase(TestPUTObjects),
-            unittest.defaultTestLoader.loadTestsFromTestCase(TestPUTIndexHtml),
-            unittest.defaultTestLoader.loadTestsFromTestCase(TestDAVOperations),
-        ))
+        return unittest.TestSuite(
+            (
+                unittest.defaultTestLoader.loadTestsFromTestCase(TestPUTObjects),
+                unittest.defaultTestLoader.loadTestsFromTestCase(TestPUTIndexHtml),
+                unittest.defaultTestLoader.loadTestsFromTestCase(TestDAVOperations),
+            )
+        )
 
     # return empty suite
     return unittest.TestSuite()

@@ -5,7 +5,6 @@ from plone.base.interfaces import ITinyMCESchema
 from plone.base.navigationroot import get_navigation_root_object
 from plone.base.utils import safe_text
 from plone.registry.interfaces import IRegistry
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import get_portal
 from zope.component import getUtility
 

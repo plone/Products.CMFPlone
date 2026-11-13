@@ -183,7 +183,6 @@ class SearchFeed(FolderFeed):
 @adapter(IItem, IFeed)
 @implementer(IFeedItem)
 class BaseItem(BaseFeedData):
-
     def __init__(self, context, feed):
         self.context = context
         self.feed = feed
@@ -273,7 +272,6 @@ class BaseItem(BaseFeedData):
 
 @adapter(IDexterityContent, IFeed)
 class DexterityItem(BaseItem):
-
     file = None
     field_name = ""
 

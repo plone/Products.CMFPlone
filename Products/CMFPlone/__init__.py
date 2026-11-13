@@ -13,8 +13,9 @@ if __version__ < "7":
     # This sets SKIP_PTA to skip the check for
     # Publication through acquisition in Plone 6.
     # Please remove this code block when can.
-    import Products.CMFCore.explicitacquisition
     from Products.CMFCore.explicitacquisition import PTA_ENV_KEY
+
+    import Products.CMFCore.explicitacquisition
 
     os.environ[PTA_ENV_KEY] = os.environ.get(PTA_ENV_KEY, "false")
     # Importing (from) the module sets SKIP_PTA. We need to override that too.

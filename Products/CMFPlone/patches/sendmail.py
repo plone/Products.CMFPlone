@@ -2,7 +2,6 @@ from plone.base.interfaces import IMailSchema
 from plone.registry.interfaces import IRegistry
 from transaction._transaction import Status
 from zope.component import getUtility
-from zope.sendmail.mailer import _SMTPState
 from zope.sendmail.mailer import SMTPMailer
 
 import logging
@@ -49,5 +48,6 @@ def mail_settings_wrapper(func):
         return func(self, **kwargs)
 
     return wrapper
+
 
 SMTPMailer.__init__ = mail_settings_wrapper(SMTPMailer.__init__)

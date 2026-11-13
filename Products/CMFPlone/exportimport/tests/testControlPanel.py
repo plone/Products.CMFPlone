@@ -53,6 +53,6 @@ class ControlPanelXMLAdapterTests(BodyAdapterTestCase):
 def test_suite():
     import unittest
 
-    return unittest.TestSuite((
-        unittest.defaultTestLoader.loadTestsFromTestCase(ControlPanelXMLAdapterTests),
-    ))
+    return unittest.TestSuite(
+        (unittest.defaultTestLoader.loadTestsFromTestCase(ControlPanelXMLAdapterTests),)
+    )

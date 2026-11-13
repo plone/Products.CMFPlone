@@ -100,7 +100,7 @@ the input fields have the mockup class
 
 the widget shows the element
     [Arguments]    ${text}
-    Get Text    css=.select2-chosen    should be    ${text}    messsage=${text} seems to not be selected
+    Get Text    css=.select2-chosen    should be    ${text}    message=${text} seems to not be selected
 
 
 the widget shows two elements

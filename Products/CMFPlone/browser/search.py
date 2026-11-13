@@ -203,7 +203,9 @@ class Search(BrowserView):
 
         # Filter the sorted ReallyUserFriendlyTypes down to the configured values from the registry,
         #  but keep the order.
-        sorted_types = [term.value for term in vocab if term.value in user_friendly_types]
+        sorted_types = [
+            term.value for term in vocab if term.value in user_friendly_types
+        ]
 
         return sorted_types
 
