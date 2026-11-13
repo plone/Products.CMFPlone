@@ -291,7 +291,7 @@ class Upgrade(BrowserView):
         """
         setup = getattr(self.context, "portal_setup")
         installed = sorted(
-            set([x.split(":")[0] for x in setup._profile_upgrade_versions.keys()])
+            {x.split(":")[0] for x in setup._profile_upgrade_versions.keys()}
         )
         ignore = ["Products.CMFFormController"]
         missing = []

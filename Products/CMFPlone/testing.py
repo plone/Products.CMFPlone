@@ -128,13 +128,13 @@ class ITestSelectWidgetSchema(Interface):
 
     directives.widget('select_field', Select2Widget)
     select_field = Choice(
-        title=u'Select Widget',
+        title='Select Widget',
         values=['one', 'two', 'three', ]
     )
 
     directives.widget('list_field', Select2Widget)
     list_field = List(
-        title=u'Select Multiple Widget',
+        title='Select Multiple Widget',
         value_type=Choice(values=['four', 'five', 'six', ]),
     )
 
