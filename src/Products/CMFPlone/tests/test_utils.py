@@ -43,7 +43,10 @@ class LogoTests(unittest.TestCase):
         settings.site_logo = SITE_LOGO_BASE64
         logo_url, logo_type = getSiteLogo(include_type=True)
 
-        self.assertTrue("http://nohost/plone/@@site-logo/pixel.png" in logo_url)
+        # The URL has the version of the logo, so it changes with the logo.
+        self.assertRegex(
+            logo_url, r"^http://nohost/plone/@@site-logo/[0-9a-f]{16}/pixel\.png$"
+        )
 
         self.assertEqual("image/png", logo_type)
 

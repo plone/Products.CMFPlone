@@ -88,7 +88,7 @@ the site title should be set to '${expected_site_title}'
 
 the site logo should be set to the custom logo
     Go To    ${PLONE_URL}
-    Get Element Count    //*[@id="portal-logo"]/img[contains(@src,'@@site-logo/pixel.png')]    should be    1
+    Get Element Count    //*[@id="portal-logo"]/img[contains(@src,'@@site-logo/') and contains(@src,'/pixel.png')]    should be    1
 
 then I can see a sitemap
 
