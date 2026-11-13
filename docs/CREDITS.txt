@@ -15,7 +15,7 @@ The Plone Team
   The following people contributed to help iron out wrinkles, gave feedback and
 contributed code.
 
-  Geir Bækholt (elvix) -- Javascript, CSS
+  Geir BÃ¦kholt (elvix) -- Javascript, CSS
   - "Plone Solutions":http://www.plonesolutions.com
 
   Helge Tesdal (tesdal) -- Code king
@@ -47,7 +47,7 @@ contributed code.
 
   Luis Lavena --  Windows icons
 
-  Stian Søiland -- CSS tips
+  Stian SÃ¸iland -- CSS tips
 
   Michael Zeltner (eaon) -- CSS wizardry, XHTML, neverending patience and persistence - "niij*":http://niij.org/
 
@@ -121,7 +121,7 @@ Companies (in randomized order):
   Bartenstein
 
   "Plone Solutions":http://www.plonesolutions.com --
-  Time and constant dedication of Alexander Limi, Helge Tesdal, Geir Bækholt.
+  Time and constant dedication of Alexander Limi, Helge Tesdal, Geir BÃ¦kholt.
 
   "4teamwork":http://www.4teamwork.com --
   Sponsorship, UI work, and testing.  Bernard Buehlman and Pascal Habegger.
