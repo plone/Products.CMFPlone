@@ -8,9 +8,9 @@ from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.textfield import RichTextValue
 from plone.indexer.wrapper import IndexableObjectWrapper
+from plone.namedfile.file import NamedImage
 from plone.uuid.interfaces import IAttributeUUID
 from plone.uuid.interfaces import IUUID
-from plone.namedfile.file import NamedImage
 from Products.CMFCore.indexing import processQueue
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone.CatalogTool import CatalogTool
