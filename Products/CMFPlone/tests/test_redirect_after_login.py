@@ -204,7 +204,9 @@ class TestRedirectAfterLogin(unittest.TestCase):
         self.browser.handleErrors = True
         self.browser.open("http://nohost/plone/document")
 
-        self.assertEqual(self.browser.url, "http://nohost/plone/login?came_from=/plone/document")
+        self.assertEqual(
+            self.browser.url, "http://nohost/plone/login?came_from=/plone/document"
+        )
         self.assertEqual(
             self.browser.getControl(name="came_from").value,
             "/plone/document",
@@ -235,7 +237,9 @@ class TestRedirectAfterLogin(unittest.TestCase):
             transaction.commit()
 
         # check came_from value with VHM installed
-        self.browser.open("http://nohost/VirtualHostBase/http/plone.org:80/plone/VirtualHostRoot/login?came_from=/document")
+        self.browser.open(
+            "http://nohost/VirtualHostBase/http/plone.org:80/plone/VirtualHostRoot/login?came_from=/document"
+        )
 
         self.assertEqual(
             self.browser.getControl(name="came_from").value,

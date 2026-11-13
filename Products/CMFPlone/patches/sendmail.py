@@ -50,4 +50,5 @@ def mail_settings_wrapper(func):
 
     return wrapper
 
+
 SMTPMailer.__init__ = mail_settings_wrapper(SMTPMailer.__init__)

@@ -253,28 +253,34 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         self.assertNotIn("http://foo.bar/foobar.js", results)
 
     def test_resource_browser_static_resource(self):
-        resource = PloneScriptResource(self.portal, resource="++resource++plone-admin-ui.js")
+        resource = PloneScriptResource(
+            self.portal, resource="++resource++plone-admin-ui.js"
+        )
         self.assertIn(
-            b"window.onload", resource.file_data,
+            b"window.onload",
+            resource.file_data,
         )
 
     def test_resource_ofs_file(self):
-        self.portal["foo.js"] = File("foo.js", "Title", b'console.log()')
+        self.portal["foo.js"] = File("foo.js", "Title", b"console.log()")
         resource = PloneScriptResource(self.portal, resource="foo.js")
         self.assertEqual(
-            resource.file_data, b'console.log()',
+            resource.file_data,
+            b"console.log()",
         )
 
     def test_resource_view(self):
         resource = PloneScriptResource(self.portal, resource="@@ok")
         self.assertEqual(
-            resource.file_data, b'OK',
+            resource.file_data,
+            b"OK",
         )
 
     def test_resource_bogus(self):
         resource = PloneScriptResource(self.portal, resource="I_do_not_exist")
         self.assertEqual(
-            resource.file_data, b'I_do_not_exist',
+            resource.file_data,
+            b"I_do_not_exist",
         )
 
     def test_relative_uri_resource(self):

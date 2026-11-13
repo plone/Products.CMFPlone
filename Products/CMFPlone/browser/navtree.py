@@ -33,7 +33,9 @@ class NavtreeQueryBuilder:
 
     def __init__(self, context):
         self.registry = getUtility(IRegistry)
-        navigation_settings = self.registry.forInterface(INavigationSchema, prefix="plone")
+        navigation_settings = self.registry.forInterface(
+            INavigationSchema, prefix="plone"
+        )
 
         # Acquire a custom nav query if available
         customQuery = getattr(context, "getCustomNavQuery", None)
