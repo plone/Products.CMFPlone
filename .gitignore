@@ -18,6 +18,7 @@
 .ropeproject
 /.pydevproject
 .ropeproject
+.venv
 /.mr.developer.cfg
 /src/*
 *.mo
