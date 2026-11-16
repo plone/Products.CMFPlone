@@ -130,8 +130,6 @@ def initialize(context):
     # Make Batch available at module level
     this_module.Batch = Batch
 
-    ModuleSecurityInfo("StringIO").declarePublic("StringIO")
-
     # Make Unauthorized importable TTW
     ModuleSecurityInfo("AccessControl").declarePublic("Unauthorized")
 
