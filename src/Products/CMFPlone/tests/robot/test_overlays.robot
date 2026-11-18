@@ -68,15 +68,23 @@ Scenario: Change default content item of a folder overlay opens
     When I change the default content view of the test folder
     Then overlay should open
 
-Scenario: Change default content item of a folder overlay closes
+Scenario: Change default content item of a folder overlay closes on cancel
    Given a logged-in site administrator
      And a document as the default view of the test folder
     When I change the default content view of the test folder
      And I 'Cancel' the form
     Then overlay should close
+
+Scenario: Change default content item of a folder overlay closes on save
+   Given a logged-in site administrator
+     And a document as the default view of the test folder
     When I change the default content view of the test folder
      And I 'Save' the form
     Then overlay should close
+
+Scenario: Change default content item of a folder overlay closes on close button
+   Given a logged-in site administrator
+     And a document as the default view of the test folder
     When I change the default content view of the test folder
      And I close the overlay
     Then overlay should close
