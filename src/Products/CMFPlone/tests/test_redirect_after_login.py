@@ -114,16 +114,14 @@ class TestRedirectAfterLogin(unittest.TestCase):
 
         self.browser.getControl("Login Name").value = TEST_USER_NAME
         self.browser.getControl("Password").value = TEST_USER_PASSWORD
-        self.browser.getControl(name="came_from").value = (
-            "http://nohost/plone/contact-info"
-        )
+        self.browser.getControl(name="came_from").value = "http://nohost/plone/sitemap"
 
         self.browser.getControl("Log in").click()
 
         self.assertIn("You are now logged in.", self.browser.contents)
         self.assertEqual(
             self.browser.url,
-            "http://nohost/plone/contact-info",
+            "http://nohost/plone/sitemap",
             "Successful login did not redirect to the came_from.",
         )
 
@@ -144,7 +142,7 @@ class TestRedirectAfterLogin(unittest.TestCase):
         self.browser.getControl("Login Name").value = TEST_USER_NAME
         self.browser.getControl("Password").value = TEST_USER_PASSWORD
         self.browser.getControl(name="came_from").value = (
-            "http://nohost/plone/contact-info?foo=bar&baz=1"
+            "http://nohost/plone/sitemap?foo=bar&baz=1"
         )
 
         self.browser.getControl("Log in").click()
@@ -152,7 +150,7 @@ class TestRedirectAfterLogin(unittest.TestCase):
         self.assertIn("You are now logged in.", self.browser.contents)
         self.assertEqual(
             self.browser.url,
-            "http://nohost/plone/contact-info?foo=bar&baz=1",
+            "http://nohost/plone/sitemap?foo=bar&baz=1",
             "Query parameters in came_from were lost after login redirect.",
         )
 
@@ -169,9 +167,7 @@ class TestRedirectAfterLogin(unittest.TestCase):
 
         self.browser.getControl("Login Name").value = TEST_USER_NAME
         self.browser.getControl("Password").value = TEST_USER_PASSWORD
-        self.browser.getControl(name="came_from").value = (
-            "http://nohost/plone/contact-info"
-        )
+        self.browser.getControl(name="came_from").value = "http://nohost/plone/sitemap"
 
         self.browser.getControl("Log in").click()
 
@@ -278,16 +274,14 @@ class TestRedirectAfterLogin(unittest.TestCase):
 
         self.browser.getControl("Login Name").value = TEST_USER_NAME
         self.browser.getControl("Password").value = TEST_USER_PASSWORD
-        self.browser.getControl(name="came_from").value = (
-            "http://nohost/plone/contact-info"
-        )
+        self.browser.getControl(name="came_from").value = "http://nohost/plone/sitemap"
 
         self.browser.getControl("Log in").click()
 
         gsm.unregisterAdapter(InitialLoginAdapter, (Interface, IRequest))
 
         self.assertIn("You are now logged in.", self.browser.contents)
-        self.assertEqual(self.browser.url, "http://nohost/plone/contact-info")
+        self.assertEqual(self.browser.url, "http://nohost/plone/sitemap")
         self.assertEqual(self.portal.foo, "foo")
 
         # Now log out.

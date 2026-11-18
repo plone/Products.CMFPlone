@@ -141,20 +141,6 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
         settings = registry.forInterface(IMailSchema, prefix="plone")
         self.assertEqual(settings.email_from_address, "john@example.com")
 
-    def test_mail_controlpanel_contactinfo_page(self):
-        self.browser.open("%s/@@mail-controlpanel" % self.portal_url)
-        self.browser.getControl(name="form.widgets.email_from_name").value = "John"
-        self.browser.getControl(name="form.widgets.email_from_address").value = (
-            "john@example.com"
-        )
-        self.browser.getControl(name="form.buttons.save").click()
-
-        self.browser.open("%s/contact-info" % self.portal_url)
-        self.assertTrue(
-            "Message" in self.browser.contents,
-            "Message exists not in the contact-info form!",
-        )
-
     def test_controlpanel_overview_shows_no_unconfigured_mailhost_warning(self):
         self.browser.open("%s/@@mail-controlpanel" % self.portal_url)
         self.browser.getControl(name="form.widgets.email_from_name").value = "John"

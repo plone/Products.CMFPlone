@@ -16,18 +16,6 @@ ${TEST_FOLDER}  test-folder
 
 *** Test cases ***
 
-Scenario: Contact form overlay opens
-    Given the site root
-     When I click the 'Contact' link
-     Then overlay should open
-
-
-Scenario: Contact form overlay closes
-    Given the site root logged out
-      and the 'Contact' overlay
-     When I close the overlay
-     Then overlay should close
-
 Scenario: Log in form overlay opens
     Given the site root logged out
       and the site root
