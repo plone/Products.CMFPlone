@@ -7,7 +7,6 @@ from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import IControlPanel
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
-from Products.CMFCore.Expression import createExprContext
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.permissions import View
@@ -16,6 +15,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.utils import get_current_context
 from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.i18nmessageid import Message
@@ -121,8 +121,10 @@ class PloneControlPanel(
     security.declarePublic("enumConfiglets")
 
     def enumConfiglets(self, group=None):
+        context = get_current_context()
         portal = getToolByName(self, "portal_url").getPortalObject()
-        context = createExprContext(self, portal, self)
+
+        context = self._getExprContext(context or portal)
         res = []
         for a in self.listActions():
             verified = 0
