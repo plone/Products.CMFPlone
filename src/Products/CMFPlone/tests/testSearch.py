@@ -1,6 +1,7 @@
 from DateTime import DateTime
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.testing import applyProfile
+from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import login
 from plone.app.testing import PLONE_FIXTURE
@@ -11,6 +12,7 @@ from plone.app.testing import TEST_USER_NAME
 from plone.app.textfield import RichTextValue
 from plone.base.interfaces import ISearchSchema
 from plone.registry.interfaces import IRegistry
+from plone.testing.zope import Browser
 from z3c.form.interfaces import IFormLayer
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -20,6 +22,7 @@ from zope.publisher.browser import setDefaultSkin
 from ZPublisher.HTTPRequest import HTTPRequest
 from ZPublisher.HTTPResponse import HTTPResponse
 
+import json
 import sys
 import time
 import unittest
@@ -83,6 +86,9 @@ class SearchLayer(PloneSandboxLayer):
 SEARCH_FIXTURE = SearchLayer()
 SEARCH_INTEGRATION_TESTING = IntegrationTesting(
     bases=(SEARCH_FIXTURE,), name="Search:Integration"
+)
+SEARCH_FUNCTIONAL_TESTING = FunctionalTesting(
+    bases=(SEARCH_FIXTURE,), name="Search:Functional"
 )
 
 
@@ -345,10 +351,75 @@ class TestSection(SearchTestCase):
         )
 
 
+class TestWrongShapedParameters(unittest.TestCase):
+    """The client chooses the shape of request parameters.
+
+    Parameters the search views cannot use are ignored instead of
+    causing a server error.
+    https://github.com/plone/Products.CMFPlone/issues/4410
+    """
+
+    layer = SEARCH_FUNCTIONAL_TESTING
+
+    query_strings = (
+        "SearchableText=spam&b_start=10&b_start=20",
+        "SearchableText=spam&b_start=text",
+        "SearchableText=spam&b_start:int=-5",
+        "created=text",
+        "SearchableText=spam&created=text",
+        "SearchableText=spam&created:list=text",
+        "SearchableText=spam&created.query:record=text&created.range:record=min",
+        "SearchableText=spam&SearchableText=eggs",
+        "SearchableText.text:record=spam",
+        "Subject.text:record=spam",
+        "SearchableText=spam&perPage=text&page=text",
+        "SearchableText=spam&perPage=1&perPage=2&page=1&page=2",
+        "SearchableText=spam&perPage=0&page=0",
+        "SearchableText=spam&perPage=-1&page=-1",
+    )
+
+    def setUp(self):
+        self.browser = Browser(self.layer["app"])
+        self.browser.handleErrors = False
+
+    def test_search(self):
+        portal_url = self.layer["portal"].absolute_url()
+        for view in ("@@search", "@@ajax-search"):
+            for query_string in self.query_strings:
+                with self.subTest(view=view, query_string=query_string):
+                    self.browser.open(f"{portal_url}/{view}?{query_string}")
+                    self.assertEqual(self.browser.headers["status"], "200 OK")
+
+    def test_b_start_falls_back_to_zero(self):
+        self.browser.open(
+            self.layer["portal"].absolute_url()
+            + "/@@search?SearchableText=spam&b_start=10&b_start=20"
+        )
+        self.assertIn('name="b_start:int" value="0"', self.browser.contents)
+        self.assertIn('<ol class="searchResults', self.browser.contents)
+        self.assertIn('start="1"', self.browser.contents)
+
+    def test_valid_created_query_still_filters(self):
+        portal_url = self.layer["portal"].absolute_url()
+        self.browser.open(
+            f"{portal_url}/@@ajax-search?SearchableText=spam"
+            "&created.query:record:date=2000-01-01&created.range:record=max"
+        )
+        self.assertEqual(json.loads(self.browser.contents)["total"], 0)
+        self.browser.open(
+            f"{portal_url}/@@ajax-search?SearchableText=spam"
+            "&created.query:record:date=2000-01-01&created.range:record=min"
+        )
+        self.assertEqual(json.loads(self.browser.contents)["total"], 12)
+
+
 def test_suite():
     """This sets up a test suite that actually runs the tests in the class
     above
     """
     suite = unittest.TestSuite()
     suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestSection))
+    suite.addTest(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestWrongShapedParameters)
+    )
     return suite
