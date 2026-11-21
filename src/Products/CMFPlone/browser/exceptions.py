@@ -1,5 +1,8 @@
 from AccessControl import getSecurityManager
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from plone.memoize.view import memoize
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zExceptions.ExceptionFormatter import format_exception
@@ -22,6 +25,26 @@ class ExceptionView(BrowserView):
             (self.__parent__, self.request), name="plone_redirector_view"
         )
 
+    def viewable_parent(self):
+        """Return the nearest parent of the error that the user may view.
+
+        When traversal fails below a private object, that object is the
+        parent of the error. The user is not authenticated yet at that point
+        of the traversal, so rendering the error page on that object leaves it
+        without logo, navigation and other viewlets, or fails completely.
+        Do not go higher than the site root.
+        """
+        parent = self.__parent__
+        sm = getSecurityManager()
+        obj = parent
+        while obj is not None:
+            if sm.checkPermission("View", obj):
+                return obj
+            if ISiteRoot.providedBy(obj):
+                break
+            obj = aq_parent(aq_inner(obj))
+        return parent
+
     def __call__(self):
         exception = self.context
         error_type = exception.__class__.__name__
@@ -30,7 +53,8 @@ class ExceptionView(BrowserView):
             # and sets the proper location header
             return
 
-        self.context = self.__parent__
+        # Viewlets acquire through the view, so set its parent as well.
+        self.context = self.__parent__ = self.viewable_parent()
         request = self.request
 
         exc_type, value, traceback = sys.exc_info()
