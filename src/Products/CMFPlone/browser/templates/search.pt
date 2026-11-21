@@ -23,8 +23,7 @@
 <body>
 
   <div id="content-core" metal:fill-slot="main"
-       tal:define="b_start python:0;
-                   b_start request/b_start | b_start;
+       tal:define="b_start view/b_start;
                    batch python: view.results(b_start=b_start);
                    normalizeString nocall:context/@@plone/normalizeString;">
 
@@ -42,7 +41,7 @@
 
         <input type="hidden" name="sort_on" value="" />
         <input type="hidden" name="sort_order" value="" />
-        <input type="hidden" id="search-batch-start" name="b_start:int" value="${request/b_start|string:0}" />
+        <input type="hidden" id="search-batch-start" name="b_start:int" value="${view/b_start}" />
         <input type="hidden" id="advanced-search-input" name="advanced_search" value="${python: 'True' if view.show_advanced_search() else 'False'}" />
 
         <div class="input-group">
@@ -130,7 +129,7 @@
                                   lastweek python:(today-7).ISO();
                                   lastmonth python:(today-31).ISO();
                                   ever python:DateTime('1970-01-02').ISO();
-                                  checked python:request.get('created', {}).get('query', ever)">
+                                  checked python:view.created_query(ever)">
                     <li>
                       <div class="form-check">
                         <input type="radio" id="query-date-yesterday" name="created.query:record:date" class="form-check-input"
@@ -199,7 +198,7 @@
                                          allowAnonymousViewAbout python:context.portal_registry['plone.allow_anon_views_about'];
                                          show_about python:not isAnon or allowAnonymousViewAbout;
                                          image_scale portal/@@image_scale;
-                                         count_offset python:request.get('b_start', 0)">
+                                         count_offset view/b_start">
                 <ol class="searchResults list-group list-group-numbered" start="${python:count_offset + 1}" style="--list-start: ${count_offset}; counter-reset: section var(--list-start, 0)">
                   <tal:results repeat="item batch">
                     <li tal:define="hasIcon item/getIcon" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start  fs-4">
