@@ -6,6 +6,7 @@ from plone.base.interfaces import ISearchSchema
 from plone.base.interfaces.siteroot import IPloneSiteRoot
 from plone.base.navigationroot import get_navigation_root
 from plone.base.utils import munge_search_term as _munge_search_term
+from plone.base.utils import safe_int
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.ZCTextIndex.ParseTree import ParseError
@@ -49,7 +50,7 @@ class Search(BrowserView):
         if query is None:
             query = {}
         if batch:
-            query["b_start"] = b_start = int(b_start)
+            query["b_start"] = b_start = max(safe_int(b_start), 0)
             query["b_size"] = b_size
         query = self.filter_query(query)
 
@@ -75,18 +76,26 @@ class Search(BrowserView):
         valid_indexes = tuple(catalog.indexes())
         valid_keys = self.valid_keys + valid_indexes
 
+        # The client chooses the shape of the request parameters.
+        # Ignore the ones the catalog cannot handle.
+        form = {
+            k: v
+            for k, v in request.form.items()
+            if self._valid_form_value(catalog, k, v)
+        }
+
         text = query.get("SearchableText", None)
         if text is None:
-            text = request.form.get("SearchableText", "")
+            text = form.get("SearchableText", "")
         if not text:
             # Without text, must provide a meaningful non-empty search
-            valid = set(valid_indexes).intersection(request.form.keys()) or set(
+            valid = set(valid_indexes).intersection(form.keys()) or set(
                 valid_indexes
             ).intersection(query.keys())
             if not valid:
                 return
 
-        for k, v in request.form.items():
+        for k, v in form.items():
             if v and ((k in valid_keys) or k.startswith("facet.")):
                 query[k] = v
         if text:
@@ -98,8 +107,8 @@ class Search(BrowserView):
             try:
                 if created.get("query", EVER) <= EVER:
                     del query["created"]
-            except AttributeError:
-                # created not a mapping
+            except (AttributeError, TypeError):
+                # created not a mapping, or its query not a date
                 del query["created"]
 
         # respect `types_not_searched` setting
@@ -116,6 +125,32 @@ class Search(BrowserView):
         if "sort_order" in query and not query["sort_order"]:
             del query["sort_order"]
         return query
+
+    @staticmethod
+    def _valid_form_value(catalog, key, value):
+        """Is this request parameter usable in a catalog query?"""
+        if key == "SearchableText":
+            return isinstance(value, str)
+        index = catalog._catalog.indexes.get(key)
+        if index is None or not hasattr(value, "keys"):
+            return True
+        # A record, for example ``created.query:record``.
+        # The catalog raises an error for options the index does not know.
+        options = set(getattr(index, "query_options", ())) | {"query"}
+        return set(value.keys()) <= options
+
+    @property
+    def b_start(self):
+        """The batch start from the request, 0 when it is not usable."""
+        return max(safe_int(self.request.form.get("b_start", 0)), 0)
+
+    def created_query(self, default=None):
+        """The query of the ``created`` filter in the request."""
+        created = self.request.form.get("created")
+        try:
+            return created.get("query", default)
+        except AttributeError:
+            return default
 
     @lazy_property
     def default_sort_on(self):
@@ -244,14 +279,10 @@ class Search(BrowserView):
 class AjaxSearch(Search):
     def __call__(self):
         items = []
-        try:
-            per_page = int(self.request.form.get("perPage"))
-        except Exception:
+        per_page = safe_int(self.request.form.get("perPage"), 10)
+        if per_page < 1:
             per_page = 10
-        try:
-            page = int(self.request.form.get("page"))
-        except Exception:
-            page = 1
+        page = max(safe_int(self.request.form.get("page"), 1), 1)
 
         results = self.results(batch=False, use_content_listing=False)
         batch = Batch(results, per_page, start=(page - 1) * per_page)
